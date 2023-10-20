@@ -1,0 +1,264 @@
+/*HTML*/
+@font-face {
+    font-family: 'Gotham Rounded';
+    src: url('fonts/GothamRounded-Medium.woff2') format('woff2'),
+        url('fonts/GothamRounded-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('fonts/Gotham-Bold.woff2') format('woff2'),
+        url('fonts/Gotham-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Gotham';
+    src: url('fonts/Gotham-Book.woff2') format('woff2'),
+        url('fonts/Gotham-Book.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body{
+    font-family: 'Gotham';
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.fs-8{font-size: 8px;}
+.fs-9{font-size: 9px;}
+.fs-10{font-size: 10px;}
+.fs-11{font-size: 11px;}
+.fs-12{font-size: 12px;}
+.fs-13{font-size: 13px;}
+.fs-14{font-size: 14px;}
+.fs-18{font-size: 18px;}
+.fs-45{font-size: 45px;}
+
+.authentication-wrapper.authentication-basic .authentication-inner:before,
+.authentication-wrapper.authentication-basic .authentication-inner:after{
+    position: relative;
+}
+
+table th{
+    font-size: 12px !important;
+    background: #171D49 !important;
+    color: #fff !important;
+    text-transform: uppercase;
+}
+
+table th:first-child{
+    border-top-left-radius: 10px;
+}
+
+table th:last-child{
+    border-top-right-radius: 10px;
+}
+
+table td{
+    font-size: 12px !important;
+}
+
+.btn:active, .btn:active {
+/*    opacity: 0.8;*/
+}
+
+#formAuthentication i{
+    color: #9EA7B3;
+}
+
+/* Estilo de la barra de desplazamiento */
+::-webkit-scrollbar {
+  width: 5px; /* Ancho de la barra de desplazamiento */
+}
+
+/* Estilo del thumb (agarre) de la barra de desplazamiento */
+::-webkit-scrollbar-thumb {
+  background-color: #3962E6; /* Color de fondo del thumb */
+  border-radius: 4px; /* Borde redondeado del thumb */
+}
+
+/* Estilo del thumb al pasar el mouse sobre él*/
+::-webkit-scrollbar-thumb:hover {
+  background-color: #171d49; /* Color de fondo del thumb al pasar el mouse */
+}
+
+::-webkit-scrollbar {
+  height: 8px; /* Establece la altura de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #3962E6; /* Color del pulgar de la barra de desplazamiento */
+  border-radius: 4px; /* Borde redondeado del pulgar */
+}
+
+::-webkit-scrollbar-track {
+  background-color: #d8d9db; /* Color de fondo de la barra de desplazamiento */
+}
+
+/*Navbar*/
+.nav-item h5 {
+    color: #171D49;
+}
+
+/*Sidebar*/
+.menu-item-active .menu-link{
+    background: rgb(219 218 222 / 20%) !important;
+}
+
+.menu-item > a.menu-toggle {
+    background: #0A1144 !important;
+    margin: 0px !important;
+}
+
+.bg-menu-theme{
+    background: #171D49 !important;
+    color: #fff !important;
+}
+
+.bg-veris{
+    background: #0071CE;
+    color: #fff !important;
+}
+
+.bg-veris:hover{
+    background: #0071CE;
+    color: #fff !important;
+}
+
+.bg-veris:active{
+    background: #0A2240 !important;
+    color: #fff !important;
+}
+
+.bg-alt{
+    color: #0071CE;
+    border: 1px solid #0071CE !important;
+}
+
+.bg-alt:hover{
+/*    opacity: 0.8;*/
+}
+
+a.menu-link{
+    background: none !important;
+    color: #fff !important;
+}
+
+.logo-sidebar{
+    height: 75px;
+}
+
+#pin-menu{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.logo-sidebar-iso {
+    height: 60px;
+    margin: auto;
+    display: none;
+}
+
+/*Login*/
+.logo-login {
+    max-width: 175px;
+}
+
+/*Componentes*/
+.txt-veris{
+    color: #0071CE !important;
+}
+
+.sk-veris .sk-chase-dot:before{
+    background-color: #3962E6;
+}
+
+.ico-button{
+    height: 15px;
+}
+
+/*Select2*/
+.select2-results__option[role=option][aria-selected=true] {
+    background-color: #3962E6 !important;
+    color: #fff;
+}
+
+.select2-container--default .select2-results__option--highlighted:not([aria-selected=true]) {
+    color: #3962E6 !important;
+}
+
+.select2-selection span {
+    font-size: 12px;
+}
+
+/*Acordion*/
+.accordion-button{
+    color: #3860e2 !important;
+}
+
+/*Paginacion*/
+.pagination{
+    justify-content: center;
+}
+
+.page-item.active .page-link, .pagination li.active > a:not(.page-link) {
+    border-color: #3962E6 !important;
+    background-color: #3962E6 !important;
+    color: #fff;
+}
+
+/*Bootstrap*/
+.form-label {
+    color: #0A2240;
+    font-weight: 700;
+}
+
+label{
+    color: #0A2240
+}
+
+.action-ico{
+    height: 15px;
+    margin-top: 5px;
+}
+
+.item-delete i, .item-delete-alt i{
+    font-size: 15px;
+    margin-top: 2px;
+}
+
+/*Cotizador*/
+
+.input-price i {
+    font-size: 10px !important;
+}
+
+.prestaciones-item > .card > .card-header {
+/*    background: rgb(57 98 230 / 10%);*/
+    background: #3962E6 !important;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.prestaciones-item > .card > .card-header h6 {
+/*    color: #171d49;*/
+    font-size: 12px !important;
+    line-height: 18px;
+}
