@@ -4,7 +4,11 @@
 @endsection
 
 @section('content')
-
+<!-- Logo -->
+<div class="text-center mb-4">
+    <img class="logo-login" src="../../assets/img/veris/icono.svg">
+</div>
+<!-- /Logo -->
 <form id="formAuthentication" class="mb-3" action="/autenticar" method="POST">
     @csrf
     @if (session()->has('mensaje'))
@@ -47,10 +51,10 @@
         <a class="txt-veris fs-12" href="/olvide-clave"> Olvide mi Contraseña</a>
     </div>
     <div class="mt-5 mb-3">
-        <button class="btn d-grid w-100 bg-veris rounded" type="submit" onclick="">Iniciar Sesión</button>
+        <button class="btn d-grid w-100 bg-veris rounded" type="submit">Iniciar Sesión</button>
     </div>
     <div class="mb-3">
-        <button class="btn d-grid w-100 bg-alt rounded" type="submit" onclick="">Crear una cuenta</button>
+        <a href="registrar-cuenta" class="btn d-grid w-100 bg-alt rounded">Crear una cuenta</a>
     </div>
 </form>
 <script>

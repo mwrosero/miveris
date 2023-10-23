@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function (e) {
     if (typeof stepsValidation !== undefined && stepsValidation !== null) {
       // Multi Steps form
       const stepsValidationForm = stepsValidation.querySelector('#multiStepsForm');
+      console.log(stepsValidationForm)
       // Form steps
       const stepsValidationFormStep1 = stepsValidationForm.querySelector('#accountDetailsValidation');
       const stepsValidationFormStep2 = stepsValidationForm.querySelector('#personalInfoValidation');

@@ -3,12 +3,15 @@
     Veris - Recuperar Contraseña
 @endsection
 @section('content')
+<div class="text-center mb-2">
+    <img class="logo-login" src="../../assets/img/veris/isotipo.svg">
+</div>
 <!-- Content Recuperar Clave -->
-<p class="fs-4 mt-5 mb-0 text-center bg-colortext fw-bold">Recuperar Contraseña</p>
-<p class="fs-6 mb-4  text-center bg-colortext">Para actualizar la Contraseña, debes ingresar el código de validación enviado a tu correo.</p>
+<p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-bold">Recupera tu contraseña</p>
+<p class="fs-6 mb-3 text-center bg-colortext">Hemos enviado un código al correo electrónico con el que creaste tu cuenta.</p>
 <form id="formAuthentication" class="mb-3" action="login">
     <div class="mb-3">
-        <label for="codigo" class="form-label bg-colortext fw-bold mt-3">Código de Validación</label>
+        <label for="codigo" class="form-label bg-colortext fw-bold mt-3">Código de autorización *</label>
         <input type="text"
             class="form-control"
             id="codigo"
@@ -16,38 +19,76 @@
             autofocus
             required />
     </div>
-    <div class="mb-3 form-password-toggle">
+    <div class="mb-2 form-password-toggle">
         <div class="d-flex justify-content-between">
-            <label class="form-label bg-colortext fw-bold" for="password">Nueva Contraseña</label>
+            <label class="form-label fw-bold" for="password">Contraseña *</label>
         </div>
         <div class="input-group input-group-merge">
             <input type="password"
-                id="password"
-                class="form-control"
-                name="password"
-                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                aria-describedby="password" required />
-            <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+            id="password"
+            class="form-control"
+            name="password"
+            placeholder="Ingresa tu contraseña"
+            aria-describedby="password"
+            required />
+            <span id="togglePassword" class="input-group-text cursor-pointer"
+            ><i class="ti ti-eye-off"></i></span>
         </div>
     </div>
     <div class="mb-3 form-password-toggle">
         <div class="d-flex justify-content-between">
-            <label class="form-label bg-colortext fw-bold" for="password">Confirmar Nueva Contraseña</label>
+            <label class="form-label fw-bold" for="password">Contraseña *</label>
         </div>
         <div class="input-group input-group-merge">
             <input type="password"
-                id="new-password"
-                class="form-control"
-                name="new-password"
-                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                aria-describedby="new-password"
-                required />
-            <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
+            id="password2"
+            class="form-control"
+            name="password2"
+            placeholder="Confirma la contraseña"
+            aria-describedby="password2"
+            required />
+            <span id="togglePassword2" class="input-group-text cursor-pointer"
+            ><i class="ti ti-eye-off"></i></span>
         </div>
     </div>
-    <div class="mb-3">
+    <div class="mb-2">
         <button class="btn btn-primary d-grid w-100 bg-colorboton" type="submit" id="guardarContrasena">Aceptar</button>
+    </div>
+    <div>
+        <p class="txt-alt fs-12 text-center">Revisa en tu bandeja de correo no deseado. Si no has recibido el correo con el código, comunícate al <b>6009600</b>.</p>
     </div>
 </form>
 <!-- /Content Recuperar Clave -->
+<script>
+    const passwordInput = document.getElementById('password');
+    const togglePassword = document.getElementById('togglePassword');
+
+    const passwordInput2 = document.getElementById('password2');
+    const togglePassword2 = document.getElementById('togglePassword2');
+
+    togglePassword.addEventListener('click', function() {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePassword.innerHTML = '<i class="ti ti-eye"></i>';
+        } else {
+            passwordInput.type = 'password';
+            togglePassword.innerHTML = '<i class="ti ti-eye-off"></i>';
+        }
+    });
+
+    togglePassword2.addEventListener('click', function() {
+        if (passwordInput2.type === 'password') {
+            passwordInput2.type = 'text';
+            togglePassword2.innerHTML = '<i class="ti ti-eye"></i>';
+        } else {
+            passwordInput2.type = 'password';
+            togglePassword2.innerHTML = '<i class="ti ti-eye-off"></i>';
+        }
+    });
+
+</script>
+@component('components.modal', ['id' => 'modalAlert', 'title' => 'Mi Modal Personalizado', 'message' => 'Mensaje'])
+    <p>Contenido personalizado del modal.</p>
+    <button type="button" class="btn btn-primary">Aceptar</button>
+@endcomponent
 @endsection
