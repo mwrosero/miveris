@@ -112,7 +112,7 @@ class SeguridadesController extends Controller
 
     /*Envio de petición para reestablecer clave*/
     public function recuperarClave(Request $request){
-        $data = $request->all();
+        /*$data = $request->all();
         $user = $data['user'];
 
         $method = '/seguridad/v1/usuarios/solicitud_recuperacion_clave';
@@ -125,7 +125,8 @@ class SeguridadesController extends Controller
         ]);
 
         session()->flash('mensaje', $response->message);
-        return view('login.olvide_clave');
+        return view('login.olvide_clave');*/
+        return view('login.reestablecer_clave');
     }
 
     /*Reestablecer clave*/

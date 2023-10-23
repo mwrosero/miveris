@@ -39,7 +39,7 @@
             required />
     </div>
     <div class="mb-3">
-        <button class="btn btn-primary d-grid w-100 bg-colorboton" type="button" id="recuperarContrasena">Enviar</button>
+        <button class="btn btn-primary d-grid w-100 bg-colorboton" type="submit" id="recuperarContrasena">Enviar</button>
     </div>
 </form>
 <!-- /Content Olvide Clave -->
