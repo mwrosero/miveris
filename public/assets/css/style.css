@@ -186,12 +186,41 @@ a.menu-link{
     color: #0071CE !important;
 }
 
+.txt-alt{
+    color: #0A2240;
+}
+
+.title-section{
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.modal-alert-component{
+    width: 360px;
+}
+
+.modal-alert-component .modal-content{
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.modal-alert-component .modal-content > div{
+    padding: 5px 15px;
+}
+
 .sk-veris .sk-chase-dot:before{
     background-color: #3962E6;
 }
 
 .ico-button{
     height: 15px;
+}
+
+#registroWizard input, 
+#registroWizard select,
+#registroWizard #togglePassword, 
+#registroWizard #togglePassword2 {
+    background: #ECEDEE;
 }
 
 /*Select2*/

@@ -101,6 +101,10 @@ class SeguridadesController extends Controller
         }
     }
 
+    public function registrarCuenta(){
+        return view('login.registrar_cuenta');
+    }
+
     /*Formulario de Olvide clave*/
     public function olvideClave(){
         return view('login.olvide_clave');

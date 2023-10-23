@@ -11,7 +11,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link href="https://code.jquery.com/jquery-3.6.0.min.js">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         
         <title>@yield('title')</title>
         <meta name="description" content="" />
@@ -57,21 +57,17 @@
         {{-- <script src="../../../assets/vendor/js/template-customizer.js"></script> --}}
         <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
         <script src="../../../assets/js/config.js"></script>
+        {{-- <script src="../../../assets/vendor/libs/jquery/jquery.js"></script> --}}
     </head>
 
     <body class="bg-fondo">
         
         <!-- Content -->
         <div class="container-xxl">
-            <div class="authentication-wrapper authentication-basic container-p-y ">
-                <div class="authentication-inner py-4">
+            <div class="authentication-wrapper authentication-basic">
+                <div class="authentication-inner">
                     <div class="card shadow-none">
                         <div class="card-body">
-                            <!-- Logo -->
-                            <div class="text-center mb-4">
-                                <img class="logo-login" src="../../assets/img/veris/icono.svg">
-                            </div>
-                            <!-- /Logo -->
                             @yield('content')
                         </div>
                     </div>
@@ -82,7 +78,6 @@
       <!-- Core JS -->
       <!-- build:js assets/vendor/js/core.js -->
 
-      <script src="../../../assets/vendor/libs/jquery/jquery.js"></script>
       <script src="../../../assets/vendor/libs/popper/popper.js"></script>
       <script src="../../../assets/vendor/js/bootstrap.js"></script>
       <script src="../../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
@@ -107,5 +102,13 @@
       <!-- Page JS -->
       {{-- <script src="../../../assets/js/pages-auth.js"></script> --}}
       <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/ism-helper.js"></script>
+
+        @if (session()->has('alert'))
+        <script>
+            $(document).ready(function() {
+                $('#modalAlert').modal('show');
+            });
+        </script>
+        @endif
 </body>
 </html>
