@@ -27,7 +27,7 @@
             class="form-control"
             id="numeroIdentificacion"
             name="numeroIdentificacion"
-            oninput="limitarCaracteres(this, 10)"
+            oninput="limitarCaracteres(this, 13)"
             onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
             placeholder="Ingresa tu identificación"
             @if (session()->has('numeroIdentificacion'))

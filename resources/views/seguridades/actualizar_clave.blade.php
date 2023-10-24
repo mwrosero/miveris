@@ -50,7 +50,7 @@
         </div>
     </div>
     <div class="mb-3">
-        <button class="btn btn-primary d-grid w-100 bg-colorboton" type="submit" id="recuperarContrasena">Actualizar Contraseña</button>
+        <button class="btn d-grid w-100 bg-veris" type="submit" id="recuperarContrasena">Actualizar Contraseña</button>
     </div>
 </form>
 <!-- /Content Actualizar Clave -->

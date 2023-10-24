@@ -77,6 +77,8 @@ table td{
 .btn{
     font-size: 12px;
     font-weight: 700;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 .btn:active, .btn:active {

@@ -31,6 +31,7 @@
 	        <select class="form-control"
 	            id="tipoIdentificacion"
 	            name="tipoIdentificacion"
+	            onchange="actualizarMaxlength(this)"
 	            autofocus
 	            required>
 	            {{-- <option disabled selected hidden>Elegir</option> --}}
@@ -38,11 +39,14 @@
 	    </div>
 	    <div class="mb-2">
 	        <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación *</label>
-	        <input type="number"
+	        <input type="text"
 	            class="form-control"
 	            id="numeroIdentificacion"
 	            name="numeroIdentificacion"
 	            placeholder="Ingresa tu número de identificación"
+	            maxlength="10" 
+	            oninput="limitarCaracteres(this, this.getAttribute('maxlength'))"
+	            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
 	            required />
 	    </div>
 	    <div class="mb-2">
@@ -68,6 +72,7 @@
 	        <label for="telefono" class="form-label fw-bold">Teléfono *</label>
 	        <input type="tel"
 	            class="form-control"
+	            oninput="limitarCaracteres(this, 10)"
 	            id="telefono"
 	            name="telefono"
 	            placeholder="Ingresa tu Teléfono"
@@ -92,7 +97,7 @@
 	    </div>
 	    <div class="mb-2 form-password-toggle">
 	        <div class="d-flex justify-content-between">
-	            <label class="form-label fw-bold" for="password2">Contraseña *</label>
+	            <label class="form-label fw-bold" for="password2">Repite tu contraseña *</label>
 	        </div>
 	        <div class="input-group input-group-merge">
 	            <input type="password"
@@ -118,7 +123,7 @@
 	            name="genero"
 	            autofocus
 	            required>
-	            <option disabled selected hidden>Elegir</option>
+	            {{-- <option disabled selected hidden>Elegir</option> --}}
 	            <option value="M">Masculino</option>
 	            <option value="F">Femenino</option>
 	        </select>
@@ -188,6 +193,7 @@
 	            class="form-control"
 	            id="codigoActivacion"
 	            name="codigoActivacion"
+	            oninput="limitarCaracteres(this, 10)"
 	            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
 	            placeholder="Ingresa el código de activación"
 	            required />
@@ -253,6 +259,11 @@
 	            if(getInput('numeroIdentificacion') == ""){
 	                errors = true;
 	                msg += `<li class="ms-0">Campo identificación es requerido</li>`;
+	            }else if(getInput('tipoIdentificacion') == 2){
+	            	if(!esValidaCedula(getInput('numeroIdentificacion').toString())){
+	            		errors = true;
+	                	msg += `<li class="ms-0">La cédula ingresada no es correcta</li>`;
+	            	}
 	            }
 	            if(getInput('mail') == ""){
 	                errors = true;
@@ -320,12 +331,47 @@
 		});*/
 
 		// Aquí puedes escuchar el evento submit del formulario para enviar los datos.
-		registerButton.addEventListener("click", function (e) {
+		registerButton.addEventListener("click", async function (e) {
 			e.preventDefault();
-			$('.logo-login').hide();
-			$('.email-masked').html(enmascararEmail(getInput('mail')));
-			step2.classList.add("d-none");
-			step3.classList.remove("d-none");
+			let errors = false;
+            let msg = `<ul class="ms-0 text-start">`;
+			let title = 'Campos requeridos';
+			
+			if(getInput('primerNombre') == ""){
+			    errors = true;
+			    msg += `<li class="ms-0">Campo primer nombre es requerido</li>`;
+			}
+			if(getInput('primerApellido') == ""){
+			    errors = true;
+			    msg += `<li class="ms-0">Campo primer apellido es requerido</li>`;
+			}
+			if(getInput('segundoApellido') == ""){
+			    errors = true;
+			    msg += `<li class="ms-0">Campo primer apellido es requerido</li>`;
+			}
+			$('#modalAlertButtonCancelar').addClass('d-none');
+			$('#modalAlertButtonAccion').addClass('d-none');
+			$('#modalAlertButton').removeClass('d-none');
+			if(!errors){
+				let registro = await registrarCuenta();
+				if(registro.code == 200){
+					$('.logo-login').hide();
+					$('.email-masked').html(enmascararEmail(getInput('mail')));
+					step2.classList.add("d-none");
+					step3.classList.remove("d-none");
+				}else{
+					let title = 'Veris';
+	            	msg += `<span class="txt-alt">${registro.message}</span>`;
+					$('#modalAlertTitle').html(title);
+				    $('#modalAlertMessage').html(msg);
+				    $('#modalAlert').modal('show');
+				}
+			}else{
+				msg += `</ul>`;
+				$('#modalAlertTitle').html(title);
+			    $('#modalAlertMessage').html(msg);
+			    $('#modalAlert').modal('show');
+			}
 		});
 	});
 
