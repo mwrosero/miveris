@@ -58,6 +58,9 @@
         <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
         <script src="../../../assets/js/config.js"></script>
         {{-- <script src="../../../assets/vendor/libs/jquery/jquery.js"></script> --}}
+        <script>
+            const api_url = "https://api-phantomx.veris.com.ec";
+        </script>
     </head>
 
     <body class="bg-fondo">
@@ -75,6 +78,10 @@
             </div>
         </div>
 
+        @component('components.modal', ['id' => 'modalAlert', 'title' => 'Error', 'message' => session('alert')])
+            <button type="button" class="btn btn-primary">Aceptar</button>
+        @endcomponent
+
       <!-- Core JS -->
       <!-- build:js assets/vendor/js/core.js -->
 
@@ -82,6 +89,7 @@
       <script src="../../../assets/vendor/js/bootstrap.js"></script>
       <script src="../../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
       <script src="../../../assets/vendor/libs/node-waves/node-waves.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/block-ui/block-ui.js"></script>
 
       <script src="../../../assets/vendor/libs/hammer/hammer.js"></script>
       <script src="../../../assets/vendor/libs/i18n/i18n.js"></script>
@@ -101,7 +109,7 @@
 
       <!-- Page JS -->
       {{-- <script src="../../../assets/js/pages-auth.js"></script> --}}
-      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/ism-helper.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 
         @if (session()->has('alert'))
         <script>

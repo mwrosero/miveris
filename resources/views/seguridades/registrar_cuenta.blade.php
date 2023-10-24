@@ -33,15 +33,15 @@
 	            name="tipoIdentificacion"
 	            autofocus
 	            required>
-	            <option disabled selected hidden>Elegir</option>
+	            {{-- <option disabled selected hidden>Elegir</option> --}}
 	        </select>
 	    </div>
 	    <div class="mb-2">
-	        <label for="user" class="form-label fw-bold">Número de identificación *</label>
+	        <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación *</label>
 	        <input type="number"
 	            class="form-control"
-	            id="user"
-	            name="user"
+	            id="numeroIdentificacion"
+	            name="numeroIdentificacion"
 	            placeholder="Ingresa tu número de identificación"
 	            required />
 	    </div>
@@ -88,10 +88,11 @@
 	            <span id="togglePassword" class="input-group-text cursor-pointer"
 	            ><i class="ti ti-eye-off"></i></span>
 	        </div>
+	        <span class="fs-10">Tu contraseña debe tener 8 dígitos mínimo</span>
 	    </div>
 	    <div class="mb-2 form-password-toggle">
 	        <div class="d-flex justify-content-between">
-	            <label class="form-label fw-bold" for="password">Contraseña *</label>
+	            <label class="form-label fw-bold" for="password2">Contraseña *</label>
 	        </div>
 	        <div class="input-group input-group-merge">
 	            <input type="password"
@@ -118,6 +119,8 @@
 	            autofocus
 	            required>
 	            <option disabled selected hidden>Elegir</option>
+	            <option value="M">Masculino</option>
+	            <option value="F">Femenino</option>
 	        </select>
 	    </div>
 	    <div class="mb-2">
@@ -154,7 +157,7 @@
 	            name="provincia"
 	            autofocus
 	            required>
-	            <option disabled selected hidden>Elegir</option>
+	            {{-- <option disabled selected hidden>Elegir</option> --}}
 	        </select>
 	    </div>
 	    <div class="mb-2">
@@ -164,16 +167,45 @@
 	            name="ciudad"
 	            autofocus
 	            required>
-	            <option disabled selected hidden>Elegir</option>
+	            {{-- <option disabled selected hidden>Elegir</option> --}}
 	        </select>
 	    </div>
 	    <div class="mt-3">
 			{{-- <button class="btn d-grid w-100 bg-alt rounded mb-2">Anterior</button> --}}
-	      	<button class="btn d-grid w-100 bg-veris rounded" type="submit">Crear Cuenta</button>
+	      	<button class="btn d-grid w-100 bg-veris rounded btn-registrar">Crear Cuenta</button>
 	    </div>
+	</section>
+	<section class="step step3 d-none">
+		<p class="text-left text-md-center title-section txt-alt mt-4 mt-md-2">Código de activación</p>
+		<img class="d-block mx-auto mt-3 mb-3" src="../../assets/img/veris/locker.svg">
+		<div class="mb-4 text-center">
+	        <span>Ingresa el código que enviamos a tu correo</span>
+	        <p class="txt-alt fw-bold email-masked"></p>
+	    </div>
+	    <div class="mb-2">
+	        <label for="codigoActivacion" class="form-label fw-bold">Código de activación *</label>
+	        <input type="number"
+	            class="form-control"
+	            id="codigoActivacion"
+	            name="codigoActivacion"
+	            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+	            placeholder="Ingresa el código de activación"
+	            required />
+	    </div>
+	    <button class="btn d-grid w-100 bg-alt rounded mt-5 mb-2" type="button">Confirmar</button>
 	</section>
 </form>
 <script>
+	document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerIdentificacion();
+        await obtenerProvincias();
+        await obtenerCiudades();
+
+        $('body').on('change', '#provincia', async function(){
+        	await obtenerCiudades();
+        })
+    });
+
 	const passwordInput = document.getElementById('password');
     const togglePassword = document.getElementById('togglePassword');
 
@@ -201,41 +233,100 @@
     });
 
     // Espera a que el DOM esté listo
-	document.addEventListener("DOMContentLoaded", function () {
-	  const form = document.getElementById("registroWizard");
-	  const step1 = document.querySelector(".step1");
-	  const step2 = document.querySelector(".step2");
-	  const nextButton = document.querySelector(".next-button");
-	  const prevButton = document.querySelector(".prev-button");
+	document.addEventListener("DOMContentLoaded", async function () {
+		const form = document.getElementById("registroWizard");
+		const step1 = document.querySelector(".step1");
+		const step2 = document.querySelector(".step2");
+		const step3 = document.querySelector(".step3");
+		const nextButton = document.querySelector(".next-button");
+		//const prevButton = document.querySelector(".prev-button");
+		const registerButton = document.querySelector(".btn-registrar");
 
-	  // Al hacer clic en "Siguiente", valida los campos y muestra el paso 2 si son válidos
-	  nextButton.addEventListener("click", function (e) {
-	    e.preventDefault();
-	    // Realiza tus validaciones aquí, por ejemplo:
-	    step1.classList.add("d-none");
-	    step2.classList.remove("d-none");
-	    /*if (document.getElementById("input1").value && document.getElementById("input2").value) {
-	      step1.classList.add("d-none");
-	      step2.classList.remove("d-none");
-	    } else {
-	      alert("Completa los campos obligatorios en el Paso 1.");
-	    }*/
-	  });
+		// Al hacer clic en "Siguiente", valida los campos y muestra el paso 2 si son válidos
+		nextButton.addEventListener("click", async function (e) {
+			e.preventDefault();
+			let errors = false;
+            let msg = `<ul class="ms-0 text-start">`;
+            let existeCuenta = await verificarCuenta();
+            let title = 'Campos requeridos';
+            if(!existeCuenta){
+	            if(getInput('numeroIdentificacion') == ""){
+	                errors = true;
+	                msg += `<li class="ms-0">Campo identificación es requerido</li>`;
+	            }
+	            if(getInput('mail') == ""){
+	                errors = true;
+	                msg += `<li class="ms-0">Campo correo electrónico es requerido</li>`;
+	            }else if(!isValidEmailAddress(getInput('mail'))){
+	            	errors = true;
+	                msg += `<li class="ms-0">Formato de email no válido</li>`;
+	            }
+				if(getInput('fechaNacimiento') == ""){
+	                errors = true;
+	                msg += `<li class="ms-0">Campo fecha de nacimiento es requerido</li>`;
+	            }
+	            if(getInput('telefono') == ""){
+	                errors = true;
+	                msg += `<li class="ms-0">Campo teléfono es requerido</li>`;
+	            }
+	            if(getInput('password') == "" || getInput('password').length < ""){
+	            	errors = true;
+	                msg += `<li class="ms-0">Campo contraseña es requerido</li>`;	
+	            }else if(getInput('password').length < 8){
+	            	errors = true;
+	                msg += `<li class="ms-0">Campo contraseña debe tener al menos 8 dígitos</li>`;
+	            }
+	            if(getInput('password2') == "" || getInput('password2').length < ""){
+	            	errors = true;
+	                msg += `<li class="ms-0">Campo confirmar contraseña es requerido</li>`;	
+	            }else if(getInput('password2').length < 8){
+	            	errors = true;
+	                msg += `<li class="ms-0">Campo confirmar contraseña debe tener al menos 8 dígitos</li>`;
+	            }
+	            if(getInput('password') != getInput('password2')){
+	            	errors = true;
+	                msg += `<li class="ms-0">Las contraseñas no coinciden</li>`;	
+	            }
+	            $('#modalAlertButtonCancelar').addClass('d-none');
+				$('#modalAlertButtonAccion').addClass('d-none');
+				$('#modalAlertButton').removeClass('d-none');
+	        }else{
+	        	errors = true;
+	        	title = 'Veris';
+	            msg += `<span class="txt-alt">La cuenta que estás intentando crear ya existe. Al parecer has olvidado tu clave, puedes cambiarla ahora.</span>`;
+	            
+	            $('#modalAlertButtonCancelar').removeClass('d-none');
+				$('#modalAlertButtonAccion').removeClass('d-none');
+				$('#modalAlertButtonAccion').attr('href','/olvide-clave');
+				$('#modalAlertButton').addClass('d-none');
+                $('#modalAlertButtonAccion').html("Cambiar mi clave");
+	        }
+			if(!errors){
+				step1.classList.add("d-none");
+				step2.classList.remove("d-none");
+			}else{
+				msg += `</ul>`;
+				$('#modalAlertTitle').html(title);
+                $('#modalAlertMessage').html(msg);
+                $('#modalAlert').modal('show');
+			}
+		});
 
-	  // Al hacer clic en "Anterior", vuelve al paso 1
-	  prevButton.addEventListener("click", function (e) {
-	    e.preventDefault();
-	    step2.classList.add("d-none");
-	    step1.classList.remove("d-none");
-	  });
+		// Al hacer clic en "Anterior", vuelve al paso 1
+		/*prevButton.addEventListener("click", function (e) {
+			e.preventDefault();
+			step2.classList.add("d-none");
+			step1.classList.remove("d-none");
+		});*/
 
-	  // Agrega más validaciones según tus necesidades.
-
-	  // Aquí puedes escuchar el evento submit del formulario para enviar los datos.
-	  form.addEventListener("submit", function (e) {
-	    e.preventDefault();
-	    // Realiza cualquier validación final y envía el formulario si es necesario.
-	  });
+		// Aquí puedes escuchar el evento submit del formulario para enviar los datos.
+		registerButton.addEventListener("click", function (e) {
+			e.preventDefault();
+			$('.logo-login').hide();
+			$('.email-masked').html(enmascararEmail(getInput('mail')));
+			step2.classList.add("d-none");
+			step3.classList.remove("d-none");
+		});
 	});
 
    

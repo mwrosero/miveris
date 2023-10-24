@@ -22,14 +22,18 @@
     </div>
     @endif
     <div class="mb-3 mt-5">
-        <label for="user" class="form-label fw-bold">Número de identificación *</label>
+        <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación *</label>
         <input type="number"
             class="form-control"
-            id="user"
-            name="user"
+            id="numeroIdentificacion"
+            name="numeroIdentificacion"
+            oninput="limitarCaracteres(this, 10)"
+            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
             placeholder="Ingresa tu identificación"
-            autofocus
-            required />
+            @if (session()->has('numeroIdentificacion'))
+            value="{{ session('numeroIdentificacion') }}"
+            @endif
+            autofocus />
     </div>
     <div class="mb-3 form-password-toggle">
         <div class="d-flex justify-content-between">
@@ -41,8 +45,7 @@
             class="form-control"
             name="password"
             placeholder="Ingresa tu contraseña"
-            aria-describedby="password"
-            required />
+            aria-describedby="password"/>
             <span id="togglePassword" class="input-group-text cursor-pointer"
             ><i class="ti ti-eye-off"></i></span>
         </div>
@@ -51,7 +54,7 @@
         <a class="txt-veris fs-12" href="/olvide-clave"> Olvide mi Contraseña</a>
     </div>
     <div class="mt-5 mb-3">
-        <button class="btn d-grid w-100 bg-veris rounded" type="submit">Iniciar Sesión</button>
+        <button class="btn d-grid w-100 bg-veris rounded" id="btnLogin" type="submit">Iniciar Sesión</button>
     </div>
     <div class="mb-3">
         <a href="registrar-cuenta" class="btn d-grid w-100 bg-alt rounded">Crear una cuenta</a>
@@ -68,6 +71,38 @@
         } else {
             passwordInput.type = 'password';
             togglePassword.innerHTML = '<i class="ti ti-eye-off"></i>';
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var form = document.getElementById("formAuthentication");
+        var submitButton = document.getElementById("btnLogin");
+
+        form.addEventListener("submit", function(event) {
+            // Realiza tu validación aquí
+            if (!validateForm()) {
+                event.preventDefault(); // Evitar que el formulario se envíe si la validación falla
+            }
+        });
+
+        function validateForm(){
+            let errors = false;
+            let msg = `<ul class="ms-0 text-start">`;
+            if(getInput('numeroIdentificacion') == "" || getInput('numeroIdentificacion').length < 10 ){
+                errors = true;
+                msg += `<li class="ms-0">Campo cédula o pasaporte es requerido</li>`;
+            }
+            if(getInput('password') == ""){
+                errors = true;
+                msg += `<li class="ms-0">Campo contraseña es requerido</li>`;
+            }
+            msg += `</ul>`;
+            if(errors){
+                $('#modalAlertTitle').html('Campos requeridos');
+                $('#modalAlertMessage').html(msg);
+                $('#modalAlert').modal('show');
+            }
+            return !errors;
         }
     });
 </script>
