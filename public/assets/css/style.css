@@ -74,6 +74,11 @@ table td{
     font-size: 12px !important;
 }
 
+.btn{
+    font-size: 12px;
+    font-weight: 700;
+}
+
 .btn:active, .btn:active {
 /*    opacity: 0.8;*/
 }
@@ -192,7 +197,7 @@ a.menu-link{
 
 .title-section{
     font-size: 20px;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .modal-alert-component{

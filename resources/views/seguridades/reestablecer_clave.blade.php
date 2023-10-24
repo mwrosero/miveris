@@ -52,7 +52,7 @@
         </div>
     </div>
     <div class="mb-2">
-        <button class="btn btn-primary d-grid w-100 bg-colorboton" type="submit" id="guardarContrasena">Aceptar</button>
+        <button class="btn btn-primary d-grid w-100 bg-colorboton" type="submit" id="guardarContrasena">Recuperar contraseña</button>
     </div>
     <div>
         <p class="txt-alt fs-12 text-center">Revisa en tu bandeja de correo no deseado. Si no has recibido el correo con el código, comunícate al <b>6009600</b>.</p>
@@ -87,8 +87,4 @@
     });
 
 </script>
-@component('components.modal', ['id' => 'modalAlert', 'title' => 'Mi Modal Personalizado', 'message' => 'Mensaje'])
-    <p>Contenido personalizado del modal.</p>
-    <button type="button" class="btn btn-primary">Aceptar</button>
-@endcomponent
 @endsection

@@ -43,4 +43,11 @@
     </div>
 </form>
 <!-- /Content Olvide Clave -->
+
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerIdentificacion();
+    });
+</script>
+
 @endsection
