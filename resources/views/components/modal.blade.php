@@ -11,7 +11,7 @@
                 {{ $message }}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn w-50 m-0 fw-bold shadow-none border-0" data-bs-dismiss="modal" id="modalAlertButtonCancelar">Cancelar</button>
+                <button type="button" class="btn w-50 m-0 fw-bold shadow-none border-0 d-none" data-bs-dismiss="modal" id="modalAlertButtonCancelar">Cancelar</button>
                 <a href="#" type="button" class="btn bg-veris w-50 m-0 fw-bold d-none" id="modalAlertButtonAccion"></a>
                 <button type="button" class="btn bg-veris w-100 m-0 fw-bold" data-bs-dismiss="modal" id="modalAlertButton">Aceptar</button>
             </div>

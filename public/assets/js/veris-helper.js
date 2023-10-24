@@ -1,3 +1,4 @@
+const _canalOrigen = "MVE_CMV";
 async function call(args){
     if(args.showLoader || args.showLoader == true){
         showLoader();
@@ -53,7 +54,6 @@ function maxLengthNumber(input, maxLength) {
         input.value = input.value.slice(0, maxLength);
     }
 }
-
 
 function showMessage(type,title,message){
 	switch(type){
@@ -132,15 +132,12 @@ function limitarCaracteres(input, maxCaracteres) {
     // Obtén el valor actual del campo de entrada
     var valor = input.value;
 
-    // Elimina cualquier caracter que no sea un número
-    valor = valor.replace(/\D/g, '');
-
     // Limita la longitud del valor a `maxCaracteres`
     if (valor.length > maxCaracteres) {
         valor = valor.slice(0, maxCaracteres);
     }
 
-    // Establece el valor limpio en el campo de entrada
+    // Establece el valor limitado en el campo de entrada
     input.value = valor;
 }
 
@@ -211,6 +208,48 @@ function isValidEmailAddress(emailAddress) {
     return pattern.test(emailAddress);
 }
 
+function esValidaCedula(cedula) {
+    // Verificar que la cédula tenga 10 dígitos
+    if (cedula.length !== 10) {
+        return false;
+    }
+
+    // Verificar que los primeros dos dígitos sean números y estén en el rango 01-24
+    var provincia = parseInt(cedula.substr(0, 2), 10);
+    if (provincia < 1 || provincia > 24) {
+        return false;
+    }
+
+    // Obtener el dígito verificador
+    var digitoVerificador = parseInt(cedula.charAt(9), 10);
+
+    // Calcular la suma de los dígitos pares
+    var sumaPares = 0;
+    for (var i = 1; i < 9; i += 2) {
+        sumaPares += parseInt(cedula.charAt(i), 10);
+    }
+
+    // Calcular la suma de los dígitos impares multiplicados por 2
+    var sumaImparesPorDos = 0;
+    for (var i = 0; i < 8; i += 2) {
+        var digito = parseInt(cedula.charAt(i), 10) * 2;
+        sumaImparesPorDos += (digito > 9) ? digito - 9 : digito;
+    }
+
+    // Sumar ambas sumas
+    var sumaTotal = sumaPares + sumaImparesPorDos;
+
+    // Calcular el dígito verificador esperado
+    var digitoVerificadorEsperado = 10 - (sumaTotal % 10);
+
+    // Comprobar si el dígito verificador es válido
+    if (digitoVerificador === digitoVerificadorEsperado || (digitoVerificador === 0 && digitoVerificadorEsperado === 10)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 async function verificarCuenta(){
     let args = [];
     args["endpoint"] = api_url + "/digitales/v1/seguridad/cuenta?tipoIdentificacion="+getInput('tipoIdentificacion')+"&numeroIdentificacion="+getInput('numeroIdentificacion');
@@ -223,4 +262,63 @@ async function verificarCuenta(){
     }
 
     return false;
+}
+
+function actualizarMaxlength(select) {
+    let numeroIdentificacionInput = document.getElementById('numeroIdentificacion');
+    if (select.value == "3") {
+        numeroIdentificacionInput.setAttribute('maxlength', '13');
+        numeroIdentificacionInput.type = "text";
+        numeroIdentificacionInput.onkeypress = function (event) {
+        var charCode = event.charCode;
+        // Permitir caracteres alfabéticos (letras) y numéricos (números)
+        if ((charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || (charCode >= 48 && charCode <= 57)) {
+            return true;
+        }
+        // Permitir teclas de control (backspace, enter)
+        if (charCode == 8 || charCode == 13) {
+            return true;
+        }
+        // Restringir otros caracteres
+        return false;
+    };
+
+    } else {
+        numeroIdentificacionInput.setAttribute('maxlength', '10');
+        numeroIdentificacionInput.type = "number";
+        numeroIdentificacionInput.onkeypress = function (event) {
+            return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57;
+        };
+    }
+}
+
+async function registrarCuenta(){
+    let args = [];
+    args["endpoint"] = api_url + "/digitales/v1/seguridad/cuenta";
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["bodyType"] = "json";
+    let fechaParts = getInput('fechaNacimiento').split('-');
+    let fechaFormateada = fechaParts[2] + '/' + fechaParts[1] + '/' + fechaParts[0];
+
+    args["data"] = JSON.stringify({
+        "tipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
+        "numeroIdentificacion": getInput('numeroIdentificacion'),
+        "primerApellido": getInput('primerApellido'),
+        "segundoApellido": getInput('segundoApellido'),
+        "primerNombre": getInput('primerNombre'),
+        "mail": getInput('mail'),
+        "fechaNacimiento": fechaFormateada,
+        "genero": getInput('genero'),
+        "telfMovil": getInput('telefono'),
+        "codigoEstadoCivil": 0,
+        "codPais": 1,
+        "codigoProv": parseInt(getInput('provincia')),
+        "codigoCiudad": parseInt(getInput('ciudad')),
+        "pass": getInput('password'),
+        "canalOrigenDigital": _canalOrigen
+    });
+
+    const data = await call(args);
+    return data;
 }
