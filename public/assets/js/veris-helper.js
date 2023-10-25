@@ -311,7 +311,6 @@ async function registrarCuenta(){
         "fechaNacimiento": fechaFormateada,
         "genero": getInput('genero'),
         "telfMovil": getInput('telefono'),
-        "codigoEstadoCivil": 0,
         "codPais": 1,
         "codigoProv": parseInt(getInput('provincia')),
         "codigoCiudad": parseInt(getInput('ciudad')),
