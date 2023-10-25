@@ -59,7 +59,7 @@
         <script src="../../../assets/js/config.js"></script>
         {{-- <script src="../../../assets/vendor/libs/jquery/jquery.js"></script> --}}
         <script>
-            const api_url = "https://api-phantomx.veris.com.ec";
+            const api_url = "https://api-phantomx.veris.com.ec"; 
         </script>
     </head>
 
