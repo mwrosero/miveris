@@ -17,11 +17,13 @@ class MiVerisMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (Session::has('userData')) {
-            // dump(7);
             return $next($request);
         } else {
-            // dump(8);
-            return redirect()->route('login');
+            if (Session::has('userDataTmp')) {
+                return redirect()->route('activar_cuenta_view');
+            }else{
+                return redirect()->route('login');
+            }
         }
     }
 }

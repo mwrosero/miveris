@@ -198,7 +198,7 @@
 	            placeholder="Ingresa el código de activación"
 	            required />
 	    </div>
-	    <button class="btn d-grid w-100 bg-alt rounded mt-5 mb-2" type="button">Confirmar</button>
+	    <button class="btn d-grid w-100 bg-alt rounded mt-5 mb-2 btn-confirmar" type="button">Confirmar</button>
 	</section>
 </form>
 <script>
@@ -247,6 +247,7 @@
 		const nextButton = document.querySelector(".next-button");
 		//const prevButton = document.querySelector(".prev-button");
 		const registerButton = document.querySelector(".btn-registrar");
+		const confirmarButton = document.querySelector(".btn-confirmar");
 
 		// Al hacer clic en "Siguiente", valida los campos y muestra el paso 2 si son válidos
 		nextButton.addEventListener("click", async function (e) {
@@ -368,6 +369,35 @@
 				}
 			}else{
 				msg += `</ul>`;
+				$('#modalAlertTitle').html(title);
+			    $('#modalAlertMessage').html(msg);
+			    $('#modalAlert').modal('show');
+			}
+		});
+
+		confirmarButton.addEventListener("click", async function (e) {
+			e.preventDefault();
+			let confirmar = await confirmarCuenta();
+
+			if(confirmar.code == 200){
+				let title = 'Cuenta creada';
+	            let msg = `<span class="txt-alt">Tu cuenta ha sido creada con éxito, ya puedes iniciar sesión.</span>`;
+				
+				$('#modalAlertButtonAccion').removeClass('w-50');
+				$('#modalAlertButtonAccion').addClass('w-100');
+				$('#modalAlertButtonAccion').attr('href','/login');
+				$('#modalAlertButtonAccion').removeClass('d-none');
+				
+				$('#modalAlertButton').addClass('d-none');
+                $('#modalAlertButtonAccion').html("Entendido");
+                $('#modalAlertTitle').html(title);
+			    $('#modalAlertMessage').html(msg);
+                $('#modalAlert').modal('show');
+			}else{
+				let title = 'Veris';
+            	let msg = `<span class="txt-alt">${confirmar.message}</span>`;
+            	$('#modalAlertButtonAccion').addClass('d-none');
+				$('#modalAlertButton').removeClass('d-none');
 				$('#modalAlertTitle').html(title);
 			    $('#modalAlertMessage').html(msg);
 			    $('#modalAlert').modal('show');
