@@ -1,0 +1,16 @@
+/* 
+ * PMF | Bootstrap Centro MÃ©dicos Template
+ * Copyright 2023 Company Akold
+ * Theme styles
+ */
+ /*!
+  * Bootstrap V5.1.0 ()
+  * Copyright 2011-2021 The Bootstrap Authors
+  * Copyright 2011-2021 Twitter, Inc.
+  * Licensed under MIT ()
+  */
+
+/* Custom Properties */
+:root{
+    --bg-vris-blue: #0071CE;
+}
