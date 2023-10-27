@@ -12,7 +12,7 @@
 <p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-bold">Recupera tu contraseña</p>
 <p class="fs-12 mb-5 text-center bg-colortext">Recibirás un código a tu correo electrónico para recuperar tu contraseña.</p>
 
-<form id="formAuthentication" class="mb-3" method="post" action="/recuperar-clave" onSubmit="return false">
+<form id="formAuthentication" class="mb-3">
     @csrf
     @if (session()->has('mensaje'))
         <div class="alert alert-warning">
@@ -43,14 +43,66 @@
             required />
     </div>
     <div class="mb-3">
-        <button class="btn d-grid w-100 bg-veris" type="submit" id="recuperarContrasena">Enviar</button>
+        <button class="btn d-grid w-100 bg-veris btn-reset" type="button" id="recuperarContrasena">Enviar</button>
     </div>
 </form>
 <!-- /Content Olvide Clave -->
 
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
+        const resetButton = document.querySelector(".btn-reset");
         await obtenerIdentificacion();
+
+        resetButton.addEventListener("click", async function (e) {
+            e.preventDefault();
+            let errors = false;
+            let msg = `<ul class="ms-0 text-start">`;
+            let title = 'Campos requeridos';
+            if(getInput('numeroIdentificacion') == ""){
+                errors = true;
+                msg += `<li class="ms-0">Campo identificación es requerido</li>`;
+            }else if(getInput('tipoIdentificacion') == 2){
+                if(!esValidaCedula(getInput('numeroIdentificacion').toString())){
+                    errors = true;
+                    msg += `<li class="ms-0">La cédula ingresada no es correcta</li>`;
+                }
+            }
+
+            if(!errors){
+                let reset = codigoReset();
+                reset.then((data) => {
+                    console.log(data); // Aquí obtendrás el resultado de la promesa una vez que se resuelva.
+                    if(data.code == 200){
+                        let codigoUsuario = btoa(getInput('numeroIdentificacion'));
+                        location.href = '/reestablecer-clave/'+codigoUsuario;
+                    }else{
+                        title = 'Veris';
+                        msg = `<span class="txt-alt">${data.message}</span>`;
+                        $('#modalAlertButtonAccion').addClass('d-none');
+                        $('#modalAlertButton').removeClass('d-none');
+                        $('#modalAlertTitle').html(title);
+                        $('#modalAlertMessage').html(msg);
+                        $('#modalAlert').modal('show');
+                    }
+                }).catch((error) => {
+                    title = 'Veris';
+                    msg = `<span class="txt-alt">${error.message}</span>`;
+                    $('#modalAlertButtonAccion').addClass('d-none');
+                    $('#modalAlertButton').removeClass('d-none');
+                    $('#modalAlertTitle').html(title);
+                    $('#modalAlertMessage').html(msg);
+                    $('#modalAlert').modal('show');
+                });
+
+            }else{
+                msg += `</ul>`;
+                $('#modalAlertButtonAccion').addClass('d-none');
+                $('#modalAlertButton').removeClass('d-none');
+                $('#modalAlertTitle').html(title);
+                $('#modalAlertMessage').html(msg);
+                $('#modalAlert').modal('show');
+            }
+        });        
     });
 </script>
 

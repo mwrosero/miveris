@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="row">
     <!-- Website Analytics -->
@@ -849,3 +850,10 @@
     <!--/ Projects table -->
     </div>
 </div>
+=======
+Hola, estas logueado, Por ahora estamos trabajando esta sección
+
+<br>
+
+<a href="/logout">Cerrar sesión</a>
+>>>>>>> developer

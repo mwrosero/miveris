@@ -321,3 +321,53 @@ async function registrarCuenta(){
     const data = await call(args);
     return data;
 }
+
+async function confirmarCuenta(){
+    let args = [];
+    args["endpoint"] = api_url + "/digitales/v1/seguridad/cuenta/activacion";
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify({
+        "tipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
+        "numeroIdentificacion": getInput('numeroIdentificacion'),
+        "codigoActivacion": parseInt(getInput('codigoActivacion')),
+        "canalOrigenDigital": _canalOrigen
+    });
+
+    const data = await call(args);
+    return data;
+}
+
+async function codigoReset(){
+    let args = [];
+    args["endpoint"] = api_url + "/digitales/v1/seguridad/codigoreset";
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify({
+        "tipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
+        "numeroIdentificacion": getInput('numeroIdentificacion'),
+        "canalOrigenDigital": _canalOrigen
+    });
+
+    const data = await call(args);
+    return data;
+}
+
+async function recuperarContrasena(){
+    let args = [];
+    args["endpoint"] = api_url + "/digitales/v1/seguridad/cuenta/clave";
+    args["method"] = "PUT";
+    args["showLoader"] = true;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify({
+        "codigoUsuario": codigoUsuario,
+        "codigoAutorizacion": parseInt(getInput('codigoAutorizacion')),
+        "nuevaClave": getInput('password'),
+        "canalOrigenDigital": _canalOrigen
+    });
+
+    const data = await call(args);
+    return data;
+}

@@ -33,13 +33,13 @@ class SeguridadesController extends Controller
         $response = json_decode($res->body());
 
         if($response->code == 200){
-            Session::put('userData', $response->data);
-            return redirect('/cotizador/consulta-cotizaciones');
-            /*if (!is_null($response->data->codigoActivacion)) {
-                // El parámetro tiene un valor
+            if (!is_null($response->data->codigoActivacion)) {
+                Session::put('userDataTmp', $response->data);
+                return redirect('/activar-cuenta');
             }else{
-                //No tiene valores
-            }*/
+                Session::put('userData', $response->data);
+                return redirect('/');
+            }
         }else{
             $message = $response->message;
         }
@@ -47,6 +47,39 @@ class SeguridadesController extends Controller
             session()->flash('alert', $message);
             session()->flash('numeroIdentificacion', strtoupper($numeroIdentificacion));
             return redirect('/login');
+        }
+    }
+
+    public function activarCuentaView(){
+        if (Session::has('userDataTmp')) {
+            return view('seguridades.activar_cuenta');
+        }else{
+            return redirect('/login');
+        }
+    }
+
+    public function activarCuenta(Request $request){
+        $data = $request->all();
+        $codigoTipoIdentificacion = Session::get('userDataTmp')->codigoTipoIdentificacion;
+        $numeroIdentificacion = Session::get('userDataTmp')->numeroIdentificacion;
+        // dd($data['codigoActivacion']);
+
+        $method = '/digitales/v1/seguridad/cuenta/activacion';
+
+        $response = Veris::call([
+            'endpoint' => Veris::BASE_URL.$method,
+            'data'     => ["tipoIdentificacion" => $codigoTipoIdentificacion, "numeroIdentificacion" => $numeroIdentificacion, "codigoActivacion" => $data['codigoActivacion'],"canalOrigenDigital" => Veris::CANAL_ORIGEN],
+            'method'   => 'POST'
+        ]);
+
+        if($response->code == 200){
+            Session::put('userData', Session::get('userDataTmp'));
+            Session::forget('userDataTmp');
+            return redirect()->route('home');
+        }else{
+            $message = $response->message;
+            session()->flash('alert', $message);
+            return view('seguridades.activar_cuenta');
         }
     }
 
@@ -59,77 +92,13 @@ class SeguridadesController extends Controller
         return view('seguridades.olvide_clave');
     }
 
-    /*Envio de petición para reestablecer clave*/
-    public function recuperarClave(Request $request){
-        /*$data = $request->all();
-        $user = $data['user'];
-
-        $method = '/seguridad/v1/usuarios/solicitud_recuperacion_clave';
-
-        $response = Veris::call([
-            'endpoint' => Veris::BASE_URL.$method,
-            //'token'    => Veris::getToken(),
-            'data'     => ['usuario' => strtoupper($user)],
-            'method'   => 'POST'
-        ]);
-
-        session()->flash('mensaje', $response->message);
-        return view('seguridades.olvide_clave');*/
+    /*public function recuperarClave(Request $request){
         return view('seguridades.reestablecer_clave');
-    }
+    }*/
 
-    /*Reestablecer clave*/
-    public function reestablecerClave(){
-        return view('seguridades.reestablecer_clave');
-    }
-
-    public function formularioActualizarClave($codigo, $usuario){
-        return view('seguridades.actualizar_clave')
-            ->with('codigo',$codigo)
-            ->with('usuario',$usuario);
-    }
-
-    public function actualizarClave(Request $request){
-        $data = $request->all();
-        $method = '/seguridad/v1/usuarios/recuperacion_clave';
-        $response = Veris::call([
-            'endpoint' => Veris::BASE_URL.$method,
-            //'token'    => Veris::getToken(),
-            'data'     => ['usuario' => $data['usuario'], 'codigoRecuperacion' => $data['codigo'], 'claveNueva' => $data['nuevaClave']],
-            'method'   => 'POST'
-        ]);
-
-        if($response->code != 200){
-            session()->flash('mensaje', $response->message);
-            return Redirect::route('actualizar_clave.form', ['codigo' => $data['codigo'], 'usuario' => $data['usuario']]);
-        }
-
-        session()->flash('mensaje', "Contraseña actualizada exitosamente.");
-        return redirect()->route('login');
-    }
-
-    /*Refresh Token*/
-    public function refreshToken(){
-        $info = Session::get('userData');
-        $method = '/seguridad/v1/autenticacion/refresh_token';
-        $response = Veris::call([
-            'endpoint'  => Veris::BASE_URL.$method,
-            'data'      => ["refreshToken" => $info->refreshToken],
-            'method'    => 'POST'
-        ]);
-
-        Session::put('accessToken', $response->data->idToken);
-
-        $msg = [
-            "code" => $response->code,
-            "message" => $response->code
-        ];
-
-        if($response->code == 200){
-            $msg["idToken"] = $response->data->idToken;
-        }
-
-        return response()->json($msg);
+    public function reestablecerClave($codigoUsuario){
+        return view('seguridades.reestablecer_clave')
+            ->with('codigoUsuario',$codigoUsuario);
     }
 
     /*Logout*/
