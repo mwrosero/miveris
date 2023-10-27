@@ -13,4 +13,35 @@
 /* Custom Properties */
 :root{
     --bg-vris-blue: #0071CE;
+    --bg-vris-white: #ffffff;
+    --bg-vris-dark-blue: #071A35;
 }
+.bg-navbar-theme-veris{
+  background-color: var(--bg-vris-blue);
+  color: var(--bg-vris-white) !important;
+}
+.bg-menu-theme-veris{
+  background-color: var(--bg-vris-dark-blue);
+  color: var(--bg-vris-white) !important;
+}
+.bg-menu-theme-veris.menu-vertical .menu-item.active{
+  background: var(--bg-vris-blue);
+  color: var(--bg-vris-white) !important;
+}
+.avatar.avatar-online::after{
+  content: none !important;
+}
+.btn-outline-primary-veris {
+  color: var(--bg-vris-blue) !important;
+  border-color: var(--bg-vris-blue) !important;
+  background: transparent;
+}
+.btn-primary-veris {
+  color: var(--bg-vris-white) !important;
+  background-color: var(--bg-vris-blue) !important;
+  border-color: var(--bg-vris-blue) !important;
+}
+.text-primary-veris{
+  color: var(--bg-vris-blue) !important;
+}
+.fs--1{font-size: 0.874rem !important;}

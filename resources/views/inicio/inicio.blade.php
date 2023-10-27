@@ -1,5 +1,9 @@
-Hola, estas logueado, Por ahora estamos trabajando esta sección
+@extends('template.app-template-veris')
+@section('title')
+    Mi Veris - Inicio
+@endsection
+@section('content')
+<div class="container-xxl flex-grow-1 container-p-y">
 
-<br>
-
-<a href="/logout">Cerrar sesión</a>
+</div>
+@endsection
