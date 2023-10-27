@@ -88,8 +88,8 @@ TemplateCustomizer.LANGUAGES.fr = { ... };
 
 if (typeof TemplateCustomizer !== 'undefined') {
   window.templateCustomizer = new TemplateCustomizer({
-    cssPath: assetsPath + 'vendor/css' + (rtlSupport ? '/rtl' : '') + '/',
-    themesPath: assetsPath + 'vendor/css' + (rtlSupport ? '/rtl' : '') + '/',
+    cssPath: assetsPath + '/vendor/css' + (rtlSupport ? '/rtl' : '') + '/',
+    themesPath: assetsPath + '/vendor/css' + (rtlSupport ? '/rtl' : '') + '/',
     displayCustomizer: true,
     // lang: 'fr',
     // defaultTheme: 2,
