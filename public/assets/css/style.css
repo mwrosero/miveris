@@ -1,8 +1,8 @@
 /*HTML*/
 @font-face {
     font-family: 'Gotham Rounded';
-    src: url('fonts/GothamRounded-Medium.woff2') format('woff2'),
-        url('fonts/GothamRounded-Medium.woff') format('woff');
+    src: url('fonts/GothamRnd-Medium.woff2') format('woff2'),
+        url('fonts/GothamRnd-Medium.woff') format('woff');
     font-weight: 500;
     font-style: normal;
     font-display: swap;
@@ -10,8 +10,8 @@
 
 @font-face {
     font-family: 'Gotham';
-    src: url('fonts/Gotham-Bold.woff2') format('woff2'),
-        url('fonts/Gotham-Bold.woff') format('woff');
+    src: url('fonts/GothamRndSSm-Bold.woff2') format('woff2'),
+        url('fonts/GothamRndSSm-Bold.woff') format('woff');
     font-weight: bold;
     font-style: normal;
     font-display: swap;
@@ -19,8 +19,8 @@
 
 @font-face {
     font-family: 'Gotham';
-    src: url('fonts/Gotham-Book.woff2') format('woff2'),
-        url('fonts/Gotham-Book.woff') format('woff');
+    src: url('fonts/GothamRndSSm-Book.woff2') format('woff2'),
+        url('fonts/GothamRndSSm-Book.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -297,4 +297,16 @@ label{
 /*    color: #171d49;*/
     font-size: 12px !important;
     line-height: 18px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
