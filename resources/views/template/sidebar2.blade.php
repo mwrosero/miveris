@@ -100,7 +100,7 @@
             <span class="menu-header-text">Apps &amp; Pages</span>
         </li>
         <li class="menu-item active">
-            <a href="#" class="menu-link fs--1 text-white">
+            <a href="{{route('home')}}" class="menu-link fs--1 text-white">
                 <i class="menu-icon fa-solid fa-house"></i>
                 <div data-i18n="Inicio">Inicio</div>
             </a>
