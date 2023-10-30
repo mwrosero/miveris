@@ -15,4 +15,12 @@ class DashboardController extends Controller
     public function home(){
         return view('inicio.inicio');
     }
+
+    function misDatos() {
+        return view('inicio.mis_datos');
+    }
+
+    function politicaPrivacidadDatos() {
+        return view('inicio.politica_privacidad_datos');
+    }
 }

@@ -37,7 +37,8 @@ Route::middleware('guest')->group(function () {
 
 Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/', [DashboardController::class, 'home'])->name('home')->withoutMiddleware(['guest']);
-
     Route::get('/logout', [SeguridadesController::class, 'logout'])->name('logout')->withoutMiddleware(['guest']);
+    Route::get('/mis-datos', [DashboardController::class, 'misDatos'])->name('misDatos')->withoutMiddleware(['guest']);
+    Route::get('/politica-privacidad-datos', [DashboardController::class, 'politicaPrivacidadDatos'])->name('politicaPrivacidadDatos')->withoutMiddleware(['guest']);
 
 });

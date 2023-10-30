@@ -33,10 +33,10 @@
 
 /* ! For .layout-navbar-fixed added fix padding top tpo .layout-page */
 .layout-navbar-fixed .layout-wrapper:not(.layout-without-menu) .layout-page {
-  padding-top: 64px !important;
+  /* padding-top: 64px !important; */
 }
 .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal):not(.layout-without-menu) .layout-page {
-  padding-top: 78px !important;
+  /* padding-top: 78px !important; */
 }
 /* Navbar page z-index issue solution */
 .content-wrapper .navbar {
@@ -162,3 +162,15 @@
   border-bottom: none;
 }
 .template-customizer-open-btn{display: none !important;}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
