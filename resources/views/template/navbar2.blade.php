@@ -334,18 +334,16 @@
                 </ul>
 
                 <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
-                    <i class="ti ti-bell ti-md"></i>
-                    <span class="badge bg-danger rounded-pill badge-notifications">5</span>
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge bg-danger rounded-pill badge-notifications d-none">5</span>
                 </a>
-
-
             </li>
             <!--/ Notification -->
 
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow d-flex align-items-center" href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
+                    <div class="avatar-sm avatar-online">
                         <img src="{{ asset('assets/img/avatars/avatar.svg') }}" alt class="h-auto rounded-circle" />
                     </div>
                     <span class="fs--1 ms-2">Maria</span>

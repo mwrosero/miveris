@@ -51,6 +51,14 @@ body{
 .avatar.avatar-online::after{
   content: none !important;
 }
+.avatar-sm{
+  width: 2rem !important;
+  height: 2rem !important;
+}
+.avatar-sm img{
+  width: 100%;
+  height: 100%;
+}
 .avatar-xxl{
   width: 6.5rem !important;
   height: 6.5rem !important;
