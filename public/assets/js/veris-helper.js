@@ -209,45 +209,34 @@ function isValidEmailAddress(emailAddress) {
 }
 
 function esValidaCedula(cedula) {
-    // Verificar que la cédula tenga 10 dígitos
-    if (cedula.length !== 10) {
-        return false;
+    var cad = cedula.trim();
+    var total = 0;
+    var longitud = cad.length;
+    var longcheck = longitud - 1;
+
+    if (cad !== "" && longitud === 10){
+        for(i = 0; i < longcheck; i++){
+            if (i%2 === 0) {
+                var aux = cad.charAt(i) * 2;
+                if (aux > 9) aux -= 9;
+                total += aux;
+            } else {
+                total += parseInt(cad.charAt(i)); // parseInt o concatenarÃ¡ en lugar de sumar
+            }
+        }
+
+        total = total % 10 ? 10 - total % 10 : 0;
+
+        if (cad.charAt(longitud-1) == total) {
+            //document.getElementById("salida").innerHTML = ("Cedula VÃ¡lida");
+            return true;
+        }else{
+            //document.getElementById("salida").innerHTML = ("Cedula InvÃ¡lida");
+            return false;
+        }
     }
 
-    // Verificar que los primeros dos dígitos sean números y estén en el rango 01-24
-    var provincia = parseInt(cedula.substr(0, 2), 10);
-    if (provincia < 1 || provincia > 24) {
-        return false;
-    }
-
-    // Obtener el dígito verificador
-    var digitoVerificador = parseInt(cedula.charAt(9), 10);
-
-    // Calcular la suma de los dígitos pares
-    var sumaPares = 0;
-    for (var i = 1; i < 9; i += 2) {
-        sumaPares += parseInt(cedula.charAt(i), 10);
-    }
-
-    // Calcular la suma de los dígitos impares multiplicados por 2
-    var sumaImparesPorDos = 0;
-    for (var i = 0; i < 8; i += 2) {
-        var digito = parseInt(cedula.charAt(i), 10) * 2;
-        sumaImparesPorDos += (digito > 9) ? digito - 9 : digito;
-    }
-
-    // Sumar ambas sumas
-    var sumaTotal = sumaPares + sumaImparesPorDos;
-
-    // Calcular el dígito verificador esperado
-    var digitoVerificadorEsperado = 10 - (sumaTotal % 10);
-
-    // Comprobar si el dígito verificador es válido
-    if (digitoVerificador === digitoVerificadorEsperado || (digitoVerificador === 0 && digitoVerificadorEsperado === 10)) {
-        return true;
-    } else {
-        return false;
-    }
+    return false;
 }
 
 async function verificarCuenta(){
