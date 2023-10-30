@@ -4,7 +4,6 @@ Mi Veris - Inicio
 @endsection
 @section('content')
 <div class="flex-grow-1 container-p-y">
-
     <!-- Modal -->
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered px-1 mx-auto">
@@ -105,7 +104,7 @@ Mi Veris - Inicio
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="fw-bold border-start-veris ps-3">Mis tratamientos</h5>
-            <a href="/" class="fs--2">Ver todos</a>
+            <a href="#!" class="fs--2">Ver todos</a>
         </div>
         <div class="position-relative mb-3">
             <div class="text-center d-none">
@@ -116,21 +115,15 @@ Mi Veris - Inicio
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="row gx-0 justify-content-between align-items-center mb-3">
-                                    <div class="col-auto">
+                                    <div class="col-9">
                                         <h6 class="card-title text-primary-veris mb-0">Traumatología</h6>
                                         <p class="fw-bold fs--2 mb-0">María Yanina Donoso Samaniego</p>
                                         <p class="card-text fs--2">Dr(a): Magdalena Caroline Hernandez...</p>
                                     </div>
-                                    <div class="col-auto">
-                                        <div class="progress-circle">
-                                            <div class="progress-circle-inner">
-                                                <div class="progress-circle-fill"></div>
-                                            </div>
-                                            <i class="bi bi-check2 mb-5"></i>
-                                            <span class="progress-text">1/7</span>
-                                        </div>
+                                    <div class="col-3">
+                                        <div id="chart-progress" data-porcentaje="10" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
                                     </div>
                                 </div>
                                 <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
@@ -158,21 +151,15 @@ Mi Veris - Inicio
                     </div>
                     <div class="swiper-slide">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="row gx-0 justify-content-between align-items-center mb-3">
-                                    <div class="col-auto">
+                                    <div class="col-9">
                                         <h6 class="card-title text-primary-veris mb-0">Otrorrinolaringología</h6>
                                         <p class="fw-bold fs--2 mb-0">María Yanina Donoso Samaniego</p>
                                         <p class="card-text fs--2">Dr(a): Magdalena Caroline Hernandez...</p>
                                     </div>
-                                    <div class="col-auto">
-                                        <div class="progress-circle">
-                                            <div class="progress-circle-inner">
-                                                <div class="progress-circle-fill"></div>
-                                            </div>
-                                            <i class="bi bi-check2 mb-5"></i>
-                                            <span class="progress-text">1/7</span>
-                                        </div>
+                                    <div class="col-3">
+                                        <div id="chart-progress" data-porcentaje="50" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
                                     </div>
                                 </div>
                                 <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
@@ -200,21 +187,15 @@ Mi Veris - Inicio
                     </div>
                     <div class="swiper-slide">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="row gx-0 justify-content-between align-items-center mb-3">
-                                    <div class="col-auto">
+                                    <div class="col-9">
                                         <h6 class="card-title text-primary-veris mb-0">Dermatología</h6>
                                         <p class="fw-bold fs--2 mb-0">María Yanina Donoso Samaniego</p>
                                         <p class="card-text fs--2">Dr(a): Magdalena Caroline Hernandez...</p>
                                     </div>
-                                    <div class="col-auto">
-                                        <div class="progress-circle">
-                                            <div class="progress-circle-inner">
-                                                <div class="progress-circle-fill"></div>
-                                            </div>
-                                            <i class="bi bi-check2 mb-5"></i>
-                                            <span class="progress-text">1/7</span>
-                                        </div>
+                                    <div class="col-3">
+                                        <div id="chart-progress" data-porcentaje="30" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
                                     </div>
                                 </div>
                                 <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
@@ -242,21 +223,15 @@ Mi Veris - Inicio
                     </div>
                     <div class="swiper-slide">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body p-2">
                                 <div class="row gx-0 justify-content-between align-items-center mb-3">
-                                    <div class="col-auto">
+                                    <div class="col-9">
                                         <h6 class="card-title text-primary-veris mb-0">Traumatología</h6>
                                         <p class="fw-bold fs--2 mb-0">María Yanina Donoso Samaniego</p>
                                         <p class="card-text fs--2">Dr(a): Magdalena Caroline Hernandez...</p>
                                     </div>
-                                    <div class="col-auto">
-                                        <div class="progress-circle">
-                                            <div class="progress-circle-inner">
-                                                <div class="progress-circle-fill"></div>
-                                            </div>
-                                            <i class="bi bi-check2 mb-5"></i>
-                                            <span class="progress-text">1/7</span>
-                                        </div>
+                                    <div class="col-3">
+                                        <div id="chart-progress" data-porcentaje="20" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
                                     </div>
                                 </div>
                                 <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
@@ -291,7 +266,7 @@ Mi Veris - Inicio
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="fw-bold border-start-veris ps-3">Próximas citas</h5>
-            <a href="/" class="fs--2">Ver todos</a>
+            <a href="#!" class="fs--2">Ver todos</a>
         </div>
         <div class="position-relative mb-3">
             <div class="swiper swiper-proximas-citas pt-3 pb-4 px-2 mx-n2">
@@ -380,7 +355,7 @@ Mi Veris - Inicio
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="fw-bold border-start-veris ps-3">Urgencias ambulatorias</h5>
-            <a href="/" class="fs--2">Ver todos</a>
+            <a href="#!" class="fs--2">Ver todos</a>
         </div>
         <div class="position-relative mb-3">
             <div class="swiper swiper-urgencias-ambulatorias pt-3 pb-4 px-2 mx-n2">
@@ -467,6 +442,9 @@ Mi Veris - Inicio
             <button type="button" id="nextProperties" class="mt-n4 btn btn-next"></button>
         </div>
     </section>
-
 </div>
 @endsection
+@push('scripts')
+<script>
+</script>
+@endpush
