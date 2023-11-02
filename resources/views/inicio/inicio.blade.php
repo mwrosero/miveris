@@ -14,7 +14,7 @@ Mi Veris - Inicio
                 <div class="modal-body px-2 pt-2">
                     <h5 class="text-center mb-4">¿Qué quieres agendar?</h5>
                     <div class="d-flex justify-content-around align-items-center mb-3">
-                        <a href="#!" class="btn border py-0 px-2">
+                        <a href="#" class="btn border py-0 px-2">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
                                     <p class="text-start fs--2 fw-bold mb-0">Lo que envió <br> mi doctor</p>
@@ -24,7 +24,7 @@ Mi Veris - Inicio
                                 </div>
                             </div>
                         </a>
-                        <a href="!#" class="btn border py-0 px-2">
+                        <a href="#" class="btn border py-0 px-2">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
                                     <p class="text-start fs--2 fw-bold mb-0">Una nueva <br> cita médica</p>
@@ -55,7 +55,7 @@ Mi Veris - Inicio
                                         <div class="col-auto">
                                             <h6 class="fw-bold mb-0">Agendar cita médica</h6>
                                         </div>
-                                        <div class="col-auto border-0 border-start rounded-circle pt-3 px-2">
+                                        <div class="col-auto border-0 border-start rounded-circle pt-3 ps-2 pe-0">
                                             <img src="{{ asset('assets/img/svg/doctora.svg') }}" class="ms-2" alt="" width="55">
                                         </div>
                                     </div>
