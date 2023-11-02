@@ -6,10 +6,10 @@ Mi Veris - Inicio
 <div class="flex-grow-1 container-p-y">
     <!-- Modal -->
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered px-1 mx-auto">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
                 <div class="modal-header">
-                    <button type="button" class="btn-close fw-bold top-50" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" class="btn-close fw-bold top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body px-2 pt-2">
                     <h5 class="text-center mb-4">¿Qué quieres agendar?</h5>
@@ -97,8 +97,8 @@ Mi Veris - Inicio
                     </div>
                 </div>
             </div>
-            <button type="button" id="prevProperties" class="d-none d-xxl-block mt-n4 btn btn-prev"></button>
-            <button type="button" id="nextProperties" class="d-none d-xxl-block mt-n4 btn btn-next"></button>
+            <button type="button" id="prevProperties" class="d-none mt-n4 btn btn-prev"></button>
+            <button type="button" id="nextProperties" class="d-none mt-n4 btn btn-next"></button>
         </div>
     </section>
     <section class="bg-light-grayish-blue p-3 mb-3">

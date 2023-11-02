@@ -1313,7 +1313,7 @@ li.ui-timepicker-selected,
 }
 
 .layout-navbar {
-  box-shadow: 0 0 10px #dbdade;
+  /* box-shadow: 0 0 10px #dbdade; */
   -webkit-backdrop-filter: saturate(200%) blur(6px);
           backdrop-filter: saturate(200%) blur(6px);
 }
