@@ -33,6 +33,11 @@ body{
     font-display: swap;
 }
 
+#layout-menu {
+    font-family: 'Gotham Rounded';
+    font-weight: 300;
+}
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
     -moz-appearance: textfield;

@@ -47,6 +47,7 @@
 	document.addEventListener("DOMContentLoaded", async function () {
 		const form = document.getElementById("formVerification");
 		const confirmarButton = document.querySelector(".btn-confirmar");
+		$('.email-masked').html(enmascararEmail('{{ $mail }}'));
 
 		form.addEventListener("submit", function(event) {
             // Realiza tu validación aquí

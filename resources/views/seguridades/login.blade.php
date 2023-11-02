@@ -23,12 +23,12 @@
     @endif
     <div class="mb-3 mt-5">
         <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación *</label>
-        <input type="number"
+        <input type="text"
             class="form-control"
             id="numeroIdentificacion"
             name="numeroIdentificacion"
             oninput="limitarCaracteres(this, 13)"
-            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
+            {{-- onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57" --}}
             placeholder="Ingresa tu identificación"
             @if (session()->has('numeroIdentificacion'))
             value="{{ session('numeroIdentificacion') }}"
@@ -88,7 +88,7 @@
         function validateForm(){
             let errors = false;
             let msg = `<ul class="ms-0 text-start">`;
-            if(getInput('numeroIdentificacion') == "" || getInput('numeroIdentificacion').length < 10 ){
+            if(getInput('numeroIdentificacion') == ""){
                 errors = true;
                 msg += `<li class="ms-0">Campo cédula o pasaporte es requerido</li>`;
             }
