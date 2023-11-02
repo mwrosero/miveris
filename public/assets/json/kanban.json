@@ -12,8 +12,8 @@
                 "due-date": "5 April",
                 "attachments": "4",
                 "assigned": [
-                    "../../assets/img/avatars/12.png",
-                    "../../assets/img/avatars/5.png"
+                    // "../../assets/img/avatars/12.png",
+                    // "../../assets/img/avatars/5.png"
                 ],
                 "members": [
                     "Bruce",
@@ -29,8 +29,8 @@
                 "attachments": "2",
                 "due-date": "10 April",
                 "assigned": [
-                    "../../assets/img/avatars/3.png",
-                    "../../assets/img/avatars/8.png"
+                    // "../../assets/img/avatars/3.png",
+                    // "../../assets/img/avatars/8.png"
                 ],
                 "members": [
                     "Helena",
@@ -52,8 +52,8 @@
                 "due-date": "8 April",
                 "attachments": "8",
                 "assigned": [
-                    "../../assets/img/avatars/11.png",
-                    "../../assets/img/avatars/6.png"
+                    // "../../assets/img/avatars/11.png",
+                    // "../../assets/img/avatars/6.png"
                 ],
                 "members": [
                     "Laurel",
@@ -65,15 +65,15 @@
                 "title": "Find new images for pages",
                 "comments": "18",
                 "badge-text": "Images",
-                "image": "../../assets/img/elements/16.jpg",
+                // "image": "../../assets/img/elements/16.jpg",
                 "badge": "warning",
                 "due-date": "2 April",
                 "attachments": "10",
                 "assigned": [
-                    "../../assets/img/avatars/9.png",
-                    "../../assets/img/avatars/2.png",
-                    "../../assets/img/avatars/3.png",
-                    "../../assets/img/avatars/12.png"
+                    // "../../assets/img/avatars/9.png",
+                    // "../../assets/img/avatars/2.png",
+                    // "../../assets/img/avatars/3.png",
+                    // "../../assets/img/avatars/12.png"
                 ],
                 "members": [
                     "Dianna",
@@ -97,9 +97,9 @@
                 "due-date": "7 April",
                 "attachments": "1",
                 "assigned": [
-                    "../../assets/img/avatars/2.png",
-                    "../../assets/img/avatars/9.png",
-                    "../../assets/img/avatars/10.png"
+                    // "../../assets/img/avatars/2.png",
+                    // "../../assets/img/avatars/9.png",
+                    // "../../assets/img/avatars/10.png"
                 ],
                 "members": [
                     "Kara",
@@ -116,7 +116,7 @@
                 "due-date": "7 April",
                 "attachments": "6",
                 "assigned": [
-                    "../../assets/img/avatars/1.png"
+                    // "../../assets/img/avatars/1.png"
                 ],
                 "members": [
                     "Sarah"
