@@ -125,8 +125,8 @@ html:not([dir="rtl"]) .border-start-veris{border-left: 3px solid var(--bg-vris-b
   padding: 0;
   transition: all .3s ease-in-out !important;
   border-radius: 50% !important;
-  background-color: #fff !important;
-  color: #454056 !important;
+  background-color: #E0E6E9 !important;
+  color: rgba(0, 113, 206, 0.75) !important;
   text-align: center !important;
   border: 0 !important;
   box-shadow: 0 .125rem .125rem -.125rem rgba(31,27,45,.08),0 .25rem .75rem rgba(31,27,45,.08) !important;
@@ -196,6 +196,31 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
 .lh-normal{
   line-height: normal !important;
 }
+.list-group-checkable .list-group-item {
+  cursor: pointer;
+}
+.list-group-item-check {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+.list-group-item-check:hover + .list-group-item {
+  color: #0157A3;
+  background-color: #F0F7FF;
+  border-color: #0157A3;
+}
+.list-group-item-check:checked + .list-group-item {
+  color: var(--bg-vris-very-dark-blue);
+  background-color: #E0EFFF;
+  border-color: #36A8FA;
+}
+.list-group-item-check[disabled] + .list-group-item,
+.list-group-item-check:disabled + .list-group-item {
+  pointer-events: none;
+  filter: none;
+  opacity: .5;
+}
+
+
 .modal{
   background-color: rgba(0,0,0, 0.5) !important;
 }
@@ -220,6 +245,10 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
 }
 
 .rounded-4{border-radius: 1rem !important;}
+.rounded-start-circle{
+  border-top-left-radius: 50em !important;
+  border-bottom-left-radius: 50em !important;
+}
 .text-veris{color: var(--bg-vris-very-dark-blue);}
 .text-primary-veris{
   color: var(--bg-vris-blue) !important;
