@@ -6,6 +6,17 @@ Mi Veris - Citas - Elige central médica
 <div class="flex-grow-1 container-p-y pt-0">
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elige central médica') }}</h5>
     <section class="p-3 mb-3">
+        <form class="d-flex justify-content-center">
+            <div class="col-md-4 mb-4">
+                <select class="form-select form-filter border-0" name="ciudad" id="ciudad">
+                    <option selected disabled value="">Elegir ciudad</option>
+                    <option value="">{{ __('Guayaquil') }}</option>
+                    <option value="">{{ __('Quito') }}</option>
+                    <option value="">{{ __('Duran') }}</option>
+                    <option value="">{{ __('Cuenca') }}</option>
+                </select>
+            </div>
+        </form>
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="card">
@@ -21,7 +32,7 @@ Mi Veris - Citas - Elige central médica
                         </div>
                     </div>
                     <div class="card-footer text-end pb-2">
-                        <a href="#!" class="btn btn-sm btn-primary-veris">{{ __('Ver Medicos') }}</a>
+                        <a href="{{route('citas.fechaDoctor')}}" class="btn btn-sm btn-primary-veris">{{ __('Ver Medicos') }}</a>
                     </div>
                 </div>
             </div>
@@ -39,7 +50,7 @@ Mi Veris - Citas - Elige central médica
                         </div>
                     </div>
                     <div class="card-footer text-end pb-2">
-                        <a href="#!" class="btn btn-sm btn-primary-veris">{{ __('Ver Medicos') }}</a>
+                        <a href="{{route('citas.fechaDoctor')}}" class="btn btn-sm btn-primary-veris">{{ __('Ver Medicos') }}</a>
                     </div>
                 </div>
             </div>

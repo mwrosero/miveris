@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /* 
- * PMF | Bootstrap Centro MÃ©dicos Template
+ * Veris | Bootstrap Centro MÃ©dicos Template
  * Copyright 2023 Company Akold
  * Theme styles
  */
@@ -97,6 +97,11 @@ html:not([dir="rtl"]) .border-start-veris{border-left: 3px solid var(--bg-vris-b
   background-color: var(--bg-vris-blue) !important;
   border-color: var(--bg-vris-blue) !important;
 }
+.btn-label-primary-veris {
+  color: var(--bg-vris-blue) !important;
+  border-color: transparent;
+  background: #E9F7FF !important;
+}
 .btn-prev::after, .swiper-button-prev::after {
   margin-right: .0625rem;
   content: "\F284" !important;
@@ -173,6 +178,15 @@ html:not([dir="rtl"]) .border-start-veris{border-left: 3px solid var(--bg-vris-b
 .card-body{
   color: var(--bg-vris-very-dark-blue) !important;
 }
+.card-fecha-foctor{
+  border-radius: 24px !important;
+  background: #003B83 !important;
+}
+.calendar-body{
+  background: #003B83;
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+}
 .cursor-inherit{
   cursor: inherit !important;
 }
@@ -224,6 +238,13 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
 .modal{
   background-color: rgba(0,0,0, 0.5) !important;
 }
+.search-box, .form-filter{
+  background-color: var(--opacidad-oscuro-05, rgba(0, 0, 0, 0.05)) !important;
+}
+.search-box span > i{
+  color: var(--iconos-claro-claro, #9EA7B3);
+  font-size: 1rem;
+}
 .swiper-pagination:not(.swiper-thumbnails) {
   display: flex;
   justify-content: center;
@@ -267,6 +288,64 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
 .fs--3{font-size: 0.625rem !important;}
 .fs--2{font-size: 0.75rem !important;}
 .fs--1{font-size: 0.874rem !important;}
+
+
+/* caledario */
+.border-24{
+  border-radius: 24px !important;
+}
+.border-top-24{
+  border-top-left-radius: 24px !important;
+  border-top-right-radius: 24px !important;
+}
+.calendar-container {
+  width: 300px;
+  /* max-height: 135px; */
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  padding: 20px;
+  color: #ffffff;
+}
+.calendar-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+.calendar-day {
+  text-align: center;
+  padding: 5px;
+  /* border: 1px solid #ccc; */
+  border-radius: 5px;
+  cursor: pointer;
+  width: 32px; /* Ajusta el ancho de los días según sea necesario */
+  font-size: 1rem;
+}
+.calendar-day.empty-day {
+  visibility: hidden; /* Oculta los días vacíos al principio del mes */
+}
+.calendar-day.day-of-week {
+  font-weight: bold;
+  /* background-color: #f2f2f2; */
+}
+
+.calendar-day:hover {
+  background-color: var(--bg-vris-white);
+  color: var(--bg-vris-very-dark-blue);
+  border-radius: 50rem;
+}
+.selected-day {
+  background-color: var(--bg-vris-white);
+  color: var(--bg-vris-very-dark-blue);
+  border-radius: 50rem;
+}
 
 /* X-Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) { 
