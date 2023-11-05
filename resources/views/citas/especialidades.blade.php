@@ -28,6 +28,14 @@ Mi Veris - Citas - Elige la especialidad
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elige la especialidad') }}</h5>
     <section class="p-3 mb-3">
+        <form class="d-flex justify-content-center">
+            <div class="col-md-4 mb-3">
+                <div class="input-group search-box">
+                    <span class="input-group-text bg-transparent border-0" id="search"><i class="bi bi-search"></i></span>
+                    <input type="search" class="form-control bg-transparent border-0" name="search" id="search" placeholder="Buscar especialidad" aria-describedby="search" />
+                </div>
+            </div>
+        </form>
         <div class="row">
             <div class="col-6 col-md-3 mb-3">
                 <div class="card">
