@@ -15,7 +15,7 @@ Mi Veris - Citas - Datos de facturación
                                 <div class="row g-3">
                                     <div class="col-md-12">
                                         <label for="tipoIdentificacion" class="form-label fw-bold fs--2">{{ __('Elige tu documento') }} *</label>
-                                        <select class="form-select" name="tipoIdentificacion" id="tipoIdentificacion" disabled readonly required>
+                                        <select class="form-select bg-neutral" name="tipoIdentificacion" id="tipoIdentificacion" required>
                                             <option selected disabled value="">Seleccionar...</option>
                                             <option value="">Cédula de identidad</option>
                                             <option value="">RUC</option>
@@ -26,7 +26,7 @@ Mi Veris - Citas - Datos de facturación
                                     </div>
                                     <div class="col-md-12">
                                         <label for="numeroIdentificacion" class="form-label fw-bold fs--2">{{ __('Número de documento') }} *</label>
-                                        <input type="text" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0975375835" disabled readonly required />
+                                        <input type="number" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0975375835" required />
                                         <div class="valid-feedback">
                                             Ingrese un numero de identificacion.
                                         </div>
@@ -40,7 +40,7 @@ Mi Veris - Citas - Datos de facturación
                                     </div>
                                     <div class="col-md-12">
                                         <label for="direccion" class="form-label fw-bold fs--2">{{ __('Dirección') }} *</label>
-                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Colinas de los ceibos, 318" disabled readonly required />
+                                        <input type="text" class="form-control bg-neutral" name="direccion" id="direccion" placeholder="Colinas de los ceibos, 318" required />
                                         <div class="invalid-feedback">
                                             Ingrese una direccion.
                                         </div>
@@ -51,7 +51,7 @@ Mi Veris - Citas - Datos de facturación
                                 <div class="row g-3">
                                     <div class="col-md-12">
                                         <label for="telefono" class="form-label fw-bold fs--2">{{ __('Teléfono') }} *</label>
-                                        <input type="numbre" class="form-control" name="telefono" id="telefono" placeholder="+593 097 989 3554" required />
+                                        <input type="number" class="form-control" name="telefono" id="telefono" placeholder="+593 097 989 3554" required />
                                         <div class="valid-feedback">
                                             Ingrese un telefono.
                                         </div>
@@ -64,7 +64,7 @@ Mi Veris - Citas - Datos de facturación
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <ul class="list-group fs--1" style="border-radius: 8px;background: #E7E9EC !important;">
+                                        <ul class="list-group fs--1 bg-neutral rounded-3">
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-bold">
                                                 {{ __('Detalle de factura') }}
                                             </li>

@@ -44,7 +44,7 @@ Mi Veris - Citas - Elegir paciente
             <div class="col-6 col-md-3 mb-3">
                 <div class="card">
                     <div class="card-body text-center">
-                        <a href="#">
+                        <a href="{{route('familia')}}">
                             <div class="d-flex justify-content-center align-items-center mb-2">
                                 <div class="avatar me-2">
                                     <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
