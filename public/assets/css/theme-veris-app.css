@@ -24,6 +24,7 @@
     --bg-vris-strong-cyan-lime-green:#00C853;
     --bg-vris-grayish-blue: #CCEAFA;
     --bg-vris-light-grayish-blue: #eff3f8;
+    --bg-vris-light-grayish-blue-rgba: rgba(249, 250, 251, 1);
     --bg-vris-light-grayish-cyan: #E2F3F5;
     --bg-vris-soft-blue: #66B4E9;
     --bg-vris-strong-magenta: #C52BD2;
@@ -246,6 +247,9 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
 .modal{
   background-color: rgba(0,0,0, 0.5) !important;
 }
+.offcanvas-body{
+  background: var(--bg-vris-light-grayish-blue-rgba) !important;
+}
 .search-box, .form-filter{
   background-color: var(--opacidad-oscuro-05, rgba(0, 0, 0, 0.05)) !important;
 }
@@ -354,6 +358,7 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
   color: var(--bg-vris-very-dark-blue);
   border-radius: 50rem;
 }
+
 
 /* X-Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) { 

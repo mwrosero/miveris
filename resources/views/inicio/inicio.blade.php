@@ -298,8 +298,7 @@ Mi Veris - Inicio
                                     <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>
                                 </div>
                                 <p class="fw-bold fs--2 mb-0">Veris - Alborada</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
-                                        AM</b></p>
+                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
                                 <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
                                 <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
