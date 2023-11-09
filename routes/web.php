@@ -5,7 +5,7 @@ use App\Http\Controllers\SeguridadesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\FamiliaAmigosController;
-
+use App\Http\Controllers\TratamientosController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,4 +58,8 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/familia-amigos', [FamiliaAmigosController::class, 'familiaAmigos'])->name('familia')->withoutMiddleware(['guest']);
     Route::get('/familia-amigos-lista', [FamiliaAmigosController::class, 'listaFamiliaAmigos'])->name('familia.lista')->withoutMiddleware(['guest']);
     Route::get('/datos-familiar', [FamiliaAmigosController::class, 'datosFamiliar'])->name('familia.datosFamiliar')->withoutMiddleware(['guest']);
+
+    #Tratamientos
+    Route::get('/mis-tratamientos', [TratamientosController::class, 'misTratamientos'])->name('tratamientos')->withoutMiddleware(['guest']);
+
 });
