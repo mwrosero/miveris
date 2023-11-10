@@ -128,7 +128,7 @@ Mi Veris - Citas - Familia y amigos
                 <ul class="list-group bg-white">
                     <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
                         <div class="mx-auto">
-                            <div class="fw-bold h6 mb-0">Hola <b class="user-auth">María</b></div>
+                            <div class="fw-bold h6 mb-0">Hola <b class="user-auth">{{ Session::get('userData')->nombre }}</b></div>
                             <p class="fs--2 mb-0">Agrega personas a tu lista de familiares y amigos</p>
                         </div>
                     </li>
@@ -139,9 +139,7 @@ Mi Veris - Citas - Familia y amigos
                             <div class="col-md-12">
                                 <label for="tipoIdentificacion" class="form-label fw-bold">{{ __('Tipo de identificación') }} *</label>
                                 <select class="form-select form-filter" name="tipoIdentificacion" id="tipoIdentificacion" required>
-                                    <option selected disabled value="">Elegir...</option>
-                                    <option value="">Cédula</option>
-                                    <option value="">Pasaporte</option>
+                                    <option selected disabled value="">Consumida Selecciona uno</option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Elegir el tipo de identificación.
@@ -188,4 +186,47 @@ Mi Veris - Citas - Familia y amigos
 @endsection
 @push('scripts')
 <script></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    // variables globales
+    let datostiposIdentificacion;
+
+    //llamada al dom
+    document.addEventListener("DOMContentLoaded", async function () {
+        await tiposIdentificacion();
+        llenarSelect();
+    });
+
+    
+    // funciones asyncronas
+    async function tiposIdentificacion() {
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/seguridad/tiposIdentificacion";
+        args["method"] = "GET";
+        args["showLoader"] = false;
+
+        const data = await call(args);
+        if (data.code == 200) {
+            console.log('data.data', data.data);
+            datostiposIdentificacion = data.data;
+        }
+        return data;
+    }
+
+
+    // funciones jquery
+    function llenarSelect() {
+        // Verifica si datostiposIdentificacion está definida
+        if (datostiposIdentificacion) {
+            // Itera sobre los datos para llenar el select
+            datostiposIdentificacion.forEach(function(tipoIdentificacion) {
+                // Aquí puedes agregar lógica para llenar el select con los datos
+                // ...
+
+                // Ejemplo de cómo se puede agregar una opción al select
+                $("#tipoIdentificacion").append('<option value="' + tipoIdentificacion.codigoTipoIdentificacion + '">' + tipoIdentificacion.nombreTipoIdentificacion + '</option>');
+            });
+        }
+    }
+</script>
 @endpush
