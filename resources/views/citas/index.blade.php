@@ -208,4 +208,45 @@ Mi Veris - Citas
 @push('scripts')
 <script>
 </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerPPD();
+    });
+
+    async function obtenerPPD(){
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
+        args["method"] = "GET";
+        args["showLoader"] = false;
+
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+            
+                localStorage.setItem('politicas', JSON.stringify(data.data));
+                if(localStorage.getItem('politicas') == null){
+                    let politicas = JSON.parse(localStorage.getItem('politicas'));
+                    if(politicas.estadoPoliticas == "N" && (politicas.isPoliticasAceptadas == null || politicas.isPoliticasAceptadas == false)){
+                        $('#politicasPPD').attr('href',politicas.linkPoliticaPrivacidad);
+                        $('#modalPPD').modal('show');
+                    }
+                    else {
+                        $('#modalPPD').modal('hide');
+                    }
+                }
+                else {
+                    return false;
+                }
+            }
+        /*if(data.code == 200){
+            $('#provincia').empty();
+            $.each(data.data, function(key, value){
+                $('#provincia').append(`<option value="${value.codigoProvincia}" codigoRegion-rel="${value.codigoRegion}">${value.nombreProvincia}</option>`);
+            })
+        }*/
+    }
+</script>
 @endpush

@@ -162,7 +162,7 @@
                     <div class="avatar-sm avatar-online">
                         <img src="{{ asset('assets/img/avatars/avatar.svg') }}" alt class="h-auto rounded-circle" />
                     </div>
-                    <span class="fs--1 ms-2">Maria</span>
+                    <span class="fs--1 ms-2">{{ Session::get('userData')->nombre }}</span>
                     <i class="fa-solid fa-angle-down ms-2"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end rounded-3 mt-2 py-1">
@@ -187,7 +187,7 @@
                     <li>
                         <a class="dropdown-item fs--1 d-flex align-items-center mb-0 cursor-pointer" data-bs-toggle="modal" data-bs-target="#logoutModal">
                             <i class="fa-solid fa-arrow-right-to-bracket text-primary-veris me-2 ti-sm"></i>
-                            <span class="align-middle">Cerrar sesión</span>
+                            <span class="align-middle">1Cerrar sesión</span>
                         </a>
                     </li>
                 </ul>
@@ -213,7 +213,26 @@
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
                 <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">No</button>
-                <a class="btn btn-lg btn-primary-veris w-100" href="/logout">Si, cerrar</a>
+                <a class="btn btn-lg btn-primary-veris w-100" id= "logout">Si, cerrar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal PPD -->
+<div class="modal fade" id="modalPPD" tabindex="-1" aria-labelledby="modalPPDLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-4 text-center">
+                <p class="mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="#" id="politicasPPD" target="_blank">políticas de privacidad de datos</a> 
+            
+            
+            </div>
+            <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
+                <button type="button" id="aceptarPDP"  class="btn btn-primary-veris btn-lg btn-outline-primary-veris w-100">Aceptar</button>
+            </div>
+            <div class="">
+                <button type="button" class="btn  w-100" id="modalRecuerdame">Recuerdame más tarde </button>
             </div>
         </div>
     </div>
@@ -291,3 +310,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    
+
+    $('#logout').click(function(){
+        localStorage.clear();
+        window.location.href = "{{ route('logout') }}";
+    });
+
+</script>
