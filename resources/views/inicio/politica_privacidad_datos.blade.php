@@ -9,7 +9,7 @@ Mi Veris - Politica-privacidad-datos
         <div class="col-md-8">
             <div class="card bg-transparent shadow-none">
                 <div class="card-body pt-5">
-                    <form class="row g-3" action="" method="post">
+                    <form class="row g-3">
                         @csrf
                         <div class="col-12 justify-content-center align-items-center">
                             <h5 class="text-center fw-bold mb-2">{{ __('Confirmación de política de privacidad de datos personales') }}</h5>
@@ -46,8 +46,9 @@ Mi Veris - Politica-privacidad-datos
                             </div>
                         </div>
                         <div class="col-12 text-center mt-5">
-                            <button class="btn btn-primary-veris w-50" type="submit">{{ __('Guardar') }}</button>
+                            <button class="btn btn-primary-veris w-50" id="botonConfirmarPDP">{{ __('Guardar') }}</button>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -56,6 +57,80 @@ Mi Veris - Politica-privacidad-datos
 </div>
 @endsection
 @push('scripts')
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', async function() {
+        const respone = await obtenerPPD();
+        console.log('dsd',respone);
+        if(respone.code == 200){
+            console.log('respone.data.estadoPoliticas',respone.data.estadoPoliticas);
+            if((respone.data.estadoPoliticas == 'N' || respone.data.estadoPoliticas == 'R') && respone.data.isPoliticasAceptadas == false){
+                $('#inlineRadioCancelacionNo').prop('checked', true);
+            }else{
+                $('#inlineRadioCancelacionSi').prop('checked', true);
+            }
+        }
+    });
+
+    //metodos jquery
+    // boton confirmar politicas
+    $('#botonConfirmarPDP').click(async function (e) {
+        e.preventDefault();
+        console.log('click');
+        $(this).prop('disabled', true); // Disable the button
+        await aceptarPoliticas();
+        $(this).prop('disabled', false); // Re-enable the button
+    });
+
+
+    // funciones asyncronas
+    // aceptar politicas
+    async function aceptarPoliticas(){
+        
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}";
+        args["method"] = "POST";
+        args["showLoader"] = false;
+        args["bodyType"] = "json";
+
+        args["data"] = JSON.stringify({
+            
+            "aceptaPoliticas": $('#inlineRadioCancelacionNo').prop('checked') ? false : $('#inlineRadioCancelacionSi').prop('checked') ? true : false,
+            "versionPoliticas": localStorage.getItem('ultimaVersionPoliticas'),
+            "codigoEmpresa": 1,
+            "plataforma": "WEB",
+            "versionPlataforma": "7.0.1",
+            "identificacion": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "tipoIdentificacion": {{ Session::get('userData')->codigoTipoIdentificacion }},
+            "tipoEvento": "CR",
+            "canalOrigen": _canalOrigen
+
+        });
+        const data = await call(args);
+        console.log('datas',data);
+        return data;
+    }
+    //obtener las politicas
+    async function obtenerPPD(){
+        console.log('obtenerPPDsisis');
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
+        args["method"] = "GET";
+        args["showLoader"] = false;
+
+        const data = await call(args);
+        console.log('data',data.code);
+        if(data.code == 200){
+            localStorage.setItem('estadoPoliticas', data.data.estadoPoliticas);
+            localStorage.setItem('isPoliticasAceptadas', data.data.isPoliticasAceptadas);
+            localStorage.setItem('ultimaVersionPoliticas', data.data.ultimaVersionPoliticas);
+        }
+        return data;
+    }
+    
+</script>
 <script>
 </script>
 @endpush
