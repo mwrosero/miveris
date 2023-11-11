@@ -42,8 +42,9 @@ Mi Veris - Inicio
 
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold border-start-veris ps-3">Acceso rápidos</h5>
+            <h5 class="fw-bold border-start-veris ps-3">Acceso rápido</h5>
         </div>
+        <div id="respuestaSolicitud"></div>
         <div class="position-relative mb-3">
             <div class="swiper swiper-acceso-rapidos pt-3 pb-4 px-2 mx-n2">
                 <div class="swiper-wrapper">
@@ -298,7 +299,8 @@ Mi Veris - Inicio
                                     <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>
                                 </div>
                                 <p class="fw-bold fs--2 mb-0">Veris - Alborada</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
+                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
+                                        AM</b></p>
                                 <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
                                 <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
@@ -444,6 +446,93 @@ Mi Veris - Inicio
 </div>
 @endsection
 @push('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerPPD();
+    });
+
+    //metodos jquery
+    //aceptar politicas
+    $('#aceptarPDP').click(async function(){
+            console.log("clicks");
+            const response = await aceptarPoliticas();
+            console.log("sisi",response);
+            if(response.code == 200){
+                localStorage.setItem('estadoPoliticas', response.data.estadoPoliticas);
+                $('#modalPPD').modal('hide');
+            }
+            
+        });
+    //cerrar el modal de politicas reuerdame
+    $(document).on('click', '#modalRecuerdame', function(){
+        console.log('click');
+        localStorage.setItem('politicaspoliticasAbiertas', true);
+        $('#modalPPD').modal('hide');
+    });
+
+
+
+    //  ---Funciones asyncronas
+    //obtener las politicas
+    let _ppd;
+    async function obtenerPPD(){
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
+        args["method"] = "GET";
+        args["showLoader"] = false;
+
+        const data = await call(args);
+        _ppd = data.data;
+        if(data.code == 200){
+            console.log(data.data)
+
+            if(localStorage.getItem('politicasAbiertas') == null){
+                console.log('emtro');
+                let politicas = JSON.parse(localStorage.getItem('politicas'));
+                if((data.data.estadoPoliticas == "N" || data.data.estadoPoliticas == "R") && (data.data.isPoliticasAceptadas == null || data.data.isPoliticasAceptadas == false)){
+                    localStorage.setItem('politicasAbiertas', true);
+                    $('#modalPPD').modal('show');
+                    $('#politicasPPD').attr('href',politicas.linkPoliticaPrivacidad);
+                }
+                else {
+                    // localStorage.setItem('estadoPoliticas', data.data.estadoPoliticas);
+                    // localStorage.setItem('isPoliticasAceptadas', data.data.isPoliticasAceptadas);
+                    $('#modalPPD').modal('hide');
+                }
+            }
+            else {
+                $('#modalPPD').modal('hide');
+            }
+        }
+    }
+    //aceptar las politicas
+    async function aceptarPoliticas(){
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}";
+        args["method"] = "POST";
+        args["showLoader"] = false;
+        args["bodyType"] = "json";
+
+        args["data"] = JSON.stringify({
+            
+            "aceptaPoliticas": true,
+            "versionPoliticas": _ppd.ultimaVersionPoliticas,
+            "codigoEmpresa": 1,
+            "plataforma": "WEB",
+            "versionPlataforma": "7.0.1",
+            "identificacion": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "tipoIdentificacion": {{ Session::get('userData')->codigoTipoIdentificacion }},
+            "tipoEvento": "CR",
+            "canalOrigen": _canalOrigen
+
+        });
+        const data = await call(args);
+        return data;
+    }
+
 </script>
+
 @endpush
