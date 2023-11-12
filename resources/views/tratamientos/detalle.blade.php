@@ -56,6 +56,7 @@ Mi Veris - Citas - tratamiento
                             <span class="fw-bold fs--2">Cantidad</span>
                         </div>
                         <ul class="list-group gap-2 bg-white rounded-0">
+                            <!-- items -->
                             <li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
                                 <div class="w-auto">
                                     <p class="text-veris mb-0">Cita médica traumatología</p>
@@ -69,10 +70,11 @@ Mi Veris - Citas - tratamiento
                                 </div>
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="2" />
+                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="1" />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
                                 </div>
                             </li>
+                            <!-- items -->
                             <li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
                                 <div class="w-auto">
                                     <p class="text-veris mb-0">Terapia física </p>
@@ -86,10 +88,11 @@ Mi Veris - Citas - tratamiento
                                 </div>
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="2" />
+                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="10" />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
                                 </div>
                             </li>
+                            <!-- items -->
                             <li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
                                 <div class="w-auto">
                                     <p class="text-veris mb-0">Procedimiento</p>
@@ -103,10 +106,11 @@ Mi Veris - Citas - tratamiento
                                 </div>
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="2" />
+                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="1" />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
                                 </div>
                             </li>
+                            <!-- items -->
                             <li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
                                 <div class="w-auto">
                                     <p class="text-veris mb-0">Radiología </p>
@@ -120,7 +124,7 @@ Mi Veris - Citas - tratamiento
                                 </div>
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="2" />
+                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="1" />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
                                 </div>
                             </li>

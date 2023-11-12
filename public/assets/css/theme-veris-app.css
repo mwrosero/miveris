@@ -28,6 +28,7 @@
   --bg-vris-light-grayish-blue-rgba: rgba(249, 250, 251, 1);
   --bg-vris-light-grayish-blue-rgba-2: rgba(233, 239, 244, 1);
   --bg-vris-light-grayish-blue-rgba-3: rgba(243, 244, 245, 1);
+  --bg-vris-very-dark-blue-rgba: rgba(61, 78, 102, 1);
   --bg-vris-light-grayish-cyan: #E2F3F5;
   --bg-vris-soft-blue: #66B4E9;
   --bg-vris-strong-magenta: #C52BD2;
@@ -392,7 +393,9 @@ h1,
   border-top-left-radius: 50em !important;
   border-bottom-left-radius: 50em !important;
 }
-
+.text-opcaity{
+  color: var(--bg-vris-very-dark-blue-rgba);
+}
 .text-veris {
   color: var(--bg-vris-very-dark-blue);
 }
