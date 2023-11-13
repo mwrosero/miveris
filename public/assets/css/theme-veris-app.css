@@ -144,7 +144,11 @@ html:not([dir="rtl"]) .border-start-veris {
   border-color: var(--bg-vris-blue) !important;
   background: transparent;
 }
-
+.btn-outline-success-veris{
+  color: var(--bg-vris-strong-cyan-lime-green) !important;
+  border-color: var(--bg-vris-strong-cyan-lime-green) !important;
+  background: transparent;
+}
 .btn-primary-veris {
   color: var(--bg-vris-white) !important;
   background-color: var(--bg-vris-blue) !important;
@@ -393,6 +397,12 @@ h1,
   border-top-left-radius: 50em !important;
   border-bottom-left-radius: 50em !important;
 }
+
+.rounded-end-circle {
+  border-top-right-radius: 50em !important;
+  border-bottom-right-radius: 50em !important;
+}
+
 .text-opcaity{
   color: var(--bg-vris-very-dark-blue-rgba);
 }

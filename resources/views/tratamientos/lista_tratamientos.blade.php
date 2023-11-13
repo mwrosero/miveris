@@ -3,17 +3,18 @@
 Mi Veris - Citas - tratamiento
 @endsection
 @push('css')
+<!-- css -->
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-    <!-- Modal -->
+    <!-- Modal Receta médica -->
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h5 class="fw-bold text-center">Receta médica</h5>
-                    <p class="text-center lh-1 fs--1 my-3">¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?</p>
-                    <a href="#" class="btn btn-primary-veris w-100">Sí, lo hice</a>
+                    <h5 class="fw-bold text-center">{{ __('Receta médica') }}</h5>
+                    <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
+                    <a href="#" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn w-100">No lo he hecho</a>
                 </div>
             </div>
@@ -25,11 +26,27 @@ Mi Veris - Citas - tratamiento
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3">Información</h1>
-                    <p class="fs--1 fw-normal">Para realizarte este examen acercate a una central médica</p>
+                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal">{{ __('Para realizarte este examen acercate a una central médica') }}</p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal VideoConsulta -->
+    <div class="modal fade" id="mensajeVideoConsultaModal" tabindex="-1" aria-labelledby="mensajeVideoConsultaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal">{{ __('Para agendar esta videoconsulta llama al') }} <b>{{ __('6009600') }}</b></p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <a href="tel:+59346009600" class="btn btn-primary-veris w-100"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                    <button type="button" class="btn text-primary-veris w-100" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
                 </div>
             </div>
         </div>
@@ -103,6 +120,44 @@ Mi Veris - Citas - tratamiento
                     <div class="card mb-3">
                         <div class="card-body fs--2 p-3">
                             <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary-veris fw-bold mb-0">Cita médica - Traumatología</h6>
+                                <span class="text-warning-veris" id="estado"><i class="fa-solid fa-circle me-2"></i>Por comprar</span>
+                            </div>
+                            <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary ms-2">DIC 09, 2022</b></p>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
+                                    <img class="rounded-circle" src="{{ asset('assets/img/svg/estetoscopio.svg') }}" width="26" alt="receta medica">
+                                </div>
+                                <div>
+                                    <a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
+                                    <a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- items -->
+                    <div class="card mb-3">
+                        <div class="card-body fs--2 p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary-veris fw-bold mb-0">Interconsulta Fisioterapia</h6>
+                                <span class="text-warning-veris" id="estado"><i class="fa-solid fa-circle me-2"></i>Por comprar</span>
+                            </div>
+                            <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary ms-2">DIC 09, 2022</b></p>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
+                                    <img class="rounded-circle" src="{{ asset('assets/img/svg/estetoscopio.svg') }}" width="26" alt="receta medica">
+                                </div>
+                                <div>
+                                    <a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
+                                    <a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- items -->
+                    <div class="card mb-3">
+                        <div class="card-body fs--2 p-3">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="text-primary-veris fw-bold mb-0">Laboratorio - <b id="codigo">2925136</b></h6>
                                 <span class="text-warning-veris" id="estado"><i class="fa-solid fa-circle me-2"></i>Por comprar</span>
                             </div>
@@ -137,25 +192,7 @@ Mi Veris - Citas - tratamiento
                             </div>
                         </div>
                     </div>
-                    <!-- items -->
-                    <div class="card mb-3">
-                        <div class="card-body fs--2 p-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary-veris fw-bold mb-0">Terapia física 3 - <b id="codigo">2925136</b></h6>
-                                <span class="text-warning-veris" id="estado"><i class="fa-solid fa-circle me-2"></i>Por comprar</span>
-                            </div>
-                            <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary ms-2">DIC 09, 2022</b></p>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
-                                    <img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">
-                                </div>
-                                <div>
-                                    <a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
-                                    <a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
