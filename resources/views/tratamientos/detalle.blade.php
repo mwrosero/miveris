@@ -3,7 +3,6 @@
 Mi Veris - Citas - tratamiento
 @endsection
 @push('css')
-
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
