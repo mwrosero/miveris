@@ -17,40 +17,44 @@ Mi Veris - Citas - Elige central médica
                 </select>
             </div>
         </form>
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body px-2 pt-2">
-                        <div class="row gx-2">
-                            <div class="col-3">
-                                <img src="{{ asset('assets/img/card/avatar_central_medica.png') }}" class="card-img-top" alt="centro medico">
+        <div class="row gy-3 justify-content-center">
+            <div class="col-auto col-lg-10">
+                <div class="row gy-3">
+                    <div class="col-auto col-md-6">
+                        <div class="card">
+                            <div class="card-body px-2 py-2">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <img src="{{ asset('assets/img/card/avatar_central_medica.png') }}" class="card-img-top" alt="centro medico">
+                                    </div>
+                                    <div class="col-9">
+                                        <h6 class="fw-bold mb-1">{{ __('VERIS - ALBORADA') }}</h6>
+                                        <p class="fs--2">{{ __('Av. Rodolfo Baquerizo Nazur y José María Egas') }}.</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-9">
-                                <h6 class="fw-bold mb-1">{{ __('VERIS - ALBORADA') }}</h6>
-                                <p class="fs--2">{{ __('Av. Rodolfo Baquerizo Nazur y José María Egas') }}.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer text-end pb-2">
-                        <a href="{{route('citas.fechaDoctor')}}" class="btn btn-sm btn-primary-veris">{{ __('Ver Medicos') }}</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body px-2 pt-2">
-                        <div class="row gx-2">
-                            <div class="col-3">
-                                <img src="{{ asset('assets/img/card/avatar_central_medica.png') }}" class="card-img-top" alt="centro medico">
-                            </div>
-                            <div class="col-9">
-                                <h6 class="fw-bold mb-1">{{ __('VERIS - ALBORADA') }}</h6>
-                                <p class="fs--2">{{ __('Av. Rodolfo Baquerizo Nazur y José María Egas') }}.</p>
+                            <div class="card-footer text-end pb-2">
+                                <a href="{{route('citas.fechaDoctor')}}" class="btn btn-sm btn-primary-veris">{{ __('Ver Medicos') }}</a>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer text-end pb-2">
-                        <a href="{{route('citas.fechaDoctor')}}" class="btn btn-sm btn-primary-veris">{{ __('Ver Medicos') }}</a>
+                    <div class="col-auto col-md-6">
+                        <div class="card">
+                            <div class="card-body px-2 py-2">
+                                <div class="row gx-2">
+                                    <div class="col-3">
+                                        <img src="{{ asset('assets/img/card/avatar_central_medica.png') }}" class="card-img-top" alt="centro medico">
+                                    </div>
+                                    <div class="col-9">
+                                        <h6 class="fw-bold mb-1">{{ __('VERIS - ALBORADA') }}</h6>
+                                        <p class="fs--2">{{ __('Av. Rodolfo Baquerizo Nazur y José María Egas') }}.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-end pb-2">
+                                <a href="{{route('citas.fechaDoctor')}}" class="btn btn-sm btn-primary-veris">{{ __('Ver Medicos') }}</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -162,8 +162,8 @@
                     <div class="avatar-sm avatar-online">
                         <img src="{{ asset('assets/img/avatars/avatar.svg') }}" alt class="h-auto rounded-circle" />
                     </div>
-                    <span class="fs--1 ms-2">{{ Session::get('userData')->nombre }}</span>
-                    <i class="fa-solid fa-angle-down ms-2"></i>
+                    <span class="fs--1 ms-2 d-none d-lg-block">{{ Session::get('userData')->nombre }}</span>
+                    <i class="fa-solid fa-angle-down d-none d-lg-block ms-2"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end rounded-3 mt-2 py-1">
                     <li>
@@ -187,7 +187,7 @@
                     <li>
                         <a class="dropdown-item fs--1 d-flex align-items-center mb-0 cursor-pointer" data-bs-toggle="modal" data-bs-target="#logoutModal">
                             <i class="fa-solid fa-arrow-right-to-bracket text-primary-veris me-2 ti-sm"></i>
-                            <span class="align-middle">1Cerrar sesión</span>
+                            <span class="align-middle">Cerrar sesión</span>
                         </a>
                     </li>
                 </ul>

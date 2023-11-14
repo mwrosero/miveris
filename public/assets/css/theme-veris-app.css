@@ -4,7 +4,7 @@
  * Copyright 2023 Company Akold
  * Theme styles
  */
- /*!
+/*!
   * Bootstrap V5.1.0 ()
   * Copyright 2011-2021 The Bootstrap Authors
   * Copyright 2011-2021 Twitter, Inc.
@@ -12,28 +12,34 @@
   */
 
 /* Custom Properties */
-:root{
-    --bg-vris-blue: #0071CE;
-    --bg-vris-white: #ffffff;
-    --bg-vris-dark-blue: #071A35;
-    --bg-vris-strong-red: #D84315;
-    --bg-vris-very-pale-red: #FFE0E4;
-    --bg-vris-very-pale-blue: #D6F3FF;
-    --bg-vris-very-dark-blue: #0A2240;
-    --bg-vris-light-grayish-green: #f1f8e2;
-    --bg-vris-strong-cyan-lime-green:#00C853;
-    --bg-vris-grayish-blue: #CCEAFA;
-    --bg-vris-light-grayish-blue: #eff3f8;
-    --bg-vris-light-grayish-blue-rgba: rgba(249, 250, 251, 1);
-    --bg-vris-light-grayish-cyan: #E2F3F5;
-    --bg-vris-soft-blue: #66B4E9;
-    --bg-vris-strong-magenta: #C52BD2;
-    --font: "Gotham Rounded", sans-serif;
+:root {
+  --bg-vris-blue: #0071CE;
+  --bg-vris-white: #ffffff;
+  --bg-vris-dark-blue: #071A35;
+  --bg-vris-vivid: #FFC107;
+  --bg-vris-strong-red: #D84315;
+  --bg-vris-very-pale-red: #FFE0E4;
+  --bg-vris-very-pale-blue: #D6F3FF;
+  --bg-vris-very-dark-blue: #0A2240;
+  --bg-vris-light-grayish-green: #f1f8e2;
+  --bg-vris-strong-cyan-lime-green: #00C853;
+  --bg-vris-grayish-blue: #CCEAFA;
+  --bg-vris-light-grayish-blue: #eff3f8;
+  --bg-vris-light-grayish-blue-rgba: rgba(249, 250, 251, 1);
+  --bg-vris-light-grayish-blue-rgba-2: rgba(233, 239, 244, 1);
+  --bg-vris-light-grayish-blue-rgba-3: rgba(243, 244, 245, 1);
+  --bg-vris-very-dark-blue-rgba: rgba(61, 78, 102, 1);
+  --bg-vris-light-grayish-cyan: #E2F3F5;
+  --bg-vris-soft-blue: #66B4E9;
+  --bg-vris-strong-magenta: #C52BD2;
+  --font: "Gotham Rounded", sans-serif;
 }
-body{
-	font-family: var(--font) !important;
+
+body {
+  font-family: var(--font) !important;
   color: var(--text-color-dark) !important;
 }
+
 .layout-navbar-fixed .layout-page::before {
   -webkit-backdrop-filter: saturate(200%) blur(10px);
   backdrop-filter: none !important;
@@ -42,58 +48,105 @@ body{
   mask: none !important;
 }
 
-.avatar-tratamiento{
+.avatar-tratamiento {
   position: relative;
   width: 3rem;
   height: 3rem;
   cursor: pointer;
 }
-.avatar-tratamiento img{
+
+.avatar-tratamiento img {
   width: 100%;
   height: 100%;
 }
-.avatar.avatar-online::after{
+
+.avatar.avatar-online::after {
   content: none !important;
 }
-.avatar-sm{
+
+.avatar-sm {
   width: 2rem !important;
   height: 2rem !important;
 }
-.avatar-sm img{
+
+.avatar-sm img {
   width: 100%;
   height: 100%;
 }
-.avatar-xxl{
+
+.avatar-xxl {
   width: 6.5rem !important;
   height: 6.5rem !important;
 }
-.bg-navbar-theme-veris{
+
+.bg-navbar-theme-veris {
   background-color: var(--bg-vris-blue);
   color: var(--bg-vris-white) !important;
 }
-.bg-menu-theme-veris{
+
+.bg-menu-theme-veris {
   background-color: var(--bg-vris-dark-blue);
   color: var(--bg-vris-white) !important;
 }
-.bg-menu-theme-veris.menu-vertical .menu-item.active{
+
+.bg-menu-theme-veris.menu-vertical .menu-item.active {
   background: var(--bg-vris-blue);
   color: var(--bg-vris-white) !important;
 }
-.bg-very-pale-red{background-color: var(--bg-vris-very-pale-red) !important;}
-.bg-very-pale-blue{background-color: var(--bg-vris-very-pale-blue) !important;}
-.bg-light-grayish-green{background-color: var(--bg-vris-light-grayish-green) !important;}
-.bg-grayish-blue{background-color: var(--bg-vris-grayish-blue) !important;}
-.bg-light-grayish-blue{background-color: var(--bg-vris-light-grayish-blue) !important;}
-.bg-light-grayish-cyan{background-color: var(--bg-vris-light-grayish-cyan) !important;}
-.bg-soft-blue{background-color: var(--bg-vris-soft-blue) !important;}
-.bg-strong-magenta{background-color: var(--bg-vris-strong-magenta) !important;}
-.bg-neutral{
+
+.bg-very-pale-red {
+  background-color: var(--bg-vris-very-pale-red) !important;
+}
+
+.bg-very-pale-blue {
+  background-color: var(--bg-vris-very-pale-blue) !important;
+}
+
+.bg-light-grayish-green {
+  background-color: var(--bg-vris-light-grayish-green) !important;
+}
+
+.bg-grayish-blue {
+  background-color: var(--bg-vris-grayish-blue) !important;
+}
+
+.bg-light-grayish-blue {
+  background-color: var(--bg-vris-light-grayish-blue) !important;
+}
+
+.bg-light-grayish-cyan {
+  background-color: var(--bg-vris-light-grayish-cyan) !important;
+}
+.bg-labe-grayish-blue{
+  background-color: var(--bg-vris-light-grayish-blue-rgba-2) !important;
+}
+.bg-labe-grayish{
+  background-color: var(--bg-vris-light-grayish-blue-rgba-3) !important;
+}
+.bg-soft-blue {
+  background-color: var(--bg-vris-soft-blue) !important;
+}
+
+.bg-strong-magenta {
+  background-color: var(--bg-vris-strong-magenta) !important;
+}
+
+.bg-neutral {
   background-color: rgba(231, 233, 236, 1) !important;
 }
-html:not([dir="rtl"]) .border-start-veris{border-left: 3px solid var(--bg-vris-blue) !important;}
+
+html:not([dir="rtl"]) .border-start-veris {
+  border-left: 3px solid var(--bg-vris-blue) !important;
+}
+
 .btn-outline-primary-veris {
   color: var(--bg-vris-blue) !important;
   border-color: var(--bg-vris-blue) !important;
+  background: transparent;
+}
+.btn-outline-success-veris{
+  color: var(--bg-vris-strong-cyan-lime-green) !important;
+  border-color: var(--bg-vris-strong-cyan-lime-green) !important;
   background: transparent;
 }
 .btn-primary-veris {
@@ -101,37 +154,53 @@ html:not([dir="rtl"]) .border-start-veris{border-left: 3px solid var(--bg-vris-b
   background-color: var(--bg-vris-blue) !important;
   border-color: var(--bg-vris-blue) !important;
 }
-.btn-outline-primary-veris{
+
+.btn-outline-primary-veris {
   color: var(--bg-vris-blue);
   border-color: var(--bg-vris-blue);
   background: transparent;
 }
+
 .btn-label-primary-veris {
   color: var(--bg-vris-blue) !important;
   border-color: transparent;
   background: #E9F7FF !important;
 }
-.btn-prev::after, .swiper-button-prev::after {
+
+.btn-prev::after,
+.swiper-button-prev::after {
   margin-right: .0625rem;
   content: "\F284" !important;
 }
-.btn-next::after, .swiper-button-next::after {
+
+.btn-next::after,
+.swiper-button-next::after {
   margin-left: .0625rem;
   content: "\F285" !important;
 }
-.btn-next::after, .btn-prev::after, .swiper-button-next::after, .swiper-button-prev::after {
+
+.btn-next::after,
+.btn-prev::after,
+.swiper-button-next::after,
+.swiper-button-prev::after {
   font-family: bootstrap-icons !important;
   font-weight: 400;
   font-size: .75rem !important;
   line-height: 2rem !important;
 }
+
 .btn-prev {
   left: 0 !important;
 }
+
 .btn-next {
   right: 0 !important;
 }
-.btn-next, .btn-prev, .swiper-button-next, .swiper-button-prev {
+
+.btn-next,
+.btn-prev,
+.swiper-button-next,
+.swiper-button-prev {
   position: absolute !important;
   top: 50% !important;
   width: 2.25rem !important;
@@ -143,13 +212,15 @@ html:not([dir="rtl"]) .border-start-veris{border-left: 3px solid var(--bg-vris-b
   color: rgba(0, 113, 206, 0.75) !important;
   text-align: center !important;
   border: 0 !important;
-  box-shadow: 0 .125rem .125rem -.125rem rgba(31,27,45,.08),0 .25rem .75rem rgba(31,27,45,.08) !important;
+  box-shadow: 0 .125rem .125rem -.125rem rgba(31, 27, 45, .08), 0 .25rem .75rem rgba(31, 27, 45, .08) !important;
   z-index: 10 !important;
 }
-.bg-dark-blue-veris{
+
+.bg-dark-blue-veris {
   background-color: var(--bg-vris-very-dark-blue) !important;
 }
-.badge-discount-top{
+
+.badge-discount-top {
   color: #0071CE;
   background: #CCEAFA;
   position: absolute;
@@ -162,7 +233,8 @@ html:not([dir="rtl"]) .border-start-veris{border-left: 3px solid var(--bg-vris-b
   gap: 10px;
   display: flex;
 }
-.badge-discount-bottom{
+
+.badge-discount-bottom {
   color: #0071CE;
   background: #CCEAFA;
   position: absolute;
@@ -175,7 +247,8 @@ html:not([dir="rtl"]) .border-start-veris{border-left: 3px solid var(--bg-vris-b
   display: flex;
   border-radius: 30px 0px 8px 0px;
 }
-.btn-master{
+
+.btn-master {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -184,132 +257,208 @@ html:not([dir="rtl"]) .border-start-veris{border-left: 3px solid var(--bg-vris-b
   padding: 8px 16px;
   border-radius: 8px;
 }
-.card-body{
+
+.card-body {
   color: var(--bg-vris-very-dark-blue) !important;
 }
-.card-fecha-foctor{
+
+.card-fecha-foctor {
   border-radius: 24px !important;
   background: #003B83 !important;
 }
-.calendar-body{
+
+.calendar-body {
   background: #003B83;
   border-top-left-radius: 24px !important;
   border-top-right-radius: 24px !important;
 }
-.cursor-inherit{
+
+.cursor-inherit {
   cursor: inherit !important;
 }
-.dropdown-item:not(.disabled).active, .dropdown-item:not(.disabled):active{
+
+.dropdown-item:not(.disabled).active,
+.dropdown-item:not(.disabled):active {
   background-color: var(--bg-vris-blue) !important;
   color: var(--bg-vris-white);
 }
-.dropdown-item:not(.disabled).active > i, .dropdown-item:not(.disabled):active > i{
+
+.dropdown-item:not(.disabled).active>i,
+.dropdown-item:not(.disabled):active>i {
   color: var(--bg-vris-white) !important;
 }
-.form-label{
+
+.form-label {
   color: var(--bg-vris-very-dark-blue) !important;
 }
-.form-check-input.terminos-input:checked, .form-check-input.terminos-input[type=checkbox]:indeterminate {
+
+.form-check-input.terminos-input:checked,
+.form-check-input.terminos-input[type=checkbox]:indeterminate {
   background-color: #00C853;
   border-color: #00C853;
 }
-h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
+
+h6,
+.h6,
+h5,
+.h5,
+h4,
+.h4,
+h3,
+.h3,
+h2,
+.h2,
+h1,
+.h1 {
   color: var(--bg-vris-very-dark-blue) !important;
 }
-.lh-normal{
+
+.lh-normal {
   line-height: normal !important;
 }
-.list-group-checkable .list-group-item, .list-group-flush .list-group-item {
+
+.list-group-checkable .list-group-item,
+.list-group-flush .list-group-item {
   cursor: pointer;
 }
+
 .list-group-item-check {
   position: absolute;
   clip: rect(0, 0, 0, 0);
 }
-.list-group-item-check:hover + .list-group-item {
+
+.list-group-item-check:hover+.list-group-item {
   color: #0157A3;
   background-color: #F0F7FF;
   border-color: #0157A3;
 }
-.list-group-item-check:checked + .list-group-item {
+
+.list-group-item-check:checked+.list-group-item {
   color: var(--bg-vris-very-dark-blue);
   background-color: #E0EFFF;
   border-color: #36A8FA;
 }
-.list-group-item-check[disabled] + .list-group-item,
-.list-group-item-check:disabled + .list-group-item {
+
+.list-group-item-check[disabled]+.list-group-item,
+.list-group-item-check:disabled+.list-group-item {
   pointer-events: none;
   filter: none;
   opacity: .5;
 }
 
 
-.modal{
-  background-color: rgba(0,0,0, 0.5) !important;
+.modal {
+  background-color: rgba(0, 0, 0, 0.5) !important;
 }
-.offcanvas-body{
+
+.offcanvas-body {
   background: var(--bg-vris-light-grayish-blue-rgba) !important;
 }
-.search-box, .form-filter{
+
+.search-box,
+.form-filter {
   background-color: var(--opacidad-oscuro-05, rgba(0, 0, 0, 0.05)) !important;
 }
-.search-box span > i{
+
+.search-box span>i {
   color: var(--iconos-claro-claro, #9EA7B3);
   font-size: 1rem;
 }
+
 .swiper-pagination:not(.swiper-thumbnails) {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .swiper-pagination-bullet:not(.swiper-thumbnail) {
   width: 1rem !important;
   height: .375rem !important;
-  transition: width .2s ease-in-out,height .2s ease-in-out,background-color .2s ease-in-out !important;
+  transition: width .2s ease-in-out, height .2s ease-in-out, background-color .2s ease-in-out !important;
   border-radius: 50rem !important;
-  background-color: rgba(102,98,118,.4) !important;
+  background-color: rgba(102, 98, 118, .4) !important;
   opacity: 1 !important;
 }
+
 .swiper-pagination-bullet-active:not(.swiper-thumbnail) {
   background-color: #666276 !important;
 }
-.swiper-horizontal > .swiper-pagination-bullets:not(.swiper-thumbnails) .swiper-pagination-bullet-active, .swiper-pagination-bullets:not(.swiper-thumbnails).swiper-pagination-horizontal .swiper-pagination-bullet-active {
+
+.swiper-horizontal>.swiper-pagination-bullets:not(.swiper-thumbnails) .swiper-pagination-bullet-active,
+.swiper-pagination-bullets:not(.swiper-thumbnails).swiper-pagination-horizontal .swiper-pagination-bullet-active {
   width: 2rem !important;
 }
 
-.rounded-4{border-radius: 1rem !important;}
-.rounded-start-circle{
+.rounded-4 {
+  border-radius: 1rem !important;
+}
+
+.rounded-start-circle {
   border-top-left-radius: 50em !important;
   border-bottom-left-radius: 50em !important;
 }
-.text-veris{color: var(--bg-vris-very-dark-blue);}
-.text-primary-veris{
+
+.rounded-end-circle {
+  border-top-right-radius: 50em !important;
+  border-bottom-right-radius: 50em !important;
+}
+
+.text-opcaity{
+  color: var(--bg-vris-very-dark-blue-rgba);
+}
+.text-veris {
+  color: var(--bg-vris-very-dark-blue);
+}
+.text-warning-veris{
+  color: var(--bg-vris-vivid) !important;
+}
+.text-primary-veris {
   color: var(--bg-vris-blue) !important;
 }
-.text-danger-veris{
+
+.text-danger-veris {
   color: var(--bg-vris-strong-red) !important;
 }
-.text-lime-veris{
+
+.text-lime-veris {
   color: var(--bg-vris-strong-cyan-lime-green) !important;
 }
-.top-25{top: 25% !important;}
-.start-40{left: 40% !important;}
-.success{
+
+.top-25 {
+  top: 25% !important;
+}
+
+.start-40 {
+  left: 40% !important;
+}
+
+.success {
   color: var(--bg-vris-strong-cyan-lime-green) !important;
 }
-.fs--3{font-size: 0.625rem !important;}
-.fs--2{font-size: 0.75rem !important;}
-.fs--1{font-size: 0.874rem !important;}
+
+.fs--3 {
+  font-size: 0.625rem !important;
+}
+
+.fs--2 {
+  font-size: 0.75rem !important;
+}
+
+.fs--1 {
+  font-size: 0.874rem !important;
+}
 
 
 /* caledario */
-.border-24{
+.border-24 {
   border-radius: 24px !important;
 }
-.border-top-24{
+
+.border-top-24 {
   border-top-left-radius: 24px !important;
   border-top-right-radius: 24px !important;
 }
+
 .calendar-container {
   width: 300px;
   /* max-height: 135px; */
@@ -320,29 +469,36 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
   padding: 20px;
   color: #ffffff;
 }
+
 .calendar-header {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
 }
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 8px;
 }
+
 .calendar-day {
   text-align: center;
   padding: 5px;
   /* border: 1px solid #ccc; */
   border-radius: 5px;
   cursor: pointer;
-  width: 32px; /* Ajusta el ancho de los días según sea necesario */
+  width: 32px;
+  /* Ajusta el ancho de los días según sea necesario */
   font-size: 1rem;
 }
+
 .calendar-day.empty-day {
-  visibility: hidden; /* Oculta los días vacíos al principio del mes */
+  visibility: hidden;
+  /* Oculta los días vacíos al principio del mes */
 }
+
 .calendar-day.day-of-week {
   font-weight: bold;
   /* background-color: #f2f2f2; */
@@ -353,21 +509,109 @@ h6, .h6, h5, .h5, h4, .h4, h3, .h3, h2, .h2, h1, .h1{
   color: var(--bg-vris-very-dark-blue);
   border-radius: 50rem;
 }
+
 .selected-day {
   background-color: var(--bg-vris-white);
   color: var(--bg-vris-very-dark-blue);
   border-radius: 50rem;
 }
 
+.top-n35 {
+  top: -35% !important;
+}
+
+.end-10 {
+  right: 10% !important;
+}
+
+.end-5 {
+  right: 5% !important;
+}
+
+.end-7 {
+  right: 7% !important;
+}
+.end-n5{
+  right: -5% !important;
+}
+.bottom-10 {
+  bottom: 10% !important;
+}
+
+.bottom-20 {
+  bottom: 20% !important;
+}
+
+.bottom-25 {
+  bottom: 25% !important;
+}
+
+.bottom-30 {
+  bottom: 30% !important;
+}
+
+.bottom-40 {
+  bottom: 40% !important;
+}
+
+.promo-img img{
+  filter: drop-shadow(0px 8px 16px rgba(0, 0, 0, 0.15));
+}
+.shadow-veris{
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
+}
+.btn-check:checked + .btn, :not(.btn-check) + .btn:active, .btn:first-child:active, .btn.active, .btn.show{
+  border-color: transparent !important;
+}
+
+.btn-minus,
+.btn-plus{
+  background: #F3F4F5 !important;
+  box-shadow: none !important;
+}
+.input-spin-none{
+  border: 1px solid #f3f4f5 !important
+}
+
 
 /* X-Large devices (large desktops, 1200px and up) */
-@media (min-width: 1200px) { 
-  .border-lg-end{border-right: 1px solid #dee2e6 !important;}
-  .border-lg-start{border-left: 1px solid #dee2e6 !important;}
-  .w-lg-50{width: 50% !important;}
+@media (min-width: 1200px) {
+  .border-lg-end {
+    border-right: 1px solid #dee2e6 !important;
+  }
+
+  .border-lg-start {
+    border-left: 1px solid #dee2e6 !important;
+  }
+
+  .w-lg-50 {
+    width: 50% !important;
+  }
+
+  .top-lg-n35 {
+    top: -35% !important;
+  }
+
+  .end-lg-n5 {
+    right: -5% !important;
+  }
+  
+  .w-lg-50 {
+    width: 50% !important;
+  }
 }
+
 @media (min-width: 992px) {
+  
 }
+
+@media (min-width: 768px) {
+  .promo-img{
+    top: -25%;
+    right: -7%;
+  }
+}
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -375,6 +619,15 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+/* `sm` applies to x-small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .promo-img{
+    bottom: 0%;
+    right: 0%;
+  }
+}
+
 
 /* Firefox */
 input[type=number] {
@@ -387,10 +640,10 @@ input[type=number] {
   font-family: 'Gotham Rounded';
   src: url('fonts/GothamRnd-BoldItalic.eot');
   src: local('Gotham Rounded Bold Italic'), local('GothamRnd-BoldItalic'),
-      url('fonts/GothamRnd-BoldItalic.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRnd-BoldItalic.woff2') format('woff2'),
-      url('fonts/GothamRnd-BoldItalic.woff') format('woff'),
-      url('fonts/GothamRnd-BoldItalic.ttf') format('truetype');
+    url('fonts/GothamRnd-BoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-BoldItalic.woff2') format('woff2'),
+    url('fonts/GothamRnd-BoldItalic.woff') format('woff'),
+    url('fonts/GothamRnd-BoldItalic.ttf') format('truetype');
   font-weight: bold;
   font-style: italic;
 }
@@ -399,10 +652,10 @@ input[type=number] {
   font-family: 'Gotham Rounded SSm';
   src: url('fonts/GothamRndSSm-Light.eot');
   src: local('Gotham Rounded SSm Light'), local('GothamRndSSm-Light'),
-      url('fonts/GothamRndSSm-Light.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRndSSm-Light.woff2') format('woff2'),
-      url('fonts/GothamRndSSm-Light.woff') format('woff'),
-      url('fonts/GothamRndSSm-Light.ttf') format('truetype');
+    url('fonts/GothamRndSSm-Light.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-Light.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-Light.woff') format('woff'),
+    url('fonts/GothamRndSSm-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
 }
@@ -411,10 +664,10 @@ input[type=number] {
   font-family: 'Gotham Rounded SSm';
   src: url('fonts/GothamRndSSm-LightItalic.eot');
   src: local('Gotham Rounded SSm Light Italic'), local('GothamRndSSm-LightItalic'),
-      url('fonts/GothamRndSSm-LightItalic.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRndSSm-LightItalic.woff2') format('woff2'),
-      url('fonts/GothamRndSSm-LightItalic.woff') format('woff'),
-      url('fonts/GothamRndSSm-LightItalic.ttf') format('truetype');
+    url('fonts/GothamRndSSm-LightItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-LightItalic.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-LightItalic.woff') format('woff'),
+    url('fonts/GothamRndSSm-LightItalic.ttf') format('truetype');
   font-weight: 300;
   font-style: italic;
 }
@@ -423,10 +676,10 @@ input[type=number] {
   font-family: 'Gotham Rounded';
   src: url('fonts/GothamRnd-Medium.eot');
   src: local('Gotham Rounded Medium'), local('GothamRnd-Medium'),
-      url('fonts/GothamRnd-Medium.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRnd-Medium.woff2') format('woff2'),
-      url('fonts/GothamRnd-Medium.woff') format('woff'),
-      url('fonts/GothamRnd-Medium.ttf') format('truetype');
+    url('fonts/GothamRnd-Medium.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-Medium.woff2') format('woff2'),
+    url('fonts/GothamRnd-Medium.woff') format('woff'),
+    url('fonts/GothamRnd-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
@@ -435,10 +688,10 @@ input[type=number] {
   font-family: 'Gotham Rounded SSm';
   src: url('fonts/GothamRndSSm-Book.eot');
   src: local('Gotham Rounded SSm Book'), local('GothamRndSSm-Book'),
-      url('fonts/GothamRndSSm-Book.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRndSSm-Book.woff2') format('woff2'),
-      url('fonts/GothamRndSSm-Book.woff') format('woff'),
-      url('fonts/GothamRndSSm-Book.ttf') format('truetype');
+    url('fonts/GothamRndSSm-Book.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-Book.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-Book.woff') format('woff'),
+    url('fonts/GothamRndSSm-Book.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -447,10 +700,10 @@ input[type=number] {
   font-family: 'Gotham Rounded SSm';
   src: url('fonts/GothamRndSSm-BoldItalic.eot');
   src: local('Gotham Rounded SSm Bold Italic'), local('GothamRndSSm-BoldItalic'),
-      url('fonts/GothamRndSSm-BoldItalic.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRndSSm-BoldItalic.woff2') format('woff2'),
-      url('fonts/GothamRndSSm-BoldItalic.woff') format('woff'),
-      url('fonts/GothamRndSSm-BoldItalic.ttf') format('truetype');
+    url('fonts/GothamRndSSm-BoldItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-BoldItalic.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-BoldItalic.woff') format('woff'),
+    url('fonts/GothamRndSSm-BoldItalic.ttf') format('truetype');
   font-weight: bold;
   font-style: italic;
 }
@@ -459,10 +712,10 @@ input[type=number] {
   font-family: 'Gotham Rounded SSm';
   src: url('fonts/GothamRndSSm-Bold.eot');
   src: local('Gotham Rounded SSm Bold'), local('GothamRndSSm-Bold'),
-      url('fonts/GothamRndSSm-Bold.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRndSSm-Bold.woff2') format('woff2'),
-      url('fonts/GothamRndSSm-Bold.woff') format('woff'),
-      url('fonts/GothamRndSSm-Bold.ttf') format('truetype');
+    url('fonts/GothamRndSSm-Bold.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-Bold.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-Bold.woff') format('woff'),
+    url('fonts/GothamRndSSm-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
@@ -471,10 +724,10 @@ input[type=number] {
   font-family: 'Gotham Rounded';
   src: url('fonts/GothamRnd-BookItalic.eot');
   src: local('Gotham Rounded Book Italic'), local('GothamRnd-BookItalic'),
-      url('fonts/GothamRnd-BookItalic.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRnd-BookItalic.woff2') format('woff2'),
-      url('fonts/GothamRnd-BookItalic.woff') format('woff'),
-      url('fonts/GothamRnd-BookItalic.ttf') format('truetype');
+    url('fonts/GothamRnd-BookItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-BookItalic.woff2') format('woff2'),
+    url('fonts/GothamRnd-BookItalic.woff') format('woff'),
+    url('fonts/GothamRnd-BookItalic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
 }
@@ -483,10 +736,10 @@ input[type=number] {
   font-family: 'Gotham Rounded';
   src: url('fonts/GothamRnd-Book.eot');
   src: local('Gotham Rounded Book'), local('GothamRnd-Book'),
-      url('fonts/GothamRnd-Book.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRnd-Book.woff2') format('woff2'),
-      url('fonts/GothamRnd-Book.woff') format('woff'),
-      url('fonts/GothamRnd-Book.ttf') format('truetype');
+    url('fonts/GothamRnd-Book.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-Book.woff2') format('woff2'),
+    url('fonts/GothamRnd-Book.woff') format('woff'),
+    url('fonts/GothamRnd-Book.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -495,10 +748,10 @@ input[type=number] {
   font-family: 'Gotham Rounded';
   src: url('fonts/GothamRnd-LightItalic.eot');
   src: local('Gotham Rounded Light Italic'), local('GothamRnd-LightItalic'),
-      url('fonts/GothamRnd-LightItalic.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRnd-LightItalic.woff2') format('woff2'),
-      url('fonts/GothamRnd-LightItalic.woff') format('woff'),
-      url('fonts/GothamRnd-LightItalic.ttf') format('truetype');
+    url('fonts/GothamRnd-LightItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-LightItalic.woff2') format('woff2'),
+    url('fonts/GothamRnd-LightItalic.woff') format('woff'),
+    url('fonts/GothamRnd-LightItalic.ttf') format('truetype');
   font-weight: 300;
   font-style: italic;
 }
@@ -507,10 +760,10 @@ input[type=number] {
   font-family: 'Gotham Rounded SSm';
   src: url('fonts/GothamRndSSm-Medium.eot');
   src: local('Gotham Rounded SSm Medium'), local('GothamRndSSm-Medium'),
-      url('fonts/GothamRndSSm-Medium.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRndSSm-Medium.woff2') format('woff2'),
-      url('fonts/GothamRndSSm-Medium.woff') format('woff'),
-      url('fonts/GothamRndSSm-Medium.ttf') format('truetype');
+    url('fonts/GothamRndSSm-Medium.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-Medium.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-Medium.woff') format('woff'),
+    url('fonts/GothamRndSSm-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
@@ -519,10 +772,10 @@ input[type=number] {
   font-family: 'Gotham Rounded';
   src: url('fonts/GothamRnd-Bold.eot');
   src: local('Gotham Rounded Bold'), local('GothamRnd-Bold'),
-      url('fonts/GothamRnd-Bold.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRnd-Bold.woff2') format('woff2'),
-      url('fonts/GothamRnd-Bold.woff') format('woff'),
-      url('fonts/GothamRnd-Bold.ttf') format('truetype');
+    url('fonts/GothamRnd-Bold.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-Bold.woff2') format('woff2'),
+    url('fonts/GothamRnd-Bold.woff') format('woff'),
+    url('fonts/GothamRnd-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
 }
@@ -531,10 +784,10 @@ input[type=number] {
   font-family: 'Gotham Rounded SSm';
   src: url('fonts/GothamRndSSm-BookItalic.eot');
   src: local('Gotham Rounded SSm Book Italic'), local('GothamRndSSm-BookItalic'),
-      url('fonts/GothamRndSSm-BookItalic.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRndSSm-BookItalic.woff2') format('woff2'),
-      url('fonts/GothamRndSSm-BookItalic.woff') format('woff'),
-      url('fonts/GothamRndSSm-BookItalic.ttf') format('truetype');
+    url('fonts/GothamRndSSm-BookItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-BookItalic.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-BookItalic.woff') format('woff'),
+    url('fonts/GothamRndSSm-BookItalic.ttf') format('truetype');
   font-weight: normal;
   font-style: italic;
 }
@@ -543,10 +796,10 @@ input[type=number] {
   font-family: 'Gotham Rounded';
   src: url('fonts/GothamRnd-Light.eot');
   src: local('Gotham Rounded Light'), local('GothamRnd-Light'),
-      url('fonts/GothamRnd-Light.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRnd-Light.woff2') format('woff2'),
-      url('fonts/GothamRnd-Light.woff') format('woff'),
-      url('fonts/GothamRnd-Light.ttf') format('truetype');
+    url('fonts/GothamRnd-Light.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-Light.woff2') format('woff2'),
+    url('fonts/GothamRnd-Light.woff') format('woff'),
+    url('fonts/GothamRnd-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
 }
@@ -555,10 +808,10 @@ input[type=number] {
   font-family: 'Gotham Rounded';
   src: url('fonts/GothamRnd-MediumItalic.eot');
   src: local('Gotham Rounded Medium Italic'), local('GothamRnd-MediumItalic'),
-      url('fonts/GothamRnd-MediumItalic.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRnd-MediumItalic.woff2') format('woff2'),
-      url('fonts/GothamRnd-MediumItalic.woff') format('woff'),
-      url('fonts/GothamRnd-MediumItalic.ttf') format('truetype');
+    url('fonts/GothamRnd-MediumItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRnd-MediumItalic.woff2') format('woff2'),
+    url('fonts/GothamRnd-MediumItalic.woff') format('woff'),
+    url('fonts/GothamRnd-MediumItalic.ttf') format('truetype');
   font-weight: 500;
   font-style: italic;
 }
@@ -567,10 +820,10 @@ input[type=number] {
   font-family: 'Gotham Rounded SSm';
   src: url('fonts/GothamRndSSm-MediumItalic.eot');
   src: local('Gotham Rounded SSm Medium Italic'), local('GothamRndSSm-MediumItalic'),
-      url('fonts/GothamRndSSm-MediumItalic.eot?#iefix') format('embedded-opentype'),
-      url('fonts/GothamRndSSm-MediumItalic.woff2') format('woff2'),
-      url('fonts/GothamRndSSm-MediumItalic.woff') format('woff'),
-      url('fonts/GothamRndSSm-MediumItalic.ttf') format('truetype');
+    url('fonts/GothamRndSSm-MediumItalic.eot?#iefix') format('embedded-opentype'),
+    url('fonts/GothamRndSSm-MediumItalic.woff2') format('woff2'),
+    url('fonts/GothamRndSSm-MediumItalic.woff') format('woff'),
+    url('fonts/GothamRndSSm-MediumItalic.ttf') format('truetype');
   font-weight: 500;
   font-style: italic;
 }
