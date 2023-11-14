@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CitasController;
 use App\Http\Controllers\FamiliaAmigosController;
 use App\Http\Controllers\TratamientosController;
+use App\Http\Controllers\DomicilioController;
 use App\Http\Controllers\ExperienciaController;
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +72,8 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/laboratorio-domicilio', [TratamientosController::class, 'laboratorioDomicilio'])->name('tratamientos.laboratorioDomicilio')->withoutMiddleware((['guest']));
     Route::get('/citas-laboratorio', [TratamientosController::class, 'citasLaboratorio'])->name('tratamientos.citasLaboratorio')->withoutMiddleware((['guest']));
     
-
+    #Domicilio
+    Route::get('/servicio-domicilio', [DomicilioController::class, 'domilicio'])->name('domicilio')->withoutMiddleware(['guest']);
 
     #Experiencia
     Route::get('/cuentanos-tu-experiencia', [ExperienciaController::class, 'tuExperiencia'])->name('experiencia')->withoutMiddleware(['guest']);
