@@ -102,6 +102,7 @@ Mi Veris - Inicio
             <button type="button" id="nextProperties" class="d-none mt-n4 btn btn-next"></button>
         </div>
     </section>
+    <!-- Tratamientos dinamico -->
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="fw-bold border-start-veris ps-3">Mis tratamientos</h5>
@@ -113,157 +114,27 @@ Mi Veris - Inicio
                 <h6 class="fw-normal">Agenda una cita y revisa tus <b>tratamientos</b> aquí</h6>
             </div>
             <div class="swiper swiper-mis-tratamientos pt-3 pb-4 px-2 mx-n2">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body p-2">
-                                <div class="row gx-0 justify-content-between align-items-center mb-3">
-                                    <div class="col-9">
-                                        <h6 class="card-title text-primary-veris mb-0">Traumatología</h6>
-                                        <p class="fw-bold fs--2 mb-0">María Yanina Donoso Samaniego</p>
-                                        <p class="card-text fs--2">Dr(a): Magdalena Caroline Hernandez...</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <div id="chart-progress" data-porcentaje="10" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
-                                    </div>
-                                </div>
-                                <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
-                                    <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">Receta medica</p>
-                                        </div>
-                                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">Terapia fisica 1</p>
-                                        </div>
-                                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body p-2">
-                                <div class="row gx-0 justify-content-between align-items-center mb-3">
-                                    <div class="col-9">
-                                        <h6 class="card-title text-primary-veris mb-0">Otrorrinolaringología</h6>
-                                        <p class="fw-bold fs--2 mb-0">María Yanina Donoso Samaniego</p>
-                                        <p class="card-text fs--2">Dr(a): Magdalena Caroline Hernandez...</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <div id="chart-progress" data-porcentaje="50" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
-                                    </div>
-                                </div>
-                                <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
-                                    <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">Receta medica</p>
-                                        </div>
-                                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <div class="avatar-tratamiento border rounded-circle bg-light-grayish-green">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/microscope.svg') }}" width="26" alt="receta medica">
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">Terapia fisica 1</p>
-                                        </div>
-                                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body p-2">
-                                <div class="row gx-0 justify-content-between align-items-center mb-3">
-                                    <div class="col-9">
-                                        <h6 class="card-title text-primary-veris mb-0">Dermatología</h6>
-                                        <p class="fw-bold fs--2 mb-0">María Yanina Donoso Samaniego</p>
-                                        <p class="card-text fs--2">Dr(a): Magdalena Caroline Hernandez...</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <div id="chart-progress" data-porcentaje="30" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
-                                    </div>
-                                </div>
-                                <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
-                                    <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">Receta medica</p>
-                                        </div>
-                                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <div class="avatar-tratamiento border rounded-circle bg-light-grayish-green">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/microscope.svg') }}" width="26" alt="receta medica">
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">Terapia fisica 1</p>
-                                        </div>
-                                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body p-2">
-                                <div class="row gx-0 justify-content-between align-items-center mb-3">
-                                    <div class="col-9">
-                                        <h6 class="card-title text-primary-veris mb-0">Traumatología</h6>
-                                        <p class="fw-bold fs--2 mb-0">María Yanina Donoso Samaniego</p>
-                                        <p class="card-text fs--2">Dr(a): Magdalena Caroline Hernandez...</p>
-                                    </div>
-                                    <div class="col-3">
-                                        <div id="chart-progress" data-porcentaje="20" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
-                                    </div>
-                                </div>
-                                <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
-                                    <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">Receta medica</p>
-                                        </div>
-                                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                    </label>
-                                    <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                        <div class="d-flex gap-2 align-items-center">
-                                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">Terapia fisica 1</p>
-                                        </div>
-                                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="swiper-wrapper" id="contenedorTratamientoHome">
+                    <!-- Puedes agregar tratamientos dinámicamente aquí desde JavaScript -->
+                    
                 </div>
             </div>
+
+            <div class="col-3">
+                <div id="chart-progress" data-porcentaje="10" data-color="success">
+                    <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
+                    <div class="custom-check position-absolute top-25 start-40"></div>
+                </div>
+            </div>
+           
+            
             <button type="button" id="prevProperties" class="mt-n4 btn btn-prev"></button>
             <button type="button" id="nextProperties" class="mt-n4 btn btn-next"></button>
         </div>
     </section>
+
+    <!-- fin tratamientos dinamico -->
+
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="fw-bold border-start-veris ps-3">Próximas citas</h5>
@@ -449,9 +320,13 @@ Mi Veris - Inicio
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    
+    //variables globales
+    let datosTratamientos = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerPPD();
+        await obtenerTratamientos();
     });
 
     //metodos jquery
@@ -461,8 +336,7 @@ Mi Veris - Inicio
             const response = await aceptarPoliticas();
             console.log("sisi",response);
             if(response.code == 200){
-                localStorage.setItem('estadoPoliticas', response.data.estadoPoliticas);
-                $('#modalPPD').modal('hide');
+                cerrarModal();
             }
             
         });
@@ -472,6 +346,76 @@ Mi Veris - Inicio
         localStorage.setItem('politicaspoliticasAbiertas', true);
         $('#modalPPD').modal('hide');
     });
+
+    function cerrarModal(){
+        $('#modalPPD').modal('hide');
+    }
+
+    // llenar el div de tratamientos
+
+    function mostrarTratamientoenDiv() {
+        let data = datosTratamientos;
+
+        let divContenedor = $('#contenedorTratamientoHome');
+            divContenedor.empty(); // Limpia el contenido actual
+
+            data.forEach(tratamientos => {
+                let elemento = `<div class="swiper-slide">
+                <div class="card">
+                    <div class="card-body p-2">
+                    <div class="row gx-0 justify-content-between align-items-center mb-3">
+                        <div class="col-9">
+                        <h6 class="card-title text-primary-veris mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
+                        <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
+                        <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
+                        </div>
+                        <div class="col-3">
+                            <div id="chart-progress" data-porcentaje="10" data-color="success">
+                                <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
+                        <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
+                            <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
+                            </div>
+                            <p class="fw-bold fs--2 mb-0">Receta medica</p>
+                        </div>
+                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
+                        </label>
+                        <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
+                        <div class="d-flex gap-2 align-items-center">
+                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
+                            <img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">
+                            </div>
+                            <p class="fw-bold fs--2 mb-0">Terapia fisica 1</p>
+                        </div>
+                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
+                        </label>
+                    </div>
+                    </div>
+                </div>
+                </div>`;
+
+            divContenedor.append(elemento);
+        });
+    }
+
+    // capializar la primera letra de cada palabra
+    function capitalizarElemento(elemento) {
+        const texto = elemento.toLowerCase();
+        const palabras = texto.split(" ");
+        for (let i = 0; i < palabras.length; i++) {
+            const palabra = palabras[i];
+            const primeraLetra = palabra[0];
+            const primeraLetraMayuscula = primeraLetra.toUpperCase();
+            palabras[i] = palabra.replace(primeraLetra, primeraLetraMayuscula);
+        }
+        const textoCapitalizado = palabras.join(" ");
+        return textoCapitalizado;
+    }
 
 
 
@@ -533,6 +477,29 @@ Mi Veris - Inicio
         return data;
     }
 
+    // recibir los tratamientos en home
+
+    async function obtenerTratamientos(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
+
+        args["endpoint"] = api_url + `/digitales/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=TODOS&canalOrigen=${canalOrigen}&page=1&perPage=6&version=7.8.0`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        console.log(args["endpoint"]);
+        const data = await call(args);
+        console.log(data.data.items);
+        if(data.code == 200){
+            datosTratamientos = data.data.items;
+            mostrarTratamientoenDiv();
+        }
+
+        return data;
+
+    }
+
+    
 </script>
 
 @endpush

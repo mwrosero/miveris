@@ -188,13 +188,17 @@ async function obtenerProvincias(){
     }
 }
 
-async function obtenerCiudades(){
+async function obtenerCiudades(codigoCiudades){
+
+    console.log(codigoCiudades);
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
+    // args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
+    args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+codigoCiudades;
     args["method"] = "GET";
     args["showLoader"] = false;
 
     const data = await call(args);
+    console.log(data);
     if(data.code == 200){
         $('#ciudad').empty();
         $.each(data.data, function(key, value){
@@ -202,6 +206,7 @@ async function obtenerCiudades(){
         })
     }
 }
+
 
 function isValidEmailAddress(emailAddress) {
     let pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;

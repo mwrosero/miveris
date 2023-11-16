@@ -3,8 +3,26 @@
 Mi Veris - Citas - Familia y amigos
 @endsection
 @section('content')
+
+<!-- Modal actualizacion exitosa -->
+
+<div class="modal fade" id="mensajeActualizacionExitosa" tabindex="-1" aria-labelledby="mensajeActualizacionExitosa" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <p class="fs--1 fw-bold m-0 mt-3">Veris</p>
+                <p class="fs--1 fw m-0 mt-3" id="mensajeActualizacionExitosa">Actualización exitosa</p>
+            </div>
+            <div class="modal-footer pb-3 pt-0 px-3">
+                <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="flex-grow-1 container-p-y pt-0">
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white" id="nombreFamiliar">{{ __('Juana Donoso') }}</h5>
+    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white" id="nombreFamiliar"></h5>
+    
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-4">
@@ -14,33 +32,30 @@ Mi Veris - Citas - Familia y amigos
                             <p class="fs--2 mb-0">¿Deseas asignar a esta persona como administrador de tu cuenta?</p>
                         </div>
                         <div class="form-check form-switch">
-                            <input form="formFamiliarAdmin" class="form-check-input fs-3" type="checkbox" role="switch" name="administrador"id="administrador" />
+                            <input class="form-check-input fs-3" type="checkbox" role="switch" name="administrador"id="administrador" />
                         </div>
                     </li>
                 </ul>
                 <div class="card mb-4">
                     <div class="card-body py-3">
-                        <form class="row g-3" id="formFamiliarAdmin">
-                            <div class="col-md-12">
-                                <p class="fs--1 mb-0">Cédula: <b class="fw-normal" id="numeroIdentificacion">0951716280</b></p>
+                        
+                        <div class="col-md-12">
+                            <p class="fs--1 mb-0">Cédula: <b class="fw-normal" id="numeroIdentificacion"></b></p>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="tipoParentesco" class="form-label">{{ __('Selecciona el tipo de relación que tienes con esta persona') }} *</label>
+                            <select class="form-select form-filter" id="tipoParentesco" required>
+                                
+                            </select>
+                            <div class="invalid-feedback">
+                                Elegir el tipo de parentesco.
                             </div>
-                            <div class="col-md-12">
-                                <label for="tipoParentesco" class="form-label">{{ __('Selecciona el tipo de relación que tienes con esta persona') }} *</label>
-                                <select class="form-select form-filter" id="tipoParentesco" required>
-                                    <option selected disabled value="">Elegir...</option>
-                                    <option value="">Abuelo(a) Mat</option>
-                                    <option value="">Abuelo(a) Pat</option>
-                                    <option value="">Amigo(a)</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Elegir el tipo de parentesco.
-                                </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="mx-auto mx-lg-3">
-                    <button class="btn btn-primary-veris w-100" type="submit" form="formFamiliarAdmin">Guardar</button>
+                    <button class="btn btn-primary-veris w-100" type="button" id="btnGuardar" >
+                        Guardar</button>
                 </div>
             </div>
         </div>
@@ -48,5 +63,113 @@ Mi Veris - Citas - Familia y amigos
 </div>
 @endsection
 @push('scripts')
-<script></script>
+<script>
+
+    // variables globales
+
+    let datosTipoParentesco = [];
+    let valorCheck = "N"; 
+    let tipoParentesco;
+    let tipoRelacion;
+
+    // llamada del dom 
+    document.addEventListener("DOMContentLoaded", async function () {
+        await consultarTipoParentesco();
+        llenarDatosFamiliar();
+    });
+
+
+    // funciones asyncronas
+
+    // consular tipos de parentesco
+    async function consultarTipoParentesco() {
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/perfil/tiposparentesco";
+        args["method"] = "GET";
+        args["showLoader"] = false;
+
+        const data = await call(args);
+        console.log('consultarTipoParentesco', data);
+
+        if (data.code == 200) {
+            datosTipoParentesco = data.data;
+            llenarSelectTipoParentesco();
+        }
+        return data;
+    }
+
+    //modificar datos del familiar
+
+    async function modificarDatosFamiliar(){
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/perfil/migrupo";
+        args["method"] = "PUT";
+        args["showLoader"] = false;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "codigoParentesco": parseInt(getInput('tipoParentesco')),
+            "esAdmin" : valorCheck,
+            "idRelacion": tipoRelacion,
+        });
+
+        console.log('args', args["data"]);
+
+        const data = await call(args);
+        console.log('modificarDatosFamiliar', data);
+
+        return data;
+    }
+
+    // funciones jquery
+
+    // guardar datos del familiar
+    $('#btnGuardar').click(async function() {
+        console.log('btnGuardar');
+        const data = await modificarDatosFamiliar(); 
+        if(data.code == 200){
+            $('#mensajeActualizacionExitosa').modal('show');
+        }   
+    });
+
+    //llenar el select 
+
+    function llenarSelectTipoParentesco() {
+        let select = document.getElementById('tipoParentesco');
+        let html = '';
+        datosTipoParentesco.forEach(element => {
+            html += `<option value="${element.codigoParentesco}">${element.descripcion}</option>`;
+        });
+        select.innerHTML = html;
+    }
+
+    // valor del check
+    $('#administrador').change(function() {
+        if($(this).is(":checked")) {
+            valorCheck = "S";
+        }else{
+            valorCheck = "N";
+        }
+        console.log('valorCheck', valorCheck);
+    });
+
+    //llenar datos del familiar
+    function llenarDatosFamiliar() {
+        document.getElementById('nombreFamiliar').innerHTML = localStorage.getItem('primerNombreFamiliar') + ' ' + localStorage.getItem('primerApellidoFamiliar');
+        document.getElementById('numeroIdentificacion').innerHTML = localStorage.getItem('numeroIdentificacion');
+        tipoParentesco = localStorage.getItem('codigoParentesco');
+        tipoRelacion = localStorage.getItem('idRelacion');
+        // llenar el select con el parentesco del localstorage
+        let select = document.getElementById('tipoParentesco');
+        select.value = tipoParentesco;
+
+    }
+
+
+
+
+
+
+
+
+</script>
 @endpush
