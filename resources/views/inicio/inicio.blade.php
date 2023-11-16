@@ -67,7 +67,7 @@ Mi Veris - Inicio
                     <div class="swiper-slide">
                         <div class="card">
                             <div class="card-body py-0">
-                                <a href="#">
+                                <a href="{{route('home.promociones')}}">
                                     <div class="row justify-content-between align-items-center">
                                         <div class="col-auto">
                                             <h6 class="fw-bold mb-0">Comprar promociones</h6>

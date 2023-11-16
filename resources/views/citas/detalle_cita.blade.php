@@ -20,7 +20,7 @@ Mi Veris - Citas - Revisa tus datos
                                 </div>
                             </div>
                             <div class="col-5 text-end">
-                                <p class="text-danger fs--3 mb-0" id="content-precioBase">{{ __('Precio normal') }} <span id="precioBase">$30.00</span></p>
+                                <p class="text-danger fs--3 mb-0" id="content-precioBase">{{ __('Precio normal') }} <del id="precioBase">$30.00</del></p>
                                 <h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$7.00</h3>
                             </div>
                             <p class="text-center text-primary-veris fs--2 mb-0" id="infoDescuento">{{ __('*Se aplicó un 5% de descuento por pago en app') }}</p>

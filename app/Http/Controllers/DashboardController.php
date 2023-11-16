@@ -16,11 +16,19 @@ class DashboardController extends Controller
         return view('inicio.inicio');
     }
 
-    function misDatos() {
+    public function misDatos() {
         return view('inicio.mis_datos');
     }
 
-    function politicaPrivacidadDatos() {
+    public function politicaPrivacidadDatos() {
         return view('inicio.politica_privacidad_datos');
+    }
+
+    public function listaPromociones() {
+        return view('inicio.promociones');
+    }
+
+    public function promocionDetalle() {
+        return view('inicio.detalle_promocion');
     }
 }
