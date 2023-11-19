@@ -7,6 +7,7 @@ Mi Veris - Citas - Mis tratamientos
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+    <!-- Filtro -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroTratamientos" aria-labelledby="filtroTratamientosLabel">
         <div class="offcanvas-header py-2">
             <h5 class="offcanvas-title" id="filtroTratamientosLabel">Filtros</h5>
@@ -58,8 +59,8 @@ Mi Veris - Citas - Mis tratamientos
             </ul>
             <div class="tab-content bg-transparent" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
-                    <div class="col-auto bg-white p-2 mb-3">
-                        <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroTratamientos" aria-controls="filtroTratamientos"><i class="bi bi-sliders me-3"></i> Maria Donoso</button>
+                    <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white py-2 mb-3">
+                        <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroTratamientos" aria-controls="filtroTratamientos"><i class="bi bi-sliders me-1"></i> Maria Donoso</button>
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
@@ -145,8 +146,8 @@ Mi Veris - Citas - Mis tratamientos
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
-                    <div class="col-auto bg-white p-2 mb-3">
-                        <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroTratamientos" aria-controls="filtroTratamientos"><i class="bi bi-sliders me-3"></i> Maria Donoso</button>
+                    <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white py-2 mb-3">
+                        <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroTratamientos" aria-controls="filtroTratamientos"><i class="bi bi-sliders me-1"></i> Maria Donoso</button>
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
