@@ -15,4 +15,9 @@ class HistoriaClinicaController extends Controller
     public function listaDoctoresHistoriaClinica() {
         return view('historia_clinica.lista_doctores');
     }
+
+    // Return view formulario solicitar historia clinica
+    public function solicitarHistoriaClinica() {
+        return view('historia_clinica.solicitar');
+    }
 }

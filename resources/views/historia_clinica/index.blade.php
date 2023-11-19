@@ -3,7 +3,7 @@
 Mi Veris - Historia clínica
 @endsection
 @push('css')
-<!-- css -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
@@ -20,15 +20,15 @@ Mi Veris - Historia clínica
                     <label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                         <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="" checked>
                         <span class="text-veris fw-bold">
-                            Optometria
-                            <small class="fs--2 d-block fw-normal text-body-secondary">Veris - Kennedy</small>
+                            Mary Samaniego Loor 
+                            <small class="fs--2 d-block fw-normal text-body-secondary">Madre</small>
                         </span>
                     </label>
                     <label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                         <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios2" value="">
                         <span class="text-veris fw-bold">
-                            Medicina general
-                            <small class="fs--2 d-block fw-normal text-body-secondary">Veris Online</small>
+                            John Donoso Salgado 
+                            <small class="fs--2 d-block fw-normal text-body-secondary">Padre</small>
                         </span>
                     </label>
                 </div>
@@ -118,5 +118,13 @@ Mi Veris - Historia clínica
 </div>
 @endsection
 @push('scripts')
-<!-- script -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    flatpickr("#fechaDesde", {
+        // maxDate: "today"
+    });
+    flatpickr("#fechaHasta", {
+        // maxDate: "today"
+    });
+</script>
 @endpush

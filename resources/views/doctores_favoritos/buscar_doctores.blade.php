@@ -3,7 +3,7 @@
 Mi Veris - Buscar doctor
 @endsection
 @push('css')
-<!-- css -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
@@ -122,5 +122,13 @@ Mi Veris - Buscar doctor
 </div>
 @endsection
 @push('scripts')
-<!-- script -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    flatpickr("#fechaDesde", {
+        // maxDate: "today"
+    });
+    flatpickr("#fechaHasta", {
+        // maxDate: "today"
+    });
+</script>
 @endpush

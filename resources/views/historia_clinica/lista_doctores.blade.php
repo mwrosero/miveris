@@ -18,99 +18,104 @@ Mi Veris - Historia clínica
                     </div>
                 </div>
             </div>
-
-            <div class="col-12 col-md-4">
-                <label class="form-check-label cursor-pointer" for="flexCheckDefault-1">
-                    <div class="card">
-                        <div class="card-body p-3">
-                            <div class="row gx-2 align-items-center">
-                                <div class="col-2">
-                                    <img src="{{ asset('assets/img/avatars/avatar_doctor.png') }}" class="card-img-top" width="62" alt="centro medico">
-                                </div>
-                                <div class="col-8">
-                                    <h6 class="fw-bold mb-0">Dr(a) Villon Asencio Abel Armando</h6>
-                                    <p class="fs--2 mb-0">Cardiología</p>
-                                </div>
-                                <div class="col-2 text-center">
-                                    <div class="form-check">
-                                        <input class="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault-1">
+            <div class="col-12 col-lg-10">
+                <div class="row g-3">
+                    <!-- items -->
+                    <div class="col-12 col-md-4">
+                        <label class="form-check-label cursor-pointer" for="flexCheckDefault-1">
+                            <div class="card">
+                                <div class="card-body p-2 pe-3">
+                                    <div class="row gx-2 align-items-center">
+                                        <div class="col-3">
+                                            <img src="{{ asset('assets/img/avatars/avatar_doctor.png') }}" class="card-img-top" width="62" alt="centro medico">
+                                        </div>
+                                        <div class="col-8">
+                                            <h6 class="fs--1 fw-bold mb-0">Dr(a) Villon Asencio Abel Armando</h6>
+                                            <p class="fs--2 mb-0">Cardiología</p>
+                                        </div>
+                                        <div class="col-1 text-center">
+                                            <div class="form-check">
+                                                <input class="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault-1">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </label>
                     </div>
-                </label>
-            </div>
-            <div class="col-12 col-md-4">
-                <label class="form-check-label cursor-pointer" for="flexCheckDefault-2">
-                    <div class="card">
-                        <div class="card-body p-3">
-                            <div class="row gx-2 align-items-center">
-                                <div class="col-2">
-                                    <img src="{{ asset('assets/img/avatars/avatar_doctor.png') }}" class="card-img-top" width="62" alt="centro medico">
-                                </div>
-                                <div class="col-8">
-                                    <h6 class="fw-bold mb-0">Dr(a) Villon Asencio Abel Armando</h6>
-                                    <p class="fs--2 mb-0">Optometría</p>
-                                </div>
-                                <div class="col-2 text-center">
-                                    <div class="form-check">
-                                        <input class="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault-2">
+                    <!-- items -->
+                    <div class="col-12 col-md-4">
+                        <label class="form-check-label cursor-pointer" for="flexCheckDefault-2">
+                            <div class="card">
+                                <div class="card-body p-2 pe-3">
+                                    <div class="row gx-2 align-items-center">
+                                        <div class="col-3">
+                                            <img src="{{ asset('assets/img/avatars/avatar_doctor.png') }}" class="card-img-top" width="62" alt="centro medico">
+                                        </div>
+                                        <div class="col-8">
+                                            <h6 class="fs--1 fw-bold mb-0">Dr(a) Villon Asencio Abel Armando</h6>
+                                            <p class="fs--2 mb-0">Optometría</p>
+                                        </div>
+                                        <div class="col-1 text-center">
+                                            <div class="form-check">
+                                                <input class="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault-2">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </label>
                     </div>
-                </label>
-            </div>
-
-            <div class="col-12 col-md-4">
-                <label class="form-check-label cursor-pointer" for="flexCheckDefault-1">
-                    <div class="card">
-                        <div class="card-body p-3">
-                            <div class="row gx-2 align-items-center">
-                                <div class="col-2">
-                                    <img src="{{ asset('assets/img/avatars/avatar_doctor.png') }}" class="card-img-top" width="62" alt="centro medico">
-                                </div>
-                                <div class="col-8">
-                                    <h6 class="fw-bold mb-0">Dr(a) Villon Asencio Abel Armando</h6>
-                                    <p class="fs--2 mb-0">Cardiología</p>
-                                </div>
-                                <div class="col-2 text-center">
-                                    <div class="form-check">
-                                        <input class="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault-1">
+                    <!-- items -->
+                    <div class="col-12 col-md-4">
+                        <label class="form-check-label cursor-pointer" for="flexCheckDefault-3">
+                            <div class="card">
+                                <div class="card-body p-2 pe-3">
+                                    <div class="row gx-2 align-items-center">
+                                        <div class="col-3">
+                                            <img src="{{ asset('assets/img/avatars/avatar_doctor.png') }}" class="card-img-top" width="62" alt="centro medico">
+                                        </div>
+                                        <div class="col-8">
+                                            <h6 class="fs--1 fw-bold mb-0">Dr(a) Villon Asencio Abel Armando</h6>
+                                            <p class="fs--2 mb-0">Cardiología</p>
+                                        </div>
+                                        <div class="col-1 text-center">
+                                            <div class="form-check">
+                                                <input class="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault-3">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </label>
                     </div>
-                </label>
-            </div>
-            <div class="col-12 col-md-4">
-                <label class="form-check-label cursor-pointer" for="flexCheckDefault-2">
-                    <div class="card">
-                        <div class="card-body p-3">
-                            <div class="row gx-2 align-items-center">
-                                <div class="col-2">
-                                    <img src="{{ asset('assets/img/avatars/avatar_doctor.png') }}" class="card-img-top" width="62" alt="centro medico">
-                                </div>
-                                <div class="col-8">
-                                    <h6 class="fw-bold mb-0">Dr(a) Villon Asencio Abel Armando</h6>
-                                    <p class="fs--2 mb-0">Optometría</p>
-                                </div>
-                                <div class="col-2 text-center">
-                                    <div class="form-check">
-                                        <input class="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault-2">
+                    <!-- items -->
+                    <div class="col-12 col-md-4">
+                        <label class="form-check-label cursor-pointer" for="flexCheckDefault-4">
+                            <div class="card">
+                                <div class="card-body p-2 pe-3">
+                                    <div class="row gx-2 align-items-center">
+                                        <div class="col-3">
+                                            <img src="{{ asset('assets/img/avatars/avatar_doctor.png') }}" class="card-img-top" width="62" alt="centro medico">
+                                        </div>
+                                        <div class="col-8">
+                                            <h6 class="fs--1 fw-bold mb-0">Dr(a) Villon Asencio Abel Armando</h6>
+                                            <p class="fs--2 mb-0">Optometría</p>
+                                        </div>
+                                        <div class="col-1 text-center">
+                                            <div class="form-check">
+                                                <input class="form-check-input cursor-pointer" type="checkbox" value="" id="flexCheckDefault-4">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </label>
                     </div>
-                </label>
+                </div>
             </div>
-
-            <div class="col-12 text-center mt-5">
-                <a href="#" class="btn btn-primary-veris">Continuar</a>
+            <div class="col-12 col-lg-6 text-center mt-5">
+                <a href="{{route('historiaClinica.solicitar')}}" class="btn btn-primary-veris w-50">Continuar</a>
             </div>
         </div>
     </section>
