@@ -4,9 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SeguridadesController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CitasController;
-use App\Http\Controllers\FamiliaAmigosController;
 use App\Http\Controllers\TratamientosController;
+use App\Http\Controllers\ResultadosController;
 use App\Http\Controllers\DomicilioController;
+use App\Http\Controllers\FamiliaAmigosController;
+use App\Http\Controllers\DoctoresFavoritosController;
+use App\Http\Controllers\HistoriaClinicaController;
 use App\Http\Controllers\ExperienciaController;
 /*
 |--------------------------------------------------------------------------
@@ -59,11 +62,6 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/citas-informacion-pago',[CitasController::class, 'citaInformacionPago'])->name('citas.citaInformacionPago')->withoutMiddleware(['guest']);
     Route::get('/citas-agendada',[CitasController::class, 'citaAgendada'])->name('citas.agendada')->withoutMiddleware(['guest']);
 
-    #Familia y amigos
-    Route::get('/familia-amigos', [FamiliaAmigosController::class, 'familiaAmigos'])->name('familia')->withoutMiddleware(['guest']);
-    Route::get('/familia-amigos-lista', [FamiliaAmigosController::class, 'listaFamiliaAmigos'])->name('familia.lista')->withoutMiddleware(['guest']);
-    Route::get('/datos-familiar', [FamiliaAmigosController::class, 'datosFamiliar'])->name('familia.datosFamiliar')->withoutMiddleware(['guest']);
-
     #Tratamientos
     Route::get('/mis-tratamientos', [TratamientosController::class, 'misTratamientos'])->name('tratamientos')->withoutMiddleware(['guest']);
     Route::get('/tratamientos', [TratamientosController::class, 'tratamientos'])->name('tratamientos.lista')->withoutMiddleware(['guest']);
@@ -72,8 +70,26 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/laboratorio-domicilio', [TratamientosController::class, 'laboratorioDomicilio'])->name('tratamientos.laboratorioDomicilio')->withoutMiddleware((['guest']));
     Route::get('/citas-laboratorio', [TratamientosController::class, 'citasLaboratorio'])->name('tratamientos.citasLaboratorio')->withoutMiddleware((['guest']));
     
+    #Resultados
+    Route::get('/resultados', [ResultadosController::class, 'resultados'])->name('resultados')->withoutMiddleware(['guest']);
+    Route::get('/resultados-laboratorio', [ResultadosController::class, 'resultadosLaboratorio'])->name('resultados.laboratorio')->withoutMiddleware(['guest']);
+    Route::get('/resultados-imagenes-procedimientos', [ResultadosController::class, 'resultadosImagenesProcedimientos'])->name('resultados.ImagenesProcedimientos')->withoutMiddleware(['guest']);
+
     #Domicilio
     Route::get('/servicio-domicilio', [DomicilioController::class, 'domilicio'])->name('domicilio')->withoutMiddleware(['guest']);
+
+    #Familia y amigos
+    Route::get('/familia-amigos', [FamiliaAmigosController::class, 'familiaAmigos'])->name('familia')->withoutMiddleware(['guest']);
+    Route::get('/familia-amigos-lista', [FamiliaAmigosController::class, 'listaFamiliaAmigos'])->name('familia.lista')->withoutMiddleware(['guest']);
+    Route::get('/datos-familiar', [FamiliaAmigosController::class, 'datosFamiliar'])->name('familia.datosFamiliar')->withoutMiddleware(['guest']);
+
+    #Doctores favoritos
+    Route::get('/doctores-favoritos', [DoctoresFavoritosController::class, 'doctoresFavoritos'])->name('doctoresFavoritos')->withoutMiddleware(['guest']);
+    Route::get('/buscar-doctor', [DoctoresFavoritosController::class, 'buscarDoctor'])->name('doctoresFavoritos.buscarDoctor')->withoutMiddleware(['guest']);
+
+    #Solicitar historia clínica
+    Route::get('/historia-clinica', [HistoriaClinicaController::class, 'historiaClinica'])->name('historiaClinica')->withoutMiddleware(['guest']);
+    Route::get('/lista-doctores', [HistoriaClinicaController::class, 'listaDoctoresHistoriaClinica'])->name('historiaClinica.listaDoctores')->withoutMiddleware(['guest']);
 
     #Experiencia
     Route::get('/cuentanos-tu-experiencia', [ExperienciaController::class, 'tuExperiencia'])->name('experiencia')->withoutMiddleware(['guest']);
