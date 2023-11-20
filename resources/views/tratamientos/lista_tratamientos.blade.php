@@ -104,7 +104,7 @@ Mi Veris - Citas - tratamiento
                                 <span class="text-warning-veris" id="estado"><i class="fa-solid fa-circle me-2"></i>Por comprar</span>
                             </div>
                             <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">DIC 09, 2022</b></p>
-                            <a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a>
+                            <a href="#" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a>
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
                                     <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
@@ -168,7 +168,7 @@ Mi Veris - Citas - tratamiento
                                 </div>
                                 <div>
                                     <a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
-                                    <a href="{{route('tratamientos.laboratorioDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>
+                                    <a href="{{route('citas.laboratorioDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>
                                 </div>
                             </div>
                         </div>
@@ -192,7 +192,6 @@ Mi Veris - Citas - tratamiento
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>

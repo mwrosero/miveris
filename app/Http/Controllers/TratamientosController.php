@@ -26,13 +26,5 @@ class TratamientosController extends Controller
         return view('tratamientos.farmacia_domicilio');
     }
 
-    // Return view laboratorio a domicilio
-    public function laboratorioDomicilio() {
-        return view('tratamientos.laboratorio_domicilio');
-    }
-
-    // Return view citas / laboratorio
-    public function citasLaboratorio() {
-        return view('tratamientos.citas_laboratorio');
-    }
+    
 }
