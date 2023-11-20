@@ -83,7 +83,7 @@ Mi Veris - Inicio
                     <div class="swiper-slide">
                         <div class="card">
                             <div class="card-body py-0">
-                                <a href="#">
+                                <a href="{{route('domicilio')}}">
                                     <div class="row justify-content-between align-items-center">
                                         <div class="col-auto">
                                             <h6 class="fw-bold mb-0">Solicitar servicios <br> a domicilio</h6>

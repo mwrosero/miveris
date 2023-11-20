@@ -25,6 +25,7 @@
   --bg-vris-strong-cyan-lime-green: #00C853;
   --bg-vris-grayish-blue: #CCEAFA;
   --bg-vris-light-grayish-blue: #eff3f8;
+  --bg-vris-light-grayish-blue-2:#DEDAF0;
   --bg-vris-light-grayish-blue-rgba: rgba(249, 250, 251, 1);
   --bg-vris-light-grayish-blue-rgba-2: rgba(233, 239, 244, 1);
   --bg-vris-light-grayish-blue-rgba-3: rgba(243, 244, 245, 1);
@@ -77,6 +78,11 @@ body {
 .avatar-xxl {
   width: 6.5rem !important;
   height: 6.5rem !important;
+}
+
+.avatar-xxl-10 {
+  width: 10.5rem !important;
+  height: 10.5rem !important;
 }
 
 .bg-navbar-theme-veris {
