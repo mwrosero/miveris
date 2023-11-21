@@ -44,7 +44,7 @@ Mi Veris - Citas - Familia y amigos
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <p class="fs--1 fw-bold m-0 mt-3">Veris</p>
+                    <i class="bi bi-exclamation-triangle-fill text-primary-veris h2"></i>
                     <p class="fs--1 fw m-0 mt-3" id="mensajePersonaYaExisteModalLabel"></p>
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
@@ -171,15 +171,23 @@ Mi Veris - Citas - Familia y amigos
         const data = await call(args);
         console.log('consultqar persona', data);
         if (data.code == 200) {
-            datosConsultarPersona = data.data;
-            console.log('datosConsultarPersona', datosConsultarPersona);
-            $("#resultadoConsulta").show();
 
-            //llenar datos de la persona
-            $("#nombrePersona").text(datosConsultarPersona[0].primerNombre + " " + datosConsultarPersona[0].segundoNombre + " " + datosConsultarPersona[0].primerApellido + " " + datosConsultarPersona[0].segundoApellido);
-            $("#numeroIdentificacionPersona").text(datosConsultarPersona[0].numeroIdentificacion);
-            $("#ciudadPersona").text(datosConsultarPersona[0].ciudad);
-            $("#fechaNacimientoPersona").text(datosConsultarPersona[0].fechaNacimiento);
+            if(data.data.length == 0){
+                $("#mensajePersonaYaExisteModalLabel").html("No se encontró ninguna persona con el número de identificación ingresado");
+                $("#mensajePersonaYaExisteModal").modal("show");
+                return;
+            } else{
+                datosConsultarPersona = data.data;
+                console.log('datosConsultarPersona', datosConsultarPersona);
+                $("#resultadoConsulta").show();
+
+                //llenar datos de la persona
+                $("#nombrePersona").text(revisarCamposNullUndefined(datosConsultarPersona[0].primerNombre) + " " + revisarCamposNullUndefined(datosConsultarPersona[0].segundoNombre) + " " + revisarCamposNullUndefined(datosConsultarPersona[0].primerApellido) + " " + revisarCamposNullUndefined(datosConsultarPersona[0].segundoApellido));
+                $("#numeroIdentificacionPersona").text(datosConsultarPersona[0].numeroIdentificacion);
+                $("#ciudadPersona").text(datosConsultarPersona[0].ciudad);
+                $("#fechaNacimientoPersona").text(datosConsultarPersona[0].fechaNacimiento);
+            }
+            
 
 
         }
@@ -188,6 +196,16 @@ Mi Veris - Citas - Familia y amigos
             $("#mensajePersonaYaExisteModal").modal("show");
         }
         return data;
+    }
+
+    // revisar campos null y undefined
+
+    function revisarCamposNullUndefined(campo) {
+        if (campo == null || campo == undefined) {
+            return "";
+        } else {
+            return campo;
+        }
     }
 
     // consular tipos de parentesco
@@ -298,4 +316,9 @@ Mi Veris - Citas - Familia y amigos
     }
 
 </script>
+<style>
+    .fs-1 {
+        font-size: 1.5rem !important;
+    }
+</style>
 @endpush

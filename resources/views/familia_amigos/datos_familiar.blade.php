@@ -10,7 +10,7 @@ Mi Veris - Citas - Familia y amigos
     <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
         <div class="modal-content">
             <div class="modal-body text-center p-3">
-                <p class="fs--1 fw-bold m-0 mt-3">Veris</p>
+                <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
                 <p class="fs--1 fw m-0 mt-3" id="mensajeActualizacionExitosa">Actualización exitosa</p>
             </div>
             <div class="modal-footer pb-3 pt-0 px-3">
@@ -71,6 +71,7 @@ Mi Veris - Citas - Familia y amigos
     let valorCheck = "N"; 
     let tipoParentesco;
     let tipoRelacion;
+    let administrador = "N";
 
     // llamada del dom 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -80,6 +81,27 @@ Mi Veris - Citas - Familia y amigos
 
 
     // funciones asyncronas
+
+    // // consultar grupo familiar
+    // async function consultarGrupoFamiliar() {
+    //     let args = [];
+    //     let canalOrigen = _canalOrigen
+    //     let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+    //     let tipoIdentificacion = localStorage.getItem('tipoIdentificacion');
+    //     let numeroIdentificacion = localStorage.getItem('numeroIdentificacion');
+    //     args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}`
+    //     console.log('args', args["endpoint"]);
+    //     args["method"] = "GET";
+    //     args["showLoader"] = false;
+    //     const data = await call(args);
+    //     console.log('dddata', data);
+    //     if(data.code == 200){
+    //         familiar = data.data;
+    //         mostrarDatosEnDiv();
+
+    //     }
+    //     return data;
+    // }
 
     // consular tipos de parentesco
     async function consultarTipoParentesco() {
@@ -162,6 +184,13 @@ Mi Veris - Citas - Familia y amigos
         let select = document.getElementById('tipoParentesco');
         select.value = tipoParentesco;
 
+        // llenar el check con el administrador del localstorage
+        if(localStorage.getItem('administrador') == "S"){
+            $('#administrador').prop('checked', true);
+        }else{
+            $('#administrador').prop('checked', false);
+        }
+
     }
 
 
@@ -172,4 +201,9 @@ Mi Veris - Citas - Familia y amigos
 
 
 </script>
+<style>
+    .fs-1 {
+        font-size: 1.5rem !important;
+    }
+</style>
 @endpush

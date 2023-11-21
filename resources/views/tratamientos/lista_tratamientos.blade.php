@@ -17,7 +17,8 @@ Mi Veris - Citas - tratamiento
                     <a href="#" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn w-100">No lo he hecho</a>
                 </div>
-            </div>
+           
+             </div>
         </div>
     </div>
 
@@ -52,7 +53,7 @@ Mi Veris - Citas - tratamiento
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Tratamiento') }}</h5>
+    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Tratamiento') }}</h5>  
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0">
             <div class="col-md-12">
@@ -60,11 +61,12 @@ Mi Veris - Citas - tratamiento
                     <div class="card-body p-3 pb-0">
                         <div class="row justify-content-between align-items-center">
                             <div class="col-9 col-md-10">
-                                <h5 class="card-title text-primary mb-0">Traumatología</h5>
-                                <p class="fw-bold fs--2 mb-0">María Yanina Donoso Samaniego</p>
-                                <p class="fs--2 mb-0">Dr(a): Magdalena Caroline Hernandez...</p>
-                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">DIC 09, 2022</b></p>
-                                <p class="fs--2 mb-0">SALUDSA-234557 PLANSMART-VERISSA</p>
+                                <h5 class="card-title text-primary mb-0">{{ $data['nombreEspecialidad'] }} </h5>
+                                <p class="fw-bold fs--2 mb-0">{{ $data['nombrePaciente'] }}</p>
+                                <p class="fs--2 mb-0">Dr(a): {{ $data['nombreMedico'] }}</p>
+                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">{{ $data['fechaTratamiento'] }}</b></p> 
+                                <p class="fs--2 mb-0">{{ $data['nombreConvenio'] }}</p>
+                                <p id="codigoTratamiento">{{ $data['codigoTratamiento'] }} </p>
                             </div>
                             <div class="col-3 col-md-2 col-lg-1">
                                 <div id="chart-progress" data-porcentaje="10" data-color="success"></div>
@@ -225,5 +227,34 @@ Mi Veris - Citas - tratamiento
 </div>
 @endsection
 @push('scripts')
-<script></script>
+<script>
+
+    // llamada al dom
+    document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerTratamientos();
+    });
+
+    // funciones asyncronas
+    
+     async function obtenerTratamientos(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        
+        var codigoTratamiento = document.getElementById("codigoTratamiento").innerHTML;
+        args["endpoint"] = api_url + `/digitales/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
+        console.log(args["endpoint"]);
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        console.log(args["endpoint"]);
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+            
+        }
+        return data;
+
+    }
+
+
+</script>
 @endpush

@@ -106,13 +106,12 @@ Mi Veris - Inicio
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="fw-bold border-start-veris ps-3">Mis tratamientos</h5>
-            <a href="#!" class="fs--2">Ver todos</a>
+            <a href="{{route('tratamientos')}}"
+            class="fs--2" style="display: visible;" id="verTodosTratamientos"
+            >Ver todos</a>
         </div>
-        <div class="position-relative mb-3">
-            <div class="text-center d-none">
-                <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
-                <h6 class="fw-normal">Agenda una cita y revisa tus <b>tratamientos</b> aquí</h6>
-            </div>
+        <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">
+            
             <div class="swiper swiper-mis-tratamientos pt-3 pb-4 px-2 mx-n2">
                 <div class="swiper-wrapper" id="contenedorTratamientoHome">
                     <!-- Puedes agregar tratamientos dinámicamente aquí desde JavaScript -->
@@ -120,14 +119,6 @@ Mi Veris - Inicio
                 </div>
             </div>
 
-            <div class="col-3">
-                <div id="chart-progress" data-porcentaje="10" data-color="success">
-                    <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
-                    <div class="custom-check position-absolute top-25 start-40"></div>
-                </div>
-            </div>
-           
-            
             <button type="button" id="prevProperties" class="mt-n4 btn btn-prev"></button>
             <button type="button" id="nextProperties" class="mt-n4 btn btn-next"></button>
         </div>
@@ -152,7 +143,7 @@ Mi Veris - Inicio
                                 </div>
                                 <p class="fw-bold fs--2 mb-0">Veris - Alborada</p>
                                 <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
-                                        AM</b></p>
+                                        AM</b></p> 
                                 <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
                                 <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
                                 <div class="d-flex justify-content-between align-items-center mt-3">
@@ -359,7 +350,7 @@ Mi Veris - Inicio
         let divContenedor = $('#contenedorTratamientoHome');
             divContenedor.empty(); // Limpia el contenido actual
 
-            data.forEach(tratamientos => {
+            data.forEach((tratamientos) => {
                 let elemento = `<div class="swiper-slide">
                 <div class="card">
                     <div class="card-body p-2">
@@ -370,8 +361,9 @@ Mi Veris - Inicio
                         <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                         </div>
                         <div class="col-3">
-                            <div id="chart-progress" data-porcentaje="10" data-color="success">
+                            <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success">
                                 <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
+                            
                             </div>
                         </div>
                     </div>
@@ -401,23 +393,26 @@ Mi Veris - Inicio
 
             divContenedor.append(elemento);
         });
+        chartProgres('#chart-progress');
     }
 
-    // capializar la primera letra de cada palabra
-    function capitalizarElemento(elemento) {
-        const texto = elemento.toLowerCase();
-        const palabras = texto.split(" ");
-        for (let i = 0; i < palabras.length; i++) {
-            const palabra = palabras[i];
-            const primeraLetra = palabra[0];
-            const primeraLetraMayuscula = primeraLetra.toUpperCase();
-            palabras[i] = palabra.replace(primeraLetra, primeraLetraMayuscula);
-        }
-        const textoCapitalizado = palabras.join(" ");
-        return textoCapitalizado;
+    // mostrar mensaje de no hay tratamientos
+    function mostrarNoExistenTratamientos() {
+        let data = datosTratamientos;
+        console.log('sisiis');
+
+        let divContenedor = $('#contenedorTratamientosHomePrincipal');
+            divContenedor.empty(); // Limpia el contenido actual
+
+            let elemento = `<div class="text-center">
+                                <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
+                                <h6 class="fw-normal">Agenda una cita y revisa tus <b>tratamientos</b> aquí</h6>
+                            </div>`;
+
+            divContenedor.append(elemento);
+            document.getElementById('verTodosTratamientos').style.display = 'none';
+        
     }
-
-
 
     //  ---Funciones asyncronas
     //obtener las politicas
@@ -491,8 +486,12 @@ Mi Veris - Inicio
         const data = await call(args);
         console.log(data.data.items);
         if(data.code == 200){
-            datosTratamientos = data.data.items;
-            mostrarTratamientoenDiv();
+            if(data.data.items.length == 0){
+                mostrarNoExistenTratamientos();
+            } else {
+                datosTratamientos = data.data.items;
+                mostrarTratamientoenDiv();
+            }
         }
 
         return data;

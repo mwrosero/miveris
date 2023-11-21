@@ -66,7 +66,11 @@ Route::group(['middleware' => ['loggedUser']], function () {
 
     #Tratamientos
     Route::get('/mis-tratamientos', [TratamientosController::class, 'misTratamientos'])->name('tratamientos')->withoutMiddleware(['guest']);
-    Route::get('/tratamientos', [TratamientosController::class, 'tratamientos'])->name('tratamientos.lista')->withoutMiddleware(['guest']);
+    Route::post('/tratamientos', [TratamientosController::class, 'tratamientos'])
+    ->name('tratamientos.lista')
+    ->withoutMiddleware(['guest']);
+
+    // Route::get('/tratamientos/detalle/{codigoTratamiento}/{nombreEspecialidad}/{nombreMedico}/{nombrePaciente}/{nombreConvenio}/{fechaTratamiento}', [TratamientosController::class, 'detalleTratamiento'])->name(''tratamientos.lista');
     Route::get('/tu-tratamiento', [TratamientosController::class, 'detalleTratamiento'])->name('tratamientos.detalle')->withoutMiddleware(['guest']);
     Route::get('/farmacia-domicilio', [TratamientosController::class, 'farmaciaDomicilio'])->name('tratamientos.farmaciaDomicilio')->withoutMiddleware((['guest']));
     Route::get('/laboratorio-domicilio', [TratamientosController::class, 'laboratorioDomicilio'])->name('tratamientos.laboratorioDomicilio')->withoutMiddleware((['guest']));
