@@ -9,7 +9,11 @@ Mi Veris - Mis Datos
         <div class="col-md-8">
             <div class="card bg-transparent shadow-none">
                 <div class="card-body">
-                    
+                    <ul>
+                        @foreach(Session::get('userData') as $key => $value)
+                            <li>{{ $key }}: {{ $value }}</li>
+                        @endforeach
+                    </ul>
                     <form class="row g-3">
                         @csrf
                         <div class="col-12 justify-content-center align-items-center">
@@ -125,14 +129,12 @@ Mi Veris - Mis Datos
 
     //variables globales
     let sexo;
-    let codeprovincia;
-    let identificacion;
 
     document.addEventListener("DOMContentLoaded", async function () {
         console.log('cargfgDOMContentLoaded');
         await obtenerDatosUsuario();
         obtenerProvincias();
-        obtenerCiudades(codeprovincia);
+        obtenerCiudades({{ Session::get('userData')->codigoProvincia }});
     });
 
     // metodos jquery
@@ -161,11 +163,8 @@ Mi Veris - Mis Datos
         console.log('datosUsuario',data);
         if (data.code == 200) {
 
-            console.log('data.data',data.data.sexo);
+            console.log('entro a obtenerDatosUsuario')
             sexo = data.data.sexo;
-            codeprovincia = data.data.codigoProvincia;
-            identificacion = data.data.numeroIdentificacion;
-
             $('#nombre').val(data.data.nombre);
             $('#primerApellido').val(data.data.primerApellido);
             $('#segundoApellido').val(data.data.segundoApellido);
@@ -174,43 +173,38 @@ Mi Veris - Mis Datos
             $('#telefono').val(data.data.telefonoMovil);
             $('#provincia').val(data.data.provincia);
             $('#ciudad').val(data.data.ciudad);
-            $('#direccion').val(data.data.direccionDomicilio);
-            if (data.data.sexo == 'M') {
-                $('#sexo').val('M');
-            } else {
-                $('#sexo').val('F');
-            }
+            $('#direccion').val(data.data.direccion);
         }
     } 
 
     //actualizar datos del usuario
     async function actualizarDatosUsuario() {
-        console.log($('#direccion').val());
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/perfil"
-        console.log('args["endpoint"]',args["endpoint"]);
+        args["endpoint"] = api_url + `/digitales/v1/perfil`;
         args["method"] = "PUT";
         args["showLoader"] = false;
         args["bodyType"] = "json";
 
         args["data"] = JSON.stringify({
-            "tipoIdentificacion": "{{ Session::get('userData')->codigoTipoIdentificacion }}",
+            "canalOrigen": _canalOrigen,
+            "tipoIdentificacion": {{ Session::get('userData')->codigoTipoIdentificacion }},
             "numeroIdentificacion": "{{ Session::get('userData')->numeroIdentificacion }}",
-            "primerNombre": $('#nombre').val(),
+            "nombre": $('#nombre').val(),
             "primerApellido": $('#primerApellido').val(),
             "segundoApellido": $('#segundoApellido').val(),
-            "sexo": $('#sexo').val(),
+            
+            "sexo": sexo,
             "mail": $('#mail').val(),
             "telefonoMovil": $('#telefono').val(),
             "provincia": $('#provincia').val(),
             "ciudad": $('#ciudad').val(),
-            "direccionDomicilio": $('#direccion').val()
+            "direccion": $('#direccion').val()
         });
 
         console.log('args["data"]',args["data"]);
 
         const data = await call(args);
-        console.log('actualizarDatosUsuario',data);
+        console.log('data',data);
 
     }
 

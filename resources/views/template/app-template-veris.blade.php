@@ -130,121 +130,98 @@
 
     <script>
         // Inicializa Swiper.js
-        function chartProgres(elemento){
-
-        
-            var swiper = new Swiper('.swiper', {
-                slidesPerView: 1,
-                spaceBetween: 8,
-                navigation: {
-                    nextEl: '.btn-next',
-                    prevEl: '.btn-prev',
+        var swiper = new Swiper('.swiper', {
+            slidesPerView: 1,
+            spaceBetween: 8,
+            navigation: {
+                nextEl: '.btn-next',
+                prevEl: '.btn-prev',
+            },
+            autoplay: {
+                delay: 7500,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 1,
+                    spaceBetween: 8,
                 },
-                autoplay: {
-                    delay: 7500,
-                    disableOnInteraction: false,
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 8,
                 },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
+                1024: {
+                    slidesPerView: 3,
+                    spaceBetween: 8,
                 },
-                breakpoints: {
-                    640: {
-                        slidesPerView: 1,
-                        spaceBetween: 8,
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 8,
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 8,
-                    },
+            },
+        });
+
+        // Inicializa apexchart
+        let chartElements = document.querySelectorAll('#chart-progress');
+        // Mapea valores de atributos personalizados a colores
+        let colorMapping = {
+            'success': '#00c853',
+            'primary': '#0071CE',
+            // Agrega más mapeos aquí según tus necesidades
+        };
+
+        // Itera sobre cada elemento con la clase 'chart-progress'
+        chartElements.forEach(function(chartElement) {
+            // Obtiene los valores de los atributos de datos para el elemento actual
+            let porcentaje = parseInt(chartElement.getAttribute('data-porcentaje'));
+            let color = chartElement.getAttribute('data-color');
+
+            // Obtén el color correspondiente del mapeo o usa el valor directamente si no está en el mapeo
+            let colorSeleccionado = colorMapping[color] || color;
+
+            // Configura los datos para ApexCharts para el elemento actual
+            let options = {
+                chart: {
+                    height: 110,
+                    type: 'radialBar',
                 },
-            });
-
-            // Inicializa apexchart
-            let chartElements = document.querySelectorAll(elemento);
-            // Mapea valores de atributos personalizados a colores
-            let colorMapping = {
-                'success': '#00c853',
-                'primary': '#0071CE',
-                // Agrega más mapeos aquí según tus necesidades
-            };
-
-            // Itera sobre cada elemento con la clase 'chart-progress'
-            chartElements.forEach(function(chartElement) {
-                // Obtiene los valores de los atributos de datos para el elemento actual
-                let porcentaje = parseInt(chartElement.getAttribute('data-porcentaje'));
-                let color = chartElement.getAttribute('data-color');
-
-                // Obtén el color correspondiente del mapeo o usa el valor directamente si no está en el mapeo
-                let colorSeleccionado = colorMapping[color] || color;
-
-                // Configura los datos para ApexCharts para el elemento actual
-                let options = {
-                    chart: {
-                        height: 110,
-                        type: 'radialBar',
-                    },
-                    plotOptions: {
-                        radialBar: {
-                            hollow: {
-                                margin: 0,
-                                size: '40%'
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            margin: 0,
+                            size: '40%'
+                        },
+                        dataLabels: {
+                            showOn: 'always',
+                            name: {
+                                offsetY: -4,
+                                show: true,
+                                color: colorSeleccionado,
+                                fontSize: '10px'
                             },
-                            dataLabels: {
-                                showOn: 'always',
-                                name: {
-                                    offsetY: -4,
-                                    show: true,
-                                    color: colorSeleccionado,
-                                    fontSize: '10px'
-                                },
-                                value: {
-                                    offsetY: -4,
-                                    color: colorSeleccionado,
-                                    fontSize: '14px',
-                                    formatter: function(val) {
-                                        return porcentaje + '%';
-                                    }
+                            value: {
+                                offsetY: -4,
+                                color: colorSeleccionado,
+                                fontSize: '14px',
+                                formatter: function(val) {
+                                    return porcentaje + '%';
                                 }
                             }
                         }
-                    },
-                    series: [porcentaje],
-                    labels: [''],
-                    stroke: {
-                        lineCap: 'round'
-                    },
-                    colors: [colorSeleccionado],
-                };
+                    }
+                },
+                series: [porcentaje],
+                labels: [''],
+                stroke: {
+                    lineCap: 'round'
+                },
+                colors: [colorSeleccionado],
+            };
 
-                // Crea una nueva instancia de ApexCharts para el elemento actual
-                let chart = new ApexCharts(chartElement, options);
-                chart.render();
-            });
-        }
-    </script>
-
-    <!-- Funciones de ayuda -->
-    <script>
-        // capializar la primera letra de cada palabra
-        function capitalizarElemento(elemento) {
-            if (elemento == null) return "";
-            const texto = elemento.toLowerCase();
-            const palabras = texto.split(" ");
-            for (let i = 0; i < palabras.length; i++) {
-                const palabra = palabras[i];
-                const primeraLetra = palabra[0];
-                const primeraLetraMayuscula = primeraLetra.toUpperCase();
-                palabras[i] = palabra.replace(primeraLetra, primeraLetraMayuscula);
-            }
-            const textoCapitalizado = palabras.join(" ");
-            return textoCapitalizado;
-        }
-
+            // Crea una nueva instancia de ApexCharts para el elemento actual
+            let chart = new ApexCharts(chartElement, options);
+            chart.render();
+        });
     </script>
     @stack('scripts')
 </body>
