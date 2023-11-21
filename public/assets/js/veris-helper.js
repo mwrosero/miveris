@@ -189,13 +189,17 @@ async function obtenerProvincias(){
     }
 }
 
-async function obtenerCiudades(){
+async function obtenerCiudades(codigoCiudades){
+
+    console.log(codigoCiudades);
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
+    // args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
+    args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+codigoCiudades;
     args["method"] = "GET";
     args["showLoader"] = false;
 
     const data = await call(args);
+    console.log(data);
     if(data.code == 200){
         $('#ciudad').empty();
         $.each(data.data, function(key, value){
