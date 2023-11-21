@@ -127,14 +127,16 @@ Mi Veris - Mis Datos
     let sexo;
     let codeprovincia;
     let identificacion;
+    let datosUsuario = [];
+    let provincias = [];
+    let ciudades = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
         console.log('cargfgDOMContentLoaded');
         await obtenerDatosUsuario();
-        obtenerProvincias();
-        
-        obtenerCiudades(codeprovincia);
-        await obtenerDatosUsuario();
+        provincias = await obtenerProvincias();
+        ciudades = await obtenerCiudades(codeprovincia);
+        llenarDatosUsuario(provincias, ciudades);
     });
 
     // metodos jquery
@@ -162,28 +164,47 @@ Mi Veris - Mis Datos
         const data = await call(args);
         console.log('datosUsuario',data);
         if (data.code == 200) {
-
-            console.log('data.data',data.data.sexo);
+            datosUsuario = data.data;
             sexo = data.data.sexo;
             codeprovincia = data.data.codigoProvincia;
             identificacion = data.data.numeroIdentificacion;
-
-            $('#nombre').val(data.data.nombre);
-            $('#primerApellido').val(data.data.primerApellido);
-            $('#segundoApellido').val(data.data.segundoApellido);
-            $('#fechaNacimiento').val(convertirFechaNacimiento(data.data.fechaNacimiento));
-            $('#mail').val(data.data.mail);
-            $('#telefono').val(data.data.telefonoMovil);
-            $('#provincia').val(data.data.codigoProvincia);
-            $('#ciudad').val(data.data.codigoCiudad);
-            $('#direccion').val(data.data.direccionDomicilio);
-            if (data.data.sexo == 'M') {
-                $('#sexo').val('M');
-            } else {
-                $('#sexo').val('F');
-            }
         }
     } 
+
+    // llenar formulario con datos del usuario
+    function llenarDatosUsuario(provincias) {
+        $('#nombre').val(datosUsuario.nombre);
+        $('#primerApellido').val(datosUsuario.primerApellido);
+        $('#segundoApellido').val(datosUsuario.segundoApellido);
+        $('#fechaNacimiento').val(convertirFechaNacimiento(datosUsuario.fechaNacimiento));
+        $('#mail').val(datosUsuario.mail);
+        $('#telefono').val(datosUsuario.telefonoMovil);
+        console.log('datosUsuario.codigoProvincia',datosUsuario.codigoProvincia);
+        // llenar el select de provincia
+        $.each(provincias, function (index, value) {
+            if (value.codigoProvincia == datosUsuario.codigoProvincia) {
+                $('#provincia').append('<option value="' + value.codigoProvincia + '" selected>' + value.nombreProvincia + '</option>');
+            } else {
+                $('#provincia').append('<option value="' + value.codigoProvincia + '">' + value.nombreProvincia + '</option>');
+            }
+        });
+        // llenar el select de ciudad
+        $.each(ciudades, function (index, value) {
+            if (value.codigoCiudad == datosUsuario.codigoCiudad) {
+                $('#ciudad').append('<option value="' + value.codigoCiudad + '" selected>' + value.nombreCiudad + '</option>');
+            } else {
+                $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
+            }
+        });
+
+        $('#ciudad').val(datosUsuario.codigoCiudad);
+        $('#direccion').val(datosUsuario.direccionDomicilio);
+        if (datosUsuario.sexo == 'M') {
+            $('#sexo').val('M');
+        } else {
+            $('#sexo').val('F');
+        }
+    }
 
     //actualizar datos del usuario
     async function actualizarDatosUsuario() {
@@ -228,7 +249,15 @@ Mi Veris - Mis Datos
         return formattedFecha;
     }
 
-   
+   // actualizar el select de ciudades cuando selecciono provincia
+   $( "#provincia").change(async function () {
+        let codeprovincia = $(this).val();
+        ciudades = await obtenerCiudades(codeprovincia);
+        $('#ciudad').empty();
+        $.each(ciudades, function (index, value) {
+            $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
+        });
+    });
 
 
 </script>
