@@ -9,11 +9,11 @@ Mi Veris - Mis Datos
         <div class="col-md-8">
             <div class="card bg-transparent shadow-none">
                 <div class="card-body">
-                    <ul>
+                    {{-- <ul>
                         @foreach(Session::get('userData') as $key => $value)
                             <li>{{ $key }}: {{ $value }}</li>
                         @endforeach
-                    </ul>
+                    </ul> --}}
                     <form class="row g-3">
                         @csrf
                         <div class="col-12 justify-content-center align-items-center">
