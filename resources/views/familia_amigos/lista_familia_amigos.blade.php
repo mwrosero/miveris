@@ -13,7 +13,9 @@ Mi Veris - Citas - Familia y amigos
                         <div class="text-center">
                             <i class="bi bi-exclamation-triangle-fill fs-2 text-danger"></i>
                             <h5 class="mb-3">Eliminar familiar</h5>
-                            <p class="fs--2 mb-0">¿Deseas eliminar a <b class="fw-bold" id="nombreFamiliar"></b> de tu lista?</p>
+                            <p class="fs--2 mb-0">¿Deseas eliminar a <b class="fw-bold" id="nombreFamiliar">
+                                
+                            </b> de tu lista?</p>
                             <input type="hidden" id="idRelacion">
                         </div>
                 </div>
@@ -88,6 +90,8 @@ Mi Veris - Citas - Familia y amigos
         $('body').on('click','.eliminarFamiliarBtn', async function () {
             let idRelacion = $(this).attr('idRelacion-rel');
             $('#idRelacion').val(idRelacion);
+            let nombreFamiliar = $(this).attr('nombre-familiar');
+            $('#nombreFamiliar').text(nombreFamiliar);
         });
         
     });
@@ -132,6 +136,8 @@ Mi Veris - Citas - Familia y amigos
         }
         return data;
     }
+
+
     // funciones jquery
     function mostrarDatosEnDiv() {
         const data = familiar;
@@ -148,14 +154,14 @@ Mi Veris - Citas - Familia y amigos
                                 <p class="fs--3 mb-0" id="parentezco">${familiar.parentesco}</p>
                             </div>
                             <div class="d-flex">
-                                <div class="btn px-1 text-danger shadow-none eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}">
+                                <div class="btn px-1 text-danger shadow-none eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}" nombre-familiar="${familiar.primerNombre} ${familiar.primerApellido}">
                                     <i class="bi bi-trash"></i>
                                 </div>
                                 <a href='{{ route("familia.datosFamiliar") }}'; class="btn px-1 text-primary" id="enlaceDetalles" 
-                                onclick="localStorage.setItem('primerNombreFamiliar', '${familiar.primerNombre}'); 
+                                onclick="localStorage.setItem('primerNombreFamiliar', '${familiar.primerNombre}');
                                 localStorage.setItem('primerApellidoFamiliar', '${familiar.primerApellido}');
-                                localStorage.setItem('codigoParentesco', '${familiar.codigoParentesco}'); 
-                                localStorage.setItem('numeroIdentificacion', '${familiar.numeroIdentificacion}');
+                                localStorage.setItem('codigoParentesco', '${familiar.codigoParentesco}');
+                                localStorage.setItem('administrador', '${familiar.esAdmin}');
                                 localStorage.setItem('idRelacion', '${familiar.idRelacion}');">
                                     <i class="bi bi-chevron-right"></i>
                                 </a>

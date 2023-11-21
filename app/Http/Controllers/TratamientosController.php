@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+
 use Illuminate\Http\Request;
 
 class TratamientosController extends Controller
@@ -12,9 +14,12 @@ class TratamientosController extends Controller
     }
 
     // Return view lista de tratamientos
-    public function tratamientos() {
-        return view('tratamientos.lista_tratamientos');
-    }
+    public function tratamientos($codigoTratamiento) {
+    // find codigoTratamiento
+    
+
+    return view('tratamientos.lista_tratamientos', compact('tratamientos'));
+}
 
     // Return view detalle de tratamiento
     public function detalleTratamiento() {

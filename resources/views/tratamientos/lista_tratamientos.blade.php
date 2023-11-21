@@ -17,6 +17,7 @@ Mi Veris - Citas - tratamiento
                     <a href="#" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn w-100">No lo he hecho</a>
                 </div>
+                <p>Médico: {{ $codigoTratamiento }}</p>
             </div>
         </div>
     </div>
@@ -225,5 +226,33 @@ Mi Veris - Citas - tratamiento
 </div>
 @endsection
 @push('scripts')
-<script></script>
+<script>
+
+    // llamada al dom
+    document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerTratamientos();
+    });
+
+    // funciones asyncronas
+
+    async function obtenerTratamientos(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoTratamiento = localStorage.getItem('codigoTratamiento');
+
+        args["endpoint"] = api_url + `/digitales/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        console.log(args["endpoint"]);
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+            
+        }
+        return data;
+
+    }
+
+
+</script>
 @endpush
