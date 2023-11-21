@@ -257,7 +257,7 @@ Mi Veris - Citas - Mis tratamientos
         // maxDate: "today"
     });
     flatpickr("#fechaHasta", {
-        // maxDate: "today"
+        // maxDate: "today" 
     });
 </script>
 @endpush
