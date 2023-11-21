@@ -9,7 +9,7 @@ use App\Http\Controllers\ResultadosController;
 use App\Http\Controllers\DomicilioController;
 use App\Http\Controllers\FamiliaAmigosController;
 use App\Http\Controllers\DoctoresFavoritosController;
-use App\Http\Controllers\HistoriaClinicaController;
+use App\Http\Controllers\HistoriaClinicaController; 
 use App\Http\Controllers\ExperienciaController;
 /*
 |--------------------------------------------------------------------------
