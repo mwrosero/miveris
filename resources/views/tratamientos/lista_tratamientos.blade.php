@@ -117,7 +117,6 @@ Mi Veris - Citas - tratamiento
 </div>
 @endsection
 @push('scripts')
-<<<<<<< HEAD
 <script>
 
     // variables globales
@@ -293,7 +292,4 @@ Mi Veris - Citas - tratamiento
 
 
 </script>
-=======
-<script></script>
->>>>>>> developer
 @endpush
