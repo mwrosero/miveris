@@ -188,7 +188,7 @@ async function obtenerProvincias(){
             $('#provincia').append(`<option value="${value.codigoProvincia}" codigoRegion-rel="${value.codigoRegion}">${value.nombreProvincia}</option>`);
         })
         
-
+        return data.data;
     }
 
 }
@@ -209,6 +209,8 @@ async function obtenerCiudades(codigoCiudades){
         $.each(data.data, function(key, value){
             $('#ciudad').append(`<option value="${value.codigoCiudad}">${value.nombreCiudad}</option>`);
         })
+
+        return data.data;
     }
 }
 
