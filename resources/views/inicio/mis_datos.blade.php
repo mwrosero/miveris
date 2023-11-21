@@ -132,7 +132,9 @@ Mi Veris - Mis Datos
         console.log('cargfgDOMContentLoaded');
         await obtenerDatosUsuario();
         obtenerProvincias();
+        
         obtenerCiudades(codeprovincia);
+        await obtenerDatosUsuario();
     });
 
     // metodos jquery
@@ -172,8 +174,8 @@ Mi Veris - Mis Datos
             $('#fechaNacimiento').val(convertirFechaNacimiento(data.data.fechaNacimiento));
             $('#mail').val(data.data.mail);
             $('#telefono').val(data.data.telefonoMovil);
-            $('#provincia').val(data.data.provincia);
-            $('#ciudad').val(data.data.ciudad);
+            $('#provincia').val(data.data.codigoProvincia);
+            $('#ciudad').val(data.data.codigoCiudad);
             $('#direccion').val(data.data.direccionDomicilio);
             if (data.data.sexo == 'M') {
                 $('#sexo').val('M');
@@ -202,12 +204,12 @@ Mi Veris - Mis Datos
             "sexo": $('#sexo').val(),
             "mail": $('#mail').val(),
             "telefonoMovil": $('#telefono').val(),
-            "provincia": $('#provincia').val(),
-            "ciudad": $('#ciudad').val(),
+            "codigoProvincia": $('#provincia').val(),
+            "codigoCiudad": $('#ciudad').val(),
             "direccionDomicilio": $('#direccion').val()
         });
 
-        console.log('args["data"]',args["data"]);
+        console.log('args', args["data"]);
 
         const data = await call(args);
         console.log('actualizarDatosUsuario',data);
