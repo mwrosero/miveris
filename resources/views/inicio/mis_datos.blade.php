@@ -14,6 +14,7 @@ Mi Veris - Mis Datos
                             <li>{{ $key }}: {{ $value }}</li>
                         @endforeach
                     </ul> --}}
+                    
                     <form class="row g-3">
                         @csrf
                         <div class="col-12 justify-content-center align-items-center">
