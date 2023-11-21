@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
+
 
 class TratamientosController extends Controller
 {
@@ -12,8 +16,11 @@ class TratamientosController extends Controller
     }
 
     // Return view lista de tratamientos
-    public function tratamientos() {
-        return view('tratamientos.lista_tratamientos');
+    public function tratamientos(Request $request) {
+
+        $data = $request->all();    
+        
+        return view('tratamientos.lista_tratamientos', ['data' => $data]);
     }
 
     // Return view detalle de tratamiento
@@ -26,5 +33,13 @@ class TratamientosController extends Controller
         return view('tratamientos.farmacia_domicilio');
     }
 
-    
+    // Return view laboratorio a domicilio
+    public function laboratorioDomicilio() {
+        return view('tratamientos.laboratorio_domicilio');
+    }
+
+    // Return view citas / laboratorio
+    public function citasLaboratorio() {
+        return view('tratamientos.citas_laboratorio');
+    }
 }
