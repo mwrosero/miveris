@@ -49,5 +49,48 @@ class CitasController extends Controller
         return view('citas.cita_agendada');
     }
 
+    // Return view Laboratorio
+    public function laboratorio() {
+        return view('citas.laboratorio');
+    }
 
+    // Return view laboratorio a domicilio
+    public function laboratorioDomicilio() {
+        return view('citas.laboratorio_domicilio');
+    }
+
+    // Return view citas / laboratorio
+    public function citasLaboratorio() {
+        return view('citas.citas_laboratorio');
+    }
+
+    // Return view imagenes / procedimientos
+    public function imagenesProcedimientos() {
+        return view('citas.imagenes_procedimientos');
+    }
+
+    // Return view terapia fisica
+    public function terapiaFisica() {
+        return view('citas.terapia_fisica');
+    }
+
+    // Return view Receta médica
+    public function recetaMedica() {
+        return view('citas.receta_medica');
+    }
+
+    // Return view Ordenes externas
+    public function ordenesExternas() {
+        return view('citas.ordenes_externas');
+    }
+
+    // Return view formulario registrar orden externa
+    public function registrarOrdenesExternas() {
+        return view('citas.registrar_orden_externa');
+    }
+
+    // Return view Mis citas
+    public function misCitas() {
+        return view('citas.mis_citas');
+    }
 }

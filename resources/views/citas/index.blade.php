@@ -60,6 +60,7 @@ Mi Veris - Citas
             <h5 class="fw-bold border-start-veris ps-3">{{ __('Servicios') }}</h5>
         </div>
         <div class="row gx-3 mb-3">
+            <!-- consulta medica -->
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
                     <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#consultaMedicaModal">
@@ -76,10 +77,10 @@ Mi Veris - Citas
                     </a>
                 </div>
             </div>
-
+            <!-- laboratorio -->
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.laboratorio')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
@@ -93,10 +94,10 @@ Mi Veris - Citas
                     </a>
                 </div>
             </div>
-
+            <!-- imagenes y procedimiento -->
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.imagenesProcedimientos')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
@@ -110,10 +111,10 @@ Mi Veris - Citas
                     </a>
                 </div>
             </div>
-
+            <!-- terapia fisica -->
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.terapiaFisica')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
@@ -127,10 +128,10 @@ Mi Veris - Citas
                     </a>
                 </div>
             </div>
-
+            <!-- receta medica -->
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.recetaMedica')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
@@ -144,10 +145,10 @@ Mi Veris - Citas
                     </a>
                 </div>
             </div>
-
+            <!-- orden externa -->
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.ordenesExternas')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
@@ -171,7 +172,7 @@ Mi Veris - Citas
         <div class="row mb-3">
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.misCitas')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
@@ -187,7 +188,7 @@ Mi Veris - Citas
             </div>
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.misCitas')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">

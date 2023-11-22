@@ -122,6 +122,7 @@ Mi Veris - Citas - Mis tratamientos
         elementoRealizados.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         await obtenerTratamientos();
         await consultarGrupoFamiliar();
+        
     });
 
 
@@ -150,9 +151,21 @@ Mi Veris - Citas - Mis tratamientos
                                                     <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
                                                 </div>
                                                 <div class="d-flex justify-content-end align-items-center">
-                                                    <a href="{{ route('tratamientos.lista', $tratamientos->codigoTratamiento) }}" class="btn btn-sm btn-primary-veris">
-                                                        {{ botonMisTratamientosPorcentaje($tratamientos->porcentajeAvanceTratamiento) }}
-                                                    </a>
+
+
+                                                    <form action="{{ route('tratamientos.lista') }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        <input type="hidden" name="nombreEspecialidad" value="${tratamientos.nombreEspecialidad}">
+                                                        <input type="hidden" name="nombrePaciente" value="${tratamientos.nombrePaciente}">
+                                                        <input type="hidden" name="nombreMedico" value="${tratamientos.nombreMedico}">
+                                                        <input type="hidden" name="fechaTratamiento" value="${tratamientos.fechaTratamiento}">
+                                                        <input type="hidden" name="nombreConvenio" value="${tratamientos.nombreConvenio}">
+                                                        <input type="hidden" name="codigoTratamiento" value="${tratamientos.codigoTratamiento}">
+                                                        <button type="submit" class="btn btn-sm btn-primary-veris">
+                                                            ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
+                                                        </button>
+                                                    </form>
+
                                                 </div>
 
                                             </div>
@@ -165,6 +178,8 @@ Mi Veris - Citas - Mis tratamientos
         });
         chartProgres("#chart-progress");
     }
+
+    
     // mostrar el tratamientos realizados
     function mostrarTratamientoenDivRealizados(){
         let data = datosTratamientos;
