@@ -263,7 +263,6 @@ Mi Veris - Citas - Laboratorio
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
