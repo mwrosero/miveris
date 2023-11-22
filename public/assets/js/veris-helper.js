@@ -1,4 +1,5 @@
 const _canalOrigen = "MVE_CMV";
+
 async function call(args){
     if(args.showLoader || args.showLoader == true){
         showLoader();
@@ -181,25 +182,35 @@ async function obtenerProvincias(){
 
     const data = await call(args);
     if(data.code == 200){
+        console.log('provincias', data);
         $('#provincia').empty();
         $.each(data.data, function(key, value){
             $('#provincia').append(`<option value="${value.codigoProvincia}" codigoRegion-rel="${value.codigoRegion}">${value.nombreProvincia}</option>`);
         })
+        
+        return data.data;
     }
+
 }
 
-async function obtenerCiudades(){
+async function obtenerCiudades(codigoCiudades){
+
+    console.log(codigoCiudades);
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
+    // args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
+    args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+codigoCiudades;
     args["method"] = "GET";
     args["showLoader"] = false;
 
     const data = await call(args);
+    console.log(data);
     if(data.code == 200){
         $('#ciudad').empty();
         $.each(data.data, function(key, value){
             $('#ciudad').append(`<option value="${value.codigoCiudad}">${value.nombreCiudad}</option>`);
         })
+
+        return data.data;
     }
 }
 

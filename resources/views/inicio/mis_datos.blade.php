@@ -9,11 +9,7 @@ Mi Veris - Mis Datos
         <div class="col-md-8">
             <div class="card bg-transparent shadow-none">
                 <div class="card-body">
-                    <ul>
-                        @foreach(Session::get('userData') as $key => $value)
-                            <li>{{ $key }}: {{ $value }}</li>
-                        @endforeach
-                    </ul>
+                    
                     <form class="row g-3">
                         @csrf
                         <div class="col-12 justify-content-center align-items-center">
@@ -129,12 +125,18 @@ Mi Veris - Mis Datos
 
     //variables globales
     let sexo;
+    let codeprovincia;
+    let identificacion;
+    let datosUsuario = [];
+    let provincias = [];
+    let ciudades = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
         console.log('cargfgDOMContentLoaded');
         await obtenerDatosUsuario();
-        obtenerProvincias();
-        obtenerCiudades({{ Session::get('userData')->codigoProvincia }});
+        provincias = await obtenerProvincias();
+        ciudades = await obtenerCiudades(codeprovincia);
+        llenarDatosUsuario(provincias, ciudades);
     });
 
     // metodos jquery
@@ -162,49 +164,76 @@ Mi Veris - Mis Datos
         const data = await call(args);
         console.log('datosUsuario',data);
         if (data.code == 200) {
-
-            console.log('entro a obtenerDatosUsuario')
+            datosUsuario = data.data;
             sexo = data.data.sexo;
-            $('#nombre').val(data.data.nombre);
-            $('#primerApellido').val(data.data.primerApellido);
-            $('#segundoApellido').val(data.data.segundoApellido);
-            $('#fechaNacimiento').val(convertirFechaNacimiento(data.data.fechaNacimiento));
-            $('#mail').val(data.data.mail);
-            $('#telefono').val(data.data.telefonoMovil);
-            $('#provincia').val(data.data.provincia);
-            $('#ciudad').val(data.data.ciudad);
-            $('#direccion').val(data.data.direccion);
+            codeprovincia = data.data.codigoProvincia;
+            identificacion = data.data.numeroIdentificacion;
         }
     } 
 
+    // llenar formulario con datos del usuario
+    function llenarDatosUsuario(provincias) {
+        $('#nombre').val(datosUsuario.nombre);
+        $('#primerApellido').val(datosUsuario.primerApellido);
+        $('#segundoApellido').val(datosUsuario.segundoApellido);
+        $('#fechaNacimiento').val(convertirFechaNacimiento(datosUsuario.fechaNacimiento));
+        $('#mail').val(datosUsuario.mail);
+        $('#telefono').val(datosUsuario.telefonoMovil);
+        console.log('datosUsuario.codigoProvincia',datosUsuario.codigoProvincia);
+        // llenar el select de provincia
+        $.each(provincias, function (index, value) {
+            if (value.codigoProvincia == datosUsuario.codigoProvincia) {
+                $('#provincia').append('<option value="' + value.codigoProvincia + '" selected>' + value.nombreProvincia + '</option>');
+            } else {
+                $('#provincia').append('<option value="' + value.codigoProvincia + '">' + value.nombreProvincia + '</option>');
+            }
+        });
+        // llenar el select de ciudad
+        $.each(ciudades, function (index, value) {
+            if (value.codigoCiudad == datosUsuario.codigoCiudad) {
+                $('#ciudad').append('<option value="' + value.codigoCiudad + '" selected>' + value.nombreCiudad + '</option>');
+            } else {
+                $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
+            }
+        });
+
+        $('#ciudad').val(datosUsuario.codigoCiudad);
+        $('#direccion').val(datosUsuario.direccionDomicilio);
+        if (datosUsuario.sexo == 'M') {
+            $('#sexo').val('M');
+        } else {
+            $('#sexo').val('F');
+        }
+    }
+
     //actualizar datos del usuario
     async function actualizarDatosUsuario() {
+        console.log($('#direccion').val());
         let args = [];
-        args["endpoint"] = api_url + `/digitales/v1/perfil`;
+        args["endpoint"] = api_url + "/digitales/v1/perfil"
+        console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "PUT";
         args["showLoader"] = false;
         args["bodyType"] = "json";
 
         args["data"] = JSON.stringify({
-            "canalOrigen": _canalOrigen,
-            "tipoIdentificacion": {{ Session::get('userData')->codigoTipoIdentificacion }},
+            "tipoIdentificacion": "{{ Session::get('userData')->codigoTipoIdentificacion }}",
             "numeroIdentificacion": "{{ Session::get('userData')->numeroIdentificacion }}",
-            "nombre": $('#nombre').val(),
+            "primerNombre": $('#nombre').val(),
             "primerApellido": $('#primerApellido').val(),
             "segundoApellido": $('#segundoApellido').val(),
-            
-            "sexo": sexo,
+            "sexo": $('#sexo').val(),
             "mail": $('#mail').val(),
             "telefonoMovil": $('#telefono').val(),
-            "provincia": $('#provincia').val(),
-            "ciudad": $('#ciudad').val(),
-            "direccion": $('#direccion').val()
+            "codigoProvincia": $('#provincia').val(),
+            "codigoCiudad": $('#ciudad').val(),
+            "direccionDomicilio": $('#direccion').val()
         });
 
-        console.log('args["data"]',args["data"]);
+        console.log('args', args["data"]);
 
         const data = await call(args);
-        console.log('data',data);
+        console.log('actualizarDatosUsuario',data);
 
     }
 
@@ -220,7 +249,15 @@ Mi Veris - Mis Datos
         return formattedFecha;
     }
 
-   
+   // actualizar el select de ciudades cuando selecciono provincia
+   $( "#provincia").change(async function () {
+        let codeprovincia = $(this).val();
+        ciudades = await obtenerCiudades(codeprovincia);
+        $('#ciudad').empty();
+        $.each(ciudades, function (index, value) {
+            $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
+        });
+    });
 
 
 </script>
