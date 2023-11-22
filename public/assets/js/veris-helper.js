@@ -182,11 +182,15 @@ async function obtenerProvincias(){
 
     const data = await call(args);
     if(data.code == 200){
+        console.log('provincias', data);
         $('#provincia').empty();
         $.each(data.data, function(key, value){
             $('#provincia').append(`<option value="${value.codigoProvincia}" codigoRegion-rel="${value.codigoRegion}">${value.nombreProvincia}</option>`);
         })
+        
+        return data.data;
     }
+
 }
 
 async function obtenerCiudades(codigoCiudades){
@@ -205,6 +209,8 @@ async function obtenerCiudades(codigoCiudades){
         $.each(data.data, function(key, value){
             $('#ciudad').append(`<option value="${value.codigoCiudad}">${value.nombreCiudad}</option>`);
         })
+
+        return data.data;
     }
 }
 

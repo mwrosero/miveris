@@ -32,9 +32,7 @@ Mi Veris - Citas - Farmacia a domicilio
                             <div class="col-md-12">
                                 <label for="paciente" class="form-label fw-bold">Selecciona el paciente</label>
                                 <select class="form-select bg-neutral" name="paciente" id="paciente" required>
-                                    <option selected disabled value="">Elegir...</option>
-                                    <option value="">...</option>
-                                    <option value="">...</option>
+                                   
                                 </select>
                                 <div class="invalid-feedback">
                                     Elegir un paciente
@@ -44,8 +42,7 @@ Mi Veris - Citas - Farmacia a domicilio
                                 <label for="paciente" class="form-label fw-bold">Selecciona la ciudad</label>
                                 <select class="form-select bg-neutral" name="ciudad" id="ciudad" required>
                                     <option selected disabled value="">Elegir...</option>
-                                    <option value="">...</option>
-                                    <option value="">...</option>
+                                    
                                 </select>
                                 <div class="invalid-feedback">
                                     Elegir una ciudad
@@ -60,11 +57,11 @@ Mi Veris - Citas - Farmacia a domicilio
                             <div class="col-md-12">
                                 <input type="text" class="form-control bg-neutral"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
                                 <div class="invalid-feedback">
-                                    Ingrese una direccion
+                                    Ingrese una direcciovisun
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-lg btn-primary-veris w-100" type="submit"><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
+                                <button class="btn btn-lg btn-primary-veris w-100" type="button"><i class="bi bi-telephone-fill me-2" id="btnGuardarSolicitudLlamada"></i> Solicitar llamada</button>
                             </div>
                         </form>
                     </div>
@@ -75,5 +72,75 @@ Mi Veris - Citas - Farmacia a domicilio
 </div>
 @endsection
 @push('scripts')
-<script></script>
+<script>
+
+    // variables globales
+    
+    let familiar = [];
+
+    // llama al dom
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        await consultarPacientes();
+        llenarSelectPacientes();
+        await consultarCiudades();
+        // await consultarFarmaciaDomicilio();
+        // // boton guardar
+        // $('body').on('click','#btnGuardar', async function () {
+        //     await guardarFarmaciaDomicilio();
+        // });
+    });
+
+    // funciones asyncronas
+
+    // consultar pacientes
+    async function consultarPacientes() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataFa', data);
+        if(data.code == 200){
+            familiar = data.data;
+
+        }
+        return data;
+    }
+
+    // consultar ciudades
+
+    async function consultarCiudades() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        args["endpoint"] = api_url + `/digitales/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataCiudades', data);
+        if(data.code == 200){
+            let ciudades = data.data;
+            let html = '';
+            ciudades.forEach(element => {
+                html += `<option value="${element.secuencialCiudad}">${element.nombreCiudad}</option>`;
+            });
+            $('#ciudad').html(html);
+        }
+        return data;
+    }
+
+    // funciones js
+    function llenarSelectPacientes() {
+        let html = '';
+        html += `<option value="{{ Session::get('userData')->numeroIdentificacion }}">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
+        familiar.forEach(element => {
+            html += `<option value="${element.numeroIdentificacion}">${element.primerNombre} ${element.primerApellido} (${element.parentesco})</option>`;
+        });
+        // yo
+            $('#paciente').html(html);
+    }
+
+</script>
 @endpush

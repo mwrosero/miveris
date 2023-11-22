@@ -78,4 +78,19 @@ class CitasController extends Controller
     public function recetaMedica() {
         return view('citas.receta_medica');
     }
+
+    // Return view Ordenes externas
+    public function ordenesExternas() {
+        return view('citas.ordenes_externas');
+    }
+
+    // Return view formulario registrar orden externa
+    public function registrarOrdenesExternas() {
+        return view('citas.registrar_orden_externa');
+    }
+
+    // Return view Mis citas
+    public function misCitas() {
+        return view('citas.mis_citas');
+    }
 }
