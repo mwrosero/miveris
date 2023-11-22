@@ -18,15 +18,9 @@ class TratamientosController extends Controller
     }
 
     // Return view lista de tratamientos
-    public function tratamientos(Request $request) {
-
-        $data = $request->all();    
-        
-        return view('tratamientos.lista_tratamientos', ['data' => $data]);
+    public function tratamientos($codigoTratamiento) {
+        return view('tratamientos.lista_tratamientos', ['codigoTratamiento' => $codigoTratamiento]);
     }
-
-    return view('tratamientos.lista_tratamientos', compact('tratamientos'));
-}
 
     // Return view detalle de tratamiento
     public function detalleTratamiento() {

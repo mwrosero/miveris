@@ -78,13 +78,14 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/mis-citas', [CitasController::class, 'misCitas'])->name('citas.misCitas')->withoutMiddleware(['guest']);
 
     #Tratamientos
-    Route::post('/tratamientos', [TratamientosController::class, 'tratamientos'])
+    Route::get('/tratamiento/{codigoTratamiento}', [TratamientosController::class, 'tratamientos'])
     ->name('tratamientos.lista')
     ->withoutMiddleware(['guest']);
+    
+    // Route::get('/tratamientos', [TratamientosController::class, 'tratamientos'])->name('tratamientos.lista')->withoutMiddleware(['guest']);
     Route::get('/mis-tratamientos', [TratamientosController::class, 'misTratamientos'])->name('tratamientos')->withoutMiddleware(['guest']);
-    Route::get('/tratamientos/{codigoTratamiento}', [TratamientosController::class, 'tratamientos'])
-    ->name('tratamientos.lista')
-    ->withoutMiddleware(['guest']);
+    
+
 
     // Route::get('/tratamientos/detalle/{codigoTratamiento}/{nombreEspecialidad}/{nombreMedico}/{nombrePaciente}/{nombreConvenio}/{fechaTratamiento}', [TratamientosController::class, 'detalleTratamiento'])->name(''tratamientos.lista');
     Route::get('/tu-tratamiento', [TratamientosController::class, 'detalleTratamiento'])->name('tratamientos.detalle')->withoutMiddleware(['guest']);
