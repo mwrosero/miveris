@@ -61,12 +61,12 @@ Mi Veris - Citas - tratamiento
                     <div class="card-body p-3 pb-0">
                         <div class="row justify-content-between align-items-center">
                             <div class="col-9 col-md-10">
-                                <h5 class="card-title text-primary mb-0">{{ $data['nombreEspecialidad'] }} </h5>
-                                <p class="fw-bold fs--2 mb-0">{{ $data['nombrePaciente'] }}</p>
-                                <p class="fs--2 mb-0">Dr(a): {{ $data['nombreMedico'] }}</p>
-                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">{{ $data['fechaTratamiento'] }}</b></p> 
-                                <p class="fs--2 mb-0">{{ $data['nombreConvenio'] }}</p>
-                                <p id="codigoTratamiento">{{ $data['codigoTratamiento'] }} </p>
+                                <h5 class="card-title text-primary mb-0"> </h5>
+                                <p class="fw-bold fs--2 mb-0"></p>
+                                <p class="fs--2 mb-0">Dr(a): </p>
+                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento"></b></p> 
+                                <p class="fs--2 mb-0"></p>
+                                <p id="codigoTratamiento"> </p>
                             </div>
                             <div class="col-3 col-md-2 col-lg-1">
                                 <div id="chart-progress" data-porcentaje="10" data-color="success"></div>
@@ -108,25 +108,9 @@ Mi Veris - Citas - tratamiento
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue">{{ __('Realizados') }}</h5>
         <div class="row g-0 justify-content-center">
             <div class="col-12 col-md-6 col-lg-5">
-                <div class="px-3">
-                    <div class="card mb-3">
-                        <div class="card-body fs--2 p-3">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary-veris fw-bold mb-0">Terapia física 3 - <b id="codigo">2925136</b></h6>
-                                <span class="text-warning-veris" id="estado"><i class="fa-solid fa-circle me-2"></i>Por comprar</span>
-                            </div>
-                            <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary ms-2">DIC 09, 2022</b></p>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
-                                    <img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">
-                                </div>
-                                <div>
-                                    <a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
-                                    <a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="px-3" id="contenedorTratamientoRealizado">
+                    <!-- items -->
+                    
                 </div>
             </div>
         </div>
@@ -137,19 +121,17 @@ Mi Veris - Citas - tratamiento
 <script>
 
     // variables globales
+    let codigoTratamiento = {{ $codigoTratamiento }};
     let datosTratamiento = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+        //await obtenerInfoTratamiento();
         await obtenerTratamientos();
     });
 
-    // funciones asyncronas
-    // obtener tratamientos
-     async function obtenerTratamientos(){
+    async function obtenerInfoTratamiento(){
         let args = [];
         let canalOrigen = _canalOrigen;
-        
-        var codigoTratamiento = document.getElementById("codigoTratamiento").innerHTML;
         args["endpoint"] = api_url + `/digitales/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
         args["method"] = "GET";
@@ -159,6 +141,28 @@ Mi Veris - Citas - tratamiento
         if(data.code == 200){
             datosTratamiento = data.data;
             mostrarTratamientoenDiv();
+            mostrarTratamientoenDivRealizados();
+            
+        }
+        return data;
+    }
+
+    // funciones asyncronas
+    // obtener tratamientos
+    async function obtenerTratamientos(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        
+        args["endpoint"] = api_url + `/digitales/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
+        console.log(args["endpoint"]);
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+            datosTratamiento = data.data;
+            mostrarTratamientoenDiv();
+            mostrarTratamientoenDivRealizados();
             
         }
         return data;
@@ -175,23 +179,26 @@ Mi Veris - Citas - tratamiento
         let divContenedor = $('#contenedorTratamientoPendiente');
         divContenedor.empty(); // Limpia el contenido actual
         data.forEach((tratamientos) => {
-                
-                let elemento = `<<div class="card mb-3">
+             
+                let elemento = `<div class="card mb-3">
                                     <div class="card-body fs--2 p-3">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio} </h6>
                                             <span class="text-warning-veris" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                         </div>
                                         <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${tratamientos.fechaCaducidad}</b></p>
-                                        <a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a>
+                                        <div id="recetaMedicaMensaje">
+                                            ${determinarMensajeRecetaMedica(tratamientos.nombreServicio)}
+                                        </div> 
+                                        
                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                             <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
+                                                ${determinarAvatar(tratamientos.nombreServicio)}
                                             </div>
                                             <div>
-                                                <a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                                                <a href="{{route('tratamientos.farmaciaDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>
+                                                ${determinarbotonesRecetaMedica(tratamientos.nombreServicio, tratamientos.esAgendable, tratamientos.tipoServicio)}  
                                             </div>
+                                            
                                         </div>
                                     </div>
                                 </div>`;
@@ -202,15 +209,137 @@ Mi Veris - Citas - tratamiento
         chartProgres("#chart-progress");
     }
 
+    // mostrar el tratamientos realizados
+
+    function mostrarTratamientoenDivRealizados(){
+
+        let data = datosTratamiento.realizados;
+        console.log('tratamientos realizados: ', data);
+        
+        let divContenedorRealizados = $('#contenedorTratamientoRealizado');
+        divContenedorRealizados.empty(); // Limpia el contenido actual
+
+        data.forEach((tratamientos) =>{
+
+            let elementoRealizados = `<div class="card mb-3">
+                                        <div class="card-body fs--2 p-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio} </h6>
+                                               
+                                            </div>
+                                            <div>
+                                                ${determinarMensajeRecetaMedicaRealizados(tratamientos.nombreServicio)}
+                                                
+                                            </div>
+                                            
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
+                                                    ${determinarAvatar(tratamientos.nombreServicio)}
+                                                </div>
+                                                <div>
+                                                    ${determinarbotonesRecetaMedicaRealizadosDetalle(tratamientos.nombreServicio, tratamientos.fechaOrden,
+                                                        tratamientos.nombrePaciente, tratamientos.nombreMedicoAtencion, tratamientos.nombreSucursal)}
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>`;
+
+            divContenedorRealizados.append(elementoRealizados);
+            
+        }
+        );
+
+    }
+
     // determinar si es comprar o por comprar
     function determinarEstado(estado){
-        console.log(estado);
         if(estado == "S"){
-            return `<i class="fa-solid fa-circle me-2"></i>Comprada`;
+            return `<i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success">Comprada</span>`;
         }else{
             return `<i class="fa-solid fa-circle me-2"></i>Por comprar`;
         }
     }
+
+    // determinar si es receta medica o no mensaje 
+    function determinarMensajeRecetaMedica(servicio){
+        if(servicio == "RECETA MÉDICA"){
+            return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a> `;
+        }
+        else{
+            return ``;
+        }
+    }
+
+    // determinar si es receta medica o no botones
+    function determinarbotonesRecetaMedica(servicio, esAgendable, tipoServicio){
+        console.log('esAgendable: ' + esAgendable);
+    
+        if(servicio == "RECETA MÉDICA"){
+            // Código para RECETA MÉDICA
+            return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
+                    <a href="{{route('tratamientos.farmaciaDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+        } else if (tipoServicio == "LABORATORIO" && esAgendable == 'N') {
+            // Código para LABORATORIO
+            return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
+                    <a href="{{route('citas.laboratorioDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar labor</a>`;
+        } 
+        else {
+            // Código para otros servicios
+            let botonAgendarClase = "btn btn-sm btn-primary-veris fw-normal fs--1";
+            let botonAgendarDisabled = "";
+
+            // Si esAgendable no es 'S', deshabilitar el botón
+            if(esAgendable !== 'S'){
+                botonAgendarClase += " disabled";
+                botonAgendarDisabled = " disabled";
+            }
+
+            return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
+                    <a href="{{route('citas.listaCentralMedica')}}" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
+        }
+    }
+
+
+    // determinar si es receta medica o no botones realizados
+    function determinarbotonesRecetaMedicaRealizados(servicio){
+        if(servicio == "RECETA MÉDICA"){
+            return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver receta</a> `;
+                                            
+        }
+        else{
+            
+            return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver orden</a> `;
+        }
+    }
+
+    // determinar avatar 
+    function determinarAvatar(servicio){
+        if(servicio == "RECETA MÉDICA"){
+            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">`;
+        }
+        else{
+            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">`;
+        }
+    }
+
+    // determinar mensaje receta medica realizados  
+    function determinarbotonesRecetaMedicaRealizadosDetalle(servicio, fechaOrden, nombrePaciente, nombreMedicoAtencion, nombreSucursal){
+        console.log('entro a determinarbotonesRecetaMedicaRealizadosDetalle');
+        if(servicio != "RECETA MÉDICA"){
+            console.log('servicio: ', servicio);
+            console.log('fechaOrden: ', fechaOrden);
+            return `<p class="fw-light mb-2">Sucursal: <b class="fecha-cita fw-light text-primary me-2">${nombreSucursal}</b></p>
+                    <p class="fw-light mb-2"><b class="fecha-cita fw-light text-primary me-2">${fechaOrden}</b></p>
+                    <p class="fw-light mb-2">Dr(a): <b class="fecha-cita fw-light text-primary me-2">${nombreMedicoAtencion}</b></p>
+                    <p class="fw-light mb-2">Paciente: <b class="fecha-cita fw-light text-primary me-2">${nombrePaciente}</b></p>`;
+                    
+        }
+        else{
+            return ``;
+        }
+    }
+    
 
 
 </script>

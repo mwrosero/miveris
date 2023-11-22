@@ -116,6 +116,7 @@ Mi Veris - Citas - Mis tratamientos
 
     // llamar al dom 
     document.addEventListener("DOMContentLoaded", async function () {
+        console.log('canalOrigen', _canalOrigen);   
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         const elementoRealizados = document.getElementById('nombreFiltroRealizados');
@@ -151,23 +152,10 @@ Mi Veris - Citas - Mis tratamientos
                                                     <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
                                                 </div>
                                                 <div class="d-flex justify-content-end align-items-center">
-
-
-                                                    <form action="{{ route('tratamientos.lista') }}" method="POST" style="display: inline;">
-                                                        @csrf
-                                                        <input type="hidden" name="nombreEspecialidad" value="${tratamientos.nombreEspecialidad}">
-                                                        <input type="hidden" name="nombrePaciente" value="${tratamientos.nombrePaciente}">
-                                                        <input type="hidden" name="nombreMedico" value="${tratamientos.nombreMedico}">
-                                                        <input type="hidden" name="fechaTratamiento" value="${tratamientos.fechaTratamiento}">
-                                                        <input type="hidden" name="nombreConvenio" value="${tratamientos.nombreConvenio}">
-                                                        <input type="hidden" name="codigoTratamiento" value="${tratamientos.codigoTratamiento}">
-                                                        <button type="submit" class="btn btn-sm btn-primary-veris">
-                                                            ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
-                                                        </button>
-                                                    </form>
-
+                                                    <a href="/tratamiento/${tratamientos.codigoTratamiento}" class="btn btn-sm btn-primary-veris">
+                                                        ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
+                                                    </a>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -374,14 +362,11 @@ Mi Veris - Citas - Mis tratamientos
 
     // obtener tratamiento por id
     async function obtenerTratamientosId(id, fechaDesde, fechaHasta, estadoTratamiento){
-        console.log('entro a la funcion tratamiento por id');
-        console.log(id);
-        console.log(fechaDesde);
-        console.log(fechaHasta);
+        
         let args = [];
         let canalOrigen = _canalOrigen;
         let numeroPaciente = id;
-
+        
         args["endpoint"] = api_url + `/digitales/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
         
         args["method"] = "GET";

@@ -61,7 +61,8 @@ Mi Veris - Citas - Farmacia a domicilio
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-lg btn-primary-veris w-100" type="button"><i class="bi bi-telephone-fill me-2" id="btnGuardarSolicitudLlamada"></i> Solicitar llamada</button>
+                                <button class="btn btn-lg btn-primary-veris w-100" type="button" id="btnGuardar"
+                                ><i class="bi bi-telephone-fill me-2" id="btnGuardarSolicitudLlamada"></i> Solicitar llamada</button>
                             </div>
                         </form>
                     </div>
@@ -77,12 +78,18 @@ Mi Veris - Citas - Farmacia a domicilio
     // variables globales
     
     let familiar = [];
+    let numeroIdentificacion = '';
+    let tipoIdentificacion = '';
+    let nombrePaciente = '';
+    let direccion = '';
+    let telefono = '';
+    let ciudad = '';
+    let correo = '';
 
     // llama al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarPacientes();
-        llenarSelectPacientes();
         await consultarCiudades();
         // await consultarFarmaciaDomicilio();
         // // boton guardar
@@ -104,7 +111,13 @@ Mi Veris - Citas - Farmacia a domicilio
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
-            familiar = data.data;
+            let html = '';
+            html += `<option value="">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
+            data.data.forEach(element => {
+                html += `<option data-rel='${ JSON.stringify(element) }'>${element.primerNombre} ${element.primerApellido} (${element.parentesco})</option>`;
+            });
+            // yo
+            $('#paciente').html(html);
 
         }
         return data;
@@ -131,16 +144,102 @@ Mi Veris - Citas - Farmacia a domicilio
         return data;
     }
 
-    // funciones js
-    function llenarSelectPacientes() {
-        let html = '';
-        html += `<option value="{{ Session::get('userData')->numeroIdentificacion }}">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
-        familiar.forEach(element => {
-            html += `<option value="${element.numeroIdentificacion}">${element.primerNombre} ${element.primerApellido} (${element.parentesco})</option>`;
+    async function consultarFarmaciaDomicilio() {
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/domicilio/farmacia/solicitud";
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "POST";
+        args["showLoader"] = false;
+        args["bodyType"] = "json";
+        let paciente = [];
+
+        if(getInput('paciente') == ''){
+            console.log(0)
+            paciente = {
+                tipoIdentificacion: "{{ Session::get('userData')->tipoIdentificacion }}",
+                numeroIdentificacion: "{{ Session::get('userData')->numeroIdentificacion }}",
+                nombrePaciente: "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}",
+            }
+        }else{
+            console.log(1)
+            paciente = JSON.parse($('#paciente option:selected').attr("data-rel"));
+            paciente["nombrePaciente"] = paciente.primerNombre + ' ' + paciente.primerApellido;
+            console.log(paciente)
+        }
+
+        args["data"] = JSON.stringify({
+            "tipoIdentificacionPaciente": paciente.tipoIdentificacion,
+            "identificacionPaciente": paciente.numeroIdentificacion,
+            "nombrePaciente":  paciente.nombrePaciente,
+            "direccion": getInput('direccion'), 
+            "telefono": getInput('telefono'),
         });
-        // yo
-            $('#paciente').html(html);
+
+        console.log('args', args["data"]);
+
+        const data = await call(args);
+        console.log('actualizarDatosUsuario',data);
+        if(data.code == 200){
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+        }
+        else{
+            alert("Error al guardar los datos");
+        }
+        return data;
+
     }
+
+    // funciones js
+    
+    // obtener datos del select paciente
+    $('#paciente').change(function() {
+    var seleccion = $(this).val(); // Obtiene el valor seleccionado
+    var valores = seleccion.split(','); // Separa los valores
+
+    numeroIdentificacion = valores[0];
+    tipoIdentificacion = valores[1];
+    correo = valores[2];
+    var textoCompleto = $(this).find('option:selected').text();
+
+    // Extrayendo solo los nombres del paciente
+    nombrePaciente = textoCompleto.substring(0, textoCompleto.lastIndexOf(" ("));
+
+    console.log('nombrePaciente',nombrePaciente);
+    console.log('correo',correo);
+    console.log('numeroIdentificacion',numeroIdentificacion);
+    console.log('tipoIdentificacion',tipoIdentificacion);
+    });
+
+    // enviar datos
+    
+    $('#btnGuardar').click(function() {
+        if ($('#paciente').val() == '') {
+            $('#paciente').addClass('is-invalid');
+            return false;
+        } else {
+            $('#paciente').removeClass('is-invalid');
+        }
+        if ($('#ciudad').val() == '') {
+            $('#ciudad').addClass('is-invalid');
+            return false;
+        } else {
+            $('#ciudad').removeClass('is-invalid');
+        }
+        if ($('#telefono').val() == '') {
+            $('#telefono').addClass('is-invalid');
+            return false;
+        } else {
+            $('#telefono').removeClass('is-invalid');
+        }
+        if ($('#direccion').val() == '') {
+            $('#direccion').addClass('is-invalid');
+            return false;
+        } else {
+            $('#direccion').removeClass('is-invalid');
+        }
+        // $('#mensajeSolicitudLlamadaModal').modal('show');
+        consultarFarmaciaDomicilio();
+    });
 
 </script>
 @endpush
