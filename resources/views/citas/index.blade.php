@@ -148,7 +148,7 @@ Mi Veris - Citas
             <!-- orden externa -->
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.ordenesExternas')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
@@ -172,7 +172,7 @@ Mi Veris - Citas
         <div class="row mb-3">
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.misCitas')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
@@ -188,7 +188,7 @@ Mi Veris - Citas
             </div>
             <div class="col-6 col-lg-4 mb-3">
                 <div class="card mb-3">
-                    <a href="#">
+                    <a href="{{route('citas.misCitas')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
