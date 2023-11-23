@@ -7,33 +7,7 @@ Mi Veris - Citas - Mis tratamientos
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroTratamientos" aria-labelledby="filtroTratamientosLabel">
-        <div class="offcanvas-header py-2">
-            <h5 class="offcanvas-title" id="filtroTratamientosLabel">Filtros</h5>
-            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atras</b></button>
-        </div>
-        <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
-            <div>
-                <h6 class="fw-light">Selecciona el paciente</h6>
-                <div class="list-group gap-2 mb-3 listaPacientesFiltro">
-                    <!-- Puedes agregar lista de pacientes dinámicamente aquí desde JavaScript -->
-                    
-                    
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label for="fechaDesde" class="form-label">{{ __('Elige el rango de fechas') }} *</label>
-                    <input type="text" class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
-                </div>
-                <div class="col-md-12 mb-5">
-                    <input type="text" class="form-control bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
-                </div>
-                <div class="col-md-12 mb-3">
-                    <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0" type="button" id="aplicarFiltros">Aplicar filtros</button>
-                    <button class="btn text-primary w-100 mb-3 mx-0" type="button" id="btnLimpiarFiltros"><i class="bi bi-trash me-2"></i> Limpiar filtros</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('components.offCanva')
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Mis tratamientos') }}</h5>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -45,14 +19,12 @@ Mi Veris - Citas - Mis tratamientos
                     <button class="nav-link" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
+            
             <div class="tab-content bg-transparent" id="pills-tabContent">
+                
+                @include('components.barraFiltro')
                 <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
-                    <div class="col-auto bg-white p-2 mb-3">
-                        <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroTratamientos" aria-controls="filtroTratamientos" ><i class="bi bi-sliders me-3"></i> 
-                            <div id= "nombreFiltro"></div>
-                        </button>
-
-                    </div>
+                    
                     <div class="d-flex justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
                             <div class="row g-3" id="contenedorTratamiento">
@@ -65,11 +37,7 @@ Mi Veris - Citas - Mis tratamientos
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
-                    <div class="col-auto bg-white p-2 mb-3">
-                        <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroTratamientos" aria-controls="filtroTratamientos"><i class="bi bi-sliders me-3"></i>
-                            <div id= "nombreFiltroRealizados"></div>
-                        </button>
-                    </div>
+                    
                     <div class="d-flex justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
                             <div class="row g-3" id="contenedorTratamientoRealizados">
@@ -119,8 +87,8 @@ Mi Veris - Citas - Mis tratamientos
         console.log('canalOrigen', _canalOrigen);   
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
-        const elementoRealizados = document.getElementById('nombreFiltroRealizados');
-        elementoRealizados.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
+        // const elementoRealizados = document.getElementById('nombreFiltroRealizados');
+        // elementoRealizados.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         await obtenerTratamientos();
         await consultarGrupoFamiliar();
         
@@ -137,7 +105,6 @@ Mi Veris - Citas - Mis tratamientos
         divContenedor.empty(); // Limpia el contenido actual
         data.forEach((tratamientos) => {
             if(tratamientos.porcentajeAvanceTratamiento < 100){
-                
                 let elemento = `<div class="col-12 col-md-6">
                                     <div class="card">
                                         <div class="card-body p-2">
@@ -362,13 +329,20 @@ Mi Veris - Citas - Mis tratamientos
 
     // obtener tratamiento por id
     async function obtenerTratamientosId(id, fechaDesde, fechaHasta, estadoTratamiento){
+
+        console.log('fechaDesde', fechaDesde);
+        console.log('fechaHasta', fechaHasta);
         
         let args = [];
         let canalOrigen = _canalOrigen;
         let numeroPaciente = id;
+
+        if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
+            args["endpoint"] = api_url + `/digitales/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&page=1&perPage=100&version=7.8.0`
+        }else {
         
         args["endpoint"] = api_url + `/digitales/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
-        
+        }
         args["method"] = "GET";
         args["showLoader"] = false;
         console.log(args["endpoint"]);

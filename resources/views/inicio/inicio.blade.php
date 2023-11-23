@@ -111,16 +111,19 @@ Mi Veris - Inicio
             >Ver todos</a>
         </div>
         <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">
-            
-            <div class="swiper swiper-mis-tratamientos pt-3 pb-4 px-2 mx-n2">
+
+            <div class="swiper swipertratamientos pt-3 pb-4 px-2 mx-n2">
                 <div class="swiper-wrapper" id="contenedorTratamientoHome">
                     <!-- Puedes agregar tratamientos dinámicamente aquí desde JavaScript -->
-                    
+
                 </div>
+
+
+                <button type="button" class="mt-n4 btn btn-prev">s</button>
+                <button type="button" class="mt-n4 btn btn-next"></button>
             </div>
 
-            <button type="button" id="prevProperties" class="mt-n4 btn btn-prev"></button>
-            <button type="button" id="nextProperties" class="mt-n4 btn btn-next"></button>
+
         </div>
     </section>
 
@@ -131,88 +134,18 @@ Mi Veris - Inicio
             <h5 class="fw-bold border-start-veris ps-3">Próximas citas</h5>
             <a href="#!" class="fs--2">Ver todos</a>
         </div>
-        <div class="position-relative mb-3">
+        <div class="position-relative mb-3" id="contenedorCitasHomePrincipal">
             <div class="swiper swiper-proximas-citas pt-3 pb-4 px-2 mx-n2">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-bold mb-0">Cardiologia</h6>
-                                    <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>
-                                </div>
-                                <p class="fw-bold fs--2 mb-0">Veris - Alborada</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
-                                        AM</b></p> 
-                                <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
-                                <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                    <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-bold mb-0">Cardiologia</h6>
-                                    <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>
-                                </div>
-                                <p class="fw-bold fs--2 mb-0">Veris - Alborada</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
-                                        AM</b></p>
-                                <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
-                                <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                    <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-bold mb-0">Cardiologia</h6>
-                                    <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>
-                                </div>
-                                <p class="fw-bold fs--2 mb-0">Veris - Alborada</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
-                                <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
-                                <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                    <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-bold mb-0">Cardiologia</h6>
-                                    <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>
-                                </div>
-                                <p class="fw-bold fs--2 mb-0">Veris - Alborada</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
-                                        AM</b></p>
-                                <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
-                                <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                    <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="swiper-wrapper" id="contenedorCitas">
+                    <!-- Puedes agregar citas dinámicamente aquí desde JavaScript -->
+
+
                 </div>
+
+                <button type="button" class="mt-n4 btn btn-prev">s</button>
+                <button type="button" class="mt-n4 btn btn-next"></button>
             </div>
-            <button type="button" id="prevProperties" class="mt-n4 btn btn-prev"></button>
-            <button type="button" id="nextProperties" class="mt-n4 btn btn-next"></button>
+
         </div>
     </section>
     <section class="bg-light-grayish-blue p-3 mb-3">
@@ -220,89 +153,17 @@ Mi Veris - Inicio
             <h5 class="fw-bold border-start-veris ps-3">Urgencias ambulatorias</h5>
             <a href="#!" class="fs--2">Ver todos</a>
         </div>
-        <div class="position-relative mb-3">
+        <div class="position-relative mb-3" id="contenedorUrgenciasAmbulatoriasHomePrincipal">
             <div class="swiper swiper-urgencias-ambulatorias pt-3 pb-4 px-2 mx-n2">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-bold mb-0">Módulo 5</h6>
-                                    <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Reservado</span>
-                                </div>
-                                <p class="fw-bold fs--2 mb-0">Veris Urgencias Ambulatorias</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
-                                        AM</b></p>
-                                <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
-                                <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                    <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-bold mb-0">Módulo 5</h6>
-                                    <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Reservado</span>
-                                </div>
-                                <p class="fw-bold fs--2 mb-0">Veris Urgencias Ambulatorias</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
-                                        AM</b></p>
-                                <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
-                                <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                    <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-bold mb-0">Módulo 5</h6>
-                                    <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Reservado</span>
-                                </div>
-                                <p class="fw-bold fs--2 mb-0">Veris Urgencias Ambulatorias</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
-                                        AM</b></p>
-                                <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
-                                <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                    <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-bold mb-0">Módulo 5</h6>
-                                    <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Reservado</span>
-                                </div>
-                                <p class="fw-bold fs--2 mb-0">Veris Urgencias Ambulatorias</p>
-                                <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
-                                        AM</b></p>
-                                <p class="fw-normal fs--2 mb-0">Dr(a) Moreno Obando Jaime Roberto</p>
-                                <p class="fw-normal fs--2 mb-0">Fernanda Alarcon Tapia</p>
-                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                    <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                    <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="swiper-wrapper" id="contenedorUrgenciasAmbulatorias">
+                    <!-- Puedes agregar citas dinámicamente aquí desde JavaScript -->
+                    
+                    
                 </div>
             </div>
-            <button type="button" id="prevProperties" class="mt-n4 btn btn-prev"></button>
-            <button type="button" id="nextProperties" class="mt-n4 btn btn-next"></button>
+            <button type="button" class="mt-n4 btn btn-prev"></button>
+            <button type="button" class="mt-n4 btn btn-next"></button>
+
         </div>
     </section>
 </div>
@@ -311,108 +172,21 @@ Mi Veris - Inicio
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    
+
     //variables globales
     let datosTratamientos = [];
+    let datosCitas = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerPPD();
         await obtenerTratamientos();
+        await obtenerCitas();
+        await obtenerUrgenciasAmbulatorias();
+        initializeSwiper('.swipertratamientos');
+        initializeSwiper('.swiper-proximas-citas');
     });
 
-    //metodos jquery
-    //aceptar politicas
-    $('#aceptarPDP').click(async function(){
-            console.log("clicks");
-            const response = await aceptarPoliticas();
-            console.log("sisi",response);
-            if(response.code == 200){
-                cerrarModal();
-            }
-            
-        });
-    //cerrar el modal de politicas reuerdame
-    $(document).on('click', '#modalRecuerdame', function(){
-        console.log('click');
-        localStorage.setItem('politicaspoliticasAbiertas', true);
-        $('#modalPPD').modal('hide');
-    });
 
-    function cerrarModal(){
-        $('#modalPPD').modal('hide');
-    }
-
-    // llenar el div de tratamientos
-
-    function mostrarTratamientoenDiv() {
-        let data = datosTratamientos;
-
-        let divContenedor = $('#contenedorTratamientoHome');
-            divContenedor.empty(); // Limpia el contenido actual
-
-            data.forEach((tratamientos) => {
-                let elemento = `<div class="swiper-slide">
-                <div class="card">
-                    <div class="card-body p-2">
-                    <div class="row gx-0 justify-content-between align-items-center mb-3">
-                        <div class="col-9">
-                        <h6 class="card-title text-primary-veris mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
-                        <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
-                        <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
-                        </div>
-                        <div class="col-3">
-                            <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success">
-                                <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
-                            
-                            </div>
-                        </div>
-                    </div>
-                    <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
-                        <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                            <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
-                            </div>
-                            <p class="fw-bold fs--2 mb-0">Receta medica</p>
-                        </div>
-                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                        </label>
-                        <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                        <div class="d-flex gap-2 align-items-center">
-                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
-                            <img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">
-                            </div>
-                            <p class="fw-bold fs--2 mb-0">Terapia fisica 1</p>
-                        </div>
-                        <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                        </label>
-                    </div>
-                    </div>
-                </div>
-                </div>`;
-
-            divContenedor.append(elemento);
-        });
-        chartProgres('#chart-progress');
-    }
-
-    // mostrar mensaje de no hay tratamientos
-    function mostrarNoExistenTratamientos() {
-        let data = datosTratamientos;
-        console.log('sisiis');
-
-        let divContenedor = $('#contenedorTratamientosHomePrincipal');
-            divContenedor.empty(); // Limpia el contenido actual
-
-            let elemento = `<div class="text-center">
-                                <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
-                                <h6 class="fw-normal">Agenda una cita y revisa tus <b>tratamientos</b> aquí</h6>
-                            </div>`;
-
-            divContenedor.append(elemento);
-            document.getElementById('verTodosTratamientos').style.display = 'none';
-        
-    }
 
     //  ---Funciones asyncronas
     //obtener las politicas
@@ -434,7 +208,7 @@ Mi Veris - Inicio
                 if((data.data.estadoPoliticas == "N" || data.data.estadoPoliticas == "R") && (data.data.isPoliticasAceptadas == null || data.data.isPoliticasAceptadas == false)){
                     localStorage.setItem('politicasAbiertas', true);
                     $('#modalPPD').modal('show');
-                    $('#politicasPPD').attr('href',politicas.linkPoliticaPrivacidad);
+                    // $('#politicasPPD').attr('href',politicas.linkPoliticaPrivacidad);
                 }
                 else {
                     // localStorage.setItem('estadoPoliticas', data.data.estadoPoliticas);
@@ -456,7 +230,7 @@ Mi Veris - Inicio
         args["bodyType"] = "json";
 
         args["data"] = JSON.stringify({
-            
+
             "aceptaPoliticas": true,
             "versionPoliticas": _ppd.ultimaVersionPoliticas,
             "codigoEmpresa": 1,
@@ -490,6 +264,7 @@ Mi Veris - Inicio
                 mostrarNoExistenTratamientos();
             } else {
                 datosTratamientos = data.data.items;
+                console.log(datosTratamientos.length);
                 mostrarTratamientoenDiv();
             }
         }
@@ -497,8 +272,299 @@ Mi Veris - Inicio
         return data;
 
     }
+    // consultar citas
+
+    async function obtenerCitas(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
+
+        args["endpoint"] = api_url + `/digitales/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        console.log(args["endpoint"]);
+        const data = await call(args);
+        if (data.code == 200) {
+            console.log(0, data.data.length);
+            if (data.data.length == 0) {
+                mostrarNoExistenCitas();
+            } else {
+                datosCitas = data.data;
+                mostrarCitasenDiv();
+            }
+        }
+        return data;
+    }
+
+    // consultar urgencias ambulatorias
+
+    async function obtenerUrgenciasAmbulatorias(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
+
+        args["endpoint"] = api_url + `/digitales/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        if (data.code == 200) {
+           console.log('exito',data.data.length);
+           if(data.data.length == 0){
+                mostrarNoExistenUrgencias();
+              } else {
+                // mostrarUrgenciasAmbulatorias();
+           }
+        }
+        return data;
+    }
+
+
+    //metodos js
+    //aceptar politicas
+    $('#aceptarPDP').click(async function(){
+            console.log("clicks");
+            const response = await aceptarPoliticas();
+            console.log("sisi",response);
+            if(response.code == 200){
+                cerrarModal();
+            }
+
+        });
+    //cerrar el modal de politicas reuerdame
+    $(document).on('click', '#modalRecuerdame', function(){
+        console.log('click');
+        localStorage.setItem('politicaspoliticasAbiertas', true);
+        $('#modalPPD').modal('hide');
+    });
+
+    function cerrarModal(){
+        $('#modalPPD').modal('hide');
+    }
+
+    // llenar el div de tratamientos
+
+    function mostrarTratamientoenDiv() {
+        let data = datosTratamientos;
+
+        let divContenedor = $('#contenedorTratamientoHome');
+            divContenedor.empty(); // Limpia el contenido actual
+
+            data.forEach((tratamientos) => {
+                let elemento = `<div class="swiper-slide">
+                                    <div class="card">
+                                        <div class="card-body p-2">
+                                        <div class="row gx-0 justify-content-between align-items-center mb-3">
+                                            <div class="col-9">
+                                            <h6 class="card-title text-primary-veris mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
+                                            <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
+                                            <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
+                                            </div>
+                                            <div class="col-3">
+                                                <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success">
+                                                    <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
+                                            <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
+                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
+                                                </div>
+                                                <p class="fw-bold fs--2 mb-0">Receta medica</p>
+                                            </div>
+                                            <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
+                                            </label>
+                                            <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
+                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">
+                                                </div>
+                                                <p class="fw-bold fs--2 mb-0">Terapia fisica 1</p>
+                                            </div>
+                                            <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
+                                            </label>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+            divContenedor.append(elemento);
+        });
+        chartProgres('#chart-progress');
+    }
+
+    // mostrar mensaje de no hay tratamientos
+    function mostrarNoExistenTratamientos() {
+        let data = datosTratamientos;
+        console.log('sisiis');
+
+        let divContenedor = $('#contenedorTratamientosHomePrincipal');
+            divContenedor.empty(); // Limpia el contenido actual
+
+            let elemento = `<div class="text-center">
+                                <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
+                                <h6 class="fw-normal">Agenda una cita y revisa tus <b>tratamientos</b> aquí</h6>
+                            </div>`;
+
+            divContenedor.append(elemento);
+            document.getElementById('verTodosTratamientos').style.display = 'none';
+
+    }
+
+    // llenar el div de citas
+    function mostrarCitasenDiv() {
+        let data = datosCitas;
+
+        let divContenedor = $('#contenedorCitas');
+            divContenedor.empty(); // Limpia el contenido actual
+
+            data.forEach((citas) => {
+                let elemento = `<div class="swiper-slide">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(citas.especialidad)}</h6>
+                                                <span class="fs--2 text-success fw-bold">${esPagada(citas.estaPagada)}</span>
+                                            </div>
+                                            <p class="fw-bold fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
+                                            <p class="fw-normal fs--2 mb-0">${citas.fecha} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                                            <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                                            <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
+                                                <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+            divContenedor.append(elemento);
+        });
+    }
+
+    // mostrar mensaje de no hay citas
+    function mostrarNoExistenCitas() {
+        let data = datosCitas;
+
+        let divContenedor = $('#contenedorCitasHomePrincipal');
+            divContenedor.empty(); // Limpia el contenido actual
+
+            let elemento = `<div class="text-center">
+                                <img src="{{ asset('assets/img/svg/doctor.svg') }}" alt="">
+                                <h6 class="fw-normal">Agenda una cita y revisa tus <b>citas</b> aquí</h6>
+                            </div>`;
+
+            divContenedor.append(elemento);
+    }
+
+    // llenar el div de urgencias ambulatorias
+    function mostrarUrgenciasAmbulatorias() {
+        let data = datosCitas;
+
+        let divContenedor = $('#contenedorUrgenciasAmbulatorias');
+            divContenedor.empty(); // Limpia el contenido actual
+
+            data.forEach((urgencias) => {
+                let elemento = `<div class="swiper-slide">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(urgencias.modulo)}</h6>
+                                                <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Reservado</span>
+                                            </div>
+                                            <p class="fw-bold fs--2 mb-0">${capitalizarElemento(urgencias.nombreSucursal)}</p>
+                                            <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
+                                                    AM</b></p>
+                                            <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
+                                            <p class="fw-normal fs--2 mb-0">${urgencias.paciente}</p>
+                                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                                <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
+                                                <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
+
+            divContenedor.append(elemento);
+        });
+    }
+
+    // mostrar mensaje de no hay urgencias
+    function mostrarNoExistenUrgencias() {
+        console.log('no hay urgencias');
+        let data = datosCitas;
+
+        let divContenedor = $('#contenedorUrgenciasAmbulatoriasHomePrincipal');
+            divContenedor.empty(); // Limpia el contenido actual
+
+            let elemento = `<div class="text-center">
+                                <img src="{{ asset('assets/img/svg/doctor.svg') }}" alt="">
+                                <h6 class="fw-normal">Agenda una cita y revisa tus <b>citas</b> aquí</h6>
+                            </div>`;
+
+            divContenedor.append(elemento);
+    }
+    
+
+    // funcion para controlar swiper independientes
+    function initializeSwiper(swiperSelector) {
+        document.querySelectorAll(swiperSelector).forEach(swiperElement => {
+            const prevButton = swiperElement.querySelector('.btn-prev');
+            const nextButton = swiperElement.querySelector('.btn-next');
+            const slides = swiperElement.querySelectorAll('.swiper-slide');
+
+            // Ocultar botones si hay menos de 4 slides
+            if (slides.length < 4) {
+                prevButton.style.display = 'none';
+                nextButton.style.display = 'none';
+            }
+
+            new Swiper(swiperElement, {
+                navigation: {
+                    nextEl: nextButton,
+                    prevEl: prevButton,
+                },
+                    // Agrega aquí otras opciones de configuración si son necesarias
+                    slidesPerView: 6,
+                    spaceBetween: 10,
+                    breakpoints: {
+                        640: {
+                            slidesPerView: 1,
+                            spaceBetween: 10,
+                        },
+                        768: {
+                            slidesPerView: 2,
+                            spaceBetween: 10,
+                        },
+                        1024: {
+                            slidesPerView: 3,
+                            spaceBetween: 10,
+                        },
+                    },
+                });
+            });
+    }
+
+    // funcion esPagada para saber si la cita esta pagada
+    function esPagada(pagada){
+        if(pagada == 'S'){
+            return `<span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>`;
+        } else {
+            return `<span class="fs--2 text-danger-veris fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita no pagada</span>`;
+        }
+    }
 
     
+
+
+
+
+
+
 </script>
 
 @endpush

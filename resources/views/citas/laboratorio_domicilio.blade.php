@@ -15,7 +15,8 @@ Mi Veris - Citas - Laboratorio a domicilio
                     <p class="fs--1 fw-normal">Un asesor te contactará pronto</p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal" id="btnEntendido"
+                    >Entiendo</button>
                 </div>
             </div>
         </div>
@@ -208,7 +209,6 @@ Mi Veris - Citas - Laboratorio a domicilio
     });
 
     // enviar datos
-    
     $('#btnGuardar').click(function() {
         if ($('#paciente').val() == '') {
             $('#paciente').addClass('is-invalid');
@@ -236,6 +236,11 @@ Mi Veris - Citas - Laboratorio a domicilio
         }
         // $('#mensajeSolicitudLlamadaModal').modal('show');
         crearSolicitudLaboratorioDomicilio();
+    });
+
+    // boton entendido
+    $('#btnEntendido').click(function() {
+        window.location.href = "{{ route('tratamientos') }}";
     });
 
 </script>
