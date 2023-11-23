@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
@@ -16,11 +18,8 @@ class TratamientosController extends Controller
     }
 
     // Return view lista de tratamientos
-    public function tratamientos(Request $request) {
-
-        $data = $request->all();    
-        
-        return view('tratamientos.lista_tratamientos', ['data' => $data]);
+    public function tratamientos($codigoTratamiento) {
+        return view('tratamientos.lista_tratamientos', ['codigoTratamiento' => $codigoTratamiento]);
     }
 
     // Return view detalle de tratamiento
