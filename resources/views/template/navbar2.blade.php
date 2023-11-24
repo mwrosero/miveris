@@ -314,6 +314,39 @@
 <script>
     
 
+    // llamada al dom
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        await getNotificaciones();
+
+    } );
+
+    // funciones asincronas
+    // notificaciones
+    async function getNotificaciones(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
+
+        console.log(codigoUsuario);
+        args["endpoint"] = api_url + `/digitales/v1/notificaciones/bandeja?canalOrigen= ${canalOrigen}&codigoUsuario=${codigoUsuario}`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        
+        const data = await call(args);
+        console.log('dd',data);
+        if(data.code == 200){
+            console.log(args["endpoint"]);
+            console.log('notificaciones');
+        }
+
+        return data;
+
+    }
+    
+
+    // funciones js
+    // salir de la sesion
     $('#logout').click(function(){
         localStorage.clear();
         window.location.href = "{{ route('logout') }}";

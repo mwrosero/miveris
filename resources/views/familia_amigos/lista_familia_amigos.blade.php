@@ -92,7 +92,7 @@ Mi Veris - Citas - Familia y amigos
             let idRelacion = $(this).attr('idRelacion-rel');
             $('#idRelacion').val(idRelacion);
             let nombreFamiliar = $(this).attr('nombre-familiar');
-            $('#nombreFamiliar').text(nombreFamiliar);
+            $('#nombreFamiliar').text(capitalizarElemento(nombreFamiliar));
         });
         
     });
@@ -151,8 +151,8 @@ Mi Veris - Citas - Familia y amigos
         data.forEach(familiar => {
             let elem = `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 bg-white px-2">
                             <div class="col-auto">
-                                <p class="fs--2 fw-bold mb-0" id="nombrePariente">${familiar.primerNombre} ${familiar.primerApellido} ${familiar.segundoApellido}</p>
-                                <p class="fs--3 mb-0" id="parentezco">${familiar.parentesco}</p>
+                                <p class="fs--2 fw-bold mb-0" id="nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
+                                <p class="fs--3 mb-0" id="parentezco">${capitalizarElemento(familiar.parentesco)}</p>
                             </div>
                             <div class="d-flex">
                                 <div class="btn px-1 text-danger shadow-none eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}" nombre-familiar="${familiar.primerNombre} ${familiar.primerApellido}">

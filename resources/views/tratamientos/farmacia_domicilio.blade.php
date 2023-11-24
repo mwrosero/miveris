@@ -12,10 +12,11 @@ Mi Veris - Citas - Farmacia a domicilio
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
                     <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud exitosa</h1>
-                    <p class="fs--1 fw-normal">Un asesor de farmacia te contactará pronto</p>
+                    <p class="fs--1 fw-normal" id="mensaje"> </p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris w-100"id="btnGuardarSolicitudLlamada"
+                     data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
@@ -80,12 +81,8 @@ Mi Veris - Citas - Farmacia a domicilio
     let familiar = [];
     let numeroIdentificacion = '';
     let tipoIdentificacion = '';
-    let nombrePaciente = '';
-    let direccion = '';
-    let telefono = '';
-    let ciudad = '';
-    let correo = '';
-
+    let message = '';
+    let codigoTratamiento = "{{ $codigoTratamiento }}";
     // llama al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -171,6 +168,7 @@ Mi Veris - Citas - Farmacia a domicilio
             "tipoIdentificacionPaciente": paciente.tipoIdentificacion,
             "identificacionPaciente": paciente.numeroIdentificacion,
             "nombrePaciente":  paciente.nombrePaciente,
+            "mail": paciente.correo,
             "direccion": getInput('direccion'), 
             "telefono": getInput('telefono'),
         });
@@ -181,9 +179,12 @@ Mi Veris - Citas - Farmacia a domicilio
         console.log('actualizarDatosUsuario',data);
         if(data.code == 200){
             $('#mensajeSolicitudLlamadaModal').modal('show');
+            document.getElementById("mensaje").innerHTML = data.message;
         }
         else{
-            alert("Error al guardar los datos");
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+            document.getElementById("mensaje").innerHTML = data.message;
+
         }
         return data;
 
@@ -191,24 +192,7 @@ Mi Veris - Citas - Farmacia a domicilio
 
     // funciones js
     
-    // obtener datos del select paciente
-    $('#paciente').change(function() {
-    var seleccion = $(this).val(); // Obtiene el valor seleccionado
-    var valores = seleccion.split(','); // Separa los valores
-
-    numeroIdentificacion = valores[0];
-    tipoIdentificacion = valores[1];
-    correo = valores[2];
-    var textoCompleto = $(this).find('option:selected').text();
-
-    // Extrayendo solo los nombres del paciente
-    nombrePaciente = textoCompleto.substring(0, textoCompleto.lastIndexOf(" ("));
-
-    console.log('nombrePaciente',nombrePaciente);
-    console.log('correo',correo);
-    console.log('numeroIdentificacion',numeroIdentificacion);
-    console.log('tipoIdentificacion',tipoIdentificacion);
-    });
+    
 
     // enviar datos
     
@@ -241,5 +225,9 @@ Mi Veris - Citas - Farmacia a domicilio
         consultarFarmaciaDomicilio();
     });
 
+    $('#btnGuardarSolicitudLlamada').click(function() {
+        $('#mensajeSolicitudLlamadaModal').modal('hide');
+        window.location.href = `/tratamiento/${codigoTratamiento}`;
+    });
 </script>
 @endpush

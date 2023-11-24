@@ -119,8 +119,9 @@ Mi Veris - Inicio
                 </div>
 
 
-                <button type="button" class="mt-n4 btn btn-prev">s</button>
-                <button type="button" class="mt-n4 btn btn-next"></button>
+                <button type="button" class="mt-n4 btn btn-prev btn-transition"></button>
+<button type="button" class="mt-n4 btn btn-next btn-transition"></button>
+
             </div>
 
 
@@ -142,8 +143,9 @@ Mi Veris - Inicio
 
                 </div>
 
-                <button type="button" class="mt-n4 btn btn-prev">s</button>
-                <button type="button" class="mt-n4 btn btn-next"></button>
+                
+                <button type="button" class="mt-n4 btn btn-prev smooth-transition"></button>
+                <button type="button" class="mt-n4 btn btn-next smooth-transition"></button>
             </div>
 
         </div>
@@ -161,8 +163,9 @@ Mi Veris - Inicio
                     
                 </div>
             </div>
-            <button type="button" class="mt-n4 btn btn-prev"></button>
-            <button type="button" class="mt-n4 btn btn-next"></button>
+            
+            <button type="button" class="mt-n4 btn btn-prev smooth-transition"></button>
+            <button type="button" class="mt-n4 btn btn-next smooth-transition"></button>
 
         </div>
     </section>
@@ -518,10 +521,14 @@ Mi Veris - Inicio
             const slides = swiperElement.querySelectorAll('.swiper-slide');
 
             // Ocultar botones si hay menos de 4 slides
-            if (slides.length < 4) {
-                prevButton.style.display = 'none';
-                nextButton.style.display = 'none';
-            }
+            console.log(slides.length);
+            if (slides.length >= 4) {
+            prevButton.style.opacity = 1;
+            nextButton.style.opacity = 1;
+        } else {
+            prevButton.style.opacity = 0;
+            nextButton.style.opacity = 0;
+        }
 
             new Swiper(swiperElement, {
                 navigation: {
@@ -529,22 +536,9 @@ Mi Veris - Inicio
                     prevEl: prevButton,
                 },
                     // Agrega aquí otras opciones de configuración si son necesarias
-                    slidesPerView: 6,
+                    slidesPerView: 3,
                     spaceBetween: 10,
-                    breakpoints: {
-                        640: {
-                            slidesPerView: 1,
-                            spaceBetween: 10,
-                        },
-                        768: {
-                            slidesPerView: 2,
-                            spaceBetween: 10,
-                        },
-                        1024: {
-                            slidesPerView: 3,
-                            spaceBetween: 10,
-                        },
-                    },
+                    
                 });
             });
     }
@@ -560,11 +554,14 @@ Mi Veris - Inicio
 
     
 
-
-
-
-
-
 </script>
+<style>
+    .btn-transition {
+    opacity: 0;
+    transition: opacity 0.01s ease;
+}
+
+
+</style>
 
 @endpush

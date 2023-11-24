@@ -60,13 +60,8 @@ Mi Veris - Citas - tratamiento
                 <div class="card rounded-0 border-0">
                     <div class="card-body p-3 pb-0">
                         <div class="row justify-content-between align-items-center">
-                            <div class="col-9 col-md-10">
-                                <h5 class="card-title text-primary mb-0"> </h5>
-                                <p class="fw-bold fs--2 mb-0"></p>
-                                <p class="fs--2 mb-0">Dr(a): </p>
-                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento"></b></p> 
-                                <p class="fs--2 mb-0"></p>
-                                <p id="codigoTratamiento"> </p>
+                            <div class="col-9 col-md-10" id="datosTratamientoCard">
+                                <!-- datos del tratamiento -->
                             </div>
                             <div class="col-3 col-md-2 col-lg-1">
                                 <div id="chart-progress" data-porcentaje="10" data-color="success"></div>
@@ -123,12 +118,11 @@ Mi Veris - Citas - tratamiento
     // variables globales
     let codigoTratamiento = {{ $codigoTratamiento }};
     let datosTratamiento = [];
+    let ultimoTratamiento = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerTratamientos();
     });
-
-    
 
     // funciones asyncronas
     // obtener tratamientos
@@ -143,7 +137,19 @@ Mi Veris - Citas - tratamiento
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
+            datosTratamiento = data.data.pendientes;
+            var ultimoTratamiento = datosTratamiento[datosTratamiento.length - 1];
+            console.log('ultimoTratamiento: ', ultimoTratamiento);
+            let datosTratamientoCard =  $('#datosTratamientoCard');
+            datosTratamientoCard.empty; // Limpia el contenido actual
+            let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
+                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
+                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedicoAtencion)}</p>
+                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${formatearFecha(ultimoTratamiento.fechaOrden)}</b></p>
+                                <p class="fs--2 mb-0">${data.data.datosConvenio.nombreConvenio}</p> `;
+            datosTratamientoCard.append(elemento);
             datosTratamiento = data.data;
+
             mostrarTratamientoenDiv();
             mostrarTratamientoenDivRealizados();
             
@@ -151,6 +157,8 @@ Mi Veris - Citas - tratamiento
         return data;
 
     }
+
+    
 
 
     // funciones js
@@ -266,15 +274,15 @@ Mi Veris - Citas - tratamiento
         if(tipoServicio == "FARMACIA" && aplicaSolicitud == 'S'){
             // Código para RECETA MÉDICA
             return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                    <a href="{{route('tratamientos.farmaciaDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    <a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else if (tipoServicio == "FARMACIA" && (aplicaSolicitud == 'N' || aplicaSolicitud == null)) {
             // Código para RECETA MÉDICA
             return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                    <a href="{{route('tratamientos.farmaciaDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    <a href="/farmacia-domicilio/${codigoTratamiento}"  class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else if (tipoServicio == "LABORATORIO" && esAgendable == 'N') {
             // Código para LABORATORIO
             return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                    <a href="{{route('citas.laboratorioDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar labor</a>`;
+                    <a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar labor</a>`;
         } else {
             // Código para otros servicios
             let botonAgendarClase = "btn btn-sm btn-primary-veris fw-normal fs--1";
@@ -315,6 +323,10 @@ Mi Veris - Citas - tratamiento
         else if (servicio == "INTERCONSULTA" || servicio == "CONSULTA" || servicio == "PROCEDIMIENTOS" || servicio == "ODONTOLOGIA"){
             return `<img class="rounded-circle" src="{{ asset('assets/img/svg/estetoscopio.svg') }}" width="26" alt="receta medica">`;
         }
+        else if (servicio == "TERAPIA"){
+            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="terapia">`;
+            return ``;
+        }
     }
 
     // determinar mensaje receta medica realizados  
@@ -343,7 +355,19 @@ Mi Veris - Citas - tratamiento
             return valor;
         }
     }
+
+    // formatear fecha
+    function formatearFecha(fecha) {
+    const meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
     
+    // Asumiendo que la fecha entra en formato "DD-MM-YYYY"
+    const partes = fecha.split('-');
+    const dia = partes[0];
+    const mes = meses[parseInt(partes[1], 10) - 1]; // Convertir a número y restar 1 porque los meses en JavaScript comienzan en 0
+    const año = partes[2];
+
+    return `${mes} ${dia}, ${año}`;
+}
 
 
 </script>

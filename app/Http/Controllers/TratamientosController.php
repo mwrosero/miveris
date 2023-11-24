@@ -28,8 +28,8 @@ class TratamientosController extends Controller
     }
 
     // Return view farmacia a domicilio
-    public function farmaciaDomicilio() {
-        return view('tratamientos.farmacia_domicilio');
+    public function farmaciaDomicilio($codigoTratamiento) {
+        return view('tratamientos.farmacia_domicilio', ['codigoTratamiento' => $codigoTratamiento]);
     }
 
     // Return view laboratorio a domicilio

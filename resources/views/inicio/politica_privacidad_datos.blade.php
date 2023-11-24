@@ -4,6 +4,22 @@ Mi Veris - Politica-privacidad-datos
 @endsection
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+    <!-- Modal mensaje -->
+    <div class="modal fade" id="mensajeActualizarPoliticas" tabindex="-1" aria-labelledby="mensajeActualizarPoliticasLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
+                    <p class="fs--1 fw-bold m-0 mt-3">Datos actualizados correctamente</p>
+                </div>
+                <div class="modal-footer pb-3 pt-0 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Política de privacidad de datos') }}</h5>
     <div class="row g-0 justify-content-center align-items-center">
         <div class="col-md-8">
@@ -109,7 +125,12 @@ Mi Veris - Politica-privacidad-datos
 
         });
         const data = await call(args);
-        console.log('datas',data);
+        if(data.code == 200){
+            $('#mensajeActualizarPoliticas').modal('show');
+            setTimeout(function() {
+                $('#mensajeActualizarPoliticas').modal('hide');
+            }, 2000);
+        }
         return data;
     }
     //obtener las politicas
