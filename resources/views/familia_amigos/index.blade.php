@@ -34,7 +34,7 @@ Mi Veris - Citas - Familia y amigos
                     <p class="fs--1 fw-bold m-0 mt-3">Persona agregada exitosamente</p>
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Entendido</button>
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
                 </div>
             </div>
         </div>
@@ -314,6 +314,12 @@ Mi Veris - Citas - Familia y amigos
             lista.appendChild(listItem);
         });
     }
+
+    // redireccionar a la lista de familiares
+
+    $("#btnEntendido").click(function() {
+        window.location.href = "{{route('familia.lista')}}";
+    });
 
 </script>
 <style>

@@ -5,9 +5,7 @@ Mi Veris - Mis Datos
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">Mis Datos</h5>
-    @forEach(Session::get('userData') as $key => $value)
-    <p class="ps-4 mb-1 pb-2 bg-white">{{ $key }}: {{ $value }}</p>
-    @endforeach
+    
     <div class="row g-0 justify-content-center align-items-center">
         <div class="col-md-8">
             <div class="card bg-transparent shadow-none">

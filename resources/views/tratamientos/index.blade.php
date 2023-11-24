@@ -7,7 +7,8 @@ Mi Veris - Citas - Mis tratamientos
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-    @include('components.offCanva')
+    @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Mis tratamientos') }}</h5>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -22,7 +23,7 @@ Mi Veris - Citas - Mis tratamientos
             
             <div class="tab-content bg-transparent" id="pills-tabContent">
                 
-                @include('components.barraFiltro')
+                @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     
                     <div class="d-flex justify-content-center">
@@ -250,6 +251,7 @@ Mi Veris - Citas - Mis tratamientos
     }
     // aplicar filtros
     $('#aplicarFiltros').on('click', async function(){
+        let contexto = $(this).data('context');
         let pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').val();
         let fechaDesde = $('#fechaDesde').val();
         let fechaHasta = $('#fechaHasta').val();
@@ -263,18 +265,24 @@ Mi Veris - Citas - Mis tratamientos
 
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
+        if (contexto === 'contextoAplicarFiltros') {
+            await obtenerTratamientosId(pacienteSeleccionado, fechaDesde, fechaHasta, estadoTratamiento);
+        }
 
-
-        await obtenerTratamientosId(pacienteSeleccionado, fechaDesde, fechaHasta, estadoTratamiento);
+        
         
     });
     // limpiar filtros
     $('#btnLimpiarFiltros').on('click', async function(){
-        $('input[name="listGroupRadios"]').prop('checked', false);
-        $('input[name="listGroupRadios"]').first().prop('checked', true);
-        $('#fechaDesde').val('');
-        $('#fechaHasta').val('');
-        await obtenerTratamientos();
+        let contexto = $(this).data('context');
+        if (contexto === 'contextoLimpiarFiltros') {
+            $('input[name="listGroupRadios"]').prop('checked', false);
+            $('input[name="listGroupRadios"]').first().prop('checked', true);
+            $('#fechaDesde').val('');
+            $('#fechaHasta').val('');
+            await obtenerTratamientos();
+        }
+        
     });
     // formatear fecha
     function formatearFecha(fecha) {
@@ -311,7 +319,7 @@ Mi Veris - Citas - Mis tratamientos
         args["showLoader"] = false;
         console.log(args["endpoint"]);
         const data = await call(args);
-        console.log(data.data.items);
+        console.log('sa',data);
         if(data.code == 200){
             console.log(data.data.items.length);
             if (data.data.items.length == 0) {
