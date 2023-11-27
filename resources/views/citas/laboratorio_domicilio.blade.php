@@ -15,7 +15,8 @@ Mi Veris - Citas - Laboratorio a domicilio
                     <p class="fs--1 fw-normal">Un asesor te contactará pronto</p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal" id="btnEntendido"
+                    >Entiendo</button>
                 </div>
             </div>
         </div>
@@ -78,12 +79,15 @@ Mi Veris - Citas - Laboratorio a domicilio
 @push('scripts')
 <script></script>
 <script>
+    // variables globales
+    let codigoTratamiento = {{ $codigoTratamiento }};
 
     // llama al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarPacientes();
         await consultarCiudades();
+        console.log('codigoTratamiento', codigoTratamiento);
     });
 
     // funciones asyncronas
@@ -184,17 +188,17 @@ Mi Veris - Citas - Laboratorio a domicilio
     // funciones js
     // obtener datos del select paciente
     $('#paciente').change(function() {
-    var seleccion = $(this).val(); // Obtiene el valor seleccionado
-    var valores = seleccion.split(','); // Separa los valores
+        var seleccion = $(this).val(); // Obtiene el valor seleccionado
+        var valores = seleccion.split(','); // Separa los valores
 
-    numeroIdentificacion = valores[0];
-    tipoIdentificacion = valores[1];
-    correo = valores[2];
-    var textoCompleto = $(this).find('option:selected').text();
+        numeroIdentificacion = valores[0];
+        tipoIdentificacion = valores[1];
+        correo = valores[2];
+        var textoCompleto = $(this).find('option:selected').text();
 
-   
-    // Extrayendo solo los nombres del paciente
-    nombrePaciente = textoCompleto.substring(0, textoCompleto.lastIndexOf(" ("));
+    
+        // Extrayendo solo los nombres del paciente
+        nombrePaciente = textoCompleto.substring(0, textoCompleto.lastIndexOf(" ("));
     });
 
      // obtener los datos del select ciudades
@@ -208,7 +212,6 @@ Mi Veris - Citas - Laboratorio a domicilio
     });
 
     // enviar datos
-    
     $('#btnGuardar').click(function() {
         if ($('#paciente').val() == '') {
             $('#paciente').addClass('is-invalid');
@@ -237,6 +240,12 @@ Mi Veris - Citas - Laboratorio a domicilio
         // $('#mensajeSolicitudLlamadaModal').modal('show');
         crearSolicitudLaboratorioDomicilio();
     });
+
+    // boton entendido
+    $('#btnEntendido').click(function() {
+        window.location.href = `/tratamiento/${codigoTratamiento}`;
+    });
+
 
 </script>
 @endpush

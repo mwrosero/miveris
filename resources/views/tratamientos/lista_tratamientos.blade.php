@@ -60,13 +60,8 @@ Mi Veris - Citas - tratamiento
                 <div class="card rounded-0 border-0">
                     <div class="card-body p-3 pb-0">
                         <div class="row justify-content-between align-items-center">
-                            <div class="col-9 col-md-10">
-                                <h5 class="card-title text-primary mb-0"> </h5>
-                                <p class="fw-bold fs--2 mb-0"></p>
-                                <p class="fs--2 mb-0">Dr(a): </p>
-                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento"></b></p> 
-                                <p class="fs--2 mb-0"></p>
-                                <p id="codigoTratamiento"> </p>
+                            <div class="col-9 col-md-10" id="datosTratamientoCard">
+                                <!-- datos del tratamiento -->
                             </div>
                             <div class="col-3 col-md-2 col-lg-1">
                                 <div id="chart-progress" data-porcentaje="10" data-color="success"></div>
@@ -94,7 +89,7 @@ Mi Veris - Citas - tratamiento
         </div>
     </section>
     <section class="p-0 px-md-3">
-        <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue">{{ __('Pendientes') }}</h5>
+        <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue" id="tituloTratamientoPendiente" style="display: none;">{{ __('Pendientes') }}</h5>
         <div class="row g-0 justify-content-center">
             <div class="col-12 col-md-6 col-lg-5">
                 <div class="px-3" id="contenedorTratamientoPendiente">
@@ -105,7 +100,7 @@ Mi Veris - Citas - tratamiento
                 </div>
             </div>
         </div>
-        <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue">{{ __('Realizados') }}</h5>
+        <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue" id="tituloTratamientoRealizado" style="display: none;">{{ __('Realizados') }}</h5>
         <div class="row g-0 justify-content-center">
             <div class="col-12 col-md-6 col-lg-5">
                 <div class="px-3" id="contenedorTratamientoRealizado">
@@ -123,29 +118,11 @@ Mi Veris - Citas - tratamiento
     // variables globales
     let codigoTratamiento = {{ $codigoTratamiento }};
     let datosTratamiento = [];
+    let ultimoTratamiento = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        //await obtenerInfoTratamiento();
         await obtenerTratamientos();
     });
-
-    async function obtenerInfoTratamiento(){
-        let args = [];
-        let canalOrigen = _canalOrigen;
-        args["endpoint"] = api_url + `/digitales/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
-        console.log(args["endpoint"]);
-        args["method"] = "GET";
-        args["showLoader"] = false;
-        const data = await call(args);
-        console.log(data);
-        if(data.code == 200){
-            datosTratamiento = data.data;
-            mostrarTratamientoenDiv();
-            mostrarTratamientoenDivRealizados();
-            
-        }
-        return data;
-    }
 
     // funciones asyncronas
     // obtener tratamientos
@@ -160,7 +137,19 @@ Mi Veris - Citas - tratamiento
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
+            datosTratamiento = data.data.pendientes;
+            var ultimoTratamiento = datosTratamiento[datosTratamiento.length - 1];
+            console.log('ultimoTratamiento: ', ultimoTratamiento);
+            let datosTratamientoCard =  $('#datosTratamientoCard');
+            datosTratamientoCard.empty; // Limpia el contenido actual
+            let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
+                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
+                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedicoAtencion)}</p>
+                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${formatearFecha(ultimoTratamiento.fechaOrden)}</b></p>
+                                <p class="fs--2 mb-0">${data.data.datosConvenio.nombreConvenio}</p> `;
+            datosTratamientoCard.append(elemento);
             datosTratamiento = data.data;
+
             mostrarTratamientoenDiv();
             mostrarTratamientoenDivRealizados();
             
@@ -168,6 +157,8 @@ Mi Veris - Citas - tratamiento
         return data;
 
     }
+
+    
 
 
     // funciones js
@@ -178,39 +169,43 @@ Mi Veris - Citas - tratamiento
 
         let divContenedor = $('#contenedorTratamientoPendiente');
         divContenedor.empty(); // Limpia el contenido actual
-        data.forEach((tratamientos) => {
-             
-                let elemento = `<div class="card mb-3">
-                                    <div class="card-body fs--2 p-3">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio} </h6>
-                                            <span class="text-warning-veris" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
-                                        </div>
-                                        <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${tratamientos.fechaCaducidad}</b></p>
-                                        <div id="recetaMedicaMensaje">
-                                            ${determinarMensajeRecetaMedica(tratamientos.nombreServicio)}
-                                        </div> 
-                                        
-                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                ${determinarAvatar(tratamientos.nombreServicio)}
+        if(data.length > 0){
+            data.forEach((tratamientos) => {
+                
+                    let elemento = `<div class="card mb-3">
+                                        <div class="card-body fs--2 p-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio} </h6>
+                                                <span class="text-warning-veris" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                             </div>
-                                            <div>
-                                                ${determinarbotonesRecetaMedica(tratamientos.nombreServicio, tratamientos.esAgendable, tratamientos.tipoServicio)}  
-                                            </div>
+                                            <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(tratamientos.fechaCaducidad)}</b></p>
+                                            <div id="recetaMedicaMensaje">
+                                                ${determinarMensajeRecetaMedica(tratamientos.nombreServicio)}
+                                            </div> 
                                             
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
+                                                    ${determinarAvatar(tratamientos.tipoServicio)}
+                                                </div>
+                                                <div>
+                                                    ${determinarbotonesRecetaMedica(tratamientos.nombreServicio, tratamientos.esAgendable, tratamientos.tipoServicio, tratamientos.aplicaSolicitud)}  
+                                                </div>
+                                                
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>`;
+                                    </div>`;
 
-                divContenedor.append(elemento);
-            
-        });
-        chartProgres("#chart-progress");
+                    divContenedor.append(elemento);
+                
+            });
+            // mostrar el titulo de pendientes
+            document.getElementById("tituloTratamientoPendiente").style.display = "block";
+            chartProgres("#chart-progress");
+        }
+        
     }
 
     // mostrar el tratamientos realizados
-
     function mostrarTratamientoenDivRealizados(){
 
         let data = datosTratamiento.realizados;
@@ -218,37 +213,38 @@ Mi Veris - Citas - tratamiento
         
         let divContenedorRealizados = $('#contenedorTratamientoRealizado');
         divContenedorRealizados.empty(); // Limpia el contenido actual
+        if(data.length > 0){
+            data.forEach((tratamientos) =>{
+                console.log('tratamientosee: ', tratamientos.nombreServicio); 
 
-        data.forEach((tratamientos) =>{
-
-            let elementoRealizados = `<div class="card mb-3">
-                                        <div class="card-body fs--2 p-3">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio} </h6>
-                                               
+                let elemento = `<div class="card mb-3">
+                                    <div class="card-body fs--2 p-3">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio}</h6>
+                                            <span id="estado"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span></span>
+                                        </div>
+                                        <div>
+                                            
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                            <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
+                                                ${determinarAvatar(tratamientos.tipoServicio)}
                                             </div>
                                             <div>
-                                                ${determinarMensajeRecetaMedicaRealizados(tratamientos.nombreServicio)}
-                                                
+                                                ${determinarbotonesRecetaMedicaRealizados(tratamientos.tipoServicio)}
                                             </div>
                                             
-                                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                    ${determinarAvatar(tratamientos.nombreServicio)}
-                                                </div>
-                                                <div>
-                                                    ${determinarbotonesRecetaMedicaRealizadosDetalle(tratamientos.nombreServicio, tratamientos.fechaOrden,
-                                                        tratamientos.nombrePaciente, tratamientos.nombreMedicoAtencion, tratamientos.nombreSucursal)}
-                                                </div>
-                                                
-                                            </div>
                                         </div>
-                                    </div>`;
+                                    </div>
+                                </div>`;
 
-            divContenedorRealizados.append(elementoRealizados);
-            
+                divContenedorRealizados.append(elemento);
+                
+            });
+             // mostrar el titulo de realizados
+            document.getElementById("tituloTratamientoRealizado").style.display = "block";
         }
-        );
+       
 
     }
 
@@ -272,19 +268,22 @@ Mi Veris - Citas - tratamiento
     }
 
     // determinar si es receta medica o no botones
-    function determinarbotonesRecetaMedica(servicio, esAgendable, tipoServicio){
+    function determinarbotonesRecetaMedica(servicio, esAgendable, tipoServicio, aplicaSolicitud){
         console.log('esAgendable: ' + esAgendable);
     
-        if(servicio == "RECETA MÉDICA"){
+        if(tipoServicio == "FARMACIA" && aplicaSolicitud == 'S'){
             // Código para RECETA MÉDICA
             return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                    <a href="{{route('tratamientos.farmaciaDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    <a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+        } else if (tipoServicio == "FARMACIA" && (aplicaSolicitud == 'N' || aplicaSolicitud == null)) {
+            // Código para RECETA MÉDICA
+            return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
+                    <a href="/farmacia-domicilio/${codigoTratamiento}"  class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else if (tipoServicio == "LABORATORIO" && esAgendable == 'N') {
             // Código para LABORATORIO
             return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                    <a href="{{route('citas.laboratorioDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar labor</a>`;
-        } 
-        else {
+                    <a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar labor</a>`;
+        } else {
             // Código para otros servicios
             let botonAgendarClase = "btn btn-sm btn-primary-veris fw-normal fs--1";
             let botonAgendarDisabled = "";
@@ -303,7 +302,7 @@ Mi Veris - Citas - tratamiento
 
     // determinar si es receta medica o no botones realizados
     function determinarbotonesRecetaMedicaRealizados(servicio){
-        if(servicio == "RECETA MÉDICA"){
+        if(servicio == "FARMACIA"){
             return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver receta</a> `;
                                             
         }
@@ -315,16 +314,23 @@ Mi Veris - Citas - tratamiento
 
     // determinar avatar 
     function determinarAvatar(servicio){
-        if(servicio == "RECETA MÉDICA"){
+        if(servicio == "FARMACIA"){
             return `<img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">`;
         }
-        else{
-            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">`;
+        else if (servicio == "LABORATORIO"){
+            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/microscopio.svg') }}" width="26" alt="receta medica">`;
+        }
+        else if (servicio == "INTERCONSULTA" || servicio == "CONSULTA" || servicio == "PROCEDIMIENTOS" || servicio == "ODONTOLOGIA"){
+            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/estetoscopio.svg') }}" width="26" alt="receta medica">`;
+        }
+        else if (servicio == "TERAPIA"){
+            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="terapia">`;
+            return ``;
         }
     }
 
     // determinar mensaje receta medica realizados  
-    function determinarbotonesRecetaMedicaRealizadosDetalle(servicio, fechaOrden, nombrePaciente, nombreMedicoAtencion, nombreSucursal){
+    function determinarRecetaMedicaRealizadosDetalle(servicio, fechaOrden, nombrePaciente, nombreMedicoAtencion, nombreSucursal){
         console.log('entro a determinarbotonesRecetaMedicaRealizadosDetalle');
         if(servicio != "RECETA MÉDICA"){
             console.log('servicio: ', servicio);
@@ -339,7 +345,29 @@ Mi Veris - Citas - tratamiento
             return ``;
         }
     }
+
+    // determinar valores null 
+    function determinarValoresNull(valor){
+        if(valor == null){
+            return '';
+        }
+        else{
+            return valor;
+        }
+    }
+
+    // formatear fecha
+    function formatearFecha(fecha) {
+    const meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
     
+    // Asumiendo que la fecha entra en formato "DD-MM-YYYY"
+    const partes = fecha.split('-');
+    const dia = partes[0];
+    const mes = meses[parseInt(partes[1], 10) - 1]; // Convertir a número y restar 1 porque los meses en JavaScript comienzan en 0
+    const año = partes[2];
+
+    return `${mes} ${dia}, ${año}`;
+}
 
 
 </script>
