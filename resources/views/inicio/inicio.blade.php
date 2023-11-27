@@ -14,7 +14,7 @@ Mi Veris - Inicio
                 <div class="modal-body px-2 pt-2">
                     <h5 class="text-center mb-4">¿Qué quieres agendar?</h5>
                     <div class="d-flex justify-content-around align-items-center mb-3">
-                        <a href="#" class="btn border py-0 px-2">
+                        <a href="/mis-tratamientos" class="btn border py-0 px-2">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
                                     <p class="text-start fs--2 fw-bold mb-0">Lo que envió <br> mi doctor</p>
