@@ -7,7 +7,7 @@ Mi Veris - Citas - Mis tratamientos
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-    @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
+    
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Mis tratamientos') }}</h5>
     <section class="p-3 mb-3">
@@ -20,9 +20,10 @@ Mi Veris - Citas - Mis tratamientos
                     <button class="nav-link" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
+           
             
             <div class="tab-content bg-transparent" id="pills-tabContent">
-                
+                @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     

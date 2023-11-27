@@ -130,11 +130,8 @@ Mi Veris - Inicio
 
     <!-- fin tratamientos dinamico -->
 
-    <section class="bg-light-grayish-blue p-3 mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold border-start-veris ps-3">Próximas citas</h5>
-            <a href="#!" class="fs--2">Ver todos</a>
-        </div>
+    <section class="bg-light-grayish-blue p-3 mb-3" id="citasContainer">
+        
         <div class="position-relative mb-3" id="contenedorCitasHomePrincipal">
             <div class="swiper swiper-proximas-citas pt-3 pb-4 px-2 mx-n2">
                 <div class="swiper-wrapper" id="contenedorCitas">
@@ -150,11 +147,8 @@ Mi Veris - Inicio
 
         </div>
     </section>
-    <section class="bg-light-grayish-blue p-3 mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold border-start-veris ps-3">Urgencias ambulatorias</h5>
-            <a href="#!" class="fs--2">Ver todos</a>
-        </div>
+    <section class="bg-light-grayish-blue p-3 mb-3" id="urgenciasContainer">
+        
         <div class="position-relative mb-3" id="contenedorUrgenciasAmbulatoriasHomePrincipal">
             <div class="swiper swiper-urgencias-ambulatorias pt-3 pb-4 px-2 mx-n2">
                 <div class="swiper-wrapper" id="contenedorUrgenciasAmbulatorias">
@@ -422,11 +416,15 @@ Mi Veris - Inicio
     function mostrarCitasenDiv() {
         let data = datosCitas;
 
-        let divContenedor = $('#contenedorCitas');
+        let divContenedor = $('#citasContainer');
             divContenedor.empty(); // Limpia el contenido actual
+            let elemento =+ `<div class="d-flex justify-content-between align-items-center">
+                                <h5 class="fw-bold border-start-veris ps-3">Próximas citas</h5>
+                                <a href="#!" class="fs--2">Ver todos</a>
+                            </div>`;
 
             data.forEach((citas) => {
-                let elemento = `<div class="swiper-slide">
+                let elemento =+ `<div class="swiper-slide">
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between align-items-center">
@@ -453,13 +451,10 @@ Mi Veris - Inicio
     function mostrarNoExistenCitas() {
         let data = datosCitas;
 
-        let divContenedor = $('#contenedorCitasHomePrincipal');
+        let divContenedor = $('#citasContainer');
             divContenedor.empty(); // Limpia el contenido actual
 
-            let elemento = `<div class="text-center">
-                                <img src="{{ asset('assets/img/svg/doctor.svg') }}" alt="">
-                                <h6 class="fw-normal">Agenda una cita y revisa tus <b>citas</b> aquí</h6>
-                            </div>`;
+            let elemento = ``;
 
             divContenedor.append(elemento);
     }
@@ -468,11 +463,15 @@ Mi Veris - Inicio
     function mostrarUrgenciasAmbulatorias() {
         let data = datosCitas;
 
-        let divContenedor = $('#contenedorUrgenciasAmbulatorias');
+        let divContenedor = $('#urgenciasContainer');
             divContenedor.empty(); // Limpia el contenido actual
+            let elemento =+ `<div class="d-flex justify-content-between align-items-center">
+                                <h5 class="fw-bold border-start-veris ps-3">Urgencias ambulatorias</h5>
+                                <a href="#!" class="fs--2">Ver todos</a>
+                            </div>`;
 
             data.forEach((urgencias) => {
-                let elemento = `<div class="swiper-slide">
+                let elemento =+ `<div class="swiper-slide">
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between align-items-center">
@@ -501,13 +500,10 @@ Mi Veris - Inicio
         console.log('no hay urgencias');
         let data = datosCitas;
 
-        let divContenedor = $('#contenedorUrgenciasAmbulatoriasHomePrincipal');
+        let divContenedor = $('#urgenciasContainer');
             divContenedor.empty(); // Limpia el contenido actual
 
-            let elemento = `<div class="text-center">
-                                <img src="{{ asset('assets/img/svg/doctor.svg') }}" alt="">
-                                <h6 class="fw-normal">Agenda una cita y revisa tus <b>citas</b> aquí</h6>
-                            </div>`;
+            let elemento = ``;
 
             divContenedor.append(elemento);
     }
