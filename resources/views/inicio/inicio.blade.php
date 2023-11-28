@@ -24,7 +24,7 @@ Mi Veris - Inicio
                                 </div>
                             </div>
                         </a>
-                        <a href="#" class="btn border py-0 px-2">
+                        <a href="/citas" class="btn border py-0 px-2">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
                                     <p class="text-start fs--2 fw-bold mb-0">Una nueva <br> cita médica</p>

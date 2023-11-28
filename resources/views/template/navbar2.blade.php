@@ -17,7 +17,7 @@
         </div>
         <!-- /Search -->
         <!-- Logo veris -->
-        <a class="navbar-brand mx-auto" href="#">
+        <a class="navbar-brand mx-auto" href="/">
             <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" alt="Bootstrap" width="84">
         </a>
 
