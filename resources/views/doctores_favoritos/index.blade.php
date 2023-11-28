@@ -41,9 +41,7 @@ Mi Veris - Doctores favoritos
                 </div>
             </div>
             <!-- Mensaje END -->
-            <div class="col-12 col-md-6 text-center mt-5">
-                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-50">Buscar doctor</a>
-            </div>
+            
         </div>
     </section>
 </div>
@@ -114,7 +112,11 @@ Mi Veris - Doctores favoritos
                                 </div>`;
                 html.append(elemento);
             });
-            
+
+            elemento = `<div class="col-12 col-md-6 text-center mt-5">
+                            <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-50">Buscar doctor</a>
+                        </div>`;
+            html.append(elemento);
         } else {
             $('.d-none').removeClass('d-none');
         }

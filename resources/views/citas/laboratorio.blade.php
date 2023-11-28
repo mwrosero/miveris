@@ -114,7 +114,7 @@ Mi Veris - Citas - Laboratorio
                                                 </div>
                                                 <div>
                                                     <a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
-                                                    <a href="{{route('citas.laboratorioDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>
+                                                    <a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -155,7 +155,7 @@ Mi Veris - Citas - Laboratorio
                                                 </div>
                                                 <div>
                                                     <a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
-                                                    <a href="{{route('citas.laboratorioDomicilio')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>
+                                                    <a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>
                                                 </div>
                                             </div>
                                         </div>

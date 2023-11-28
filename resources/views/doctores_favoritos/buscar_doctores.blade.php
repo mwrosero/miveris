@@ -18,6 +18,7 @@ Mi Veris - Buscar doctor
                 <h6 class="fw-light">Selecciona la especialidad</h6>
                 
                 <div class="list-group gap-2 mb-3" id="listaEspecialidades">
+                    <!-- especialidades dinamicas -->
                     
                     
                 </div>
@@ -30,7 +31,7 @@ Mi Veris - Buscar doctor
                 </div>
                 <div class="col-md-12 mb-3">
                     <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>
-                    <button class="btn text-primary w-100 mb-3 mx-0" type="button"><i class="bi bi-trash me-2" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"></i> Limpiar filtros</button>
+                    <button class="btn text-primary w-100 mb-3 mx-0" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><i class="bi bi-trash me-2" ></i> Limpiar filtros</button>
                 </div>
             </form>
         </div>
@@ -51,10 +52,11 @@ Mi Veris - Buscar doctor
                 <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroSearchDoctors" aria-controls="filtroSearchDoctors"><i class="bi bi-sliders me-1"></i> Filtros</button>
             </div>
             <div class="col-auto col-lg-10">
-                <div class="row gy-3">
+                <div class="row gy-3" id="doctoresFavoritos">
+                    
                     
                     <!-- Mensaje No hay doctores disponibles -->
-                    <div class="col-12 d-flex justify-content-center d-none">
+                    <div class="col-12 d-flex justify-content-center d-none" id="noHayDoctores">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
@@ -135,8 +137,9 @@ Mi Veris - Buscar doctor
         console.log('fechaDesde',fechaDesde);
         console.log('fechaHasta',fechaHasta);
         
-        fechaDesde = formatearFecha(fechaDesde);
-        fechaHasta = formatearFecha(fechaHasta);
+        fechaDesde = esFechaValida(fechaDesde) ? formatearFecha(fechaDesde) : '';
+        fechaHasta = esFechaValida(fechaHasta) ? formatearFecha(fechaHasta) : '';
+
         args["endpoint"] = api_url + `/digitales/v1/perfil/doctores?codigoUsuario=${codigoUsuario}&codigoSucursal=${codigoSucursal}&codigoEspecialidad=${codigoEspecialidad}&fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}&canalOrigen=${canalOrigen}`;
     
         console.log(args["endpoint"]);
@@ -144,8 +147,78 @@ Mi Veris - Buscar doctor
         args["showLoader"] = false;
         const data = await call(args);
         console.log('disponibilidadzzz',data);
+        if (data.code == 200){
+            if (data.data.length == 0){
+                console.log('no hay doctores');
+                $('#noHayDoctores').removeClass('d-none');
+            } else{
+
+                let doctores = data.data;
+                let html = $('#doctoresFavoritos');
+                html.empty();
+                data.data.forEach(element => {
+                    let disponibilidad = obtenerDisponibilidadDoctor(element);
+                    let elemento = `<div class="col-12 col-md-6">
+                                        <div class="card">
+                                            <div class="card-body p-3">
+                                                <div class="row gx-2 align-items-center">
+                                                    <div class="col-3">
+                                                        <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='https://i.pinimg.com/474x/93/b5/f9/93b5f9913d2e4316cd6e541c67b9aed0.jpg';">
+                                                    </div>
+                                                    <div class="col-7">
+                                                        <h6 class="fw-bold mb-0">Dr(a) ${capitalizarElemento(element.primerNombre)} ${capitalizarElemento(element.segundoNombre)} ${capitalizarElemento(element.primerApellido)} ${capitalizarElemento(element.segundoApellido)}</h6>
+                                                        <p class="text-primary-veris fw-bold fs--2 mb-0">${capitalizarElemento(element.nombreSucursal)}</p>
+                                                        <p class="fs--2 mb-0">${capitalizarElemento(element.nombreEspecialidad)}</p>
+                                                    </div>
+                                                    <div class="col-2 text-center">
+                                                        <a href="#!" class="btn rounded-pill btn-icon btn-primary-veris" onclick="agregarDoctorFavorito(${element})"
+                                                        ><i class="bi bi-plus-lg"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                    html.append(elemento);
+                });
+            }
+        }
         
     }
+
+    // agregar doctores favoritos 
+    async function agregarDoctorFavorito(doctor) {
+
+        let args = [];
+        let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
+        args["endpoint"] = api_url + `/digitales/v1/perfil/doctores/favoritos/agregar?codigoUsuario=${codigoUsuario}`;
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "POST";
+        args["showLoader"] = false;
+        args["bodyType"] = "json";
+
+        args["data"] = JSON.stringify({
+            "codigoEspecialidad": doctor.codigoEspecialidad,
+            "codigoProfesional": doctor.codigoProfesional,
+            "nombreDoctor": doctor.primerNombre + ' ' + doctor.segundoNombre + ' ' + doctor.primerApellido + ' ' + doctor.segundoApellido,
+            "nombreEspecialidad": doctor.nombreEspecialidad,
+            "secuenciaPersonal": doctor.secuenciaPersonal,
+            "imagen": doctor.imagen,
+            "codigoSucursal": doctor.codigoSucursal,
+            "codigoEmpresa": doctor.codigoEmpresa,
+            "esOnline": doctor.esOnline,
+        });
+
+        console.log('args', args["data"]);
+
+        const data = await call(args);
+        console.log('data', data);
+        if (data.code == 200) {
+            console.log('doctor agregado');
+        }
+
+    }
+
+
     
     // funciones js
 
@@ -169,14 +242,9 @@ Mi Veris - Buscar doctor
 
     // limpiar filtros
     $('#btnLimpiarFiltros').on('click', async function(){
-        let contexto = $(this).data('context');
-        if (contexto === 'contextoLimpiarFiltros') {
-            $('input[name="listGroupRadios"]').prop('checked', false);
-            $('input[name="listGroupRadios"]').first().prop('checked', true);
-            $('#fechaDesde').val('');
-            $('#fechaHasta').val('');
-            await obtenerTratamientos();
-        }
+        console.log('limpiar filtros');
+        $('#fechaDesde').val('');
+        $('#fechaHasta').val('');
     });
 
     // formatear fecha

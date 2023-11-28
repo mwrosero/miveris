@@ -355,5 +355,35 @@ Mi Veris - Citas - Imágenes y procedimientos
     flatpickr("#fechaHasta", {
         // maxDate: "today"
     });
+
+    // variables globales
+
+    // llamada al dom
+    document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerTratamientosImagenProcedimientos();
+    });
+
+    // funciones asyncronas
+    // Consultar los tratamientos de un paciente imagen y procedimientos
+    async function obtenerTratamientosImagenProcedimientos(estado) {
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
+        let plataforma = _plataforma;
+        let version = _version;
+        estado = 'PENDIENTE'
+        
+        args["endpoint"] = api_url + `/digitales/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=LABORATORIO&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        console.log(args["endpoint"]);
+        const data = await call(args);
+        console.log('tratamientos',data);
+        
+
+        return data;
+
+    }
+
 </script>
 @endpush
