@@ -244,6 +244,13 @@
             const textoCapitalizado = palabras.join(" ");
             return textoCapitalizado;
         }
+        // funcion quitar comillas a la url
+        function quitarComillas(url){
+            console.log('imagen',url);
+            if (url == null) return "";
+            let urlSinComillas = url.replace(/['"]+/g, '');
+            return urlSinComillas;
+        }
 
     </script>
     @stack('scripts')
