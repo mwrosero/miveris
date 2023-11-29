@@ -25,7 +25,13 @@ Mi Veris - Doctores favoritos
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Doctores favoritos') }}</h5>
     <section class="p-3 mb-3">
-        <div class="row justify-content-center" id="doctoresFavoritos">
+        <div class="row justify-content-center" >
+            <div class="col-12 col-md-6 text-center mt-5 mb-5">
+                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-50">Buscar doctor</a>
+            </div>
+            <div class="row justify-content-center"  id="doctoresFavoritos" >
+
+            </div>
             <!-- Doctor favorito dinamico -->
             
 
@@ -83,6 +89,7 @@ Mi Veris - Doctores favoritos
 
             // Esperar a que todas las promesas se resuelvan
             const resultados = await Promise.all(promesas);
+            
 
             // Ahora iterar sobre los resultados para construir el HTML
             resultados.forEach((disponibilidad, index) => {
@@ -91,8 +98,9 @@ Mi Veris - Doctores favoritos
                                     <div class="card">
                                         <div class="card-body p-3">
                                             <div class="row gx-2">
-                                                <div class="col-3">
-                                                    <img src=${doctores.imagen} class="card-img-top" alt="centro medico" onerror="this.src='https://i.pinimg.com/474x/93/b5/f9/93b5f9913d2e4316cd6e541c67b9aed0.jpg';">
+                                                <div class="col-3 d-flex justify-content-center align-items-center">
+                                                    <img src=${doctores.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
+
                                                 </div>
 
                                                 <div class="col-9">
@@ -113,10 +121,7 @@ Mi Veris - Doctores favoritos
                 html.append(elemento);
             });
 
-            elemento = `<div class="col-12 col-md-6 text-center mt-5">
-                            <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-50">Buscar doctor</a>
-                        </div>`;
-            html.append(elemento);
+            
         } else {
             $('.d-none').removeClass('d-none');
         }

@@ -245,28 +245,12 @@
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0 py-0 px-0">
         <h5 id="offcanvasEndLabel" class="offcanvas-title px-3 mb-3">Notificaciones</h5>
-        <div class="border-300" id="notificaciones">
+        <div class="border-300" id= "notificaciones">
             
             <!-- Notificaciones dinamicas -->
             
         </div>
-        <div class="px-3 mt-5">
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link bg-transparent" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&lt;</span>
-                        </a>
-                    </li>
-                    <li class="page-item disabled"><span class="page-link bg-transparent">1 de 2</span></li>
-                    <li class="page-item">
-                        <a class="page-link bg-transparent" href="#" aria-label="Next">
-                            <span aria-hidden="true">&gt;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        
     </div>
 </div>
 
@@ -298,7 +282,7 @@
             console.log('notificaciones');
             
             let notificaciones = data.data;
-            let html = $('#notificaciones').html();
+            let html = $('#notificaciones')
             html.empty();
             notificaciones.forEach(notificacion => {
                 html += `<div class="py-3 border-bottom px-3 bg-light-grayish-cyan">
@@ -317,12 +301,36 @@
                         </div>`;
                         
             });
+            html += `<div class="px-3 mt-5">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <a class="page-link bg-transparent" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item disabled"><span class="page-link bg-transparent">1 de 2</span></li>
+                                <li class="page-item">
+                                    <a class="page-link bg-transparent" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&gt;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>`;
             html.append(html);
         } else {
-            console.log ('no hay notificaciones');
-           
+            // crear esceario de no notificaciones
+
+            let html = $('#notificaciones')
+            html.empty();
+            // crear div de no notificaciones
+            html = ``;
+            html.append(html);
         }
+        return data;
     }
+
 
     
 
