@@ -252,6 +252,12 @@
             return urlSinComillas;
         }
 
+        //determinar valores null
+        function determinarValorNull(valor){
+            if (valor == null) return "";
+            return valor;
+        }
+
     </script>
     @stack('scripts')
 </body>

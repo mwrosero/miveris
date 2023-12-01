@@ -51,7 +51,7 @@ Mi Veris - Citas - Imágenes y procedimientos
                     <!-- Mensaje END -->
 
                     <!-- Mensaje No tienes permisos de administrador -->
-                    <div class="col-12 d-flex justify-content-center d-none">
+                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesPermisosAdministrador">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
@@ -92,7 +92,7 @@ Mi Veris - Citas - Imágenes y procedimientos
                     <!-- Mensaje END -->
 
                     <!-- Mensaje No tienes permisos de administrador -->
-                    <div class="col-12 d-flex justify-content-center d-none">
+                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesPermisosAdministradorRealizados">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
@@ -134,14 +134,23 @@ Mi Veris - Citas - Imágenes y procedimientos
 
     // funciones asyncronas
     // Consultar los tratamientos de un paciente imagen y procedimientos
-    async function obtenerTratamientos(estado, pacienteSeleccionado, fechaDesde, fechaHasta) {
+    async function obtenerTratamientos(estado, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin) {
         console.log('obtenerTratamientosImagenProcedimientos');
+        console.log('pacienteSeleccionado', pacienteSeleccionado);
         let args = [];
         let canalOrigen = _canalOrigen;
+                
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
+        if (pacienteSeleccionado) {
+            numeroPaciente = pacienteSeleccionado;
+        }
+        let admin = esAdmin;
+        if (admin == undefined || admin == null) {
+            admin = 'S';
+        }
         let plataforma = _plataforma;
         let version = _version;
-        let servicio = 'IMAGENES';
+        let servicio = 'IMAGENES,PROCEDIMIENTOS';
         if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
             args["endpoint"] = api_url + `/digitales/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
        
@@ -152,126 +161,153 @@ Mi Veris - Citas - Imágenes y procedimientos
         args["showLoader"] = false;
         console.log(args["endpoint"]);
         const data = await call(args);
+        console.log('datalabor', data);
+        console.log('estado', estado);
         if(estado == 'PENDIENTE'){
             console.log('entrando a pendiente');
             if (data.code == 200) {
                 if(data.data.items.length == 0){
-                    $('#mensajeNoTienesImagenesProcedimientos').removeClass('d-none');
-                    
-                }else{
-                    datosLaboratorio = data.data.items;
-                    console.log('datosLaboratorio',datosLaboratorio);
+                    console.log('entrando a pendiente no tienes');
                     let html = $('#contenedorTratamientosImagenes');
                     html.empty();
-
-                    let elementos = ''; // Definir la variable fuera del bucle
-
-                    data.data.items.forEach((laboratorio) => {
-                        elementos += `<div class="col-12 mb-4">
-                                        <div class="card">
-                                            <div class="card-body py-2 px-3">
-                                                <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
-                                                <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center mb-3">
-                                        <div class="col-12 col-md-10 col-lg-8">
-                                            <div class="row g-3" id="cardTratamientoLaboratorio">
-                                                <!-- items -->
-                                                <div class="col-12 col-md-6">`;
-                    
-                        laboratorio.detallesTratamiento.forEach((detalles) =>{
-                            elementos += `<div class="card">
-                                                <div class="card-body p-2">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                        <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
-                                                    </div>
-                                                    <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
-                                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                                        <div class="avatar me-2">
-                                                            <img src="{{ asset('assets/img/svg/microscopio.svg') }}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
-                                                        </div>
-                                                        <div>
-                                                            ${determinarbotonesRecetaMedica(detalles)}  
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>`;                        
-                        });
-                        elementos += `</div>
-                                        </div>
-                                    </div>
-                                </div>`;
-                    });
-                    html.append(elementos); // Agregar todos los elementos después del bucle
-
-                } 
-                return data;
-            } 
-        }else if(estado == 'REALIZADO'){
-            console.log('entrando a realizado');
-            if (data.code == 200) {
-                if(data.data.items.length == 0){
-                    $('#mensajeNoTienesImagenesProcedimientosRealizados').removeClass('d-none');
+                    $('#mensajeNoTienesImagenesProcedimientos').removeClass('d-none');
+                    $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
                     
                 }else{
-                    datosLaboratorio = data.data.items;
-                    console.log('datosLaboratorio',datosLaboratorio);
-                    let html = $('#contenedorTratamientosImagenesRealizados');
-                    html.empty();
+                    if (admin === 'S') {
+                        datosLaboratorio = data.data.items;
+                        console.log('datosLaboratorio',datosLaboratorio);
+                        let html = $('#contenedorTratamientosImagenes');
+                        $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
+                        $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
+                        html.empty();
 
-                    let elementos = ''; // Definir la variable fuera del bucle
+                        let elementos = ''; // Definir la variable fuera del bucle
 
-                    data.data.items.forEach((laboratorio) => {
-                        elementos += `<div class="col-12 mb-4">
-                                        <div class="card">
-                                            <div class="card-body py-2 px-3">
-                                                <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
-                                                <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                        data.data.items.forEach((laboratorio) => {
+                            elementos += `<div class="col-12 mb-4">
+                                            <div class="card">
+                                                <div class="card-body py-2 px-3">
+                                                    <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
+                                                    <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
+                                                    <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
+                                                    <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
+                                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center mb-3">
-                                        <div class="col-12 col-md-10 col-lg-8">
-                                            <div class="row g-3" id="cardTratamientoLaboratorio">
-                                                <!-- items -->
-                                                <div class="col-12 col-md-6">`;
-                    
-                        laboratorio.detallesTratamiento.forEach((detalles) =>{
-                            elementos += `<div class="card">
-                                                <div class="card-body p-2">
-                                                    <div class="d-flex justify-content-between align-items-center">
-                                                        <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                        <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
-                                                    </div>
-                                                    <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
-                                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                                        <div class="avatar me-2">
-                                                            <img src="{{ asset('assets/img/svg/microscopio.svg') }}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                        <div class="d-flex justify-content-center mb-3">
+                                            <div class="col-12 col-md-10 col-lg-8">
+                                                <div class="row g-3" id="cardTratamientoLaboratorio">
+                                                    <!-- items -->
+                                                    <div class="col-12 col-md-6">`;
+                        
+                            laboratorio.detallesTratamiento.forEach((detalles) =>{
+                                elementos += `<div class="card">
+                                                    <div class="card-body p-2">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                            <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
                                                         </div>
-                                                        <div>
-                                                            ${determinarbotonesRecetaMedica(detalles)}  
+                                                        <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
+                                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                                            <div class="avatar me-2">
+                                                                <img src="{{ asset('assets/img/svg/microscopio.svg') }}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                            </div>
+                                                            <div>
+                                                                ${determinarbotonesRecetaMedica(detalles)}  
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>`;                        
-                        });
-                        elementos += `</div>
+                                                </div>`;                        
+                            });
+                            elementos += `</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>`;
-                    });
-                    html.append(elementos); // Agregar todos los elementos después del bucle
+                                    </div>`;
+                        });
+                        html.append(elementos); // Agregar todos los elementos después del bucle
+
+                    } else if (admin === 'N') {
+                        let html = $('#contenedorTratamientosImagenes');
+                        html.empty();
+                        $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
+
+                    }
+                    return data;
+                } 
+            }
+        }
+        else if(estado == 'REALIZADO'){
+            console.log('entrando a realizado');
+            
+            
+            if (data.code == 200) {
+                if(data.data.items.length == 0){
+                    console.log('entrando a realizado vacio');
+                    $('#mensajeNoTienesImagenesProcedimientosRealizados').removeClass('d-none');
+                    $('#mensajeNoTienesPermisosAdministradorRealizados').addClass('d-none');
+                    
+                }else{
+                    if (admin === 'S'){
+                        datosLaboratorio = data.data.items;
+                        console.log('datosLaboratorio',datosLaboratorio);
+                        let html = $('#contenedorTratamientosImagenesRealizados');
+                        html.empty();
+
+                        let elementos = ''; // Definir la variable fuera del bucle
+
+                        data.data.items.forEach((laboratorio) => {
+                            elementos += `<div class="col-12 mb-4">
+                                            <div class="card">
+                                                <div class="card-body py-2 px-3">
+                                                    <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
+                                                    <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
+                                                    <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
+                                                    <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
+                                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-center mb-3">
+                                            <div class="col-12 col-md-10 col-lg-8">
+                                                <div class="row g-3" id="cardTratamientoLaboratorio">
+                                                    <!-- items -->
+                                                    <div class="col-12 col-md-6">`;
+                        
+                            laboratorio.detallesTratamiento.forEach((detalles) =>{
+                                elementos += `<div class="card">
+                                                    <div class="card-body p-2">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                            <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
+                                                        </div>
+                                                        <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
+                                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                                            <div class="avatar me-2">
+                                                                <img src="{{ asset('assets/img/svg/microscopio.svg') }}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                            </div>
+                                                            <div>
+                                                                ${determinarbotonesRecetaMedica(detalles)}  
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>`;                        
+                            });
+                            elementos += `</div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                        });
+                        html.append(elementos); // Agregar todos los elementos después del bucle
+                    } else if (admin === 'N') {
+                        let html = $('#contenedorTratamientosImagenesRealizados');
+                        html.empty();
+                        $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
+
+                    }
 
                 } 
                 return data;
@@ -349,7 +385,7 @@ Mi Veris - Citas - Imágenes y procedimientos
         console.log('sss',data);
         data.forEach((Pacientes) => {
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="${Pacientes.numeroPaciente}" unchecked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
                                 <span class="text-veris fw-bold">
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
@@ -360,12 +396,13 @@ Mi Veris - Citas - Imágenes y procedimientos
         });
     }
 
-    // aplicar filtros
+// aplicar filtros
     $('#aplicarFiltros').on('click', async function(){
         let contexto = $(this).data('context');
-        let pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').val();
+        let pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
         let fechaDesde = $('#fechaDesde').val();
         let fechaHasta = $('#fechaHasta').val();
+        let esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
         let estadoTratamiento;
         if (document.getElementById('pills-pendientes-tab').getAttribute('aria-selected') === 'true') {
             estadoTratamiento = 'PENDIENTE';
@@ -376,16 +413,14 @@ Mi Veris - Citas - Imágenes y procedimientos
 
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
-        
 
-        
+
+
         if (contexto === 'contextoAplicarFiltros') {
             console.log('exito');   
-            await obtenerTratamientos( estadoTratamiento, pacienteSeleccionado, fechaDesde, fechaHasta);
-        }
+            await obtenerTratamientos( estadoTratamiento, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin);
+    }
 
-        
-        
     });
     // limpiar filtros
     $('#btnLimpiarFiltros').on('click', async function(){
