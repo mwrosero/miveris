@@ -88,10 +88,10 @@ Mi Veris - Citas - Familia y amigos
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-outline-primary-veris bg-white w-100" type="button" id="btnBuscar">
+                                <button class="btn btn-outline-primary-veris bg-white w-100" type="submit" id="btnBuscar">
                                     Buscar</button>
                             </div>
-                        </form>
+                        </form> 
                     </div>
                 </div>
                 <div id="resultadoConsulta" style="display: none;">
@@ -254,9 +254,11 @@ Mi Veris - Citas - Familia y amigos
 
     //buscar persona
     
-    $("#btnBuscar").click(async function() {
+    $("form").on('submit', async function(e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado de envío del formulario
         await consultarPersona();
     });
+
 
     // agregar persona
 
