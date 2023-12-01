@@ -314,6 +314,88 @@
 <script>
     
 
+<<<<<<< HEAD
+=======
+    // llamada al dom
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        await getNotificaciones();
+
+    } );
+
+    // funciones asincronas
+    // notificaciones
+    async function getNotificaciones(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
+
+        console.log(codigoUsuario);
+        args["endpoint"] = api_url + `/digitales/v1/notificaciones/bandeja?canalOrigen= ${canalOrigen}&codigoUsuario=${codigoUsuario}`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        
+        const data = await call(args);
+        if (data.data.length > 0){
+            
+            console.log('notificaciones');
+            
+            let notificaciones = data.data;
+            let html = $('#notificaciones')
+            html.empty();
+            notificaciones.forEach(notificacion => {
+                html += `<div class="py-3 border-bottom px-3 bg-light-grayish-cyan">
+                            <div class="d-flex justify-content-between">
+                                <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> Cita de control.</h4>
+                                <span class="fs--3">Ahora</span>
+                            </div>
+                            <div class="flex-1 ms-4">
+                                <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
+                                    <b class="nombre-paciente"> Mag</b>, recuerda que tu especialista de <b class="nombre-especialidad"> ${notificacion.nombreEspecialidad}</b> te envió una cita de control el <b class="fecha"> ${notificacion.fechaOrden}</b>
+                                </p>
+                            </div>
+                            <div class="text-end">
+                                <a href="#!" class="text-primary-veris fs--1 fw-bold">Agendar cita</a>
+                            </div>
+                        </div>`;
+                        
+            });
+            html += `<div class="px-3 mt-5">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item">
+                                    <a class="page-link bg-transparent" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item disabled"><span class="page-link bg-transparent">1 de 2</span></li>
+                                <li class="page-item">
+                                    <a class="page-link bg-transparent" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&gt;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>`;
+            html.append(html);
+        } else {
+            // crear esceario de no notificaciones
+
+            let html = $('#notificaciones')
+            html.empty();
+            // crear div de no notificaciones
+            html = ``;
+            html.append(html);
+        }
+        return data;
+    }
+
+
+    
+
+    // funciones js
+    // salir de la sesion
+>>>>>>> parent of 9e86342 (ajustes citas img, recetas, terapia, notificaciones)
     $('#logout').click(function(){
         localStorage.clear();
         window.location.href = "{{ route('logout') }}";

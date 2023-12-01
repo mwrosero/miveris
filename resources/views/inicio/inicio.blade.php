@@ -352,6 +352,7 @@ Mi Veris - Inicio
 
             data.forEach((tratamientos) => {
                 let elemento = `<div class="swiper-slide">
+<<<<<<< HEAD
                 <div class="card">
                     <div class="card-body p-2">
                     <div class="row gx-0 justify-content-between align-items-center mb-3">
@@ -390,6 +391,46 @@ Mi Veris - Inicio
                     </div>
                 </div>
                 </div>`;
+=======
+                                    <div class="card">
+                                        <div class="card-body p-2">
+                                            <div class="row gx-0 justify-content-between align-items-center mb-3">
+                                                <div class="col-9">
+                                                    <h6 class="card-title text-primary-veris mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
+                                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
+                                                    <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success">
+                                                        <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">`;
+
+                // Bucle anidado para detalleTratamiento
+                tratamientos.detallesTratamiento.forEach((detalle) => {
+                    elemento += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
+                                            <img class="rounded-circle" src=${quitarComillas(detalle.urlImagenTipoServicio)}  width="26" alt="icono">
+                                        </div>
+                                        <p class="fw-bold fs--2 mb-0">${
+                                            
+                                            detalle.tipoServicio}</p>
+                                    </div>
+                                    <a href=
+                                    "#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
+                                </label>`;
+                });
+
+                // Finalizar construcción del elemento HTML
+                elemento += `</div></div></div></div>`;
+
+                // Agregar 'elemento' al DOM
+                divContenedor.append(elemento);
+            });
+>>>>>>> parent of 9e86342 (ajustes citas img, recetas, terapia, notificaciones)
 
             divContenedor.append(elemento);
         });
