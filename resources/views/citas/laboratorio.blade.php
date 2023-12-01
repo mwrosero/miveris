@@ -386,6 +386,7 @@ Mi Veris - Citas - Laboratorio
         
     });
     // limpiar filtros
+    // limpiar filtros
     $('#btnLimpiarFiltros').on('click', async function(){
         let contexto = $(this).data('context');
         if (contexto === 'contextoLimpiarFiltros') {

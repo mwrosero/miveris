@@ -151,8 +151,7 @@
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
                 <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
                     <i class="fa-solid fa-bell"></i>
-                    <span class="badge bg-danger rounded-pill badge-notifications d-none">5</span>
-                </a>
+                    <span class="badge bg-danger rounded-pill badge-notifications d-none" id="numeroNotificaciones"></span>
             </li>
             <!--/ Notification -->
 
@@ -257,82 +256,140 @@
 <script>
     
 
+    // variables globales
+    
+    let htmlNotificaciones = '';
+    let paginacionHTML = '';
+    let maxNotificacionesPorPagina = 5;
+    let paginaActual = 1; 
+    let notificaciones = []; 
+
+    
+    
     // llamada al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
         await getNotificaciones();
+        await numeroNotificaciones();
 
     } );
 
     // funciones asincronas
     // notificaciones
-    async function getNotificaciones(){
+    async function getNotificaciones() {
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}";
+
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen= ${canalOrigen}&codigoUsuario=${codigoUsuario}`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+
+        const data = await call(args);
+
+        if (data.code == 200 && data.data.length > 0) {
+            const notificaciones = data.data;
+            let paginaActual = 1;
+            const maxNotificacionesPorPagina = 5;
+            const totalPaginas = Math.ceil(notificaciones.length / maxNotificacionesPorPagina);
+
+            const actualizarVista = (pagina) => {
+                let htmlNotificaciones = '';
+                let inicio = (pagina - 1) * maxNotificacionesPorPagina;
+                let fin = inicio + maxNotificacionesPorPagina;
+
+                notificaciones.slice(inicio, fin).forEach(notificacion => {
+                    // Construcción del HTML de cada notificación
+                    
+                    htmlNotificaciones += `<div class="py-3 border-bottom px-3 bg-light-grayish-cyan">
+                                                        <div class="d-flex justify-content-between">
+                                                            <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> ${deteminarCabeceraNotificacion(notificacion.categoria)}</h4>
+                                                            <span class="fs--3">Ahora</span>
+                                                        </div>
+                                                        <div class="flex-1 ms-4">
+                                                            <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">${notificacion.mensajeNotificacion}</p>
+                                                        </div>
+                                                        <div class="text-end">
+                                                            <a href="#!" class="text-primary-veris fs--1 fw-bold">${determinarBotonAgendaCita(notificacion.categoria)}</a>
+                                                        </div>
+                                                    </div>`;
+                });
+
+                if (totalPaginas > 1) {
+                    // Construcción del HTML de paginación
+                    
+                    paginacionHTML = `<div class="px-3 mt-5">
+                                            <nav aria-label="Page navigation">
+                                                <ul class="pagination justify-content-center">
+                                                    <li class="page-item">
+                                                        <a class="page-link bg-transparent" href="#" aria-label="Previous">
+                                                            <span aria-hidden="true">&lt;</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item disabled"><span class="page-link bg-transparent">${paginaActual}
+                                                        de ${Math.ceil(notificaciones.length / maxNotificacionesPorPagina)}</span></li>
+                                                    <li class="page-item">
+                                                        <a class="page-link bg-transparent" href="#" aria-label="Next">
+                                                            <span aria-hidden="true">&gt;</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>`;
+                } 
+                
+
+                $('#notificaciones').html(htmlNotificaciones + paginacionHTML);
+            };
+
+            $(document).on('click', '.page-link-prev', function(e) {
+                e.preventDefault();
+                if (paginaActual > 1) {
+                    actualizarVista(--paginaActual);
+                }
+            });
+
+            $(document).on('click', '.page-link-next', function(e) {
+                e.preventDefault();
+                if (paginaActual < totalPaginas) {
+                    actualizarVista(++paginaActual);
+                }
+            });
+
+            actualizarVista(paginaActual);
+        }
+
+        return data;
+    }
+
+
+
+    // recibir numero de notificaciones
+    async function numeroNotificaciones(){
         let args = [];
         let canalOrigen = _canalOrigen;
         let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
 
         console.log(codigoUsuario);
-        args["endpoint"] = api_url + `/digitales/v1/notificaciones/bandeja?canalOrigen= ${canalOrigen}&codigoUsuario=${codigoUsuario}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
         args["method"] = "GET";
         args["showLoader"] = false;
-        
+        console.log('no',args["endpoint"] );
         const data = await call(args);
-        if (data.data.length > 0){
+        console.log('numero notificaciones',data);
+        if (data.code == 200 ){
+            if (data.data.cantidadNotificaciones > 0){
+                $('#numeroNotificaciones').removeClass('d-none');
+                $('#numeroNotificaciones').html(data.data.cantidadNotificaciones);
+            } else {
+                $('#numeroNotificaciones').addClass('d-none');
+            }
             
-            console.log('notificaciones');
-            
-            let notificaciones = data.data;
-            let html = $('#notificaciones')
-            html.empty();
-            notificaciones.forEach(notificacion => {
-                html += `<div class="py-3 border-bottom px-3 bg-light-grayish-cyan">
-                            <div class="d-flex justify-content-between">
-                                <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> Cita de control.</h4>
-                                <span class="fs--3">Ahora</span>
-                            </div>
-                            <div class="flex-1 ms-4">
-                                <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
-                                    <b class="nombre-paciente"> Mag</b>, recuerda que tu especialista de <b class="nombre-especialidad"> ${notificacion.nombreEspecialidad}</b> te envió una cita de control el <b class="fecha"> ${notificacion.fechaOrden}</b>
-                                </p>
-                            </div>
-                            <div class="text-end">
-                                <a href="#!" class="text-primary-veris fs--1 fw-bold">Agendar cita</a>
-                            </div>
-                        </div>`;
-                        
-            });
-            html += `<div class="px-3 mt-5">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item">
-                                    <a class="page-link bg-transparent" href="#" aria-label="Previous">
-                                        <span aria-hidden="true">&lt;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item disabled"><span class="page-link bg-transparent">1 de 2</span></li>
-                                <li class="page-item">
-                                    <a class="page-link bg-transparent" href="#" aria-label="Next">
-                                        <span aria-hidden="true">&gt;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>`;
-            html.append(html);
-        } else {
-            // crear esceario de no notificaciones
-
-            let html = $('#notificaciones')
-            html.empty();
-            // crear div de no notificaciones
-            html = ``;
-            html.append(html);
-        }
+        
         return data;
+        }
     }
 
-
-    
 
     // funciones js
     // salir de la sesion
@@ -340,5 +397,25 @@
         localStorage.clear();
         window.location.href = "{{ route('logout') }}";
     });
+
+    
+
+    // determinar cabecera notificaciones
+
+    function deteminarCabeceraNotificacion(categoria){
+        if(categoria == 'PENDIENTE_PAGO') return 'Pago pendiente';
+
+    }
+
+    // funciones para determinar boton agenda cita
+    function determinarBotonAgendaCita(categoria){
+        if(categoria == 'PENDIENTE_PAGO') return '';
+    }
+
+
+
+
+
+
 
 </script>

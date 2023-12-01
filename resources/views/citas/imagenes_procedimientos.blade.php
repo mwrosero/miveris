@@ -141,7 +141,7 @@ Mi Veris - Citas - Imágenes y procedimientos
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
         let plataforma = _plataforma;
         let version = _version;
-        let servicio = 'IMAGENES';
+        let servicio = 'IMAGENES,PROCEDIMIENTOS';
         if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
             args["endpoint"] = api_url + `/digitales/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
        
