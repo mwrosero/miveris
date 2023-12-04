@@ -266,6 +266,8 @@ Mi Veris - Citas - Mis tratamientos
 
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
+        console.log('fechaDesde', fechaDesde);
+        console.log('fechaHasta', fechaHasta);
         if (contexto === 'contextoAplicarFiltros') {
             await obtenerTratamientosId(pacienteSeleccionado, fechaDesde, fechaHasta, estadoTratamiento);
         }

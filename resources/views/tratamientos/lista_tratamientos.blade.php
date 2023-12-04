@@ -123,7 +123,7 @@ Mi Veris - Citas - tratamiento
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerTratamientos();
     });
-
+    
     // funciones asyncronas
     // obtener tratamientos
     async function obtenerTratamientos(){

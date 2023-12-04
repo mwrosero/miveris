@@ -179,8 +179,8 @@ Mi Veris - Inicio
         await obtenerTratamientos();
         await obtenerCitas();
         await obtenerUrgenciasAmbulatorias();
-        initializeSwiper('.swipertratamientos');
-        initializeSwiper('.swiper-proximas-citas');
+        // initializeSwiper('.swipertratamientos');
+        // initializeSwiper('.swiper-proximas-citas');
     });
 
 
@@ -249,8 +249,9 @@ Mi Veris - Inicio
         let args = [];
         let canalOrigen = _canalOrigen;
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
-
-        args["endpoint"] = api_url + `/digitales/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=TODOS&canalOrigen=${canalOrigen}&page=1&perPage=6&version=7.8.0`
+        // imprimir todos los valores de session
+        
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = false;
         console.log(args["endpoint"]);
@@ -282,11 +283,13 @@ Mi Veris - Inicio
         args["showLoader"] = false;
         console.log(args["endpoint"]);
         const data = await call(args);
+        console.log('citas',data);
         if (data.code == 200) {
             console.log(0, data.data.length);
             if (data.data.length == 0) {
                 mostrarNoExistenCitas();
             } else {
+                console.log('si hay citas');
                 datosCitas = data.data;
                 mostrarCitasenDiv();
             }
@@ -352,47 +355,49 @@ Mi Veris - Inicio
                 let elemento = `<div class="swiper-slide">
                                     <div class="card">
                                         <div class="card-body p-2">
-                                        <div class="row gx-0 justify-content-between align-items-center mb-3">
-                                            <div class="col-9">
-                                            <h6 class="card-title text-primary-veris mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
-                                            <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
-                                            <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
+                                            <div class="row gx-0 justify-content-between align-items-center mb-3">
+                                                <div class="col-9">
+                                                    <h6 class="card-title text-primary-veris mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
+                                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
+                                                    <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success">
+                                                        <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-3">
-                                                <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success">
-                                                    <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
+                                            <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">`;
 
-                                                </div>
-                                            </div>
+                // Bucle anidado para detalleTratamiento
+                tratamientos.detallesTratamiento.forEach((detalle) => {
+                    elemento += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
+                                            <img class="rounded-circle" src=${quitarComillas(detalle.urlImagenTipoServicio)}  width="26" alt="icono">
                                         </div>
-                                        <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">
-                                            <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                            <div class="d-flex gap-2 align-items-center">
-                                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">
-                                                </div>
-                                                <p class="fw-bold fs--2 mb-0">Receta medica</p>
-                                            </div>
-                                            <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                            </label>
-                                            <label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
-                                            <div class="d-flex gap-2 align-items-center">
-                                                <div class="avatar-tratamiento border rounded-circle bg-very-pale-blue">
-                                                <img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="receta medica">
-                                                </div>
-                                                <p class="fw-bold fs--2 mb-0">Terapia fisica 1</p>
-                                            </div>
-                                            <a href="#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
-                                            </label>
-                                        </div>
-                                        </div>
+                                        <p class="fw-bold fs--2 mb-0">${
+                                            
+                                            detalle.tipoServicio}</p>
                                     </div>
-                                </div>`;
+                                    <a href=
+                                    "#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
+                                </label>`;
+                });
 
-            divContenedor.append(elemento);
-        });
+                // Finalizar construcción del elemento HTML
+                elemento += `</div></div></div></div>`;
+
+                // Agregar 'elemento' al DOM
+                divContenedor.append(elemento);
+            });
+
         chartProgres('#chart-progress');
     }
+
+    
+
+    
 
     // mostrar mensaje de no hay tratamientos
     function mostrarNoExistenTratamientos() {
