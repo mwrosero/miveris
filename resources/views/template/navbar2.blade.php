@@ -273,10 +273,11 @@
         let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}";
 
         console.log(codigoUsuario);
-        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen= ${canalOrigen}&codigoUsuario=${codigoUsuario}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`;
         args["method"] = "GET";
         args["showLoader"] = false;
 
+        console.log(1,args["endpoint"]);
         const data = await call(args);
         console.log('notificaciones', data);
         let htmlContent = '';
