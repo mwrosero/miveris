@@ -32,7 +32,7 @@ Mi Veris - Citas - Laboratorio a domicilio
                         <form class="row g-3">
                             <div class="col-md-12">
                                 <label for="paciente" class="form-label fw-bold">Selecciona el paciente</label>
-                                <select class="form-select bg-neutral" name="paciente" id="paciente" required>
+                                <select class="form-select bg-neutral" name="paciente" id="paciente" >
                                     <option selected disabled value="">Elegir...</option>
                                     <option value="">...</option>
                                     <option value="">...</option>
@@ -65,7 +65,7 @@ Mi Veris - Citas - Laboratorio a domicilio
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-lg btn-primary-veris w-100" type="button" id="btnGuardar"
+                                <button class="btn btn-lg btn-primary-veris w-100" type="submit" id="btnGuardar"
                                 ><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
                             </div>
                         </form>
@@ -148,7 +148,7 @@ Mi Veris - Citas - Laboratorio a domicilio
         if(getInput('paciente') == ''){
             console.log(0)
             paciente = {
-                tipoIdentificacion: "{{ Session::get('userData')->tipoIdentificacion }}",
+                tipoIdentificacion: "{{ Session::get('userData')->codigoTipoIdentificacion }}",
                 numeroIdentificacion: "{{ Session::get('userData')->numeroIdentificacion }}",
                 nombrePaciente: "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}",
             }
@@ -177,9 +177,8 @@ Mi Veris - Citas - Laboratorio a domicilio
         console.log('actualizarDatosUsuario',data);
         if(data.code == 200){
             $('#mensajeSolicitudLlamadaModal').modal('show');
-        }
-        else{
-            alert("Error al guardar los datos");
+        } else {
+            $('#mensajeSolicitudLlamadaModal').modal('show');
         }
         return data;
 
@@ -212,35 +211,13 @@ Mi Veris - Citas - Laboratorio a domicilio
     });
 
     // enviar datos
-    $('#btnGuardar').click(function() {
-        if ($('#paciente').val() == '') {
-            $('#paciente').addClass('is-invalid');
-            return false;
-        } else {
-            $('#paciente').removeClass('is-invalid');
-        }
-        if ($('#ciudad').val() == '') {
-            $('#ciudad').addClass('is-invalid');
-            return false;
-        } else {
-            $('#ciudad').removeClass('is-invalid');
-        }
-        if ($('#telefono').val() == '') {
-            $('#telefono').addClass('is-invalid');
-            return false;
-        } else {
-            $('#telefono').removeClass('is-invalid');
-        }
-        if ($('#direccion').val() == '') {
-            $('#direccion').addClass('is-invalid');
-            return false;
-        } else {
-            $('#direccion').removeClass('is-invalid');
-        }
-        // $('#mensajeSolicitudLlamadaModal').modal('show');
+
+    $("form").on('submit', async function(e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado de envío del formulario
         crearSolicitudLaboratorioDomicilio();
     });
-
+    
+    
     // boton entendido
     $('#btnEntendido').click(function() {
         window.location.href = `/tratamiento/${codigoTratamiento}`;

@@ -163,6 +163,7 @@ Mi Veris - Citas - Familia y amigos
                                 localStorage.setItem('primerApellidoFamiliar', '${familiar.primerApellido}');
                                 localStorage.setItem('codigoParentesco', '${familiar.codigoParentesco}');
                                 localStorage.setItem('administrador', '${familiar.esAdmin}');
+                                localStorage.setItem('numeroIdentificacion', '${familiar.numeroIdentificacion}');
                                 localStorage.setItem('idRelacion', '${familiar.idRelacion}');">
                                     <i class="bi bi-chevron-right"></i>
                                 </a>

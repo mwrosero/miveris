@@ -209,7 +209,7 @@
         <div class="modal-content">
             <div class="modal-body p-4 text-center">
                 <h4 class="mb-0">Cerrar sesión</h4>
-                <p class="mb-0">¿Estás seguro que deseas cerar sesión?.</p>
+                <p class="mb-0">¿Estás seguro que deseas cerrar sesión?.</p>
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
                 <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">No</button>
@@ -273,10 +273,11 @@
         let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}";
 
         console.log(codigoUsuario);
-        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen= ${canalOrigen}&codigoUsuario=${codigoUsuario}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`;
         args["method"] = "GET";
         args["showLoader"] = false;
 
+        console.log(1,args["endpoint"]);
         const data = await call(args);
         console.log('notificaciones', data);
         let htmlContent = '';
