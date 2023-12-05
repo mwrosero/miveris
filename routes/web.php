@@ -78,7 +78,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/mis-citas', [CitasController::class, 'misCitas'])->name('citas.misCitas')->withoutMiddleware(['guest']);
 
     #Tratamientos
-    Route::get('/tratamiento/{codigoTratamiento}', [TratamientosController::class, 'tratamientos'])
+    Route::get('/tratamiento/{codigoTratamiento}/{porcentaje}', [TratamientosController::class, 'tratamientos'])
     ->name('tratamientos.lista')
     ->withoutMiddleware(['guest']);
     

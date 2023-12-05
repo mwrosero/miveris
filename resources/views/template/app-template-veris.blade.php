@@ -131,6 +131,7 @@
     <script>
         // Inicializa Swiper.js
         function chartProgres(elemento){
+            console.log('elemento',elemento);
 
         
             var swiper = new Swiper('.swiper', {

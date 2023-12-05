@@ -271,7 +271,7 @@
 	                msg += `<li class="ms-0">Campo correo electrónico es requerido</li>`;
 	            }else if(!isValidEmailAddress(getInput('mail'))){
 	            	errors = true;
-	                msg += `<li class="ms-0">Formato de email no válido</li>`;
+	                msg += `<li class="ms-0">Formato de correo electrónico no válido</li>`;
 	            }
 				if(getInput('fechaNacimiento') == ""){
 	                errors = true;

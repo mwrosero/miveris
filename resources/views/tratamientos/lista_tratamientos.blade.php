@@ -117,6 +117,7 @@ Mi Veris - Citas - tratamiento
 
     // variables globales
     let codigoTratamiento = {{ $codigoTratamiento }};
+    let porcentaje = {{ $porcentaje }};
     let datosTratamiento = [];
     let ultimoTratamiento = [];
     // llamada al dom
@@ -125,7 +126,7 @@ Mi Veris - Citas - tratamiento
     });
     
     // funciones asyncronas
-    // obtener tratamientos
+    // obtener tratamientos  ​/tratamientos​/{idTratamiento}
     async function obtenerTratamientos(){
         let args = [];
         let canalOrigen = _canalOrigen;
@@ -145,9 +146,11 @@ Mi Veris - Citas - tratamiento
             let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
                                 <p class="fw-bold fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedicoAtencion)}</p>
-                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${formatearFecha(ultimoTratamiento.fechaOrden)}</b></p>
+                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${ultimoTratamiento.fechaOrden}</b></p>
                                 <p class="fs--2 mb-0">${data.data.datosConvenio.nombreConvenio}</p> `;
             datosTratamientoCard.append(elemento);
+            // mostrar el porcentaje
+            document.getElementById("chart-progress").setAttribute("data-porcentaje", porcentaje);
             datosTratamiento = data.data;
 
             mostrarTratamientoenDiv();
@@ -200,7 +203,7 @@ Mi Veris - Citas - tratamiento
             });
             // mostrar el titulo de pendientes
             document.getElementById("tituloTratamientoPendiente").style.display = "block";
-            chartProgres("#chart-progress");
+            // chartProgres("#chart-progress");
         }
         
     }
@@ -243,6 +246,7 @@ Mi Veris - Citas - tratamiento
             });
              // mostrar el titulo de realizados
             document.getElementById("tituloTratamientoRealizado").style.display = "block";
+            // chartProgres("#chart-progress");
         }
        
 
@@ -282,7 +286,7 @@ Mi Veris - Citas - tratamiento
         } else if (tipoServicio == "LABORATORIO" && esAgendable == 'N') {
             // Código para LABORATORIO
             return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                    <a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar labor</a>`;
+                    <a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else {
             // Código para otros servicios
             let botonAgendarClase = "btn btn-sm btn-primary-veris fw-normal fs--1";

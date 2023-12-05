@@ -126,15 +126,14 @@ Mi Veris - Citas - Laboratorio
     document.addEventListener("DOMContentLoaded", async function () {
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
-        await obtenerTratamientos('PENDIENTE');
+        await obtenerTratamientos();
         await consultarGrupoFamiliar();
     });
 
     // funciones asyncronas
     // Consultar los tratamientos de un paciente imagen y procedimientos
-    async function obtenerTratamientos(estado, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin) {
-        console.log('obtenerTratamientosImagenProcedimientos');
-        console.log('pacienteSeleccionado', pacienteSeleccionado);
+    async function obtenerTratamientos(estado = 'PENDIENTE', pacienteSeleccionado = null, fechaDesde = '', fechaHasta = '', esAdmin = null) {
+        console.log('esAdmin', esAdmin);
         let args = [];
         let canalOrigen = _canalOrigen;
                 
@@ -149,12 +148,9 @@ Mi Veris - Citas - Laboratorio
         let plataforma = _plataforma;
         let version = _version;
         let servicio = 'LABORATORIO';
-        if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
-            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-       
-        } else {
-            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-        }
+        
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+        
         args["method"] = "GET";
         args["showLoader"] = false;
         console.log(args["endpoint"]);
@@ -165,10 +161,17 @@ Mi Veris - Citas - Laboratorio
             console.log('entrando a pendiente');
             if (data.code == 200) {
                 if(data.data.items.length == 0){
-                    let html = $('#contenedorTratamientosImagenes');
-                    html.empty();
-                    $('#mensajeNoTienesProcedimientos').removeClass('d-none');
-                    $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
+                    if (admin === 'S') {
+                        let html = $('#contenedorTratamientosImagenes');
+                        html.empty();
+                        $('#mensajeNoTienesProcedimientos').removeClass('d-none');
+                        $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
+                    } else if (admin === 'N') {
+                        let html = $('#contenedorTratamientosImagenes');
+                        html.empty();
+                        $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
+                        $('#mensajeNoTienesProcedimientos').addClass('d-none');
+                    }
                     
                 }else{
                     if (admin === 'S') {
@@ -395,35 +398,31 @@ Mi Veris - Citas - Laboratorio
     }
 
     // aplicar filtros
+
     $('#aplicarFiltros').on('click', async function(){
-        let contexto = $(this).data('context');
-        let pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
-        let fechaDesde = $('#fechaDesde').val();
-        let fechaHasta = $('#fechaHasta').val();
-        let esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
+        const contexto = $(this).data('context');
+        const pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
+        let fechaDesde = $('#fechaDesde').val() || '';
+        let fechaHasta = $('#fechaHasta').val() || '';
+        const esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
         let estadoTratamiento;
-        if (document.getElementById('pills-pendientes-tab').getAttribute('aria-selected') === 'true') {
+
+        if ($('#pills-pendientes-tab').attr('aria-selected') === 'true') {
             estadoTratamiento = 'PENDIENTE';
-        } else if (document.getElementById('pills-realizados-tab').getAttribute('aria-selected') === 'true') {
+        } else if ($('#pills-realizados-tab').attr('aria-selected') === 'true') {
             estadoTratamiento = 'REALIZADO';
         }
 
-
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
-        
 
-        
         if (contexto === 'contextoAplicarFiltros') {
             console.log('exito');   
-            await obtenerTratamientos( estadoTratamiento, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin);
+            await obtenerTratamientos(estadoTratamiento, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin);
         }
-
-        
-        
     });
 
-    // ver valorseleccionado en el filtro
+
 
 
     // limpiar filtros
@@ -435,23 +434,28 @@ Mi Veris - Citas - Laboratorio
             $('input[name="listGroupRadiosI"]').first().prop('checked', true);
             $('#fechaDesde').val('');
             $('#fechaHasta').val('');
-            // await obtenerTratamientos();
+            await obtenerTratamientos();
         }
         
     });
+    
     // formatear fecha
     function formatearFecha(fecha) {
+        if (!fecha) return '';
+
         const fechaObj = new Date(fecha);
-        const dia = ('0' + fechaObj.getDate()).slice(-2);
-        const mes = ('0' + (fechaObj.getMonth() + 1)).slice(-2);
+        if (isNaN(fechaObj.getTime())) return '';
+
+        const dia = fechaObj.getDate().toString().padStart(2, '0');
+        const mes = (fechaObj.getMonth() + 1).toString().padStart(2, '0');
         const año = fechaObj.getFullYear();
 
         return `${dia}/${mes}/${año}`;
     }
 
+
     // boton tratamiento realizado
     $('#pills-realizados-tab').on('click', async function(){
-        console.log('realizados');
         await obtenerTratamientos('REALIZADO');
     });
 
