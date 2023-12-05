@@ -166,4 +166,39 @@ Mi Veris - Resultados
 @endsection
 @push('scripts')
 <!-- script -->
+<script>
+   
+
+    // variables globales
+ 
+ 
+     // llamada al dom 
+     document.addEventListener("DOMContentLoaded", async function () {
+         await resultadosportipo();
+         
+     });
+ 
+     // funciones asyncronas
+ 
+     // Consultar resultados de laboratorio
+ 
+     async function resultadosportipo() {
+         let args = [];
+         let canalOrigen = _canalOrigen;
+         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+         tipoServicio = "IMG,PROC";
+         numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+ 
+                 
+         args["endpoint"] = api_url + `/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&tipoServicio=${tipoServicio}`;
+         args["method"] = "GET";
+         args["showLoader"] = false;
+         console.log(7,args["endpoint"]);
+         const data = await call(args);
+         console.log('data7', data);
+         
+     }
+ 
+ </script>
 @endpush

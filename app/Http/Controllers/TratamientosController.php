@@ -18,8 +18,8 @@ class TratamientosController extends Controller
     }
 
     // Return view lista de tratamientos
-    public function tratamientos($codigoTratamiento) {
-        return view('tratamientos.lista_tratamientos', ['codigoTratamiento' => $codigoTratamiento]);
+    public function tratamientos($codigoTratamiento, $porcentaje) {
+        return view('tratamientos.lista_tratamientos', ['codigoTratamiento' => $codigoTratamiento, 'porcentaje' => $porcentaje]);
     }
 
     // Return view detalle de tratamiento

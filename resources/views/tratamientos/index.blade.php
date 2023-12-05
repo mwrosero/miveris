@@ -121,7 +121,8 @@ Mi Veris - Citas - Mis tratamientos
                                                     <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
                                                 </div>
                                                 <div class="d-flex justify-content-end align-items-center">
-                                                    <a href="/tratamiento/${tratamientos.codigoTratamiento}" class="btn btn-sm btn-primary-veris">
+                                                    <a href="/tratamiento/${tratamientos.codigoTratamiento}/${tratamientos.porcentajeAvanceTratamiento}
+                                                    " class="btn btn-sm btn-primary-veris">
                                                         ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
                                                     </a>
                                                 </div>
@@ -312,6 +313,7 @@ Mi Veris - Citas - Mis tratamientos
 
     // funciones asynronas
     // obtener tratamientos
+    
     async function obtenerTratamientos(){
         let args = [];
         let canalOrigen = _canalOrigen;
