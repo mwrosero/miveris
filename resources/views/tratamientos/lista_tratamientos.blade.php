@@ -131,7 +131,7 @@ Mi Veris - Citas - tratamiento
         let args = [];
         let canalOrigen = _canalOrigen;
         
-        args["endpoint"] = api_url + `/digitales/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = false;
@@ -188,10 +188,11 @@ Mi Veris - Citas - tratamiento
                                             
                                             <div class="d-flex justify-content-between align-items-center mt-2">
                                                 <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                    ${determinarAvatar(tratamientos.tipoServicio)}
+                                                <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" width="26" alt="receta medica">
                                                 </div>
                                                 <div>
-                                                    ${determinarbotonesRecetaMedica(tratamientos.nombreServicio, tratamientos.esAgendable, tratamientos.tipoServicio, tratamientos.aplicaSolicitud)}  
+                                                    ${determinarCondicionesBotones(tratamientos)}
+                                                        
                                                 </div>
                                                 
                                             </div>
@@ -231,7 +232,8 @@ Mi Veris - Citas - tratamiento
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                             <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                ${determinarAvatar(tratamientos.tipoServicio)}
+                                            <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" width="26" alt="receta medica">
+                                            
                                             </div>
                                             <div>
                                                 ${determinarbotonesRecetaMedicaRealizados(tratamientos.tipoServicio)}
@@ -316,22 +318,47 @@ Mi Veris - Citas - tratamiento
         }
     }
 
-    // determinar avatar 
-    function determinarAvatar(servicio){
-        if(servicio == "FARMACIA"){
-            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/receta.svg') }}" width="26" alt="receta medica">`;
+
+    // determinar condiciones de los botones 
+
+    function determinarCondicionesBotones(datosServicio){
+
+        if (datosServicio.length == 0) {
+            return `<div></div>`;
         }
-        else if (servicio == "LABORATORIO"){
-            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/microscopio.svg') }}" width="26" alt="receta medica">`;
-        }
-        else if (servicio == "INTERCONSULTA" || servicio == "CONSULTA" || servicio == "PROCEDIMIENTOS" || servicio == "ODONTOLOGIA"){
-            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/estetoscopio.svg') }}" width="26" alt="receta medica">`;
-        }
-        else if (servicio == "TERAPIA"){
-            return `<img class="rounded-circle" src="{{ asset('assets/img/svg/muletas.svg') }}" width="26" alt="terapia">`;
-            return ``;
+        else{
+
+            switch (datosServicio.tipoCard) {
+                case "AGENDA" :
+                    if(datosServicio.esAgendable == "S"){
+                        return `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                    }
+                    else{
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                    }
+                    break;
+                case "LABORATORIO" :
+
+                    return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Solicitar</a>`;
+                    break;
+                case "RECETA" :
+                    if(datosServicio.aplicaSolicitud == "S"){
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Solicitar</a>`;
+                    }
+                    else{
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Solicitar</a>`;
+                    }
+                    break;
+                case "ODONTOLOGIA" :
+                    return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Solicitar</a>`;
+                    break;
+
+            }
+
         }
     }
+
+    
 
     // determinar mensaje receta medica realizados  
     function determinarRecetaMedicaRealizadosDetalle(servicio, fechaOrden, nombrePaciente, nombreMedicoAtencion, nombreSucursal){

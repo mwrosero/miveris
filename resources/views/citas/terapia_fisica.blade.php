@@ -170,11 +170,11 @@ Mi Veris - Citas - Terapia física
 
     // funciones asyncronas
     // Consultar los tratamientos de un paciente imagen y procedimientos
-    async function obtenerTratamientos(estado, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin) {
+    async function obtenerTratamientos(estado = 'PENDIENTE', pacienteSeleccionado = null, fechaDesde = '', fechaHasta = '', esAdmin = null) {
         console.log('obtenerTratamientosImagenProcedimientos');
         console.log('pacienteSeleccionado', pacienteSeleccionado);
         let args = [];
-        let canalOrigen = _canalOrigen;
+        let canalOrigen = 'APP_CMV'
                 
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
         if (pacienteSeleccionado) {
@@ -186,16 +186,19 @@ Mi Veris - Citas - Terapia física
         }
         let plataforma = _plataforma;
         let version = _version;
-        let servicio = 'FARMACIA';
-        if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
-            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+        let servicio = 'TERAPIA';
+        // if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
+        //     args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
        
-        } else {
-            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-        }
+        // } else {
+        //     args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+        // }
+
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+        
         args["method"] = "GET";
         args["showLoader"] = false;
-        console.log(args["endpoint"]);
+        console.log(8,args["endpoint"]);
         const data = await call(args);
         console.log('datalabor', data);
         console.log('estado', estado);
@@ -449,32 +452,33 @@ Mi Veris - Citas - Terapia física
         });
     }
 
+
     // aplicar filtros
+
     $('#aplicarFiltros').on('click', async function(){
-        let contexto = $(this).data('context');
-        let pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
-        let fechaDesde = $('#fechaDesde').val();
-        let fechaHasta = $('#fechaHasta').val();
-        let esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
+        const contexto = $(this).data('context');
+        const pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
+        let fechaDesde = $('#fechaDesde').val() || '';
+        let fechaHasta = $('#fechaHasta').val() || '';
+        const esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
         let estadoTratamiento;
-        if (document.getElementById('pills-pendientes-tab').getAttribute('aria-selected') === 'true') {
+
+        if ($('#pills-pendientes-tab').attr('aria-selected') === 'true') {
             estadoTratamiento = 'PENDIENTE';
-        } else if (document.getElementById('pills-realizados-tab').getAttribute('aria-selected') === 'true') {
+        } else if ($('#pills-realizados-tab').attr('aria-selected') === 'true') {
             estadoTratamiento = 'REALIZADO';
         }
-
 
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
 
-
-
         if (contexto === 'contextoAplicarFiltros') {
             console.log('exito');   
-            await obtenerTratamientos( estadoTratamiento, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin);
+            await obtenerTratamientos(estadoTratamiento, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin);
         }
-
     });
+
+
     // limpiar filtros
     $('#btnLimpiarFiltros').on('click', async function(){
         let contexto = $(this).data('context');
