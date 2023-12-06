@@ -380,8 +380,8 @@ Mi Veris - Inicio
                                             
                                             detalle.tipoServicio}</p>
                                     </div>
-                                    <a href=
-                                    "#" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
+                                    <a href="/tratamiento/${detalle.codigoTratamiento}/${tratamientos.porcentajeAvanceTratamiento}"
+                                    class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
                                 </label>`;
                 });
 

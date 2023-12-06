@@ -427,6 +427,18 @@ Mi Veris - Citas - Elige la especialidad
 @endsection
 @push('scripts')
 <script>
+    // variables globales
+
+    // llamada al dom
+    document.addEventListener("DOMContentLoaded", async function () {
+        // await consultarGrupoFamiliar();
+    });
+
+
+    // funciones asyncronas
+    // agendamiento consulta de ciudades
+
+    
 
 </script>
 @endpush
