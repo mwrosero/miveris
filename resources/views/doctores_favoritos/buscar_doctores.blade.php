@@ -37,7 +37,7 @@ Mi Veris - Buscar doctor
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Buscar doctor') }}</h5>
+    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Buscar doctore') }}</h5>
     <section class="p-3 pt-0 mb-3">
         <form class="d-flex justify-content-center">
             <div class="col-md-4 my-3">
@@ -85,6 +85,7 @@ Mi Veris - Buscar doctor
     });
 
     // variables globales
+    let dataEspecialidades = [];
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function() {
@@ -94,35 +95,36 @@ Mi Veris - Buscar doctor
     // funciones asyncronas
     // consulta de especialidades
     async function consultarEspecialidades() {
-        let args = [];
         let canalOrigen = _canalOrigen;
         let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
         console.log(codigoUsuario);
-        args["endpoint"] = api_url + `/digitales/v1/perfil/especialidades?codigoUsuario=${codigoUsuario}`;
-        console.log(args["endpoint"]);
-        args["method"] = "GET";
-        args["showLoader"] = false;
-        const data = await call(args);
-        console.log('especial',data);
+        let endpoint = api_url + `/digitales/v1/perfil/especialidades?codigoUsuario=${codigoUsuario}`;
+        console.log(endpoint);
+        const data = await call({ endpoint, method: "GET", showLoader: false });
+        dataEspecialidades = data.data;
         
         if (data.code == 200){
-            // agregar especialidades dinamicamente
-            let especialidades = data.data;
+            console.log('especialidades', data.data);
             let html = $('#listaEspecialidades');
-
-            data.data.forEach(element => {
-                let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                    <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="" checked data-rel='${ JSON.stringify(element) }'>
+            html.empty();
+            let firstItem = true;
+            let elemento = '';
+            dataEspecialidades.forEach(element => {
+                elemento += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                                    <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" value="${element.nombreEspecialidad}" ${firstItem ? 'checked' : ''} data-rel='${ JSON.stringify(element) }'>
                                     <span class="text-veris fw-bold">
                                         ${capitalizarElemento(element.nombreEspecialidad)}
                                         <small class="fs--2 d-block fw-normal text-body-secondary">${element.nombreSucursal}</small>
                                     </span>
                                 </label>`;
-                html.append(elemento);
+                
+                firstItem = false;
             });
+            html.append(elemento);
         }
         return data;
     }
+
 
     // consultar disponibilidad de doctores
 
