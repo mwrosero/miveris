@@ -44,7 +44,7 @@ Mi Veris - Inicio
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="fw-bold border-start-veris ps-3">Acceso rápido</h5>
         </div>
-        <div id="respuestaSolicitud"></div>
+        
         <div class="position-relative mb-3">
             <div class="swiper swiper-acceso-rapidos pt-3 pb-4 px-2 mx-n2">
                 <div class="swiper-wrapper">
@@ -107,8 +107,7 @@ Mi Veris - Inicio
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="fw-bold border-start-veris ps-3">Mis tratamientos</h5>
             <a href="{{route('tratamientos')}}"
-            class="fs--2" style="display: visible;" id="verTodosTratamientos"
-            >Ver todos</a>
+            class="fs--2" style="display: visible;" id="verTodosTratamientos">Ver todos</a>
         </div>
         <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">
 
@@ -120,7 +119,7 @@ Mi Veris - Inicio
 
 
                 <button type="button" class="mt-n4 btn btn-prev btn-transition"></button>
-<button type="button" class="mt-n4 btn btn-next btn-transition"></button>
+                <button type="button" class="mt-n4 btn btn-next btn-transition"></button>
 
             </div>
 
@@ -168,6 +167,7 @@ Mi Veris - Inicio
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+
 <script>
 
     //variables globales
@@ -192,7 +192,7 @@ Mi Veris - Inicio
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         const data = await call(args);
         _ppd = data.data;
@@ -266,6 +266,7 @@ Mi Veris - Inicio
                 mostrarTratamientoenDiv();
             }
         }
+        chartProgres('#chart-progress');
 
         return data;
 
@@ -392,7 +393,7 @@ Mi Veris - Inicio
                 divContenedor.append(elemento);
             });
 
-        chartProgres('#chart-progress');
+        
     }
 
     
@@ -515,34 +516,34 @@ Mi Veris - Inicio
     
 
     // funcion para controlar swiper independientes
-    function initializeSwiper(swiperSelector) {
-        document.querySelectorAll(swiperSelector).forEach(swiperElement => {
-            const prevButton = swiperElement.querySelector('.btn-prev');
-            const nextButton = swiperElement.querySelector('.btn-next');
-            const slides = swiperElement.querySelectorAll('.swiper-slide');
+    // function initializeSwiper(swiperSelector) {
+    //     document.querySelectorAll(swiperSelector).forEach(swiperElement => {
+    //         const prevButton = swiperElement.querySelector('.btn-prev');
+    //         const nextButton = swiperElement.querySelector('.btn-next');
+    //         const slides = swiperElement.querySelectorAll('.swiper-slide');
 
-            // Ocultar botones si hay menos de 4 slides
-            console.log(slides.length);
-            if (slides.length >= 4) {
-            prevButton.style.opacity = 1;
-            nextButton.style.opacity = 1;
-        } else {
-            prevButton.style.opacity = 0;
-            nextButton.style.opacity = 0;
-        }
+    //         // Ocultar botones si hay menos de 4 slides
+    //         console.log(slides.length);
+    //         if (slides.length >= 4) {
+    //         prevButton.style.opacity = 1;
+    //         nextButton.style.opacity = 1;
+    //     } else {
+    //         prevButton.style.opacity = 0;
+    //         nextButton.style.opacity = 0;
+    //     }
 
-            new Swiper(swiperElement, {
-                navigation: {
-                    nextEl: nextButton,
-                    prevEl: prevButton,
-                },
-                    // Agrega aquí otras opciones de configuración si son necesarias
-                    slidesPerView: 3,
-                    spaceBetween: 10,
+    //         new Swiper(swiperElement, {
+    //             navigation: {
+    //                 nextEl: nextButton,
+    //                 prevEl: prevButton,
+    //             },
+    //                 // Agrega aquí otras opciones de configuración si son necesarias
+    //                 slidesPerView: 3,
+    //                 spaceBetween: 10,
                     
-                });
-            });
-    }
+    //             });
+    //         });
+    // }
 
     // funcion esPagada para saber si la cita esta pagada
     function esPagada(pagada){
