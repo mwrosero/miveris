@@ -1,6 +1,11 @@
 const _canalOrigen = "MVE_CMV";
+const _plataforma = "WEB";
+const _version = "7.8.0";
+
+
 
 async function call(args){
+    console.log(11,$.blockUI)
     if(args.showLoader || args.showLoader == true){
         showLoader();
     }

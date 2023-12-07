@@ -15,7 +15,8 @@ Mi Veris - Citas - Laboratorio a domicilio
                     <p class="fs--1 fw-normal">Un asesor te contactará pronto</p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal" id="btnEntendido"
+                    >Entiendo</button>
                 </div>
             </div>
         </div>
@@ -31,7 +32,7 @@ Mi Veris - Citas - Laboratorio a domicilio
                         <form class="row g-3">
                             <div class="col-md-12">
                                 <label for="paciente" class="form-label fw-bold">Selecciona el paciente</label>
-                                <select class="form-select bg-neutral" name="paciente" id="paciente" required>
+                                <select class="form-select bg-neutral" name="paciente" id="paciente" >
                                     <option selected disabled value="">Elegir...</option>
                                     <option value="">...</option>
                                     <option value="">...</option>
@@ -64,7 +65,8 @@ Mi Veris - Citas - Laboratorio a domicilio
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-lg btn-primary-veris w-100" type="submit"><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
+                                <button class="btn btn-lg btn-primary-veris w-100" type="submit" id="btnGuardar"
+                                ><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
                             </div>
                         </form>
                     </div>
@@ -76,4 +78,151 @@ Mi Veris - Citas - Laboratorio a domicilio
 @endsection
 @push('scripts')
 <script></script>
+<script>
+    // variables globales
+    let codigoTratamiento = {{ $codigoTratamiento }};
+
+    // llama al dom
+
+    document.addEventListener("DOMContentLoaded", async function () {
+        await consultarPacientes();
+        await consultarCiudades();
+        console.log('codigoTratamiento', codigoTratamiento);
+    });
+
+    // funciones asyncronas
+
+    // consultar pacientes
+    async function consultarPacientes() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataFa', data);
+        if(data.code == 200){
+            let html = '';
+            html += `<option value="">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
+            data.data.forEach(element => {
+                html += `<option data-rel='${ JSON.stringify(element) }'>${element.primerNombre} ${element.primerApellido} (${element.parentesco})</option>`;
+            });
+            // yo
+            $('#paciente').html(html);
+
+        }
+        return data;
+    }
+
+    // consultar ciudades
+
+    async function consultarCiudades() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        args["endpoint"] = api_url + `/digitales/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataCiudades', data);
+        if(data.code == 200){
+            let ciudades = data.data;
+            let html = '';
+            ciudades.forEach(element => {
+                html += `<option value="${element.secuencialCiudad}">${element.nombreCiudad}</option>`;
+            });
+            $('#ciudad').html(html);
+        }
+        return data;
+    }
+
+    //Crea una nueva solicitud de orden de laboratorio a domicilio.
+    async function crearSolicitudLaboratorioDomicilio() {
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/domicilio/laboratorio/solicitud";
+        args["method"] = "POST";
+        args["showLoader"] = false;
+        args["bodyType"] = "formdata";
+        let paciente = [];
+
+        if(getInput('paciente') == ''){
+            console.log(0)
+            paciente = {
+                tipoIdentificacion: "{{ Session::get('userData')->codigoTipoIdentificacion }}",
+                numeroIdentificacion: "{{ Session::get('userData')->numeroIdentificacion }}",
+                nombrePaciente: "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}",
+            }
+        }else{
+            console.log(1)
+            paciente = JSON.parse($('#paciente option:selected').attr("data-rel"));
+            paciente["nombrePaciente"] = paciente.primerNombre + ' ' + paciente.primerApellido;
+            console.log(paciente)
+        }
+
+        console.log(paciente)
+
+        let formData = new FormData();
+        formData.append("tipoIdentificacionPaciente", paciente.tipoIdentificacion);
+        formData.append("identificacionPaciente", paciente.numeroIdentificacion);
+        formData.append("nombrePaciente", paciente.nombrePaciente);
+        formData.append("codigoCiudad", getInput('ciudad'));
+        formData.append("direccion", getInput('direccion'));
+        formData.append("telefono", getInput('telefono'));
+
+        args["data"] = formData;
+
+        console.log('args1111', args["data"]);
+
+        const data = await call(args);
+        console.log('actualizarDatosUsuario',data);
+        if(data.code == 200){
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+        } else {
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+        }
+        return data;
+
+    }
+
+    // funciones js
+    // obtener datos del select paciente
+    $('#paciente').change(function() {
+        var seleccion = $(this).val(); // Obtiene el valor seleccionado
+        var valores = seleccion.split(','); // Separa los valores
+
+        numeroIdentificacion = valores[0];
+        tipoIdentificacion = valores[1];
+        correo = valores[2];
+        var textoCompleto = $(this).find('option:selected').text();
+
+    
+        // Extrayendo solo los nombres del paciente
+        nombrePaciente = textoCompleto.substring(0, textoCompleto.lastIndexOf(" ("));
+    });
+
+     // obtener los datos del select ciudades
+     $('#ciudad').change(function() {
+        var seleccion = $(this).val(); // Obtiene el valor seleccionado
+        var valores = seleccion.split(','); // Separa los valores
+
+        ciudad = valores[0];
+        console.log('ciudad',ciudad);
+        var textoCompleto = $(this).find('option:selected').text();
+    });
+
+    // enviar datos
+
+    $("form").on('submit', async function(e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado de envío del formulario
+        crearSolicitudLaboratorioDomicilio();
+    });
+    
+    
+    // boton entendido
+    $('#btnEntendido').click(function() {
+        window.location.href = `/tratamiento/${codigoTratamiento}`;
+    });
+
+
+</script>
 @endpush

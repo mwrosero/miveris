@@ -34,7 +34,7 @@ Mi Veris - Citas - Familia y amigos
                     <p class="fs--1 fw-bold m-0 mt-3">Persona agregada exitosamente</p>
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Entendido</button>
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
                 </div>
             </div>
         </div>
@@ -88,10 +88,10 @@ Mi Veris - Citas - Familia y amigos
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-outline-primary-veris bg-white w-100" type="button" id="btnBuscar">
+                                <button class="btn btn-outline-primary-veris bg-white w-100" type="submit" id="btnBuscar">
                                     Buscar</button>
                             </div>
-                        </form>
+                        </form> 
                     </div>
                 </div>
                 <div id="resultadoConsulta" style="display: none;">
@@ -254,9 +254,11 @@ Mi Veris - Citas - Familia y amigos
 
     //buscar persona
     
-    $("#btnBuscar").click(async function() {
+    $("form").on('submit', async function(e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado de envío del formulario
         await consultarPersona();
     });
+
 
     // agregar persona
 
@@ -314,6 +316,12 @@ Mi Veris - Citas - Familia y amigos
             lista.appendChild(listItem);
         });
     }
+
+    // redireccionar a la lista de familiares
+
+    $("#btnEntendido").click(function() {
+        window.location.href = "{{route('familia.lista')}}";
+    });
 
 </script>
 <style>

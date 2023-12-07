@@ -30,7 +30,7 @@ Mi Veris - Citas - Servicios a domicilio
                         <form class="row g-3">
                             <div class="d-flex justify-content-between">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
                                     <label class="form-check-label cursor-pointer fw-bold" for="inlineRadio1">Laboratorio</label>
                                 </div>
                                 <div class="form-check form-check-inline">
@@ -40,7 +40,7 @@ Mi Veris - Citas - Servicios a domicilio
                             </div>
                             <div class="col-md-12">
                                 <label for="paciente" class="form-label fw-bold">Selecciona el paciente</label>
-                                <select class="form-select bg-neutral" name="paciente" id="paciente" required>
+                                <select class="form-select bg-neutral" name="paciente" id="paciente" >
                                     <option selected disabled value="">Elegir...</option>
                                     <option value="">...</option>
                                     <option value="">...</option>
@@ -84,5 +84,187 @@ Mi Veris - Citas - Servicios a domicilio
 </div>
 @endsection
 @push('scripts')
-<script></script>
+<script>
+
+    // variables globales
+
+
+    // llamada al dom
+    document.addEventListener("DOMContentLoaded", async function () {
+        // consultar grupo familiar
+        await consultarGrupoFamiliar();
+        // consultar ciudades
+        await consultarCiudades();
+        
+    });
+
+    // funciones asincronas 
+
+    // consultar grupo familiar
+    async function consultarGrupoFamiliar() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataFa', data);
+        if (data.code == "200") {
+            let html = '';
+            html += `<option value="">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
+            data.data.forEach(element => {
+                html += `<option data-rel='${ JSON.stringify(element) }'>${element.primerNombre} ${element.primerApellido} (${element.parentesco})</option>`;
+            });
+            $('#paciente').html(html);
+        
+        } 
+    }
+
+    // consultar ciudades
+
+    async function consultarCiudades() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        args["endpoint"] = api_url + `/digitales/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataCiudades', data);
+        if(data.code == 200){
+            let ciudades = data.data;
+            let html = '';
+            ciudades.forEach(element => {
+                html += `<option value="${element.secuencialCiudad}">${element.nombreCiudad}</option>`;
+            });
+            $('#ciudad').html(html);
+        }
+        return data;
+    }
+
+    // guardar farmacia domicilio
+    async function consultarFarmaciaDomicilio() {
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/domicilio/farmacia/solicitud";
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "POST";
+        args["showLoader"] = false;
+        args["bodyType"] = "json";
+        let paciente = [];
+
+        if(getInput('paciente') == ''){
+            console.log(0)
+            paciente = {
+                tipoIdentificacion: "{{ Session::get('userData')->tipoIdentificacion }}",
+                numeroIdentificacion: "{{ Session::get('userData')->numeroIdentificacion }}",
+                nombrePaciente: "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}",
+            }
+        }else{
+            console.log(2)
+            paciente = JSON.parse($('#paciente option:selected').attr("data-rel"));
+            paciente["nombrePaciente"] = paciente.primerNombre + ' ' + paciente.primerApellido;
+            console.log(paciente)
+        }
+
+        args["data"] = JSON.stringify({
+            "tipoIdentificacionPaciente": paciente.tipoIdentificacion,
+            "identificacionPaciente": paciente.numeroIdentificacion,
+            "nombrePaciente":  paciente.nombrePaciente,
+            "mail": paciente.correo,
+            "direccion": getInput('direccion'), 
+            "telefono": getInput('telefono'),
+        });
+
+        console.log('args', args["data"]);
+
+        const data = await call(args);
+        console.log('actualizarDatosUsuario',data);
+        if(data.code == 200){
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+            document.getElementById("mensaje").innerHTML = data.message;
+        }
+        else{
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+            document.getElementById("mensaje").innerHTML = data.message;
+
+        }
+        return data;
+
+    }
+
+
+    //Crea una nueva solicitud de orden de laboratorio a domicilio.
+    async function crearSolicitudLaboratorioDomicilio() {
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/domicilio/laboratorio/solicitud";
+        args["method"] = "POST";
+        args["showLoader"] = false;
+        args["bodyType"] = "formdata";
+        let paciente = [];
+
+        if(getInput('paciente') == ''){
+            console.log(0)
+            paciente = {
+                tipoIdentificacion: "{{ Session::get('userData')->codigoTipoIdentificacion }}",
+                numeroIdentificacion: "{{ Session::get('userData')->numeroIdentificacion }}",
+                nombrePaciente: "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}",
+            }
+        }else{
+            console.log(1)
+            paciente = JSON.parse($('#paciente option:selected').attr("data-rel"));
+            paciente["nombrePaciente"] = paciente.primerNombre + ' ' + paciente.primerApellido;
+            console.log(paciente)
+        }
+
+        console.log(paciente)
+
+        let formData = new FormData();
+        formData.append("tipoIdentificacionPaciente", paciente.tipoIdentificacion);
+        formData.append("identificacionPaciente", paciente.numeroIdentificacion);
+        formData.append("nombrePaciente", paciente.nombrePaciente);
+        formData.append("codigoCiudad", getInput('ciudad'));
+        formData.append("direccion", getInput('direccion'));
+        formData.append("telefono", getInput('telefono'));
+
+        args["data"] = formData;
+
+        console.log('args1111', args["data"]);
+
+        const data = await call(args);
+        console.log('actualizarDatosUsuario',data);
+        if(data.code == 200){
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+        }
+        else{
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+            document.getElementById("mensaje").innerHTML = data.message;
+
+        }
+        return data;
+
+    }
+
+
+    // funciones JS
+
+    $("form").on('submit', async function(e) {
+        e.preventDefault(); // Evita el comportamiento predeterminado de envío del formulario
+        // recibir los valores del checkbox
+        let tipoServicio = $('input[name="inlineRadioOptions"]:checked').val();
+
+        if (tipoServicio == 'option1') {
+            await crearSolicitudLaboratorioDomicilio();
+        } else {
+            await consultarFarmaciaDomicilio();
+        }
+    });
+
+    
+
+
+
+
+
+
+</script>
 @endpush

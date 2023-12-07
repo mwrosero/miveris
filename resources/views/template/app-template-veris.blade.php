@@ -6,6 +6,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- Libreria para  blockUI -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
+   
         
     <title>@yield('title')</title>
 
@@ -131,6 +135,7 @@
     <script>
         // Inicializa Swiper.js
         function chartProgres(elemento){
+            console.log('elemento',elemento);
 
         
             var swiper = new Swiper('.swiper', {
@@ -243,6 +248,19 @@
             }
             const textoCapitalizado = palabras.join(" ");
             return textoCapitalizado;
+        }
+        // funcion quitar comillas a la url
+        function quitarComillas(url){
+            console.log('imagen',url);
+            if (url == null) return "";
+            let urlSinComillas = url.replace(/['"]+/g, '');
+            return urlSinComillas;
+        }
+
+        //determinar valores null
+        function determinarValorNull(valor){
+            if (valor == null) return "";
+            return valor;
         }
 
     </script>

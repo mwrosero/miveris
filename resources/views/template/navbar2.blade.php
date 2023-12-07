@@ -151,7 +151,7 @@
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
                 <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
                     <i class="fa-solid fa-bell"></i>
-                    <span class="badge bg-danger rounded-pill badge-notifications d-none">5</span>
+                    <span class="badge bg-danger rounded-pill badge-notifications d-none" id="badgeNotificaciones"></span>
                 </a>
             </li>
             <!--/ Notification -->
@@ -209,7 +209,7 @@
         <div class="modal-content">
             <div class="modal-body p-4 text-center">
                 <h4 class="mb-0">Cerrar sesión</h4>
-                <p class="mb-0">¿Estás seguro que deseas cerar sesión?.</p>
+                <p class="mb-0">¿Estás seguro que deseas cerrar sesión?.</p>
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
                 <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">No</button>
@@ -245,149 +245,128 @@
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0 py-0 px-0">
         <h5 id="offcanvasEndLabel" class="offcanvas-title px-3 mb-3">Notificaciones</h5>
-        <div class="border-300">
-            <div class="py-3 border-bottom px-3 bg-light-grayish-cyan">
-                <div class="d-flex justify-content-between">
-                    <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> Cita de control.</h4>
-                    <span class="fs--3">Ahora</span>
-                </div>
-                <div class="flex-1 ms-4">
-                    <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
-                        <b class="nombre-paciente"> Magdalena</b>, recuerda que tu especialista de <b class="nombre-especialidad"> [especialidad]</b> te envió una cita de control el <b class="fecha"> 00/00/0000</b>
-                    </p>
-                </div>
-                <div class="text-end">
-                    <a href="#!" class="text-primary-veris fs--1 fw-bold">Agendar cita</a>
-                </div>
-            </div>
-
-            <div class="py-3 border-bottom px-3">
-                <div class="d-flex justify-content-between">
-                    <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> Cita de control.</h4>
-                    <span class="fs--3">Ahora</span>
-                </div>
-                <div class="flex-1 ms-4">
-                    <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
-                        <b class="nombre-paciente"> Magdalena</b>, recuerda que tu especialista de <b class="nombre-especialidad"> [especialidad]</b> te envió una cita de control el <b class="fecha"> 00/00/0000</b>
-                    </p>
-                </div>
-                <div class="text-end">
-                    <a href="#!" class="text-primary-veris fs--1 fw-bold">Agendar cita</a>
-                </div>
-            </div>
-
-            <div class="py-3 border-bottom px-3 bg-light-grayish-cyan">
-                <div class="d-flex justify-content-between">
-                    <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> Cita de control.</h4>
-                    <span class="fs--3">Ahora</span>
-                </div>
-                <div class="flex-1 ms-4">
-                    <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
-                        <b class="nombre-paciente"> Magdalena</b>, recuerda que tu especialista de <b class="nombre-especialidad"> [especialidad]</b> te envió una cita de control el <b class="fecha"> 00/00/0000</b>
-                    </p>
-                </div>
-                <div class="text-end">
-                    <a href="#!" class="text-primary-veris fs--1 fw-bold">Agendar cita</a>
-                </div>
-            </div>
+        <div class="border-300" id= "notificaciones">
+            
+            <!-- Notificaciones dinamicas -->
+            
         </div>
-        <div class="px-3 mt-5">
-            <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link bg-transparent" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&lt;</span>
-                        </a>
-                    </li>
-                    <li class="page-item disabled"><span class="page-link bg-transparent">1 de 2</span></li>
-                    <li class="page-item">
-                        <a class="page-link bg-transparent" href="#" aria-label="Next">
-                            <span aria-hidden="true">&gt;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        
     </div>
 </div>
 
 <script>
     
 
-<<<<<<< HEAD
-=======
+    // variables globales
+    let paginaActual = 1;
+    const notificacionesPorPagina = 5;
+    let todasNotificaciones = [];
+
+
     // llamada al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
         await getNotificaciones();
+        await cantidadNotificaciones();
 
     } );
 
     // funciones asincronas
     // notificaciones
-    async function getNotificaciones(){
+    async function getNotificaciones( pagina = 1 ) {
         let args = [];
         let canalOrigen = _canalOrigen;
-        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}";
 
         console.log(codigoUsuario);
-        args["endpoint"] = api_url + `/digitales/v1/notificaciones/bandeja?canalOrigen= ${canalOrigen}&codigoUsuario=${codigoUsuario}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`;
         args["method"] = "GET";
         args["showLoader"] = false;
-        
+
+        console.log(1,args["endpoint"]);
         const data = await call(args);
-        if (data.data.length > 0){
-            
-            console.log('notificaciones');
-            
-            let notificaciones = data.data;
-            let html = $('#notificaciones')
-            html.empty();
-            notificaciones.forEach(notificacion => {
-                html += `<div class="py-3 border-bottom px-3 bg-light-grayish-cyan">
-                            <div class="d-flex justify-content-between">
-                                <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> Cita de control.</h4>
-                                <span class="fs--3">Ahora</span>
-                            </div>
-                            <div class="flex-1 ms-4">
-                                <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
-                                    <b class="nombre-paciente"> Mag</b>, recuerda que tu especialista de <b class="nombre-especialidad"> ${notificacion.nombreEspecialidad}</b> te envió una cita de control el <b class="fecha"> ${notificacion.fechaOrden}</b>
-                                </p>
-                            </div>
-                            <div class="text-end">
-                                <a href="#!" class="text-primary-veris fs--1 fw-bold">Agendar cita</a>
-                            </div>
-                        </div>`;
-                        
-            });
-            html += `<div class="px-3 mt-5">
+
+        todasNotificaciones = data.data;    
+        console.log('notificaciones', data);
+        mostrarNotificaciones(pagina);
+        return data;
+    }
+
+    function mostrarNotificaciones(pagina) {
+        let htmlContent = '';
+
+        const notificaciones = todasNotificaciones;
+        // Calcular el rango de notificaciones a mostrar
+        const inicio = (pagina - 1) * notificacionesPorPagina;
+        const fin = inicio + notificacionesPorPagina;
+        notificaciones.slice(inicio, fin).forEach(notificacion => {
+            const bgClass = notificacion.estado !== "LEIDO" ? "bg-light-grayish-cyan" : "";
+            htmlContent += `<div class="py-3 border-bottom px-3 ${bgClass}">
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> ${determinarCategoria(notificacion.categoria)}</h4>
+                                    <span class="fs--3">${notificacion.valorTiempo}</span>
+                                </div>
+                                <div class="flex-1 ms-4">
+                                    <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
+                                        ${notificacion.mensajeNotificacion}
+                                    </p>
+                                </div>
+                                <div class="text-end">
+                                    ${determinarBotonNotificacion(notificacion.categoria)}
+                                    
+                                </div>
+                            </div>`;
+        });
+        let totalPaginas = Math.ceil(notificaciones.length / notificacionesPorPagina);
+
+
+        // Agregar paginación al final
+        htmlContent += `<div class="px-3 mt-5">
                         <nav aria-label="Page navigation">
                             <ul class="pagination justify-content-center">
-                                <li class="page-item">
-                                    <a class="page-link bg-transparent" href="#" aria-label="Previous">
+                                <li class="page-item ${pagina === 1 ? 'disabled' : ''}">
+                                    <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual - 1)" aria-label="Previous">
                                         <span aria-hidden="true">&lt;</span>
                                     </a>
                                 </li>
-                                <li class="page-item disabled"><span class="page-link bg-transparent">1 de 2</span></li>
-                                <li class="page-item">
-                                    <a class="page-link bg-transparent" href="#" aria-label="Next">
+                                <li class="page-item disabled"><span class="page-link bg-transparent">${pagina} de ${totalPaginas}</span></li>
+                                <li class="page-item ${pagina === totalPaginas ? 'disabled' : ''}">
+                                    <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual + 1)" aria-label="Next">
                                         <span aria-hidden="true">&gt;</span>
                                     </a>
                                 </li>
                             </ul>
                         </nav>
                     </div>`;
-            html.append(html);
-        } else {
-            // crear esceario de no notificaciones
+        
+        $('#notificaciones').html(htmlContent);
+        
+    }
 
-            let html = $('#notificaciones')
-            html.empty();
-            // crear div de no notificaciones
-            html = ``;
-            html.append(html);
+
+    // cantidad de notificaciones
+
+    async function cantidadNotificaciones(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
+        args["endpoint"] = api_url + `/digitales/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
+        
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        console.log(2,args["endpoint"]);
+        
+        const data = await call(args);
+        console.log('cantidad notificaciones', data);
+        if (data.code == 200) {
+            let cantidadNotificaciones = data.data.cantidadNotificaciones;
+            if (cantidadNotificaciones > 0) {
+                $('#badgeNotificaciones').html(cantidadNotificaciones);
+                $('#badgeNotificaciones').removeClass('d-none');
+            } else {
+                $('#badgeNotificaciones').addClass('d-none');
+            }
         }
-        return data;
     }
 
 
@@ -395,10 +374,46 @@
 
     // funciones js
     // salir de la sesion
->>>>>>> parent of 9e86342 (ajustes citas img, recetas, terapia, notificaciones)
     $('#logout').click(function(){
         localStorage.clear();
         window.location.href = "{{ route('logout') }}";
     });
+
+    // determinar categoria
+
+    function determinarCategoria(categoria){
+        let categoriaNotificacion = '';
+        switch (categoria) {
+            case 'PENDIENTE_PAGO':
+                categoriaNotificacion = 'Pago pendiente';
+                break;
+        }
+        return categoriaNotificacion;
+    }
+
+    //determinar boton notificacion
+    function determinarBotonNotificacion(categoria){
+        let botonNotificacion = '';
+        switch (categoria) {
+            case 'PENDIENTE_PAGO':
+                botonNotificacion = ``;
+                break;
+            case 'CITA_MEDICA':
+                botonNotificacion = `<a href="#!" class="btn btn-sm btn-outline-primary-veris">Agendar cita</a>`;
+                break;
+        }
+
+        return botonNotificacion;
+    }
+
+    function cambiarPagina(nuevaPagina) {
+        if (nuevaPagina < 1 || nuevaPagina > Math.ceil(todasNotificaciones.length / notificacionesPorPagina)) {
+            return;
+        }
+        paginaActual = nuevaPagina; // Actualizar la variable paginaActual
+        mostrarNotificaciones(paginaActual);
+    }
+
+
 
 </script>

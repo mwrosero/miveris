@@ -5,6 +5,11 @@ Mi Veris - Mis Datos
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">Mis Datos</h5>
+    
+    @foreach (Session::get('userData') as $key => $value)
+        <p>{{ $key }}: {{ $value }}</p>
+    @endforeach
+    
     <div class="row g-0 justify-content-center align-items-center">
         <div class="col-md-8">
             <div class="card bg-transparent shadow-none">
@@ -132,7 +137,7 @@ Mi Veris - Mis Datos
     let ciudades = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
-        console.log('cargfgDOMContentLoaded');
+        console.log(_canalOrigen);
         await obtenerDatosUsuario();
         provincias = await obtenerProvincias();
         ciudades = await obtenerCiudades(codeprovincia);
