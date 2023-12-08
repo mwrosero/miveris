@@ -22,6 +22,8 @@ Mi Veris - Citas - tratamiento
         </div>
     </div>
 
+    
+
     <!-- Modal Examenes presencial -->
     <div class="modal fade" id="mensajeLaboratorioPresencialModal" tabindex="-1" aria-labelledby="mensajeLaboratorioPresencialModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -118,6 +120,7 @@ Mi Veris - Citas - tratamiento
     // variables globales
     let codigoTratamiento = {{ $codigoTratamiento }};
     let porcentaje = {{ $porcentaje }};
+    
     let datosTratamiento = [];
     let ultimoTratamiento = [];
     // llamada al dom
@@ -129,12 +132,12 @@ Mi Veris - Citas - tratamiento
     // obtener tratamientos  ​/tratamientos​/{idTratamiento}
     async function obtenerTratamientos(){
         let args = [];
-        let canalOrigen = _canalOrigen;
+        let canalOrigen = 'APP_CMV'
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
@@ -181,7 +184,7 @@ Mi Veris - Citas - tratamiento
                                                 <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio} </h6>
                                                 <span class="text-warning-veris" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                             </div>
-                                            <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(tratamientos.fechaCaducidad)}</b></p>
+                                            ${determinarFechasCaducadas(tratamientos)}
                                             <div id="recetaMedicaMensaje">
                                                 ${determinarMensajeRecetaMedica(tratamientos.nombreServicio)}
                                             </div> 
@@ -204,7 +207,7 @@ Mi Veris - Citas - tratamiento
             });
             // mostrar el titulo de pendientes
             document.getElementById("tituloTratamientoPendiente").style.display = "block";
-            // chartProgres("#chart-progress");
+            chartProgres("#chart-progress");
         }
         
     }
@@ -252,6 +255,15 @@ Mi Veris - Citas - tratamiento
         }
        
 
+    }
+
+    // determinar fechas caducadas
+    function determinarFechasCaducadas(datos){
+        if (datos.esCaducado == "S") {
+            return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+        } else {
+            return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+        }
     }
 
     // determinar si es comprar o por comprar
@@ -330,32 +342,91 @@ Mi Veris - Citas - tratamiento
 
             switch (datosServicio.tipoCard) {
                 case "AGENDA" :
+                    let respuestaAgenda = "";
                     if(datosServicio.esAgendable == "S"){
-                        return `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
-                    }
-                    else{
-                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
-                    }
-                    break;
-                case "LABORATORIO" :
 
-                    return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Solicitar</a>`;
+                        if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
+                            if (datosServicio.habilitaBotonAgendar == 'S') {
+                                respuestaAgenda += `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                            } else {
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+
+                            }
+
+                        }else if (datosServicio.estado == 'ATENDIDO'){
+                            
+
+                        }else if (datosServicio.estado == 'AGENDADO'){
+                            // mostrar boton de ver orden
+                            if (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                                
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Cambiar fecha</a>`;
+                            } else {
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver orden</a>`;
+                            }
+
+                            
+                        }
+
+                    }
+
+                    return respuestaAgenda;
+
                     break;
-                case "RECETA" :
+
+                case "LAB":
+                    let respuesta = "";
+
+                    // condición para 'verResultados'
+                    if (datosServicio.verResultados == "S") {
+                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2
+                        "><i class="bi me-2"></i> Ver resultados</a>`;
+                    } else {
+                        respuesta += ``;
+                    }
+
+                    //condición para 'aplicaSolicitud'
+                    if (datosServicio.aplicaSolicitud == "S") {
+                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    } else {
+                        respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    }
+
+                    
+
+                    return respuesta;
+
+                    break;
+
+                case "RECETAS" :
                     if(datosServicio.aplicaSolicitud == "S"){
-                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Solicitar</a>`;
+                        return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                     }
                     else{
                         return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Solicitar</a>`;
                     }
                     break;
                 case "ODONTOLOGIA" :
-                    return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Solicitar</a>`;
+                    if (datosServicio.esAgendable == "N") {
+                        return `<a class="btn btn-sm btn-primary-veris fw-normal fs--1" onclick="agendarCitaOdontologia()"><i class="bi me-2"></i> Agendar</a>`;
+                      
+                    } else {
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                    }
+
                     break;
 
             }
 
         }
+    }
+
+    // agendar cita odontologia
+
+    function agendarCitaOdontologia(){
+        //abrir modal video consulta
+        $('#mensajeVideoConsultaModal').modal('show');
     }
 
     

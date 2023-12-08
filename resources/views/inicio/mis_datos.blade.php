@@ -4,6 +4,25 @@ Mi Veris - Mis Datos
 @endsection
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- modal datos actualizados -->
+
+    <div class="modal fade" id="mensajeDatosActualizados" tabindex="-1" aria-labelledby="mensajeDatosActualizadosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
+                    <p class="fs--1 fw-bold m-0 mt-3">Datos actualizados</p>
+                </div>
+                <div class="modal-footer pb-3 pt-0 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">Mis Datos</h5>
     
     
@@ -237,6 +256,9 @@ Mi Veris - Mis Datos
 
         const data = await call(args);
         console.log('actualizarDatosUsuario',data);
+        if (data.code == 200) {
+            $('#mensajeDatosActualizados').modal('show');
+        }
 
     }
 

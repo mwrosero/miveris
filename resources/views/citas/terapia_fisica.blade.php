@@ -149,6 +149,8 @@ Mi Veris - Citas - Terapia física
 @push('scripts')
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
 <script>
     flatpickr("#fechaDesde", {
         // maxDate: "today"
@@ -170,11 +172,11 @@ Mi Veris - Citas - Terapia física
 
     // funciones asyncronas
     // Consultar los tratamientos de un paciente imagen y procedimientos
-    async function obtenerTratamientos(estado = 'PENDIENTE', pacienteSeleccionado = null, fechaDesde = '', fechaHasta = '', esAdmin = null) {
+    async function obtenerTratamientos(estado, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin) {
         console.log('obtenerTratamientosImagenProcedimientos');
         console.log('pacienteSeleccionado', pacienteSeleccionado);
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = 'APP_CMV';
                 
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
         if (pacienteSeleccionado) {
@@ -187,18 +189,15 @@ Mi Veris - Citas - Terapia física
         let plataforma = _plataforma;
         let version = _version;
         let servicio = 'TERAPIA';
-        // if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
-        //     args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+        if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
+            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
        
-        // } else {
-        //     args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-        // }
-
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-        
+        } else {
+            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+        }
         args["method"] = "GET";
-        args["showLoader"] = false;
-        console.log(8,args["endpoint"]);
+        args["showLoader"] = true;
+        console.log(args["endpoint"]);
         const data = await call(args);
         console.log('datalabor', data);
         console.log('estado', estado);
@@ -248,10 +247,11 @@ Mi Veris - Citas - Terapia física
                                             <div class="col-12 col-md-10 col-lg-8">
                                                 <div class="row g-3" id="cardTratamientoLaboratorio">
                                                     <!-- items -->
-                                                    <div class="col-12 col-md-6">`;
+                                                    `;
                         
                             laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                elementos += `<div class="card">
+                                elementos += `<div class="col-12 col-md-6">
+                                                <div class="card">
                                                     <div class="card-body p-2">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
@@ -260,16 +260,19 @@ Mi Veris - Citas - Terapia física
                                                         <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
-                                                                <img src="{{ asset('assets/img/svg/muletas.svg') }}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                
                                                             </div>
                                                             <div>
                                                                 ${determinarbotonesRecetaMedica(detalles)}  
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>`;                        
+                                                </div>
+                                                
+                                            </div>`;                        
                             });
-                            elementos += `</div>
+                            elementos += `
                                             </div>
                                         </div>
                                     </div>`;
@@ -343,7 +346,7 @@ Mi Veris - Citas - Terapia física
                                                         <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
-                                                                <img src="{{ asset('assets/img/svg/muletas.svg') }}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                             </div>
                                                             <div>
                                                                 ${determinarbotonesRecetaMedica(detalles)}  
@@ -392,6 +395,52 @@ Mi Veris - Citas - Terapia física
 
 
     // funciones js 
+
+    // determinarCondiciones
+    function determinarCondicionesBotones(data){
+
+        if (data.length == 0) {
+            return `<div></div>`;
+        } else {
+
+            switch (data.tipoCard){
+
+                case 'AGENDA' : {
+                    return `<div class="d-flex justify-content-between align-items-center mt-2">
+                                <div class="avatar me-2">
+                                    <img src="${quitarComillas(data.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                </div>
+                                <div>
+                                    <a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1${data.esAgendable !== 'S' ? ' disabled' : ''}"> Agendar</a>
+                                </div>
+                            </div>`;
+                    
+                        
+                }
+
+                break;
+            }
+
+
+        }
+
+    }
+
+    // determinar condiciones de agenda
+
+    function determinarAgenda(data){
+        if(data.esAgendable == 'S'){
+            return `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>`;
+        }else{
+            return '';
+        }
+        if (data.estado == 'PENDIENTE_AGENDAR'){
+
+
+
+
+        }
+    }
 
     // determinar si es comprar o por comprar
     function determinarEstado(estado){
@@ -452,33 +501,32 @@ Mi Veris - Citas - Terapia física
         });
     }
 
-
     // aplicar filtros
-
     $('#aplicarFiltros').on('click', async function(){
-        const contexto = $(this).data('context');
-        const pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
-        let fechaDesde = $('#fechaDesde').val() || '';
-        let fechaHasta = $('#fechaHasta').val() || '';
-        const esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
+        let contexto = $(this).data('context');
+        let pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
+        let fechaDesde = $('#fechaDesde').val();
+        let fechaHasta = $('#fechaHasta').val();
+        let esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
         let estadoTratamiento;
-
-        if ($('#pills-pendientes-tab').attr('aria-selected') === 'true') {
+        if (document.getElementById('pills-pendientes-tab').getAttribute('aria-selected') === 'true') {
             estadoTratamiento = 'PENDIENTE';
-        } else if ($('#pills-realizados-tab').attr('aria-selected') === 'true') {
+        } else if (document.getElementById('pills-realizados-tab').getAttribute('aria-selected') === 'true') {
             estadoTratamiento = 'REALIZADO';
         }
+
 
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
 
+
+
         if (contexto === 'contextoAplicarFiltros') {
             console.log('exito');   
-            await obtenerTratamientos(estadoTratamiento, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin);
+            await obtenerTratamientos( estadoTratamiento, pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin);
         }
+
     });
-
-
     // limpiar filtros
     $('#btnLimpiarFiltros').on('click', async function(){
         let contexto = $(this).data('context');
