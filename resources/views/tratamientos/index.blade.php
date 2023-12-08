@@ -74,8 +74,7 @@ Mi Veris - Citas - Mis tratamientos
         console.log('canalOrigen', _canalOrigen);   
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
-        // const elementoRealizados = document.getElementById('nombreFiltroRealizados');
-        // elementoRealizados.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
+        
         await obtenerTratamientosId();
         await consultarGrupoFamiliar();
         
@@ -93,41 +92,40 @@ Mi Veris - Citas - Mis tratamientos
         divContenedor.empty(); // Limpia el contenido actual
         if (esAdmin == 'N') {
             mostrarMensajeNoEsAdmin();
-        } else{
-            if (data.length == 0) {
+        } else if (data.length == 0) {
                 mostrarMensajeNoTieneTratamiento();
-            }
-        }
+        } else{
 
-        data.forEach((tratamientos) => {
-            let elemento = `<div class="col-12 col-md-6">
-                                <div class="card">
-                                    <div class="card-body p-2">
-                                        <div class="row gx-0 justify-content-between align-items-center mb-2">
-                                            <div class="col-9">
-                                                <h6 class="card-title text-primary-veris mb-0">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
-                                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
-                                                <p class="card-text fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
-                                                <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="fecha-enviado fw-normal text-primary-veris">${tratamientos.fechaTratamiento}</b></p>
-                                            </div>
-                                            <div class="col-3">
-                                                <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
-                                            </div>
-                                            <div class="d-flex justify-content-end align-items-center">
-                                                <a href="/tratamiento/${tratamientos.codigoTratamiento}/${tratamientos.porcentajeAvanceTratamiento}
-                                                " class="btn btn-sm btn-primary-veris">
-                                                    ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
-                                                </a>
+            data.forEach((tratamientos) => {
+                let elemento = `<div class="col-12 col-md-6">
+                                    <div class="card">
+                                        <div class="card-body p-2">
+                                            <div class="row gx-0 justify-content-between align-items-center mb-2">
+                                                <div class="col-9">
+                                                    <h6 class="card-title text-primary-veris mb-0">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
+                                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
+                                                    <p class="card-text fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
+                                                    <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="fecha-enviado fw-normal text-primary-veris">${tratamientos.fechaTratamiento}</b></p>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
+                                                </div>
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <a href="/tratamiento/${tratamientos.codigoTratamiento}/${tratamientos.porcentajeAvanceTratamiento}
+                                                    " class="btn btn-sm btn-primary-veris">
+                                                        ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>`;
+                                </div>`;
 
-            divContenedor.append(elemento);
-            
-        });
-        chartProgres("#chart-progress");
+                divContenedor.append(elemento);
+                
+            });
+            chartProgres("#chart-progress");
+        }
     }
 
     
@@ -189,7 +187,8 @@ Mi Veris - Citas - Mis tratamientos
         divContenedor.empty(); // Limpia el contenido actual
 
         let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" checked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
+                                checked>
                                 <span class="text-veris fw-bold">
                                     ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
@@ -200,8 +199,10 @@ Mi Veris - Citas - Mis tratamientos
         console.log('sss',data);
         data.forEach((Pacientes) => {
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}'
+                                    " value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
                                 <span class="text-veris fw-bold">
+                                    
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
                                 </span>
@@ -298,61 +299,35 @@ Mi Veris - Citas - Mis tratamientos
 
 
     // aplicar filtros
-    $('#aplicarFiltros').on('click', async function(){
+    $('#aplicarFiltros').on('click', function() {
         const contexto = $(this).data('context');
-        const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').val();
-        let fechaDesde = $('#fechaDesde').val() || '';
-        let fechaHasta = $('#fechaHasta').val() || '';
-        const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
-        let estadoTratamiento;
+        aplicarFiltros(contexto);
 
-        if ($('#pills-pendientes-tab').attr('aria-selected') === 'true') {
-            estadoTratamiento = 'PENDIENTE';
-        } else if ($('#pills-realizados-tab').attr('aria-selected') === 'true') {
-            estadoTratamiento = 'REALIZADO';
+        
+        // Obtener el texto completo de la opción seleccionada data-rel
+        let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+        // colocar el nombre del filtro
+        const elemento = document.getElementById('nombreFiltro');
+        if (texto == 'YO') {
+            elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+        } else{
+            elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
         }
-
-        fechaDesde = formatearFecha(fechaDesde);
-        fechaHasta = formatearFecha(fechaHasta);
-
-        if (contexto === 'contextoAplicarFiltros') {
-            console.log('exito');   
-            await obtenerTratamientosId(pacienteSeleccionado, fechaDesde, fechaHasta, estadoTratamiento, esAdmin);
-        }
+        
+        
+        
+        
     });
 
     
     // limpiar filtros
-    $('#btnLimpiarFiltros').on('click', async function(){
-        let contexto = $(this).data('context');
-        if (contexto === 'contextoLimpiarFiltros') {
-            $('input[name="listGroupRadios"]').prop('checked', false);
-            $('input[name="listGroupRadios"]').first().prop('checked', true);
-            $('#fechaDesde').val('');
-            $('#fechaHasta').val('');
-            let estado = document.getElementById('pills-pendienes-tab').getAttribute('aria-selected');
-            if (estado === 'true') {
-                await obtenerTratamientosId('', '', '', 'PENDIENTE');
-            }else {
-                await obtenerTratamientosId('', '', '', 'REALIZADO');
-            }
-
-        }
-        
+    
+    $('#btnLimpiarFiltros').on('click', function() {
+        const contexto = $(this).data('context');
+        limpiarFiltros(contexto);
     });
-    // formatear fecha
-    function formatearFecha(fecha) {
-        if (!fecha) return '';
 
-        const fechaObj = new Date(fecha);
-        if (isNaN(fechaObj.getTime())) return '';
-
-        const dia = fechaObj.getDate().toString().padStart(2, '0');
-        const mes = (fechaObj.getMonth() + 1).toString().padStart(2, '0');
-        const año = fechaObj.getFullYear();
-
-        return `${dia}/${mes}/${año}`;
-    }
+    
 
 
     // funcion para Mostrar mensaje en el boton de mis tratamientos
@@ -374,9 +349,7 @@ Mi Veris - Citas - Mis tratamientos
     // obtener tratamiento por id
     async function obtenerTratamientosId(id='', fechaDesde='', fechaHasta='', estadoTratamiento='PENDIENTE', esAdmin='S') {
 
-        console.log('fechaDesde', fechaDesde);
-        console.log('fechaHasta', fechaHasta);
-        console.log('esAdmin', esAdmin  );
+       
 
         let args = [];
         let canalOrigen = _canalOrigen;
@@ -385,7 +358,7 @@ Mi Veris - Citas - Mis tratamientos
         }
         let numeroPaciente = id;
 
-        args["endpoint"] = api_url + `/digitales/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
         
         args["method"] = "GET";
         args["showLoader"] = false;
