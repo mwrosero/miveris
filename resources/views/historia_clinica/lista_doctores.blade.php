@@ -115,7 +115,7 @@ Mi Veris - Historia clínica
                 </div>
             </div>
             <div class="col-12 col-lg-6 text-center mt-5">
-                <a href="{{route('historiaClinica.solicitar')}}" class="btn btn-primary-veris w-50">Continuar</a>
+                <a href="{{route('historiaClinica.solicitar')}}" class="btn btn-primary-veris w-50 py-3">Continuar</a>
             </div>
         </div>
     </section>

@@ -8,14 +8,13 @@
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- Logo veris -->
         <a class="navbar-brand mx-auto" href="#">
-            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" alt="Bootstrap" width="84">
+            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" class="ml-lg-10" alt="veris" width="84">
         </a>
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
                 <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
                     <i class="fa-solid fa-bell"></i>
-                    <span class="badge bg-danger rounded-pill badge-notifications d-none" id="badgeNotificaciones"></span>
                 </a>
             </li>
             <!--/ Notification -->
@@ -57,12 +56,6 @@
             </li>
             <!--/ User -->
         </ul>
-    </div>
-
-    <!-- Search Small Screens -->
-    <div class="navbar-search-wrapper search-input-wrapper d-none">
-        <input type="text" class="form-control search-input container-xxl border-0" placeholder="Search..." aria-label="Search..." />
-        <i class="ti ti-x ti-sm search-toggler cursor-pointer"></i>
     </div>
 </nav>
 

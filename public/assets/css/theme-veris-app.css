@@ -282,7 +282,9 @@ html:not([dir="rtl"]) .border-start-veris {
 .cursor-inherit {
   cursor: inherit !important;
 }
-
+.cursor-pointer{
+  cursor: pointer;
+}
 .dropdown-item:not(.disabled).active,
 .dropdown-item:not(.disabled):active {
   background-color: var(--bg-vris-blue) !important;
@@ -610,7 +612,9 @@ h1,
 }
 
 @media (min-width: 992px) {
-  
+  .ml-lg-10{
+    margin-left: 10.5rem !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -618,6 +622,7 @@ h1,
     top: -25%;
     right: -7%;
   }
+  
 }
 
 
