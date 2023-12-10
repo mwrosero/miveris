@@ -91,7 +91,7 @@ Mi Veris - Citas - Detalle
 
                         <!-- Button trigger modal -->
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary-veris w-100" data-bs-toggle="modal" data-bs-target="#plaPreventivoModal">
+                            <button type="button" class="btn btn-primary-veris w-100 py-3" data-bs-toggle="modal" data-bs-target="#plaPreventivoModal">
                                 Continuar
                             </button>
                         </div>

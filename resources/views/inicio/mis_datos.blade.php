@@ -21,11 +21,7 @@ Mi Veris - Mis Datos
         </div>
     </div>
 
-
-
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">Mis Datos</h5>
-    
-    
     
     <div class="row g-0 justify-content-center align-items-center">
         <div class="col-md-8">
@@ -47,7 +43,7 @@ Mi Veris - Mis Datos
                                 <div class="col-md-12">
                                     <label for="nombre" class="form-label fw-semibold">{{ __('Nombre') }}</label>
                                     <input type="text" class="form-control" name="nombre" id="nombre" required />
-                                    <div class="valid-feedback">
+                                    <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
@@ -90,14 +86,14 @@ Mi Veris - Mis Datos
                                 <div class="col-md-12">
                                     <label for="mail" class="form-label fw-semibold">{{ __('Correo electrónico') }} *</label>
                                     <input type="email" class="form-control" name="mail" id="mail" required />
-                                    <div class="valid-feedback">
+                                    <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="telefono" class="form-label fw-semibold">{{ __('Teléfono') }} *</label>
                                     <input type="number" class="form-control" name="telefono" id="telefono" required />
-                                    <div class="valid-feedback">
+                                    <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
@@ -131,7 +127,7 @@ Mi Veris - Mis Datos
                             </div>
                         </div>
                         <div class="col-12 text-center mt-5">
-                            <button class="btn btn-primary-veris w-50" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
+                            <button class="btn btn-primary-veris w-50 py-3" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
                         </div>
                     </form>
                 </div>

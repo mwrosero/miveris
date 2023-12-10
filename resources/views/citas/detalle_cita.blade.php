@@ -57,7 +57,7 @@ Mi Veris - Citas - Revisa tus datos
                 </div>
             </div>
             <div class="col-md-12 text-center mt-5">
-                <a href="{{route('citas.datosFacturacion')}}" class="btn btn-primary-veris w-25 px-3">{{ __('Pagar') }}</a>
+                <a href="{{route('citas.datosFacturacion')}}" class="btn btn-primary-veris w-25 px-3 py-3">{{ __('Pagar') }}</a>
             </div>
         </div>
     </section>

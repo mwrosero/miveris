@@ -40,7 +40,7 @@ Mi Veris - Historia clínica
                     <input type="text" class="form-control bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
                 </div>
                 <div class="col-md-12 mb-3">
-                    <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0" type="submit">Aplicar filtros</button>
+                    <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0 py-3" type="submit">Aplicar filtros</button>
                     <button class="btn text-primary w-100 mb-3 mx-0" type="submit"><i class="bi bi-trash me-2"></i> Limpiar filtros</button>
                 </div>
             </form>
