@@ -1,4 +1,8 @@
 const _canalOrigen = "MVE_CMV";
+const _plataforma = "WEB";
+const _version = "7.8.0";
+
+
 
 async function call(args){
     if(args.showLoader || args.showLoader == true){
@@ -370,4 +374,61 @@ async function recuperarContrasena(){
 
     const data = await call(args);
     return data;
+}
+
+
+// funciones para el filtro pendientes, realizadas 
+
+async function aplicarFiltros(contexto) {
+    const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').val();
+    let fechaDesde = $('#fechaDesde').val() || '';
+    let fechaHasta = $('#fechaHasta').val() || '';
+    const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
+    let estadoTratamiento;
+
+    if ($('#pills-pendientes-tab').attr('aria-selected') === 'true') {
+        estadoTratamiento = 'PENDIENTE';
+    } else if ($('#pills-realizados-tab').attr('aria-selected') === 'true') {
+        estadoTratamiento = 'REALIZADO';
+    }
+
+    fechaDesde = formatearFecha(fechaDesde);
+    fechaHasta = formatearFecha(fechaHasta);
+
+    if (contexto === 'contextoAplicarFiltros') {
+        console.log('exito');
+        await obtenerTratamientosId(pacienteSeleccionado, fechaDesde, fechaHasta, estadoTratamiento, esAdmin);
+        $('#filtroTratamientos').offcanvas('hide');
+    }
+}
+
+// limpiar filtros
+async function limpiarFiltros(contexto) {
+    if (contexto === 'contextoLimpiarFiltros') {
+        $('input[name="listGroupRadios"]').prop('checked', false);
+        $('input[name="listGroupRadios"]').first().prop('checked', true);
+        $('#fechaDesde').val('');
+        $('#fechaHasta').val('');
+        let estado = document.getElementById('pills-pendienes-tab').getAttribute('aria-selected');
+        if (estado === 'true') {
+            await obtenerTratamientosId('', '', '', 'PENDIENTE');
+        } else {
+            await obtenerTratamientosId('', '', '', 'REALIZADO');
+        }
+    }
+}
+
+
+// formatear fecha
+function formatearFecha(fecha) {
+    if (!fecha) return '';
+
+    const fechaObj = new Date(fecha);
+    if (isNaN(fechaObj.getTime())) return '';
+
+    const dia = fechaObj.getDate().toString().padStart(2, '0');
+    const mes = (fechaObj.getMonth() + 1).toString().padStart(2, '0');
+    const año = fechaObj.getFullYear();
+
+    return `${dia}/${mes}/${año}`;
 }

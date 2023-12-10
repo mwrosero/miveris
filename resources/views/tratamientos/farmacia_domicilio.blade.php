@@ -12,10 +12,11 @@ Mi Veris - Citas - Farmacia a domicilio
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
                     <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud exitosa</h1>
-                    <p class="fs--1 fw-normal">Un asesor de farmacia te contactará pronto</p>
+                    <p class="fs--1 fw-normal" id="mensaje"> </p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris w-100"id="btnGuardarSolicitudLlamada"
+                     data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
@@ -42,8 +43,7 @@ Mi Veris - Citas - Farmacia a domicilio
                                 <label for="paciente" class="form-label fw-bold">Selecciona la ciudad</label>
                                 <select class="form-select bg-neutral" name="ciudad" id="ciudad" required>
                                     <option selected disabled value="">Elegir...</option>
-                                    <option value="">...</option>
-                                    <option value="">...</option>
+                                    
                                 </select>
                                 <div class="invalid-feedback">
                                     Elegir una ciudad
@@ -58,11 +58,12 @@ Mi Veris - Citas - Farmacia a domicilio
                             <div class="col-md-12">
                                 <input type="text" class="form-control bg-neutral"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
                                 <div class="invalid-feedback">
-                                    Ingrese una direccion
+                                    Ingrese una direcciovisun
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-lg btn-primary-veris w-100" type="submit"><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
+                                <button class="btn btn-lg btn-primary-veris w-100" type="button" id="btnGuardar"
+                                ><i class="bi bi-telephone-fill me-2" id="btnGuardarSolicitudLlamada"></i> Solicitar llamada</button>
                             </div>
                         </form>
                     </div>
@@ -78,13 +79,15 @@ Mi Veris - Citas - Farmacia a domicilio
     // variables globales
     
     let familiar = [];
-
+    let numeroIdentificacion = '';
+    let tipoIdentificacion = '';
+    let message = '';
+    let codigoTratamiento = "{{ $codigoTratamiento }}";
     // llama al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarPacientes();
-        llenarSelectPacientes();
-        // await consultarCiudades();
+        await consultarCiudades();
         // await consultarFarmaciaDomicilio();
         // // boton guardar
         // $('body').on('click','#btnGuardar', async function () {
@@ -105,7 +108,13 @@ Mi Veris - Citas - Farmacia a domicilio
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
-            familiar = data.data;
+            let html = '';
+            html += `<option value="">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
+            data.data.forEach(element => {
+                html += `<option data-rel='${ JSON.stringify(element) }'>${element.primerNombre} ${element.primerApellido} (${element.parentesco})</option>`;
+            });
+            // yo
+            $('#paciente').html(html);
 
         }
         return data;
@@ -115,7 +124,8 @@ Mi Veris - Citas - Farmacia a domicilio
 
     async function consultarCiudades() {
         let args = [];
-        args["endpoint"] = api_url + `/digitales/v1/parametros/ciudades`
+        canalOrigen = _canalOrigen
+        args["endpoint"] = api_url + `/digitales/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
         args["method"] = "GET";
         args["showLoader"] = false;
         const data = await call(args);
@@ -124,23 +134,100 @@ Mi Veris - Citas - Farmacia a domicilio
             let ciudades = data.data;
             let html = '';
             ciudades.forEach(element => {
-                html += `<option value="${element.codigoCiudad}">${element.nombreCiudad}</option>`;
+                html += `<option value="${element.secuencialCiudad}">${element.nombreCiudad}</option>`;
             });
             $('#ciudad').html(html);
         }
         return data;
     }
 
-    // funciones js
-    function llenarSelectPacientes() {
-        let html = '';
-        familiar.forEach(element => {
-            html += `<option value="${element.numeroIdentificacion}">${element.primerNombre} ${element.primerApellido}</option>`;
+    async function consultarFarmaciaDomicilio() {
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/domicilio/farmacia/solicitud";
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "POST";
+        args["showLoader"] = false;
+        args["bodyType"] = "json";
+        let paciente = [];
+
+        if(getInput('paciente') == ''){
+            console.log(0)
+            paciente = {
+                tipoIdentificacion: "{{ Session::get('userData')->tipoIdentificacion }}",
+                numeroIdentificacion: "{{ Session::get('userData')->numeroIdentificacion }}",
+                nombrePaciente: "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}",
+            }
+        }else{
+            console.log(1)
+            paciente = JSON.parse($('#paciente option:selected').attr("data-rel"));
+            paciente["nombrePaciente"] = paciente.primerNombre + ' ' + paciente.primerApellido;
+            console.log(paciente)
+        }
+
+        args["data"] = JSON.stringify({
+            "tipoIdentificacionPaciente": paciente.tipoIdentificacion,
+            "identificacionPaciente": paciente.numeroIdentificacion,
+            "nombrePaciente":  paciente.nombrePaciente,
+            "mail": paciente.correo,
+            "direccion": getInput('direccion'), 
+            "telefono": getInput('telefono'),
         });
-        // yo
-        html += `<option value="{{ Session::get('userData')->numeroIdentificacion }}">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}</option>`;
-        $('#paciente').html(html);
+
+        console.log('args', args["data"]);
+
+        const data = await call(args);
+        console.log('actualizarDatosUsuario',data);
+        if(data.code == 200){
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+            document.getElementById("mensaje").innerHTML = data.message;
+        }
+        else{
+            $('#mensajeSolicitudLlamadaModal').modal('show');
+            document.getElementById("mensaje").innerHTML = data.message;
+
+        }
+        return data;
+
     }
 
+    // funciones js
+    
+    
+
+    // enviar datos
+    
+    $('#btnGuardar').click(function() {
+        if ($('#paciente').val() == '') {
+            $('#paciente').addClass('is-invalid');
+            return false;
+        } else {
+            $('#paciente').removeClass('is-invalid');
+        }
+        if ($('#ciudad').val() == '') {
+            $('#ciudad').addClass('is-invalid');
+            return false;
+        } else {
+            $('#ciudad').removeClass('is-invalid');
+        }
+        if ($('#telefono').val() == '') {
+            $('#telefono').addClass('is-invalid');
+            return false;
+        } else {
+            $('#telefono').removeClass('is-invalid');
+        }
+        if ($('#direccion').val() == '') {
+            $('#direccion').addClass('is-invalid');
+            return false;
+        } else {
+            $('#direccion').removeClass('is-invalid');
+        }
+        // $('#mensajeSolicitudLlamadaModal').modal('show');
+        consultarFarmaciaDomicilio();
+    });
+
+    $('#btnGuardarSolicitudLlamada').click(function() {
+        $('#mensajeSolicitudLlamadaModal').modal('hide');
+        window.location.href = `/tratamiento/${codigoTratamiento}`;
+    });
 </script>
 @endpush
