@@ -412,8 +412,10 @@ async function limpiarFiltros(contexto) {
         let estado = document.getElementById('pills-pendienes-tab').getAttribute('aria-selected');
         if (estado === 'true') {
             await obtenerTratamientosId('', '', '', 'PENDIENTE');
+            $('#filtroTratamientos').offcanvas('hide');
         } else {
             await obtenerTratamientosId('', '', '', 'REALIZADO');
+            $('#filtroTratamientos').offcanvas('hide');
         }
     }
 }
@@ -432,3 +434,8 @@ function formatearFecha(fecha) {
 
     return `${dia}/${mes}/${año}`;
 }
+
+
+
+
+
