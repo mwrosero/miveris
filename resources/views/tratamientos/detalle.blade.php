@@ -161,5 +161,38 @@ Mi Veris - Citas - tratamiento
 </div>
 @endsection
 @push('scripts')
-<script></script>
+<script>
+
+
+    // llamada al dom
+    
+    document.addEventListener("DOMContentLoaded", async function () {
+
+    });
+
+
+    // funciones asyncronas
+
+    // ver detalle de tratamiento
+    async function consultarGrupoFamiliar() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataFa', data);
+        if(data.code == 200){
+            familiar = data.data;
+            mostrarListaPacientesFiltro();
+
+        }
+        return data;
+    }
+
+
+
+
+</script>
 @endpush
