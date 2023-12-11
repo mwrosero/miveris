@@ -27,13 +27,11 @@ Mi Veris - Doctores favoritos
     <section class="p-3 mb-3">
         <div class="row justify-content-center" >
             <div class="col-12 col-md-6 text-center mt-5 mb-5">
-                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-50">Buscar doctor</a>
+                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-50 py-3">Buscar doctor</a>
             </div>
             <div class="row justify-content-center"  id="doctoresFavoritos" >
-
             </div>
             <!-- Doctor favorito dinamico -->
-            
 
             <!-- Mensaje Aún no tienes doctores favoritos -->
             <div class="col-12 d-flex justify-content-center d-none">

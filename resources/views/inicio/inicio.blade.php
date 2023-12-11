@@ -3,7 +3,7 @@
 Mi Veris - Inicio
 @endsection
 @section('content')
-<div class="flex-grow-1 container-p-y">
+<div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -39,7 +39,9 @@ Mi Veris - Inicio
             </form>
         </div>
     </div>
-
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-4 pt-3 mb-1 pb-2">{{ __('Inicio') }}</h5>
+    </div>
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="fw-bold border-start-veris ps-3">Acceso rápido</h5>
