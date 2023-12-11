@@ -12,20 +12,7 @@ Mi Veris - Resultados
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body" id="modalBody">
-                    <h1 class="text-center fw-bold fs-5">Resultados</h1>
-                    <!-- items -->
-                    <div class="my-3">
-                        <p class="text-center fs-normal my-3">ECOGRAFÍA - OSTEOMUSCULAR.</p>
-                        <a href="#" class="btn btn-outline-primary-veris w-100">Ver imagen</a>
-                    </div>
-                    <!-- items -->
-                    <div class="my-3">
-                        <p class="text-center fs-normal my-3">ECOGRAFÍA - OSTEOMUSCULAR.</p>
-                        <a href="#" class="btn btn-outline-primary-veris w-100">Ver imagen</a>
-                    </div>
-                    <div class="border-top">
-                        <a href="#" class="btn btn-primary-veris w-100 mt-3">Ver informe</a>
-                    </div>
+                    <!-- contenido dinamico -->
                 </div>
             </div>
         </div>
@@ -173,45 +160,63 @@ Mi Veris - Resultados
     //  detalles de resultados de laboratorio
 
     async function detallesResultadosLaboratorio(codigoApoyo){
-        let args = [];
-        canalOrigen = _canalOrigen
-        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
-
-        args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
-        args["method"] = "GET";
-        args["showLoader"] = false;
-        const data = await call(args);
-        console.log('datad', data);
-
-        // insertar datos en el modal
-        if (data.code == 200){
-            
-    
-            let html = $("#modalBody");
-            html.empty();
+         let args = [];
+         canalOrigen = _canalOrigen
+         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+ 
+         args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
+         args["method"] = "GET";
+         args["showLoader"] = false;
+         const data = await call(args);
+         console.log('datad', data);
+ 
+         // insertar datos en el modal
+         if (data.code == 200){
             let items = data.data;
-            let elemento = "";
-
-            elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
-
-            items.forEach((resultados) => {
-
+            
+            if (items == null){
+                console.log('entro1');
+                let html = $("#modalBody");
+                html.empty();
+                
+                let elemento = "";
+                elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
                 elemento += `<div class="my-3">
-                                <p class="text-center fs-normal my-3">${capitalizarElemento(resultados.nombrePrestacion)}</p>
-                                <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
+                                <p class="text-center fs-normal my-3">${capitalizarElemento(data.message)}</p>
                             </div>`;
-                        });
+                
+                html.append(elemento);  
+            } else {
+                console.log('entro2');
 
-            elemento += `<div class="border-top">
-                            <a onclick="detallesResultadosLaboratorio('${codigoApoyo}')" href="${quitarComillas(data.data[0].urlVisorWeb)}"
-                            class="btn btn-primary-veris w-100 mt-3" target="_blank">Ver informe</a>
-                        </div>`;
-            html.append(elemento);
-
-        }
-
-    }
+                let html = $("#modalBody");
+                html.empty();
+                
+                let elemento = "";
+    
+                elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
+    
+                items.forEach((resultados) => {
+    
+                    elemento += `<div class="my-3">
+                                    <p class="text-center fs-normal my-3">${capitalizarElemento(resultados.nombrePrestacion)}</p>
+                                    <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
+                                </div>`;
+                            });
+    
+                elemento += `<div class="border-top">
+                                <a onclick="detallesResultadosLaboratorio('${codigoApoyo}')" href="${quitarComillas(data.data[0].urlVisorWeb)}"
+                                class="btn btn-primary-veris w-100 mt-3" target="_blank">Ver informe</a>
+                            </div>`;
+                html.append(elemento);
+    
+            }        
+     
+             
+         }
+ 
+     }
 
 
     // consultar grupo familiar

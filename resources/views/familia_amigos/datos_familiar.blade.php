@@ -27,12 +27,12 @@ Mi Veris - Citas - Familia y amigos
         <div class="row justify-content-center">
             <div class="col-auto col-md-4">
                 <ul class="list-group">
-                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
+                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center p-2">
                         <div class="mx-auto">
                             <p class="fs--2 mb-0">¿Deseas asignar a esta persona como administrador de tu cuenta?</p>
                         </div>
                         <div class="form-check form-switch">
-                            <input class="form-check-input fs-3" type="checkbox" role="switch" name="administrador"id="administrador" />
+                            <input class="form-check-input fs-3 ms-0" type="checkbox" role="switch" name="administrador"id="administrador" />
                         </div>
                     </li>
                 </ul>
@@ -54,8 +54,7 @@ Mi Veris - Citas - Familia y amigos
                     </div>
                 </div>
                 <div class="mx-auto mx-lg-3">
-                    <button class="btn btn-primary-veris w-100" type="button" id="btnGuardar" >
-                        Guardar</button>
+                    <button class="btn btn-primary-veris w-100 py-3" type="button" id="btnGuardar">Guardar</button>
                 </div>
             </div>
         </div>

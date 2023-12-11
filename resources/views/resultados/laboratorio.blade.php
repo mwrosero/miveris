@@ -8,13 +8,11 @@ Mi Veris - Resultados
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- modal -->
-    <div class="modal fade" id="resultadoLaboratorioModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
+    <div class="modal fade" id="resultadImagenesProcedimientosModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content" id="modalBody">
-                <div class="modal-body">
-                    <h1 class="text-center fw-bold fs-5">Resultados</h1>
-                    <a href="#" class="btn btn-outline-primary-veris w-100 mb-2">Ver imagen</a>
-                    <a href="#" class="btn btn-primary-veris w-100 mb-2">Ver informe</a>
+            <div class="modal-content">
+                <div class="modal-body" id="modalBody">
+                    <!-- contenido dinamico -->
                 </div>
             </div>
         </div>
@@ -34,6 +32,38 @@ Mi Veris - Resultados
                     
                 </div>
             </div>
+
+            <!-- Mensaje No tienes resultados -->
+            <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesResultadosRealizados">
+                <div class="card bg-transparent shadow-none">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h5>No tienes resultados </h5>
+                            <p>En esta sección podrás revisar los resultados de tus exámenes</p>
+                            <div class="avatar avatar-xxl-10 mx-auto">
+                                <span class="avatar-initial rounded-circle bg-light-grayish-blue">
+                                    <img src="{{ asset('assets/img/svg/doctora.svg') }}" alt="recetas" class="rounded-circle">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mensaje END -->
+
+            <!-- Mensaje No tienes permisos de administrador -->
+            <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesPermisosAdministradorRealizados">
+                <div class="card bg-transparent shadow-none">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h5>No tienes permisos de administrador</h5>
+                            <p>Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
+                            <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Mensaje END -->
 
         </div>
     </section>
@@ -126,58 +156,63 @@ Mi Veris - Resultados
      //  detalles de resultados de laboratorio
  
      async function detallesResultadosLaboratorio(codigoApoyo){
-         let args = [];
-         canalOrigen = _canalOrigen
-         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
- 
-         args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
-         args["method"] = "GET";
-         args["showLoader"] = false;
-         const data = await call(args);
-         console.log('datad', data);
- 
-         // insertar datos en el modal
-         if (data.code == 200){
-            let items = data.data;
-            console.log('datas', data.data); 
-            if (items == null){
-                let html = $("#modalBody");
-                html.empty();
-                
-                let elemento = "";
-                elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
-                
-                html.append(elemento);  
-            } else {
-
-                let html = $("#modalBody");
-                html.empty();
-                
-                let elemento = "";
-    
-                elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
-    
-                items.forEach((resultados) => {
-    
-                    elemento += `<div class="my-3">
-                                    <p class="text-center fs-normal my-3">${capitalizarElemento(resultados.nombrePrestacion)}</p>
-                                    <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
-                                </div>`;
-                            });
-    
-                elemento += `<div class="border-top">
-                                <a onclick="detallesResultadosLaboratorio('${codigoApoyo}')" href="${quitarComillas(data.data[0].urlVisorWeb)}"
-                                class="btn btn-primary-veris w-100 mt-3" target="_blank">Ver informe</a>
-                            </div>`;
-                html.append(elemento);
-    
-            }        
-     
+          let args = [];
+          canalOrigen = _canalOrigen
+          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+          tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+  
+          args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
+          args["method"] = "GET";
+          args["showLoader"] = false;
+          const data = await call(args);
+          console.log('datad', data);
+  
+          // insertar datos en el modal
+          if (data.code == 200){
+             let items = data.data;
              
-         }
+             if (items == null){
+                 console.log('entro1');
+                 let html = $("#modalBody");
+                 html.empty();
+                 
+                 let elemento = "";
+                 elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
+                 elemento += `<div class="my-3">
+                                 <p class="text-center fs-normal my-3">${capitalizarElemento(data.message)}</p>
+                             </div>`;
+                 
+                 html.append(elemento);  
+             } else {
+                 console.log('entro2');
  
-     }
+                 let html = $("#modalBody");
+                 html.empty();
+                 
+                 let elemento = "";
+     
+                 elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
+     
+                 items.forEach((resultados) => {
+     
+                     elemento += `<div class="my-3">
+                                     <p class="text-center fs-normal my-3">${capitalizarElemento(resultados.nombrePrestacion)}</p>
+                                     <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
+                                 </div>`;
+                             });
+     
+                 elemento += `<div class="border-top">
+                                 <a onclick="detallesResultadosLaboratorio('${codigoApoyo}')" href="${quitarComillas(data.data[0].urlVisorWeb)}"
+                                 class="btn btn-primary-veris w-100 mt-3" target="_blank">Ver informe</a>
+                             </div>`;
+                 html.append(elemento);
+     
+             }        
+      
+              
+          }
+  
+      }
  
  
      // consultar grupo familiar

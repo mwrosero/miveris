@@ -14,8 +14,8 @@ Mi Veris - Citas - Cuéntanos tu experiencia
                 <div class="card rounded-0">
                     <div class="card-body p-3">
                         <h4 class="fw-semibold">{{ __('Bienvenido a Veris') }}</h4>
-                        <a href="#" class="btn btn-outline-primary-veris w-100 mb-2">{{ __('Ingresar como empresa') }}</a>
-                        <a href="#" class="btn btn-outline-success-veris w-100">{{ __('Ingresar como paciente') }}</a>
+                        <a href="#" class="btn btn-outline-primary-veris w-100 mb-2 py-3">{{ __('Ingresar como empresa') }}</a>
+                        <a href="#" class="btn btn-outline-success-veris w-100 py-3">{{ __('Ingresar como paciente') }}</a>
                     </div>
                 </div>
             </div>

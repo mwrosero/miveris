@@ -225,28 +225,32 @@ Mi Veris - Citas - Receta médica
                                             <div class="col-12 col-md-10 col-lg-8">
                                                 <div class="row g-3" id="cardTratamientoLaboratorio">
                                                     <!-- items -->
-                                                    <div class="col-12 col-md-6">`;
+                                                    `;
                         
                             laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                elementos += `<div class="card">
+                                elementos += `<div class="col-12 col-md-6">
+                                                <div class="card">
                                                     <div class="card-body p-2">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
                                                         </div>
-                                                        <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
+                                                        <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${determinarValorNull(detalles.fechaCaducidad)}</b></p>
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
-                                                                <img src="{{ asset('assets/img/svg/recetas.svg') }}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                
                                                             </div>
                                                             <div>
                                                                 ${determinarbotonesRecetaMedica(detalles)}  
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>`;                        
+                                                </div>
+                                                
+                                            </div>`;                        
                             });
-                            elementos += `</div>
+                            elementos += `
                                             </div>
                                         </div>
                                     </div>`;
@@ -320,7 +324,7 @@ Mi Veris - Citas - Receta médica
                                                         <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
-                                                                <img src="{{ asset('assets/img/svg/recetas.svg') }}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                             </div>
                                                             <div>
                                                                 ${determinarbotonesRecetaMedica(detalles)}  
