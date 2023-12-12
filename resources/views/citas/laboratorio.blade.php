@@ -118,11 +118,9 @@ Mi Veris - Citas - Laboratorio
         // maxDate: "today"
     });
 
-    
     // variables globales
     let datosLaboratorio = [];
     let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
-    let 
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
@@ -138,7 +136,7 @@ Mi Veris - Citas - Laboratorio
         console.log('obtenerTratamientosImagenProcedimientos');
         console.log('pacienteSeleccionado', pacienteSeleccionado);
         let args = [];
-        let canalOrigen = _canalOrigen;
+        let canalOrigen = 'APP_CMV';
                 
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
         if (pacienteSeleccionado) {
@@ -335,7 +333,6 @@ Mi Veris - Citas - Laboratorio
             } 
         }
     }
-    
     // consultar grupo familiar
     async function consultarGrupoFamiliar() {
         let args = [];
@@ -426,12 +423,12 @@ Mi Veris - Citas - Laboratorio
         aplicarFiltros(contexto);
 
 
-        
+
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
 
         identificacionSeleccionada = texto.numeroPaciente;
-        
+
         // colocar el nombre del filtro
         const elemento = document.getElementById('nombreFiltro');
         if (texto == 'YO') {
@@ -439,23 +436,19 @@ Mi Veris - Citas - Laboratorio
         } else{
             elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
         }
-        
+
     });
 
-    
+
     // limpiar filtros
-    
     $('#btnLimpiarFiltros').on('click', function() {
         const contexto = $(this).data('context');
         limpiarFiltros(contexto);
         identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-
     });
 
-
-    
     // boton tratamiento realizado
     $('#pills-realizados-tab').on('click', async function(){
         const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
@@ -464,11 +457,9 @@ Mi Veris - Citas - Laboratorio
 
     // boton tratamiento pendientes
     $('#pills-pendientes-tab').on('click', async function(){
+        console.log('pendientes');
         const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
-
         await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
     });
-
-
 </script>
 @endpush
