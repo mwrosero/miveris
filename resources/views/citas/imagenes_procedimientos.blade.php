@@ -139,7 +139,7 @@ Mi Veris - Citas - Imágenes y procedimientos
         console.log('obtenerTratamientosImagenProcedimientos');
         console.log('pacienteSeleccionado', pacienteSeleccionado);
         let args = [];
-        let canalOrigen = _canalOrigen;
+        let canalOrigen = 'APP_CMV';
                 
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
         if (pacienteSeleccionado) {
@@ -151,7 +151,7 @@ Mi Veris - Citas - Imágenes y procedimientos
         }
         let plataforma = _plataforma;
         let version = _version;
-        let servicio = 'IMAGEN,PROCEDIMIENTO';
+        let servicio = 'IMAGENES,PROCEDIMIENTOS';
         if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
             args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
        

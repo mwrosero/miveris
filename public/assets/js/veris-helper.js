@@ -409,7 +409,7 @@ async function limpiarFiltros(contexto) {
         $('input[name="listGroupRadios"]').first().prop('checked', true);
         $('#fechaDesde').val('');
         $('#fechaHasta').val('');
-        let estado = document.getElementById('pills-pendienes-tab').getAttribute('aria-selected');
+        let estado = document.getElementById('pills-pendientes-tab').getAttribute('aria-selected');
         if (estado === 'true') {
             await obtenerTratamientosId('', '', '', 'PENDIENTE');
             $('#filtroTratamientos').offcanvas('hide');

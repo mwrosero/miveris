@@ -85,8 +85,8 @@ class CitasController extends Controller
     }
 
     // Return view formulario registrar orden externa
-    public function registrarOrdenesExternas() {
-        return view('citas.registrar_orden_externa');
+    public function registrarOrdenesExternas($tipoIdentificacion, $numeroIdentificacion,  $codigoConvenio, $nombreConvenio) {
+        return view('citas.registrar_orden_externa', ['tipoIdentificacion' => $tipoIdentificacion, 'numeroIdentificacion' => $numeroIdentificacion, 'codigoConvenio' => $codigoConvenio, 'nombreConvenio' => $nombreConvenio]);
     }
 
     // Return view Mis citas

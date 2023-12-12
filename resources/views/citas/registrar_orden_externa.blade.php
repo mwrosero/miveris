@@ -31,11 +31,8 @@ Mi Veris - Citas - Nueva orden externa
                             </ul>
                             <h5>Registro de datos del paciente</h5>
                             <div class="col-md-12">
-                                <label for="paciente" class="form-label fw-bold">Selecciona el paciente *</label>
-                                <select class="form-select bg-neutral" name="paciente" id="paciente" required>
-                                    <option selected disabled value="">Selecciona el paciente</option>
-                                    <option>...</option>
-                                </select>
+                                <label for="paciente" class="form-label fw-bold">Nombre del Paciente *</label>
+                                <input type="text" class="form-control bg-neutral" name="paciente" id="paciente" placeholder="Nombre del paciente" disabled />
                             </div>
                             <div class="col-md-12">
                                 <label for="numeroIdentificacion" class="form-label fw-bold">Cédula o pasaporte *</label>
@@ -43,18 +40,15 @@ Mi Veris - Citas - Nueva orden externa
                             </div>
                             <div class="col-md-12">
                                 <label for="email" class="form-label fw-bold">Email *</label>
-                                <input type="email" class="form-control bg-neutral" name="email" id="email" placeholder="jaz.ordenana@gmail.com" required />
+                                <input type="email" class="form-control bg-neutral" name="email" id="email"  required />
                             </div>
                             <div class="col-md-12">
                                 <label for="telefono" class="form-label fw-bold">Teléfono *</label>
-                                <input type="number" class="form-control bg-neutral" name="telefono" id="telefono" placeholder="0997874554" required />
+                                <input type="number" class="form-control bg-neutral" name="telefono" id="telefono"  required />
                             </div>
                             <div class="col-md-12">
                                 <label for="conveio" class="form-label fw-bold">Elige el convenio *</label>
-                                <select class="form-select bg-neutral" name="conveio" id="conveio" required>
-                                    <option selected disabled value="">Elige el convenio</option>
-                                    <option>...</option>
-                                </select>
+                                <input type="text" class="form-control bg-neutral" name="conveio" id="conveio" placeholder="Convenio" disabled />
                             </div>
                             <div class="col-12">
                                 <button class="btn btn-primary w-100" type="submit">Siguiente</button>
@@ -71,7 +65,10 @@ Mi Veris - Citas - Nueva orden externa
 <!-- imagen -->
 <script>
     // Obtener referencia al elemento de carga de archivos
+    var totalArchivos = 0;
+
     var inputUpload = document.getElementById('upload');
+
     // Obtener referencia al contenedor de la lista de archivos
     var fileListContainer = document.getElementById('fileList');
 
@@ -79,16 +76,15 @@ Mi Veris - Citas - Nueva orden externa
     inputUpload.addEventListener('change', function() {
         // Obtener la lista de archivos seleccionados
         var archivos = inputUpload.files;
-
-        // Limpiar la lista de archivos anterior
-        fileListContainer.innerHTML = '';
-
-        // Verificar la cantidad de archivos seleccionados
-        if (archivos.length > 5) {
+        // Verificar la cantidad total de archivos (ya cargados más los nuevos seleccionados)
+        if (totalArchivos + archivos.length > 5) {
+            
             agregarMensaje('Seleccione un máximo de 5 archivos.');
             inputUpload.value = ''; // Limpiar la selección
             return;
         }
+
+       
 
         // Verificar el tamaño de cada archivo y mostrar detalles
         for (var i = 0; i < archivos.length; i++) {
@@ -121,21 +117,21 @@ Mi Veris - Citas - Nueva orden externa
             btnEliminar.classList.add('btn', 'btn-sm', 'fs--2', 'text-danger', 'shadow-none');
             btnEliminar.innerHTML = '<i class="bi bi-trash"></i>';
             btnEliminar.addEventListener('click', function() {
-                // Evitar el envío del formulario
                 event.preventDefault();
-                // Eliminar el elemento div al que pertenece el botón
                 this.parentNode.remove();
-                // Limpiar la selección
                 inputUpload.value = '';
+                totalArchivos--; // Disminuir el contador
             });
 
             archivoDiv.appendChild(btnEliminar);
             fileListContainer.appendChild(archivoDiv);
+            totalArchivos++; // Aumentar el contador
         }
     });
 
     // Función para agregar mensajes debajo de la etiqueta label
     function agregarMensaje(mensaje) {
+       
         var mensajeDiv = document.createElement('div');
         mensajeDiv.classList.add('mensaje-error', 'fw-bold', 'fs--2');
         // mensajeDiv.className = '';
@@ -155,5 +151,129 @@ Mi Veris - Citas - Nueva orden externa
 
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
     }
+    
+</script>
+
+<script>
+    // variables globales
+
+    // recuperar variables del path
+    let tipoIdentificacion = {{ $tipoIdentificacion }}; 
+    let numeroIdentificacion = '{{ $numeroIdentificacion }}';
+    let codigoConvenio = {{ $codigoConvenio }};
+    let nombreConvenio = '{{ $nombreConvenio }}';
+    let datosPaciente = [];
+
+
+    // llamada al dom
+    document.addEventListener("DOMContentLoaded", async function() {
+        
+        // consultar datos del usuario
+        await consultarDatosUsuario();
+
+    });
+
+    // funciones asyncronas
+
+    async function consultarConvenios(event) {
+        
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let dataRel = $(event.currentTarget).data('rel');
+        console.log('dataRel', dataRel);
+
+        let codigoUsuario = dataRel.numeroIdentificacion;
+        let tipoIdentificacion = dataRel.tipoIdentificacion;
+        args["endpoint"] = api_url + `/digitales/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataRel', data);
+
+        if (data.code == 200) {
+            // llenar select
+            let options = '';
+            data.data.forEach(element => {
+                options += `<option value="${element.codigoConvenio}">${element.nombreConvenio}</option>`;
+            });
+            $('#conveio').html(options);
+
+            
+            
+
+        }
+        return data;
+    }
+
+    // consultar los datos del usuario
+    async function consultarDatosUsuario() {
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        args["endpoint"] = api_url + `/digitales/v1/pacientes/${numeroIdentificacion}?tipoIdentificacion=${tipoIdentificacion}&canalOrigen=${canalOrigen}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataRERER', data);
+        if (data.code == 200) {
+            // llenar los datos del paciente en el formulario
+
+            datosPaciente = data.data;
+            $('#paciente').val(datosPaciente.nombreCompleto);
+            $('#numeroIdentificacion').val(datosPaciente.numeroIdentificacion);
+            $('#email').val(datosPaciente.mail);
+            $('#telefono').val(datosPaciente.telefonoMovil);
+            $('#conveio').val(nombreConvenio);
+
+        }
+        return data;
+    }
+
+    // crear solicitud de orden externa
+
+    async function crearSolicitudLaboratorioDomicilio() {
+        let args = [];
+        args["endpoint"] = api_url + "/digitales/v1/domicilio/laboratorio/solicitud";
+        args["method"] = "POST";
+        args["showLoader"] = false;
+        args["bodyType"] = "formdata";
+
+        // recibir los datos de la imagen 
+        let files = document.getElementById('upload').files;
+
+        
+
+        let formData = new FormData();
+        formData.append("tipoIdentificacionPaciente", datosPaciente.tipoIdentificacion);
+        formData.append("identificacionPaciente", datosPaciente.numeroIdentificacion);
+        formData.append("nombrePaciente", datosPaciente.nombreCompleto);
+        formData.append("direccion", datosPaciente.direccion);
+        formData.append("telefono", datosPaciente.telefonoMovil);
+        formData.append("files", files);
+        args["data"] = formData;
+
+
+        console.log('args1111', args["data"]);
+
+        const data = await call(args);
+        console.log('actualizarDatosUsuario',data);
+        // if(data.code == 200){
+        //     $('#mensajeSolicitudLlamadaModal').modal('show');
+        // } else {
+        //     $('#mensajeSolicitudLlamadaModal').modal('show');
+        // }
+        return data;
+
+    }
+
+    // enviar formulario
+
+    $("form").on('submit', async function(e) {
+        e.preventDefault(); 
+        await crearSolicitudLaboratorioDomicilio();
+    });
+    
+
+
+
 </script>
 @endpush
