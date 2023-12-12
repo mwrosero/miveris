@@ -40,6 +40,26 @@ Mi Veris - Citas - Familia y amigos
         </div>
     </div>
 
+    <!-- Modal mensaje para errores fuera de 200 -->    
+
+    <div class="modal fade" id="mensajeErrorModal" tabindex="-1" aria-labelledby="mensajeErrorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <i class="bi bi-exclamation-triangle-fill  text-primary-veris h2"></i>
+                    <p class="fs--1 fw-bold m-0 mt-3" id="mensajeErrorModalLabel"></p>
+                </div>
+                <div class="modal-footer pb-3 pt-0 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
     <div class="modal fade" id="mensajePersonaYaExisteModal" tabindex="-1" aria-labelledby="mensajePersonaYaExisteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
@@ -151,7 +171,12 @@ Mi Veris - Citas - Familia y amigos
         if (data.code == 200) {
             console.log('data.data', data.data);
             datostiposIdentificacion = data.data;
+        } else if (data.code != 200) {
+            $("#mensajeErrorModalLabel").html(data.message);
+            $("#mensajeErrorModal").modal("show");
         }
+
+
         return data;
     }
 
@@ -190,24 +215,14 @@ Mi Veris - Citas - Familia y amigos
             
 
 
-        }
-        if (data.code == 400) {
-            $("#mensajePersonaYaExisteModalLabel").html(data.message);
-            $("#mensajePersonaYaExisteModal").modal("show");
+        } else if (data.code != 200) {
+            $("#mensajeErrorModalLabel").html(data.message);
+            $("#mensajeErrorModal").modal("show");
         }
         return data;
     }
 
-    // revisar campos null y undefined
-
-    function revisarCamposNullUndefined(campo) {
-        if (campo == null || campo == undefined) {
-            return "";
-        } else {
-            return campo;
-        }
-    }
-
+   
     // consular tipos de parentesco
 
     async function consultarTipoParentesco() {
@@ -222,6 +237,10 @@ Mi Veris - Citas - Familia y amigos
             datosTipoParentesco = data.data;
 
             $("#parentescoFamiliarModal").modal("show");
+        }
+        else if (data.code != 200) {
+            $("#mensajeErrorModalLabel").html(data.message);
+            $("#mensajeErrorModal").modal("show");
         }
         return data;
     }
@@ -246,11 +265,29 @@ Mi Veris - Citas - Familia y amigos
 
         const data = await call(args);
         console.log('agregarPersona', data);
+        if (data.code == 200) {
+            $("#mensajePersonaAgregadaModal").modal("show");
+        }
+        else if (data.code != 200) {
+            $("#mensajeErrorModalLabel").html(data.message);
+            $("#mensajeErrorModal").modal("show");
+        }
         return data;
     }
 
 
     // funciones jquery
+
+     // revisar campos null y undefined
+
+     function revisarCamposNullUndefined(campo) {
+        if (campo == null || campo == undefined) {
+            return "";
+        } else {
+            return campo;
+        }
+    }
+
 
     //buscar persona
     
@@ -279,7 +316,6 @@ Mi Veris - Citas - Familia y amigos
         console.log('parentesco', parentesco);
         console.log('codigoParentesco', codigoParentesco);
         $("#parentescoFamiliarModal").modal("hide");
-        $("#mensajePersonaAgregadaModal").modal("show");
         await agregarPersona();
     });
 
