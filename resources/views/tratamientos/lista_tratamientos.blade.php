@@ -22,6 +22,8 @@ Mi Veris - Citas - tratamiento
         </div>
     </div>
 
+    
+
     <!-- Modal Examenes presencial -->
     <div class="modal fade" id="mensajeLaboratorioPresencialModal" tabindex="-1" aria-labelledby="mensajeLaboratorioPresencialModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -44,6 +46,23 @@ Mi Veris - Citas - tratamiento
                 <div class="modal-body text-center px-2 pt-3 pb-0">
                     <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal">{{ __('Para agendar esta videoconsulta llama al') }} <b>{{ __('6009600') }}</b></p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <a href="tel:+59346009600" class="btn btn-primary-veris w-100"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                    <button type="button" class="btn text-primary-veris w-100" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal ver informacion -->
+    <div class="modal fade" id="informacionModal" tabindex="-1" aria-labelledby="informacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal" id = "mensajeInformacion"></p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
                     <a href="tel:+59346009600" class="btn btn-primary-veris w-100"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
@@ -118,6 +137,7 @@ Mi Veris - Citas - tratamiento
     // variables globales
     let codigoTratamiento = {{ $codigoTratamiento }};
     let porcentaje = {{ $porcentaje }};
+    
     let datosTratamiento = [];
     let ultimoTratamiento = [];
     // llamada al dom
@@ -129,21 +149,21 @@ Mi Veris - Citas - tratamiento
     // obtener tratamientos  ​/tratamientos​/{idTratamiento}
     async function obtenerTratamientos(){
         let args = [];
-        let canalOrigen = _canalOrigen;
+        let canalOrigen = 'APP_CMV'
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
-        console.log(data);
+        console.log('sssisis',data);
         if(data.code == 200){
             datosTratamiento = data.data.pendientes;
             var ultimoTratamiento = datosTratamiento[datosTratamiento.length - 1];
-            console.log('ultimoTratamiento: ', ultimoTratamiento);
+            console.log('ultimoTratamiento: ', ultimoTratamiento.nombreEspecialidad);
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
-            let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
+            let elemento = `<h5 class="card-title text-primary mb-0">9${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
                                 <p class="fw-bold fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedicoAtencion)}</p>
                                 <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${ultimoTratamiento.fechaOrden}</b></p>
@@ -181,7 +201,7 @@ Mi Veris - Citas - tratamiento
                                                 <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio} </h6>
                                                 <span class="text-warning-veris" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                             </div>
-                                            <p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(tratamientos.fechaCaducidad)}</b></p>
+                                            ${determinarFechasCaducadas(tratamientos)}
                                             <div id="recetaMedicaMensaje">
                                                 ${determinarMensajeRecetaMedica(tratamientos.nombreServicio)}
                                             </div> 
@@ -204,7 +224,7 @@ Mi Veris - Citas - tratamiento
             });
             // mostrar el titulo de pendientes
             document.getElementById("tituloTratamientoPendiente").style.display = "block";
-            // chartProgres("#chart-progress");
+            chartProgres("#chart-progress");
         }
         
     }
@@ -252,6 +272,15 @@ Mi Veris - Citas - tratamiento
         }
        
 
+    }
+
+    // determinar fechas caducadas
+    function determinarFechasCaducadas(datos){
+        if (datos.esCaducado == "S") {
+            return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+        } else {
+            return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+        }
     }
 
     // determinar si es comprar o por comprar
@@ -330,27 +359,86 @@ Mi Veris - Citas - tratamiento
 
             switch (datosServicio.tipoCard) {
                 case "AGENDA" :
+                    let respuestaAgenda = "";
                     if(datosServicio.esAgendable == "S"){
-                        return `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
-                    }
-                    else{
-                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
-                    }
-                    break;
-                case "LABORATORIO" :
 
-                    return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Solicitar</a>`;
+                        if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
+                            if (datosServicio.habilitaBotonAgendar == 'S') {
+                                respuestaAgenda += `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                            } else {
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+
+                            }
+
+                        }else if (datosServicio.estado == 'ATENDIDO'){
+
+                            // mostrar boton de ver orden
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2"><i class="bi me-2"></i> Ver orden</a>`;
+
+                        }else if (datosServicio.estado == 'AGENDADO'){
+                            // mostrar boton de ver orden
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
+
+                            if (datosServicio.permitePago == 'S'){
+                                // mostrar boton de pagar
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                            } 
+                            if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                                
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            } 
+                            
+                            if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                                // mostrar boton de informacion
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})"></i> Información</a>`;
+                            } 
+                        }
+
+                    }
+
+                    return respuestaAgenda;
+
                     break;
-                case "RECETA" :
+
+                case "LAB":
+                    let respuesta = "";
+
+                    // condición para 'verResultados'
+                    if (datosServicio.verResultados == "S") {
+                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2
+                        "><i class="bi me-2"></i> Ver resultados</a>`;
+                    } else {
+                        respuesta += ``;
+                    }
+
+                    //condición para 'aplicaSolicitud'
+                    if (datosServicio.aplicaSolicitud == "S") {
+                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    } else {
+                        respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    }
+
+                    return respuesta;
+
+                    break;
+
+                case "RECETAS" :
                     if(datosServicio.aplicaSolicitud == "S"){
-                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Solicitar</a>`;
+                        return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                     }
                     else{
-                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Solicitar</a>`;
+                        // return boton ver receta
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver receta</a>`;
                     }
                     break;
                 case "ODONTOLOGIA" :
-                    return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Solicitar</a>`;
+                    if (datosServicio.esAgendable == "N") {
+                        return `<a class="btn btn-sm btn-primary-veris fw-normal fs--1" onclick="agendarCitaOdontologia()"><i class="bi me-2"></i> Agendar</a>`;
+                      
+                    } else {
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                    }
+
                     break;
 
             }
@@ -358,24 +446,31 @@ Mi Veris - Citas - tratamiento
         }
     }
 
+    // agendar cita odontologia
+
+    function agendarCitaOdontologia(){
+        //abrir modal video consulta
+        $('#mensajeVideoConsultaModal').modal('show');
+    }
+
+    // mostrar informacion
+
+    function mostrarInformacion(mensaje){
+
+        if (mensaje == null) {
+            //abrir modal informacion
+            $('#informacionModal').modal('show');
+            document.getElementById("mensajeInformacion").innerHTML = "No hay información disponible";
+        } else{
+            //abrir modal informacion
+            $('#informacionModal').modal('show');
+            document.getElementById("mensajeInformacion").innerHTML = mensaje;
+        }
+
+    }
+
     
 
-    // determinar mensaje receta medica realizados  
-    function determinarRecetaMedicaRealizadosDetalle(servicio, fechaOrden, nombrePaciente, nombreMedicoAtencion, nombreSucursal){
-        console.log('entro a determinarbotonesRecetaMedicaRealizadosDetalle');
-        if(servicio != "RECETA MÉDICA"){
-            console.log('servicio: ', servicio);
-            console.log('fechaOrden: ', fechaOrden);
-            return `<p class="fw-light mb-2">Sucursal: <b class="fecha-cita fw-light text-primary me-2">${nombreSucursal}</b></p>
-                    <p class="fw-light mb-2"><b class="fecha-cita fw-light text-primary me-2">${fechaOrden}</b></p>
-                    <p class="fw-light mb-2">Dr(a): <b class="fecha-cita fw-light text-primary me-2">${nombreMedicoAtencion}</b></p>
-                    <p class="fw-light mb-2">Paciente: <b class="fecha-cita fw-light text-primary me-2">${nombrePaciente}</b></p>`;
-                    
-        }
-        else{
-            return ``;
-        }
-    }
 
     // determinar valores null 
     function determinarValoresNull(valor){
@@ -389,16 +484,16 @@ Mi Veris - Citas - tratamiento
 
     // formatear fecha
     function formatearFecha(fecha) {
-    const meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
-    
-    // Asumiendo que la fecha entra en formato "DD-MM-YYYY"
-    const partes = fecha.split('-');
-    const dia = partes[0];
-    const mes = meses[parseInt(partes[1], 10) - 1]; // Convertir a número y restar 1 porque los meses en JavaScript comienzan en 0
-    const año = partes[2];
+        const meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
+        
+        // Asumiendo que la fecha entra en formato "DD-MM-YYYY"
+        const partes = fecha.split('-');
+        const dia = partes[0];
+        const mes = meses[parseInt(partes[1], 10) - 1]; // Convertir a número y restar 1 porque los meses en JavaScript comienzan en 0
+        const año = partes[2];
 
-    return `${mes} ${dia}, ${año}`;
-}
+        return `${mes} ${dia}, ${año}`;
+    }
 
 
 </script>

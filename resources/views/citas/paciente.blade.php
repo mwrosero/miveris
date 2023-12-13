@@ -14,21 +14,8 @@ Mi Veris - Citas - Elegir paciente
                 <div class="modal-body p-3 pt-4">
                     <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0">
-                            <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1" value="" checked>
-                            <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios1">
-                                Nombre del convenio
-                            </label>
-
-                            <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                            <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios2">
-                                Nombre del convenio
-                            </label>
-
-                            <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="">
-                            <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios3">
-                                Nombre del convenio
-                            </label>
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
+                            
                         </div>
                     </div>
                 </div>
@@ -66,21 +53,21 @@ Mi Veris - Citas - Elegir paciente
 @push('scripts')
 <script>
 
-// variables globales
+    // variables globales
     let familiar = [];
 
 
-// llamada al dom 
+    // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarGrupoFamiliar();
     });
 
-// funciones asyncronas
+    // funciones asyncronas
     // consultar grupo familiar
     async function consultarGrupoFamiliar() {
         let args = [];
-        canalOrigen = _canalOrigen
-        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let canalOrigen = _canalOrigen
+        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
         args["showLoader"] = false;
@@ -94,7 +81,76 @@ Mi Veris - Citas - Elegir paciente
         return data;
     }
 
-// funciones js
+
+    // consultar lista de convenios
+    async function consultarConvenios(event) {
+        console.log('entro');
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let dataRel = $(event.currentTarget).data('rel');
+        console.log('dataRel', dataRel);
+
+        let codigoUsuario = dataRel.numeroIdentificacion;
+        let tipoIdentificacion = dataRel.tipoIdentificacion;
+        let nombreCompleto = dataRel.primerNombre + ' ' + dataRel.primerApellido + ' ' + dataRel.segundoApellido;
+
+        args["endpoint"] = api_url + `/digitales/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataRel', data);
+
+        // llenar modal
+        if (data.code == 200){
+
+            if(data.data.length > 0){
+                
+
+                let listaConvenios = $('#listaConvenios');
+                listaConvenios.empty();
+                let elemento = '';
+
+                data.data.forEach((convenios) => {
+                    elemento += `<a href="/registrar-orden-externa/${tipoIdentificacion}/${codigoUsuario}/${convenios.codigoConvenio}/${convenios.nombreConvenio}"
+                        class="stretched-link">
+                                    <div class="list-group-item fs--2 rounded-3 p-2">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
+                                        <label for="listGroupCheckableRadios2">
+                                            ${convenios.nombreConvenio}
+                                        </label> 
+                                    </div>
+                                </a>`;
+                    
+                });
+                
+
+                listaConvenios.append(elemento);
+            } else {
+                let listaConvenios = $('#listaConvenios');
+                listaConvenios.empty();
+                let elemento = '';
+                elemento += `<div class="col-12">
+                                <div class=" fs--2 rounded-3 p-2">
+                                    {{ __('Ninguno') }}
+                                </div>
+                            </div> `;
+                listaConvenios.append(elemento);    
+            }
+
+        }
+
+
+
+
+        return data;
+    }
+
+
+    
+
+
+    // funciones js
+    
     // mostrar lista de pacientes
 
     function mostrarListaPacientes(){
@@ -110,7 +166,7 @@ Mi Veris - Citas - Elegir paciente
         elemento += `<div class="col-6 col-md-3 mb-3">
                         <div class="card">
                             <div class="card-body text-center">
-                                <a href="{{route('citas.listaEspecialidades')}}">
+                                <a data-bs-toggle="modal" data-bs-target="#convenioModal">
                                     <div class="d-flex justify-content-center align-items-center mb-2">
                                         <div class="avatar me-2">
                                             <span class="avatar-initial rounded-circle ${backgroundClass}">${pacienteYo.charAt(0).toUpperCase()}</span>
@@ -123,21 +179,22 @@ Mi Veris - Citas - Elegir paciente
                         </div>
                     </div> `;
         familiar.forEach((pacientes) => {
-            console.log('pacientes', pacientes.genero);
+            console.log('pacientes', pacientes);
             let backgroundClass = pacientes.genero === "F" ? "bg-strong-magenta" : (pacientes.genero === "M" ? "bg-soft-blue" : "bg-soft-green");
 
             elemento += `<div class="col-6 col-md-3 mb-3">
                                 <div class="card">
                                     <div class="card-body text-center">
-                                        <a href="{{route('citas.listaEspecialidades')}}">
-                                            <div class="d-flex justify-content-center align-items-center mb-2">
+                                        
+                                        <div data-bs-toggle="modal" data-bs-target="#convenioModal" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
+                                           <div class="d-flex justify-content-center align-items-center mb-2">
                                                 <div class="avatar me-2">
                                                     <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
                                                 </div>
                                             </div>
                                             <p class="text-veris fw-bold fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
                                             <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
-                                        </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div> `;

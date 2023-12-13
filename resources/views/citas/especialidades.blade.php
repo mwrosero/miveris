@@ -431,12 +431,27 @@ Mi Veris - Citas - Elige la especialidad
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        // await consultarGrupoFamiliar();
+        await consultarCiudadesEspecialidad();
     });
 
 
     // funciones asyncronas
     // agendamiento consulta de ciudades
+
+    async function consultarCiudadesEspecialidad() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitales/v1/agenda/ciudades?canalOrigen=${canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('ciudades', data);
+        
+
+        return data;
+    }
+
 
     
 
