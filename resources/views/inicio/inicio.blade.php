@@ -149,7 +149,8 @@ Mi Veris - Inicio
 <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
    
 
-
+<script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
+    
 <script>
 
     //variables globales
