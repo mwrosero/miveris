@@ -12,7 +12,26 @@ Mi Veris - Citas - Servicios a domicilio
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
                     <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud exitosa</h1>
-                    <p class="fs--1 fw-normal">Un asesor de farmacia te contactará pronto</p>
+                    <p class="fs--1 fw-normal" id="mensaje" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal de error -->
+
+    <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
                     <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
@@ -175,18 +194,16 @@ Mi Veris - Citas - Servicios a domicilio
             "telefono": getInput('telefono'),
         });
 
-        console.log('args', args["data"]);
-
         const data = await call(args);
         console.log('actualizarDatosUsuario',data);
         if(data.code == 200){
             $('#mensajeSolicitudLlamadaModal').modal('show');
             document.getElementById("mensaje").innerHTML = data.message;
         }
-        else{
-            $('#mensajeSolicitudLlamadaModal').modal('show');
-            document.getElementById("mensaje").innerHTML = data.message;
-
+        if(data.code != 200){
+            console.log('entro a error farmacia')
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+            document.getElementById("mensajeError").innerHTML = data.message;
         }
         return data;
 
@@ -203,21 +220,15 @@ Mi Veris - Citas - Servicios a domicilio
         let paciente = [];
 
         if(getInput('paciente') == ''){
-            console.log(0)
             paciente = {
                 tipoIdentificacion: "{{ Session::get('userData')->codigoTipoIdentificacion }}",
                 numeroIdentificacion: "{{ Session::get('userData')->numeroIdentificacion }}",
                 nombrePaciente: "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}",
             }
         }else{
-            console.log(1)
             paciente = JSON.parse($('#paciente option:selected').attr("data-rel"));
             paciente["nombrePaciente"] = paciente.primerNombre + ' ' + paciente.primerApellido;
-            console.log(paciente)
         }
-
-        console.log(paciente)
-
         let formData = new FormData();
         formData.append("tipoIdentificacionPaciente", paciente.tipoIdentificacion);
         formData.append("identificacionPaciente", paciente.numeroIdentificacion);
@@ -228,17 +239,14 @@ Mi Veris - Citas - Servicios a domicilio
 
         args["data"] = formData;
 
-        console.log('args1111', args["data"]);
-
         const data = await call(args);
-        console.log('actualizarDatosUsuario',data);
         if(data.code == 200){
             $('#mensajeSolicitudLlamadaModal').modal('show');
-        }
-        else{
-            $('#mensajeSolicitudLlamadaModal').modal('show');
             document.getElementById("mensaje").innerHTML = data.message;
-
+        }
+        if(data.code != 200){
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+            document.getElementById("mensajeError").innerHTML = data.message;
         }
         return data;
 

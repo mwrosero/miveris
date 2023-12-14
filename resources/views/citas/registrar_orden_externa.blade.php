@@ -243,7 +243,7 @@ Mi Veris - Citas - Nueva orden externa
         
 
         let formData = new FormData();
-        formData.append("tipoIdentificacionPaciente", datosPaciente.tipoIdentificacion);
+        formData.append("tipoIdentificacionPaciente", datosPaciente.codigoTipoIdentificacion);
         formData.append("identificacionPaciente", datosPaciente.numeroIdentificacion);
         formData.append("nombrePaciente", datosPaciente.nombreCompleto);
         formData.append("direccion", datosPaciente.direccion);

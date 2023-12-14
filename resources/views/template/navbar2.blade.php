@@ -127,8 +127,9 @@
     // llamada al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
-        await getNotificaciones();
+        
         await cantidadNotificaciones();
+        await getNotificaciones();
 
     } );
 
