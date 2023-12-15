@@ -239,7 +239,7 @@ Mi Veris - Inicio
         args["showLoader"] = false;
         console.log(args["endpoint"]);
         const data = await call(args);
-        console.log(data.data.items);
+        console.log('INITR',data.data.items);
         if(data.code == 200){
             if(data.data.items.length == 0){
                 mostrarNoExistenTratamientos();
@@ -360,9 +360,8 @@ Mi Veris - Inicio
                                         <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
                                             <img class="rounded-circle" src=${quitarComillas(detalle.urlImagenTipoServicio)}  width="26" alt="icono">
                                         </div>
-                                        <p class="fw-bold fs--2 mb-0">${
+                                        <p class="fw-bold fs--2 mb-0">${capitalizarElemento(detalle.nombreServicio)}</p>
                                             
-                                            detalle.tipoServicio}</p>
                                     </div>
                                     <a href="/tratamiento/${detalle.codigoTratamiento}/${tratamientos.porcentajeAvanceTratamiento}"
                                     class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>

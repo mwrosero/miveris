@@ -238,18 +238,25 @@
     <script>
         // capializar la primera letra de cada palabra
         function capitalizarElemento(elemento) {
-            if (elemento == null) return "";
-            const texto = elemento.toLowerCase();
-            const palabras = texto.split(" ");
-            for (let i = 0; i < palabras.length; i++) {
-                const palabra = palabras[i];
-                const primeraLetra = palabra[0];
-                const primeraLetraMayuscula = primeraLetra.toUpperCase();
-                palabras[i] = palabra.replace(primeraLetra, primeraLetraMayuscula);
+            try {
+                if (elemento == null) return "";
+                const texto = elemento.toLowerCase();
+                const palabras = texto.split(" ");
+                for (let i = 0; i < palabras.length; i++) {
+                    const palabra = palabras[i];
+                    if (palabra.length === 0) continue;  // Añadido para evitar errores con palabras vacías
+                    const primeraLetra = palabra[0];
+                    const primeraLetraMayuscula = primeraLetra.toUpperCase();
+                    palabras[i] = palabra.replace(primeraLetra, primeraLetraMayuscula);
+                }
+                const textoCapitalizado = palabras.join(" ");
+                return textoCapitalizado;
+            } catch (error) {
+                // Retornar el elemento original en caso de error
+                return elemento;
             }
-            const textoCapitalizado = palabras.join(" ");
-            return textoCapitalizado;
         }
+
         // funcion quitar comillas a la url
         function quitarComillas(url){
             console.log('imagen',url);
