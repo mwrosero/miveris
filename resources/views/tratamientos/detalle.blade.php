@@ -54,7 +54,7 @@ Mi Veris - Citas - tratamiento
                             <span class="fw-bold fs--2">Servicio</span>
                             <span class="fw-bold fs--2">Cantidad</span>
                         </div>
-                        <ul class="list-group gap-2 bg-white rounded-0">
+                        <ul class="list-group gap-2 bg-white rounded-0" id="listaServicios">
                             <!-- items -->
                             <li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
                                 <div class="w-auto">
@@ -73,60 +73,7 @@ Mi Veris - Citas - tratamiento
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
                                 </div>
                             </li>
-                            <!-- items -->
-                            <li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
-                                <div class="w-auto">
-                                    <p class="text-veris mb-0">Terapia física </p>
-                                    <div class="d-flex align-items-center">
-                                        <p class="text-primary fw-bold fs--2 mb-0" id="precioTotal">
-                                            <del class="text-danger fw-normal" id="precioBase">$50.00</del> 
-                                            $45.00
-                                        </p>
-                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal"><i class="bi bi-info-circle"></i> </button> 
-                                    </div>
-                                </div>
-                                <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
-                                    <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="10" />
-                                    <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
-                                </div>
-                            </li>
-                            <!-- items -->
-                            <li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
-                                <div class="w-auto">
-                                    <p class="text-veris mb-0">Procedimiento</p>
-                                    <div class="d-flex align-items-center">
-                                        <p class="text-primary fw-bold fs--2 mb-0" id="precioTotal">
-                                            <del class="text-danger fw-normal" id="precioBase">$50.00</del> 
-                                            $45.00
-                                        </p>
-                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal"><i class="bi bi-info-circle"></i> </button> 
-                                    </div>
-                                </div>
-                                <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
-                                    <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="1" />
-                                    <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
-                                </div>
-                            </li>
-                            <!-- items -->
-                            <li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
-                                <div class="w-auto">
-                                    <p class="text-veris mb-0">Radiología </p>
-                                    <div class="d-flex align-items-center">
-                                        <p class="text-primary fw-bold fs--2 mb-0" id="precioTotal">
-                                            <del class="text-danger fw-normal" id="precioBase">$50.00</del> 
-                                            $45.00
-                                        </p>
-                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal"><i class="bi bi-info-circle"></i> </button> 
-                                    </div>
-                                </div>
-                                <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
-                                    <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="1" />
-                                    <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
-                                </div>
-                            </li>
+                            
                         </ul>
                         <div class="accordion accordion-flush" id="accordionFlushExample">
                             <div class="accordion-item">
@@ -161,5 +108,74 @@ Mi Veris - Citas - tratamiento
 </div>
 @endsection
 @push('scripts')
-<script></script>
+<script>
+
+
+    // llamada al dom
+    
+    document.addEventListener("DOMContentLoaded", async function () {
+
+        await valorizacionServicios(1);
+    });
+
+
+    // funciones asyncronas
+
+    // Obtener los servicios correspondiente a un tratamiento.
+    async function valorizacionServicios(_idTratamiento) {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataFa', data);
+        if(data.code == 200){
+            
+
+            let html = $('#listaServicios');
+            html.empty();
+            let precioTotal = 0;
+            let elemento = '';
+
+            data.data.forEach((resultados) => {
+                elemento += `<li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
+                                <div class="w-auto">
+                                    <p class="text-veris mb-0">Cita médica traumatología</p>
+                                    <div class="d-flex align-items-center">
+                                        <p class="text-primary fw-bold fs--2 mb-0" id="precioTotal">
+                                            <del class="text-danger fw-normal" id="precioBase">$50.00</del> 
+                                            $45.00
+                                        </p>
+                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal"><i class="bi bi-info-circle"></i> </button> 
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
+                                    <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
+                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="1" />
+                                    <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
+                                </div>
+                            </li>`;
+            });
+            html.append(elemento);
+
+            $('.btn-minus, .btn-plus').off('click').on('click', function() {
+                let input = $(this).closest('.input-group').find('input');
+                let currentValue = parseInt(input.val());
+                if ($(this).hasClass('btn-minus') && currentValue > 1) {
+                    input.val(currentValue - 1);
+                } else if ($(this).hasClass('btn-plus')) {
+                    input.val(currentValue + 1);
+                }
+            });
+
+        }
+        return data;
+    }
+
+
+
+
+</script>
 @endpush

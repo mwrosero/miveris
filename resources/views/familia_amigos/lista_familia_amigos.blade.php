@@ -54,7 +54,7 @@ Mi Veris - Citas - Familia y amigos
                             <p class="fw-bold">Aún no tiene personas agregadas</p>
                         </div>
                         <div class="card-footer p-0 mb-3">
-                            <a href="{{route('familia')}}" class="btn btn-primary-veris m-0 w-100">Agregar</a>
+                            <a href="{{route('familia')}}" class="btn btn-primary-veris m-0 w-100 py-3">Agregar</a>
                         </div>
                         <div class="d-flex flex-column flex-md-row gap-4 align-items-center justify-content-center">
                             <div class="list-group list-group-radio d-grid gap-2 border-0 w-100" id="familia-lista">
@@ -163,6 +163,7 @@ Mi Veris - Citas - Familia y amigos
                                 localStorage.setItem('primerApellidoFamiliar', '${familiar.primerApellido}');
                                 localStorage.setItem('codigoParentesco', '${familiar.codigoParentesco}');
                                 localStorage.setItem('administrador', '${familiar.esAdmin}');
+                                localStorage.setItem('numeroIdentificacion', '${familiar.numeroIdentificacion}');
                                 localStorage.setItem('idRelacion', '${familiar.idRelacion}');">
                                     <i class="bi bi-chevron-right"></i>
                                 </a>

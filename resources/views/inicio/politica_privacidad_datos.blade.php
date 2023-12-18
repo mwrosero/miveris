@@ -36,12 +36,12 @@ Mi Veris - Politica-privacidad-datos
                                 <p class="lh-normal mb-0">{{ __('Rectificación de datos personales') }}</p>
                                 <div class="d-flex">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionNo" value="option1">
-                                        <label class="form-check-label" for="inlineRadioRectificacionNo">{{ __('No') }}</label>
+                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionNo" value="option1">
+                                        <label class="form-check-label cursor-pointer" for="inlineRadioRectificacionNo">{{ __('No') }}</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionSi" value="option2">
-                                        <label class="form-check-label" for="inlineRadioRectificacionSi">{{ __('Si') }}</label>
+                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionSi" value="option2">
+                                        <label class="form-check-label cursor-pointer" for="inlineRadioRectificacionSi">{{ __('Si') }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -51,20 +51,19 @@ Mi Veris - Politica-privacidad-datos
                                 <p class="lh-normal mb-0">{{ __('Cancelación / Oposición de datos personales') }}</p>
                                 <div class="d-flex">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioCancelacion" id="inlineRadioCancelacionNo" value="option1">
-                                        <label class="form-check-label" for="inlineRadioCancelacionNo">{{ __('No') }}</label>
+                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioCancelacion" id="inlineRadioCancelacionNo" value="option1">
+                                        <label class="form-check-label cursor-pointer" for="inlineRadioCancelacionNo">{{ __('No') }}</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioCancelacion" id="inlineRadioCancelacionSi" value="option2">
-                                        <label class="form-check-label" for="inlineRadioCancelacionSi">{{ __('Si') }}</label>
+                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioCancelacion" id="inlineRadioCancelacionSi" value="option2">
+                                        <label class="form-check-label cursor-pointer" for="inlineRadioCancelacionSi">{{ __('Si') }}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 text-center mt-5">
-                            <button class="btn btn-primary-veris w-50" id="botonConfirmarPDP">{{ __('Guardar') }}</button>
+                            <button class="btn btn-primary-veris w-50 py-3" id="botonConfirmarPDP">{{ __('Guardar') }}</button>
                         </div>
-
                     </form>
                 </div>
             </div>

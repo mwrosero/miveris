@@ -4,11 +4,34 @@ Mi Veris - Mis Datos
 @endsection
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- modal datos actualizados -->
+
+    <div class="modal fade" id="mensajeDatosActualizados" tabindex="-1" aria-labelledby="mensajeDatosActualizadosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
+                    <p class="fs--1 fw-bold m-0 mt-3">Datos actualizados</p>
+                </div>
+                <div class="modal-footer pb-3 pt-0 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">Mis Datos</h5>
-    
+
     @foreach (Session::get('userData') as $key => $value)
-        <p>{{ $key }}: {{ $value }}</p>
+    <p class="ps-4 mb-1 pb-2 bg-white">{{ $key }}: {{ $value }}</p>
+    
+ 
     @endforeach
+
+
+
+
     
     <div class="row g-0 justify-content-center align-items-center">
         <div class="col-md-8">
@@ -30,7 +53,7 @@ Mi Veris - Mis Datos
                                 <div class="col-md-12">
                                     <label for="nombre" class="form-label fw-semibold">{{ __('Nombre') }}</label>
                                     <input type="text" class="form-control" name="nombre" id="nombre" required />
-                                    <div class="valid-feedback">
+                                    <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
@@ -73,14 +96,14 @@ Mi Veris - Mis Datos
                                 <div class="col-md-12">
                                     <label for="mail" class="form-label fw-semibold">{{ __('Correo electrónico') }} *</label>
                                     <input type="email" class="form-control" name="mail" id="mail" required />
-                                    <div class="valid-feedback">
+                                    <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="telefono" class="form-label fw-semibold">{{ __('Teléfono') }} *</label>
                                     <input type="number" class="form-control" name="telefono" id="telefono" required />
-                                    <div class="valid-feedback">
+                                    <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
@@ -114,7 +137,7 @@ Mi Veris - Mis Datos
                             </div>
                         </div>
                         <div class="col-12 text-center mt-5">
-                            <button class="btn btn-primary-veris w-50" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
+                            <button class="btn btn-primary-veris w-50 py-3" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
                         </div>
                     </form>
                 </div>
@@ -239,6 +262,9 @@ Mi Veris - Mis Datos
 
         const data = await call(args);
         console.log('actualizarDatosUsuario',data);
+        if (data.code == 200) {
+            $('#mensajeDatosActualizados').modal('show');
+        }
 
     }
 

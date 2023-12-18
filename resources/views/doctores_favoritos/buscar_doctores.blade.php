@@ -19,8 +19,6 @@ Mi Veris - Buscar doctor
                 
                 <div class="list-group gap-2 mb-3" id="listaEspecialidades">
                     <!-- especialidades dinamicas -->
-                    
-                    
                 </div>
                 <div class="col-md-12 mb-3">
                     <label for="fechaDesde" class="form-label">{{ __('Elige el rango de fechas') }} *</label>
@@ -30,14 +28,14 @@ Mi Veris - Buscar doctor
                     <input type="text" class="form-control bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
                 </div>
                 <div class="col-md-12 mb-3">
-                    <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>
+                    <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>
                     <button class="btn text-primary w-100 mb-3 mx-0" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><i class="bi bi-trash me-2" ></i> Limpiar filtros</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Buscar doctor') }}</h5>
+    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Buscar doctore') }}</h5>
     <section class="p-3 pt-0 mb-3">
         <form class="d-flex justify-content-center">
             <div class="col-md-4 my-3">
@@ -53,8 +51,6 @@ Mi Veris - Buscar doctor
             </div>
             <div class="col-auto col-lg-10">
                 <div class="row gy-3" id="doctoresFavoritos">
-                    
-                    
                     <!-- Mensaje No hay doctores disponibles -->
                     <div class="col-12 d-flex justify-content-center d-none" id="noHayDoctores">
                         <div class="card bg-transparent shadow-none">
@@ -66,7 +62,6 @@ Mi Veris - Buscar doctor
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
 
@@ -85,6 +80,7 @@ Mi Veris - Buscar doctor
     });
 
     // variables globales
+    let dataEspecialidades = [];
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function() {
@@ -94,35 +90,36 @@ Mi Veris - Buscar doctor
     // funciones asyncronas
     // consulta de especialidades
     async function consultarEspecialidades() {
-        let args = [];
         let canalOrigen = _canalOrigen;
         let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
         console.log(codigoUsuario);
-        args["endpoint"] = api_url + `/digitales/v1/perfil/especialidades?codigoUsuario=${codigoUsuario}`;
-        console.log(args["endpoint"]);
-        args["method"] = "GET";
-        args["showLoader"] = false;
-        const data = await call(args);
-        console.log('especial',data);
+        let endpoint = api_url + `/digitales/v1/perfil/especialidades?codigoUsuario=${codigoUsuario}`;
+        console.log(endpoint);
+        const data = await call({ endpoint, method: "GET", showLoader: false });
+        dataEspecialidades = data.data;
         
         if (data.code == 200){
-            // agregar especialidades dinamicamente
-            let especialidades = data.data;
+            console.log('especialidades', data.data);
             let html = $('#listaEspecialidades');
-
-            data.data.forEach(element => {
-                let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                    <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="" checked data-rel='${ JSON.stringify(element) }'>
+            html.empty();
+            let firstItem = true;
+            let elemento = '';
+            dataEspecialidades.forEach(element => {
+                elemento += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                                    <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" value="${element.nombreEspecialidad}" ${firstItem ? 'checked' : ''} data-rel='${ JSON.stringify(element) }'>
                                     <span class="text-veris fw-bold">
                                         ${capitalizarElemento(element.nombreEspecialidad)}
                                         <small class="fs--2 d-block fw-normal text-body-secondary">${element.nombreSucursal}</small>
                                     </span>
                                 </label>`;
-                html.append(elemento);
+                
+                firstItem = false;
             });
+            html.append(elemento);
         }
         return data;
     }
+
 
     // consultar disponibilidad de doctores
 

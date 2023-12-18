@@ -6,155 +6,25 @@
     </div>
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-        <!-- Search -->
-        <div class="navbar-nav align-items-center d-none">
-            <div class="nav-item navbar-search-wrapper mb-0">
-                <a class="nav-item nav-link search-toggler d-flex align-items-center px-0" href="javascript:void(0);">
-                    <i class="ti ti-search ti-md me-2"></i>
-                    <span class="d-none d-md-inline-block text-muted">Search (Ctrl+/)</span>
-                </a>
-            </div>
-        </div>
-        <!-- /Search -->
         <!-- Logo veris -->
         <a class="navbar-brand mx-auto" href="#">
-            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" alt="Bootstrap" width="84">
+            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" class="ml-lg-10" alt="veris" width="84">
         </a>
-
-
         <ul class="navbar-nav flex-row align-items-center">
-            <!-- Language -->
-            <li class="nav-item dropdown-language dropdown me-2 me-xl-0 d-none">
-                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0);" data-language="en">
-                            <i class="fi fi-us fis rounded-circle me-1 fs-3"></i>
-                            <span class="align-middle">English</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0);" data-language="fr">
-                            <i class="fi fi-fr fis rounded-circle me-1 fs-3"></i>
-                            <span class="align-middle">French</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0);" data-language="de">
-                            <i class="fi fi-de fis rounded-circle me-1 fs-3"></i>
-                            <span class="align-middle">German</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0);" data-language="pt">
-                            <i class="fi fi-pt fis rounded-circle me-1 fs-3"></i>
-                            <span class="align-middle">Portuguese</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <!--/ Language -->
-
-            <!-- Style Switcher -->
-            <li class="nav-item me-2 me-xl-0 d-none">
-                <a class="nav-link style-switcher-toggle hide-arrow" href="javascript:void(0);">
-                    <i class="ti ti-md"></i>
-                </a>
-            </li>
-            <!--/ Style Switcher -->
-
-            <!-- Quick links  -->
-            <li class="nav-item dropdown-shortcuts navbar-dropdown dropdown me-2 me-xl-0 d-none">
-                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                    <i class="ti ti-layout-grid-add ti-md"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end py-0">
-                    <div class="dropdown-menu-header border-bottom">
-                        <div class="dropdown-header d-flex align-items-center py-3">
-                            <h5 class="text-body mb-0 me-auto">Shortcuts</h5>
-                            <a href="javascript:void(0)" class="dropdown-shortcuts-add text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Add shortcuts"><i class="ti ti-sm ti-apps"></i></a>
-                        </div>
-                    </div>
-                    <div class="dropdown-shortcuts-list scrollable-container">
-                        <div class="row row-bordered overflow-visible g-0">
-                            <div class="dropdown-shortcuts-item col">
-                                <span class="dropdown-shortcuts-icon rounded-circle mb-2">
-                                    <i class="ti ti-calendar fs-4"></i>
-                                </span>
-                                <a href="app-calendar.html" class="stretched-link">Calendar</a>
-                                <small class="text-muted mb-0">Appointments</small>
-                            </div>
-                            <div class="dropdown-shortcuts-item col">
-                                <span class="dropdown-shortcuts-icon rounded-circle mb-2">
-                                    <i class="ti ti-file-invoice fs-4"></i>
-                                </span>
-                                <a href="app-invoice-list.html" class="stretched-link">Invoice App</a>
-                                <small class="text-muted mb-0">Manage Accounts</small>
-                            </div>
-                        </div>
-                        <div class="row row-bordered overflow-visible g-0">
-                            <div class="dropdown-shortcuts-item col">
-                                <span class="dropdown-shortcuts-icon rounded-circle mb-2">
-                                    <i class="ti ti-users fs-4"></i>
-                                </span>
-                                <a href="app-user-list.html" class="stretched-link">User App</a>
-                                <small class="text-muted mb-0">Manage Users</small>
-                            </div>
-                            <div class="dropdown-shortcuts-item col">
-                                <span class="dropdown-shortcuts-icon rounded-circle mb-2">
-                                    <i class="ti ti-lock fs-4"></i>
-                                </span>
-                                <a href="app-access-roles.html" class="stretched-link">Role Management</a>
-                                <small class="text-muted mb-0">Permission</small>
-                            </div>
-                        </div>
-                        <div class="row row-bordered overflow-visible g-0">
-                            <div class="dropdown-shortcuts-item col">
-                                <span class="dropdown-shortcuts-icon rounded-circle mb-2">
-                                    <i class="ti ti-chart-bar fs-4"></i>
-                                </span>
-                                <a href="index.html" class="stretched-link">Dashboard</a>
-                                <small class="text-muted mb-0">User Profile</small>
-                            </div>
-                            <div class="dropdown-shortcuts-item col">
-                                <span class="dropdown-shortcuts-icon rounded-circle mb-2">
-                                    <i class="ti ti-settings fs-4"></i>
-                                </span>
-                                <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
-                                <small class="text-muted mb-0">Account Settings</small>
-                            </div>
-                        </div>
-                        <div class="row row-bordered overflow-visible g-0">
-                            <div class="dropdown-shortcuts-item col">
-                                <span class="dropdown-shortcuts-icon rounded-circle mb-2">
-                                    <i class="ti ti-help fs-4"></i>
-                                </span>
-                                <a href="pages-help-center-landing.html" class="stretched-link">Help Center</a>
-                                <small class="text-muted mb-0">FAQs & Articles</small>
-                            </div>
-                            <div class="dropdown-shortcuts-item col">
-                                <span class="dropdown-shortcuts-icon rounded-circle mb-2">
-                                    <i class="ti ti-square fs-4"></i>
-                                </span>
-                                <a href="modal-examples.html" class="stretched-link">Modals</a>
-                                <small class="text-muted mb-0">Useful Popups</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            <!-- Quick links -->
-
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
-                <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
-                    <i class="fa-solid fa-bell"></i>
-                    <span class="badge bg-danger rounded-pill badge-notifications d-none" id="numeroNotificaciones"></span>
+                <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
+                    <i class="fa-solid fa-bell">
+                        
+                    </i>
+                    <span class="badge bg-danger rounded-pill d-none d-lg-block" id="badgeNotificaciones"></span>
+                    
+                </a>
+                
             </li>
-            <!--/ Notification -->
 
+            
+            <!--/ Notification -->
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow d-flex align-items-center" href="javascript:void(0);" data-bs-toggle="dropdown">
@@ -194,12 +64,6 @@
             <!--/ User -->
         </ul>
     </div>
-
-    <!-- Search Small Screens -->
-    <div class="navbar-search-wrapper search-input-wrapper d-none">
-        <input type="text" class="form-control search-input container-xxl border-0" placeholder="Search..." aria-label="Search..." />
-        <i class="ti ti-x ti-sm search-toggler cursor-pointer"></i>
-    </div>
 </nav>
 
 <!-- Modal -->
@@ -208,7 +72,7 @@
         <div class="modal-content">
             <div class="modal-body p-4 text-center">
                 <h4 class="mb-0">Cerrar sesión</h4>
-                <p class="mb-0">¿Estás seguro que deseas cerar sesión?.</p>
+                <p class="mb-0">¿Estás seguro que deseas cerrar sesión?.</p>
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
                 <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">No</button>
@@ -224,8 +88,6 @@
         <div class="modal-content">
             <div class="modal-body p-4 text-center">
                 <p class="mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="#" id="politicasPPD" target="_blank">políticas de privacidad de datos</a> 
-            
-            
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
                 <button type="button" id="aceptarPDP"  class="btn btn-primary-veris btn-lg btn-outline-primary-veris w-100">Aceptar</button>
@@ -257,18 +119,16 @@
     
 
     // variables globales
-    
-    let htmlNotificaciones = '';
-    let paginacionHTML = '';
-    let maxNotificacionesPorPagina = 5;
-    let paginaActual = 1; 
-    let notificaciones = []; 
+    let paginaActual = 1;
+    const notificacionesPorPagina = 5;
+    let todasNotificaciones = [];
 
-    
-    
+
     // llamada al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
+        
+        await cantidadNotificaciones();
         await getNotificaciones();
         await numeroNotificaciones();
 
@@ -276,90 +136,104 @@
 
     // funciones asincronas
     // notificaciones
-    async function getNotificaciones() {
+    async function getNotificaciones( pagina = 1 ) {
         let args = [];
         let canalOrigen = _canalOrigen;
         let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}";
 
-        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen= ${canalOrigen}&codigoUsuario=${codigoUsuario}`;
+        console.log(codigoUsuario);
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`;
         args["method"] = "GET";
         args["showLoader"] = false;
 
+        console.log(1,args["endpoint"]);
         const data = await call(args);
 
-        if (data.code == 200 && data.data.length > 0) {
-            const notificaciones = data.data;
-            let paginaActual = 1;
-            const maxNotificacionesPorPagina = 5;
-            const totalPaginas = Math.ceil(notificaciones.length / maxNotificacionesPorPagina);
-
-            const actualizarVista = (pagina) => {
-                let htmlNotificaciones = '';
-                let inicio = (pagina - 1) * maxNotificacionesPorPagina;
-                let fin = inicio + maxNotificacionesPorPagina;
-
-                notificaciones.slice(inicio, fin).forEach(notificacion => {
-                    // Construcción del HTML de cada notificación
-                    
-                    htmlNotificaciones += `<div class="py-3 border-bottom px-3 bg-light-grayish-cyan">
-                                                        <div class="d-flex justify-content-between">
-                                                            <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> ${deteminarCabeceraNotificacion(notificacion.categoria)}</h4>
-                                                            <span class="fs--3">Ahora</span>
-                                                        </div>
-                                                        <div class="flex-1 ms-4">
-                                                            <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">${notificacion.mensajeNotificacion}</p>
-                                                        </div>
-                                                        <div class="text-end">
-                                                            <a href="#!" class="text-primary-veris fs--1 fw-bold">${determinarBotonAgendaCita(notificacion.categoria)}</a>
-                                                        </div>
-                                                    </div>`;
-                });
-
-                if (totalPaginas > 1) {
-                    // Construcción del HTML de paginación
-                    
-                    paginacionHTML = `<div class="px-3 mt-5">
-                                            <nav aria-label="Page navigation">
-                                                <ul class="pagination justify-content-center">
-                                                    <li class="page-item">
-                                                        <a class="page-link bg-transparent" href="#" aria-label="Previous">
-                                                            <span aria-hidden="true">&lt;</span>
-                                                        </a>
-                                                    </li>
-                                                    <li class="page-item disabled"><span class="page-link bg-transparent">${paginaActual}
-                                                        de ${Math.ceil(notificaciones.length / maxNotificacionesPorPagina)}</span></li>
-                                                    <li class="page-item">
-                                                        <a class="page-link bg-transparent" href="#" aria-label="Next">
-                                                            <span aria-hidden="true">&gt;</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </nav>
-                                        </div>`;
-                } 
-                
-
-                $('#notificaciones').html(htmlNotificaciones + paginacionHTML);
-            };
-
-            $(document).on('click', '.page-link-prev', function(e) {
-                e.preventDefault();
-                if (paginaActual > 1) {
-                    actualizarVista(--paginaActual);
-                }
-            });
-
-            $(document).on('click', '.page-link-next', function(e) {
-                e.preventDefault();
-                if (paginaActual < totalPaginas) {
-                    actualizarVista(++paginaActual);
-                }
-            });
-
-            actualizarVista(paginaActual);
-        }
-
+        todasNotificaciones = data.data;    
+        console.log('notificaciones', data);
+        mostrarNotificaciones(pagina);
         return data;
+    }
+
+    function mostrarNotificaciones(pagina) {
+        let htmlContent = '';
+
+        const notificaciones = todasNotificaciones;
+        // Calcular el rango de notificaciones a mostrar
+        const inicio = (pagina - 1) * notificacionesPorPagina;
+        const fin = inicio + notificacionesPorPagina;
+        notificaciones.slice(inicio, fin).forEach(notificacion => {
+            const bgClass = notificacion.estado !== "LEIDO" ? "bg-light-grayish-cyan" : "";
+            htmlContent += `<div class="py-3 border-bottom px-3 ${bgClass}">
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> ${determinarCategoria(notificacion.categoria)}</h4>
+                                    <span class="fs--3">${notificacion.valorTiempo}</span>
+                                </div>
+                                <div class="flex-1 ms-4">
+                                    <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
+                                        ${notificacion.mensajeNotificacion}
+                                    </p>
+                                </div>
+                                <div class="text-end">
+                                    ${determinarBotonNotificacion(notificacion.categoria)}
+                                    
+                                </div>
+                            </div>`;
+        });
+        let totalPaginas = Math.ceil(notificaciones.length / notificacionesPorPagina);
+
+
+        // Agregar paginación al final
+        htmlContent += `<div class="px-3 mt-5">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item ${pagina === 1 ? 'disabled' : ''}">
+                                    <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">&lt;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item disabled"><span class="page-link bg-transparent">${pagina} de ${totalPaginas}</span></li>
+                                <li class="page-item ${pagina === totalPaginas ? 'disabled' : ''}">
+                                    <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual + 1)" aria-label="Next">
+                                        <span aria-hidden="true">&gt;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>`;
+        
+        $('#notificaciones').html(htmlContent);
+        
+    }
+
+
+    // cantidad de notificaciones
+
+    async function cantidadNotificaciones(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
+        args["endpoint"] = api_url + `/digitales/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
+        
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        console.log(2,args["endpoint"]);
+        
+        const data = await call(args);
+        console.log('cantidad notificaciones', data);
+        if (data.code == 200) {
+            let cantidadNotificaciones = data.data.cantidadNotificaciones;
+            console.log('iii',cantidadNotificaciones);
+            if (cantidadNotificaciones > 0) {
+                $('#badgeNotificaciones').html(cantidadNotificaciones);
+                $('#badgeNotificaciones').removeClass('d-none');
+            } else {
+                $('#badgeNotificaciones').html(cantidadNotificaciones);
+                
+                $('#badgeNotificaciones').removeClass('d-none');
+                // $('#badgeNotificaciones').addClass('d-none');
+            }
+        }
     }
 
 
@@ -398,24 +272,84 @@
         window.location.href = "{{ route('logout') }}";
     });
 
+    // determinar categoria
+
+    function determinarCategoria(categoria){
+        let categoriaNotificacion = '';
+        switch (categoria) {
+            case 'PENDIENTE_PAGO':
+                categoriaNotificacion = 'Pago pendiente';
+                break;
+        }
+        return categoriaNotificacion;
+    }
+
+    //determinar boton notificacion
+    function determinarBotonNotificacion(categoria){
+        let botonNotificacion = '';
+        switch (categoria) {
+            case 'PENDIENTE_PAGO':
+                botonNotificacion = ``;
+                break;
+            case 'CITA_MEDICA':
+                botonNotificacion = `<a href="#!" class="btn btn-sm btn-outline-primary-veris">Agendar cita</a>`;
+                break;
+        }
+
+        return botonNotificacion;
+    }
+
+    function cambiarPagina(nuevaPagina) {
+        if (nuevaPagina < 1 || nuevaPagina > Math.ceil(todasNotificaciones.length / notificacionesPorPagina)) {
+            return;
+        }
+        paginaActual = nuevaPagina; // Actualizar la variable paginaActual
+        mostrarNotificaciones(paginaActual);
+        activarNotificacion();
+    }
+
+    // cambiar estado de notificacion
+
+    $('#dropdownNotifications').click(function(){
+        // enviar el id de la notificacion de las notificaciones que estan en la pagina actual
+        console.log('activar notificacion ');
+        activarNotificacion();
+
+    });
+
+    // enviar codigo de notificacion 
+
+    function activarNotificacion(){
+        let notificacionesPaginaActual = todasNotificaciones.slice((paginaActual - 1) * notificacionesPorPagina, paginaActual * notificacionesPorPagina);
+        console.log('notificaciones pagina actual', notificacionesPaginaActual);
+        notificacionesPaginaActual.forEach(notificacion => {
+            if (notificacion.estado !== "LEIDO") {
+                cambiarEstadoNotificacion(notificacion.codigoNotificacion);
+            }
+        });
+    }
+
+
+
     
 
-    // determinar cabecera notificaciones
+    // cambia estado de notificacion a leido
 
-    function deteminarCabeceraNotificacion(categoria){
-        if(categoria == 'PENDIENTE_PAGO') return 'Pago pendiente';
-
+    async function cambiarEstadoNotificacion(codigoNotificacion){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        args["endpoint"] = api_url + `/digitales/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
+        
+        args["method"] = "PUT";
+        args["showLoader"] = false;
+        console.log(2,args["endpoint"]);
+        
+        const data = await call(args);
+        console.log('cambiar estado notificacion', data);
+        if (data.code == 200) {
+            cantidadNotificaciones();
+        }
     }
-
-    // funciones para determinar boton agenda cita
-    function determinarBotonAgendaCita(categoria){
-        if(categoria == 'PENDIENTE_PAGO') return '';
-    }
-
-
-
-
-
 
 
 </script>

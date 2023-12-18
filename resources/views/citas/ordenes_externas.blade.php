@@ -24,44 +24,7 @@ Mi Veris - Órdenes externas
     </div>
 
     <!-- filtro -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroOrdenesExternas" aria-labelledby="filtroOrdenesExternasLabel">
-        <div class="offcanvas-header py-2">
-            <h5 class="offcanvas-title" id="filtroOrdenesExternasLabel">Filtros</h5>
-            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atras</b></button>
-        </div>
-        <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
-            <form action="">
-                <h6 class="fw-light">Selecciona la especialidad</h6>
-                <div class="list-group gap-2 mb-3">
-                    <label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                        <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="" checked>
-                        <span class="text-veris fw-bold">
-                            Mary Samaniego Loor
-                            <small class="fs--2 d-block fw-normal text-body-secondary">Madre</small>
-                        </span>
-                    </label>
-                    <label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                        <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios2" value="">
-                        <span class="text-veris fw-bold">
-                            John Donoso Salgado
-                            <small class="fs--2 d-block fw-normal text-body-secondary">Padre</small>
-                        </span>
-                    </label>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label for="fechaDesde" class="form-label">{{ __('Elige el rango de fechas') }} *</label>
-                    <input type="text" class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
-                </div>
-                <div class="col-md-12 mb-5">
-                    <input type="text" class="form-control bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
-                </div>
-                <div class="col-md-12 mb-3">
-                    <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0" type="submit">Aplicar filtros</button>
-                    <button class="btn text-primary w-100 mb-3 mx-0" type="submit"><i class="bi bi-trash me-2"></i> Limpiar filtros</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Órdenes externas') }}</h5>
     <section class="p-3 pt-0 mb-3">
@@ -72,61 +35,20 @@ Mi Veris - Órdenes externas
                 </button>
             </div>
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white py-2 mb-3">
-                <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroOrdenesExternas" aria-controls="filtroOrdenesExternas"><i class="bi bi-sliders me-1"></i> María Donoso</button>
+                @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
+                @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
             </div>
             <div class="row gy-3 justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
-                    <div class="row g-3">
-                        <!-- items -->
-                        <div class="col-12 col-md-6">
-                            <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
-                                <div class="card-body">
-                                    <h6 class="fw-bold mb-0">Orden externa laboratorio / 834822</h6>
-                                    <p class="fs--1 mb-0">María Donoso Samaniego</p>
-                                    <p class="fs--1 mb-0">Valor: <b class="fw-normal">$45.84</b></p>
-                                    <p class="text-dark fw-bold fs--1 mb-2">AGO 09, 2021 <b class="fw-bold me-2">10:20 AM</b></p>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="text-lime-veris fs--1"><i class="fa-solid fa-circle me-2"></i>Aprobada</span>
-                                        <a href="#" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- items -->
-                        <div class="col-12 col-md-6">
-                            <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
-                                <div class="card-body">
-                                    <h6 class="fw-bold mb-0">Orden externa laboratorio / 834822</h6>
-                                    <p class="fs--1 mb-0">María Donoso Samaniego</p>
-                                    <p class="fs--1 mb-0">Valor: <b class="fw-normal">$45.84</b></p>
-                                    <p class="text-dark fw-bold fs--1 mb-2">AGO 09, 2021 <b class="fw-bold me-2">10:20 AM</b></p>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="text-lime-veris fs--1"><i class="fa-solid fa-circle me-2"></i>Aprobada</span>
-                                        <a href="#" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- items -->
-                        <div class="col-12 col-md-6">
-                            <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
-                                <div class="card-body">
-                                    <h6 class="fw-bold mb-0">Orden externa laboratorio / 834822</h6>
-                                    <p class="fs--1 mb-0">María Donoso Samaniego</p>
-                                    <p class="fs--1 mb-0">Valor: <b class="fw-normal">$45.84</b></p>
-                                    <p class="text-dark fw-bold fs--1 mb-2">AGO 09, 2021 <b class="fw-bold me-2">10:20 AM</b></p>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
-                                        <span class="text-lime-veris fs--1"><i class="fa-solid fa-circle me-2"></i>Aprobada</span>
-                                        <a href="#" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="row g-3" id="ordenesExternas">
+                        <!-- items dinamicos -->
+                        
+                        
                     </div>
                 </div>
 
                 <!-- Mensaje El paciente seleccionado no tiene órdenes disponibles. -->
-                <div class="col-12 d-flex justify-content-center d-none">
+                <div class="col-12 d-flex justify-content-center d-none" id="mensajeOrdenesExternas">
                     <div class="card bg-transparent shadow-none">
                         <div class="card-body">
                             <div class="text-center">
@@ -151,5 +73,180 @@ Mi Veris - Órdenes externas
     flatpickr("#fechaHasta", {
         // maxDate: "today"
     });
+</script>
+
+<script>
+
+    // variables globales
+
+    // llamada al dom
+    document.addEventListener("DOMContentLoaded", async function () {
+        const elemento = document.getElementById('nombreFiltro');
+        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
+        // consultar ordenes externas de laboratorio
+        await consultarOrdenesExternasLaboratorio();
+        // consultar grupo familiar\
+        await consultarGrupoFamiliar();
+
+    });
+
+    // funciones asyncronas
+
+     // consultar ordenes externas de laboratorio
+     async function consultarOrdenesExternasLaboratorio(_pacienteSeleccionado = '', _fechaDesde = '', _fechaHasta = '', _esAdmin = '') {
+        let args = [];
+        let canalOrigen = _canalOrigen
+        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+        args["endpoint"] = api_url + `/digitalestest/v1/ordenes/laboratorio?numeroIdentificacion=${codigoUsuario}&tipoIdentificacion=${tipoIdentificacion}&canalOrigen=${canalOrigen}`;
+        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log('dataOrde', data);
+        if (data.code == 200){
+
+            if (data.data.length > 0) {
+                document.getElementById('mensajeOrdenesExternas').classList.add('d-none');
+                let ordenesExternas = $('#ordenesExternas');
+                ordenesExternas.empty();
+
+                data.lsOrdenesLaboratorio.forEach((ordenes) => {
+
+                    let elemento = `<div class="col-12 col-md-6">
+                                        <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
+                                            <div class="card-body">
+                                                <h6 class="fw-bold mb-0">${capitalizarElemento(ordenes.descripcionOrden)}</h6>
+                                                <p class="fs--1 mb-0"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>
+                                                <p class="fs--1 mb-0">Valor: <b class="fw-normal">$${ordenes.total}</b></p>
+                                                <p class="text-dark fw-bold fs--1 mb-2">AGO 09, 2021 <b class="fw-bold me-2">10:20 AM</b></p>
+                                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                                    <span class="text-lime-veris fs--1"><i class="fa-solid fa-circle me-2"></i>Aprobada</span>
+                                                    <a href="/citas" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> `;
+                    ordenesExternas.append(elemento);
+
+                });
+
+
+                                    
+
+
+            } else {
+                document.getElementById('mensajeOrdenesExternas').classList.remove('d-none');
+            }
+        }
+        
+     }
+
+
+
+     // consultar grupo familiar
+    async function consultarGrupoFamiliar() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        console.log('dataFa', data);
+        if(data.code == 200){
+            familiar = data.data;
+            mostrarListaPacientesFiltro();
+
+        }
+        return data;
+    }
+
+
+    // funciones js
+
+    function mostrarListaPacientesFiltro(){
+
+        let data = familiar;
+
+        let divContenedor = $('.listaPacientesFiltro');
+        divContenedor.empty(); // Limpia el contenido actual
+
+        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" checked>
+                                <span class="text-veris fw-bold">
+                                    ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
+                                    <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
+                                </span>
+                            </label>`;
+        divContenedor.append(elementoYo);
+
+        console.log('sss',data);
+        data.forEach((Pacientes) => {
+            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                                <span class="text-veris fw-bold">
+                                    ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
+                                    <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
+                                </span>
+                            </label>`;
+            divContenedor.append(elemento);
+
+        });
+    }
+
+    // aplicar filtros
+    $('#aplicarFiltros').on('click', async function(){
+        const contexto = $(this).data('context');
+        const pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
+        let fechaDesde = $('#fechaDesde').val() || '';
+        let fechaHasta = $('#fechaHasta').val() || '';
+        const esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
+
+        fechaDesde = formatearFecha(fechaDesde);
+        fechaHasta = formatearFecha(fechaHasta);
+
+        if (contexto === 'contextoAplicarFiltros') {
+            console.log('exito');   
+            await consultarOrdenesExternasLaboratorio(pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin);
+        }
+    });
+    
+    // limpiar filtros
+    $('#btnLimpiarFiltros').on('click', function(){
+        const contexto = $(this).data('context');
+        if (contexto === 'contextoLimpiarFiltros') {
+            console.log('exitoss');
+            const radioButtons = $('input[name="listGroupRadiosI"]');
+            radioButtons.prop('checked', false);
+            radioButtons.first().prop('checked', true);
+            $('#fechaDesde').val('');
+            $('#fechaHasta').val('');
+            consultarOrdenesExternasLaboratorio();
+        }
+    });
+
+
+    function formatearFecha(fecha) {
+        // Validar si la entrada está vacía
+        if (!fecha) {
+            return '';
+        }
+
+        const fechaObj = new Date(fecha);
+        // Validar si la fecha es válida
+        if (isNaN(fechaObj.getTime())) {
+            return '';
+        }
+
+        const dia = String(fechaObj.getDate()).padStart(2, '0');
+        const mes = String(fechaObj.getMonth() + 1).padStart(2, '0');
+        const año = fechaObj.getFullYear();
+
+        return `${dia}/${mes}/${año}`;
+    }
+
+
+
 </script>
 @endpush

@@ -27,13 +27,11 @@ Mi Veris - Doctores favoritos
     <section class="p-3 mb-3">
         <div class="row justify-content-center" >
             <div class="col-12 col-md-6 text-center mt-5 mb-5">
-                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-50">Buscar doctor</a>
+                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-50 py-3">Buscar doctor</a>
             </div>
             <div class="row justify-content-center"  id="doctoresFavoritos" >
-
             </div>
             <!-- Doctor favorito dinamico -->
-            
 
             <!-- Mensaje Aún no tienes doctores favoritos -->
             <div class="col-12 d-flex justify-content-center d-none">
@@ -74,20 +72,16 @@ Mi Veris - Doctores favoritos
         let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
         
 
-        args["endpoint"] = api_url + `/digitales/v1/perfil/doctores/favoritos?codigoUsuario=${codigoUsuario}&idPersona=${codigoUsuario}&canalOrigen=${canalOrigen}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores/favoritos?codigoUsuario=${codigoUsuario}&idPersona=${codigoUsuario}&canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('doc',data);
         
         if(data.data.length > 0){
-            //for each de data
             let html = $('#doctoresFavoritos');
-           // Crear un array para almacenar las promesas
             const promesas = data.data.map(doctores => obtenerDisponibilidadDoctor(doctores));
-
-            // Esperar a que todas las promesas se resuelvan
             const resultados = await Promise.all(promesas);
             
 
@@ -146,7 +140,7 @@ Mi Veris - Doctores favoritos
         args["endpoint"] = api_url + `/digitales/v1/agenda/medicos/horarios?canalOrigen=${canalOrigen}&codigoEmpresa=${doctor.codigoEmpresa}&codigoSucursal=${doctor.codigoSucursal}&codigoEspecialidad=${doctor.codigoEspecialidad}&codigoPrestacion=${doctor.codigoPrestacion}&codigoServicio=${doctor.codigoServicio}&online=${doctor.esOnline}&fechaSeleccionada=${fechaHoy}`;
         console.log(args["endpoint"]);
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('doctor',doctor);
         console.log('disponibilidad',data);

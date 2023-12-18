@@ -3,45 +3,17 @@
         <a href="/" class="app-brand-link text-white">
             <span class="app-brand-text demo menu-text fw-bold">Menú</span>
         </a>
-
-        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-none">
-            <i class="ti menu-toggle-icon d-none d-xl-block ti-sm align-middle"></i>
-            <i class="ti ti-x d-block d-xl-none ti-sm align-middle"></i>
-        </a>
     </div>
 
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-        <!-- Dashboards -->
-        <li class="menu-item active open d-none">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ti ti-smart-home"></i>
-                <div data-i18n="Dashboards">Dashboards</div>
-                <div class="badge bg-label-primary rounded-pill ms-auto">3</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item active">
-                    <a href="index.html" class="menu-link">
-                    <div data-i18n="Analytics">Analytics</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="dashboards-crm.html" class="menu-link">
-                    <div data-i18n="CRM">CRM</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="dashboards-ecommerce.html" class="menu-link">
-                    <div data-i18n="eCommerce">eCommerce</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
         <!-- Menu -->
         <li class="menu-item {{ Route::is('home') || Route::is('home.*')  ? 'active' : '' }}">
             <a href="{{route('home')}}" class="menu-link fs--1 text-white">
-                <i class="menu-icon fa-solid fa-house"></i>
+                <svg class="menu-icon" width="16" height="21" viewBox="0 0 24 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.2109 10.5C23.2109 11.2031 22.625 11.75 21.9609 11.75H20.7109L20.75 18C20.75 18.1172 20.75 18.2344 20.75 18.3125V18.9375C20.75 19.8359 20.0469 20.5 19.1875 20.5H18.5625C18.4844 20.5 18.4453 20.5 18.4062 20.5C18.3672 20.5 18.2891 20.5 18.25 20.5H16.0625C15.1641 20.5 14.5 19.8359 14.5 18.9375V15.5C14.5 14.8359 13.9141 14.25 13.25 14.25H10.75C10.0469 14.25 9.5 14.8359 9.5 15.5V18.9375C9.5 19.8359 8.79688 20.5 7.9375 20.5H5.75C5.67188 20.5 5.63281 20.5 5.55469 20.5C5.51562 20.5 5.47656 20.5 5.4375 20.5H4.8125C3.91406 20.5 3.25 19.8359 3.25 18.9375V14.5625C3.25 14.5625 3.25 14.5234 3.25 14.4844V11.75H2C1.29688 11.75 0.75 11.2031 0.75 10.5C0.75 10.1484 0.867188 9.83594 1.14062 9.5625L11.1406 0.851562C11.4141 0.578125 11.7266 0.5 12 0.5C12.2734 0.5 12.5859 0.617188 12.8203 0.8125L22.7812 9.5625C23.0938 9.83594 23.25 10.1484 23.2109 10.5Z" fill="white"/>
+                </svg>
                 <div data-i18n="Inicio">Inicio</div>
             </a>
         </li>
@@ -107,7 +79,7 @@
                 <svg class="menu-icon" width="26" height="21" viewBox="0 0 26 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16.75 7.375C16.75 11.2031 13.0781 14.25 8.625 14.25C7.80469 14.25 7.0625 14.1719 6.32031 13.9766C5.22656 14.7188 3.50781 15.5 1.39844 15.5C1.04688 15.5 0.695312 15.3047 0.539062 14.9531C0.421875 14.6016 0.460938 14.2109 0.734375 13.9375C0.734375 13.9375 1.67188 12.9219 2.25781 11.6719C1.16406 10.5 0.5 9.01562 0.5 7.375C0.5 3.58594 4.13281 0.5 8.625 0.5C13.0781 0.5 16.75 3.58594 16.75 7.375ZM8.625 13C12.4141 13 15.5 10.5 15.5 7.375C15.5 4.28906 12.4141 1.75 8.625 1.75C4.79688 1.75 1.75 4.28906 1.75 7.375C1.75 8.625 2.21875 9.83594 3.15625 10.8125L3.74219 11.4375L3.39062 12.2188C3 13.0391 2.49219 13.7422 2.14062 14.25C3.625 14.0938 4.83594 13.4688 5.65625 12.9609L6.08594 12.6484L6.63281 12.7656C7.25781 12.9219 7.96094 13 8.625 13ZM24.1719 17.5312C24.6797 18.3516 25.2266 18.9375 25.2266 18.9766C25.4609 19.2109 25.5391 19.6016 25.4219 19.9531C25.2656 20.3047 24.9141 20.5 24.5625 20.5C23.2734 20.5 22.1797 20.2266 21.2422 19.8359C20.2266 20.2656 19.1328 20.5 18 20.5C14.4453 20.5 11.5156 18.3125 10.6953 15.3047C11.125 15.2266 11.5547 15.1094 11.9453 14.9922C12.6094 17.4531 15.0312 19.25 18 19.25C18.9375 19.25 19.8359 19.0547 20.7344 18.7031L21.2031 18.4688L21.7109 18.6641C22.4141 18.9766 23.1172 19.1719 23.8203 19.25C23.625 18.9766 23.3516 18.5859 23.1172 18.1953L22.6484 17.4531L23.1562 16.7891C23.8594 15.8516 24.25 14.7578 24.25 13.625C24.25 10.5391 21.4375 8 18 8C17.9609 8 17.9609 8.03906 17.9609 8.03906C17.9609 7.80469 18 7.60938 18 7.375C18 7.17969 17.9609 6.98438 17.9609 6.78906C17.9609 6.78906 17.9609 6.75 18 6.75C22.1406 6.75 25.5 9.83594 25.5 13.625C25.5 15.0703 24.9922 16.4375 24.1719 17.5312Z" fill="white"/>
                 </svg>
-                <div data-i18n="Cuentanos tu experiencia">Cuentanos tu experiencia</div>
+                <div style="font-size: 0.8rem;" data-i18n="Cuéntanos tu experiencia">Cuéntanos tu experiencia</div>
             </a>
         </li>
     </ul>
