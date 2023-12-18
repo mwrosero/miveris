@@ -148,10 +148,13 @@
 
         console.log(1,args["endpoint"]);
         const data = await call(args);
-
-        todasNotificaciones = data.data;    
-        console.log('notificaciones', data);
-        mostrarNotificaciones(pagina);
+        if (data.code == 200) {
+            todasNotificaciones = data.data;    
+            mostrarNotificaciones(pagina);
+        } else if (data.code != 200) {
+            console.log('error', data);
+        }
+        
         return data;
     }
 

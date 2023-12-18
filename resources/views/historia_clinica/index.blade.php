@@ -12,7 +12,7 @@ Mi Veris - Historia clínica
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Historia clínica') }}</h5>
     @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
-    @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
+    @include('components.offCanvaHC', ['context' => 'contextoLimpiarFiltros'])
             
     <section class="p-3 pt-0 mb-3">
         <div class="row justify-content-center">
@@ -132,7 +132,8 @@ Mi Veris - Historia clínica
                     let element = '';
 
                     data.data.forEach((especialidades) => {
-                        element += `<a href="{{route('historiaClinica.listaDoctores')}}" class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
+                        element += `<a href="/lista-doctores/${especialidades.codigoEspecialidad}/${codigoTipoIdentificacion}/${numeroIdentificacion}"
+                        " class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
                                         <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0">
                                         
                                         <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
@@ -216,6 +217,32 @@ Mi Veris - Historia clínica
         if (contexto === 'contextoAplicarFiltros') {
             await hcEspecialidadesAtendidas(pacienteSeleccionado, tipoIdentificacion, esAdmin);
             $('#filtroTratamientos').offcanvas('hide');
+        }
+    }
+
+    // limpiar filtros
+    
+    $('#btnLimpiarFiltros').on('click', function() {
+        const contexto = $(this).data('context');
+        limpiarFiltrosResultados(contexto, tipoServicio = 'LAB');
+        identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+        const elemento = document.getElementById('nombreFiltro');
+        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+
+    });
+
+
+    // limpiar filtros para resultados
+    async function limpiarFiltrosResultados(contexto, tipoServicio) {
+        if (contexto === 'contextoLimpiarFiltros') {
+            $('input[name="listGroupRadios"]').prop('checked', false);
+            $('input[name="listGroupRadios"]').first().prop('checked', true);
+            
+            let pacienteSeleccionado = "{{ Session::get('userData')->numeroIdentificacion }}";
+            let  tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+            await hcEspecialidadesAtendidas(pacienteSeleccionado, tipoIdentificacion, 'S');
+            $('#filtroTratamientos').offcanvas('hide');
+
         }
     }
 

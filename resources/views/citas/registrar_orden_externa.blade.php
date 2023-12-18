@@ -7,6 +7,24 @@ Mi Veris - Citas - Nueva orden externa
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+
+
+      <!-- Modal mensaje -->
+      <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
+                    <p class="fs--1 fw-bold m-0 mt-3">Tu orden ha sido enviada exitosamente</p>
+                </div>
+                <div class="modal-footer pb-3 pt-0 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Nueva orden externa') }}</h5>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -256,11 +274,13 @@ Mi Veris - Citas - Nueva orden externa
 
         const data = await call(args);
         console.log('actualizarDatosUsuario',data);
-        // if(data.code == 200){
-        //     $('#mensajeSolicitudLlamadaModal').modal('show');
-        // } else {
-        //     $('#mensajeSolicitudLlamadaModal').modal('show');
-        // }
+        if (data.code == 200) {
+            // mostrar modal de exito
+            $('#mensajeOrdenExitosa').modal('show');
+            $('#btnEntendido').on('click', function(){
+                window.location.href = "{{ route('citas') }}";
+            });
+        }
         return data;
 
     }
