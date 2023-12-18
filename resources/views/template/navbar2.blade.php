@@ -130,6 +130,7 @@
         
         await cantidadNotificaciones();
         await getNotificaciones();
+        await numeroNotificaciones();
 
     } );
 
@@ -239,7 +240,33 @@
     }
 
 
-    
+
+    // recibir numero de notificaciones
+    async function numeroNotificaciones(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
+
+        console.log(codigoUsuario);
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        console.log('no',args["endpoint"] );
+        const data = await call(args);
+        console.log('numero notificaciones',data);
+        if (data.code == 200 ){
+            if (data.data.cantidadNotificaciones > 0){
+                $('#numeroNotificaciones').removeClass('d-none');
+                $('#numeroNotificaciones').html(data.data.cantidadNotificaciones);
+            } else {
+                $('#numeroNotificaciones').addClass('d-none');
+            }
+            
+        
+        return data;
+        }
+    }
+
 
     // funciones js
     // salir de la sesion

@@ -47,6 +47,7 @@ Mi Veris - Citas - Receta médica
                     </div>
                     
 
+
                     <!-- Mensaje No tienes ordenes de terapia -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientos">
                         <div class="card bg-transparent shadow-none">
@@ -88,6 +89,7 @@ Mi Veris - Citas - Receta médica
                     </div>
                     
                     
+
 
                     <!-- Mensaje No tienes ordenes de terapia realizadas -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">

@@ -8,44 +8,7 @@ Mi Veris - Citas - Terapia física
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Filtro -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroTerapiaFisica" aria-labelledby="filtroTerapiaFisicaLabel">
-        <div class="offcanvas-header py-2">
-            <h5 class="offcanvas-title" id="filtroTerapiaFisicaLabel">Filtros</h5>
-            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atras</b></button>
-        </div>
-        <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
-            <form action="">
-                <h6 class="fw-light">Selecciona el paciente</h6>
-                <div class="list-group gap-2 mb-3">
-                    <label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                        <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="" checked>
-                        <span class="text-veris fw-bold">
-                            Mary Samaniego Loor
-                            <small class="fs--3 d-block fw-normal text-body-secondary">Madre</small>
-                        </span>
-                    </label>
-                    <label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                        <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios2" value="">
-                        <span class="text-veris fw-bold">
-                            John Donoso Salgado
-                            <small class="fs--3 d-block fw-normal text-body-secondary">Padre</small>
-                        </span>
-                    </label>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label for="fechaDesde" class="form-label">{{ __('Elige el rango de fechas') }} *</label>
-                    <input type="text" class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
-                </div>
-                <div class="col-md-12 mb-5">
-                    <input type="text" class="form-control bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
-                </div>
-                <div class="col-md-12 mb-3">
-                    <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0" type="submit">Aplicar filtros</button>
-                    <button class="btn text-primary w-100 mb-3 mx-0" type="submit"><i class="bi bi-trash me-2"></i> Limpiar filtros</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Terapia física') }}</h5>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
