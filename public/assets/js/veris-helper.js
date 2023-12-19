@@ -409,7 +409,7 @@ async function limpiarFiltros(contexto) {
         $('input[name="listGroupRadios"]').first().prop('checked', true);
         $('#fechaDesde').val('');
         $('#fechaHasta').val('');
-        let estado = document.getElementById('pills-pendienes-tab').getAttribute('aria-selected');
+        let estado = document.getElementById('pills-pendientes-tab').getAttribute('aria-selected');
         if (estado === 'true') {
             await obtenerTratamientosId('', '', '', 'PENDIENTE');
             $('#filtroTratamientos').offcanvas('hide');
@@ -417,6 +417,47 @@ async function limpiarFiltros(contexto) {
             await obtenerTratamientosId('', '', '', 'REALIZADO');
             $('#filtroTratamientos').offcanvas('hide');
         }
+    }
+}
+
+// aplicar filtros para resultados
+async function aplicarFiltrosResultados(contexto, tipoServicio) {
+    
+    // capturar los datos de data-rel del input radio
+    let datos = $('input[name="listGroupRadios"]:checked').attr('data-rel');
+    datos = JSON.parse(datos);
+    
+    let pacienteSeleccionado = datos.tipoIdentificacion;
+    let tipoIdentificacion = datos.numeroIdentificacion;
+    let esAdmin = datos.esAdmin;
+    if (datos.parentesco === 'YO') {
+        esAdmin = 'S';
+    }
+
+    console.log('paciente',datos.tipoIdentificacion);
+    let fechaDesde = $('#fechaDesde').val() || '';
+    let fechaHasta = $('#fechaHasta').val() || '';
+
+    fechaDesde = formatearFecha(fechaDesde);
+    fechaHasta = formatearFecha(fechaHasta);
+
+    if (contexto === 'contextoAplicarFiltros') {
+        console.log('exito');
+        await consultarResultadosPorTipo(pacienteSeleccionado, tipoIdentificacion, fechaDesde, fechaHasta, tipoServicio, esAdmin);
+        $('#filtroTratamientos').offcanvas('hide');
+    }
+}
+
+// limpiar filtros para resultados
+async function limpiarFiltrosResultados(contexto, tipoServicio) {
+    if (contexto === 'contextoLimpiarFiltros') {
+        $('input[name="listGroupRadios"]').prop('checked', false);
+        $('input[name="listGroupRadios"]').first().prop('checked', true);
+        $('#fechaDesde').val('');
+        $('#fechaHasta').val('');
+        let pacienteSeleccionado = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let  tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+        await consultarResultadosPorTipo(pacienteSeleccionado, tipoIdentificacion, '', '', tipoServicio, 'S');
     }
 }
 
@@ -433,6 +474,25 @@ function formatearFecha(fecha) {
     const año = fechaObj.getFullYear();
 
     return `${dia}/${mes}/${año}`;
+}
+
+
+// mostrar lista de pacientes
+function mostrarListaPacientesFiltro(){
+    let data = familiar;
+    let divContenedor = $('.listaPacientesFiltro');
+    divContenedor.empty();
+    data.forEach((Pacientes) => {
+        let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                            <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                            <span class="text-veris fw-bold">
+                                
+                                ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
+                                <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
+                            </span>
+                        </label>`;
+        divContenedor.append(elemento);
+    });
 }
 
 

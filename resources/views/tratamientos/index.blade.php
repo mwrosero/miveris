@@ -14,7 +14,7 @@ Mi Veris - Citas - Mis tratamientos
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-pendienes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
+                    <button class="nav-link active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
@@ -105,7 +105,7 @@ Mi Veris - Citas - Mis tratamientos
         if(data.code == 200){
             datosTratamientos = data.data.items;
             
-            if (document.getElementById('pills-pendienes-tab').getAttribute('aria-selected') === 'true') {
+            if (document.getElementById('pills-pendientes-tab').getAttribute('aria-selected') === 'true') {
                 if (estadoTratamiento == 'PENDIENTE') {
                     mostrarTratamientoenDiv(esAdmin);
                 }
@@ -417,7 +417,7 @@ Mi Veris - Citas - Mis tratamientos
     });
 
     // boton tratamiento pendientes
-    $('#pills-pendienes-tab').on('click', async function(){
+    $('#pills-pendientes-tab').on('click', async function(){
         const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
 
         await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);

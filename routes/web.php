@@ -73,7 +73,8 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/receta-medica',[CitasController::class, 'recetaMedica'])->name('citas.recetaMedica')->withoutMiddleware(['guest']);
     #Ordenes externas
     Route::get('/ordenes-externas',[CitasController::class, 'ordenesExternas'])->name('citas.ordenesExternas')->withoutMiddleware(['guest']);
-    Route::get('/registrar-orden-externa',[CitasController::class, 'registrarOrdenesExternas'])->name('citas.registrarOrdenesExternas')->withoutMiddleware(['guest']);
+    Route::get('/registrar-orden-externa/{tipoIdentificacion}/{numeroIdentificacion}/{codigoConvenio}/{nombreConvenio}'
+    ,[CitasController::class, 'registrarOrdenesExternas'])->name('citas.registrarOrdenesExternas')->withoutMiddleware(['guest']);
     #Mis citas
     Route::get('/mis-citas', [CitasController::class, 'misCitas'])->name('citas.misCitas')->withoutMiddleware(['guest']);
 
@@ -110,7 +111,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
 
     #Solicitar historia clínica
     Route::get('/historia-clinica', [HistoriaClinicaController::class, 'historiaClinica'])->name('historiaClinica')->withoutMiddleware(['guest']);
-    Route::get('/lista-doctores', [HistoriaClinicaController::class, 'listaDoctoresHistoriaClinica'])->name('historiaClinica.listaDoctores')->withoutMiddleware(['guest']);
+    Route::get('/lista-doctores/{codigoEspecialidad}/{tipoIdentificacion}/{numeroIdentificacion}', [HistoriaClinicaController::class, 'listaDoctoresHistoriaClinica'])->name('historiaClinica.listaDoctores')->withoutMiddleware(['guest']);
     Route::get('/solicitar-historia-clinica', [HistoriaClinicaController::class, 'solicitarHistoriaClinica'])->name('historiaClinica.solicitar')->withoutMiddleware(['guest']);
 
     #Experiencia

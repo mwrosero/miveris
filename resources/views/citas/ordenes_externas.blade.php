@@ -101,7 +101,7 @@ Mi Veris - Órdenes externas
         args["endpoint"] = api_url + `/digitalestest/v1/ordenes/laboratorio?numeroIdentificacion=${codigoUsuario}&tipoIdentificacion=${tipoIdentificacion}&canalOrigen=${canalOrigen}`;
         
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataOrde', data);
         if (data.code == 200){

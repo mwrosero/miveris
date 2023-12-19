@@ -127,8 +127,10 @@
     // llamada al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
-        await getNotificaciones();
+        
         await cantidadNotificaciones();
+        await getNotificaciones();
+        await numeroNotificaciones();
 
     } );
 
@@ -146,10 +148,13 @@
 
         console.log(1,args["endpoint"]);
         const data = await call(args);
-
-        todasNotificaciones = data.data;    
-        console.log('notificaciones', data);
-        mostrarNotificaciones(pagina);
+        if (data.code == 200) {
+            todasNotificaciones = data.data;    
+            mostrarNotificaciones(pagina);
+        } else if (data.code != 200) {
+            console.log('error', data);
+        }
+        
         return data;
     }
 
@@ -235,7 +240,33 @@
     }
 
 
-    
+
+    // recibir numero de notificaciones
+    async function numeroNotificaciones(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
+
+        console.log(codigoUsuario);
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        console.log('no',args["endpoint"] );
+        const data = await call(args);
+        console.log('numero notificaciones',data);
+        if (data.code == 200 ){
+            if (data.data.cantidadNotificaciones > 0){
+                $('#numeroNotificaciones').removeClass('d-none');
+                $('#numeroNotificaciones').html(data.data.cantidadNotificaciones);
+            } else {
+                $('#numeroNotificaciones').addClass('d-none');
+            }
+            
+        
+        return data;
+        }
+    }
+
 
     // funciones js
     // salir de la sesion

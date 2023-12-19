@@ -131,39 +131,17 @@ Mi Veris - Inicio
 
     <!-- fin tratamientos dinamico -->
 
-    <section class="bg-light-grayish-blue p-3 mb-3" id="citasContainer">
-        
-        <div class="position-relative mb-3" id="contenedorCitasHomePrincipal">
-            <div class="swiper swiper-proximas-citas pt-3 pb-4 px-2 mx-n2">
-                <div class="swiper-wrapper" id="contenedorCitas">
-                    <!-- Puedes agregar citas dinámicamente aquí desde JavaScript -->
+    <div id=contenedorCitas>
+        <!-- AGREGAR AQUI EL CONTENIDO DE CITAS -->
 
+    </div>
 
-                </div>
+    <div id = contenedorUrgenciasAmbulatorias>
+        <!-- AGREGAR AQUI EL CONTENIDO DE URGENCIAS AMBULATORIAS -->
 
-                
-                <button type="button" class="mt-n4 btn btn-prev smooth-transition"></button>
-                <button type="button" class="mt-n4 btn btn-next smooth-transition"></button>
-            </div>
+    </div>
 
-        </div>
-    </section>
-    <section class="bg-light-grayish-blue p-3 mb-3" id="urgenciasContainer">
-        
-        <div class="position-relative mb-3" id="contenedorUrgenciasAmbulatoriasHomePrincipal">
-            <div class="swiper swiper-urgencias-ambulatorias pt-3 pb-4 px-2 mx-n2">
-                <div class="swiper-wrapper" id="contenedorUrgenciasAmbulatorias">
-                    <!-- Puedes agregar citas dinámicamente aquí desde JavaScript -->
-                    
-                    
-                </div>
-            </div>
-            
-            <button type="button" class="mt-n4 btn btn-prev smooth-transition"></button>
-            <button type="button" class="mt-n4 btn btn-next smooth-transition"></button>
-
-        </div>
-    </section>
+    
 </div>
 @endsection
 @push('scripts')
@@ -171,7 +149,8 @@ Mi Veris - Inicio
 <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
    
 
-
+<script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
+    
 <script>
 
     //variables globales
@@ -260,7 +239,7 @@ Mi Veris - Inicio
         args["showLoader"] = false;
         console.log(args["endpoint"]);
         const data = await call(args);
-        console.log(data.data.items);
+        console.log('INITR',data.data.items);
         if(data.code == 200){
             if(data.data.items.length == 0){
                 mostrarNoExistenTratamientos();
@@ -381,9 +360,8 @@ Mi Veris - Inicio
                                         <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
                                             <img class="rounded-circle" src=${quitarComillas(detalle.urlImagenTipoServicio)}  width="26" alt="icono">
                                         </div>
-                                        <p class="fw-bold fs--2 mb-0">${
+                                        <p class="fw-bold fs--2 mb-0">${capitalizarElemento(detalle.nombreServicio)}</p>
                                             
-                                            detalle.tipoServicio}</p>
                                     </div>
                                     <a href="/tratamiento/${detalle.codigoTratamiento}/${tratamientos.porcentajeAvanceTratamiento}"
                                     class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
@@ -428,10 +406,20 @@ Mi Veris - Inicio
 
         let divContenedor = $('#citasContainer');
             divContenedor.empty(); // Limpia el contenido actual
-            let elemento =+ `<div class="d-flex justify-content-between align-items-center">
-                                <h5 class="fw-bold border-start-veris ps-3">Próximas citas</h5>
-                                <a href="#!" class="fs--2">Ver todos</a>
-                            </div>`;
+
+
+            let elemento =+ `<section class="bg-light-grayish-blue bg-dark p-3 mb-3" id="citasContainer">
+        
+                                <div class="position-relative mb-3" id="contenedorCitasHomePrincipal">
+                                    <div class="swiper swiper-proximas-citas pt-3 pb-4 px-2 mx-n2">
+                                        <div class="swiper-wrapper">
+                                            <!-- Puedes agregar citas dinámicamente aquí desde JavaScript -->
+
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="fw-bold border-start-veris ps-3">Próximas citas</h5>
+                                                <a href="#!" class="fs--2">Ver todos</a>
+                                            </div>`;
+            
 
             data.forEach((citas) => {
                 let elemento =+ `<div class="swiper-slide">
@@ -451,7 +439,16 @@ Mi Veris - Inicio
                                             </div>
                                         </div>
                                     </div>
-                                </div>`;
+                                </div>
+                            </div>
+
+                                        
+                            <button type="button" class="mt-n4 btn btn-prev smooth-transition"></button>
+                            <button type="button" class="mt-n4 btn btn-next smooth-transition"></button>
+                        </div>
+
+                    </div>
+                </section>`;
 
             divContenedor.append(elemento);
         });
@@ -475,10 +472,17 @@ Mi Veris - Inicio
 
         let divContenedor = $('#urgenciasContainer');
             divContenedor.empty(); // Limpia el contenido actual
-            let elemento =+ `<div class="d-flex justify-content-between align-items-center">
-                                <h5 class="fw-bold border-start-veris ps-3">Urgencias ambulatorias</h5>
-                                <a href="#!" class="fs--2">Ver todos</a>
-                            </div>`;
+
+            let elemento =+ `<section class="bg-light-grayish-blue p-3 mb-3" id="urgenciasContainer">
+        
+                                <div class="position-relative mb-3" id="contenedorUrgenciasAmbulatoriasHomePrincipal">
+                                    <div class="swiper swiper-urgencias-ambulatorias pt-3 pb-4 px-2 mx-n2">
+                                        <div class="swiper-wrapper" id="contenedorUrgenciasAmbulatorias">
+                                            <!-- Puedes agregar citas dinámicamente aquí desde JavaScript -->
+                                            <div class="d-flex justify-content-between align-items-center">
+                                            <h5 class="fw-bold border-start-veris ps-3">Urgencias ambulatorias</h5>
+                                            <a href="#!" class="fs--2">Ver todos</a>
+                                        </div>`;
 
             data.forEach((urgencias) => {
                 let elemento =+ `<div class="swiper-slide">
@@ -499,7 +503,15 @@ Mi Veris - Inicio
                                             </div>
                                         </div>
                                     </div>
-                                </div>`;
+                                </div>
+                                </div>
+                                    </div>
+                                    
+                                    <button type="button" class="mt-n4 btn btn-prev smooth-transition"></button>
+                                    <button type="button" class="mt-n4 btn btn-next smooth-transition"></button>
+
+                                </div>
+                            </section>`;
 
             divContenedor.append(elemento);
         });
