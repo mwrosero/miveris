@@ -1,8 +1,11 @@
 @extends('template.app-template-veris')
 @section('title')
-Mi Veris - Citas - Elige la especialidad
+Elige la especialidad
 @endsection
 @section('content')
+@php
+$data = json_decode(base64_decode($params));
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="citaPendienteModal" tabindex="-1" aria-labelledby="citaPendienteModalLabel" aria-hidden="true">
@@ -36,8 +39,8 @@ Mi Veris - Citas - Elige la especialidad
                 </div>
             </div>
         </form>
-        <div class="row">
-            <div class="col-6 col-md-3 mb-3">
+        <div class="row" id="listaEspecialidades">
+            {{-- <div class="col-6 col-md-3 mb-3">
                 <div class="card">
                     <div class="card-body px-2 text-center">
                         <a href="{{route('citas.listaCentralMedica')}}">
@@ -50,377 +53,7 @@ Mi Veris - Citas - Elige la especialidad
                         </a>
                     </div>
                 </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/cardiologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Cardiología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/cirugia_general.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Cirugía general') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/cirugia_maxilo_facial.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Cirugía maxilo-facial') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/cirugia_oncológica.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Cirugía oncológica') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/cirugia_vascular.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Cirugía vascular') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/dermatolgia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Dermatolgía') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/endocrinologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Endocrinología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/fisiatria.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Fisiatría') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/gastroenterologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Gastroenterología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/geriatria.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Geriatría') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/ginecologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Ginecología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/medicina_general.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Medicina general') }} </p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/medicina_interna.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Medicina interna') }} </p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/nefrologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Nefrología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/neurologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Neurología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/nutricion_dietetica.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Nutrición y dietética') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/oftalmologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Oftalmología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/optometria.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Optometría') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/otrorrinolaringologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Otrorrinolaringología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/pediatria.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Pediatría') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/psicologia_clinica.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Psicología clínica') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/psiquiatria.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Psiquiatría') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/reumatolologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Reumatolología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/terapia_fisica.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Terapia física') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/traumatologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Traumatología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/urologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Urología') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            </div> --}}
         </div>
     </section>
 </div>
@@ -431,29 +64,64 @@ Mi Veris - Citas - Elige la especialidad
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        await consultarCiudadesEspecialidad();
+        await consultarEspecialidades();
     });
 
-
-    // funciones asyncronas
-    // agendamiento consulta de ciudades
-
-    async function consultarCiudadesEspecialidad() {
-        let args = [];
-        canalOrigen = _canalOrigen
-        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/agenda/ciudades?canalOrigen=${canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
-        args["method"] = "GET";
-        args["showLoader"] = false;
-        const data = await call(args);
-        console.log('ciudades', data);
+    async function consultarEspecialidades(){
+        let listaEspecialidades = $('#listaEspecialidades');
+        listaEspecialidades.empty();
         
+        let args = [];
+        args["endpoint"] = api_url + `/digitales/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}`
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            let elemento = '';
+
+            if(data.data.length > 0){
+                listaEspecialidades.empty();
+
+                data.data.forEach((especialidad) => {
+                    let params = @json($data);
+                    params.especialidad = especialidad;
+                    let ulrParams = btoa(JSON.stringify(params));
+                    let path_url = "citas-elegir-central-medica";
+                    if(params.online == "S"){
+                        path_url = "citas-elegir-fecha-doctor";
+                    }
+                    elemento += `<div class="col-6 col-md-3 mb-3">
+                                    <div class="card">
+                                        <div class="card-body px-2 text-center">
+                                            <a href="/${path_url}/${ulrParams}">
+                                                <div class="avatar avatar-lg mx-auto">
+                                                    <div class="avatar-especialidad">
+                                                        <img src="${especialidad.imagen}" alt="${especialidad.nombre}">
+                                                    </div>
+                                                </div>
+                                                <p class="text-veris fs--2 fw-bold mb-0">${especialidad.nombre}</p>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>`;
+                });
+                
+            } else {
+                listaEspecialidades.empty();
+                elemento += `<div class="col-12">
+                                <div class=" fs--2 rounded-3 p-2">
+                                    {{ __('No existe data que mostrar') }}
+                                </div>
+                            </div> `;
+            }
+            
+            listaEspecialidades.append(elemento);    
+        }
 
         return data;
     }
-
-
-    
 
 </script>
 @endpush
