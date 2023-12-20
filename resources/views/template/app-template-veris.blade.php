@@ -276,6 +276,48 @@
             return valor;
         }
 
+
+        function inicializarDatePickers() {
+            // Esta variable se declara aquí para poder ser accesible dentro del onChange de fechaDesdePicker
+            let fechaHastaPicker;
+
+            let fechaDesdePicker = flatpickr("#fechaDesde", {
+                maxDate: new Date().fp_incr(0),
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (!document.getElementById('fechaHasta').disabled) {
+                        fechaHastaPicker.set('minDate', dateStr);
+                    } else {
+                        document.getElementById('fechaHasta').disabled = false;
+                        fechaHastaPicker = flatpickr("#fechaHasta", {
+                            minDate: dateStr,
+                            maxDate: new Date().fp_incr(0)
+                        });
+                    }
+                }
+            });
+
+            fechaHastaPicker = flatpickr("#fechaHasta", {
+                maxDate: new Date().fp_incr(0),
+                minDate: new Date(),
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Aquí puedes agregar lógica adicional si es necesario
+                }
+            });
+
+            // Inicialmente, deshabilitar el segundo datepicker
+            document.getElementById('fechaHasta').disabled = true;
+
+            // Quitar el atributo readonly de los campos
+            $("#fechaDesde").removeAttr("readonly");
+            $("#fechaHasta").removeAttr("readonly");
+
+            // Deshabilitar el autocompletado para estos campos
+            $("#fechaDesde").attr("autocomplete", "off");
+            $("#fechaHasta").attr("autocomplete", "off");
+        }
+
+
+
         
 
     </script>
