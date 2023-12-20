@@ -17,7 +17,9 @@
                     <i class="fa-solid fa-bell">
                         
                     </i>
-                    <span class="badge bg-danger rounded-pill d-none d-lg-block" id="badgeNotificaciones"></span>
+                    <span class="badge  rounded-pill d-none d-lg-block" id="badgeNotificaciones">
+
+                    </span>
                     
                 </a>
                 
@@ -128,7 +130,7 @@
 
     document.addEventListener("DOMContentLoaded", async function () {
         
-        await cantidadNotificaciones();
+        // await cantidadNotificaciones();
         await getNotificaciones();
         await numeroNotificaciones();
 
@@ -258,8 +260,14 @@
             if (data.data.cantidadNotificaciones > 0){
                 $('#numeroNotificaciones').removeClass('d-none');
                 $('#numeroNotificaciones').html(data.data.cantidadNotificaciones);
+                // agregar clase danger
+                $('#numeroNotificaciones').addClass('badge-danger');
             } else {
+                console.log('no hay notificaciones dsd');
                 $('#numeroNotificaciones').addClass('d-none');
+                // clear numero notificaciones
+                $('#numeroNotificaciones').html('');
+
             }
             
         
