@@ -404,61 +404,61 @@ Mi Veris - Inicio
     function mostrarCitasenDiv() {
         let data = datosCitas;
 
-        let divContenedor = $('#citasContainer');
-            divContenedor.empty(); // Limpia el contenido actual
+        let divContenedor = $('#contenedorCitas');
+        divContenedor.empty(); // Limpia el contenido actual
+        let elemento = '';
 
+        elemento += `<section class="bg-light-grayish-blue p-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold border-start-veris ps-3">Mis citas</h5>
+                            <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
+                        </div>
+                        <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">
+                            <div class="swiper swipertratamientos pt-3 pb-4 px-2 mx-n2">
+                                <div class="swiper-wrapper" id="contenedorTratamientoHome">`;
 
-            let elemento =+ `<section class="bg-light-grayish-blue bg-dark p-3 mb-3" id="citasContainer">
-        
-                                <div class="position-relative mb-3" id="contenedorCitasHomePrincipal">
-                                    <div class="swiper swiper-proximas-citas pt-3 pb-4 px-2 mx-n2">
-                                        <div class="swiper-wrapper">
-                                            <!-- Puedes agregar citas dinámicamente aquí desde JavaScript -->
-
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h5 class="fw-bold border-start-veris ps-3">Próximas citas</h5>
-                                                <a href="#!" class="fs--2">Ver todos</a>
-                                            </div>`;
+                                    
             
 
-            data.forEach((citas) => {
-                let elemento =+ `<div class="swiper-slide">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(citas.especialidad)}</h6>
-                                                <span class="fs--2 text-success fw-bold">${esPagada(citas.estaPagada)}</span>
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
-                                            <p class="fw-normal fs--2 mb-0">${citas.fecha} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
-                                            <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                                            <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
-                                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                                <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                            </div>
+        data.forEach((citas) => {
+            elemento += `<div class="swiper-slide">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(citas.especialidad)}</h6>
+                                            <span class="fs--2 text-success fw-bold">${esPagada(citas.estaPagada)}</span>
+                                        </div>
+                                        <p class="fw-bold fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
+                                        <p class="fw-normal fs--2 mb-0">${citas.fecha} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                                        <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
+                                            <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                                        
-                            <button type="button" class="mt-n4 btn btn-prev smooth-transition"></button>
-                            <button type="button" class="mt-n4 btn btn-next smooth-transition"></button>
                         </div>
-
-                    </div>
-                </section>`;
-
-            divContenedor.append(elemento);
+                    `;
         });
-    }
+
+        elemento += `</div>
+                <button type="button" class="mt-n4 btn btn-prev btn-transition"></button>
+                <button type="button" class="mt-n4 btn btn-next btn-transition"></button>
+            </div>
+        </div>
+        </section>`;
+
+        divContenedor.append(elemento);
+    
+    } 
+    
 
     // mostrar mensaje de no hay citas
     function mostrarNoExistenCitas() {
         let data = datosCitas;
 
-        let divContenedor = $('#citasContainer');
+        let divContenedor = $('#contenedorCitas');
             divContenedor.empty(); // Limpia el contenido actual
 
             let elemento = ``;
