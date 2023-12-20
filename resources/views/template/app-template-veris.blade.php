@@ -271,7 +271,16 @@
             return valor;
         }
 
+        function determinarValoresNull(valor){
+            if (valor == null) return 0;
+            return valor;
+        }
+
+        
+
     </script>
+
+    
     @stack('scripts')
 </body>
 

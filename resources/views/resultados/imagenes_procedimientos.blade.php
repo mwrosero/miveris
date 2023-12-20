@@ -19,11 +19,13 @@ Mi Veris - Resultados
     </div>
 
     <!-- filtro -->
+    <div class="tab-content bg-transparent" id="pills-tabContent">
+        @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
+        @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
     
+    </div>
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Resultados') }}</h5>
-    @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
-    @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
     <section class="p-3 pt-0 mb-3">
         
         <div class="row justify-content-center">
@@ -75,7 +77,14 @@ Mi Veris - Resultados
 @push('scripts')
 <!-- script -->
 
-
+<script>
+    flatpickr("#fechaDesde", {
+        // maxDate: "today"
+    });
+    flatpickr("#fechaHasta", {
+        // maxDate: "today"
+    });
+</script>
 <script>
    
 
@@ -304,5 +313,7 @@ Mi Veris - Resultados
  
  
 </script>
+
+
 
 @endpush
