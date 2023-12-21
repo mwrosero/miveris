@@ -148,6 +148,8 @@ Mi Veris - Mis Datos
 @endsection
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
+    
 
 <script>
 
@@ -187,7 +189,7 @@ Mi Veris - Mis Datos
         args["endpoint"] = api_url + `/digitales/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion={{Session::get('userData')->codigoTipoIdentificacion}}&numeroIdentificacion={{Session::get('userData')->numeroIdentificacion}}`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         
         const data = await call(args);
         console.log('datosUsuario',data);
@@ -241,7 +243,7 @@ Mi Veris - Mis Datos
         args["endpoint"] = api_url + "/digitales/v1/perfil"
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "PUT";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         args["bodyType"] = "json";
 
         args["data"] = JSON.stringify({

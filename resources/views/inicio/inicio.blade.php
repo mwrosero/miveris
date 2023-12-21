@@ -149,7 +149,6 @@ Mi Veris - Inicio
 <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
    
 
-<script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
     
 <script>
 
@@ -206,7 +205,7 @@ Mi Veris - Inicio
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}";
         args["method"] = "POST";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         args["bodyType"] = "json";
 
         args["data"] = JSON.stringify({
@@ -236,7 +235,7 @@ Mi Veris - Inicio
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${canalOrigen}`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
         console.log('INITR',data.data.items);
@@ -264,7 +263,7 @@ Mi Veris - Inicio
 
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
         console.log('citas',data);
@@ -291,7 +290,7 @@ Mi Veris - Inicio
 
         args["endpoint"] = api_url + `/digitales/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         if (data.code == 200) {
            console.log('exito',data.data.length);

@@ -10,6 +10,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
     
+    
    
         
     <title>@yield('title')</title>
@@ -64,6 +65,7 @@
 
 <body>
     <!-- Layout wrapper -->
+    
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
