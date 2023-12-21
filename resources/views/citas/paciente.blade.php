@@ -170,32 +170,33 @@ $data = json_decode(base64_decode($params));
                             </div>
                         </div>
                     </div> `;
-        familiar.forEach((pacientes) => {
-            // console.log('pacientes', pacientes);
-            let backgroundClass = pacientes.genero === "F" ? "bg-strong-magenta" : (pacientes.genero === "M" ? "bg-soft-blue" : "bg-soft-green");
+        if(familiar != null){
+            familiar.forEach((pacientes) => {
+                // console.log('pacientes', pacientes);
+                let backgroundClass = pacientes.genero === "F" ? "bg-strong-magenta" : (pacientes.genero === "M" ? "bg-soft-blue" : "bg-soft-green");
 
-            elemento += `<div class="col-6 col-md-3 mb-3">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        
-                                        <div data-bs-toggle="modal" data-bs-target="#convenioModal" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
-                                           <div class="d-flex justify-content-center align-items-center mb-2">
-                                                <div class="avatar me-2">
-                                                    <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
+                elemento += `<div class="col-6 col-md-3 mb-3">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            
+                                            <div data-bs-toggle="modal" data-bs-target="#convenioModal" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
+                                               <div class="d-flex justify-content-center align-items-center mb-2">
+                                                    <div class="avatar me-2">
+                                                        <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
+                                                    </div>
                                                 </div>
+                                                <p class="text-veris fw-bold fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
+                                                <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
                                             </div>
-                                            <p class="text-veris fw-bold fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
-                                            <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
                                         </div>
                                     </div>
-                                </div>
-                            </div> `;
+                                </div> `;
 
-        } );
+            });
+        }
 
         listaPacientes.append(elemento);
-
-
+        console.log(elemento)
     }
 
    
