@@ -405,7 +405,7 @@ Mi Veris - Citas - Terapia física
 
                         if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                             if (datosServicio.habilitaBotonAgendar == 'S') {
-                                respuestaAgenda += `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
                             } else {
                                 respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
 
