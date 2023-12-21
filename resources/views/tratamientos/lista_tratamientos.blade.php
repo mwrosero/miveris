@@ -340,7 +340,7 @@ Mi Veris - Citas - tratamiento
             }
 
             return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
-                    <a href="{{route('citas.listaCentralMedica')}}" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
+                    <a href="#" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
         }
     }
 
@@ -374,7 +374,7 @@ Mi Veris - Citas - tratamiento
 
                         if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                             if (datosServicio.habilitaBotonAgendar == 'S') {
-                                respuestaAgenda += `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
                             } else {
                                 respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
 
