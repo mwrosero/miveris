@@ -98,7 +98,7 @@ Mi Veris - Citas - Mis tratamientos
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
 
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
         console.log(data.data.items);
@@ -129,7 +129,7 @@ Mi Veris - Citas - Mis tratamientos
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){

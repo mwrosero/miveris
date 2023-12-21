@@ -165,7 +165,7 @@ Mi Veris - Citas - Familia y amigos
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/seguridad/tiposIdentificacion";
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         const data = await call(args);
         if (data.code == 200) {
@@ -192,7 +192,7 @@ Mi Veris - Citas - Familia y amigos
         let args = [];
         args["endpoint"] = api_url + `/digitales/v1/perfil/personas?canalOrigen=${canal}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('consultqar persona', data);
         if (data.code == 200) {
@@ -229,7 +229,7 @@ Mi Veris - Citas - Familia y amigos
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/perfil/tiposparentesco";
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         const data = await call(args);
         console.log('consultarTipoParentesco', data);
@@ -253,7 +253,7 @@ Mi Veris - Citas - Familia y amigos
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/perfil/migrupo";
         args["method"] = "POST";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         args["bodyType"] = "json";
         
         args["data"] = JSON.stringify({

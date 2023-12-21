@@ -221,7 +221,7 @@ Mi Veris - Citas - Terapia física
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
                                                         </div>
-                                                        <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
+                                                        ${determinarFechasCaducadas(detalles)}
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
@@ -344,7 +344,7 @@ Mi Veris - Citas - Terapia física
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
@@ -370,7 +370,25 @@ Mi Veris - Citas - Terapia física
         }
     }
 
-    
+    // determinar fechas caducadas
+    function determinarFechasCaducadas(datos){
+
+        
+        // si es receta medica no mostrar fechas
+        console.log('datos: ', datos.tipoServicio);
+        if (datos.tipoServicio == "FARMACIA") {
+            return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a> `;
+        } else{
+            if (datos.esCaducado == "S") {
+                return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            } else {
+                return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            }
+
+        }
+
+
+    }
 
     // determinar condiciones de botones
     function determinarCondicionesBotones(datosServicio){

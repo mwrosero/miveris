@@ -102,7 +102,7 @@ Mi Veris - Historia clínica
         args["endpoint"] = api_url + `/digitales/v1/hc/especialidadesAtendidas?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&tipoIdentificacion=${codigoTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataES', data);
         let html = $('#especialidadesAtendidas');
@@ -134,8 +134,7 @@ Mi Veris - Historia clínica
                     data.data.forEach((especialidades) => {
                         element += `<a href="/lista-doctores/${especialidades.codigoEspecialidad}/${codigoTipoIdentificacion}/${numeroIdentificacion}"
                         " class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
-                                        <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0">
-                                        
+                                        <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0" onerror="this.src='{{ asset('assets/img/svg/doctor_light.svg') }}'">
                                         <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
                                             <div>
                                                 <h6 class="mb-0">${capitalizarElemento(especialidades.nombre)}</h6>
@@ -163,7 +162,7 @@ Mi Veris - Historia clínica
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
          args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
          args["method"] = "GET";
-         args["showLoader"] = false;
+         args["showLoader"] = true;
          const data = await call(args);
          if(data.code == 200){
              familiar = data.data;

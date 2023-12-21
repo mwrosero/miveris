@@ -34,7 +34,7 @@ Mi Veris - Citas - tratamiento
                     <div class="card-header rounded-0 position-relative" style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
                         <div class="content-text text-white lh-1">
                             <p class="mb-0">Veris te regala un</p>
-                            <h4 class="text-white mb-0">XX% de descuento</h4>
+                            <h4 class="text-white mb-0" id="content-descuento">XX% de descuento</h4>
                             <p class="mb-0">por pagar en app</p>
                         </div>
                         <div class="promo-img position-absolute">
@@ -56,23 +56,7 @@ Mi Veris - Citas - tratamiento
                         </div>
                         <ul class="list-group gap-2 bg-white rounded-0" id="listaServicios">
                             <!-- items -->
-                            <li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
-                                <div class="w-auto">
-                                    <p class="text-veris mb-0">Cita médica traumatología</p>
-                                    <div class="d-flex align-items-center">
-                                        <p class="text-primary fw-bold fs--2 mb-0" id="precioTotal">
-                                            <del class="text-danger fw-normal" id="precioBase">$50.00</del> 
-                                            $45.00
-                                        </p>
-                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal"><i class="bi bi-info-circle"></i> </button> 
-                                    </div>
-                                </div>
-                                <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
-                                    <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="1" />
-                                    <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
-                                </div>
-                            </li>
+                            
                             
                         </ul>
                         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -108,6 +92,8 @@ Mi Veris - Citas - tratamiento
 </div>
 @endsection
 @push('scripts')
+
+<script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
 <script>
 
 
@@ -115,45 +101,56 @@ Mi Veris - Citas - tratamiento
     
     document.addEventListener("DOMContentLoaded", async function () {
 
-        await valorizacionServicios(1);
+        await valorizacionServicios();
     });
 
 
     // funciones asyncronas
 
     // Obtener los servicios correspondiente a un tratamiento.
-    async function valorizacionServicios(_idTratamiento) {
-        let args = [];
-        canalOrigen = _canalOrigen
-        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
-        args["method"] = "GET";
-        args["showLoader"] = false;
+    async function valorizacionServicios() {
+        let args = {};
+        let idTratamiento = 2102945;
+        let canalOrigenDigital = 'APP_CMV';
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "codigoPreTransaccion": null,
+            "canalOrigenDigital": canalOrigenDigital,
+        });
+
         const data = await call(args);
-        console.log('dataFa', data);
+        console.log('dataservicio', data);
         if(data.code == 200){
             
+            // llenar el content descuento
+            let contentDescuento = $('#content-descuento');
+            contentDescuento.empty();
+            contentDescuento.append(`${data.data.porcentajeDescuentoPromocion}% de descuento`);
 
             let html = $('#listaServicios');
             html.empty();
             let precioTotal = 0;
             let elemento = '';
 
-            data.data.forEach((resultados) => {
+            data.data.serviciosIncluyeCompra.forEach((resultados) => {
                 elemento += `<li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
                                 <div class="w-auto">
-                                    <p class="text-veris mb-0">Cita médica traumatología</p>
+                                    <p class="text-veris mb-0">${resultados.descripcionServicio}</p>
                                     <div class="d-flex align-items-center">
                                         <p class="text-primary fw-bold fs--2 mb-0" id="precioTotal">
-                                            <del class="text-danger fw-normal" id="precioBase">$50.00</del> 
-                                            $45.00
+                                            <del class="text-danger fw-normal" id="precioBase">$${resultados.valorNormal}</del> 
+                                            $${resultados.valorPromocion}
                                         </p>
                                         <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal"><i class="bi bi-info-circle"></i> </button> 
                                     </div>
                                 </div>
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus">-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="1" value="1" />
+                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="0" max=${resultados.cantidadMaximaPermitida}
+                                    value="1" />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus">+</button>
                                 </div>
                             </li>`;
@@ -163,12 +160,19 @@ Mi Veris - Citas - tratamiento
             $('.btn-minus, .btn-plus').off('click').on('click', function() {
                 let input = $(this).closest('.input-group').find('input');
                 let currentValue = parseInt(input.val());
-                if ($(this).hasClass('btn-minus') && currentValue > 1) {
-                    input.val(currentValue - 1);
+                let maxValue = parseInt(input.attr('max'));
+
+                if ($(this).hasClass('btn-minus')) {
+                    if (currentValue > 0) { // Permitir que el valor disminuya hasta 0
+                        input.val(currentValue - 1);
+                    }
                 } else if ($(this).hasClass('btn-plus')) {
-                    input.val(currentValue + 1);
+                    if (currentValue < maxValue) { // No permitir que el valor exceda el máximo
+                        input.val(currentValue + 1);
+                    }
                 }
             });
+
 
         }
         return data;

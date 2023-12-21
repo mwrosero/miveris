@@ -19,11 +19,13 @@ Mi Veris - Resultados
     </div>
 
     <!-- filtro -->
+    <div class="tab-content bg-transparent" id="pills-tabContent">
+        @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
+        @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
     
+    </div>
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Resultados') }}</h5>
-    @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
-    @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
     <section class="p-3 pt-0 mb-3">
         
         <div class="row justify-content-center">
@@ -74,13 +76,47 @@ Mi Veris - Resultados
 @endsection
 @push('scripts')
 <!-- script -->
+<script>
+    let fechaDesdePicker = flatpickr("#fechaDesde", {
+        maxDate: new Date().fp_incr(0),
+        onChange: function(selectedDates, dateStr, instance) {
+            if (!document.getElementById('fechaHasta').disabled) {
+                fechaHastaPicker.set('minDate', dateStr);
+            } else {
+                document.getElementById('fechaHasta').disabled = false;
+                fechaHastaPicker = flatpickr("#fechaHasta", {
+                    minDate: dateStr,
+                    maxDate: new Date().fp_incr(0)
+                });
+            }
+        }
+    });
 
+    let fechaHastaPicker = flatpickr("#fechaHasta", {
+        maxDate: new Date().fp_incr(0),
+        minDate: new Date(), 
+        onChange: function(selectedDates, dateStr, instance) {
+        }
+    });
+
+    document.getElementById('fechaHasta').disabled = true;
+    // quitar el readonly
+
+    $("#fechaDesde").removeAttr("readonly");
+    $("#fechaHasta").removeAttr("readonly");
+    // no permitir autocomplete
+    $("#fechaDesde").attr("autocomplete", "off");
+    $("#fechaHasta").attr("autocomplete", "off");
+
+
+
+</script>
 
 <script>
    
 
     // variables globales
- 
+        
         let familiar = [];
         let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
  
@@ -95,6 +131,7 @@ Mi Veris - Resultados
              
                  
          });
+         inicializarDatePickers();
      });
  
      // funciones asyncronas
@@ -194,7 +231,7 @@ Mi Veris - Resultados
   
           args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
           args["method"] = "GET";
-          args["showLoader"] = false;
+          args["showLoader"] = true;
           const data = await call(args);
           console.log('datad', data);
   
@@ -253,7 +290,7 @@ Mi Veris - Resultados
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
          args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
          args["method"] = "GET";
-         args["showLoader"] = false;
+         args["showLoader"] = true;
          const data = await call(args);
          if(data.code == 200){
              familiar = data.data;
@@ -304,5 +341,7 @@ Mi Veris - Resultados
  
  
 </script>
+
+
 
 @endpush

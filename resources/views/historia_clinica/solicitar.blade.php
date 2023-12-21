@@ -33,11 +33,13 @@ Mi Veris - Historia clínica
                             <form class="row g-3">
                                 <div class="col-md-12">
                                     <label for="fechaDesde" class="form-label fw-bold">{{ __('Desde la fecha') }}</label>
-                                    <input type="text" class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
+                                    <input  
+                                    class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
                                 </div>
                                 <div class="col-md-12">
                                     <label for="fechaHasta" class="form-label fw-bold">{{ __('Hasta la fecha') }}</label>
-                                    <input type="text" class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaHasta" id="fechaHasta" required />
+                                    <input    
+                                    class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaHasta" id="fechaHasta" required />
                                 </div>
                                 <div class="col-md-12">
                                     <label for="motivo" class="form-label fw-bold">{{ __('Motivo de su consulta') }}</label>
@@ -69,6 +71,41 @@ Mi Veris - Historia clínica
 @push('scripts')
 <!-- script -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script>
+    let fechaDesdePicker = flatpickr("#fechaDesde", {
+        maxDate: new Date().fp_incr(0),
+        onChange: function(selectedDates, dateStr, instance) {
+            if (!document.getElementById('fechaHasta').disabled) {
+                fechaHastaPicker.set('minDate', dateStr);
+            } else {
+                document.getElementById('fechaHasta').disabled = false;
+                fechaHastaPicker = flatpickr("#fechaHasta", {
+                    minDate: dateStr,
+                    maxDate: new Date().fp_incr(0)
+                });
+            }
+        }
+    });
+
+    let fechaHastaPicker = flatpickr("#fechaHasta", {
+        maxDate: new Date().fp_incr(0),
+        minDate: new Date(), 
+        onChange: function(selectedDates, dateStr, instance) {
+        }
+    });
+
+    document.getElementById('fechaHasta').disabled = true;
+    // quitar el readonly
+
+    $("#fechaDesde").removeAttr("readonly");
+    $("#fechaHasta").removeAttr("readonly");
+    // no permitir autocomplete
+    $("#fechaDesde").attr("autocomplete", "off");
+    $("#fechaHasta").attr("autocomplete", "off");
+
+
+
+</script>
 
 <script>
 
@@ -164,10 +201,20 @@ Mi Veris - Historia clínica
             return;
         }
         // validar campos
+        // validar fechas vacias
+
+
+         
+
+
         if (!$("#fechaDesde").val() || !$("#fechaHasta").val() || !$("#motivo").val()) {
-            // mostrar la validacion required
+            // mostrar mensaje de error 
+            
             return;
+
         }
+
+        
         // Solicitar historia clínica para un paciente.
         await solicitarHistoriaClinica();
         

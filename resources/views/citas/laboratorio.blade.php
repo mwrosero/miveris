@@ -31,7 +31,7 @@ Mi Veris - Citas - Laboratorio
                     </div>
                     
                     <!-- Mensaje No tienes ordenes de laboratorio -->
-                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesProcedimientos">
+                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientos">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
@@ -65,13 +65,10 @@ Mi Veris - Citas - Laboratorio
                 <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
                     
                     <!-- Card header items -->
-                    <div id="mensajeNoTienesImagenesProcedimientosRealizados">
-                        
-
-                    </div>
+                    
 
                     <!-- Mensaje No tienes ordenes de laboratorio realizadas -->
-                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesProcedimientosRealizados">
+                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
@@ -156,7 +153,7 @@ Mi Veris - Citas - Laboratorio
             args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
         }
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
         console.log('datalabor', data);
@@ -340,7 +337,7 @@ Mi Veris - Citas - Laboratorio
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
@@ -363,6 +360,26 @@ Mi Veris - Citas - Laboratorio
         }else{
             return `<i class="fa-solid fa-circle me-2"></i>Por comprar`;
         }
+    }
+
+    // determinar fechas caducadas
+    function determinarFechasCaducadas(datos){
+
+        
+        // si es receta medica no mostrar fechas
+        console.log('datos: ', datos.tipoServicio);
+        if (datos.tipoServicio == "FARMACIA") {
+            return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a> `;
+        } else{
+            if (datos.esCaducado == "S") {
+                return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            } else {
+                return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            }
+
+        }
+
+
     }
 
     // determinar si es receta medica o no botones

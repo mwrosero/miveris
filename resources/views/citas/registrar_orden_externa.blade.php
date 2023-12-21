@@ -204,7 +204,7 @@ Mi Veris - Citas - Nueva orden externa
         let tipoIdentificacion = dataRel.tipoIdentificacion;
         args["endpoint"] = api_url + `/digitales/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataRel', data);
 
@@ -229,7 +229,7 @@ Mi Veris - Citas - Nueva orden externa
         let canalOrigen = _canalOrigen;
         args["endpoint"] = api_url + `/digitales/v1/pacientes/${numeroIdentificacion}?tipoIdentificacion=${tipoIdentificacion}&canalOrigen=${canalOrigen}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataRERER', data);
         if (data.code == 200) {
@@ -252,7 +252,7 @@ Mi Veris - Citas - Nueva orden externa
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/domicilio/laboratorio/solicitud";
         args["method"] = "POST";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         args["bodyType"] = "formdata";
 
         // recibir los datos de la imagen 
