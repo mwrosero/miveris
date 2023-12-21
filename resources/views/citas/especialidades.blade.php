@@ -444,7 +444,7 @@ Mi Veris - Citas - Elige la especialidad
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/agenda/ciudades?canalOrigen=${canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('ciudades', data);
         

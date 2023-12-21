@@ -105,7 +105,7 @@ Mi Veris - Citas - Familia y amigos
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('data', data);
         if(data.code == 200){
@@ -125,7 +125,7 @@ Mi Veris - Citas - Familia y amigos
         let idRelacion = $('#idRelacion').val();
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo/${idRelacion}`
         args["method"] = "DELETE";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         console.log('endpoint', args["endpoint"]);
         const data = await call(args);

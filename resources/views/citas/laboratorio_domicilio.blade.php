@@ -99,7 +99,7 @@ Mi Veris - Citas - Laboratorio a domicilio
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
@@ -122,7 +122,7 @@ Mi Veris - Citas - Laboratorio a domicilio
         canalOrigen = _canalOrigen
         args["endpoint"] = api_url + `/digitales/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataCiudades', data);
         if(data.code == 200){
@@ -141,7 +141,7 @@ Mi Veris - Citas - Laboratorio a domicilio
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/domicilio/laboratorio/solicitud";
         args["method"] = "POST";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         args["bodyType"] = "formdata";
         let paciente = [];
 

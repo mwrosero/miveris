@@ -102,7 +102,7 @@ Mi Veris - Historia clínica
         args["endpoint"] = api_url + `/digitales/v1/hc/especialidadesAtendidas?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&tipoIdentificacion=${codigoTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataES', data);
         let html = $('#especialidadesAtendidas');
@@ -162,7 +162,7 @@ Mi Veris - Historia clínica
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
          args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
          args["method"] = "GET";
-         args["showLoader"] = false;
+         args["showLoader"] = true;
          const data = await call(args);
          if(data.code == 200){
              familiar = data.data;

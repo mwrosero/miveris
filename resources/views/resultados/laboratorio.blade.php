@@ -190,7 +190,7 @@ Mi Veris - Resultados
   
           args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
           args["method"] = "GET";
-          args["showLoader"] = false;
+          args["showLoader"] = true;
           const data = await call(args);
           console.log('datad', data);
   
@@ -249,7 +249,7 @@ Mi Veris - Resultados
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
          args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
          args["method"] = "GET";
-         args["showLoader"] = false;
+         args["showLoader"] = true;
          const data = await call(args);
          if(data.code == 200){
              familiar = data.data;

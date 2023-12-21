@@ -140,7 +140,7 @@ Mi Veris - Citas - Mis citas
         // args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
         console.log('argsss', args["endpoint"]);
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         const data = await call(args);
         console.log('respuesta', data);
@@ -202,7 +202,7 @@ Mi Veris - Citas - Mis citas
 
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log('citasxd',args["endpoint"]);
         const data = await call(args);
         console.log('citas',data);
@@ -257,7 +257,7 @@ Mi Veris - Citas - Mis citas
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){

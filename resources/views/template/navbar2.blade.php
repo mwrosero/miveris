@@ -146,7 +146,7 @@
         console.log(codigoUsuario);
         args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         console.log(1,args["endpoint"]);
         const data = await call(args);
@@ -221,7 +221,7 @@
         args["endpoint"] = api_url + `/digitales/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
         
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(2,args["endpoint"]);
         
         const data = await call(args);
@@ -252,7 +252,7 @@
         console.log(codigoUsuario);
         args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log('no',args["endpoint"] );
         const data = await call(args);
         console.log('numero notificaciones',data);
@@ -352,7 +352,7 @@
         args["endpoint"] = api_url + `/digitales/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
         
         args["method"] = "PUT";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(2,args["endpoint"]);
         
         const data = await call(args);
