@@ -11,23 +11,27 @@ class CitasController extends Controller
         return view('citas.index');
     }
 
+    public function agendamiento(){
+        return view('citas.agendamiento');
+    }
+
     // Return view elegir paciente
-    public function listaPacientes() {
-        return view('citas.paciente');
+    public function listaPacientes($params) {
+        return view('citas.paciente')->with('params',$params);
     }
 
     // Return view elegir espcialidad
-    public function listaEspecialidades() {
-        return view('citas.especialidades');
+    public function listaEspecialidades($params) {
+        return view('citas.especialidades')->with('params',$params);
     }
 
     // Return view elegir central medica
-    public function listaCentralMedica() {
-        return view('citas.central_medica');
+    public function listaCentralMedica($params) {
+        return view('citas.central_medica')->with('params',$params);
     }
 
     // Return view elegir fecha y doctor
-    public function fechaDoctor() {
+    public function fechaDoctor($params) {
         return view('citas.fecha_doctor');
     }
     // Return view detalle de la cita
