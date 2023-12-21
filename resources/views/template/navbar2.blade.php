@@ -7,8 +7,8 @@
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- Logo veris -->
-        <a class="navbar-brand mx-auto" href="#">
-            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" class="ml-lg-10" alt="veris" width="84">
+        <a class="navbar-brand mx-auto" href="/">
+            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" alt="Bootstrap" width="84">
         </a>
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
@@ -17,7 +17,9 @@
                     <i class="fa-solid fa-bell">
                         
                     </i>
-                    <span class="badge bg-danger rounded-pill d-none d-lg-block" id="badgeNotificaciones"></span>
+                    <span class="badge  rounded-pill d-none d-lg-block" id="badgeNotificaciones">
+
+                    </span>
                     
                 </a>
                 
@@ -128,8 +130,9 @@
 
     document.addEventListener("DOMContentLoaded", async function () {
         
-        await cantidadNotificaciones();
+        // await cantidadNotificaciones();
         await getNotificaciones();
+        await numeroNotificaciones();
 
     } );
 
@@ -143,14 +146,17 @@
         console.log(codigoUsuario);
         args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         console.log(1,args["endpoint"]);
         const data = await call(args);
-
-        todasNotificaciones = data.data;    
-        console.log('notificaciones', data);
-        mostrarNotificaciones(pagina);
+        if (data.code == 200) {
+            todasNotificaciones = data.data;    
+            mostrarNotificaciones(pagina);
+        } else if (data.code != 200) {
+            console.log('error', data);
+        }
+        
         return data;
     }
 
@@ -215,7 +221,7 @@
         args["endpoint"] = api_url + `/digitales/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
         
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(2,args["endpoint"]);
         
         const data = await call(args);
@@ -236,7 +242,39 @@
     }
 
 
-    
+
+    // recibir numero de notificaciones
+    async function numeroNotificaciones(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
+
+        console.log(codigoUsuario);
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('no',args["endpoint"] );
+        const data = await call(args);
+        console.log('numero notificaciones',data);
+        if (data.code == 200 ){
+            if (data.data.cantidadNotificaciones > 0){
+                $('#numeroNotificaciones').removeClass('d-none');
+                $('#numeroNotificaciones').html(data.data.cantidadNotificaciones);
+                // agregar clase danger
+                $('#numeroNotificaciones').addClass('badge-danger');
+            } else {
+                console.log('no hay notificaciones dsd');
+                $('#numeroNotificaciones').addClass('d-none');
+                // clear numero notificaciones
+                $('#numeroNotificaciones').html('');
+
+            }
+            
+        
+        return data;
+        }
+    }
+
 
     // funciones js
     // salir de la sesion
@@ -314,7 +352,7 @@
         args["endpoint"] = api_url + `/digitales/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
         
         args["method"] = "PUT";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(2,args["endpoint"]);
         
         const data = await call(args);

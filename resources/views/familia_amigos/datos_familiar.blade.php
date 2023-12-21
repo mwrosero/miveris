@@ -107,7 +107,7 @@ Mi Veris - Citas - Familia y amigos
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/perfil/tiposparentesco";
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         const data = await call(args);
         console.log('consultarTipoParentesco', data);
@@ -125,7 +125,7 @@ Mi Veris - Citas - Familia y amigos
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/perfil/migrupo";
         args["method"] = "PUT";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
             "codigoParentesco": parseInt(getInput('tipoParentesco')),

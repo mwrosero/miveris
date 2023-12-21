@@ -16,8 +16,8 @@ Mi Veris - Órdenes externas
                     <p class="fs--1 mb-0">{{ __('¿Deseas el servicio a domicilio?') }}</p>
                 </div>
                 <div class="modal-footer justify-content-center px-3 pt-0 pb-3">
-                    <a href="{{route('citas.listaPacientes')}}" class="btn btn-primary-veris">{{ __('NO') }}</a>
-                    <a href="{{route('citas.listaPacientes')}}" class="btn btn-primary-veris">{{ __('SI') }}</a>
+                    <a href="/registrar-orden-externa/2/0923796304/8185/SALUD%20S.A-SALUD%20S.A-PLAN%20ELITE%205D%20COSTA" class="btn btn-primary-veris">{{ __('NO') }}</a>
+                    <a href="/registrar-orden-externa/2/0923796304/8185/SALUD%20S.A-SALUD%20S.A-PLAN%20ELITE%205D%20COSTA" class="btn btn-primary-veris">{{ __('SI') }}</a>
                 </div>
             </div>
         </div>
@@ -151,7 +151,7 @@ Mi Veris - Órdenes externas
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){

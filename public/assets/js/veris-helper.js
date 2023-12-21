@@ -2,8 +2,6 @@ const _canalOrigen = "MVE_CMV";
 const _plataforma = "WEB";
 const _version = "7.8.0";
 
-
-
 async function call(args){
     if(args.showLoader || args.showLoader == true){
         showLoader();
@@ -207,7 +205,6 @@ async function obtenerCiudades(codigoCiudades){
     args["showLoader"] = false;
 
     const data = await call(args);
-    console.log(data);
     if(data.code == 200){
         $('#ciudad').empty();
         $.each(data.data, function(key, value){
@@ -495,7 +492,27 @@ function mostrarListaPacientesFiltro(){
     });
 }
 
+function verificarImagen(urlImagen, callback) {
+    var img = new Image();
+        img.onload = function() {
+        // La imagen se cargó exitosamente
+        callback(true);
+    };
 
+    img.onerror = function() {
+        // Hubo un error al cargar la imagen
+        callback(false);
+    };
+    img.src = urlImagen;
+}
 
+// Ejemplo de uso
+var urlImagen = 'https://ejemplo.com/imagen.jpg';
 
-
+verificarImagen(urlImagen, function(existeImagen) {
+    if (existeImagen) {
+        console.log('La imagen existe y es accesible.');
+    } else {
+        console.log('La imagen no existe o no es accesible.');
+    }
+});

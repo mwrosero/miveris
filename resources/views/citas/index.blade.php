@@ -3,6 +3,10 @@
 Mi Veris - Citas
 @endsection
 @section('content')
+@php
+    $paramsPresencial = base64_encode(json_encode(["online" => "N"])); 
+    $paramsOnline = base64_encode(json_encode(["online" => "S"]));
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal modal-top fade" id="consultaMedicaModal" tabindex="-1" aria-labelledby="consultaMedicaModalLabel" aria-hidden="true">
@@ -17,7 +21,7 @@ Mi Veris - Citas
 
                         <div class="col-6 col-lg-6 mb-3">
                             <div class="card mb-3">
-                                <a href="{{route('citas.listaPacientes')}}">
+                                <a href="{{route('citas.listaPacientes',['params' => $paramsPresencial])}}">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-9 col-md-auto">
                                             <div class="card-body py-0 px-2">
@@ -34,7 +38,7 @@ Mi Veris - Citas
 
                         <div class="col-6 col-lg-6 mb-3">
                             <div class="card mb-3">
-                                <a href="{{route('citas.listaPacientes')}}">
+                                <a href="{{route('citas.listaPacientes',['params' => $paramsOnline])}}">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-9 col-md-auto">
                                             <div class="card-body py-0 px-2">
@@ -221,7 +225,7 @@ Mi Veris - Citas
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         const data = await call(args);
         console.log(data);

@@ -12,7 +12,7 @@ Mi Veris - Historia clínica
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Historia clínica') }}</h5>
     @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
-    @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
+    @include('components.offCanvaHC', ['context' => 'contextoLimpiarFiltros'])
             
     <section class="p-3 pt-0 mb-3">
         <div class="row justify-content-center">
@@ -102,7 +102,7 @@ Mi Veris - Historia clínica
         args["endpoint"] = api_url + `/digitales/v1/hc/especialidadesAtendidas?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&tipoIdentificacion=${codigoTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataES', data);
         let html = $('#especialidadesAtendidas');
@@ -132,9 +132,9 @@ Mi Veris - Historia clínica
                     let element = '';
 
                     data.data.forEach((especialidades) => {
-                        element += `<a href="{{route('historiaClinica.listaDoctores')}}" class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
-                                        <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0">
-                                        
+                        element += `<a href="/lista-doctores/${especialidades.codigoEspecialidad}/${codigoTipoIdentificacion}/${numeroIdentificacion}"
+                        " class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
+                                        <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0" onerror="this.src='{{ asset('assets/img/svg/doctor_light.svg') }}'">
                                         <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
                                             <div>
                                                 <h6 class="mb-0">${capitalizarElemento(especialidades.nombre)}</h6>
@@ -162,7 +162,7 @@ Mi Veris - Historia clínica
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
          args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
          args["method"] = "GET";
-         args["showLoader"] = false;
+         args["showLoader"] = true;
          const data = await call(args);
          if(data.code == 200){
              familiar = data.data;
@@ -216,6 +216,32 @@ Mi Veris - Historia clínica
         if (contexto === 'contextoAplicarFiltros') {
             await hcEspecialidadesAtendidas(pacienteSeleccionado, tipoIdentificacion, esAdmin);
             $('#filtroTratamientos').offcanvas('hide');
+        }
+    }
+
+    // limpiar filtros
+    
+    $('#btnLimpiarFiltros').on('click', function() {
+        const contexto = $(this).data('context');
+        limpiarFiltrosResultados(contexto, tipoServicio = 'LAB');
+        identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+        const elemento = document.getElementById('nombreFiltro');
+        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+
+    });
+
+
+    // limpiar filtros para resultados
+    async function limpiarFiltrosResultados(contexto, tipoServicio) {
+        if (contexto === 'contextoLimpiarFiltros') {
+            $('input[name="listGroupRadios"]').prop('checked', false);
+            $('input[name="listGroupRadios"]').first().prop('checked', true);
+            
+            let pacienteSeleccionado = "{{ Session::get('userData')->numeroIdentificacion }}";
+            let  tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+            await hcEspecialidadesAtendidas(pacienteSeleccionado, tipoIdentificacion, 'S');
+            $('#filtroTratamientos').offcanvas('hide');
+
         }
     }
 

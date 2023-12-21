@@ -14,7 +14,7 @@ Mi Veris - Inicio
                 <div class="modal-body px-2 pt-2">
                     <h5 class="text-center mb-4">¿Qué quieres agendar?</h5>
                     <div class="d-flex justify-content-around align-items-center mb-3">
-                        <a href="#" class="btn border py-0 px-2">
+                        <a href="/mis-tratamientos" class="btn border py-0 px-2">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
                                     <p class="text-start fs--2 fw-bold mb-0">Lo que envió <br> mi doctor</p>
@@ -24,7 +24,7 @@ Mi Veris - Inicio
                                 </div>
                             </div>
                         </a>
-                        <a href="#" class="btn border py-0 px-2">
+                        <a href="/citas" class="btn border py-0 px-2">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
                                     <p class="text-start fs--2 fw-bold mb-0">Una nueva <br> cita médica</p>
@@ -149,7 +149,7 @@ Mi Veris - Inicio
 <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
    
 
-
+    
 <script>
 
     //variables globales
@@ -205,7 +205,7 @@ Mi Veris - Inicio
         let args = [];
         args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}";
         args["method"] = "POST";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         args["bodyType"] = "json";
 
         args["data"] = JSON.stringify({
@@ -235,7 +235,7 @@ Mi Veris - Inicio
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${canalOrigen}`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
         console.log('INITR',data.data.items);
@@ -263,7 +263,7 @@ Mi Veris - Inicio
 
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
         console.log('citas',data);
@@ -290,7 +290,7 @@ Mi Veris - Inicio
 
         args["endpoint"] = api_url + `/digitales/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         if (data.code == 200) {
            console.log('exito',data.data.length);
@@ -403,61 +403,61 @@ Mi Veris - Inicio
     function mostrarCitasenDiv() {
         let data = datosCitas;
 
-        let divContenedor = $('#citasContainer');
-            divContenedor.empty(); // Limpia el contenido actual
+        let divContenedor = $('#contenedorCitas');
+        divContenedor.empty(); // Limpia el contenido actual
+        let elemento = '';
 
+        elemento += `<section class="bg-light-grayish-blue p-3 mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="fw-bold border-start-veris ps-3">Mis citas</h5>
+                            <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
+                        </div>
+                        <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">
+                            <div class="swiper swipertratamientos pt-3 pb-4 px-2 mx-n2">
+                                <div class="swiper-wrapper" id="contenedorTratamientoHome">`;
 
-            let elemento =+ `<section class="bg-light-grayish-blue bg-dark p-3 mb-3" id="citasContainer">
-        
-                                <div class="position-relative mb-3" id="contenedorCitasHomePrincipal">
-                                    <div class="swiper swiper-proximas-citas pt-3 pb-4 px-2 mx-n2">
-                                        <div class="swiper-wrapper">
-                                            <!-- Puedes agregar citas dinámicamente aquí desde JavaScript -->
-
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h5 class="fw-bold border-start-veris ps-3">Próximas citas</h5>
-                                                <a href="#!" class="fs--2">Ver todos</a>
-                                            </div>`;
+                                    
             
 
-            data.forEach((citas) => {
-                let elemento =+ `<div class="swiper-slide">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(citas.especialidad)}</h6>
-                                                <span class="fs--2 text-success fw-bold">${esPagada(citas.estaPagada)}</span>
-                                            </div>
-                                            <p class="fw-bold fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
-                                            <p class="fw-normal fs--2 mb-0">${citas.fecha} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
-                                            <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                                            <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
-                                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                                <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                            </div>
+        data.forEach((citas) => {
+            elemento += `<div class="swiper-slide">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(citas.especialidad)}</h6>
+                                            <span class="fs--2 text-success fw-bold">${esPagada(citas.estaPagada)}</span>
+                                        </div>
+                                        <p class="fw-bold fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
+                                        <p class="fw-normal fs--2 mb-0">${citas.fecha} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                                        <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
+                                            <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                                        
-                            <button type="button" class="mt-n4 btn btn-prev smooth-transition"></button>
-                            <button type="button" class="mt-n4 btn btn-next smooth-transition"></button>
                         </div>
-
-                    </div>
-                </section>`;
-
-            divContenedor.append(elemento);
+                    `;
         });
-    }
+
+        elemento += `</div>
+                <button type="button" class="mt-n4 btn btn-prev btn-transition"></button>
+                <button type="button" class="mt-n4 btn btn-next btn-transition"></button>
+            </div>
+        </div>
+        </section>`;
+
+        divContenedor.append(elemento);
+    
+    } 
+    
 
     // mostrar mensaje de no hay citas
     function mostrarNoExistenCitas() {
         let data = datosCitas;
 
-        let divContenedor = $('#citasContainer');
+        let divContenedor = $('#contenedorCitas');
             divContenedor.empty(); // Limpia el contenido actual
 
             let elemento = ``;
