@@ -13,7 +13,7 @@
                 
             </div>
             <div class="col-md-12 mb-3">
-                <label for="fechaDesde" class="form-label">{{ __('Elige el rango de fechas') }} *</label>
+                <label for="fechaDesde" class="fw-light h6">{{ __('Elige el rango de fechas') }} *</label>
                 <input type="text" class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
             </div>
             <div class="col-md-12 mb-5">
