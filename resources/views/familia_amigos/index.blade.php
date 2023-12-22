@@ -70,7 +70,7 @@ Mi Veris - Citas - Familia y amigos
                     </li>
                 </ul>
                 <div class="card bg-transparent shadow-none mb-4">
-                    <div class="card-body py-3">
+                    <div class="card-body py-3 px-0">
                         <form class="row g-3">
                             <div class="col-md-12">
                                 <label for="tipoIdentificacion" class="form-label fw-bold">{{ __('Tipo de identificación') }} *</label>
