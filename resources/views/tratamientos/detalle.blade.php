@@ -66,9 +66,14 @@ Mi Veris - Citas - tratamiento
                                         Servicios que no están incluidos en tu compra. 
                                     </button>
                                 </h2>
-                                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                                    <div class="accordion-body">Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                                <div>
+                                    <!-- items servicios no incluidos -->
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body" >Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
+                                    </div>
+
                                 </div>
+                                
                             </div>
                         </div>
                         <div class="d-flex justify-content-center align-items-center bg-white mb-3 py-2">
@@ -76,8 +81,8 @@ Mi Veris - Citas - tratamiento
                                 <img src="{{ asset('assets/img/svg/regalo_abierto.svg') }}" alt="" />
                             </div>
                             <div class="ms-4">
-                                <p class="text-danger fw-normal fs--2 mb-0" id="content-precioBase">Precio normal <del class="fw-bold" id="precioBase">$130.00</del></p>
-                                <h2 class="text-primary fw-bold mb-0" id="precioTotal">$35.00</h2>
+                                <p class="text-danger fw-normal fs--2 mb-0" id="content-precioBase">Precio normal <del class="fw-bold" id="precioBaseEnd"></del></p>
+                                <h2 class="text-primary fw-bold mb-0" id="precioTotalEnd"></h2>
                             </div>
                         </div>
                         <div class="p-3">
@@ -97,6 +102,9 @@ Mi Veris - Citas - tratamiento
 <script>
 
 
+
+    // variables globales
+    let datosValorizacion = [];
     // llamada al dom
     
     document.addEventListener("DOMContentLoaded", async function () {
@@ -107,7 +115,7 @@ Mi Veris - Citas - tratamiento
 
     // funciones asyncronas
 
-    // Obtener los servicios correspondiente a un tratamiento.
+    // Obtener la valorizacion de los servicios del tratamiento
     async function valorizacionServicios() {
         let args = {};
         let idTratamiento = 2102945;
@@ -123,7 +131,9 @@ Mi Veris - Citas - tratamiento
 
         const data = await call(args);
         console.log('dataservicio', data);
+
         if(data.code == 200){
+            datosValorizacion = data.data;
             
             // llenar el content descuento
             let contentDescuento = $('#content-descuento');
@@ -143,8 +153,10 @@ Mi Veris - Citas - tratamiento
                                         <p class="text-primary fw-bold fs--2 mb-0" id="precioTotal">
                                             <del class="text-danger fw-normal" id="precioBase">$${resultados.valorNormal}</del> 
                                             $${resultados.valorPromocion}
+                                            <input type="hidden" id="valorPromocionHidden" value="${resultados.valorPromocion}">
+                                            <input type="hidden" id="valorNormalHidden" value="${resultados.valorNormal}">
                                         </p>
-                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal"><i class="bi bi-info-circle"></i> </button> 
+                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal" data-rel='${JSON.stringify(resultados)}' ><i class="bi bi-info-circle"></i> </button> 
                                     </div>
                                 </div>
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
@@ -157,28 +169,154 @@ Mi Veris - Citas - tratamiento
             });
             html.append(elemento);
 
+            let serviciosNoIncluidos = $('#flush-collapseOne');
+            serviciosNoIncluidos.empty();
+            let elementoNoIncluido = '';
+
+
+            data.data.serviciosNoIncluyeCompra.forEach((resultados) => {
+                elementoNoIncluido += `<div class="accordion-body">${resultados.descripcionServicio}</div>`;
+                
+            });
+            
+            serviciosNoIncluidos.append(elementoNoIncluido);
+
+            // eventos de los precios
+
+            let precioBaseEnd = $('#precioBaseEnd');
+            let precioTotalEnd = $('#precioTotalEnd');
+            
+            precioBaseEnd.empty();
+            precioTotalEnd.empty();
+
+            precioBaseEnd.append(`$${data.data.valorNormal}`);
+            precioTotalEnd.append(`$${data.data.valorPromocion}`);
+
+
             $('.btn-minus, .btn-plus').off('click').on('click', function() {
                 let input = $(this).closest('.input-group').find('input');
                 let currentValue = parseInt(input.val());
                 let maxValue = parseInt(input.attr('max'));
 
+                let precioBaseElement = $(this).closest('li').find('#precioBase');
+                let precioPromocionElement = $(this).closest('li').find('#precioTotal');
+                let precioBaseHidden = $(this).closest('li').find('#valorNormalHidden');
+                let precioPromocionHidden = $(this).closest('li').find('#valorPromocionHidden');
+
                 if ($(this).hasClass('btn-minus')) {
-                    if (currentValue > 0) { // Permitir que el valor disminuya hasta 0
+                    if (currentValue > 0) {
                         input.val(currentValue - 1);
+                        console.log(precioPromocionHidden.val());
+                        console.log(precioBaseHidden.val());
+                        // Actualizar los valores al disminuir la cantidad
+                        updatePrices(precioBaseElement, precioPromocionElement, currentValue - 1, precioBaseHidden, precioPromocionHidden);
                     }
                 } else if ($(this).hasClass('btn-plus')) {
-                    if (currentValue < maxValue) { // No permitir que el valor exceda el máximo
+                    if (currentValue < maxValue) {
                         input.val(currentValue + 1);
+                        // Actualizar los valores al aumentar la cantidad
+                        updatePrices(precioBaseElement, precioPromocionElement, currentValue + 1, precioBaseHidden, precioPromocionHidden);
                     }
                 }
             });
 
+            function updatePrices(precioBaseElement, precioPromocionElement, newQuantity, precioBaseHidden, precioPromocionHidden) {
 
-        }
+                // obtener los valores de los inputs hidden
+                let valorPromocion = parseFloat(precioPromocionHidden.val());
+                let valorNormal = parseFloat(precioBaseHidden.val());
+
+                let valorPrecioBase = parseFloat(precioBaseElement.text().split('$')[1]);
+                let valorPrecioPromocion = parseFloat(precioPromocionElement.text().split('$')[1]);
+
+                console.log('valorPromocion', valorPromocion)
+                console.log('valorNormal', valorNormal)
+
+                let precioBaseCambia = valorPrecioBase * newQuantity;
+                let precioPromocionCambia = valorPrecioPromocion * newQuantity;
+
+                if (newQuantity > 1) {
+                    // restablecer los valores de los precios
+                    console.log('entro al caso 2')
+                    precioBaseCambia = valorNormal * newQuantity;
+                    precioPromocionCambia = valorPromocion * newQuantity;
+                }
+                else if (newQuantity == 0) {
+                    precioBaseCambia = 0;
+                    precioPromocionCambia = 0;
+                }
+                else if (newQuantity == 1) {
+                    // restablecer los valores de los precios
+                    console.log('entro al caso 1')
+                    precioBaseCambia = valorNormal;
+                    precioPromocionCambia = valorPromocion;
+                }
+
+                // Actualizar los valores del  preciobaseElement y precioPromocionElement
+                precioBaseElement.text(`$${precioBaseCambia.toFixed(2)}`);
+                precioPromocionElement.text(`$${precioPromocionCambia.toFixed(2)}`);
+                
+                // Actualizar el precio total
+
+                let precioTotal = 0;
+                let precioTotalElement = $('#precioTotalEnd');
+                precioTotalElement.empty();
+
+
+                 
+
+                $('#listaServicios li').each(function() {
+                    let precioPromocion = parseFloat($(this).find('#precioTotal').text().split('$')[1]);
+                    precioTotal += precioPromocion;
+                });
+
+                precioTotalElement.append(`$${precioTotal.toFixed(2)}`);
+
+            }
+        return data;
+    }
+    }
+
+    // actualizar la valorizacion de los servicios del tratamiento con un put
+
+    function actualizarValorizacionServicios() {
+        let args = {};
+        let idTratamiento = 2102945;
+        let canalOrigenDigital = 'APP_CMV';
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
+        args["method"] = "PUT";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "codigoPreTransaccion": null,
+            "canalOrigenDigital": canalOrigenDigital,
+        });
+
+        const data = call(args);
+        console.log('dataservicio', data);
         return data;
     }
 
+    // funciones js
 
+    // boton info
+    $('#informacionModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget) // Button that triggered the modal
+        let recipient = button.data('rel') // Extract info from data-* attributes
+       
+        let modal = $(this);
+        modal.find('.modal-body').empty();
+        modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">${recipient.descripcionServicio}</h1>
+                                            <p class="fs--1 fw-bold text-primary">Servicios incluidos en la compra</p>
+                                            <ul id="listaServicios"></ul>`);
+        let listaServicios = modal.find('#listaServicios');
+        recipient.detallePrestaciones.forEach((resultados) => {
+            resultados.grupoDetalles.forEach((resultados2) => {
+                listaServicios.append(`<li>${resultados2.nombrePrestacion}</li>`);
+            });
+        });
+
+    })
 
 
 </script>

@@ -14,7 +14,7 @@ Mi Veris - Inicio
                 <div class="modal-body px-2 pt-2">
                     <h5 class="text-center mb-4">¿Qué quieres agendar?</h5>
                     <div class="d-flex justify-content-around align-items-center mb-3">
-                        <a href="#" class="btn border py-0 px-2">
+                        <a href="/mis-tratamientos" class="btn border py-0 px-2">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
                                     <p class="text-start fs--2 fw-bold mb-0">Lo que envió <br> mi doctor</p>
@@ -24,7 +24,7 @@ Mi Veris - Inicio
                                 </div>
                             </div>
                         </a>
-                        <a href="#" class="btn border py-0 px-2">
+                        <a href="/citas" class="btn border py-0 px-2">
                             <div class="row justify-content-between align-items-center">
                                 <div class="col-auto">
                                     <p class="text-start fs--2 fw-bold mb-0">Una nueva <br> cita médica</p>
@@ -52,50 +52,50 @@ Mi Veris - Inicio
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="card">
-                            <div class="card-body py-0">
-                                <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal">
-                                    <div class="row justify-content-between align-items-center">
-                                        <div class="col-auto">
-                                            <h6 class="fw-bold mb-0">Agendar cita médica</h6>
-                                        </div>
-                                        <div class="col-auto border-0 border-start rounded-circle pt-3 ps-2 pe-0">
-                                            <img src="{{ asset('assets/img/svg/doctora.svg') }}" class="ms-2" alt="" width="55">
+                            <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal">
+                                <div class="row g-0 justify-content-between align-items-center">
+                                    <div class="col-9 col-md-auto">
+                                        <div class="card-body py-0 px-2">
+                                            <h6 class="fw-bold fs--1 mb-0">{{ __('Agendar cita médica') }}</h6>
                                         </div>
                                     </div>
-                                </a>
-                            </div>
+                                    <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center">
+                                        <img src="{{ asset('assets/img/svg/doctora.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="card">
-                            <div class="card-body py-0">
-                                <a href="{{route('home.promociones')}}">
-                                    <div class="row justify-content-between align-items-center">
-                                        <div class="col-auto">
-                                            <h6 class="fw-bold mb-0">Comprar promociones</h6>
-                                        </div>
-                                        <div class="col-auto border-0 border-start rounded-circle pt-3 px-2">
-                                            <img src="{{ asset('assets/img/svg/comprar.svg') }}" class="ms-2" alt="" width="55">
+                            <a href="{{route('home.promociones')}}">
+                                <div class="row g-0 justify-content-between align-items-center">
+                                    <div class="col-9 col-md-auto">
+                                        <div class="card-body py-0 px-2">
+                                            <h6 class="fw-bold fs--1 mb-0">{{ __('Comprar promociones') }}</h6>
                                         </div>
                                     </div>
-                                </a>
-                            </div>
+                                    <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center">
+                                        <img src="{{ asset('assets/img/svg/comprar.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                     <div class="swiper-slide">
                         <div class="card">
-                            <div class="card-body py-0">
-                                <a href="#">
-                                    <div class="row justify-content-between align-items-center">
-                                        <div class="col-auto">
-                                            <h6 class="fw-bold mb-0">Solicitar servicios <br> a domicilio</h6>
-                                        </div>
-                                        <div class="col-auto border-0 border-start rounded-circle pt-3 px-2">
-                                            <img src="{{ asset('assets/img/svg/motociclista.svg') }}" class="ms-2" alt="" width="55">
+                            <a href="#">
+                                <div class="row g-0 justify-content-between align-items-center">
+                                    <div class="col-9 col-md-auto">
+                                        <div class="card-body py-0 px-2">
+                                            <h6 class="fw-bold fs--1 mb-0">{{ __('Solicitar servicios') }} <br> {{ __('a domicilio') }}</h6>
                                         </div>
                                     </div>
-                                </a>
-                            </div>
+                                    <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center">
+                                        <img src="{{ asset('assets/img/svg/motociclista.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>

@@ -173,6 +173,11 @@ html:not([dir="rtl"]) .border-start-veris {
   background: #E9F7FF !important;
 }
 
+.swiper-acceso-rapidos {
+  width: 100%;
+  overflow: hidden !important;
+}
+
 .btn-prev::after,
 .swiper-button-prev::after {
   margin-right: .0625rem;

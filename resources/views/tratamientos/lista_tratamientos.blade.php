@@ -163,7 +163,7 @@ Mi Veris - Citas - tratamiento
             console.log('ultimoTratamiento: ', ultimoTratamiento.nombreEspecialidad);
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
-            let elemento = `<h5 class="card-title text-primary mb-0">9${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
+            let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
                                 <p class="fw-bold fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedicoAtencion)}</p>
                                 <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${ultimoTratamiento.fechaOrden}</b></p>
@@ -340,7 +340,7 @@ Mi Veris - Citas - tratamiento
             }
 
             return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
-                    <a href="{{route('citas.listaCentralMedica')}}" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
+                    <a href="#" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
         }
     }
 
@@ -374,7 +374,7 @@ Mi Veris - Citas - tratamiento
 
                         if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                             if (datosServicio.habilitaBotonAgendar == 'S') {
-                                respuestaAgenda += `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
                             } else {
                                 respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
 
