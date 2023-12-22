@@ -55,6 +55,23 @@ Mi Veris - Citas - tratamiento
         </div>
     </div>
 
+
+    <!-- Modal ver informacion -->
+    <div class="modal fade" id="informacionModal" tabindex="-1" aria-labelledby="informacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal" id = "mensajeInformacion"></p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <a href="tel:+59346009600" class="btn btn-primary-veris w-100"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                    <button type="button" class="btn text-primary-veris w-100" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Tratamiento') }}</h5>  
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0">
@@ -139,11 +156,11 @@ Mi Veris - Citas - tratamiento
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log(data);
+        console.log('sssisis',data);
         if(data.code == 200){
             datosTratamiento = data.data.pendientes;
             var ultimoTratamiento = datosTratamiento[datosTratamiento.length - 1];
-            console.log('ultimoTratamiento: ', ultimoTratamiento);
+            console.log('ultimoTratamiento: ', ultimoTratamiento.nombreEspecialidad);
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
             let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
@@ -259,11 +276,21 @@ Mi Veris - Citas - tratamiento
 
     // determinar fechas caducadas
     function determinarFechasCaducadas(datos){
-        if (datos.esCaducado == "S") {
-            return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-        } else {
-            return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+
+        // si es receta medica no mostrar fechas
+        console.log('datos: ', datos.tipoServicio);
+        if (datos.tipoServicio == "FARMACIA") {
+            return ``;
+        } else{
+            if (datos.esCaducado == "S") {
+                return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            } else {
+                return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            }
+
         }
+
+        
     }
 
     // determinar si es comprar o por comprar
@@ -313,7 +340,7 @@ Mi Veris - Citas - tratamiento
             }
 
             return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
-                    <a href="{{route('citas.listaCentralMedica')}}" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
+                    <a href="#" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
         }
     }
 
@@ -347,26 +374,34 @@ Mi Veris - Citas - tratamiento
 
                         if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                             if (datosServicio.habilitaBotonAgendar == 'S') {
-                                respuestaAgenda += `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
                             } else {
                                 respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
 
                             }
 
                         }else if (datosServicio.estado == 'ATENDIDO'){
-                            
+
+                            // mostrar boton de ver orden
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2"><i class="bi me-2"></i> Ver orden</a>`;
 
                         }else if (datosServicio.estado == 'AGENDADO'){
                             // mostrar boton de ver orden
-                            if (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
-                                
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Cambiar fecha</a>`;
-                            } else {
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver orden</a>`;
-                            }
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
 
+                            if (datosServicio.permitePago == 'S'){
+                                // mostrar boton de pagar
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                            } 
+                            if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                                
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            } 
                             
+                            if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                                // mostrar boton de informacion
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})"></i> Información</a>`;
+                            } 
                         }
 
                     }
@@ -393,8 +428,6 @@ Mi Veris - Citas - tratamiento
                         respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                     }
 
-                    
-
                     return respuesta;
 
                     break;
@@ -404,7 +437,8 @@ Mi Veris - Citas - tratamiento
                         return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                     }
                     else{
-                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Solicitar</a>`;
+                        // return boton ver receta
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver receta</a>`;
                     }
                     break;
                 case "ODONTOLOGIA" :
@@ -429,24 +463,24 @@ Mi Veris - Citas - tratamiento
         $('#mensajeVideoConsultaModal').modal('show');
     }
 
+    // mostrar informacion
+
+    function mostrarInformacion(mensaje){
+
+        if (mensaje == null) {
+            //abrir modal informacion
+            $('#informacionModal').modal('show');
+            document.getElementById("mensajeInformacion").innerHTML = "No hay información disponible";
+        } else{
+            //abrir modal informacion
+            $('#informacionModal').modal('show');
+            document.getElementById("mensajeInformacion").innerHTML = mensaje;
+        }
+
+    }
+
     
 
-    // determinar mensaje receta medica realizados  
-    function determinarRecetaMedicaRealizadosDetalle(servicio, fechaOrden, nombrePaciente, nombreMedicoAtencion, nombreSucursal){
-        console.log('entro a determinarbotonesRecetaMedicaRealizadosDetalle');
-        if(servicio != "RECETA MÉDICA"){
-            console.log('servicio: ', servicio);
-            console.log('fechaOrden: ', fechaOrden);
-            return `<p class="fw-light mb-2">Sucursal: <b class="fecha-cita fw-light text-primary me-2">${nombreSucursal}</b></p>
-                    <p class="fw-light mb-2"><b class="fecha-cita fw-light text-primary me-2">${fechaOrden}</b></p>
-                    <p class="fw-light mb-2">Dr(a): <b class="fecha-cita fw-light text-primary me-2">${nombreMedicoAtencion}</b></p>
-                    <p class="fw-light mb-2">Paciente: <b class="fecha-cita fw-light text-primary me-2">${nombrePaciente}</b></p>`;
-                    
-        }
-        else{
-            return ``;
-        }
-    }
 
     // determinar valores null 
     function determinarValoresNull(valor){
@@ -460,16 +494,16 @@ Mi Veris - Citas - tratamiento
 
     // formatear fecha
     function formatearFecha(fecha) {
-    const meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
-    
-    // Asumiendo que la fecha entra en formato "DD-MM-YYYY"
-    const partes = fecha.split('-');
-    const dia = partes[0];
-    const mes = meses[parseInt(partes[1], 10) - 1]; // Convertir a número y restar 1 porque los meses en JavaScript comienzan en 0
-    const año = partes[2];
+        const meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
+        
+        // Asumiendo que la fecha entra en formato "DD-MM-YYYY"
+        const partes = fecha.split('-');
+        const dia = partes[0];
+        const mes = meses[parseInt(partes[1], 10) - 1]; // Convertir a número y restar 1 porque los meses en JavaScript comienzan en 0
+        const año = partes[2];
 
-    return `${mes} ${dia}, ${año}`;
-}
+        return `${mes} ${dia}, ${año}`;
+    }
 
 
 </script>

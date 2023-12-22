@@ -9,6 +9,8 @@
     <!-- Libreria para  blockUI -->
     
     <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
+    
+    
    
         
     <title>@yield('title')</title>
@@ -63,6 +65,7 @@
 
 <body>
     <!-- Layout wrapper -->
+    
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
             <!-- Menu -->
@@ -330,18 +333,25 @@
     <script>
         // capializar la primera letra de cada palabra
         function capitalizarElemento(elemento) {
-            if (elemento == null) return "";
-            const texto = elemento.toLowerCase();
-            const palabras = texto.split(" ");
-            for (let i = 0; i < palabras.length; i++) {
-                const palabra = palabras[i];
-                const primeraLetra = palabra[0];
-                const primeraLetraMayuscula = primeraLetra.toUpperCase();
-                palabras[i] = palabra.replace(primeraLetra, primeraLetraMayuscula);
+            try {
+                if (elemento == null) return "";
+                const texto = elemento.toLowerCase();
+                const palabras = texto.split(" ");
+                for (let i = 0; i < palabras.length; i++) {
+                    const palabra = palabras[i];
+                    if (palabra.length === 0) continue;  // Añadido para evitar errores con palabras vacías
+                    const primeraLetra = palabra[0];
+                    const primeraLetraMayuscula = primeraLetra.toUpperCase();
+                    palabras[i] = palabra.replace(primeraLetra, primeraLetraMayuscula);
+                }
+                const textoCapitalizado = palabras.join(" ");
+                return textoCapitalizado;
+            } catch (error) {
+                // Retornar el elemento original en caso de error
+                return elemento;
             }
-            const textoCapitalizado = palabras.join(" ");
-            return textoCapitalizado;
         }
+
         // funcion quitar comillas a la url
         function quitarComillas(url){
             console.log('imagen',url);
@@ -356,7 +366,58 @@
             return valor;
         }
 
+        function determinarValoresNull(valor){
+            if (valor == null) return 0;
+            return valor;
+        }
+
+
+        function inicializarDatePickers() {
+            // Esta variable se declara aquí para poder ser accesible dentro del onChange de fechaDesdePicker
+            let fechaHastaPicker;
+
+            let fechaDesdePicker = flatpickr("#fechaDesde", {
+                maxDate: new Date().fp_incr(0),
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (!document.getElementById('fechaHasta').disabled) {
+                        fechaHastaPicker.set('minDate', dateStr);
+                    } else {
+                        document.getElementById('fechaHasta').disabled = false;
+                        fechaHastaPicker = flatpickr("#fechaHasta", {
+                            minDate: dateStr,
+                            maxDate: new Date().fp_incr(0)
+                        });
+                    }
+                }
+            });
+
+            fechaHastaPicker = flatpickr("#fechaHasta", {
+                maxDate: new Date().fp_incr(0),
+                minDate: new Date(),
+                onChange: function(selectedDates, dateStr, instance) {
+                    // Aquí puedes agregar lógica adicional si es necesario
+                }
+            });
+
+            // Inicialmente, deshabilitar el segundo datepicker
+            document.getElementById('fechaHasta').disabled = true;
+
+            // Quitar el atributo readonly de los campos
+            $("#fechaDesde").removeAttr("readonly");
+            $("#fechaHasta").removeAttr("readonly");
+
+            // Deshabilitar el autocompletado para estos campos
+            $("#fechaDesde").attr("autocomplete", "off");
+            $("#fechaHasta").attr("autocomplete", "off");
+        }
+
+
+
+        
+
     </script>
+
+    
     @stack('scripts')
 </body>
 

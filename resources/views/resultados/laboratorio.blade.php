@@ -77,10 +77,12 @@ Mi Veris - Resultados
 
     // variables globales
  
+        let familiar = [];
+        let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
  
      // llamada al dom 
      document.addEventListener("DOMContentLoaded", async function () {
-         await resultadosportipo();
+         await consultarResultadosPorTipo();
          await consultarGrupoFamiliar();
          const elemento = document.getElementById('nombreFiltro');
          elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
@@ -95,7 +97,7 @@ Mi Veris - Resultados
  
      // Consultar resultados de laboratorio
  
-     async function resultadosportipo() {
+     async function consultarResultadosPorTipo(numeroIdentificacion, tipoIdentificacion, desde='', hasta = '', tipoServicio , esAdmin = 'S') {
          let args = [];
          let canalOrigen = _canalOrigen;
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
@@ -104,52 +106,77 @@ Mi Veris - Resultados
          numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
  
                  
-         args["endpoint"] = api_url + `/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&tipoServicio=${tipoServicio}`;
+         args["endpoint"] = api_url + `/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
+         
          args["method"] = "GET";
-         args["showLoader"] = false;
+         args["showLoader"] = true;
          console.log(7,args["endpoint"]);
          const data = await call(args);
          console.log('data7', data.data.items);
  
+         let html = $("#resultadosIP");
+         html.empty();
          if (data.code == 200){
-             if (data.data.items.length > 0){
-                 $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
-                 let html = $("#resultadosIP");
-                 html.empty();
-                 let items = data.data.items;
-                 let elemento = "";
- 
-                 items.forEach((resultados) => {
- 
-                     elemento += `<div class="col-12 col-md-6">
-                                     <div class="card h-100">
-                                         <div class="card-body p-3">
-                                             <h6 class="text-primary-veris fw-bold fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
-                                             <p class="text-primary-veris fw-bold fs--2 mb-1" id="nombreResultadoLab">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
-                                             <p class="fw-bold fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
-                                             <p class="fw-normal fs--2 mb-1">Realizado: <b class="fw-normal" id="fecha">${resultados.dia}</b></p>
-                                             <div class="d-flex justify-content-between align-items-center mt-3">
-                                                 <div class="avatar me-2">
-                                                     <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
-                                                    
-                                                         
-                                                 </div>
-                                                 <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}')"
-                                                 type="button"  class="btn btn-sm btn-primary-veris verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
-                                                     Ver resultados
-                                                 </button>
-                                             </div>
-                                         </div>
-                                     </div>
-                                 </div>`;
-                 });
-                 html.append(elemento);
- 
-             } else {
-                 $("#mensajeNoTienesResultadosRealizados").removeClass("d-none");
-             }
- 
-         }
+            if (data.data.items.length == 0){
+                 if (esAdmin == 'S'){
+                     $("#mensajeNoTienesResultadosRealizados").removeClass("d-none");
+                    $("#mensajeNoTienesPermisosAdministradorRealizados").addClass("d-none");
+
+                 } else if (esAdmin == 'N'){
+                    $("#mensajeNoTienesPermisosAdministradorRealizados").removeClass("d-none");
+                    $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
+                     
+                 }
+            } 
+            else {
+                
+                $("#mensajeNoTienesPermisosAdministradorRealizados").addClass("d-none");
+                if (esAdmin == 'S'){
+                
+                    $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
+                    
+                    
+                    let items = data.data.items;
+                    let elemento = "";
+    
+                    items.forEach((resultados) => {
+    
+                        elemento += `<div class="col-12 col-md-6">
+                                        <div class="card h-100">
+                                            <div class="card-body p-3">
+                                                <h6 class="text-primary-veris fw-bold fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
+                                                <p class="text-primary-veris fw-bold fs--2 mb-1" id="nombreResultadoLab">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
+                                                <p class="fw-bold fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
+                                                <p class="fw-normal fs--2 mb-1">Realizado: <b class="fw-normal" id="fecha">${resultados.dia}</b></p>
+                                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                                    <div class="avatar me-2">
+                                                        <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
+                                                        
+                                                            
+                                                    </div>
+                                                    <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}')"
+                                                    type="button"  class="btn btn-sm btn-primary-veris verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
+                                                        Ver resultados
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                    });
+                    html.append(elemento);
+                    
+                } 
+                else if (esAdmin == 'N'){
+                    // mostrar mensaje de no tienes permisos de administrador
+                    $("#mensajeNoTienesPermisosAdministradorRealizados").removeClass("d-none");
+                }
+
+    
+                
+
+            }
+
+        }
          
      }
  
@@ -163,7 +190,7 @@ Mi Veris - Resultados
   
           args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
           args["method"] = "GET";
-          args["showLoader"] = false;
+          args["showLoader"] = true;
           const data = await call(args);
           console.log('datad', data);
   
@@ -220,9 +247,9 @@ Mi Veris - Resultados
          let args = [];
          canalOrigen = _canalOrigen
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
          args["method"] = "GET";
-         args["showLoader"] = false;
+         args["showLoader"] = true;
          const data = await call(args);
          if(data.code == 200){
              familiar = data.data;
@@ -231,43 +258,49 @@ Mi Veris - Resultados
          }
          return data;
      }
+
+     
+
  
  
      // funciones js 
  
-     // mostrar lista de pacientes
-     function mostrarListaPacientesFiltro(){
+     
+
+
+
+      // aplicar filtros
+    $('#aplicarFiltros').on('click', function() {
+
+        console.log('aplciar filtros');
+        const contexto = $(this).data('context');
+        console.log('contexto', contexto);
+        aplicarFiltrosResultados(contexto, tipoServicio = 'LAB');
+        let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+        console.log('texto', texto);
+        identificacionSeleccionada = texto.numeroPaciente;
+        const elemento = document.getElementById('nombreFiltro');
+        elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
+        
+    });
+
+    
+    // limpiar filtros
+    
+    $('#btnLimpiarFiltros').on('click', function() {
+        const contexto = $(this).data('context');
+        limpiarFiltrosResultados(contexto, tipoServicio = 'LAB');
+        identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+        const elemento = document.getElementById('nombreFiltro');
+        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+
+    });
+
+
+
  
-         let data = familiar;
- 
-         let divContenedor = $('.listaPacientesFiltro');
-         divContenedor.empty(); // Limpia el contenido actual
- 
-         let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" checked>
-                                 <span class="text-veris fw-bold">
-                                     ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
-                                     <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
-                                 </span>
-                             </label>`;
-         divContenedor.append(elementoYo);
- 
-         console.log('sss',data);
-         data.forEach((Pacientes) => {
-             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
-                                 <span class="text-veris fw-bold">
-                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
-                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
-                                 </span>
-                             </label>`;
-             divContenedor.append(elemento);
- 
-         });
-     }
  
  
- 
- </script>
+</script>
  
 @endpush

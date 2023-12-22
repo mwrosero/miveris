@@ -8,44 +8,7 @@ Mi Veris - Citas - Terapia física
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Filtro -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroTerapiaFisica" aria-labelledby="filtroTerapiaFisicaLabel">
-        <div class="offcanvas-header py-2">
-            <h5 class="offcanvas-title" id="filtroTerapiaFisicaLabel">Filtros</h5>
-            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atras</b></button>
-        </div>
-        <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
-            <form action="">
-                <h6 class="fw-light">Selecciona el paciente</h6>
-                <div class="list-group gap-2 mb-3">
-                    <label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                        <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="" checked>
-                        <span class="text-veris fw-bold">
-                            Mary Samaniego Loor
-                            <small class="fs--3 d-block fw-normal text-body-secondary">Madre</small>
-                        </span>
-                    </label>
-                    <label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                        <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios2" value="">
-                        <span class="text-veris fw-bold">
-                            John Donoso Salgado
-                            <small class="fs--3 d-block fw-normal text-body-secondary">Padre</small>
-                        </span>
-                    </label>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label for="fechaDesde" class="form-label">{{ __('Elige el rango de fechas') }} *</label>
-                    <input type="text" class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
-                </div>
-                <div class="col-md-12 mb-5">
-                    <input type="text" class="form-control bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
-                </div>
-                <div class="col-md-12 mb-3">
-                    <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0" type="submit">Aplicar filtros</button>
-                    <button class="btn text-primary w-100 mb-3 mx-0" type="submit"><i class="bi bi-trash me-2"></i> Limpiar filtros</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Terapia física') }}</h5>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -149,6 +112,7 @@ Mi Veris - Citas - Terapia física
 @push('scripts')
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
 
 <script>
@@ -257,14 +221,14 @@ Mi Veris - Citas - Terapia física
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
                                                         </div>
-                                                        <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
+                                                        ${determinarFechasCaducadas(detalles)}
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                                 
                                                             </div>
                                                             <div>
-                                                                ${determinarbotonesRecetaMedica(detalles)}  
+                                                                ${determinarCondicionesBotones(detalles)}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -349,7 +313,7 @@ Mi Veris - Citas - Terapia física
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                             </div>
                                                             <div>
-                                                                ${determinarbotonesRecetaMedica(detalles)}  
+                                                                ${determinarCondicionesBotones(detalles)}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -380,7 +344,7 @@ Mi Veris - Citas - Terapia física
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
@@ -396,52 +360,7 @@ Mi Veris - Citas - Terapia física
 
     // funciones js 
 
-    // determinarCondiciones
-    function determinarCondicionesBotones(data){
-
-        if (data.length == 0) {
-            return `<div></div>`;
-        } else {
-
-            switch (data.tipoCard){
-
-                case 'AGENDA' : {
-                    return `<div class="d-flex justify-content-between align-items-center mt-2">
-                                <div class="avatar me-2">
-                                    <img src="${quitarComillas(data.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
-                                </div>
-                                <div>
-                                    <a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1${data.esAgendable !== 'S' ? ' disabled' : ''}"> Agendar</a>
-                                </div>
-                            </div>`;
-                    
-                        
-                }
-
-                break;
-            }
-
-
-        }
-
-    }
-
-    // determinar condiciones de agenda
-
-    function determinarAgenda(data){
-        if(data.esAgendable == 'S'){
-            return `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>`;
-        }else{
-            return '';
-        }
-        if (data.estado == 'PENDIENTE_AGENDAR'){
-
-
-
-
-        }
-    }
-
+    
     // determinar si es comprar o por comprar
     function determinarEstado(estado){
         if(estado == "S"){
@@ -451,23 +370,121 @@ Mi Veris - Citas - Terapia física
         }
     }
 
-    // determinar si es receta medica o no botones
-    function determinarbotonesRecetaMedica(detalles) {
-        let botonVer = `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver ${detalles.tipoServicio === "LABORATORIO" ? "orden" : "receta"}</a>`;
-        let botonSolicitar;
+    // determinar fechas caducadas
+    function determinarFechasCaducadas(datos){
 
-        if(detalles.esPagada === "N"){
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi  me-2"></i> Pagar</a>`;
-            
-        }else  if (detalles.tipoServicio === "FARMACIA") {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1${detalles.aplicaSolicitud !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else if (detalles.tipoServicio === "LABORATORIO") {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else {
-            botonSolicitar = `<a href="{{route('citas.listaCentralMedica')}}" class="btn btn-sm btn-primary-veris fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"> Agendar</a>`;
+        
+        // si es receta medica no mostrar fechas
+        console.log('datos: ', datos.tipoServicio);
+        if (datos.tipoServicio == "FARMACIA") {
+            return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a> `;
+        } else{
+            if (datos.esCaducado == "S") {
+                return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            } else {
+                return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            }
+
         }
 
-        return botonVer + botonSolicitar;
+
+    }
+
+    // determinar condiciones de botones
+    function determinarCondicionesBotones(datosServicio){
+
+        if (datosServicio.length == 0) {
+            return `<div></div>`;
+        }
+        else{
+
+            switch (datosServicio.tipoCard) {
+                case "AGENDA" :
+                    let respuestaAgenda = "";
+                    if(datosServicio.esAgendable == "S"){
+
+                        if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
+                            if (datosServicio.habilitaBotonAgendar == 'S') {
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                            } else {
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+
+                            }
+
+                        }else if (datosServicio.estado == 'ATENDIDO'){
+
+                            // mostrar boton de ver orden
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2"><i class="bi me-2"></i> Ver orden</a>`;
+
+                        }else if (datosServicio.estado == 'AGENDADO'){
+                            // mostrar boton de ver orden
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
+
+                            if (datosServicio.permitePago == 'S'){
+                                // mostrar boton de pagar
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                            } 
+                            if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                                
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            } 
+                            
+                            if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                                // mostrar boton de informacion
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})"></i> Información</a>`;
+                            } 
+                        }
+
+                    }
+
+                    return respuestaAgenda;
+
+                    break;
+
+                case "LAB":
+                    let respuesta = "";
+
+                    // condición para 'verResultados'
+                    if (datosServicio.verResultados == "S") {
+                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2
+                        "><i class="bi me-2"></i> Ver resultados</a>`;
+                    } else {
+                        respuesta += ``;
+                    }
+
+                    //condición para 'aplicaSolicitud'
+                    if (datosServicio.aplicaSolicitud == "S") {
+                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    } else {
+                        respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    }
+
+                    return respuesta;
+
+                    break;
+
+                case "RECETAS" :
+                    if(datosServicio.aplicaSolicitud == "S"){
+                        return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    }
+                    else{
+                        // return boton ver receta
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver receta</a>`;
+                    }
+                    break;
+                case "ODONTOLOGIA" :
+                    if (datosServicio.esAgendable == "N") {
+                        return `<a class="btn btn-sm btn-primary-veris fw-normal fs--1" onclick="agendarCitaOdontologia()"><i class="bi me-2"></i> Agendar</a>`;
+                    
+                    } else {
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                    }
+
+                    break;
+
+            }
+
+        }
     }
 
     // mostrar lista de pacientes

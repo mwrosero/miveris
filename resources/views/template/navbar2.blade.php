@@ -7,16 +7,25 @@
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- Logo veris -->
-        <a class="navbar-brand mx-auto" href="#">
-            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" class="ml-lg-10" alt="veris" width="84">
+        <a class="navbar-brand mx-auto" href="/">
+            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" alt="Bootstrap" width="84">
         </a>
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
-                <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd">
-                    <i class="fa-solid fa-bell"></i>
+                <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
+                    <i class="fa-solid fa-bell">
+                        
+                    </i>
+                    <span class="badge  rounded-pill d-none d-lg-block" id="badgeNotificaciones">
+
+                    </span>
+                    
                 </a>
+                
             </li>
+
+            
             <!--/ Notification -->
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -120,8 +129,10 @@
     // llamada al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
+        
+        // await cantidadNotificaciones();
         await getNotificaciones();
-        await cantidadNotificaciones();
+        await numeroNotificaciones();
 
     } );
 
@@ -135,14 +146,17 @@
         console.log(codigoUsuario);
         args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
 
         console.log(1,args["endpoint"]);
         const data = await call(args);
-
-        todasNotificaciones = data.data;    
-        console.log('notificaciones', data);
-        mostrarNotificaciones(pagina);
+        if (data.code == 200) {
+            todasNotificaciones = data.data;    
+            mostrarNotificaciones(pagina);
+        } else if (data.code != 200) {
+            console.log('error', data);
+        }
+        
         return data;
     }
 
@@ -207,24 +221,60 @@
         args["endpoint"] = api_url + `/digitales/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
         
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(2,args["endpoint"]);
         
         const data = await call(args);
         console.log('cantidad notificaciones', data);
         if (data.code == 200) {
             let cantidadNotificaciones = data.data.cantidadNotificaciones;
+            console.log('iii',cantidadNotificaciones);
             if (cantidadNotificaciones > 0) {
                 $('#badgeNotificaciones').html(cantidadNotificaciones);
                 $('#badgeNotificaciones').removeClass('d-none');
             } else {
-                $('#badgeNotificaciones').addClass('d-none');
+                $('#badgeNotificaciones').html(cantidadNotificaciones);
+                
+                $('#badgeNotificaciones').removeClass('d-none');
+                // $('#badgeNotificaciones').addClass('d-none');
             }
         }
     }
 
 
-    
+
+    // recibir numero de notificaciones
+    async function numeroNotificaciones(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
+
+        console.log(codigoUsuario);
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('no',args["endpoint"] );
+        const data = await call(args);
+        console.log('numero notificaciones',data);
+        if (data.code == 200 ){
+            if (data.data.cantidadNotificaciones > 0){
+                $('#numeroNotificaciones').removeClass('d-none');
+                $('#numeroNotificaciones').html(data.data.cantidadNotificaciones);
+                // agregar clase danger
+                $('#numeroNotificaciones').addClass('badge-danger');
+            } else {
+                console.log('no hay notificaciones dsd');
+                $('#numeroNotificaciones').addClass('d-none');
+                // clear numero notificaciones
+                $('#numeroNotificaciones').html('');
+
+            }
+            
+        
+        return data;
+        }
+    }
+
 
     // funciones js
     // salir de la sesion
@@ -266,8 +316,51 @@
         }
         paginaActual = nuevaPagina; // Actualizar la variable paginaActual
         mostrarNotificaciones(paginaActual);
+        activarNotificacion();
     }
 
+    // cambiar estado de notificacion
+
+    $('#dropdownNotifications').click(function(){
+        // enviar el id de la notificacion de las notificaciones que estan en la pagina actual
+        console.log('activar notificacion ');
+        activarNotificacion();
+
+    });
+
+    // enviar codigo de notificacion 
+
+    function activarNotificacion(){
+        let notificacionesPaginaActual = todasNotificaciones.slice((paginaActual - 1) * notificacionesPorPagina, paginaActual * notificacionesPorPagina);
+        console.log('notificaciones pagina actual', notificacionesPaginaActual);
+        notificacionesPaginaActual.forEach(notificacion => {
+            if (notificacion.estado !== "LEIDO") {
+                cambiarEstadoNotificacion(notificacion.codigoNotificacion);
+            }
+        });
+    }
+
+
+
+    
+
+    // cambia estado de notificacion a leido
+
+    async function cambiarEstadoNotificacion(codigoNotificacion){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        args["endpoint"] = api_url + `/digitales/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
+        
+        args["method"] = "PUT";
+        args["showLoader"] = true;
+        console.log(2,args["endpoint"]);
+        
+        const data = await call(args);
+        console.log('cambiar estado notificacion', data);
+        if (data.code == 200) {
+            cantidadNotificaciones();
+        }
+    }
 
 
 </script>

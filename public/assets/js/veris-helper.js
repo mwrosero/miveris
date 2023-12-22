@@ -2,8 +2,6 @@ const _canalOrigen = "MVE_CMV";
 const _plataforma = "WEB";
 const _version = "7.8.0";
 
-
-
 async function call(args){
     if(args.showLoader || args.showLoader == true){
         showLoader();
@@ -207,7 +205,6 @@ async function obtenerCiudades(codigoCiudades){
     args["showLoader"] = false;
 
     const data = await call(args);
-    console.log(data);
     if(data.code == 200){
         $('#ciudad').empty();
         $.each(data.data, function(key, value){
@@ -409,12 +406,55 @@ async function limpiarFiltros(contexto) {
         $('input[name="listGroupRadios"]').first().prop('checked', true);
         $('#fechaDesde').val('');
         $('#fechaHasta').val('');
-        let estado = document.getElementById('pills-pendienes-tab').getAttribute('aria-selected');
+        let estado = document.getElementById('pills-pendientes-tab').getAttribute('aria-selected');
         if (estado === 'true') {
             await obtenerTratamientosId('', '', '', 'PENDIENTE');
+            $('#filtroTratamientos').offcanvas('hide');
         } else {
             await obtenerTratamientosId('', '', '', 'REALIZADO');
+            $('#filtroTratamientos').offcanvas('hide');
         }
+    }
+}
+
+// aplicar filtros para resultados
+async function aplicarFiltrosResultados(contexto, tipoServicio) {
+    
+    // capturar los datos de data-rel del input radio
+    let datos = $('input[name="listGroupRadios"]:checked').attr('data-rel');
+    datos = JSON.parse(datos);
+    
+    let pacienteSeleccionado = datos.tipoIdentificacion;
+    let tipoIdentificacion = datos.numeroIdentificacion;
+    let esAdmin = datos.esAdmin;
+    if (datos.parentesco === 'YO') {
+        esAdmin = 'S';
+    }
+
+    console.log('paciente',datos.tipoIdentificacion);
+    let fechaDesde = $('#fechaDesde').val() || '';
+    let fechaHasta = $('#fechaHasta').val() || '';
+
+    fechaDesde = formatearFecha(fechaDesde);
+    fechaHasta = formatearFecha(fechaHasta);
+
+    if (contexto === 'contextoAplicarFiltros') {
+        console.log('exito');
+        await consultarResultadosPorTipo(pacienteSeleccionado, tipoIdentificacion, fechaDesde, fechaHasta, tipoServicio, esAdmin);
+        $('#filtroTratamientos').offcanvas('hide');
+    }
+}
+
+// limpiar filtros para resultados
+async function limpiarFiltrosResultados(contexto, tipoServicio) {
+    if (contexto === 'contextoLimpiarFiltros') {
+        $('input[name="listGroupRadios"]').prop('checked', false);
+        $('input[name="listGroupRadios"]').first().prop('checked', true);
+        $('#fechaDesde').val('');
+        $('#fechaHasta').val('');
+        let pacienteSeleccionado = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let  tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+        await consultarResultadosPorTipo(pacienteSeleccionado, tipoIdentificacion, '', '', tipoServicio, 'S');
     }
 }
 
@@ -432,3 +472,47 @@ function formatearFecha(fecha) {
 
     return `${dia}/${mes}/${año}`;
 }
+
+
+// mostrar lista de pacientes
+function mostrarListaPacientesFiltro(){
+    let data = familiar;
+    let divContenedor = $('.listaPacientesFiltro');
+    divContenedor.empty();
+    data.forEach((Pacientes) => {
+        let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                            <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                            <span class="text-veris fw-bold">
+                                
+                                ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
+                                <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
+                            </span>
+                        </label>`;
+        divContenedor.append(elemento);
+    });
+}
+
+function verificarImagen(urlImagen, callback) {
+    var img = new Image();
+        img.onload = function() {
+        // La imagen se cargó exitosamente
+        callback(true);
+    };
+
+    img.onerror = function() {
+        // Hubo un error al cargar la imagen
+        callback(false);
+    };
+    img.src = urlImagen;
+}
+
+// Ejemplo de uso
+var urlImagen = 'https://ejemplo.com/imagen.jpg';
+
+verificarImagen(urlImagen, function(existeImagen) {
+    if (existeImagen) {
+        console.log('La imagen existe y es accesible.');
+    } else {
+        console.log('La imagen no existe o no es accesible.');
+    }
+});

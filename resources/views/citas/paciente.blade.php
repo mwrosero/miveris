@@ -1,8 +1,11 @@
 @extends('template.app-template-veris')
 @section('title')
-Mi Veris - Citas - Elegir paciente
+Elige Paciente
 @endsection
 @section('content')
+@php
+$data = json_decode(base64_decode($params));
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
@@ -14,21 +17,8 @@ Mi Veris - Citas - Elegir paciente
                 <div class="modal-body p-3 pt-4">
                     <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0">
-                            <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1" value="" checked>
-                            <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios1">
-                                Nombre del convenio
-                            </label>
-
-                            <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                            <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios2">
-                                Nombre del convenio
-                            </label>
-
-                            <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="">
-                            <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios3">
-                                Nombre del convenio
-                            </label>
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
+                            
                         </div>
                     </div>
                 </div>
@@ -55,35 +45,29 @@ Mi Veris - Citas - Elegir paciente
                     </div>
                 </div>
             </div>
-
-            
-            
-            
         </div>
     </section>
 </div>
 @endsection
 @push('scripts')
 <script>
-
-// variables globales
+    // variables globales
     let familiar = [];
 
-
-// llamada al dom 
+    // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarGrupoFamiliar();
     });
 
-// funciones asyncronas
+    // funciones asyncronas
     // consultar grupo familiar
     async function consultarGrupoFamiliar() {
         let args = [];
-        canalOrigen = _canalOrigen
-        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let canalOrigen = _canalOrigen
+        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
@@ -94,23 +78,87 @@ Mi Veris - Citas - Elegir paciente
         return data;
     }
 
-// funciones js
-    // mostrar lista de pacientes
+    // consultar lista de convenios
+    async function consultarConvenios(event) {
+        console.log('entro');
+        let listaConvenios = $('#listaConvenios');
+        listaConvenios.empty();
+        listaConvenios.append(`<div class="text-center p-2"><small>Nos estamos comunicando con tu aseguradora, el proceso puede tardar unos minutos</small></div>`);
 
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let dataRel = $(event.currentTarget).data('rel');
+        console.log('dataRel', dataRel);
+        
+        let codigoUsuario;
+        let tipoIdentificacion;
+
+        if(dataRel != ""){
+            codigoUsuario = dataRel.numeroIdentificacion;
+            tipoIdentificacion = dataRel.tipoIdentificacion;
+            let nombreCompleto = dataRel.primerNombre + ' ' + dataRel.primerApellido + ' ' + dataRel.segundoApellido;
+        }else{
+            codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+            tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
+            console.log(codigoUsuario,tipoIdentificacion)
+        }
+
+        args["endpoint"] = api_url + `/digitales/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        // llenar modal
+        if (data.code == 200){
+            let elemento = '';
+
+            if(data.data.length > 0){
+                listaConvenios.empty();
+                data.data.forEach((convenios) => {
+                    let params = @json($data);
+                    params.convenio = convenios;
+                    let ulrParams = btoa(JSON.stringify(params));
+                    elemento += `<a href="/citas-elegir-especialidad/${ulrParams}"
+                        class="stretched-link">
+                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
+                                        <label for="listGroupCheckableRadios2">
+                                            ${convenios.nombreConvenio}
+                                        </label> 
+                                    </div>
+                                </a>`;
+                });
+                
+            } else {
+                listaConvenios.empty();
+                elemento += `<div class="col-12">
+                                <div class=" fs--2 rounded-3 p-2">
+                                    {{ __('Ninguno') }}
+                                </div>
+                            </div> `;
+            }
+            
+            listaConvenios.append(elemento);    
+        }
+
+        return data;
+    }
+    
+    // mostrar lista de pacientes
     function mostrarListaPacientes(){
 
         let listaPacientes = $('#listaPacientes');
         let pacienteYo = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->segundoNombre }} {{ Session::get('userData')->primerApellido }}";
         
         let pacienteYoGenero = "{{ Session::get('userData')->sexo }}";
-        console.log('pacienteYoGenero', pacienteYoGenero);
+        // console.log('pacienteYoGenero', pacienteYoGenero);
 
         let backgroundClass = pacienteYoGenero === "F" ? "bg-strong-magenta" : (pacienteYoGenero === "M" ? "bg-soft-blue" : "bg-soft-green");
         let elemento = '';
         elemento += `<div class="col-6 col-md-3 mb-3">
                         <div class="card">
                             <div class="card-body text-center">
-                                <a href="{{route('citas.listaEspecialidades')}}">
+                                <a data-bs-toggle="modal" data-bs-target="#convenioModal" onclick="consultarConvenios(event)" data-rel="" >
                                     <div class="d-flex justify-content-center align-items-center mb-2">
                                         <div class="avatar me-2">
                                             <span class="avatar-initial rounded-circle ${backgroundClass}">${pacienteYo.charAt(0).toUpperCase()}</span>
@@ -122,31 +170,33 @@ Mi Veris - Citas - Elegir paciente
                             </div>
                         </div>
                     </div> `;
-        familiar.forEach((pacientes) => {
-            console.log('pacientes', pacientes.genero);
-            let backgroundClass = pacientes.genero === "F" ? "bg-strong-magenta" : (pacientes.genero === "M" ? "bg-soft-blue" : "bg-soft-green");
+        if(familiar != null){
+            familiar.forEach((pacientes) => {
+                // console.log('pacientes', pacientes);
+                let backgroundClass = pacientes.genero === "F" ? "bg-strong-magenta" : (pacientes.genero === "M" ? "bg-soft-blue" : "bg-soft-green");
 
-            elemento += `<div class="col-6 col-md-3 mb-3">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <a href="{{route('citas.listaEspecialidades')}}">
-                                            <div class="d-flex justify-content-center align-items-center mb-2">
-                                                <div class="avatar me-2">
-                                                    <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
+                elemento += `<div class="col-6 col-md-3 mb-3">
+                                    <div class="card">
+                                        <div class="card-body text-center">
+                                            
+                                            <div data-bs-toggle="modal" data-bs-target="#convenioModal" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
+                                               <div class="d-flex justify-content-center align-items-center mb-2">
+                                                    <div class="avatar me-2">
+                                                        <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
+                                                    </div>
                                                 </div>
+                                                <p class="text-veris fw-bold fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
+                                                <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
                                             </div>
-                                            <p class="text-veris fw-bold fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
-                                            <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
-                                        </a>
+                                        </div>
                                     </div>
-                                </div>
-                            </div> `;
+                                </div> `;
 
-        } );
+            });
+        }
 
         listaPacientes.append(elemento);
-
-
+        console.log(elemento)
     }
 
    

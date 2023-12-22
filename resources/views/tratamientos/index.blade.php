@@ -14,7 +14,7 @@ Mi Veris - Citas - Mis tratamientos
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-pendienes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
+                    <button class="nav-link active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
@@ -68,6 +68,7 @@ Mi Veris - Citas - Mis tratamientos
     // variables globales
     let datosTratamientos = [];
     let familiar = [];
+    let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
 
     // llamar al dom 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -79,6 +80,66 @@ Mi Veris - Citas - Mis tratamientos
         await consultarGrupoFamiliar();
         
     });
+
+
+    // funciones asynronas
+    // obtener tratamientos
+    
+    // obtener tratamiento por id
+    async function obtenerTratamientosId(id='', fechaDesde='', fechaHasta='', estadoTratamiento='PENDIENTE', esAdmin='S') {
+
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        if (id == '') {
+            id = {{ Session::get('userData')->numeroPaciente }};
+        }
+        let numeroPaciente = id;
+
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
+
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log(args["endpoint"]);
+        const data = await call(args);
+        console.log(data.data.items);
+        if(data.code == 200){
+            datosTratamientos = data.data.items;
+            
+            if (document.getElementById('pills-pendientes-tab').getAttribute('aria-selected') === 'true') {
+                if (estadoTratamiento == 'PENDIENTE') {
+                    mostrarTratamientoenDiv(esAdmin);
+                }
+            }
+                
+            else if (document.getElementById('pills-realizados-tab').getAttribute('aria-selected') === 'true') {
+                if (estadoTratamiento == 'REALIZADO') {
+                    mostrarTratamientoenDivRealizados(esAdmin);
+                }
+                
+            }
+        }
+        return data;
+    }
+
+
+    // consultar grupo familiar
+    async function consultarGrupoFamiliar() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log('dataFa', data);
+        if(data.code == 200){
+            familiar = data.data;
+            mostrarListaPacientesFiltro();
+
+        }
+        return data;
+    }
+
 
 
     // funciones js adicionales
@@ -199,8 +260,7 @@ Mi Veris - Citas - Mis tratamientos
         console.log('sss',data);
         data.forEach((Pacientes) => {
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}'
-                                    " value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
                                 <span class="text-veris fw-bold">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
@@ -303,9 +363,13 @@ Mi Veris - Citas - Mis tratamientos
         const contexto = $(this).data('context');
         aplicarFiltros(contexto);
 
+
         
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+
+        identificacionSeleccionada = texto.numeroPaciente;
+        
         // colocar el nombre del filtro
         const elemento = document.getElementById('nombreFiltro');
         if (texto == 'YO') {
@@ -313,9 +377,6 @@ Mi Veris - Citas - Mis tratamientos
         } else{
             elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
         }
-        
-        
-        
         
     });
 
@@ -325,6 +386,10 @@ Mi Veris - Citas - Mis tratamientos
     $('#btnLimpiarFiltros').on('click', function() {
         const contexto = $(this).data('context');
         limpiarFiltros(contexto);
+        identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+        const elemento = document.getElementById('nombreFiltro');
+        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+
     });
 
     
@@ -343,77 +408,19 @@ Mi Veris - Citas - Mis tratamientos
 
 
 
-    // funciones asynronas
-    // obtener tratamientos
     
-    // obtener tratamiento por id
-    async function obtenerTratamientosId(id='', fechaDesde='', fechaHasta='', estadoTratamiento='PENDIENTE', esAdmin='S') {
-
-       
-
-        let args = [];
-        let canalOrigen = _canalOrigen;
-        if (id == '') {
-            id = {{ Session::get('userData')->numeroPaciente }};
-        }
-        let numeroPaciente = id;
-
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
-        
-        args["method"] = "GET";
-        args["showLoader"] = false;
-        console.log(args["endpoint"]);
-        const data = await call(args);
-        console.log(data.data.items);
-        if(data.code == 200){
-            datosTratamientos = data.data.items;
-            
-            if (document.getElementById('pills-pendienes-tab').getAttribute('aria-selected') === 'true') {
-                if (estadoTratamiento == 'PENDIENTE') {
-                    mostrarTratamientoenDiv(esAdmin);
-                }
-            }
-                
-            else if (document.getElementById('pills-realizados-tab').getAttribute('aria-selected') === 'true') {
-                if (estadoTratamiento == 'REALIZADO') {
-                    mostrarTratamientoenDivRealizados(esAdmin);
-                }
-                
-            }
-        }
-        return data;
-    }
-    
-
-    // consultar grupo familiar
-    async function consultarGrupoFamiliar() {
-        let args = [];
-        canalOrigen = _canalOrigen
-        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
-        args["method"] = "GET";
-        args["showLoader"] = false;
-        const data = await call(args);
-        console.log('dataFa', data);
-        if(data.code == 200){
-            familiar = data.data;
-            mostrarListaPacientesFiltro();
-
-        }
-        return data;
-    }
-
 
     // boton tratamiento realizado
     $('#pills-realizados-tab').on('click', async function(){
-        console.log('realizados');
-        await obtenerTratamientosId('', '', '', 'REALIZADO');
+        const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
+        await obtenerTratamientosId(identificacionSeleccionada, '', '', 'REALIZADO', esAdmin);
     });
 
     // boton tratamiento pendientes
-    $('#pills-pendienes-tab').on('click', async function(){
-        console.log('pendientes');
-        await obtenerTratamientosId('', '', '', 'PENDIENTE');
+    $('#pills-pendientes-tab').on('click', async function(){
+        const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
+
+        await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
     });
 </script>
 @endpush

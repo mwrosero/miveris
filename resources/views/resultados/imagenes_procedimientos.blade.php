@@ -19,11 +19,13 @@ Mi Veris - Resultados
     </div>
 
     <!-- filtro -->
+    <div class="tab-content bg-transparent" id="pills-tabContent">
+        @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
+        @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
     
+    </div>
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Resultados') }}</h5>
-    @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
-    @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
     <section class="p-3 pt-0 mb-3">
         
         <div class="row justify-content-center">
@@ -74,204 +76,272 @@ Mi Veris - Resultados
 @endsection
 @push('scripts')
 <!-- script -->
-
-
 <script>
-   
-
-   // variables globales
-
-
-    // llamada al dom 
-    document.addEventListener("DOMContentLoaded", async function () {
-        await resultadosportipo();
-        await consultarGrupoFamiliar();
-        const elemento = document.getElementById('nombreFiltro');
-        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
-        $('body').on('click','.verResultados', async function () {
-            let idRelacion = $(this).attr('data-object');
-            console.log('idRelacion',idRelacion);
-                
-        });
+    let fechaDesdePicker = flatpickr("#fechaDesde", {
+        maxDate: new Date().fp_incr(0),
+        onChange: function(selectedDates, dateStr, instance) {
+            if (!document.getElementById('fechaHasta').disabled) {
+                fechaHastaPicker.set('minDate', dateStr);
+            } else {
+                document.getElementById('fechaHasta').disabled = false;
+                fechaHastaPicker = flatpickr("#fechaHasta", {
+                    minDate: dateStr,
+                    maxDate: new Date().fp_incr(0)
+                });
+            }
+        }
     });
 
-    // funciones asyncronas
-
-    // Consultar resultados de laboratorio
-
-    async function resultadosportipo() {
-        let args = [];
-        let canalOrigen = _canalOrigen;
-        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
-        tipoServicio = "IMG,PROC";
-        numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
-
-                
-        args["endpoint"] = api_url + `/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&tipoServicio=${tipoServicio}`;
-        args["method"] = "GET";
-        args["showLoader"] = false;
-        console.log(7,args["endpoint"]);
-        const data = await call(args);
-        console.log('data7', data.data.items);
-
-        if (data.code == 200){
-            if (data.data.items.length > 0){
-                $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
-                let html = $("#resultadosIP");
-                html.empty();
-                let items = data.data.items;
-                let elemento = "";
-
-                items.forEach((resultados) => {
-
-                    elemento += `<div class="col-12 col-md-6">
-                                    <div class="card h-100">
-                                        <div class="card-body p-3">
-                                            <h6 class="text-primary-veris fw-bold fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
-                                            <p class="text-primary-veris fw-bold fs--2 mb-1" id="nombreResultadoLab">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
-                                            <p class="fw-bold fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
-                                            <p class="fw-normal fs--2 mb-1">Realizado: <b class="fw-normal" id="fecha">${resultados.dia}</b></p>
-                                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <div class="avatar me-2">
-                                                    <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
-                                                   
-                                                        
-                                                </div>
-                                                <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}')"
-                                                type="button"  class="btn btn-sm btn-primary-veris verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
-                                                    Ver resultados
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`;
-                });
-                html.append(elemento);
-
-            } else {
-                $("#mensajeNoTienesResultadosRealizados").removeClass("d-none");
-            }
-
+    let fechaHastaPicker = flatpickr("#fechaHasta", {
+        maxDate: new Date().fp_incr(0),
+        minDate: new Date(), 
+        onChange: function(selectedDates, dateStr, instance) {
         }
-        
-    }
+    });
 
-    //  detalles de resultados de laboratorio
+    document.getElementById('fechaHasta').disabled = true;
+    // quitar el readonly
 
-    async function detallesResultadosLaboratorio(codigoApoyo){
-         let args = [];
-         canalOrigen = _canalOrigen
-         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
- 
-         args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
-         args["method"] = "GET";
-         args["showLoader"] = false;
-         const data = await call(args);
-         console.log('datad', data);
- 
-         // insertar datos en el modal
-         if (data.code == 200){
-            let items = data.data;
-            
-            if (items == null){
-                console.log('entro1');
-                let html = $("#modalBody");
-                html.empty();
-                
-                let elemento = "";
-                elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
-                elemento += `<div class="my-3">
-                                <p class="text-center fs-normal my-3">${capitalizarElemento(data.message)}</p>
-                            </div>`;
-                
-                html.append(elemento);  
-            } else {
-                console.log('entro2');
-
-                let html = $("#modalBody");
-                html.empty();
-                
-                let elemento = "";
-    
-                elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
-    
-                items.forEach((resultados) => {
-    
-                    elemento += `<div class="my-3">
-                                    <p class="text-center fs-normal my-3">${capitalizarElemento(resultados.nombrePrestacion)}</p>
-                                    <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
-                                </div>`;
-                            });
-    
-                elemento += `<div class="border-top">
-                                <a onclick="detallesResultadosLaboratorio('${codigoApoyo}')" href="${quitarComillas(data.data[0].urlVisorWeb)}"
-                                class="btn btn-primary-veris w-100 mt-3" target="_blank">Ver informe</a>
-                            </div>`;
-                html.append(elemento);
-    
-            }        
-     
-             
-         }
- 
-     }
-
-
-    // consultar grupo familiar
-    async function consultarGrupoFamiliar() {
-        let args = [];
-        canalOrigen = _canalOrigen
-        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
-        args["method"] = "GET";
-        args["showLoader"] = false;
-        const data = await call(args);
-        if(data.code == 200){
-            familiar = data.data;
-            mostrarListaPacientesFiltro();
-
-        }
-        return data;
-    }
-
-
-    // funciones js 
-
-    // mostrar lista de pacientes
-    function mostrarListaPacientesFiltro(){
-
-        let data = familiar;
-
-        let divContenedor = $('.listaPacientesFiltro');
-        divContenedor.empty(); // Limpia el contenido actual
-
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" checked>
-                                <span class="text-veris fw-bold">
-                                    ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
-                                    <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
-                                </span>
-                            </label>`;
-        divContenedor.append(elementoYo);
-
-        console.log('sss',data);
-        data.forEach((Pacientes) => {
-            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
-                                <span class="text-veris fw-bold">
-                                    ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
-                                    <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
-                                </span>
-                            </label>`;
-            divContenedor.append(elemento);
-
-        });
-    }
+    $("#fechaDesde").removeAttr("readonly");
+    $("#fechaHasta").removeAttr("readonly");
+    // no permitir autocomplete
+    $("#fechaDesde").attr("autocomplete", "off");
+    $("#fechaHasta").attr("autocomplete", "off");
 
 
 
 </script>
+
+<script>
+   
+
+    // variables globales
+        
+        let familiar = [];
+        let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+ 
+     // llamada al dom 
+     document.addEventListener("DOMContentLoaded", async function () {
+         await consultarResultadosPorTipo();
+         await consultarGrupoFamiliar();
+         const elemento = document.getElementById('nombreFiltro');
+         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
+         $('body').on('click','.verResultados', async function () {
+             let idRelacion = $(this).attr('data-object');
+             
+                 
+         });
+         inicializarDatePickers();
+     });
+ 
+     // funciones asyncronas
+ 
+     // Consultar resultados de laboratorio
+ 
+     async function consultarResultadosPorTipo(numeroIdentificacion, tipoIdentificacion, desde='', hasta = '', tipoServicio , esAdmin = 'S') {
+         let args = [];
+         let canalOrigen = _canalOrigen;
+         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+         tipoServicio = "IMG,PROC";
+         numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+ 
+                 
+         args["endpoint"] = api_url + `/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
+         
+         args["method"] = "GET";
+         args["showLoader"] = true;
+         console.log(7,args["endpoint"]);
+         const data = await call(args);
+         console.log('data7', data.data.items);
+ 
+         let html = $("#resultadosIP");
+         html.empty();
+         if (data.code == 200){
+            if (data.data.items.length == 0){
+                 if (esAdmin == 'S'){
+                     $("#mensajeNoTienesResultadosRealizados").removeClass("d-none");
+                    $("#mensajeNoTienesPermisosAdministradorRealizados").addClass("d-none");
+
+                 } else if (esAdmin == 'N'){
+                    $("#mensajeNoTienesPermisosAdministradorRealizados").removeClass("d-none");
+                    $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
+                     
+                 }
+            } 
+            else {
+                
+                $("#mensajeNoTienesPermisosAdministradorRealizados").addClass("d-none");
+                if (esAdmin == 'S'){
+                
+                    $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
+                    
+                    
+                    let items = data.data.items;
+                    let elemento = "";
+    
+                    items.forEach((resultados) => {
+    
+                        elemento += `<div class="col-12 col-md-6">
+                                        <div class="card h-100">
+                                            <div class="card-body p-3">
+                                                <h6 class="text-primary-veris fw-bold fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
+                                                <p class="text-primary-veris fw-bold fs--2 mb-1" id="nombreResultadoLab">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
+                                                <p class="fw-bold fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
+                                                <p class="fw-normal fs--2 mb-1">Realizado: <b class="fw-normal" id="fecha">${resultados.dia}</b></p>
+                                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                                    <div class="avatar me-2">
+                                                        <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
+                                                        
+                                                            
+                                                    </div>
+                                                    <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}')"
+                                                    type="button"  class="btn btn-sm btn-primary-veris verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
+                                                        Ver resultados
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                    });
+                    html.append(elemento);
+                    
+                } 
+                else if (esAdmin == 'N'){
+                    // mostrar mensaje de no tienes permisos de administrador
+                    $("#mensajeNoTienesPermisosAdministradorRealizados").removeClass("d-none");
+                }
+
+    
+                
+
+            }
+
+        }
+         
+     }
+ 
+     //  detalles de resultados de laboratorio
+ 
+     async function detallesResultadosLaboratorio(codigoApoyo){
+          let args = [];
+          canalOrigen = _canalOrigen
+          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+          tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+  
+          args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
+          args["method"] = "GET";
+          args["showLoader"] = true;
+          const data = await call(args);
+          console.log('datad', data);
+  
+          // insertar datos en el modal
+          if (data.code == 200){
+             let items = data.data;
+             
+             if (items == null){
+                 console.log('entro1');
+                 let html = $("#modalBody");
+                 html.empty();
+                 
+                 let elemento = "";
+                 elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
+                 elemento += `<div class="my-3">
+                                 <p class="text-center fs-normal my-3">${capitalizarElemento(data.message)}</p>
+                             </div>`;
+                 
+                 html.append(elemento);  
+             } else {
+                 console.log('entro2');
+ 
+                 let html = $("#modalBody");
+                 html.empty();
+                 
+                 let elemento = "";
+     
+                 elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
+     
+                 items.forEach((resultados) => {
+     
+                     elemento += `<div class="my-3">
+                                     <p class="text-center fs-normal my-3">${capitalizarElemento(resultados.nombrePrestacion)}</p>
+                                     <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
+                                 </div>`;
+                             });
+     
+                 elemento += `<div class="border-top">
+                                 <a onclick="detallesResultadosLaboratorio('${codigoApoyo}')" href="${quitarComillas(data.data[0].urlVisorWeb)}"
+                                 class="btn btn-primary-veris w-100 mt-3" target="_blank">Ver informe</a>
+                             </div>`;
+                 html.append(elemento);
+     
+             }        
+      
+              
+          }
+  
+      }
+ 
+ 
+     // consultar grupo familiar
+     async function consultarGrupoFamiliar() {
+         let args = [];
+         canalOrigen = _canalOrigen
+         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
+         args["method"] = "GET";
+         args["showLoader"] = true;
+         const data = await call(args);
+         if(data.code == 200){
+             familiar = data.data;
+             mostrarListaPacientesFiltro();
+ 
+         }
+         return data;
+     }
+
+     
+     // funciones js 
+ 
+     
+
+
+
+      // aplicar filtros
+    $('#aplicarFiltros').on('click', function() {
+
+        console.log('aplciar filtros');
+        const contexto = $(this).data('context');
+        console.log('contexto', contexto);
+        aplicarFiltrosResultados(contexto, tipoServicio = "IMG,PROC" );
+        let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+        console.log('texto', texto);
+        identificacionSeleccionada = texto.numeroPaciente;
+        const elemento = document.getElementById('nombreFiltro');
+        elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
+        
+        
+    });
+
+    
+    // limpiar filtros
+    
+    $('#btnLimpiarFiltros').on('click', function() {
+        const contexto = $(this).data('context');
+        limpiarFiltrosResultados(contexto, tipoServicio = "IMG,PROC" );
+        identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+        const elemento = document.getElementById('nombreFiltro');
+        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+
+    });
+
+
+
+ 
+ 
+ 
+</script>
+
+
 
 @endpush
