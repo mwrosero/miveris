@@ -25,6 +25,25 @@ Mi Veris - Citas - tratamiento
             </div>
         </div>
     </div>
+    <!-- Modal servicios no incluidos -->
+    <div class="modal fade" id="serviciosNoIncluidosModal" tabindex="-1" aria-labelledby="serviciosNoIncluidosModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">Informacion</h1>
+                    <p class="fs--1 fw-bold text-primary"id="descripcionServicio"></p>
+                    <ul>
+                        <li>Opciones...</li>
+                        <li>Opciones...</li>
+                        <li>Opciones...</li>
+                    </ul>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Tú tratamiento') }}</h5>
     <section class="pt-3 px-0 px-md-3 pb-0">
@@ -34,7 +53,7 @@ Mi Veris - Citas - tratamiento
                     <div class="card-header rounded-0 position-relative" style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
                         <div class="content-text text-white lh-1">
                             <p class="mb-0">Veris te regala un</p>
-                            <h4 class="text-white mb-0" id="content-descuento">XX% de descuento</h4>
+                            <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
                             <p class="mb-0">por pagar en app</p>
                         </div>
                         <div class="promo-img position-absolute">
@@ -86,9 +105,10 @@ Mi Veris - Citas - tratamiento
                             </div>
                         </div>
                         <div class="p-3">
-                            <a href="#" class="btn btn-primary-veris w-100 mb-3">Comprar</a>
+                            <button type="button" class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprar</button>
                             <a href="#" class="btn w-100 mb-3">Ahora no</a>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -105,6 +125,7 @@ Mi Veris - Citas - tratamiento
 
     // variables globales
     let datosValorizacion = [];
+    let codigoTratamiento = {{ $codigoTratamiento }};
     // llamada al dom
     
     document.addEventListener("DOMContentLoaded", async function () {
@@ -118,7 +139,7 @@ Mi Veris - Citas - tratamiento
     // Obtener la valorizacion de los servicios del tratamiento
     async function valorizacionServicios() {
         let args = {};
-        let idTratamiento = 2102945;
+        let idTratamiento = codigoTratamiento;
         let canalOrigenDigital = 'APP_CMV';
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
         args["method"] = "POST";
@@ -175,8 +196,13 @@ Mi Veris - Citas - tratamiento
 
 
             data.data.serviciosNoIncluyeCompra.forEach((resultados) => {
-                elementoNoIncluido += `<div class="accordion-body">${resultados.descripcionServicio}</div>`;
-                
+                elementoNoIncluido += `<div class="d-flex align-items-center justify-content-between">
+                                            <div class="accordion-body" style="flex-grow: 1;">${resultados.descripcionServicio}</div>
+                                            <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" style="color: ${resultados.colorInformacion};"
+                                                data-bs-toggle="modal" data-bs-target="#serviciosNoIncluidosModal" data-rel='${JSON.stringify(resultados)}'>
+                                                <i class="bi bi-info-circle"></i>
+                                            </button>
+                                        </div>`;
             });
             
             serviciosNoIncluidos.append(elementoNoIncluido);
@@ -218,6 +244,20 @@ Mi Veris - Citas - tratamiento
                         updatePrices(precioBaseElement, precioPromocionElement, currentValue + 1, precioBaseHidden, precioPromocionHidden);
                     }
                 }
+
+                 // Verificar si todos los contadores han llegado a cero y deshabilitar el botón
+                let allCountersZero = $('.input-group input').toArray().every(function(el) {
+                    return parseInt($(el).val()) === 0;
+                });
+
+                if (allCountersZero) {
+                    $('#btnComprar').prop('disabled', true);
+                } else {
+                    $('#btnComprar').prop('disabled', false);
+                }
+
+
+
             });
 
             function updatePrices(precioBaseElement, precioPromocionElement, newQuantity, precioBaseHidden, precioPromocionHidden) {
@@ -317,6 +357,38 @@ Mi Veris - Citas - tratamiento
         });
 
     })
+
+    // boton info servicios no incluidos
+    $('#serviciosNoIncluidosModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget) // Button that triggered the modal
+        let recipient = button.data('rel') // Extract info from data-* attributes
+       
+        let modal = $(this);
+        modal.find('.modal-body').empty();
+        modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">Informacion</h1>
+                                            <p class="fs--1 fw-bold text-primary">${recipient.detallePrestaciones[0].descripcionGrupoDetalle}</p>
+                                            <ul id="listaServicios"></ul>`);
+        let listaServicios = modal.find('#listaServicios');
+        recipient.detallePrestaciones.forEach((resultados) => {
+            resultados.grupoDetalles.forEach((resultados2) => {
+                listaServicios.append(`<li>${resultados2.nombrePrestacion}</li>`);
+            });
+        });
+
+    })
+
+
+    // boton comprar redireccionar a la pagina de pago
+    $('#btnComprar').on('click', function() {
+        window.location.href = "/citas-revisa-tus-datos";
+    })
+    
+    // boton cancelar redireccionar a la pagina de citas
+    $('#btnCancelar').on('click', function() {
+        window.location.href = "/citas";
+    })
+
+
 
 
 </script>

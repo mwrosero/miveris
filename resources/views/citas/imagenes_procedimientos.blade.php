@@ -220,14 +220,14 @@ Mi Veris - Citas - Imágenes y procedimientos
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
                                                         </div>
-                                                        <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${determinarValorNull(detalles.fechaCaducidad)}</b></p>
+                                                        ${determinarFechasCaducadas(detalles)}
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                                 
                                                             </div>
                                                             <div>
-                                                                ${determinarbotonesRecetaMedica(detalles)}  
+                                                                ${determinarCondicionesBotones(detalles)}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -341,7 +341,7 @@ Mi Veris - Citas - Imágenes y procedimientos
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -386,6 +386,131 @@ Mi Veris - Citas - Imágenes y procedimientos
 
         return botonVer + botonSolicitar;
     }
+
+
+    // determinar condiciones de botones
+    function determinarCondicionesBotones(datosServicio){
+
+        if (datosServicio.length == 0) {
+            return `<div></div>`;
+        }
+        else{
+
+            switch (datosServicio.tipoCard) {
+                case "AGENDA" :
+                    let respuestaAgenda = "";
+                    if(datosServicio.esAgendable == "S"){
+
+                        if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
+                            if (datosServicio.habilitaBotonAgendar == 'S') {
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                            } else {
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+
+                            }
+
+                        }else if (datosServicio.estado == 'ATENDIDO'){
+
+                            // mostrar boton de ver orden
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2"><i class="bi me-2"></i> Ver orden</a>`;
+
+                        }else if (datosServicio.estado == 'AGENDADO'){
+                            // mostrar boton de ver orden
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
+
+                            if (datosServicio.permitePago == 'S'){
+                                // mostrar boton de pagar
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                            } 
+                            if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                                
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            } 
+                            
+                            if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                                // mostrar boton de informacion
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})"></i> Información</a>`;
+                            } 
+                        }
+
+                    }
+                    else{
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                    }
+
+                    return respuestaAgenda;
+
+                    break;
+
+                case "LAB":
+                    let respuesta = "";
+
+                    // condición para 'verResultados'
+                    if (datosServicio.verResultados == "S") {
+                        respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2
+                        "><i class="bi me-2"></i> Ver resultados</a>`;
+                    } else {
+                        respuesta += ``;
+                    }
+
+                    //condición para 'aplicaSolicitud'
+                    if (datosServicio.aplicaSolicitud == "S") {
+                        respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    } else {
+                        respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    }
+
+                    return respuesta;
+
+                    break;
+
+                case "RECETAS" :
+                    if(datosServicio.aplicaSolicitud == "S"){
+                        return `<a href="/farmacia-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                }
+                    else{
+                        // return boton ver receta
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver receta</a>`;
+                    }
+                    break;
+                case "ODONTOLOGIA" :
+                    if (datosServicio.esAgendable == "N") {
+                        return `<a class="btn btn-sm btn-primary-veris fw-normal fs--1" onclick="agendarCitaOdontologia()"><i class="bi me-2"></i> Agendar</a>`;
+                    
+                    } else {
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                    }
+
+                    break;
+
+            }
+
+        }
+    }
+
+    // determinar fechas caducadas
+    function determinarFechasCaducadas(datos){
+
+        // si es receta medica no mostrar fechas
+        console.log('datos: ', datos.tipoServicio);
+        if (datos.tipoServicio == "FARMACIA") {
+            return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a> `;
+        } 
+        if (datos.tipoServicio == "IMAGENES" || datos.tipoServicio == "PROCEDIMIENTOS" || datos.tipoServicio == "INTERCONSULTA") {
+            return ``;
+        }
+        else{
+            if (datos.esCaducado == "S") {
+                return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            } else {
+                return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            }
+
+        }
+
+
+    }
+
 
     // mostrar lista de pacientes en el filtro
     function mostrarListaPacientesFiltro(){

@@ -64,7 +64,7 @@ $data = json_decode(base64_decode($params));
     async function consultarCiudadesEspecialidad() {
         let args = [];
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
         args["method"] = "GET";
         args["showLoader"] = false;
         const data = await call(args);
@@ -92,7 +92,7 @@ $data = json_decode(base64_decode($params));
         let ciudad = JSON.parse($('#ciudad option:selected').attr("data-rel"));
         
         let args = [];
-        args["endpoint"] = api_url + `/digitales/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=true`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=true`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

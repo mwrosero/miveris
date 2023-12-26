@@ -247,7 +247,7 @@ Mi Veris - Resultados
          let args = [];
          canalOrigen = _canalOrigen
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-         args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
+         args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
          args["method"] = "GET";
          args["showLoader"] = true;
          const data = await call(args);

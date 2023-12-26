@@ -163,7 +163,7 @@ Mi Veris - Citas - Familia y amigos
     // obtener los tipos de identificación
     async function tiposIdentificacion() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/seguridad/tiposIdentificacion";
+        args["endpoint"] = api_url + "/digitalestest/v1/seguridad/tiposIdentificacion";
         args["method"] = "GET";
         args["showLoader"] = true;
 
@@ -190,7 +190,7 @@ Mi Veris - Citas - Familia y amigos
         let datosParentezco = [];
         console.log('tipoIdentificacion', tipoIdentificacion);
         let args = [];
-        args["endpoint"] = api_url + `/digitales/v1/perfil/personas?canalOrigen=${canal}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/personas?canalOrigen=${canal}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -227,7 +227,7 @@ Mi Veris - Citas - Familia y amigos
 
     async function consultarTipoParentesco() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/perfil/tiposparentesco";
+        args["endpoint"] = api_url + "/digitalestest/v1/perfil/tiposparentesco";
         args["method"] = "GET";
         args["showLoader"] = true;
 
@@ -251,7 +251,7 @@ Mi Veris - Citas - Familia y amigos
 
     async function agregarPersona() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/perfil/migrupo";
+        args["endpoint"] = api_url + "/digitalestest/v1/perfil/migrupo";
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";

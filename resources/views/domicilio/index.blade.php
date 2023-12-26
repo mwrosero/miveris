@@ -124,7 +124,7 @@ Mi Veris - Citas - Servicios a domicilio
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -145,7 +145,7 @@ Mi Veris - Citas - Servicios a domicilio
     async function consultarCiudades() {
         let args = [];
         canalOrigen = _canalOrigen
-        args["endpoint"] = api_url + `/digitales/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -164,7 +164,7 @@ Mi Veris - Citas - Servicios a domicilio
     // guardar farmacia domicilio
     async function consultarFarmaciaDomicilio() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/domicilio/farmacia/solicitud";
+        args["endpoint"] = api_url + "/digitalestest/v1/domicilio/farmacia/solicitud";
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "POST";
         args["showLoader"] = true;
@@ -213,7 +213,7 @@ Mi Veris - Citas - Servicios a domicilio
     //Crea una nueva solicitud de orden de laboratorio a domicilio.
     async function crearSolicitudLaboratorioDomicilio() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/domicilio/laboratorio/solicitud";
+        args["endpoint"] = api_url + "/digitalestest/v1/domicilio/laboratorio/solicitud";
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "formdata";

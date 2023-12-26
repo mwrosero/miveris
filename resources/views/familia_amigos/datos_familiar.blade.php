@@ -105,7 +105,7 @@ Mi Veris - Citas - Familia y amigos
     // consular tipos de parentesco
     async function consultarTipoParentesco() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/perfil/tiposparentesco";
+        args["endpoint"] = api_url + "/digitalestest/v1/perfil/tiposparentesco";
         args["method"] = "GET";
         args["showLoader"] = true;
 
@@ -123,7 +123,7 @@ Mi Veris - Citas - Familia y amigos
 
     async function modificarDatosFamiliar(){
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/perfil/migrupo";
+        args["endpoint"] = api_url + "/digitalestest/v1/perfil/migrupo";
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";
