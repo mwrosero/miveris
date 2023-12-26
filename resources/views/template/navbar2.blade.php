@@ -211,7 +211,7 @@
         let args = [];
         let canalOrigen = _canalOrigen;
         let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
-        args["endpoint"] = api_url + `/digitales/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -342,7 +342,7 @@
     async function cambiarEstadoNotificacion(codigoNotificacion){
         let args = [];
         let canalOrigen = _canalOrigen;
-        args["endpoint"] = api_url + `/digitales/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
         
         args["method"] = "PUT";
         args["showLoader"] = true;

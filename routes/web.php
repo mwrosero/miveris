@@ -77,7 +77,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/ordenes-externas',[CitasController::class, 'ordenesExternas'])->name('citas.ordenesExternas')->withoutMiddleware(['guest']);
     Route::get('/registrar-orden-externa/{tipoIdentificacion}/{numeroIdentificacion}/{codigoConvenio}/{nombreConvenio}'
     ,[CitasController::class, 'registrarOrdenesExternas'])->name('citas.registrarOrdenesExternas')->withoutMiddleware(['guest']);
-    #Mis citas
+    #Mis citas 
     Route::get('/mis-citas', [CitasController::class, 'misCitas'])->name('citas.misCitas')->withoutMiddleware(['guest']);
 
     #Tratamientos
@@ -91,7 +91,8 @@ Route::group(['middleware' => ['loggedUser']], function () {
 
 
     // Route::get('/tratamientos/detalle/{codigoTratamiento}/{nombreEspecialidad}/{nombreMedico}/{nombrePaciente}/{nombreConvenio}/{fechaTratamiento}', [TratamientosController::class, 'detalleTratamiento'])->name(''tratamientos.lista');
-    Route::get('/tu-tratamiento', [TratamientosController::class, 'detalleTratamiento'])->name('tratamientos.detalle')->withoutMiddleware(['guest']);
+    Route::get('/tu-tratamiento/{codigoTratamiento}
+    ', [TratamientosController::class, 'detalleTratamiento'])->name('tratamientos.detalle')->withoutMiddleware(['guest']);
     Route::get('/farmacia-domicilio/{codigoTratamiento}', [TratamientosController::class, 'farmaciaDomicilio'])->name('tratamientos.farmaciaDomicilio')->withoutMiddleware((['guest']));
     
     #Resultados

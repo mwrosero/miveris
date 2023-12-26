@@ -23,8 +23,8 @@ class TratamientosController extends Controller
     }
 
     // Return view detalle de tratamiento
-    public function detalleTratamiento() {
-        return view('tratamientos.detalle');
+    public function detalleTratamiento($codigoTratamiento) {
+        return view('tratamientos.detalle', ['codigoTratamiento' => $codigoTratamiento]);
     }
 
     // Return view farmacia a domicilio

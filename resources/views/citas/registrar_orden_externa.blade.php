@@ -202,7 +202,7 @@ Mi Veris - Citas - Nueva orden externa
 
         let codigoUsuario = dataRel.numeroIdentificacion;
         let tipoIdentificacion = dataRel.tipoIdentificacion;
-        args["endpoint"] = api_url + `/digitales/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -227,7 +227,7 @@ Mi Veris - Citas - Nueva orden externa
     async function consultarDatosUsuario() {
         let args = [];
         let canalOrigen = _canalOrigen;
-        args["endpoint"] = api_url + `/digitales/v1/pacientes/${numeroIdentificacion}?tipoIdentificacion=${tipoIdentificacion}&canalOrigen=${canalOrigen}`
+        args["endpoint"] = api_url + `/digitalestest/v1/pacientes/${numeroIdentificacion}?tipoIdentificacion=${tipoIdentificacion}&canalOrigen=${canalOrigen}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -250,7 +250,7 @@ Mi Veris - Citas - Nueva orden externa
 
     async function crearSolicitudLaboratorioDomicilio() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/domicilio/laboratorio/solicitud";
+        args["endpoint"] = api_url + "/digitalestest/v1/domicilio/laboratorio/solicitud";
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "formdata";

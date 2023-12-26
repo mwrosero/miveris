@@ -91,18 +91,8 @@ Mi Veris - Citas - tratamiento
                         <a href="#" class="btn btn-sm btn-label-primary-veris px-3 mb-2">Ver PDF</a>
                     </div>
                 </div>  
-                <div class="card rounded-0 border-0">
-                    <div class="card-body p-3 position-relative px-lg-5"
-                        style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
-                        <h4 class="fw-bold text-white mb-0">Compra y gestiona</h4>
-                        <h6 class=" fw-light text-white mb-0">tu <b>tratamiento</b> sin <b>filas</b></h6>
-                        <div class="d-flex justify-content-end mt-3">
-                            <a href="{{route('tratamientos.detalle')}}" class="btn btn-sm btn-primary-veris px-4">Ver tratamiento</a>
-                        </div>
-                    </div>
-                    <div class="position-absolute end-7 bottom-40">
-                        <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="96" alt="carrito_promocion" />
-                    </div>
+                <div class="card rounded-0 border-0" id="cardPromocion">
+                    <!-- banner promocion -->
                 </div>
             </div>
         </div>
@@ -175,7 +165,12 @@ Mi Veris - Citas - tratamiento
 
             mostrarTratamientoenDiv();
             mostrarTratamientoenDivRealizados();
-            
+            if(data.data.aplicaPromocion == 'S'){
+                mostrarBannerPromocion(data.data);
+            }
+            else {
+                document.getElementById("cardPromocion").style.display = "none";
+            }
         }
         return data;
 
@@ -272,6 +267,27 @@ Mi Veris - Citas - tratamiento
         }
        
 
+    }
+
+    // mostrar banner de promocion
+    function mostrarBannerPromocion(datos){
+        let divContenedor = $('#cardPromocion');
+        divContenedor.empty(); // Limpia el contenido actual
+        let elemento = `<div class="card rounded-0 border-0">
+                            <div class="card-body p-3 position-relative px-lg-5"
+                                style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
+                                <h4 class="fw-bold text-white mb-0">Compra y gestiona</h4>
+                                <h6 class=" fw-light text-white mb-0">tu <b>tratamiento</b> sin <b>filas</b></h6>
+                                <div class="d-flex justify-content-end mt-3">
+                                    <a href="/tu-tratamiento/${codigoTratamiento}
+                                    " class="btn btn-sm btn-primary-veris px-4">Ver tratamiento</a>
+                                </div>
+                            </div>
+                            <div class="position-absolute end-7 bottom-40">
+                                <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="96" alt="carrito_promocion" />
+                            </div>
+                        </div>`;
+        divContenedor.append(elemento);
     }
 
     // determinar fechas caducadas
