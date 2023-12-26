@@ -72,7 +72,7 @@ $data = json_decode(base64_decode($params));
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/digitales/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}`
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

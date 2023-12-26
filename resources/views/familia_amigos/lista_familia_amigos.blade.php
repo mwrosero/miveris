@@ -103,7 +103,7 @@ Mi Veris - Citas - Familia y amigos
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -123,7 +123,7 @@ Mi Veris - Citas - Familia y amigos
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         let idRelacion = $('#idRelacion').val();
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo/${idRelacion}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo/${idRelacion}`
         args["method"] = "DELETE";
         args["showLoader"] = true;
 

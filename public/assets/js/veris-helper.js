@@ -164,7 +164,7 @@ function enmascararEmail(email) {
 
 async function obtenerIdentificacion(){
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/tiposIdentificacion";
+    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/tiposIdentificacion";
     args["method"] = "GET";
     args["showLoader"] = false;
 
@@ -178,7 +178,7 @@ async function obtenerIdentificacion(){
 
 async function obtenerProvincias(){
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/provincias?codigoPais=1";
+    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/provincias?codigoPais=1";
     args["method"] = "GET";
     args["showLoader"] = false;
 
@@ -199,8 +199,8 @@ async function obtenerCiudades(codigoCiudades){
 
     console.log(codigoCiudades);
     let args = [];
-    // args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+codigoCiudades;
+    // args["endpoint"] = api_url + "/digitalestest/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
+    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+codigoCiudades;
     args["method"] = "GET";
     args["showLoader"] = false;
 
@@ -253,7 +253,7 @@ function esValidaCedula(cedula) {
 
 async function verificarCuenta(){
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/cuenta?tipoIdentificacion="+getInput('tipoIdentificacion')+"&numeroIdentificacion="+getInput('numeroIdentificacion');
+    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/cuenta?tipoIdentificacion="+getInput('tipoIdentificacion')+"&numeroIdentificacion="+getInput('numeroIdentificacion');
     args["method"] = "GET";
     args["showLoader"] = false;
 
@@ -295,7 +295,7 @@ function actualizarMaxlength(select) {
 
 async function registrarCuenta(){
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/cuenta";
+    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/cuenta";
     args["method"] = "POST";
     args["showLoader"] = true;
     args["bodyType"] = "json";
@@ -325,7 +325,7 @@ async function registrarCuenta(){
 
 async function confirmarCuenta(){
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/cuenta/activacion";
+    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/cuenta/activacion";
     args["method"] = "POST";
     args["showLoader"] = true;
     args["bodyType"] = "json";
@@ -342,7 +342,7 @@ async function confirmarCuenta(){
 
 async function codigoReset(){
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/codigoreset";
+    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/codigoreset";
     args["method"] = "POST";
     args["showLoader"] = true;
     args["bodyType"] = "json";
@@ -358,7 +358,7 @@ async function codigoReset(){
 
 async function recuperarContrasena(){
     let args = [];
-    args["endpoint"] = api_url + "/digitales/v1/seguridad/cuenta/clave";
+    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/cuenta/clave";
     args["method"] = "PUT";
     args["showLoader"] = true;
     args["bodyType"] = "json";
