@@ -34,7 +34,7 @@ Mi Veris - Citas - tratamiento
                     <div class="card-header rounded-0 position-relative" style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
                         <div class="content-text text-white lh-1">
                             <p class="mb-0">Veris te regala un</p>
-                            <h4 class="text-white mb-0" id="content-descuento">XX% de descuento</h4>
+                            <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
                             <p class="mb-0">por pagar en app</p>
                         </div>
                         <div class="promo-img position-absolute">
@@ -86,9 +86,10 @@ Mi Veris - Citas - tratamiento
                             </div>
                         </div>
                         <div class="p-3">
-                            <a href="#" class="btn btn-primary-veris w-100 mb-3">Comprar</a>
+                            <button type="button" class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprar</button>
                             <a href="#" class="btn w-100 mb-3">Ahora no</a>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -218,6 +219,20 @@ Mi Veris - Citas - tratamiento
                         updatePrices(precioBaseElement, precioPromocionElement, currentValue + 1, precioBaseHidden, precioPromocionHidden);
                     }
                 }
+
+                 // Verificar si todos los contadores han llegado a cero y deshabilitar el botón
+                let allCountersZero = $('.input-group input').toArray().every(function(el) {
+                    return parseInt($(el).val()) === 0;
+                });
+
+                if (allCountersZero) {
+                    $('#btnComprar').prop('disabled', true);
+                } else {
+                    $('#btnComprar').prop('disabled', false);
+                }
+
+
+
             });
 
             function updatePrices(precioBaseElement, precioPromocionElement, newQuantity, precioBaseHidden, precioPromocionHidden) {
@@ -317,6 +332,19 @@ Mi Veris - Citas - tratamiento
         });
 
     })
+
+
+    // boton comprar redireccionar a la pagina de pago
+    $('#btnComprar').on('click', function() {
+        window.location.href = "/citas-revisa-tus-datos";
+    })
+    
+    // boton cancelar redireccionar a la pagina de citas
+    $('#btnCancelar').on('click', function() {
+        window.location.href = "/citas";
+    })
+
+
 
 
 </script>
