@@ -5,6 +5,9 @@ Mi Veris - Citas - tratamiento
 @push('css')
 @endpush
 @section('content')
+@php
+$data = json_decode(base64_decode($params));
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="informacionModal" tabindex="-1" aria-labelledby="informacionModalLabel" aria-hidden="true">
@@ -125,7 +128,14 @@ Mi Veris - Citas - tratamiento
 
     // variables globales
     let datosValorizacion = [];
-    let codigoTratamiento = {{ $codigoTratamiento }};
+
+
+    let params = @json($data);
+
+    
+
+    let codigoTratamiento = params.codigoTratamiento;
+    console.log('codigoTratamientotrt', codigoTratamiento);
     // llamada al dom
     
     document.addEventListener("DOMContentLoaded", async function () {
@@ -196,11 +206,13 @@ Mi Veris - Citas - tratamiento
 
 
             data.data.serviciosNoIncluyeCompra.forEach((resultados) => {
+                console.log(resultados.colorInformacion);
                 elementoNoIncluido += `<div class="d-flex align-items-center justify-content-between">
                                             <div class="accordion-body" style="flex-grow: 1;">${resultados.descripcionServicio}</div>
-                                            <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" style="color: ${resultados.colorInformacion};"
+                                            <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" ;"
                                                 data-bs-toggle="modal" data-bs-target="#serviciosNoIncluidosModal" data-rel='${JSON.stringify(resultados)}'>
-                                                <i class="bi bi-info-circle"></i>
+                                                <i class="bi bi-info-circle" style="color: ${resultados.colorInformacion};"
+                                                ></i>
                                             </button>
                                         </div>`;
             });
@@ -313,8 +325,8 @@ Mi Veris - Citas - tratamiento
                 precioTotalElement.append(`$${precioTotal.toFixed(2)}`);
 
             }
-        return data;
-    }
+            return data;
+        }
     }
 
     // actualizar la valorizacion de los servicios del tratamiento con un put
@@ -380,7 +392,12 @@ Mi Veris - Citas - tratamiento
 
     // boton comprar redireccionar a la pagina de pago
     $('#btnComprar').on('click', function() {
-        window.location.href = "/citas-revisa-tus-datos";
+        // capturar los valores de los inputs
+        let inputs = $('.input-group input').toArray();
+        let cantidadServicios = [];
+        
+        
+        window.location.href = "/citas-datos-facturacion";
     })
     
     // boton cancelar redireccionar a la pagina de citas

@@ -6,6 +6,9 @@ Mi Veris - Citas - tratamiento
 <!-- css -->
 @endpush
 @section('content')
+@php
+$data = json_decode(base64_decode($params));
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal Receta médica -->
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
@@ -125,8 +128,11 @@ Mi Veris - Citas - tratamiento
 <script>
 
     // variables globales
-    let codigoTratamiento = {{ $codigoTratamiento }};
-    let porcentaje = {{ $porcentaje }};
+    let params = @json($data);
+    console.log(params)
+    let codigoTratamiento = params.codigoTratamiento;
+    let porcentaje = params.porcentaje;
+    
     
     let datosTratamiento = [];
     let ultimoTratamiento = [];
@@ -177,8 +183,7 @@ Mi Veris - Citas - tratamiento
     }
 
     
-
-
+    
     // funciones js
     // mostrar el tratamientos pendientes
     function mostrarTratamientoenDiv() {
@@ -271,6 +276,10 @@ Mi Veris - Citas - tratamiento
 
     // mostrar banner de promocion
     function mostrarBannerPromocion(datos){
+        let params = @json($data);
+        params.codigoTratamiento = codigoTratamiento;
+        let ulrParams = btoa(JSON.stringify(params));
+
         let divContenedor = $('#cardPromocion');
         divContenedor.empty(); // Limpia el contenido actual
         let elemento = `<div class="card rounded-0 border-0">
@@ -279,7 +288,7 @@ Mi Veris - Citas - tratamiento
                                 <h4 class="fw-bold text-white mb-0">Compra y gestiona</h4>
                                 <h6 class=" fw-light text-white mb-0">tu <b>tratamiento</b> sin <b>filas</b></h6>
                                 <div class="d-flex justify-content-end mt-3">
-                                    <a href="/tu-tratamiento/${codigoTratamiento}
+                                    <a href="/tu-tratamiento/${ulrParams}
                                     " class="btn btn-sm btn-primary-veris px-4">Ver tratamiento</a>
                                 </div>
                             </div>
