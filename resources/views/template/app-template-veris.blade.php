@@ -140,8 +140,101 @@
         function chartProgres(elemento){
             console.log('elemento',elemento);
 
-        
-            var swiper = new Swiper('.swiper', {
+            var swiper = new Swiper('.swiper-acceso-rapidos', {
+                slidesPerView: 1,
+                spaceBetween: 8,
+                navigation: {
+                    nextEl: '.btn-next',
+                    prevEl: '.btn-prev',
+                },
+                autoplay: {
+                    delay: 7500,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    300: {
+                        slidesPerView: 2,
+                        spaceBetween: 8,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 8,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 8,
+                    },
+                },
+            });
+
+            var swiper = new Swiper('.swipertratamientos', {
+                slidesPerView: 1,
+                spaceBetween: 8,
+                navigation: {
+                    nextEl: '.btn-next',
+                    prevEl: '.btn-prev',
+                },
+                autoplay: {
+                    delay: 7500,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 8,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 8,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 8,
+                    },
+                },
+            });
+
+
+            var swiper = new Swiper('.swiper-proximas-citas', {
+                slidesPerView: 1,
+                spaceBetween: 8,
+                navigation: {
+                    nextEl: '.btn-next',
+                    prevEl: '.btn-prev',
+                },
+                autoplay: {
+                    delay: 7500,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 1,
+                        spaceBetween: 8,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 8,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 8,
+                    },
+                },
+            });
+
+            var swiper = new Swiper('.swiper-urgencias-ambulatorias', {
                 slidesPerView: 1,
                 spaceBetween: 8,
                 navigation: {

@@ -8,21 +8,14 @@
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- Logo veris -->
         <a class="navbar-brand mx-auto" href="/">
-            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" alt="Bootstrap" width="84">
+            <img src="{{ asset('assets/img/veris/logo-veris.svg') }}" class="ml-lg-10" alt="veris" width="84">
         </a>
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
                 <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
-                    <i class="fa-solid fa-bell">
-                        
-                    </i>
-                    <span class="badge  rounded-pill d-none d-lg-block" id="badgeNotificaciones">
-
-                    </span>
-                    
+                    <i class="fa-solid fa-bell"></i>
                 </a>
-                
             </li>
 
             
