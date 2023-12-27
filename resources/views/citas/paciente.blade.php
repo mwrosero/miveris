@@ -53,6 +53,15 @@ $data = json_decode(base64_decode($params));
 <script>
     // variables globales
     let familiar = [];
+    let params = @json($data);
+    let online = params.online;
+    let ordenExterna = params.ordenExterna;
+    let convenios = params.convenio;
+
+    console.log('conv', convenios);
+
+    console.log('online', online);  
+    console.log('ordenExterna', ordenExterna);
 
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -117,9 +126,31 @@ $data = json_decode(base64_decode($params));
                 data.data.forEach((convenios) => {
                     let params = @json($data);
                     params.convenio = convenios;
+<<<<<<< HEAD
                     let urlParams = btoa(JSON.stringify(params));
                     elemento += `<a href="/citas-elegir-especialidad/${urlParams}"
                         class="stretched-link">
+=======
+                    params.numeroIdentificacion = codigoUsuario;
+                    params.tipoIdentificacion = tipoIdentificacion;
+                    let ulrParams = btoa(JSON.stringify(params));
+                    let ruta = '';
+                    if (ordenExterna == 'S') {
+                        
+                        if(online == 'S'){
+                            console.log('entro a ruta online');
+                            ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;
+                            
+                        }else{
+                            ruta = `/registrar-orden-externa/${ulrParams}`;
+                        }
+                    }
+                    else {
+                        ruta = `/citas-elegir-especialidad/${ulrParams}`;
+                    }
+                    elemento += `<a href="${ruta}"
+                    class="stretched-link">
+>>>>>>> julio
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
                                         <label for="listGroupCheckableRadios2">
@@ -128,17 +159,40 @@ $data = json_decode(base64_decode($params));
                                     </div>
                                 </a>`;
                 });
+
+                listaConvenios.append(elemento); 
+                
+                // mostrar modal
+                $('#convenioModal').modal('show');
                 
             } else {
+
+                let params = @json($data);
+                params.convenio = null;
+                params.numeroIdentificacion = codigoUsuario;
+                params.tipoIdentificacion = tipoIdentificacion;
+                let ulrParams = btoa(JSON.stringify(params));
                 listaConvenios.empty();
-                elemento += `<div class="col-12">
-                                <div class=" fs--2 rounded-3 p-2">
-                                    {{ __('Ninguno') }}
-                                </div>
-                            </div> `;
+                if (ordenExterna == 'S') {
+                        
+                        if(online == 'S'){
+                            console.log('entro a ruta online');
+                            ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;
+                            
+                        }else{
+                            ruta = `/registrar-orden-externa/${ulrParams}`;
+                        }
+                    }
+                    else {
+                        ruta = `/citas-elegir-especialidad/${ulrParams}`;
+                    }
+
+                
+                window.location.href = ruta;
             }
+
             
-            listaConvenios.append(elemento);    
+              
         }
 
         return data;
@@ -158,7 +212,7 @@ $data = json_decode(base64_decode($params));
         elemento += `<div class="col-6 col-md-3 mb-3">
                         <div class="card">
                             <div class="card-body text-center">
-                                <a data-bs-toggle="modal" data-bs-target="#convenioModal" onclick="consultarConvenios(event)" data-rel="" >
+                                <a data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel="" >
                                     <div class="d-flex justify-content-center align-items-center mb-2">
                                         <div class="avatar me-2">
                                             <span class="avatar-initial rounded-circle ${backgroundClass}">${pacienteYo.charAt(0).toUpperCase()}</span>
@@ -179,7 +233,7 @@ $data = json_decode(base64_decode($params));
                                     <div class="card">
                                         <div class="card-body text-center">
                                             
-                                            <div data-bs-toggle="modal" data-bs-target="#convenioModal" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
+                                            <div data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
                                                <div class="d-flex justify-content-center align-items-center mb-2">
                                                     <div class="avatar me-2">
                                                         <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
@@ -196,7 +250,6 @@ $data = json_decode(base64_decode($params));
         }
 
         listaPacientes.append(elemento);
-        console.log(elemento)
     }
 
    

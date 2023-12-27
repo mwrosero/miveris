@@ -6,6 +6,7 @@ Mi Veris - Citas
 @php
     $paramsPresencial = base64_encode(json_encode(["online" => "N"])); 
     $paramsOnline = base64_encode(json_encode(["online" => "S"]));
+    
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
