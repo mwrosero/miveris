@@ -24,7 +24,6 @@ Mi Veris - Citas - Familia y amigos
         </div>
     </div>
     
-
     <!-- Modal mensaje -->
     <div class="modal fade" id="mensajePersonaAgregadaModal" tabindex="-1" aria-labelledby="mensajePersonaAgregadaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -41,7 +40,6 @@ Mi Veris - Citas - Familia y amigos
     </div>
 
     <!-- Modal mensaje para errores fuera de 200 -->    
-
     <div class="modal fade" id="mensajeErrorModal" tabindex="-1" aria-labelledby="mensajeErrorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
@@ -55,10 +53,6 @@ Mi Veris - Citas - Familia y amigos
             </div>
         </div>
     </div>
-
-
-
-
 
     <div class="modal fade" id="mensajePersonaYaExisteModal" tabindex="-1" aria-labelledby="mensajePersonaYaExisteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -74,10 +68,9 @@ Mi Veris - Citas - Familia y amigos
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Familia y amigos') }}</h5>
-    
-    
-    
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Familia y amigos') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-4">

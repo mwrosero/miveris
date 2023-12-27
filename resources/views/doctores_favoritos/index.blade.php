@@ -22,8 +22,9 @@ Mi Veris - Doctores favoritos
             </div>
         </div>
     </div>
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Doctores favoritos') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Doctores favoritos') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center" >
             <div class="col-12 col-md-6 text-center mt-5 mb-5">

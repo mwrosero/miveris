@@ -8,15 +8,13 @@ Mi Veris - Historia clínica
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- filtro -->
-    
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Historia clínica') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Historia clínica') }}</h5>
+    </div>
     @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
     @include('components.offCanvaHC', ['context' => 'contextoLimpiarFiltros'])
-            
     <section class="p-3 pt-0 mb-3">
         <div class="row justify-content-center">
-            
             <div class="col-auto col-lg-10">
             </div>
             <div class="row gy-3 justify-content-center">
@@ -24,11 +22,9 @@ Mi Veris - Historia clínica
                     <div class="d-flex flex-column flex-md-row gap-4 py-md-5 align-items-center justify-content-center">
                         <div class="list-group gap-2 w-100" id='especialidadesAtendidas'>
                             <!-- Items de especialidades atendidas -->
-                            
                         </div>
                     </div>
                 </div>
-
                 <!-- Mensaje El paciente seleccionado no tiene especialidades disponibles. -->
                 <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoHayEspecialidades">
                     <div class="card bg-transparent shadow-none">
