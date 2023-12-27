@@ -117,8 +117,8 @@ $data = json_decode(base64_decode($params));
                 data.data.forEach((convenios) => {
                     let params = @json($data);
                     params.convenio = convenios;
-                    let ulrParams = btoa(JSON.stringify(params));
-                    elemento += `<a href="/citas-elegir-especialidad/${ulrParams}"
+                    let urlParams = btoa(JSON.stringify(params));
+                    elemento += `<a href="/citas-elegir-especialidad/${urlParams}"
                         class="stretched-link">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">

@@ -32,7 +32,8 @@ class CitasController extends Controller
 
     // Return view elegir fecha y doctor
     public function fechaDoctor($params) {
-        return view('citas.fecha_doctor');
+        //dd(utf8_encode(base64_decode($params)));
+        return view('citas.fecha_doctor')->with('params',$params);
     }
     // Return view detalle de la cita
     public function detalleCita() {
