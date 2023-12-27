@@ -6,6 +6,9 @@ Mi Veris - Citas - Nueva orden externa
 <!-- css -->
 @endpush
 @section('content')
+@php
+    $data = json_decode(base64_decode($params));
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
 
 
@@ -174,20 +177,28 @@ Mi Veris - Citas - Nueva orden externa
 
 <script>
     // variables globales
-
+    let params = @json($data);
+    
+    console.log('params', params);
     // recuperar variables del path
-    let tipoIdentificacion = {{ $tipoIdentificacion }}; 
-    let numeroIdentificacion = '{{ $numeroIdentificacion }}';
-    let codigoConvenio = {{ $codigoConvenio }};
-    let nombreConvenio = '{{ $nombreConvenio }}';
+    let tipoIdentificacion = params.tipoIdentificacion;
+    let numeroIdentificacion = params.numeroIdentificacion;
+    let convenio = params.convenio;
+    let codigoConvenio;
+    let nombreConvenio ;
     let datosPaciente = [];
 
+    
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function() {
         
         // consultar datos del usuario
         await consultarDatosUsuario();
+        // ocultar convenio si es null
+        if (convenio == null) {
+            $('#conveio').parent().hide();
+        }
 
     });
 

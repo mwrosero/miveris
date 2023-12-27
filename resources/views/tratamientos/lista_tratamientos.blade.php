@@ -129,9 +129,11 @@ $data = json_decode(base64_decode($params));
 
     // variables globales
     let params = @json($data);
-    console.log(params)
+    console.log('uu',params)
     let codigoTratamiento = params.codigoTratamiento;
-    let porcentaje = params.porcentaje;
+    let porcentaje = params.porcentajeAvanceTratamiento;
+
+    console.log('porcentaje: ', porcentaje);
     
     
     let datosTratamiento = [];
@@ -188,7 +190,6 @@ $data = json_decode(base64_decode($params));
     // mostrar el tratamientos pendientes
     function mostrarTratamientoenDiv() {
         let data = datosTratamiento.pendientes;
-        console.log(data);
 
         let divContenedor = $('#contenedorTratamientoPendiente');
         divContenedor.empty(); // Limpia el contenido actual
@@ -302,8 +303,6 @@ $data = json_decode(base64_decode($params));
     // determinar fechas caducadas
     function determinarFechasCaducadas(datos){
 
-        // si es receta medica no mostrar fechas
-        console.log('datos: ', datos.tipoServicio);
         if (datos.tipoServicio == "FARMACIA") {
             return ``;
         } else{
