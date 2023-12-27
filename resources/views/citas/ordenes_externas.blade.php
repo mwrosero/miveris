@@ -16,8 +16,10 @@ Mi Veris - Órdenes externas
                     <p class="fs--1 mb-0">{{ __('¿Deseas el servicio a domicilio?') }}</p>
                 </div>
                 <div class="modal-footer justify-content-center px-3 pt-0 pb-3">
-                    <a href="/registrar-orden-externa/2/0923796304/8185/SALUD%20S.A-SALUD%20S.A-PLAN%20ELITE%205D%20COSTA" class="btn btn-primary-veris">{{ __('NO') }}</a>
-                    <a href="/registrar-orden-externa/2/0923796304/8185/SALUD%20S.A-SALUD%20S.A-PLAN%20ELITE%205D%20COSTA" class="btn btn-primary-veris">{{ __('SI') }}</a>
+                    <a  class="btn btn-primary-veris" id="btnNo"
+                    >{{ __('NO') }}</a>
+                    <a  class="btn btn-primary-veris" id="btnSi"
+                    >{{ __('SI') }}</a>
                 </div>
             </div>
         </div>
@@ -78,6 +80,8 @@ Mi Veris - Órdenes externas
 <script>
 
     // variables globales
+    let dataConvenio = [];
+
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
@@ -106,36 +110,41 @@ Mi Veris - Órdenes externas
         console.log('dataOrde', data);
         if (data.code == 200){
 
-            if (data.data.length > 0) {
+            if (data.data.lsOrdenesLaboratorio.length > 0) {
+                dataConvenio = data.data;
                 document.getElementById('mensajeOrdenesExternas').classList.add('d-none');
                 let ordenesExternas = $('#ordenesExternas');
                 ordenesExternas.empty();
+                let elemento = '';
 
-                data.lsOrdenesLaboratorio.forEach((ordenes) => {
+                data.data.lsOrdenesLaboratorio.forEach((ordenes) => {
 
-                    let elemento = `<div class="col-12 col-md-6">
-                                        <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
-                                            <div class="card-body">
-                                                <h6 class="fw-bold mb-0">${capitalizarElemento(ordenes.descripcionOrden)}</h6>
-                                                <p class="fs--1 mb-0"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>
-                                                <p class="fs--1 mb-0">Valor: <b class="fw-normal">$${ordenes.total}</b></p>
-                                                <p class="text-dark fw-bold fs--1 mb-2">AGO 09, 2021 <b class="fw-bold me-2">10:20 AM</b></p>
-                                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                                    <span class="text-lime-veris fs--1"><i class="fa-solid fa-circle me-2"></i>Aprobada</span>
-                                                    <a href="/citas" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>
-                                                </div>
+                    elemento = `<div class="col-12 col-md-6">
+                                    <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
+                                        <div class="card-body">
+                                            <h6 class="fw-bold mb-0">${capitalizarElemento(ordenes.descripcionOrden)}</h6>
+                                            <p class="fs--1 mb-0"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>
+                                            <p class="fs--1 mb-0">Valor: <b class="fw-normal">$${ordenes.total}</b></p>
+                                            <p class="text-dark fw-bold fs--1 mb-2">AGO 09, 2021 <b class="fw-bold me-2">10:20 AM</b></p>
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <span class="text-lime-veris fs--1"><i class="fa-solid fa-circle me-2"></i>Aprobada</span>
+                                                <a href="/citas" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>
                                             </div>
                                         </div>
-                                    </div> `;
-                    ordenesExternas.append(elemento);
+                                    </div>
+                                </div> `;
+                    
 
                 });
+
+                ordenesExternas.append(elemento);
 
 
                                     
 
 
             } else {
+                dataConvenio = [];
                 document.getElementById('mensajeOrdenesExternas').classList.remove('d-none');
             }
         }
@@ -149,7 +158,7 @@ Mi Veris - Órdenes externas
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -245,6 +254,33 @@ Mi Veris - Órdenes externas
 
         return `${dia}/${mes}/${año}`;
     }
+
+    // btn si o no
+    $('#btnSi').on('click', function(){
+
+        let params = {
+            "ordenExterna" :  "S" ,
+            "online" : "S"
+        }
+        let ulrParams = btoa(JSON.stringify(params));
+
+
+        // recireccionar a registrar orden externa
+        window.location.href = `/citas-elegir-paciente/${ulrParams}`;
+
+    });
+
+    $('#btnNo').on('click', function(){
+
+        let params = {
+            "ordenExterna" :  "S" ,
+            "online" : "N"
+        }
+        let ulrParams = btoa(JSON.stringify(params));
+
+        // window.location.href = `/citas-elegir-paciente/${ulrParams}`;
+        window.location.href = `/citas-elegir-paciente/${ulrParams}`;
+    });
 
 
 

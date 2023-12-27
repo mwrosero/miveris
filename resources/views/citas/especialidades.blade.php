@@ -72,7 +72,7 @@ $data = json_decode(base64_decode($params));
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/digitales/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}`
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -87,7 +87,7 @@ $data = json_decode(base64_decode($params));
                 data.data.forEach((especialidad) => {
                     let params = @json($data);
                     params.especialidad = especialidad;
-                    let ulrParams = btoa(JSON.stringify(params));
+                    let urlParams = btoa(JSON.stringify(params));
                     let path_url = "citas-elegir-central-medica";
                     if(params.online == "S"){
                         path_url = "citas-elegir-fecha-doctor";
@@ -95,7 +95,7 @@ $data = json_decode(base64_decode($params));
                     elemento += `<div class="col-6 col-md-3 mb-3">
                                     <div class="card">
                                         <div class="card-body px-2 text-center">
-                                            <a href="/${path_url}/${ulrParams}">
+                                            <a href="/${path_url}/${urlParams}">
                                                 <div class="avatar avatar-lg mx-auto">
                                                     <div class="avatar-especialidad">
                                                         <img src="${especialidad.imagen}" alt="${especialidad.nombre}">

@@ -32,7 +32,8 @@ class CitasController extends Controller
 
     // Return view elegir fecha y doctor
     public function fechaDoctor($params) {
-        return view('citas.fecha_doctor');
+        //dd(utf8_encode(base64_decode($params)));
+        return view('citas.fecha_doctor')->with('params',$params);
     }
     // Return view detalle de la cita
     public function detalleCita() {
@@ -89,9 +90,16 @@ class CitasController extends Controller
     }
 
     // Return view formulario registrar orden externa
-    public function registrarOrdenesExternas($tipoIdentificacion, $numeroIdentificacion,  $codigoConvenio, $nombreConvenio) {
-        return view('citas.registrar_orden_externa', ['tipoIdentificacion' => $tipoIdentificacion, 'numeroIdentificacion' => $numeroIdentificacion, 'codigoConvenio' => $codigoConvenio, 'nombreConvenio' => $nombreConvenio]);
+    public function registrarOrdenesExternas($params) {
+        return view('citas.registrar_orden_externa'
+        ,['params' => $params]);
     }
+
+    // Return view formulario registrar orden externa ubicacion
+    public function registrarOrdenesExternasUbicacion($params) {
+        return view('citas.laboratorio_domicilioExterna')->with('params',$params);
+    }
+
 
     // Return view Mis citas
     public function misCitas() {

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
-
+use Psy\Readline\Hoa\Console;
 
 class TratamientosController extends Controller
 {
@@ -18,13 +18,18 @@ class TratamientosController extends Controller
     }
 
     // Return view lista de tratamientos
-    public function tratamientos($codigoTratamiento, $porcentaje) {
-        return view('tratamientos.lista_tratamientos', ['codigoTratamiento' => $codigoTratamiento, 'porcentaje' => $porcentaje]);
+    public function tratamientos($params) {
+        return view('tratamientos.lista_tratamientos')
+                ->with('params', $params);
     }
+    
+    
 
     // Return view detalle de tratamiento
-    public function detalleTratamiento() {
-        return view('tratamientos.detalle');
+    public function detalleTratamiento($params) {
+        
+        return view('tratamientos.detalle')
+                ->with('params', $params);
     }
 
     // Return view farmacia a domicilio

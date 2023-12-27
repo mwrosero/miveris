@@ -121,7 +121,7 @@ Mi Veris - Citas - Mis tratamientos
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -142,7 +142,8 @@ Mi Veris - Citas - Mis tratamientos
     function mostrarTratamientoenDiv(esAdmin){
         console.log('esAdmin4', esAdmin);
         let data = datosTratamientos;
-
+        
+        
         let divContenedor = $('#contenedorTratamiento');
         divContenedor.empty(); // Limpia el contenido actual
         if (esAdmin == 'N') {
@@ -152,6 +153,13 @@ Mi Veris - Citas - Mis tratamientos
         } else{
 
             data.forEach((tratamientos) => {
+                let params = { 
+                    "codigoTratamiento": tratamientos.codigoTratamiento,
+                    "porcentajeAvanceTratamiento": tratamientos.porcentajeAvanceTratamiento
+                }
+                let ulrParams = btoa(JSON.stringify(params));
+                console.log('ulrParams', params);
+
                 let elemento = `<div class="col-12 col-md-6">
                                     <div class="card">
                                         <div class="card-body p-3">
@@ -165,9 +173,15 @@ Mi Veris - Citas - Mis tratamientos
                                                 <div class="col-3">
                                                     <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
                                                 </div>
+<<<<<<< HEAD
                                                 <div class="d-flex justify-content-end align-items-center mt-2">
                                                     <a href="/tratamiento/${tratamientos.codigoTratamiento}/${tratamientos.porcentajeAvanceTratamiento}
                                                     " class="btn btn-sm btn-primary-veris shadow-none">
+=======
+                                                <div class="d-flex justify-content-end align-items-center">
+                                                    <a href="/tratamiento/${ulrParams}
+                                                    " class="btn btn-sm btn-primary-veris">
+>>>>>>> developer
                                                         ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
                                                     </a>
                                                 </div>

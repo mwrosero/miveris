@@ -6,6 +6,7 @@ Mi Veris - Citas
 @php
     $paramsPresencial = base64_encode(json_encode(["online" => "N"])); 
     $paramsOnline = base64_encode(json_encode(["online" => "S"]));
+    
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
@@ -222,7 +223,7 @@ Mi Veris - Citas
 
     async function obtenerPPD(){
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
+        args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
         args["method"] = "GET";
         args["showLoader"] = true;
 

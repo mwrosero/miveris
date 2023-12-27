@@ -59,7 +59,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/citas-elegir-especialidad/{params}',[CitasController::class, 'listaEspecialidades'])->name('citas.listaEspecialidades')->withoutMiddleware(['guest']);
     Route::get('/citas-elegir-central-medica/{params}',[CitasController::class, 'listaCentralMedica'])->name('citas.listaCentralMedica')->withoutMiddleware(['guest']);
     Route::get('/citas-elegir-fecha-doctor/{params}',[CitasController::class, 'fechaDoctor'])->name('citas.fechaDoctor')->withoutMiddleware(['guest']);
-    Route::get('/citas-revisa-tus-datos',[CitasController::class, 'detalleCita'])->name('citas.detalleCita')->withoutMiddleware(['guest']);
+    Route::get('/citas-revisa-tus-datos/{params}',[CitasController::class, 'detalleCita'])->name('citas.detalleCita')->withoutMiddleware(['guest']);
     Route::get('/citas-datos-facturacion',[CitasController::class, 'datosFacturacion'])->name('citas.datosFacturacion')->withoutMiddleware(['guest']);
     Route::get('/citas-informacion-pago',[CitasController::class, 'citaInformacionPago'])->name('citas.citaInformacionPago')->withoutMiddleware(['guest']);
     Route::get('/citas-agendada',[CitasController::class, 'citaAgendada'])->name('citas.agendada')->withoutMiddleware(['guest']);
@@ -75,13 +75,17 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/receta-medica',[CitasController::class, 'recetaMedica'])->name('citas.recetaMedica')->withoutMiddleware(['guest']);
     #Ordenes externas
     Route::get('/ordenes-externas',[CitasController::class, 'ordenesExternas'])->name('citas.ordenesExternas')->withoutMiddleware(['guest']);
-    Route::get('/registrar-orden-externa/{tipoIdentificacion}/{numeroIdentificacion}/{codigoConvenio}/{nombreConvenio}'
+    Route::get('/registrar-orden-externa/{params}'
     ,[CitasController::class, 'registrarOrdenesExternas'])->name('citas.registrarOrdenesExternas')->withoutMiddleware(['guest']);
-    #Mis citas
+
+    Route::get('/registrar-orden-externa-ubicacion/{params}
+    ',[CitasController::class, 'registrarOrdenesExternasUbicacion'])->name('citas.registrarOrdenesExternasUbicacion')->withoutMiddleware(['guest']);
+
+    #Mis citas 
     Route::get('/mis-citas', [CitasController::class, 'misCitas'])->name('citas.misCitas')->withoutMiddleware(['guest']);
 
     #Tratamientos
-    Route::get('/tratamiento/{codigoTratamiento}/{porcentaje}', [TratamientosController::class, 'tratamientos'])
+    Route::get('/tratamiento/{params}', [TratamientosController::class, 'tratamientos'])
     ->name('tratamientos.lista')
     ->withoutMiddleware(['guest']);
     
@@ -91,7 +95,8 @@ Route::group(['middleware' => ['loggedUser']], function () {
 
 
     // Route::get('/tratamientos/detalle/{codigoTratamiento}/{nombreEspecialidad}/{nombreMedico}/{nombrePaciente}/{nombreConvenio}/{fechaTratamiento}', [TratamientosController::class, 'detalleTratamiento'])->name(''tratamientos.lista');
-    Route::get('/tu-tratamiento', [TratamientosController::class, 'detalleTratamiento'])->name('tratamientos.detalle')->withoutMiddleware(['guest']);
+    Route::get('/tu-tratamiento/{params}
+    ', [TratamientosController::class, 'detalleTratamiento'])->name('tratamientos.detalle')->withoutMiddleware(['guest']);
     Route::get('/farmacia-domicilio/{codigoTratamiento}', [TratamientosController::class, 'farmaciaDomicilio'])->name('tratamientos.farmaciaDomicilio')->withoutMiddleware((['guest']));
     
     #Resultados
