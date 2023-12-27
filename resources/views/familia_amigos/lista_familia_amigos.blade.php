@@ -42,8 +42,9 @@ Mi Veris - Citas - Familia y amigos
         </div>
     </div>
 
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Familia y amigos') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Familia y amigos') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-4">

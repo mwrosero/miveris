@@ -7,42 +7,36 @@ Mi Veris - Citas - Mis tratamientos
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-    
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Mis tratamientos') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Mis tratamientos') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
+                    <button class="nav-link px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
+                    <button class="nav-link px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
-           
-            
             <div class="tab-content bg-transparent" id="pills-tabContent">
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
-                    
                     <div class="d-flex justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
                             <div class="row g-3" id="contenedorTratamiento">
                                 <!-- items dinamicos de tratamientos -->
-
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
-                    
                     <div class="d-flex justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
                             <div class="row g-3" id="contenedorTratamientoRealizados">
                                 <!-- items dinamicos de tratamientos realizados -->
-
                             </div>
                         </div>
                     </div>
@@ -168,8 +162,8 @@ Mi Veris - Citas - Mis tratamientos
 
                 let elemento = `<div class="col-12 col-md-6">
                                     <div class="card">
-                                        <div class="card-body p-2">
-                                            <div class="row gx-0 justify-content-between align-items-center mb-2">
+                                        <div class="card-body p-3">
+                                            <div class="row gx-0 justify-content-between align-items-center">
                                                 <div class="col-9">
                                                     <h6 class="card-title text-primary-veris mb-0">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
                                                     <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
@@ -179,9 +173,15 @@ Mi Veris - Citas - Mis tratamientos
                                                 <div class="col-3">
                                                     <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
                                                 </div>
+<<<<<<< HEAD
+                                                <div class="d-flex justify-content-end align-items-center mt-2">
+                                                    <a href="/tratamiento/${tratamientos.codigoTratamiento}/${tratamientos.porcentajeAvanceTratamiento}
+                                                    " class="btn btn-sm btn-primary-veris shadow-none">
+=======
                                                 <div class="d-flex justify-content-end align-items-center">
                                                     <a href="/tratamiento/${ulrParams}
                                                     " class="btn btn-sm btn-primary-veris">
+>>>>>>> developer
                                                         ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
                                                     </a>
                                                 </div>
