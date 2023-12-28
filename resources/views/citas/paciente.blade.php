@@ -5,6 +5,8 @@ Elige Paciente
 @section('content')
 @php
 $data = json_decode(base64_decode($params));
+
+
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
@@ -124,8 +126,11 @@ $data = json_decode(base64_decode($params));
             if(data.data.length > 0){
                 listaConvenios.empty();
                 data.data.forEach((convenios) => {
+
+                    console.log('convenios', convenios);
                     let params = @json($data);
-                    params.convenio = convenios;
+                    params.nombreConvenio = convenios.nombreConvenio;
+                    params.codigoConvenio = convenios.codigoConvenio;
                     params.numeroIdentificacion = codigoUsuario;
                     params.tipoIdentificacion = tipoIdentificacion;
                     let ulrParams = btoa(JSON.stringify(params));
