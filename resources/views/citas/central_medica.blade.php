@@ -107,7 +107,7 @@ $data = json_decode(base64_decode($params));
                 data.data.forEach((central) => {
                     let params = @json($data);
                     params.central = central;
-                    let ulrParams = btoa(JSON.stringify(params));
+                    let urlParams = btoa(JSON.stringify(params));
                     elemento += `<div class="col-auto col-md-6">
                                     <div class="card">
                                         <div class="card-body px-2 py-2">
@@ -122,7 +122,7 @@ $data = json_decode(base64_decode($params));
                                             </div>
                                         </div>
                                         <div class="card-footer text-end pb-2">
-                                            <a href="/citas-elegir-fecha-doctor/${ulrParams}" class="btn btn-sm btn-primary-veris">{{ __('Ver Médicos') }}</a>
+                                            <a href="/citas-elegir-fecha-doctor/${urlParams}" class="btn btn-sm btn-primary-veris">{{ __('Ver Médicos') }}</a>
                                         </div>
                                     </div>
                                 </div>`

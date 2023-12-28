@@ -165,7 +165,7 @@ Mi Veris - Citas - Familia y amigos
         let args = [];
         args["endpoint"] = api_url + "/digitalestest/v1/seguridad/tiposIdentificacion";
         args["method"] = "GET";
-        args["showLoader"] = true;
+        // args["showLoader"] = true;
 
         const data = await call(args);
         if (data.code == 200) {
