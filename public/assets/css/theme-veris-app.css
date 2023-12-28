@@ -300,7 +300,8 @@ html:not([dir="rtl"]) .border-start-veris {
 .dropdown-item:not(.disabled):active>i {
   color: var(--bg-vris-white) !important;
 }
-
+.fs-18{font-size: 1.125rem;}
+.fs-24{font-size: 1.5rem;}
 .form-label {
   color: var(--bg-vris-very-dark-blue) !important;
 }

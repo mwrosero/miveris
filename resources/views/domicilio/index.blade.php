@@ -40,7 +40,9 @@ Mi Veris - Citas - Servicios a domicilio
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Servicios a domicilio') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Servicios a domicilio') }}</h5>
+    </div>
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
