@@ -100,6 +100,7 @@ $data = json_decode(utf8_encode(base64_decode($params)));
 
     function renderCalendar(listaFechas) {
         console.log(listaFechas);
+        
         calendarGrid.innerHTML = '';
         const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
         const lastDayOfPreviousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
