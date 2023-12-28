@@ -12,7 +12,7 @@
         </a>
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
-            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1" id="dropdownNotifications">
                 <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
                     <i class="fa-solid fa-bell"></i>
                 </a>
@@ -124,7 +124,7 @@
     document.addEventListener("DOMContentLoaded", async function () {
         
         // await cantidadNotificaciones();
-        await getNotificaciones();
+        
         await numeroNotificaciones();
 
     } );
@@ -214,7 +214,7 @@
         args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
         
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
         console.log(2,args["endpoint"]);
         
         const data = await call(args);
@@ -245,7 +245,7 @@
         console.log(codigoUsuario);
         args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
         console.log('no',args["endpoint"] );
         const data = await call(args);
         console.log('numero notificaciones',data);
@@ -263,7 +263,6 @@
 
             }
             
-        
         return data;
         }
     }
@@ -354,6 +353,11 @@
             cantidadNotificaciones();
         }
     }
+
+    // llamar a la funcion getNotificaciones cuando se de click en la campana
+    $('#dropdownNotifications').click(function(){
+        getNotificaciones();
+    });
 
 
 </script>
