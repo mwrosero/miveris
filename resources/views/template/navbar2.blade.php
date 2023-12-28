@@ -108,8 +108,8 @@
             
         </div>
 
-        <div class="d-flex flex-column justify-content-center align-items-center py-5" 
-        id="noNotificaciones" style="display: none;">
+        <div class="d-flex flex-column justify-content-center align-items-center py-5 d-none"
+        id="noNotificaciones">
             <img src="{{ asset('assets/img/svg/bellNotificacion.svg') }}" alt="" width="50px" class="mb-3">
             <h5 class="fs-0 text-300">No tienes notificaciones</h5>
             <div> En esta sección podrás revisar tus notificaciones</div>
@@ -171,13 +171,14 @@
         const inicio = (pagina - 1) * notificacionesPorPagina;
         const fin = inicio + notificacionesPorPagina;
         if (notificaciones.length === 0) {
-            $('#noNotificaciones').show();
-            $('#notificaciones').hide();
+            $('#noNotificaciones').removeClass('d-none');
+            $('#notificaciones').addClass('d-none');
+
             return;
         }
         else {
-            $('#noNotificaciones').hide();
-            $('#notificaciones').show();
+            $('#noNotificaciones').addClass('d-none');
+            $('#notificaciones').removeClass('d-none');
         
             notificaciones.slice(inicio, fin).forEach(notificacion => {
                 const bgClass = notificacion.estado !== "LEIDO" ? "bg-light-grayish-cyan" : "";
