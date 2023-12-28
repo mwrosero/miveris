@@ -100,12 +100,22 @@
         <button type="button" class="btn btn-sm shadow-none text-decoration-underline" data-bs-dismiss="offcanvas" aria-label="Close">cerrar</button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0 py-0 px-0">
-        <h5 id="offcanvasEndLabel" class="offcanvas-title px-3 mb-3">Notificaciones</h5>
+        <h5 id="offcanvasEndLabel" class="offcanvas-title px-3 mb-3 bg-white
+        ">Notificaciones</h5>
         <div class="border-300" id= "notificaciones">
             
             <!-- Notificaciones dinamicas -->
             
         </div>
+
+        <div class="d-flex flex-column justify-content-center align-items-center py-5" 
+        id="noNotificaciones" style="display: none;">
+            <img src="{{ asset('assets/img/svg/bellNotificacion.svg') }}" alt="" width="50px" class="mb-3">
+            <h5 class="fs-0 text-300">No tienes notificaciones</h5>
+            <div> En esta sección podrás revisar tus notificaciones</div>
+            <img src="{{ asset('assets/img/svg/amico.svg') }}" alt="" class="img-fluid w-50">
+        </div>
+        
         
     </div>
 </div>
@@ -160,47 +170,57 @@
         // Calcular el rango de notificaciones a mostrar
         const inicio = (pagina - 1) * notificacionesPorPagina;
         const fin = inicio + notificacionesPorPagina;
-        notificaciones.slice(inicio, fin).forEach(notificacion => {
-            const bgClass = notificacion.estado !== "LEIDO" ? "bg-light-grayish-cyan" : "";
-            htmlContent += `<div class="py-3 border-bottom px-3 ${bgClass}">
-                                <div class="d-flex justify-content-between">
-                                    <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> ${determinarCategoria(notificacion.categoria)}</h4>
-                                    <span class="fs--3">${notificacion.valorTiempo}</span>
-                                </div>
-                                <div class="flex-1 ms-4">
-                                    <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
-                                        ${notificacion.mensajeNotificacion}
-                                    </p>
-                                </div>
-                                <div class="text-end">
-                                    ${determinarBotonNotificacion(notificacion.categoria)}
-                                    
-                                </div>
-                            </div>`;
-        });
-        let totalPaginas = Math.ceil(notificaciones.length / notificacionesPorPagina);
-
-
-        // Agregar paginación al final
-        htmlContent += `<div class="px-3 mt-5">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item ${pagina === 1 ? 'disabled' : ''}">
-                                    <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual - 1)" aria-label="Previous">
-                                        <span aria-hidden="true">&lt;</span>
-                                    </a>
-                                </li>
-                                <li class="page-item disabled"><span class="page-link bg-transparent">${pagina} de ${totalPaginas}</span></li>
-                                <li class="page-item ${pagina === totalPaginas ? 'disabled' : ''}">
-                                    <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual + 1)" aria-label="Next">
-                                        <span aria-hidden="true">&gt;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>`;
+        if (notificaciones.length === 0) {
+            $('#noNotificaciones').show();
+            $('#notificaciones').hide();
+            return;
+        }
+        else {
+            $('#noNotificaciones').hide();
+            $('#notificaciones').show();
         
-        $('#notificaciones').html(htmlContent);
+            notificaciones.slice(inicio, fin).forEach(notificacion => {
+                const bgClass = notificacion.estado !== "LEIDO" ? "bg-light-grayish-cyan" : "";
+                htmlContent += `<div class="py-3 border-bottom px-3 ${bgClass}">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> ${determinarCategoria(notificacion.categoria)}</h4>
+                                        <span class="fs--3">${notificacion.valorTiempo}</span>
+                                    </div>
+                                    <div class="flex-1 ms-4">
+                                        <p class="fs--2 text-1000 mb-2 mb-sm-3 fw-normal">
+                                            ${notificacion.mensajeNotificacion}
+                                        </p>
+                                    </div>
+                                    <div class="text-end">
+                                        ${determinarBotonNotificacion(notificacion.categoria)}
+                                        
+                                    </div>
+                                </div>`;
+            });
+            let totalPaginas = Math.ceil(notificaciones.length / notificacionesPorPagina);
+
+
+            // Agregar paginación al final
+            htmlContent += `<div class="px-3 mt-5">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item ${pagina === 1 ? 'disabled' : ''}">
+                                        <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual - 1)" aria-label="Previous">
+                                            <span aria-hidden="true">&lt;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item disabled"><span class="page-link bg-transparent">${pagina} de ${totalPaginas}</span></li>
+                                    <li class="page-item ${pagina === totalPaginas ? 'disabled' : ''}">
+                                        <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual + 1)" aria-label="Next">
+                                            <span aria-hidden="true">&gt;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>`;
+            
+            $('#notificaciones').html(htmlContent);
+        }
         
     }
 
@@ -297,7 +317,13 @@
             case 'CITA_MEDICA':
                 botonNotificacion = `<a href="#!" class="btn btn-sm btn-outline-primary-veris">Agendar cita</a>`;
                 break;
+            
         }
+
+        if (categoria !== 'PENDIENTE_PAGO' && categoria !== 'CITA_MEDICA') {
+            botonNotificacion = `<a href="/mis-tratamientos" class="btn btn-sm btn-outline-primary-veris">Ver detalle</a>`;
+        }
+
 
         return botonNotificacion;
     }
