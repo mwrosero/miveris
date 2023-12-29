@@ -355,6 +355,14 @@ Mi Veris - Inicio
 
                 // Bucle anidado para detalleTratamiento
                 tratamientos.detallesTratamiento.forEach((detalle) => {
+                    let params = {
+                        codigoTratamiento: detalle.codigoTratamiento,
+                        porcentajeAvanceTratamiento: tratamientos.porcentajeAvanceTratamiento
+                    };
+
+                    // convertir objeto a base64
+                    let paramsBase64 = btoa(JSON.stringify(params));
+
                     elemento += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
                                     <div class="d-flex gap-2 align-items-center">
                                         <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
@@ -363,7 +371,7 @@ Mi Veris - Inicio
                                         <p class="fw-bold fs--2 mb-0">${capitalizarElemento(detalle.nombreServicio)}</p>
                                             
                                     </div>
-                                    <a href="/tratamiento/${detalle.codigoTratamiento}/${tratamientos.porcentajeAvanceTratamiento}"
+                                    <a href="/tratamiento/${paramsBase64}"
                                     class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-3"></i></a>
                                 </label>`;
                 });

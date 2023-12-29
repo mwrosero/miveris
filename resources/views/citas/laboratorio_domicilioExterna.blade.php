@@ -29,9 +29,10 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Laboratorio a domicilio') }}</h5>
+    <div id="map" style="height: 400px;"></div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
-            <div id="map" style="height: 400px;"></div>
+            
             <div class="col-auto col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body">
@@ -51,12 +52,12 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
                             <div class="col-md-12">
                                 <label for="direccion" class="form-label fw-bold">Dirección *</label>
-                                <textarea class="form-control" name="direccion" id="direccion" rows="3" required></textarea>
+                                <textarea class="form-control" name="direccion" id="direccion" rows="3" required style="resize: none;"></textarea>
                             </div>
 
                             <div class="col-md-12">
                                 <label for="numeroIdentificacion" class="form-label fw-bold">Cédula o pasaporte *</label>
-                                <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
+                                <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion"  required />
                             </div>
 
 
@@ -74,7 +75,8 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
                             <div class="col-md-12">
                                 <label for="referencias" class="form-label fw-bold">Referencias *</label>
-                                <textarea class="form-control" name="referencias" id="referencias" rows="3" required></textarea>
+                                <textarea class="form-control" name="referencias" id="referencias" rows="3" required style="resize: none;"
+                                ></textarea>
                             </div>
 
 
