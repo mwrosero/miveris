@@ -459,6 +459,35 @@ async function limpiarFiltrosResultados(contexto, tipoServicio) {
 }
 
 
+//aplicarfiltro ordenes externas
+async function aplicarFiltrosOrdenesExternas(contexto) {
+    
+    // capturar los datos de data-rel del input radio
+    let datos = $('input[name="listGroupRadios"]:checked').attr('data-rel');
+    datos = JSON.parse(datos);
+    
+    let pacienteSeleccionado = datos.tipoIdentificacion;
+    let tipoIdentificacion = datos.numeroIdentificacion;
+    let esAdmin = datos.esAdmin;
+    if (datos.parentesco === 'YO') {
+        esAdmin = 'S';
+    }
+
+    console.log('paciente',datos.tipoIdentificacion);
+    let fechaDesde = $('#fechaDesde').val() || '';
+    let fechaHasta = $('#fechaHasta').val() || '';
+
+    fechaDesde = formatearFecha(fechaDesde);
+    fechaHasta = formatearFecha(fechaHasta);
+
+    if (contexto === 'contextoAplicarFiltros') {
+        console.log('exito');
+        await consultarOrdenesExternasLaboratorio(pacienteSeleccionado, tipoIdentificacion, fechaDesde, fechaHasta, esAdmin);
+        $('#filtroTratamientos').offcanvas('hide');
+    }
+}
+
+
 // formatear fecha
 function formatearFecha(fecha) {
     if (!fecha) return '';

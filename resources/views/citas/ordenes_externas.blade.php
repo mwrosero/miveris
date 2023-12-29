@@ -81,6 +81,7 @@ Mi Veris - Órdenes externas
 
     // variables globales
     let dataConvenio = [];
+    let idPaciente = '{{ Session::get('userData')->numeroPaciente }}';
 
 
     // llamada al dom
@@ -97,11 +98,15 @@ Mi Veris - Órdenes externas
     // funciones asyncronas
 
      // consultar ordenes externas de laboratorio
-     async function consultarOrdenesExternasLaboratorio(_pacienteSeleccionado = '', _fechaDesde = '', _fechaHasta = '', _esAdmin = '') {
+     async function consultarOrdenesExternasLaboratorio(_pacienteSeleccionado = '', tipoIdentificacion = '', _fechaDesde = '', _fechaHasta = '', _esAdmin = '') {
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+        if (tipoIdentificacion == '') {
+            tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+        }
+
+
         args["endpoint"] = api_url + `/digitalestest/v1/ordenes/laboratorio?numeroIdentificacion=${codigoUsuario}&tipoIdentificacion=${tipoIdentificacion}&canalOrigen=${canalOrigen}`;
         
         args["method"] = "GET";
@@ -128,7 +133,8 @@ Mi Veris - Órdenes externas
                                             <p class="text-dark fw-bold fs--1 mb-2">AGO 09, 2021 <b class="fw-bold me-2">10:20 AM</b></p>
                                             <div class="d-flex justify-content-between align-items-center mt-2">
                                                 <span class="text-lime-veris fs--1"><i class="fa-solid fa-circle me-2"></i>Aprobada</span>
-                                                <a href="/citas" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>
+                                                ${determinarBotonesPagarSolicitar(ordenes)}
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -182,7 +188,8 @@ Mi Veris - Órdenes externas
         divContenedor.empty(); // Limpia el contenido actual
 
         let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" checked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
+                                checked>
                                 <span class="text-veris fw-bold">
                                     ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
@@ -193,8 +200,9 @@ Mi Veris - Órdenes externas
         console.log('sss',data);
         data.forEach((Pacientes) => {
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
                                 <span class="text-veris fw-bold">
+                                    
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
                                 </span>
@@ -205,20 +213,26 @@ Mi Veris - Órdenes externas
     }
 
     // aplicar filtros
-    $('#aplicarFiltros').on('click', async function(){
+    $('#aplicarFiltros').on('click', function() {
         const contexto = $(this).data('context');
-        const pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
-        let fechaDesde = $('#fechaDesde').val() || '';
-        let fechaHasta = $('#fechaHasta').val() || '';
-        const esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
+        aplicarFiltrosOrdenesExternas(contexto);
 
-        fechaDesde = formatearFecha(fechaDesde);
-        fechaHasta = formatearFecha(fechaHasta);
 
-        if (contexto === 'contextoAplicarFiltros') {
-            console.log('exito');   
-            await consultarOrdenesExternasLaboratorio(pacienteSeleccionado, fechaDesde, fechaHasta, esAdmin);
+        
+        // Obtener el texto completo de la opción seleccionada data-rel
+        let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+        console.log('texto', texto);
+
+        identificacionSeleccionada = texto.numeroPaciente;
+        
+        // colocar el nombre del filtro
+        const elemento = document.getElementById('nombreFiltro');
+        if (texto == 'YO') {
+            elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+        } else{
+            elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
         }
+        
     });
     
     // limpiar filtros
@@ -281,6 +295,27 @@ Mi Veris - Órdenes externas
         // window.location.href = `/citas-elegir-paciente/${ulrParams}`;
         window.location.href = `/citas-elegir-paciente/${ulrParams}`;
     });
+
+    // determinar botones pagar o solicitar
+    function determinarBotonesPagarSolicitar(data){
+        let params = {
+            "idPaciente" : idPaciente,
+            "numeroOrden" : data.numeroOrden,
+            "codigoEmpresa" : data.codigoEmpresa,
+
+        }
+        let ulrParams = btoa(JSON.stringify(params));
+
+
+        let elemento = '';
+        if(data.permitePago == 'S'){
+            elemento = `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fs--1">Pagar</a>`;
+        }else{
+            elemento = `<a href="/citas" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>`;
+        }
+        return elemento;
+
+    }
 
 
 

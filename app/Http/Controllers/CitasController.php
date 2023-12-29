@@ -65,8 +65,8 @@ class CitasController extends Controller
     }
 
     // Return view citas / laboratorio
-    public function citasLaboratorio() {
-        return view('citas.citas_laboratorio');
+    public function citasLaboratorio($params) {
+        return view('citas.citas_laboratorio')->with('params',$params);
     }
 
     // Return view imagenes / procedimientos
