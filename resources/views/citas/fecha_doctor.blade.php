@@ -5,6 +5,7 @@ Mi Veris - Citas - Elige fecha y doctor
 @section('content')
 @php
 $data = json_decode(utf8_encode(base64_decode($params)));
+//dd($data);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- modal position-absolute -->
@@ -99,7 +100,8 @@ $data = json_decode(utf8_encode(base64_decode($params)));
     let currentDate = new Date();
 
     function renderCalendar(listaFechas) {
-        console.log(listaFechas);
+        console.log(listaFechas); 
+
         calendarGrid.innerHTML = '';
         const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
         const lastDayOfPreviousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
@@ -182,7 +184,7 @@ $data = json_decode(utf8_encode(base64_decode($params)));
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoSucursal={{ $data->central->codigoSucursal }}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoSucursal={{ isset($data->central) ? $data->central->codigoSucursal : '' }}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -205,7 +207,7 @@ $data = json_decode(utf8_encode(base64_decode($params)));
 
     async function consultarMedicos(fechaSeleccionada){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoSucursal={{ $data->central->codigoSucursal }}&codigoServicio={{ $data->especialidad->codigoServicio }}&codigoPrestacion={{ $data->especialidad->codigoPrestacion }}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoSucursal={{ isset($data->central) ? $data->central->codigoSucursal : '' }}&codigoServicio={{ $data->especialidad->codigoServicio }}&codigoPrestacion={{ $data->especialidad->codigoPrestacion }}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -224,7 +226,7 @@ $data = json_decode(utf8_encode(base64_decode($params)));
                                 </div>
                                 <div class="col-9">
                                     <h6 class="fw-bold mb-0">Dr(a) ${medico.nombreMedico}</h6>
-                                    <p class="text-primary-veris fw-bold fs--2 mb-0">{{ $data->central->nombreSucursal }}</p>
+                                    <p class="text-primary-veris fw-bold fs--2 mb-0">{{ isset($data->central) ? $data->central->nombreSucursal : 'VIRTUAL' }}</p>
                                     <p class="fs--2 mb-0">{{ $data->especialidad->nombre }}</p>
                                     <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">${medico.disponibilidad}</b></p>
                                     <p class="fs--2 mb-0">Horarios: <b class="fw-normal text-primary-veris" id="horarios">${medico.horario}</b></p>
@@ -254,7 +256,7 @@ $data = json_decode(utf8_encode(base64_decode($params)));
         listaHorariosMedico.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoSucursal={{ $data->central->codigoSucursal }}&codigoServicio={{ $data->especialidad->codigoServicio }}&codigoPrestacion={{ $data->especialidad->codigoPrestacion }}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoSucursal={{ isset($data->central) ? $data->central->codigoSucursal : '' }}&codigoServicio={{ $data->especialidad->codigoServicio }}&codigoPrestacion={{ $data->especialidad->codigoPrestacion }}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
