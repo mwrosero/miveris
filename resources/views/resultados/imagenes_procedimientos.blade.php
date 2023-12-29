@@ -269,10 +269,10 @@ Mi Veris - Resultados
                                  </div>`;
                              });
      
-                 elemento += `<div class="border-top">
-                                 <a onclick="detallesResultadosLaboratorio('${codigoApoyo}')" href="${quitarComillas(data.data[0].urlVisorWeb)}"
-                                 class="btn btn-primary-veris w-100 mt-3" target="_blank">Ver informe</a>
-                             </div>`;
+                    let jsonData = JSON.stringify(data.data).replace(/"/g, '&quot;');
+                     elemento += `<div class="border-top" onclick="verInforme('${jsonData}')">
+                                    <div class="btn btn-primary-veris w-100 mt-3">Ver informe</div>
+                                </div>`;
                  html.append(elemento);
      
              }        
@@ -281,9 +281,33 @@ Mi Veris - Resultados
           }
   
       }
+
+      // consultar documento del informe
+
+    
+    async function verInforme(dataString) {
+        
+        let dataS = JSON.parse(dataString);
+        console.log('data55', dataS);
+        let codigoApoyo = dataS[0].codigoOrdenApoyos;
+        console.log('codigoApoyo', codigoApoyo);
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+
+        args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log('datad', data);
+
+    }
  
  
-     // consultar grupo familiar
+     
+     
+         // consultar grupo familiar
      async function consultarGrupoFamiliar() {
          let args = [];
          canalOrigen = _canalOrigen
@@ -302,10 +326,6 @@ Mi Veris - Resultados
 
      
      // funciones js 
- 
-     
-
-
 
       // aplicar filtros
     $('#aplicarFiltros').on('click', function() {
@@ -332,14 +352,8 @@ Mi Veris - Resultados
         identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-
     });
 
-
-
- 
- 
- 
 </script>
 
 
