@@ -40,7 +40,9 @@ Mi Veris - Citas - Servicios a domicilio
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Servicios a domicilio') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Servicios a domicilio') }}</h5>
+    </div>
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
@@ -124,7 +126,7 @@ Mi Veris - Citas - Servicios a domicilio
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -145,7 +147,7 @@ Mi Veris - Citas - Servicios a domicilio
     async function consultarCiudades() {
         let args = [];
         canalOrigen = _canalOrigen
-        args["endpoint"] = api_url + `/digitales/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -164,7 +166,7 @@ Mi Veris - Citas - Servicios a domicilio
     // guardar farmacia domicilio
     async function consultarFarmaciaDomicilio() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/domicilio/farmacia/solicitud";
+        args["endpoint"] = api_url + "/digitalestest/v1/domicilio/farmacia/solicitud";
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "POST";
         args["showLoader"] = true;
@@ -213,7 +215,7 @@ Mi Veris - Citas - Servicios a domicilio
     //Crea una nueva solicitud de orden de laboratorio a domicilio.
     async function crearSolicitudLaboratorioDomicilio() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/domicilio/laboratorio/solicitud";
+        args["endpoint"] = api_url + "/digitalestest/v1/domicilio/laboratorio/solicitud";
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "formdata";

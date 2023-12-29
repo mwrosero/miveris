@@ -42,8 +42,9 @@ Mi Veris - Citas - Familia y amigos
         </div>
     </div>
 
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Familia y amigos') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Familia y amigos') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-4">
@@ -103,7 +104,7 @@ Mi Veris - Citas - Familia y amigos
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -123,7 +124,7 @@ Mi Veris - Citas - Familia y amigos
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         let idRelacion = $('#idRelacion').val();
-        args["endpoint"] = api_url + `/digitales/v1/perfil/migrupo/${idRelacion}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo/${idRelacion}`
         args["method"] = "DELETE";
         args["showLoader"] = true;
 

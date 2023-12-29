@@ -9,44 +9,55 @@ Mi Veris - Inicio
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
                 <div class="modal-header">
-                    <button type="button" class="btn-close fw-bold top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close fw-bold bg-transparent me-1 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body px-2 pt-2">
                     <h5 class="text-center mb-4">¿Qué quieres agendar?</h5>
-                    <div class="d-flex justify-content-around align-items-center mb-3">
-                        <a href="/mis-tratamientos" class="btn border py-0 px-2">
-                            <div class="row justify-content-between align-items-center">
-                                <div class="col-auto">
-                                    <p class="text-start fs--2 fw-bold mb-0">Lo que envió <br> mi doctor</p>
-                                </div>
-                                <div class="col-auto border-0 border-start rounded-circle pt-3 px-2">
-                                    <img src="{{ asset('assets/img/svg/paste.svg') }}" class="ms-2" alt="paste" width="35">
-                                </div>
+                    <div class="row gx-2 justify-content-between align-items-center">
+                        <div class="col-6 col-lg-6 mb-3">
+                            <div class="card mb-3">
+                                <a href="/mis-tratamientos">
+                                    <div class="row g-0 justify-content-between align-items-center">
+                                        <div class="col-9">
+                                            <div class="card-body py-0 px-2">
+                                                <h6 class="fw-bold fs--2 mb-0">{{ __('Lo que envió') }} {{ __('mi doctor') }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-3 border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
+                                            <img src="{{ asset('assets/img/svg/paste.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="paste" width="35">
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
-                        <a href="/citas" class="btn border py-0 px-2">
-                            <div class="row justify-content-between align-items-center">
-                                <div class="col-auto">
-                                    <p class="text-start fs--2 fw-bold mb-0">Una nueva <br> cita médica</p>
-                                </div>
-                                <div class="col-auto border-0 border-start rounded-circle pt-3 px-2">
-                                    <img src="{{ asset('assets/img/svg/doctor.svg') }}" class="ms-2" alt="doctor" width="35">
-                                </div>
+                        </div>
+                        <div class="col-6 col-lg-6 mb-3">
+                            <div class="card mb-3">
+                                <a href="/citas">
+                                    <div class="row g-0 justify-content-between align-items-center">
+                                        <div class="col-9">
+                                            <div class="card-body py-0 px-2">
+                                                <h6 class="fw-bold fs--2 mb-0">{{ __('Una nueva') }} {{ __('cita médica') }}</h6>
+                                            </div>
+                                        </div>
+                                        <div class="col-3 border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
+                                            <img src="{{ asset('assets/img/svg/doctor.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="doctor" width="35">
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-4 pt-3 mb-1 pb-2">{{ __('Inicio') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Inicio') }}</h5>
     </div>
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold border-start-veris ps-3">Acceso rápido</h5>
+            <h6 class="fw-bold border-start-veris ps-3 fs-18">Acceso rápido</h6>
         </div>
-        
         <div class="position-relative mb-3">
             <div class="swiper swiper-acceso-rapidos pt-3 pb-4 px-2 mx-n2">
                 <div class="swiper-wrapper">
@@ -59,7 +70,7 @@ Mi Veris - Inicio
                                             <h6 class="fw-bold fs--1 mb-0">{{ __('Agendar cita médica') }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center">
+                                    <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
                                         <img src="{{ asset('assets/img/svg/doctora.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
                                     </div>
                                 </div>
@@ -75,7 +86,7 @@ Mi Veris - Inicio
                                             <h6 class="fw-bold fs--1 mb-0">{{ __('Comprar promociones') }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center">
+                                    <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
                                         <img src="{{ asset('assets/img/svg/comprar.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
                                     </div>
                                 </div>
@@ -91,7 +102,7 @@ Mi Veris - Inicio
                                             <h6 class="fw-bold fs--1 mb-0">{{ __('Solicitar servicios') }} <br> {{ __('a domicilio') }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center">
+                                    <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
                                         <img src="{{ asset('assets/img/svg/motociclista.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
                                     </div>
                                 </div>
@@ -107,38 +118,28 @@ Mi Veris - Inicio
     <!-- Tratamientos dinamico -->
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold border-start-veris ps-3">Mis tratamientos</h5>
+            <h5 class="fw-bold border-start-veris ps-3 fs-18">Mis tratamientos</h5>
             <a href="{{route('tratamientos')}}"
             class="fs--2" style="display: visible;" id="verTodosTratamientos">Ver todos</a>
         </div>
         <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">
-
             <div class="swiper swipertratamientos pt-3 pb-4 px-2 mx-n2">
                 <div class="swiper-wrapper" id="contenedorTratamientoHome">
                     <!-- Puedes agregar tratamientos dinámicamente aquí desde JavaScript -->
-
                 </div>
-
-
                 <button type="button" class="mt-n4 btn btn-prev btn-transition"></button>
                 <button type="button" class="mt-n4 btn btn-next btn-transition"></button>
-
             </div>
-
-
         </div>
     </section>
-
     <!-- fin tratamientos dinamico -->
 
     <div id=contenedorCitas>
         <!-- AGREGAR AQUI EL CONTENIDO DE CITAS -->
-
     </div>
 
     <div id = contenedorUrgenciasAmbulatorias>
         <!-- AGREGAR AQUI EL CONTENIDO DE URGENCIAS AMBULATORIAS -->
-
     </div>
 
     
@@ -172,7 +173,7 @@ Mi Veris - Inicio
     let _ppd;
     async function obtenerPPD(){
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
+        args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
         args["method"] = "GET";
         args["showLoader"] = true;
 
@@ -203,7 +204,7 @@ Mi Veris - Inicio
     //aceptar las politicas
     async function aceptarPoliticas(){
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}";
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -288,7 +289,7 @@ Mi Veris - Inicio
         let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/digitales/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
+        args["endpoint"] = api_url + `/digitalestest/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -409,7 +410,7 @@ Mi Veris - Inicio
 
         elemento += `<section class="bg-light-grayish-blue p-3 mb-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="fw-bold border-start-veris ps-3">Mis citas</h5>
+                            <h5 class="fw-bold border-start-veris ps-3 fs-18">Mis citas</h5>
                             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
                         </div>
                         <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">

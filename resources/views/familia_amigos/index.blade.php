@@ -24,7 +24,6 @@ Mi Veris - Citas - Familia y amigos
         </div>
     </div>
     
-
     <!-- Modal mensaje -->
     <div class="modal fade" id="mensajePersonaAgregadaModal" tabindex="-1" aria-labelledby="mensajePersonaAgregadaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -41,7 +40,6 @@ Mi Veris - Citas - Familia y amigos
     </div>
 
     <!-- Modal mensaje para errores fuera de 200 -->    
-
     <div class="modal fade" id="mensajeErrorModal" tabindex="-1" aria-labelledby="mensajeErrorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
@@ -55,10 +53,6 @@ Mi Veris - Citas - Familia y amigos
             </div>
         </div>
     </div>
-
-
-
-
 
     <div class="modal fade" id="mensajePersonaYaExisteModal" tabindex="-1" aria-labelledby="mensajePersonaYaExisteModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -74,10 +68,9 @@ Mi Veris - Citas - Familia y amigos
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Familia y amigos') }}</h5>
-    
-    
-    
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Familia y amigos') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-4">
@@ -163,9 +156,9 @@ Mi Veris - Citas - Familia y amigos
     // obtener los tipos de identificación
     async function tiposIdentificacion() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/seguridad/tiposIdentificacion";
+        args["endpoint"] = api_url + "/digitalestest/v1/seguridad/tiposIdentificacion";
         args["method"] = "GET";
-        args["showLoader"] = true;
+        // args["showLoader"] = true;
 
         const data = await call(args);
         if (data.code == 200) {
@@ -190,7 +183,7 @@ Mi Veris - Citas - Familia y amigos
         let datosParentezco = [];
         console.log('tipoIdentificacion', tipoIdentificacion);
         let args = [];
-        args["endpoint"] = api_url + `/digitales/v1/perfil/personas?canalOrigen=${canal}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/personas?canalOrigen=${canal}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -227,7 +220,7 @@ Mi Veris - Citas - Familia y amigos
 
     async function consultarTipoParentesco() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/perfil/tiposparentesco";
+        args["endpoint"] = api_url + "/digitalestest/v1/perfil/tiposparentesco";
         args["method"] = "GET";
         args["showLoader"] = true;
 
@@ -251,7 +244,7 @@ Mi Veris - Citas - Familia y amigos
 
     async function agregarPersona() {
         let args = [];
-        args["endpoint"] = api_url + "/digitales/v1/perfil/migrupo";
+        args["endpoint"] = api_url + "/digitalestest/v1/perfil/migrupo";
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
