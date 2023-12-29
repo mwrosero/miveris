@@ -31,10 +31,11 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Laboratorio a domicilio') }}</h5>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
+            <div id="map" style="height: 400px;"></div>
             <div class="col-auto col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body">
-                        <div id="map" style="height: 400px;"></div>
+                        
 
                         <form class="row g-3" enctype="multipart/form-data">
                             
@@ -43,10 +44,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
                             <div class="col-md-12">
                                 <label for="ciudad" class="form-label fw-bold">Selecciona tu Ciudad *</label>
                                 <select class="form-select bg-neutral" name="ciudad" id="ciudad" required>
-                                    <option value="">Seleccione una ciudad</option>
-                                    <option value="1">Quito</option>
-                                    <option value="2">Guayaquil</option>
-                                    <option value="3">Cuenca</option>
+                                    
                                 </select>
                             </div>
                             
@@ -81,7 +79,8 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
 
                             <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit">Siguiente</button>
+                                <button class="btn btn-primary w-100" type="submit"
+                                >Siguiente</button>
                             </div>
                         </form>
                     </div>
@@ -115,6 +114,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     // variables globales
 
     let params = @json($data);
+    console.log('params', params);
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
@@ -151,14 +151,15 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
         e.preventDefault(); 
 
         // enviar datos por parametros
-        params.ciudad = $('#ciudad').val();
-        params.direccion = $('#direccion').val();
-        params.numeroIdentificacion = $('#numeroIdentificacion').val();
-        params.email = $('#email').val();
-        params.telefono = $('#telefono').val();
-        params.referencias = $('#referencias').val();
+        params.Uciudad = $('#ciudad').val();
+        params.Udireccion = $('#direccion').val();
+        params.UnumeroIdentificacion = $('#numeroIdentificacion').val();
+        params.Uemail = $('#email').val();
+        params.Utelefono = $('#telefono').val();
+        params.Ureferencias = $('#referencias').val();
 
         let ulrParams = btoa(JSON.stringify(params)); 
+        console.log('ulrParams', ulrParams);
         
         window.location.href = `/registrar-orden-externa/${ulrParams}`;
     });

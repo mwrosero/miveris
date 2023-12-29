@@ -66,8 +66,9 @@ Route::group(['middleware' => ['loggedUser']], function () {
     #Laboratorio
     Route::get('/laboratorio',[CitasController::class, 'laboratorio'])->name('citas.laboratorio')->withoutMiddleware(['guest']);
     Route::get('/laboratorio-domicilio/{codigoTratamiento}', [CitasController::class, 'laboratorioDomicilio'])->name('citas.laboratorioDomicilio')->withoutMiddleware((['guest']));
-    Route::get('/citas-laboratorio', [CitasController::class, 'citasLaboratorio'])->name('citas.citasLaboratorio')->withoutMiddleware((['guest']));
-    #Imagenes y procedimientos
+    Route::get('/citas-laboratorio/{params}',[CitasController::class, 'citasLaboratorio'])->name('citas.citasLaboratorio')->withoutMiddleware((['guest']));
+     
+    #Imagenes y procedimientos              
     Route::get('/imagenes-procedimientos',[CitasController::class, 'imagenesProcedimientos'])->name('citas.imagenesProcedimientos')->withoutMiddleware(['guest']);
     #Terapia fisica
     Route::get('/terapia-fisica',[CitasController::class, 'terapiaFisica'])->name('citas.terapiaFisica')->withoutMiddleware(['guest']);

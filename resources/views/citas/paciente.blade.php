@@ -5,6 +5,8 @@ Elige Paciente
 @section('content')
 @php
 $data = json_decode(base64_decode($params));
+
+
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
@@ -124,13 +126,13 @@ $data = json_decode(base64_decode($params));
             if(data.data.length > 0){
                 listaConvenios.empty();
                 data.data.forEach((convenios) => {
+
+                    console.log('convenios', convenios);
                     let params = @json($data);
                     params.convenio = convenios;
-<<<<<<< HEAD
                     let urlParams = btoa(JSON.stringify(params));
                     elemento += `<a href="/citas-elegir-especialidad/${urlParams}"
-                        class="stretched-link">
-=======
+                        class="stretched-link">`;
                     params.numeroIdentificacion = codigoUsuario;
                     params.tipoIdentificacion = tipoIdentificacion;
                     let ulrParams = btoa(JSON.stringify(params));
@@ -148,9 +150,7 @@ $data = json_decode(base64_decode($params));
                     else {
                         ruta = `/citas-elegir-especialidad/${ulrParams}`;
                     }
-                    elemento += `<a href="${ruta}"
-                    class="stretched-link">
->>>>>>> julio
+                    elemento += `<a href="${ruta}" class="stretched-link">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
                                         <label for="listGroupCheckableRadios2">
