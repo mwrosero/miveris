@@ -175,7 +175,7 @@ Mi Veris - Citas - Mis tratamientos
                                                 </div>
                                                 <div class="d-flex justify-content-end align-items-center">
                                                     <a href="/tratamiento/${ulrParams}
-                                                    " class="btn btn-sm btn-primary-veris">
+                                                    " class="btn btn-sm btn-primary-veris shadow-none">
                                                         ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
                                                     </a>
                                                 </div>

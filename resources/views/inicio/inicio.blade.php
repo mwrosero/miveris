@@ -24,7 +24,7 @@ Mi Veris - Inicio
                                             </div>
                                         </div>
                                         <div class="col-3 border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                            <img src="{{ asset('assets/img/svg/paste.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="paste" width="35">
+                                            <img src="{{ asset('assets/img/svg/paste.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="paste" width="40">
                                         </div>
                                     </div>
                                 </a>
@@ -40,7 +40,7 @@ Mi Veris - Inicio
                                             </div>
                                         </div>
                                         <div class="col-3 border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                            <img src="{{ asset('assets/img/svg/doctor.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="doctor" width="35">
+                                            <img src="{{ asset('assets/img/svg/doctor.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="doctor" width="40">
                                         </div>
                                     </div>
                                 </a>
@@ -71,7 +71,7 @@ Mi Veris - Inicio
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                        <img src="{{ asset('assets/img/svg/doctora.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
+                                        <img src="{{ asset('assets/img/svg/doctora.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="52">
                                     </div>
                                 </div>
                             </a>
@@ -87,7 +87,7 @@ Mi Veris - Inicio
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                        <img src="{{ asset('assets/img/svg/comprar.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
+                                        <img src="{{ asset('assets/img/svg/comprar.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="52">
                                     </div>
                                 </div>
                             </a>
@@ -103,7 +103,7 @@ Mi Veris - Inicio
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                        <img src="{{ asset('assets/img/svg/motociclista.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
+                                        <img src="{{ asset('assets/img/svg/motociclista.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="52">
                                     </div>
                                 </div>
                             </a>
