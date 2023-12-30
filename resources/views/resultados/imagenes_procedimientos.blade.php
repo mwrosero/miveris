@@ -263,7 +263,7 @@ Mi Veris - Resultados
      
                     let jsonData = JSON.stringify(data.data).replace(/"/g, '&quot;');
                      elemento += `<div class="border-top" onclick="verInforme('${jsonData}')">
-                                    <div class="btn btn-primary-veris w-100 mt-3">Ver informe</div>
+                                    <div class="btn btn-lg btn-primary-veris w-100 mt-3">Ver informe</div>
                                 </div>`;
                  html.append(elemento);
      
