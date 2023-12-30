@@ -188,7 +188,7 @@ Mi Veris - Resultados
                                                         <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
                                                     </div>
                                                     <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}')"
-                                                    type="button"  class="btn btn-primary-veris shadow-none verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
+                                                    type="button" class="btn btn-primary-veris shadow-none verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
                                                         Ver resultados
                                                     </button>
                                                 </div>
@@ -261,17 +261,10 @@ Mi Veris - Resultados
                                  </div>`;
                              });
      
-<<<<<<< HEAD
-                 elemento += `<div class="border-top">
-                                 <a onclick="detallesResultadosLaboratorio('${codigoApoyo}')" href="${quitarComillas(data.data[0].urlVisorWeb)}"
-                                 class="btn btn-lg btn-primary-veris w-100 mt-3" target="_blank">Ver informe</a>
-                             </div>`;
-=======
                     let jsonData = JSON.stringify(data.data).replace(/"/g, '&quot;');
                      elemento += `<div class="border-top" onclick="verInforme('${jsonData}')">
                                     <div class="btn btn-primary-veris w-100 mt-3">Ver informe</div>
                                 </div>`;
->>>>>>> developer
                  html.append(elemento);
      
              }        
