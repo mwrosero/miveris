@@ -346,8 +346,19 @@ Mi Veris - Inicio
                                                     <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success">
-                                                        <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
+                                                    <div class="progress-circle" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+                                                        <span class="progress-left">
+                                                            <span class="progress-bar"></span>
+                                                        </span>
+                                                        <span class="progress-right">
+                                                            <span class="progress-bar"></span>
+                                                        </span>
+                                                        <div class="progress-value">
+                                                            <div>
+                                                                <span><i class="bi bi-check2 success"></i></span>
+                                                                <p class="fs--2 mb-0">${tratamientos.totalTratamientoRealizados}/${tratamientos.totalTratamientoEnviados}</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
