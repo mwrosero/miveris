@@ -253,7 +253,7 @@
 		nextButton.addEventListener("click", async function (e) {
 			e.preventDefault();
 			let errors = false;
-            let msg = `<ul class="ms-0 text-start">`;
+            let msg = `<ul class="ms-0 text-start" id="itemsMsg">`;
             let existeCuenta = await verificarCuenta();
             let title = 'Campos requeridos';
             if(!existeCuenta){
@@ -303,10 +303,16 @@
 				$('#modalAlertButtonAccion').addClass('d-none');
 				$('#modalAlertButton').removeClass('d-none');
 	        }else{
+				
 	        	errors = true;
 	        	title = 'Veris';
-	            msg += `<span class="txt-alt">La cuenta que estás intentando crear ya existe. Al parecer has olvidado tu clave, puedes cambiarla ahora.</span>`;
+	            msg += `<p class="txt-alt text-center">La cuenta que estás intentando crear ya existe. Al parecer has olvidado tu clave, puedes cambiarla ahora.</p>`;
 	            
+				$(document).ready(function() {
+					console.log($('#itemsMsg').length);
+					$('#itemsMsg').addClass('ps-0');
+				});
+				
 	            $('#modalAlertButtonCancelar').removeClass('d-none');
 				$('#modalAlertButtonAccion').removeClass('d-none');
 				$('#modalAlertButtonAccion').attr('href','/olvide-clave');

@@ -78,7 +78,12 @@ table th:last-child{
 table td{
     font-size: 12px !important;
 }
-
+.text-dark-veris{
+    color: #0A2240;
+}
+.bg-labe-grayish {
+    background-color: #F3F4F5 !important;
+}
 .btn{
     font-weight: 700;
     padding-top: 15px;

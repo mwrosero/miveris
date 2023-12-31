@@ -2,6 +2,11 @@
 @section('title')
     Veris - Olvide Contraseña
 @endsection
+@section('back-button')
+<div class="bg-labe-grayish px-3 py-2 position-absolute w-100">
+    <a href="{{route('login')}}" class="text-dark-veris"><i class="bi bi-arrow-left"></i> {{ __('Atrás') }}</a>
+</div>
+@endsection
 @section('content')
 <!-- Logo -->
 <div class="text-center mb-2">
