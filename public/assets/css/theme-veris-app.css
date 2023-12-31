@@ -21,6 +21,7 @@
   --bg-vris-very-pale-red: #FFE0E4;
   --bg-vris-very-pale-blue: #D6F3FF;
   --bg-vris-very-dark-blue: #0A2240;
+  --bg-vris-desaturated: #3D4E66;
   --bg-vris-light-grayish-green: #f1f8e2;
   --bg-vris-strong-cyan-lime-green: #00C853;
   --bg-vris-grayish-blue: #CCEAFA;
@@ -85,6 +86,9 @@ body {
   height: 10.5rem !important;
 }
 
+.border-desaturated{
+  border: 1px solid var(--bg-vris-desaturated, #3D4E66) !important;
+}
 .bg-navbar-theme-veris {
   background-color: var(--bg-vris-blue);
   color: var(--bg-vris-white) !important;
