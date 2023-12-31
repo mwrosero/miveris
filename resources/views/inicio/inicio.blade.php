@@ -56,7 +56,7 @@ Mi Veris - Inicio
     </div>
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h6 class="fw-bold border-start-veris ps-3 fs-18">Acceso rápido</h6>
+            <h6 class="fw-bold border-start-veris ps-3 fs-18">{{ __('Acceso rápido') }}</h6>
         </div>
         <div class="position-relative mb-3">
             <div class="swiper swiper-acceso-rapidos pt-3 pb-4 px-2 mx-n2">
@@ -111,8 +111,8 @@ Mi Veris - Inicio
                     </div>
                 </div>
             </div>
-            <button type="button" id="prevProperties" class="d-none mt-n4 btn btn-prev"></button>
-            <button type="button" id="nextProperties" class="d-none mt-n4 btn btn-next"></button>
+            <button type="button" id="prevProperties" class="d-flex d-lg-none mt-n4 btn btn-prev"></button>
+            <button type="button" id="nextProperties" class="d-flex d-lg-none mt-n4 btn btn-next"></button>
         </div>
     </section>
     <!-- Tratamientos dinamico -->
