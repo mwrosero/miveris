@@ -2,6 +2,11 @@
 @section('title')
     Veris - Recuperar Contraseña
 @endsection
+@section('back-button')
+<div class="bg-labe-grayish px-3 py-2 position-absolute w-100" style="z-index: 9;">
+    <a href="{{route('login')}}" class="text-dark-veris"><i class="bi bi-arrow-left"></i> {{ __('Atrás') }}</a>
+</div>
+@endsection
 @section('content')
 <div class="text-center mb-2">
     <img class="logo-login" src="../../assets/img/veris/isotipo.svg">
@@ -13,7 +18,7 @@
     <div class="mb-3">
         <label for="codigoAutorizacion" class="form-label bg-colortext fw-bold mt-3">Código de autorización *</label>
         <input type="text"
-            class="form-control"
+            class="form-control form-filter border-0"
             oninput="limitarCaracteres(this, 10)"
             onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
             id="codigoAutorizacion"
@@ -28,12 +33,12 @@
         <div class="input-group input-group-merge">
             <input type="password"
             id="password"
-            class="form-control"
+            class="form-control form-filter border-0"
             name="password"
             placeholder="Ingresa tu contraseña"
             aria-describedby="password"
             required />
-            <span id="togglePassword" class="input-group-text cursor-pointer"
+            <span id="togglePassword" class="input-group-text cursor-pointer form-filter border-0"
             ><i class="ti ti-eye-off"></i></span>
         </div>
     </div>
@@ -44,12 +49,12 @@
         <div class="input-group input-group-merge">
             <input type="password"
             id="password2"
-            class="form-control"
+            class="form-control form-filter border-0"
             name="password2"
             placeholder="Confirma la contraseña"
             aria-describedby="password2"
             required />
-            <span id="togglePassword2" class="input-group-text cursor-pointer"
+            <span id="togglePassword2" class="input-group-text cursor-pointer form-filter border-0"
             ><i class="ti ti-eye-off"></i></span>
         </div>
     </div>
