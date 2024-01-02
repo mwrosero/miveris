@@ -232,7 +232,7 @@ Mi Veris - Resultados
               
           }
   
-      }
+    }
  
  
      // consultar grupo familiar
