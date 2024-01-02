@@ -25,6 +25,23 @@ Mi Veris - Órdenes externas
         </div>
     </div>
 
+    <!-- Modal de error -->
+
+    <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- filtro -->
     
 
@@ -167,7 +184,16 @@ Mi Veris - Órdenes externas
                 document.getElementById('mensajeOrdenesExternas').classList.remove('d-none');
             }
         }
-        
+        if (data.code != 200) {
+            dataConvenio = [];
+            // limpiar lista de ordenes
+            $('#ordenesExternas').empty();
+            // mostrar mensaje error en el modal
+            $('#mensajeError').text(data.message);
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+            
+        }
+
      }
 
      function convertirFecha(fechaOriginal) {
