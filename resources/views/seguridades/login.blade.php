@@ -51,13 +51,13 @@
         </div>
     </div>
     <div class="mb-5 text-left">
-        <a class="txt-veris fs-12" href="/olvide-clave"> Olvide mi Contraseña</a>
+        <a class="txt-veris fs-12" href="/olvide-clave"> {{ __('Olvidé mi contraseña')}}</a>
     </div>
     <div class="mt-5 mb-3">
-        <button class="btn d-grid w-100 bg-veris rounded" id="btnLogin" type="submit">Iniciar Sesión</button>
+        <button class="btn d-grid w-100 bg-veris rounded" id="btnLogin" type="submit">{{ __('Iniciar Sesión')}}</button>
     </div>
     <div class="mb-3">
-        <a href="registrar-cuenta" class="btn d-grid w-100 bg-alt rounded">Crear una cuenta</a>
+        <a href="registrar-cuenta" class="btn d-grid w-100 bg-alt rounded">{{ __('Crear una cuenta')}}</a>
     </div>
 </form>
 <script>

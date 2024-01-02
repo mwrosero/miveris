@@ -171,11 +171,24 @@ Mi Veris - Citas - Mis tratamientos
                                                     <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="fecha-enviado fw-normal text-primary-veris">${tratamientos.fechaTratamiento}</b></p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
+                                                    <div class="progress-circle" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+                                                        <span class="progress-left">
+                                                            <span class="progress-bar"></span>
+                                                        </span>
+                                                        <span class="progress-right">
+                                                            <span class="progress-bar"></span>
+                                                        </span>
+                                                        <div class="progress-value">
+                                                            <div>
+                                                                <span><i class="bi bi-check2 success"></i></span>
+                                                                <p class="fs--2 mb-0">${tratamientos.totalTratamientoRealizados}/${tratamientos.totalTratamientoEnviados}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end align-items-center">
                                                     <a href="/tratamiento/${ulrParams}
-                                                    " class="btn btn-sm btn-primary-veris">
+                                                    " class="btn btn-sm btn-primary-veris shadow-none">
                                                         ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
                                                     </a>
                                                 </div>
@@ -218,18 +231,31 @@ Mi Veris - Citas - Mis tratamientos
                                         </div>
                                         <div class="text-center">
                                             <div class="col-auto">
-                                                <div id="chart-progressRealizado" data-porcentaje="${tratamientosRealizados.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
+                                                <div class="progress-circle" data-percentage="${tratamientosRealizados.porcentajeAvanceTratamiento}">
+                                                    <span class="progress-left">
+                                                        <span class="progress-bar"></span>
+                                                    </span>
+                                                    <span class="progress-right">
+                                                        <span class="progress-bar"></span>
+                                                    </span>
+                                                    <div class="progress-value">
+                                                        <div>
+                                                            <span><i class="bi bi-check2 success"></i></span>
+                                                            <p class="fs--2 mb-0">${tratamientosRealizados.totalTratamientoRealizados}/${tratamientosRealizados.totalTratamientoEnviados}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <h6 class="card-title mb-2">${capitalizarElemento(tratamientosRealizados.nombreEspecialidad)}</h6>
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-end">
-                                            <div>
-                                                <p class="fw-bold fs--2 mb-0">¡Tratamiento terminado!</p>
+                                        <div class="row g-0 justify-content-between align-items-end">
+                                            <div class="col-md-9">
+                                                <p class="fw-bold fs--2 mb-0" style="color: #003B83;">¡Tratamiento terminado!</p>
                                                 <p class="fw-normal fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientosRealizados.nombreMedico)}</p>
                                                 <p class="fw-light fs--2 mb-0">Terminado el: <b class="text-primary-veris fw-light fs--2" id="fechaTratamiento">${tratamientosRealizados.fechaTratamiento}</b></p>
                                             </div>
-                                            <div>
-                                                <a href="#" class="btn btn-sm btn-primary-veris">Ver todo</a>
+                                            <div class="col-md-3">
+                                                <a href="#" class="btn btn-sm btn-primary-veris px-2">Ver todo</a>
                                             </div>
                                         </div>
                                     </div>

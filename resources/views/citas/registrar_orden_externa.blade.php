@@ -185,7 +185,7 @@ $data1 = json_decode($data);
     // recuperar variables del path
     let tipoIdentificacion = params.tipoIdentificacion;
     let numeroIdentificacion = params.numeroIdentificacion;
-    // let convenio = params.convenio;
+    let convenio = params.convenio;
     let codigoConvenio = params.codigoConvenio;
     let nombreConvenio = params.nombreConvenio;
     let datosPaciente = [];
