@@ -12,8 +12,8 @@ class HistoriaClinicaController extends Controller
     }
 
     //Return view lista de doctores historia clinica
-    public function listaDoctoresHistoriaClinica( $codigoEspecialidad , $tipoIdentificacion, $numeroIdentificacion) {
-        return view('historia_clinica.lista_doctores', ['codigoEspecialidad' => $codigoEspecialidad, 'tipoIdentificacion' => $tipoIdentificacion, 'numeroIdentificacion' => $numeroIdentificacion]);
+    public function listaDoctoresHistoriaClinica( $codigoEspecialidad , $tipoIdentificacion, $numeroIdentificacion, $esOnline) {
+        return view('historia_clinica.lista_doctores', ['codigoEspecialidad' => $codigoEspecialidad, 'tipoIdentificacion' => $tipoIdentificacion, 'numeroIdentificacion' => $numeroIdentificacion, 'esOnline' => $esOnline]);
     }
 
     // Return view formulario solicitar historia clinica

@@ -85,6 +85,7 @@ Mi Veris - Buscar doctor
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function() {
         await consultarEspecialidades();
+        await obtenerDisponibilidadDoctor(dataEspecialidades[0]);
     });
 
     // funciones asyncronas
