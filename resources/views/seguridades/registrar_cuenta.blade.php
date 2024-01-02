@@ -28,7 +28,7 @@
     	<p class="text-left text-md-center title-section txt-alt mt-4 mt-md-2">Crear una cuenta</p>
 	    <div class="mb-2">
 	        <label for="tipoIdentificacion" class="form-label fw-bold">Tipo de identificación *</label>
-	        <select class="form-control"
+	        <select class="form-select form-filter border-0"
 	            id="tipoIdentificacion"
 	            name="tipoIdentificacion"
 	            onchange="actualizarMaxlength(this)"
@@ -40,7 +40,7 @@
 	    <div class="mb-2">
 	        <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación *</label>
 	        <input type="text"
-	            class="form-control"
+	            class="form-control form-filter border-0"
 	            id="numeroIdentificacion"
 	            name="numeroIdentificacion"
 	            placeholder="Ingresa tu número de identificación"
@@ -52,7 +52,7 @@
 	    <div class="mb-2">
 	        <label for="mail" class="form-label fw-bold">Correo electrónico *</label>
 	        <input type="email"
-	            class="form-control"
+	            class="form-control form-filter border-0"
 	            id="mail"
 	            name="mail"
 	            placeholder="Ingresa tu correo electrónico"
@@ -61,7 +61,7 @@
 	    <div class="mb-2">
 	        <label for="fechaNacimiento" class="form-label fw-bold">Fecha de Nacimiento *</label>
 	        <input type="text"
-	            class="form-control"
+	            class="form-control form-filter border-0"
 	            id="fechaNacimiento"
 	            name="fechaNacimiento"
 	            placeholder="Fecha de Nacimiento"
@@ -71,7 +71,7 @@
 	    <div class="mb-2">
 	        <label for="telefono" class="form-label fw-bold">Teléfono *</label>
 	        <input type="tel"
-	            class="form-control"
+	            class="form-control form-filter border-0"
 	            oninput="limitarCaracteres(this, 10)"
 	            id="telefono"
 	            name="telefono"
@@ -85,12 +85,12 @@
 	        <div class="input-group input-group-merge">
 	            <input type="password"
 	            id="password"
-	            class="form-control"
+	            class="form-control form-filter border-0"
 	            name="password"
 	            placeholder="Ingresa tu contraseña"
 	            aria-describedby="password"
 	            required />
-	            <span id="togglePassword" class="input-group-text cursor-pointer"
+	            <span id="togglePassword" class="input-group-text cursor-pointer form-filter border-0"
 	            ><i class="ti ti-eye-off"></i></span>
 	        </div>
 	        <span class="fs-10">Tu contraseña debe tener 8 dígitos mínimo</span>
@@ -102,12 +102,12 @@
 	        <div class="input-group input-group-merge">
 	            <input type="password"
 	            id="password2"
-	            class="form-control"
+	            class="form-control form-filter border-0"
 	            name="password2"
 	            placeholder="Repite la contraseña"
 	            aria-describedby="password2"
 	            required />
-	            <span id="togglePassword2" class="input-group-text cursor-pointer"
+	            <span id="togglePassword2" class="input-group-text cursor-pointer form-filter border-0"
 	            ><i class="ti ti-eye-off"></i></span>
 	        </div>
 	    </div>
@@ -118,7 +118,7 @@
 	<section class="step step2 d-none">
 		<div class="mb-2">
 	        <label for="genero" class="form-label fw-bold">Género *</label>
-	        <select class="form-control"
+	        <select class="form-select form-filter border-0"
 	            id="genero"
 	            name="genero"
 	            autofocus
@@ -157,7 +157,7 @@
 	    </div>
 	    <div class="mb-2">
 	        <label for="provincia" class="form-label fw-bold">Provincia *</label>
-	        <select class="form-control"
+	        <select class="form-select form-filter border-0"
 	            id="provincia"
 	            name="provincia"
 	            autofocus
@@ -167,7 +167,7 @@
 	    </div>
 	    <div class="mb-2">
 	        <label for="ciudad" class="form-label fw-bold">Ciudad *</label>
-	        <select class="form-control"
+	        <select class="form-select form-filter border-0"
 	            id="ciudad"
 	            name="ciudad"
 	            autofocus
@@ -253,7 +253,7 @@
 		nextButton.addEventListener("click", async function (e) {
 			e.preventDefault();
 			let errors = false;
-            let msg = `<ul class="ms-0 text-start">`;
+            let msg = `<ul class="ms-0 text-start" id="itemsMsg">`;
             let existeCuenta = await verificarCuenta();
             let title = 'Campos requeridos';
             if(!existeCuenta){
@@ -303,10 +303,16 @@
 				$('#modalAlertButtonAccion').addClass('d-none');
 				$('#modalAlertButton').removeClass('d-none');
 	        }else{
+				
 	        	errors = true;
 	        	title = 'Veris';
-	            msg += `<span class="txt-alt">La cuenta que estás intentando crear ya existe. Al parecer has olvidado tu clave, puedes cambiarla ahora.</span>`;
+	            msg += `<p class="txt-alt text-center">La cuenta que estás intentando crear ya existe. Al parecer has olvidado tu clave, puedes cambiarla ahora.</p>`;
 	            
+				$(document).ready(function() {
+					console.log($('#itemsMsg').length);
+					$('#itemsMsg').addClass('ps-0');
+				});
+				
 	            $('#modalAlertButtonCancelar').removeClass('d-none');
 				$('#modalAlertButtonAccion').removeClass('d-none');
 				$('#modalAlertButtonAccion').attr('href','/olvide-clave');

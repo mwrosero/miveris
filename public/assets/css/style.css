@@ -78,9 +78,13 @@ table th:last-child{
 table td{
     font-size: 12px !important;
 }
-
+.text-dark-veris{
+    color: #0A2240;
+}
+.bg-labe-grayish {
+    background-color: #F3F4F5 !important;
+}
 .btn{
-    font-size: 12px;
     font-weight: 700;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -154,7 +158,7 @@ table td{
 }
 
 .bg-veris:active{
-    background: #0A2240 !important;
+    background: #003B83 !important;
     color: #fff !important;
 }
 
@@ -232,9 +236,11 @@ a.menu-link{
 #registroWizard select,
 #registroWizard #togglePassword, 
 #registroWizard #togglePassword2 {
-    background: #ECEDEE;
+    /* background: #ECEDEE; */
 }
-
+.form-filter {
+    background-color: var(--opacidad-oscuro-05, rgba(0, 0, 0, 0.05)) !important;
+}
 /*Select2*/
 .select2-results__option[role=option][aria-selected=true] {
     background-color: #3962E6 !important;

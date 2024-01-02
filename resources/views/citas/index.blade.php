@@ -76,7 +76,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center" style="background: #F0FAFF; border-top-right-radius: 7.375rem; border-bottom-right-radius: 7.375rem;">
-                                <img src="{{ asset('assets/img/svg/estetoscopio.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Imágenes y procedimientos') }}" width="40">
+                                <img src="{{ asset('assets/img/svg/estetoscopio.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Imágenes y procedimientos') }}" width="52">
                             </div>
                         </div>
                     </a>
@@ -93,7 +93,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center" style="background: #F1F8E2; border-top-right-radius: 7.375rem; border-bottom-right-radius: 7.375rem;">
-                                <img src="{{ asset('assets/img/svg/microscopio.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Laboratorio') }}" width="40">
+                                <img src="{{ asset('assets/img/svg/microscopio.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Laboratorio') }}" width="52">
                             </div>
                         </div>
                     </a>
@@ -110,7 +110,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center" style="background: #DEDAF0; border-top-right-radius: 7.375rem; border-bottom-right-radius: 7.375rem;">
-                                <img src="{{ asset('assets/img/svg/imagen.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Imágenes y procedimientos') }}" width="40">
+                                <img src="{{ asset('assets/img/svg/imagen.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Imágenes y procedimientos') }}" width="52">
                             </div>
                         </div>
                     </a>
@@ -127,7 +127,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center" style="background: #D6F3FF; border-top-right-radius: 7.375rem; border-bottom-right-radius: 7.375rem;">
-                                <img src="{{ asset('assets/img/svg/muletas.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Terapia física') }}" width="40">
+                                <img src="{{ asset('assets/img/svg/muletas.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Terapia física') }}" width="52">
                             </div>
                         </div>
                     </a>
@@ -144,7 +144,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center" style="background: #FFE0E4; border-top-right-radius: 7.375rem; border-bottom-right-radius: 7.375rem;">
-                                <img src="{{ asset('assets/img/svg/recetas.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Recetas médicas') }}" width="40">
+                                <img src="{{ asset('assets/img/svg/recetas.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Recetas médicas') }}" width="52">
                             </div>
                         </div>
                     </a>
@@ -161,7 +161,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center" style="background: #F0F0F0; border-top-right-radius: 7.375rem; border-bottom-right-radius: 7.375rem;">
-                                <img src="{{ asset('assets/img/svg/orden_externa.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Orden externa') }}" width="40">
+                                <img src="{{ asset('assets/img/svg/orden_externa.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Orden externa') }}" width="52">
                             </div>
                         </div>
                     </a>
@@ -184,7 +184,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('assets/img/svg/clock.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Citas pasadas') }}" width="40">
+                                <img src="{{ asset('assets/img/svg/clock.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Citas pasadas') }}" width="52">
                             </div>
                         </div>
                     </a>
@@ -200,7 +200,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('assets/img/svg/calendario.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Próximas citas') }}" width="40">
+                                <img src="{{ asset('assets/img/svg/calendario.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Próximas citas') }}" width="52">
                             </div>
                         </div>
                     </a>

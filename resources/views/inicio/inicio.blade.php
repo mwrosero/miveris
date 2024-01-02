@@ -24,7 +24,7 @@ Mi Veris - Inicio
                                             </div>
                                         </div>
                                         <div class="col-3 border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                            <img src="{{ asset('assets/img/svg/paste.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="paste" width="35">
+                                            <img src="{{ asset('assets/img/svg/paste.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="paste" width="40">
                                         </div>
                                     </div>
                                 </a>
@@ -40,7 +40,7 @@ Mi Veris - Inicio
                                             </div>
                                         </div>
                                         <div class="col-3 border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                            <img src="{{ asset('assets/img/svg/doctor.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="doctor" width="35">
+                                            <img src="{{ asset('assets/img/svg/doctor.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="doctor" width="40">
                                         </div>
                                     </div>
                                 </a>
@@ -56,7 +56,7 @@ Mi Veris - Inicio
     </div>
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h6 class="fw-bold border-start-veris ps-3 fs-18">Acceso rápido</h6>
+            <h6 class="fw-bold border-start-veris ps-3 fs-18">{{ __('Acceso rápido') }}</h6>
         </div>
         <div class="position-relative mb-3">
             <div class="swiper swiper-acceso-rapidos pt-3 pb-4 px-2 mx-n2">
@@ -71,7 +71,7 @@ Mi Veris - Inicio
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                        <img src="{{ asset('assets/img/svg/doctora.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
+                                        <img src="{{ asset('assets/img/svg/doctora.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="52">
                                     </div>
                                 </div>
                             </a>
@@ -87,7 +87,7 @@ Mi Veris - Inicio
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                        <img src="{{ asset('assets/img/svg/comprar.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
+                                        <img src="{{ asset('assets/img/svg/comprar.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="52">
                                     </div>
                                 </div>
                             </a>
@@ -103,7 +103,7 @@ Mi Veris - Inicio
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                        <img src="{{ asset('assets/img/svg/motociclista.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="55">
+                                        <img src="{{ asset('assets/img/svg/motociclista.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="52">
                                     </div>
                                 </div>
                             </a>
@@ -111,8 +111,8 @@ Mi Veris - Inicio
                     </div>
                 </div>
             </div>
-            <button type="button" id="prevProperties" class="d-none mt-n4 btn btn-prev"></button>
-            <button type="button" id="nextProperties" class="d-none mt-n4 btn btn-next"></button>
+            <button type="button" id="prevProperties" class="d-flex d-lg-none mt-n4 btn btn-prev"></button>
+            <button type="button" id="nextProperties" class="d-flex d-lg-none mt-n4 btn btn-next"></button>
         </div>
     </section>
     <!-- Tratamientos dinamico -->
@@ -346,8 +346,19 @@ Mi Veris - Inicio
                                                     <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success">
-                                                        <i class="bi bi-check2 position-absolute top-25 start-40 success"></i>
+                                                    <div class="progress-circle" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+                                                        <span class="progress-left">
+                                                            <span class="progress-bar"></span>
+                                                        </span>
+                                                        <span class="progress-right">
+                                                            <span class="progress-bar"></span>
+                                                        </span>
+                                                        <div class="progress-value">
+                                                            <div>
+                                                                <span><i class="bi bi-check2 success"></i></span>
+                                                                <p class="fs--2 mb-0">${tratamientos.totalTratamientoRealizados}/${tratamientos.totalTratamientoEnviados}</p>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

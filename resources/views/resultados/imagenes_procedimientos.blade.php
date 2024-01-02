@@ -17,27 +17,21 @@ Mi Veris - Resultados
             </div>
         </div>
     </div>
-
     <!-- filtro -->
     <div class="tab-content bg-transparent" id="pills-tabContent">
         @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
         @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
-    
     </div>
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Resultados') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white mb-4">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Resultados') }}</h5>
+    </div>
     <section class="p-3 pt-0 mb-3">
-        
         <div class="row justify-content-center">
-            
-            
             <div class="col-auto col-lg-10">
-                <div class="row gy-3" id="resultadosIP">
+                <div class="row g-3" id="resultadosIP">
                     <!-- items dinamicos -->
-                    
                 </div>
             </div>
-
             <!-- Mensaje No tienes ordenes de terapia realizadas -->
             <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesResultadosRealizados">
                 <div class="card bg-transparent shadow-none">
@@ -186,17 +180,15 @@ Mi Veris - Resultados
                                         <div class="card h-100">
                                             <div class="card-body p-3">
                                                 <h6 class="text-primary-veris fw-bold fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
-                                                <p class="text-primary-veris fw-bold fs--2 mb-1" id="nombreResultadoLab">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
+                                                <p class="fw-bold fs--2 mb-1" id="nombreResultadoLab" style="color: #0055AA !important">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
                                                 <p class="fw-bold fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
                                                 <p class="fw-normal fs--2 mb-1">Realizado: <b class="fw-normal" id="fecha">${resultados.dia}</b></p>
                                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                                     <div class="avatar me-2">
                                                         <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
-                                                        
-                                                            
                                                     </div>
                                                     <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}')"
-                                                    type="button"  class="btn btn-sm btn-primary-veris verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
+                                                    type="button" class="btn btn-primary-veris shadow-none verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
                                                         Ver resultados
                                                     </button>
                                                 </div>
@@ -265,13 +257,13 @@ Mi Veris - Resultados
      
                      elemento += `<div class="my-3">
                                      <p class="text-center fs-normal my-3">${capitalizarElemento(resultados.nombrePrestacion)}</p>
-                                     <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
+                                     <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-lg btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
                                  </div>`;
                              });
      
                     let jsonData = JSON.stringify(data.data).replace(/"/g, '&quot;');
                      elemento += `<div class="border-top" onclick="verInforme('${jsonData}')">
-                                    <div class="btn btn-primary-veris w-100 mt-3">Ver informe</div>
+                                    <div class="btn btn-lg btn-primary-veris w-100 mt-3">Ver informe</div>
                                 </div>`;
                  html.append(elemento);
      
