@@ -208,6 +208,40 @@ $data = json_decode(base64_decode($params));
 
     }
 
+    // cambiar el estado del tratamiento a realizada
+    async function detalleTratamientoRealizado(datos){
+
+        let args = [];
+        let canalOrigen = 'APP_CMV'
+        
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
+        args["method"] = "PUT";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify(
+            {
+                "codigoTratamiento": null,
+                "lineaDetalleTratamiento": 38,
+                "recetas": [
+                    {
+                        "secuenciaReceta": datos.secuenciaReceta,
+                        "esCompraExterna": false,
+                        "fechaRealizado": "02/01/2024 12:22:32"
+                    }
+                ],
+                "generarSolicitud": false,
+                "fechaRealizado": "02/01/2024 12:22:32"
+            }
+        );
+
+        console.log('args', args["data"]);
+
+        const data = await call(args);
+        console.log('modificarDatosFamiliar', data);
+        
+
+    }
+
     
     
     // funciones js
@@ -228,7 +262,7 @@ $data = json_decode(base64_decode($params));
                                             </div>
                                             ${determinarFechasCaducadas(tratamientos)}
                                             <div id="recetaMedicaMensaje">
-                                                ${determinarMensajeRecetaMedica(tratamientos.nombreServicio)}
+                                                ${determinarMensajeRecetaMedica(tratamientos.nombreServicio , tratamientos.codigoTratamiento)}
                                             </div> 
                                             
                                             <div class="d-flex justify-content-between align-items-center mt-2">
@@ -359,6 +393,10 @@ $data = json_decode(base64_decode($params));
             return ``;
         }
     }
+
+    
+
+
 
     // determinar si es receta medica o no botones
     function determinarbotonesRecetaMedica(servicio, esAgendable, tipoServicio, aplicaSolicitud){
