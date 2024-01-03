@@ -7,6 +7,22 @@ Mi Veris - Doctores favoritos
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+    <!-- Modal de error -->
+
+    <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="eliminarDoctorModal" tabindex="-1" aria-labelledby="eliminarDoctorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -17,7 +33,8 @@ Mi Veris - Doctores favoritos
                 </div>
                 <div class="modal-footer flex-nowrap justify-content-center pt-0 px-0">
                     <button type="button" class="btn btn-link text-primary-veris shadow-none" data-bs-dismiss="modal">Cancelar</button>
-                    <a href="#!" class="btn btn-link text-primary-veris shadow-none">Eliminar</a>
+                    <a href="#!" class="btn btn-link text-primary-veris shadow-none" id="btnEliminarDoctor"
+                    >Eliminar</a>
                 </div>
             </div>
         </div>
@@ -35,7 +52,7 @@ Mi Veris - Doctores favoritos
             <!-- Doctor favorito dinamico -->
 
             <!-- Mensaje Aún no tienes doctores favoritos -->
-            <div class="col-12 d-flex justify-content-center d-none">
+            <div class="col-12 d-flex justify-content-center d-none" id="noDoctorFavorito">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body">
                         <div class="text-center">
@@ -70,7 +87,7 @@ Mi Veris - Doctores favoritos
     async function obtenerDoctorFavorito() {
         let args = [];
         let canalOrigen = _canalOrigen;
-        let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
+        let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
         
 
         args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores/favoritos?codigoUsuario=${codigoUsuario}&idPersona=${codigoUsuario}&canalOrigen=${canalOrigen}`;
@@ -79,6 +96,11 @@ Mi Veris - Doctores favoritos
         args["showLoader"] = true;
         const data = await call(args);
         console.log('doc',data);
+
+        if (data.data == null) {
+            $('#noDoctorFavorito').removeClass('d-none');
+        }
+        else
         
         if(data.data.length > 0){
             let html = $('#doctoresFavoritos');
@@ -108,7 +130,7 @@ Mi Veris - Doctores favoritos
                                             </div>
                                         </div>
                                         <div class="card-footer text-end p-3">
-                                            <button type="button" class="btn btn-outline-primary-veris btn-sm me-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal">Descartar</button>
+                                            <button type="button" class="btn btn-outline-primary-veris btn-sm me-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${JSON.stringify(doctores)}'>Descartar</button>
                                             <a href="#!" class="btn btn-sm btn-primary-veris">Reservar Cita</a>
                                         </div>
                                     </div>
@@ -130,7 +152,7 @@ Mi Veris - Doctores favoritos
     async function obtenerDisponibilidadDoctor(doctor) {
         let args = [];
         let canalOrigen = _canalOrigen;
-        let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
+        let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
         let fechaHoy = new Date().toLocaleDateString('es-ES', {
             day: '2-digit',
             month: '2-digit',
@@ -155,9 +177,48 @@ Mi Veris - Doctores favoritos
 
     }
 
+    // eliminar doctor favorito
+
+    async function eliminarDoctorFavorito(secuenciaDoctor) {
+        let args = [];
+        let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
+      
+
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores/favoritos/eliminar?codigoUsuario= ${codigoUsuario}&secuenciaDoctor=${secuenciaDoctor}`;
+        args["method"] = "DELETE";
+        args["showLoader"] = true;
+        const data = await call(args);
+        if (data.code == 200) {
+            $('#eliminarDoctorModal').modal('hide');
+            await obtenerDoctorFavorito();
+        }
+        else if (data.code != 200) {
+            $('#mensajeError').text(data.message);
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+        }
+
+
+        return data;
+
+    }
+
 
 
     // funciones js 
+
+    // setear los valores de data-rel en el modal
+    $('body').on('click', '#eliminarDoctorModal', function () {
+        let data = JSON.parse($(this).attr("data-rel"));
+        $('#btnEliminarDoctor').attr('data-rel', data.secuencia);
+
+
+    });
+
+    // eliminar doctor favorito
+    $('body').on('click', '#btnEliminarDoctor', async function () {
+        let secuenciaDoctor = $(this).attr("data-rel");
+        await eliminarDoctorFavorito(secuenciaDoctor);
+    });
     
 
 </script>

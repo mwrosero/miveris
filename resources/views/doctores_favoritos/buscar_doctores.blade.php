@@ -92,14 +92,17 @@ Mi Veris - Buscar doctor
     // consulta de especialidades
     async function consultarEspecialidades() {
         let canalOrigen = _canalOrigen;
-        let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
-        console.log(codigoUsuario);
+        let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
         let endpoint = api_url + `/digitalestest/v1/perfil/especialidades?codigoUsuario=${codigoUsuario}`;
         console.log(endpoint);
         const data = await call({ endpoint, method: "GET", showLoader: false });
         dataEspecialidades = data.data;
         
         if (data.code == 200){
+
+            if (data.data.length == 0){
+                $('#noHayDoctores').removeClass('d-none');
+            }
             console.log('especialidades', data.data);
             let html = $('#listaEspecialidades');
             html.empty();
@@ -127,41 +130,35 @@ Mi Veris - Buscar doctor
     async function obtenerDisponibilidadDoctor(doctores) {
         let args = [];
         let canalOrigen = _canalOrigen;
-        let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
+        let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
         let codigoSucursal = doctores.codigoSucursal ? doctores.codigoSucursal : '';
         let codigoEspecialidad = doctores.codigoEspecialidad;
         let fechaDesde = $('#fechaDesde').val();
         let fechaHasta = $('#fechaHasta').val();
-        console.log('fechaDesde',fechaDesde);
-        console.log('fechaHasta',fechaHasta);
         
         fechaDesde = esFechaValida(fechaDesde) ? formatearFecha(fechaDesde) : '';
         fechaHasta = esFechaValida(fechaHasta) ? formatearFecha(fechaHasta) : '';
 
         args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores?codigoUsuario=${codigoUsuario}&codigoSucursal=${codigoSucursal}&codigoEspecialidad=${codigoEspecialidad}&fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}&canalOrigen=${canalOrigen}`;
     
-        console.log(args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log('disponibilidadzzz',data);
         if (data.code == 200){
             if (data.data.length == 0){
-                console.log('no hay doctores');
                 $('#noHayDoctores').removeClass('d-none');
             } else{
-
                 let doctores = data.data;
                 let html = $('#doctoresFavoritos');
                 html.empty();
+                let elemento = '';
                 data.data.forEach(element => {
-                    let disponibilidad = obtenerDisponibilidadDoctor(element);
-                    let elemento = `<div class="col-12 col-md-6">
+                    elemento = `<div class="col-12 col-md-6">
                                         <div class="card">
                                             <div class="card-body p-3">
                                                 <div class="row gx-2 align-items-center">
                                                     <div class="col-3">
-                                                        <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='https://i.pinimg.com/474x/93/b5/f9/93b5f9913d2e4316cd6e541c67b9aed0.jpg';">
+                                                        <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='https://i.pinimg.com/474x/93/b5/f9/93b5f9913d2e4316cd6e541c67b9aed0.jpg'; this.style.height='50px'; this.style.width='50px';">
                                                     </div>
                                                     <div class="col-7">
                                                         <h6 class="fw-bold mb-0">Dr(a) ${capitalizarElemento(element.primerNombre)} ${capitalizarElemento(element.segundoNombre)} ${capitalizarElemento(element.primerApellido)} ${capitalizarElemento(element.segundoApellido)}</h6>
@@ -176,8 +173,9 @@ Mi Veris - Buscar doctor
                                             </div>
                                         </div>
                                     </div>`;
-                    html.append(elemento);
+                    
                 });
+                html.append(elemento);
             }
         }
         
@@ -187,7 +185,7 @@ Mi Veris - Buscar doctor
     async function agregarDoctorFavorito(doctor) {
 
         let args = [];
-        let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
+        let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
         args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores/favoritos/agregar?codigoUsuario=${codigoUsuario}`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "POST";
