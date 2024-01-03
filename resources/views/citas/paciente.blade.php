@@ -5,8 +5,7 @@ Elige Paciente
 @section('content')
 @php
 $data = json_decode(base64_decode($params));
-
-
+// dd(Session::get('userData'));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
@@ -103,15 +102,16 @@ $data = json_decode(base64_decode($params));
         
         let codigoUsuario;
         let tipoIdentificacion;
+        let nombreCompleto;
 
         if(dataRel != ""){
             codigoUsuario = dataRel.numeroIdentificacion;
             tipoIdentificacion = dataRel.tipoIdentificacion;
-            let nombreCompleto = dataRel.primerNombre + ' ' + dataRel.primerApellido + ' ' + dataRel.segundoApellido;
+            nombreCompleto = dataRel.primerNombre + ' ' + dataRel.primerApellido + ' ' + dataRel.segundoApellido;
         }else{
             codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
             tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
-            console.log(codigoUsuario,tipoIdentificacion)
+            nombreCompleto = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}";
         }
 
         args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
@@ -133,8 +133,15 @@ $data = json_decode(base64_decode($params));
                     let urlParams = btoa(JSON.stringify(params));
                     elemento += `<a href="/citas-elegir-especialidad/${urlParams}"
                         class="stretched-link">`;
-                    params.numeroIdentificacion = codigoUsuario;
-                    params.tipoIdentificacion = tipoIdentificacion;
+                    // params.numeroIdentificacion = codigoUsuario;
+                    // params.tipoIdentificacion = tipoIdentificacion;
+                    // params.nombrePaciente = nombreCompleto;
+                    params.paciente = {
+                        "numeroIdentificacion": codigoUsuario,
+                        "tipoIdentificacion": tipoIdentificacion,
+                        "nombrePaciente": nombreCompleto
+                    };
+                    console.log(params);
                     let ulrParams = btoa(JSON.stringify(params));
                     let ruta = '';
                     if (ordenExterna == 'S') {

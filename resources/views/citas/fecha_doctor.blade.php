@@ -5,7 +5,6 @@ Mi Veris - Citas - Elige fecha y doctor
 @section('content')
 @php
 $data = json_decode(utf8_encode(base64_decode($params)));
-//dd($data);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- modal position-absolute -->
@@ -127,8 +126,10 @@ $data = json_decode(utf8_encode(base64_decode($params)));
         // Llenar los días del mes actual
         for (let i = 1; i <= lastDayOfMonth; i++) {
             const dayElement = document.createElement('div');
-            let fechaSeleccionada = i+"/"+ (currentDate.getMonth() + 1)+"/"+currentDate.getFullYear();
-            let classFechaSeleccionada = i+"_"+ (currentDate.getMonth() + 1)+"_"+currentDate.getFullYear();
+            let dia = (i < 10) ? '0' + i : i;
+            let mes = ((currentDate.getMonth() + 1) < 10) ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
+            let fechaSeleccionada = dia +"/"+ mes +"/"+currentDate.getFullYear();
+            let classFechaSeleccionada = dia +"_"+ mes +"_"+currentDate.getFullYear();
             dayElement.classList.add('calendar-day', 'current-month-day', classFechaSeleccionada);
             dayElement.textContent = i;
             dayElement.setAttribute('fechaSeleccionada-rel', fechaSeleccionada);
