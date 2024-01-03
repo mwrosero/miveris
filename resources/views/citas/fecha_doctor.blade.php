@@ -4,7 +4,7 @@ Mi Veris - Citas - Elige fecha y doctor
 @endsection
 @section('content')
 @php
-$data = json_decode(utf8_encode(base64_decode($params)));
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- modal position-absolute -->

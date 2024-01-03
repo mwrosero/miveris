@@ -4,7 +4,7 @@ Mi Veris - Citas - Revisa tus datos
 @endsection
 @section('content')
 @php
-$data = json_decode(utf8_encode(base64_decode($params)));
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd($data);
 $partesHora = explode(':', $data->horario->horaInicio);
 $hora = (int)$partesHora[0];

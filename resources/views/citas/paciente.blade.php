@@ -4,7 +4,7 @@ Elige Paciente
 @endsection
 @section('content')
 @php
-$data = json_decode(base64_decode($params));
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd(Session::get('userData'));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
