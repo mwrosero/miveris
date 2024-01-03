@@ -8,36 +8,31 @@ Mi Veris - Citas - Mis citas
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Filtro -->
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Mis citas') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Mis citas') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-actuales-tab" data-bs-toggle="pill" data-bs-target="#pills-actuales" type="button" role="tab" aria-controls="pills-actuales" aria-selected="true">Actuales</button>
+                    <button class="nav-link px-md-5 active" id="pills-actuales-tab" data-bs-toggle="pill" data-bs-target="#pills-actuales" type="button" role="tab" aria-controls="pills-actuales" aria-selected="true">Próximas</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-historial-tab" data-bs-toggle="pill" data-bs-target="#pills-historial" type="button" role="tab" aria-controls="pills-historial" aria-selected="false">Historial</button>
+                    <button class="nav-link px-md-5" id="pills-historial-tab" data-bs-toggle="pill" data-bs-target="#pills-historial" type="button" role="tab" aria-controls="pills-historial" aria-selected="false">Historial</button>
                 </li>
             </ul>
             <div class="tab-content bg-transparent" id="pills-tabContent">
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
-
                 <div class="tab-pane fade show active" id="pills-actuales" role="tabpanel" aria-labelledby="pills-actuales-tab" tabindex="0">
-
-
                     <!-- botn de agendar -->
                     <div class="text-center">
-                        <a href="/citas" class="btn btn-primary-veris px-lg-5 mb-4 px-5 p-3
-                        ">Agendar cita</a>
+                        <a href="/citas" class="btn btn-primary-veris px-lg-5 mb-4 px-5 p-3">Agendar cita</a>
                     </div>
-
                     <div class="d-flex justify-content-center mb-4">
                         <div class="col-12 col-md-10 col-lg-8">
                             <div class="row g-3" id="citasActuales">
                                 <!-- items dinamicos -->
-
                             </div>
                         </div>
                     </div>
@@ -55,20 +50,12 @@ Mi Veris - Citas - Mis citas
                         </div>
                     </div>
                     <!-- Mensaje END -->
-
-
                 </div>
                 <div class="tab-pane fade" id="pills-historial" role="tabpanel" aria-labelledby="pills-historial-tab" tabindex="0">
-
-
                     <div class="d-flex justify-content-center mb-4">
                         <div class="col-12 col-md-10 col-lg-8">
                             <div class="row g-3" id="historialCitas">
                                 <!-- items dinamicos -->
-
-
-
-
                             </div>
                         </div>
                     </div>
@@ -84,7 +71,6 @@ Mi Veris - Citas - Mis citas
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -174,8 +160,8 @@ Mi Veris - Citas - Mis citas
                                                     <p class="fw-normal fs--2 mb-0">${capitalizarElemento(historial.nombrePaciente)}</p>
                                                     <div class="d-flex justify-content-end align-items-center mt-3">
                                                         <div>
-                                                            <a href=${quitarComillas(historial.urlEncuesta)} class="btn btn-sm btn-outline-primary-veris">Calificar</a>
-                                                            <a href="/citas" class="btn btn-sm btn-primary-veris">Reagendar</a>
+                                                            <a href=${quitarComillas(historial.urlEncuesta)} class="btn btn-sm btn-outline-primary-veris shadow-none">Calificar</a>
+                                                            <a href="/citas" class="btn btn-sm btn-primary-veris shadow-none">Reagendar</a>
                                                         </div>
                                                     </div>
                                                 </div>

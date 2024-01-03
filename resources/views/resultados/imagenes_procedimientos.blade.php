@@ -76,47 +76,12 @@ Mi Veris - Resultados
 @endsection
 @push('scripts')
 <!-- script -->
-<script>
-    let fechaDesdePicker = flatpickr("#fechaDesde", {
-        maxDate: new Date().fp_incr(0),
-        onChange: function(selectedDates, dateStr, instance) {
-            if (!document.getElementById('fechaHasta').disabled) {
-                fechaHastaPicker.set('minDate', dateStr);
-            } else {
-                document.getElementById('fechaHasta').disabled = false;
-                fechaHastaPicker = flatpickr("#fechaHasta", {
-                    minDate: dateStr,
-                    maxDate: new Date().fp_incr(0)
-                });
-            }
-        }
-    });
-
-    let fechaHastaPicker = flatpickr("#fechaHasta", {
-        maxDate: new Date().fp_incr(0),
-        minDate: new Date(), 
-        onChange: function(selectedDates, dateStr, instance) {
-        }
-    });
-
-    document.getElementById('fechaHasta').disabled = true;
-    // quitar el readonly
-
-    $("#fechaDesde").removeAttr("readonly");
-    $("#fechaHasta").removeAttr("readonly");
-    // no permitir autocomplete
-    $("#fechaDesde").attr("autocomplete", "off");
-    $("#fechaHasta").attr("autocomplete", "off");
-
-
-
-</script>
 
 <script>
    
 
     // variables globales
-        
+ 
         let familiar = [];
         let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
  
@@ -128,10 +93,9 @@ Mi Veris - Resultados
          elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
          $('body').on('click','.verResultados', async function () {
              let idRelacion = $(this).attr('data-object');
-             
+             console.log('idRelacion',idRelacion);
                  
          });
-         inicializarDatePickers();
      });
  
      // funciones asyncronas
@@ -186,17 +150,15 @@ Mi Veris - Resultados
                                         <div class="card h-100">
                                             <div class="card-body p-3">
                                                 <h6 class="text-primary-veris fw-bold fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
-                                                <p class="text-primary-veris fw-bold fs--2 mb-1" id="nombreResultadoLab">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
+                                                <p class="fw-bold fs--2 mb-1" id="nombreResultadoLab" style="color: #0055AA !important">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
                                                 <p class="fw-bold fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
                                                 <p class="fw-normal fs--2 mb-1">Realizado: <b class="fw-normal" id="fecha">${resultados.dia}</b></p>
                                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                                     <div class="avatar me-2">
                                                         <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
-                                                        
-                                                            
                                                     </div>
                                                     <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}')"
-                                                    type="button"  class="btn btn-sm btn-primary-veris verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
+                                                    type="button"  class="btn btn-primary-veris shadow-none verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
                                                         Ver resultados
                                                     </button>
                                                 </div>
@@ -212,14 +174,12 @@ Mi Veris - Resultados
                     $("#mensajeNoTienesPermisosAdministradorRealizados").removeClass("d-none");
                 }
 
-    
-                
-
             }
 
         }
          
      }
+
  
      //  detalles de resultados de laboratorio
  
@@ -238,6 +198,7 @@ Mi Veris - Resultados
           // insertar datos en el modal
           if (data.code == 200){
              let items = data.data;
+             console.log('items', items);
              
              if (items == null){
                  console.log('entro1');
@@ -261,18 +222,22 @@ Mi Veris - Resultados
      
                  elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
      
-                 items.forEach((resultados) => {
+                 items.forEach((resultados, index) => {
+                    console.log('resultados', resultados);
      
                      elemento += `<div class="my-3">
                                      <p class="text-center fs-normal my-3">${capitalizarElemento(resultados.nombrePrestacion)}</p>
-                                     <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
-                                 </div>`;
+                                     <a href="${quitarComillas   (resultados.urlVisorWeb)}" class="btn btn-lg btn-outline-primary-veris w-100" target="_blank">Ver imagen</a>
+                                 </div>
+                                 <div class="border-top">
+                                    <button class="btn btn-lg btn-primary-veris w-100 mt-3" target="_blank" onclick="verInforme('${resultados.codigoOrdenApoyos}' , '${resultados.tipo}')">Ver informe</button>
+                                </div>
+                                 `;
+
+
                              });
-     
-                 elemento += `<div class="border-top">
-                                 <a onclick="detallesResultadosLaboratorio('${codigoApoyo}')" href="${quitarComillas(data.data[0].urlVisorWeb)}"
-                                 class="btn btn-primary-veris w-100 mt-3" target="_blank">Ver informe</a>
-                             </div>`;
+
+                
                  html.append(elemento);
      
              }        
@@ -280,7 +245,38 @@ Mi Veris - Resultados
               
           }
   
-      }
+    }
+
+    async function verInforme(codigoApoyo, tipo){
+        console.log('si entro');    
+        
+        let args = {};
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+
+        args["endpoint"] = api_url + `/digitalestest/v1/examenes/archivoresultado?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo}`;
+       
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+
+            window.open(pdfUrl, '_blank');
+
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+
+        } catch (error) {
+            console.error('Error al obtener el PDF:', error);
+        }
+
+    }
+
+    
  
  
      // consultar grupo familiar
@@ -301,6 +297,9 @@ Mi Veris - Resultados
      }
 
      
+
+ 
+ 
      // funciones js 
  
      
@@ -313,13 +312,12 @@ Mi Veris - Resultados
         console.log('aplciar filtros');
         const contexto = $(this).data('context');
         console.log('contexto', contexto);
-        aplicarFiltrosResultados(contexto, tipoServicio = "IMG,PROC" );
+        aplicarFiltrosResultados(contexto, tipoServicio = 'LAB');
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
         console.log('texto', texto);
         identificacionSeleccionada = texto.numeroPaciente;
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
-        
         
     });
 
@@ -328,7 +326,7 @@ Mi Veris - Resultados
     
     $('#btnLimpiarFiltros').on('click', function() {
         const contexto = $(this).data('context');
-        limpiarFiltrosResultados(contexto, tipoServicio = "IMG,PROC" );
+        limpiarFiltrosResultados(contexto, tipoServicio = 'LAB');
         identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
@@ -341,7 +339,41 @@ Mi Veris - Resultados
  
  
 </script>
+{{-- <script>
+    let fechaDesdePicker = flatpickr("#fechaDesde", {
+        maxDate: new Date().fp_incr(0),
+        onChange: function(selectedDates, dateStr, instance) {
+            if (!document.getElementById('fechaHasta').disabled) {
+                fechaHastaPicker.set('minDate', dateStr);
+            } else {
+                document.getElementById('fechaHasta').disabled = false;
+                fechaHastaPicker = flatpickr("#fechaHasta", {
+                    minDate: dateStr,
+                    maxDate: new Date().fp_incr(0)
+                });
+            }
+        }
+    });
 
+    let fechaHastaPicker = flatpickr("#fechaHasta", {
+        maxDate: new Date().fp_incr(0),
+        minDate: new Date(), 
+        onChange: function(selectedDates, dateStr, instance) {
+        }
+    });
+
+    document.getElementById('fechaHasta').disabled = true;
+    // quitar el readonly
+
+    $("#fechaDesde").removeAttr("readonly");
+    $("#fechaHasta").removeAttr("readonly");
+    // no permitir autocomplete
+    $("#fechaDesde").attr("autocomplete", "off");
+    $("#fechaHasta").attr("autocomplete", "off");
+
+
+
+</script> --}}
 
 
 @endpush

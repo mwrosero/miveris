@@ -8,28 +8,26 @@ Mi Veris - Citas - Laboratorio
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Filtro -->
-    
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Laboratorio') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Laboratorio') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
-            <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3" id="pills-tab" role="tablist">
+            <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
+                    <button class="nav-link px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
+                    <button class="nav-link px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
             <div class="tab-content bg-transparent" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     @include('components.barraFiltro')
                     @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
-
                     <!-- Card header items -->
                     <div id="contenedorTratamientosImagenes">
-                        
                     </div>
-                    
                     <!-- Mensaje No tienes ordenes de laboratorio -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientos">
                         <div class="card bg-transparent shadow-none">
@@ -63,10 +61,7 @@ Mi Veris - Citas - Laboratorio
                     <!-- Mensaje END -->
                 </div>
                 <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
-                    
                     <!-- Card header items -->
-                    
-
                     <!-- Mensaje No tienes ordenes de laboratorio realizadas -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">
                         <div class="card bg-transparent shadow-none">
@@ -388,14 +383,14 @@ Mi Veris - Citas - Laboratorio
         let botonSolicitar;
 
         if(detalles.esPagada === "N"){
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi  me-2"></i> Pagar</a>`;
+            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1"><i class="bi  me-2"></i> Pagar</a>`;
             
         }else  if (detalles.tipoServicio === "FARMACIA") {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1${detalles.aplicaSolicitud !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1${detalles.aplicaSolicitud !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else if (detalles.tipoServicio === "LABORATORIO") {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"> Agendar</a>`;
+            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"> Agendar</a>`;
         }
 
         return botonVer + botonSolicitar;

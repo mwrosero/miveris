@@ -4,7 +4,8 @@ Elige la especialidad
 @endsection
 @section('content')
 @php
-$data = json_decode(base64_decode($params));
+$data0 = utf8_encode(base64_decode(urldecode($params)));
+$data = json_decode($data0);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->

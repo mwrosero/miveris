@@ -40,10 +40,54 @@ async function call(args){
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
             }
-            toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.","ERROR");
+            // toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.","ERROR");
             //console.log(error);
         });
 }
+
+async function callInformes(args) {
+    if (args.showLoader) {
+        showLoader();
+    }
+
+    let requestOptions = {
+        method: args.method,
+        redirect: 'follow'
+    };
+    let myHeaders = new Headers();
+    if (args.bodyType === "json") {
+        myHeaders.append("Content-Type", "application/json");
+        requestOptions.headers = myHeaders;
+    }
+    if (["POST", "PUT", "DELETE"].includes(args.method) && args.data) {
+        requestOptions.body = args.data;
+    }
+
+    try {
+        const response = await fetch(args.endpoint, requestOptions);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        if (args.showLoader) {
+            hideLoader();
+        }
+
+        return blob;
+    } catch (error) {
+        if (args.showLoader) {
+            hideLoader();
+        }
+
+        // console.error("Error en la solicitud: ", error.message);
+        toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.", "ERROR");
+
+        throw error;
+    }
+}
+
 
 function removeLeadingZero(input, maxLength) {
     input.value = input.value.replace(/^0/, '');
@@ -465,9 +509,9 @@ async function aplicarFiltrosOrdenesExternas(contexto) {
     // capturar los datos de data-rel del input radio
     let datos = $('input[name="listGroupRadios"]:checked').attr('data-rel');
     datos = JSON.parse(datos);
-    
-    let pacienteSeleccionado = datos.tipoIdentificacion;
-    let tipoIdentificacion = datos.numeroIdentificacion;
+    console.log('datosI8I',datos.numeroIdentificacion);
+    let pacienteSeleccionado = datos.numeroIdentificacion
+    let tipoIdentificacion = datos.tipoIdentificacion;
     let esAdmin = datos.esAdmin;
     if (datos.parentesco === 'YO') {
         esAdmin = 'S';
@@ -485,6 +529,21 @@ async function aplicarFiltrosOrdenesExternas(contexto) {
         await consultarOrdenesExternasLaboratorio(pacienteSeleccionado, tipoIdentificacion, fechaDesde, fechaHasta, esAdmin);
         $('#filtroTratamientos').offcanvas('hide');
     }
+}
+
+// limpiar filtros para ordenes externas
+
+async function limpiarFiltrosOrdenesExternas(contexto, numeroIdentificacion, tipoIdentificacionn) {
+    if (contexto === 'contextoLimpiarFiltros') {
+        $('input[name="listGroupRadios"]').prop('checked', false);
+        $('input[name="listGroupRadios"]').first().prop('checked', true);
+        
+        let pacienteSeleccionado = numeroIdentificacion
+        let  tipoIdentificacion = tipoIdentificacionn;
+        await consultarOrdenesExternasLaboratorio(pacienteSeleccionado, tipoIdentificacion, '', '', 'S');
+        $('#filtroTratamientos').offcanvas('hide');
+    }
+
 }
 
 

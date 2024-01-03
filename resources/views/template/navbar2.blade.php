@@ -97,46 +97,32 @@
 <!-- Notificaciones -->
 <div class="offcanvas offcanvas-end" style="margin-top: 62px;" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <div class="offcanvas-header justify-content-end pb-0">
-        <button type="button" class="btn btn-sm shadow-none text-decoration-underline" data-bs-dismiss="offcanvas" aria-label="Close">cerrar</button>
+        <button type="button" class="btn btn-sm shadow-none text-decoration-underline" data-bs-dismiss="offcanvas" aria-label="Close">Cerrar</button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0 py-0 px-0">
-        <h5 id="offcanvasEndLabel" class="offcanvas-title px-3 mb-3 bg-white
-        ">Notificaciones</h5>
-        <div class="border-300" id= "notificaciones">
-            
+        <h5 id="offcanvasEndLabel" class="offcanvas-title px-3 mb-3 bg-white">Notificaciones</h5>
+        <div class="d-flex flex-column border-300" id= "notificaciones" style="min-height: 75vh;">
             <!-- Notificaciones dinamicas -->
-            
         </div>
-
-        <div class="d-flex flex-column justify-content-center align-items-center py-5 d-none"
-        id="noNotificaciones">
+        <div class="d-flex flex-column justify-content-center align-items-center py-5 d-none" id="noNotificaciones">
             <img src="{{ asset('assets/img/svg/bellNotificacion.svg') }}" alt="" width="50px" class="mb-3">
             <h5 class="fs-0 text-300">No tienes notificaciones</h5>
             <div> En esta sección podrás revisar tus notificaciones</div>
             <img src="{{ asset('assets/img/svg/amico.svg') }}" alt="" class="img-fluid w-50">
         </div>
-        
-        
     </div>
 </div>
 
 <script>
-    
-
     // variables globales
     let paginaActual = 1;
     const notificacionesPorPagina = 5;
     let todasNotificaciones = [];
-
-
     // llamada al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
-        
         // await cantidadNotificaciones();
-        
         await numeroNotificaciones();
-
     } );
 
     // funciones asincronas
@@ -202,7 +188,7 @@
 
 
             // Agregar paginación al final
-            htmlContent += `<div class="px-3 mt-5">
+            htmlContent += `<div class="px-3 mt-auto">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item ${pagina === 1 ? 'disabled' : ''}">

@@ -6,7 +6,27 @@ Mi Veris - Citas - Mis tratamientos
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
-<div class="flex-grow-1 container-p-y pt-0">
+    <!-- Modal de error -->
+
+    <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-grow-1 container-p-y pt-0">
+
+
+    
+
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Mis tratamientos') }}</h5>
     </div>
@@ -112,6 +132,13 @@ Mi Veris - Citas - Mis tratamientos
                 
             }
         }
+        else if (data.code != 200) {
+            console.log('errorza');
+            // mostrar modal de error
+            $('#mensajeError').text(data.message);
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+
+        }
         return data;
     }
 
@@ -171,11 +198,24 @@ Mi Veris - Citas - Mis tratamientos
                                                     <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="fecha-enviado fw-normal text-primary-veris">${tratamientos.fechaTratamiento}</b></p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div id="chart-progress" data-porcentaje="${tratamientos.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
+                                                    <div class="progress-circle" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+                                                        <span class="progress-left">
+                                                            <span class="progress-bar"></span>
+                                                        </span>
+                                                        <span class="progress-right">
+                                                            <span class="progress-bar"></span>
+                                                        </span>
+                                                        <div class="progress-value">
+                                                            <div>
+                                                                <span><i class="bi bi-check2 success"></i></span>
+                                                                <p class="fs--2 mb-0">${tratamientos.totalTratamientoRealizados}/${tratamientos.totalTratamientoEnviados}</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end align-items-center">
                                                     <a href="/tratamiento/${ulrParams}
-                                                    " class="btn btn-sm btn-primary-veris">
+                                                    " class="btn btn-sm btn-primary-veris shadow-none">
                                                         ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
                                                     </a>
                                                 </div>
@@ -218,18 +258,31 @@ Mi Veris - Citas - Mis tratamientos
                                         </div>
                                         <div class="text-center">
                                             <div class="col-auto">
-                                                <div id="chart-progressRealizado" data-porcentaje="${tratamientosRealizados.porcentajeAvanceTratamiento}" data-color="success"><i class="bi bi-check2 position-absolute top-25 start-40 success"></i></div>
+                                                <div class="progress-circle" data-percentage="${tratamientosRealizados.porcentajeAvanceTratamiento}">
+                                                    <span class="progress-left">
+                                                        <span class="progress-bar"></span>
+                                                    </span>
+                                                    <span class="progress-right">
+                                                        <span class="progress-bar"></span>
+                                                    </span>
+                                                    <div class="progress-value">
+                                                        <div>
+                                                            <span><i class="bi bi-check2 success"></i></span>
+                                                            <p class="fs--2 mb-0">${tratamientosRealizados.totalTratamientoRealizados}/${tratamientosRealizados.totalTratamientoEnviados}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <h6 class="card-title mb-2">${capitalizarElemento(tratamientosRealizados.nombreEspecialidad)}</h6>
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-end">
-                                            <div>
-                                                <p class="fw-bold fs--2 mb-0">¡Tratamiento terminado!</p>
+                                        <div class="row g-0 justify-content-between align-items-end">
+                                            <div class="col-md-9">
+                                                <p class="fw-bold fs--2 mb-0" style="color: #003B83;">¡Tratamiento terminado!</p>
                                                 <p class="fw-normal fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientosRealizados.nombreMedico)}</p>
                                                 <p class="fw-light fs--2 mb-0">Terminado el: <b class="text-primary-veris fw-light fs--2" id="fechaTratamiento">${tratamientosRealizados.fechaTratamiento}</b></p>
                                             </div>
-                                            <div>
-                                                <a href="#" class="btn btn-sm btn-primary-veris">Ver todo</a>
+                                            <div class="col-md-3">
+                                                <a href="#" class="btn btn-sm btn-primary-veris px-2">Ver todo</a>
                                             </div>
                                         </div>
                                     </div>

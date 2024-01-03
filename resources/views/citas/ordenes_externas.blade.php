@@ -25,6 +25,23 @@ Mi Veris - Órdenes externas
         </div>
     </div>
 
+    <!-- Modal de error -->
+
+    <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- filtro -->
     
 
@@ -38,7 +55,7 @@ Mi Veris - Órdenes externas
             </div>
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white py-2 mb-3">
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
-                @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
+                @include('components.offCanvaHC', ['context' => 'contextoLimpiarFiltros'])
             </div>
             <div class="row gy-3 justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
@@ -102,6 +119,10 @@ Mi Veris - Órdenes externas
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        if (_pacienteSeleccionado != '') {
+            codigoUsuario = _pacienteSeleccionado;
+        }
+        
         if (tipoIdentificacion == '') {
             tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
         }
@@ -116,6 +137,11 @@ Mi Veris - Órdenes externas
         if (data.code == 200){
 
             if (data.data.lsOrdenesLaboratorio.length > 0) {
+
+                // ocultar mensaje no hay ordenes
+                
+                $('#mensajeOrdenesExternas').addClass('d-none');
+
                 dataConvenio = data.data;
                 document.getElementById('mensajeOrdenesExternas').classList.add('d-none');
                 let ordenesExternas = $('#ordenesExternas');
@@ -130,7 +156,7 @@ Mi Veris - Órdenes externas
                                             <h6 class="fw-bold mb-0">${capitalizarElemento(ordenes.descripcionOrden)}</h6>
                                             <p class="fs--1 mb-0"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>
                                             <p class="fs--1 mb-0">Valor: <b class="fw-normal">$${ordenes.total}</b></p>
-                                            <p class="text-dark fw-bold fs--1 mb-2">AGO 09, 2021 <b class="fw-bold me-2">10:20 AM</b></p>
+                                            <p class="text-dark fw-bold fs--1 mb-2">${convertirFecha(ordenes.fechaItem)}</p>
                                             <div class="d-flex justify-content-between align-items-center mt-2">
                                                 <span class="text-lime-veris fs--1"><i class="fa-solid fa-circle me-2"></i>Aprobada</span>
                                                 ${determinarBotonesPagarSolicitar(ordenes)}
@@ -151,11 +177,44 @@ Mi Veris - Órdenes externas
 
             } else {
                 dataConvenio = [];
+                // limpiar lista de ordenes
+                $('#ordenesExternas').empty();
+                // mostrar mensaje no hay ordenes
+
                 document.getElementById('mensajeOrdenesExternas').classList.remove('d-none');
             }
         }
-        
+        if (data.code != 200) {
+            dataConvenio = [];
+            // limpiar lista de ordenes
+            $('#ordenesExternas').empty();
+            // mostrar mensaje error en el modal
+            $('#mensajeError').text(data.message);
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+            
+        }
+
      }
+
+     function convertirFecha(fechaOriginal) {
+        try {
+            const meses = {
+                '01': 'ENE', '02': 'FEB', '03': 'MAR', '04': 'ABR',
+                '05': 'MAY', '06': 'JUN', '07': 'JUL', '08': 'AGO',
+                '09': 'SEP', '10': 'OCT', '11': 'NOV', '12': 'DIC'
+            };
+
+            const [dia, mes, año] = fechaOriginal.split("/");
+
+            if (!dia || !mes || !año || !meses[mes]) {
+                throw new Error("Formato de fecha inválido");
+            }
+
+            return `${meses[mes]} ${dia}, ${año}`;
+        } catch (error) {
+            return fechaOriginal;
+        }
+    }
 
 
 
@@ -238,15 +297,13 @@ Mi Veris - Órdenes externas
     // limpiar filtros
     $('#btnLimpiarFiltros').on('click', function(){
         const contexto = $(this).data('context');
-        if (contexto === 'contextoLimpiarFiltros') {
-            console.log('exitoss');
-            const radioButtons = $('input[name="listGroupRadiosI"]');
-            radioButtons.prop('checked', false);
-            radioButtons.first().prop('checked', true);
-            $('#fechaDesde').val('');
-            $('#fechaHasta').val('');
-            consultarOrdenesExternasLaboratorio();
-        }
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+        limpiarFiltrosOrdenesExternas(contexto, numeroIdentificacion, tipoIdentificacion);
+        identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+        const elemento = document.getElementById('nombreFiltro');
+        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+
     });
 
 
@@ -305,13 +362,12 @@ Mi Veris - Órdenes externas
 
         }
         let ulrParams = btoa(JSON.stringify(params));
-
-
         let elemento = '';
         if(data.permitePago == 'S'){
             elemento = `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fs--1">Pagar</a>`;
-        }else{
-            elemento = `<a href="/citas" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>`;
+            
+        }else if(data.permitePago == 'N'){
+            elemento = `<a href="/citas-elegir-fecha-doctor/${ulrParams}" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>`;
         }
         return elemento;
 
