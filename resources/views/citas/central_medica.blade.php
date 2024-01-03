@@ -63,7 +63,6 @@ $data = json_decode(base64_decode($params));
 
     async function consultarCiudadesEspecialidad() {
         let args = [];
-        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
         args["method"] = "GET";
         args["showLoader"] = false;
