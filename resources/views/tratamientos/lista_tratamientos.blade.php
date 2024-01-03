@@ -453,7 +453,7 @@ $data = json_decode(base64_decode($params));
 
     // determinar si es receta medica o no mensaje 
     function determinarMensajeRecetaMedica(servicio){
-        console.log('serviciossisisi: ', servicio);    
+         
         if(servicio.nombreServicio == "RECETA MÉDICA"){
             let servicioStr = JSON.stringify(servicio);
             return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal" data-rel='${servicioStr}'>¿Ya compraste esta receta?</a>`;
@@ -533,9 +533,20 @@ $data = json_decode(base64_decode($params));
 
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                         if (datosServicio.habilitaBotonAgendar == 'S') {
+                            let modalidad;
+                            if (datosServicio.modalidad === 'online') {
+                                modalidad = 'S';
+                            } else if (datosServicio.modalidad === 'presencial') {
+                                modalidad = 'N';
+                            }
+
                             let params = @json($data);
-                            params.especialidad = datosServicio.codigoEspecialidad;
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                            params.especialidad = {
+                                codigoEspecialidad: datosServicio.codigoEspecialidad
+                            };
+                            params.esOnline = modalidad;
+                            let urlParams = btoa(JSON.stringify(params));
+                            respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
                         } else {
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
 
