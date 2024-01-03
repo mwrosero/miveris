@@ -4,10 +4,11 @@ Elige central médica
 @endsection
 @section('content')
 @php
-$data = json_decode(base64_decode($params));
+$data0 = utf8_encode(base64_decode(urldecode($params)));
+$data = json_decode($data0);
 // dd(Session::get('userData')->codigoProvincia);
 // dd(Session::get('userData')->codigoCiudad);
-// dd($data->especialidad->codigoEspecialidad);
+
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elige central médica') }}</h5>
