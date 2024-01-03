@@ -4,7 +4,7 @@ Elige central médica
 @endsection
 @section('content')
 @php
-$data = json_decode(base64_decode($params));
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd(Session::get('userData')->codigoProvincia);
 // dd(Session::get('userData')->codigoCiudad);
 // dd($data->especialidad->codigoEspecialidad);
