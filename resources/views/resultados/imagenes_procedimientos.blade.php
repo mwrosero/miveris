@@ -231,7 +231,6 @@ Mi Veris - Resultados
                                  </div>
                                  <div class="border-top">
                                     <button class="btn btn-lg btn-primary-veris w-100 mt-3" target="_blank" onclick="verInforme('${resultados.codigoOrdenApoyos}' , '${resultados.tipo}')">Ver informe</button>
-
                                 </div>
                                  `;
 
@@ -251,17 +250,29 @@ Mi Veris - Resultados
     async function verInforme(codigoApoyo, tipo){
         console.log('si entro');    
         
-        let args = [];
+        let args = {};
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
 
-        args["endpoint"] = api_url + `/digitalestest/v1/examenes/archivoresultado?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo}&tipo=${tipo}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/examenes/archivoresultado?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo}`;
        
         args["method"] = "GET";
         args["showLoader"] = true;
-        const data = await call(args);
-        console.log('datad', data);
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+
+            window.open(pdfUrl, '_blank');
+
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+
+        } catch (error) {
+            console.error('Error al obtener el PDF:', error);
+        }
 
     }
 

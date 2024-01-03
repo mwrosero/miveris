@@ -40,10 +40,54 @@ async function call(args){
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
             }
-            toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.","ERROR");
+            // toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.","ERROR");
             //console.log(error);
         });
 }
+
+async function callInformes(args) {
+    if (args.showLoader) {
+        showLoader();
+    }
+
+    let requestOptions = {
+        method: args.method,
+        redirect: 'follow'
+    };
+    let myHeaders = new Headers();
+    if (args.bodyType === "json") {
+        myHeaders.append("Content-Type", "application/json");
+        requestOptions.headers = myHeaders;
+    }
+    if (["POST", "PUT", "DELETE"].includes(args.method) && args.data) {
+        requestOptions.body = args.data;
+    }
+
+    try {
+        const response = await fetch(args.endpoint, requestOptions);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const blob = await response.blob();
+        if (args.showLoader) {
+            hideLoader();
+        }
+
+        return blob;
+    } catch (error) {
+        if (args.showLoader) {
+            hideLoader();
+        }
+
+        // console.error("Error en la solicitud: ", error.message);
+        toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.", "ERROR");
+
+        throw error;
+    }
+}
+
 
 function removeLeadingZero(input, maxLength) {
     input.value = input.value.replace(/^0/, '');
