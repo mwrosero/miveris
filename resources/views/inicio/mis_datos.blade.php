@@ -29,9 +29,6 @@ Mi Veris - Mis Datos
  
     @endforeach --}}
 
-
-
-
     
     <div class="row g-0 justify-content-center align-items-center">
         <div class="col-md-8">

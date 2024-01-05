@@ -4,6 +4,23 @@ Mi Veris - Politica-privacidad-datos
 @endsection
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- modal datos actualizados -->
+
+    <div class="modal fade" id="mensajeDatosActualizados" tabindex="-1" aria-labelledby="mensajeDatosActualizadosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
+                    <p class="fs--1 fw-bold m-0 mt-3">Datos actualizados</p>
+                </div>
+                <div class="modal-footer pb-3 pt-0 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal mensaje -->
     <div class="modal fade" id="mensajeActualizarPoliticas" tabindex="-1" aria-labelledby="mensajeActualizarPoliticasLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -37,11 +54,11 @@ Mi Veris - Politica-privacidad-datos
                                 <p class="lh-normal mb-0">{{ __('Rectificación de datos personales') }}</p>
                                 <div class="d-flex">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionNo" value="option1">
+                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionNo" value="option1" >
                                         <label class="form-check-label cursor-pointer" for="inlineRadioRectificacionNo">{{ __('No') }}</label>
                                     </div>
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionSi" value="option2">
+                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionSi" value="option2" checked>
                                         <label class="form-check-label cursor-pointer" for="inlineRadioRectificacionSi">{{ __('Si') }}</label>
                                     </div>
                                 </div>
@@ -213,14 +230,14 @@ Mi Veris - Politica-privacidad-datos
     //setear los datos del usuario
     function llenarDatosUsuario(provincias , ciudades){
         
-        $('#primerNombre').val("{{ Session::get('userData')->primerNombre }}");
-        $('#segundoNombre').val("{{ Session::get('userData')->segundoNombre }}");
-        $('#prmerApellido').val("{{ Session::get('userData')->primerApellido }}");
-        $('#segundoApellido').val("{{ Session::get('userData')->segundoApellido }}");
-        $('#fechaNacimiento').val("{{ Session::get('userData')->fechaNacimiento }}");
-        $('#numeroIdentificacion').val("{{ Session::get('userData')->numeroIdentificacion }}");
-        $('#telefono').val("{{ Session::get('userData')->telefonoMovil}}");
-        $('#correoElctronico').val("{{ Session::get('userData')->mail}}");
+        $('#primerNombre').val(datosUsuario.primerNombre);
+        $('#segundoNombre').val(datosUsuario.segundoNombre);
+        $('#prmerApellido').val(datosUsuario.primerApellido);
+        $('#segundoApellido').val(datosUsuario.segundoApellido);
+        $('#fechaNacimiento').val(datosUsuario.fechaNacimiento);
+        $('#numeroIdentificacion').val(datosUsuario.numeroIdentificacion);
+        $('#telefono').val(datosUsuario.telefonoMovil);
+        $('#correoElctronico').val(datosUsuario.mail);
         $('#dirección').val(datosUsuario.direccionDomicilio);
     
         // llenar el select de provincia
@@ -254,6 +271,8 @@ Mi Veris - Politica-privacidad-datos
         $(this).prop('disabled', true); // Disable the button
         await aceptarPoliticas();
         $(this).prop('disabled', false); // Re-enable the button
+
+        await actualizarDatosUsuario();
     });
 
 
@@ -305,14 +324,93 @@ Mi Veris - Politica-privacidad-datos
         }
         return data;
     }
+
+    //actualizar datos del usuario
+    async function actualizarDatosUsuario() {
+        console.log($('#direccion').val());
+        let args = [];
+        args["endpoint"] = api_url + "/digitalestest/v1/perfil"
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "PUT";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+
+        args["data"] = JSON.stringify({
+            "tipoIdentificacion": "{{ Session::get('userData')->codigoTipoIdentificacion }}",
+            "numeroIdentificacion": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "primerNombre": $('#primerNombre').val(),
+            "primerApellido": $('#primerApellido').val(),
+            "segundoApellido": $('#segundoApellido').val(),
+            "mail": $('#correoElctronico').val(),
+            "telefonoMovil": $('#telefono').val(),
+            "codigoProvincia": $('#provincia').val(),
+            "codigoCiudad": $('#ciudad').val(),
+            "direccionDomicilio": $('#direccion').val()
+        });
+        const data = await call(args);
+        console.log('actualizarDatosUsuario',data);
+        if (data.code == 200) {
+            $('#mensajeDatosActualizados').modal('show');
+        }
+
+    }
+
+    // actualizar el select de ciudades cuando selecciono provincia
+   $( "#provincia").change(async function () {
+        let codeprovincia = $(this).val();
+        ciudades = await obtenerCiudades(codeprovincia);
+        $('#ciudad').empty();
+        $.each(ciudades, function (index, value) {
+            $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
+        });
+    });
+
+    $('input[name="inlineRadioRectificacion"]').click(function () {
+        if ($('#inlineRadioRectificacionNo').prop('checked')) {
+            $('#primerNombre').prop('readonly', false);
+            $('#segundoNombre').prop('readonly', false);
+            $('#prmerApellido').prop('readonly', false);
+            $('#segundoApellido').prop('readonly', false);
+            $('#fechaNacimiento').prop('readonly', false);
+            $('#telefono').prop('readonly', false);
+            $('#correoElctronico').prop('readonly', false);
+            $('#pais').prop('disabled', false);
+            $('#provincia').prop('disabled', false);
+            $('#ciudad').prop('disabled', false);
+            $('#dirección').prop('readonly', false);
+
+            // desabilitar el boton de guardar
+            $('#botonConfirmarPDP').prop('disabled', true);
+        } else {
+            $('#primerNombre').prop('readonly', true);
+            $('#segundoNombre').prop('readonly', true);
+            $('#prmerApellido').prop('readonly', true);
+            $('#segundoApellido').prop('readonly', true);
+            $('#fechaNacimiento').prop('readonly', true);
+            $('#telefono').prop('readonly', true);
+            $('#correoElctronico').prop('readonly', true);
+            $('#pais').prop('disabled', true);
+            $('#provincia').prop('disabled', true);
+            $('#ciudad').prop('disabled', true);
+            $('#dirección').prop('readonly', true);
+
+            // habilitar el boton de guardar
+            $('#botonConfirmarPDP').prop('disabled', false);
+        }
+    });
+
     
 </script>
 <script>
 </script>
 <style>
     .custom-select-disabled {
-        background-color: white !important; /* Color de fondo */
-        color: black !important; /* Color del texto */
+        background-color: white !important; 
+        color: black !important; 
     }
+    
+
+    
+
 </style>
 @endpush
