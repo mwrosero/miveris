@@ -98,6 +98,9 @@ Mi Veris - Doctores favoritos
         console.log('doc',data);
 
         if (data.data == null) {
+            // limpiar el html
+            $('#doctoresFavoritos').html('');
+            
             $('#noDoctorFavorito').removeClass('d-none');
         }
         else
@@ -106,12 +109,12 @@ Mi Veris - Doctores favoritos
             let html = $('#doctoresFavoritos');
             const promesas = data.data.map(doctores => obtenerDisponibilidadDoctor(doctores));
             const resultados = await Promise.all(promesas);
-            
+            let elemento = '';
 
             // Ahora iterar sobre los resultados para construir el HTML
             resultados.forEach((disponibilidad, index) => {
                 let doctores = data.data[index];
-                let elemento = `<div class="col-12 col-lg-4 mb-3">
+                elemento+= `<div class="col-12 col-lg-4 mb-3">
                                     <div class="card">
                                         <div class="card-body p-3">
                                             <div class="row gx-2">
@@ -130,13 +133,14 @@ Mi Veris - Doctores favoritos
                                             </div>
                                         </div>
                                         <div class="card-footer text-end p-3">
-                                            <button type="button" class="btn btn-outline-primary-veris btn-sm me-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${JSON.stringify(doctores)}'>Descartar</button>
+                                            <button type="button" class="btn btn-outline-primary-veris btn-sm me-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
                                             <a href="#!" class="btn btn-sm btn-primary-veris">Reservar Cita</a>
                                         </div>
                                     </div>
                                 </div>`;
-                html.append(elemento);
+                
             });
+            html.append(elemento);
 
             
         } else {
@@ -180,14 +184,16 @@ Mi Veris - Doctores favoritos
     // eliminar doctor favorito
 
     async function eliminarDoctorFavorito(secuenciaDoctor) {
+        console.log('secuencia', secuenciaDoctor);
         let args = [];
-        let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
+        let codigoUsuario ='{{Session::get('userData')->numeroIdentificacion}}';
       
 
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores/favoritos/eliminar?codigoUsuario= ${codigoUsuario}&secuenciaDoctor=${secuenciaDoctor}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores/favoritos/eliminar?codigoUsuario=${codigoUsuario}&secuenciaDoctor=${secuenciaDoctor}`;
         args["method"] = "DELETE";
         args["showLoader"] = true;
         const data = await call(args);
+        console.log('eliminar',data);
         if (data.code == 200) {
             $('#eliminarDoctorModal').modal('hide');
             await obtenerDoctorFavorito();
@@ -207,18 +213,27 @@ Mi Veris - Doctores favoritos
     // funciones js 
 
     // setear los valores de data-rel en el modal
-    $('body').on('click', '#eliminarDoctorModal', function () {
-        let data = JSON.parse($(this).attr("data-rel"));
-        $('#btnEliminarDoctor').attr('data-rel', data.secuencia);
+    $('#eliminarDoctorModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget); // Botón que activó el modal
+        // extrae el dato de data rel
+        let data = button.data('rel');
+        // setea el valor de data rel en el boton eliminar
+        $('#btnEliminarDoctor').attr('data-rel', data);
+
 
 
     });
+
+
+
 
     // eliminar doctor favorito
     $('body').on('click', '#btnEliminarDoctor', async function () {
         let secuenciaDoctor = $(this).attr("data-rel");
+        console.log('Secuencia Doctor:', secuenciaDoctor);
         await eliminarDoctorFavorito(secuenciaDoctor);
     });
+
     
 
 </script>
