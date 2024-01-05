@@ -66,90 +66,83 @@ Mi Veris - Politica-privacidad-datos
                         <h5 class="text-center mt-4 pt-2">Datos</h5>
                         <div class="col-md-3">
                             <label for="primerNombre" class="form-label fw-bold">Primer nombre</label>
-                            <input type="text" class="form-control border-desaturated" name="primerNombre" id="primerNombre" required />
+                            <input type="text" class="form-control border-desaturated" name="primerNombre" id="primerNombre" required readonly />
+
                             <div class="invalid-feedback">
                                 Ingrese su primer nombre.
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label for="segundoNombre" class="form-label fw-bold">Segundo nombre</label>
-                            <input type="text" class="form-control border-desaturated" name="segundoNombre" id="segundoNombre" required />
+                            <input type="text" class="form-control border-desaturated" name="segundoNombre" id="segundoNombre" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su segundo nombre.
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label for="prmerApellido" class="form-label fw-bold">Primer apellido</label>
-                            <input type="text" class="form-control border-desaturated" name="prmerApellido" id="prmerApellido" required />
+                            <input type="text" class="form-control border-desaturated" name="prmerApellido" id="prmerApellido" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su primer apellido.
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label for="segundoApellido" class="form-label fw-bold">Segundo apellido</label>
-                            <input type="text" class="form-control border-desaturated" name="segundoApellido" id="segundoApellido" required />
+                            <input type="text" class="form-control border-desaturated" name="segundoApellido" id="segundoApellido" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su segundo apellido.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="fechaNacimiento" class="form-label fw-bold">Fecha de nacimiento</label>
-                            <input type="text" class="form-control border-desaturated" name="fechaNacimiento" id="fechaNacimiento" required />
+                            <input type="text" class="form-control border-desaturated" name="fechaNacimiento" id="fechaNacimiento" required readonly />
                             <div class="invalid-feedback">
                                 Ingrese su fecha de naciemiento.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación</label>
-                            <input type="text" class="form-control border-desaturated" name="numeroIdentificacion" id="numeroIdentificacion" required />
+                            <input type="text" class="form-control border-desaturated" name="numeroIdentificacion" id="numeroIdentificacion" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su número de identificación.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="telefono" class="form-label fw-bold">Número de teléfono</label>
-                            <input type="number" class="form-control border-desaturated" name="telefono" id="telefono" required />
+                            <input type="number" class="form-control border-desaturated" name="telefono" id="telefono" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese un número de teléfono.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="correoElctronico" class="form-label fw-bold">Correo elctrónico</label>
-                            <input type="email" class="form-control border-desaturated" name="correoElctronico" id="correoElctronico" required />
+                            <input type="email" class="form-control border-desaturated" name="correoElctronico" id="correoElctronico" required  readonly/>
                             <div class="invalid-feedback">
                                 Ingrese un correo elctrónico.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="pais" class="form-label fw-bold">País</label>
-                            <select class="form-select border-desaturated" name="pais" id="pais" required>
-                                <option selected>Select one</option>
-                                <option value="">New Delhi</option>
-                                <option value="">Istanbul</option>
-                                <option value="">Jakarta</option>
+                            <select class="form-select border-desaturated custom-select-disabled" name="pais" id="pais" required disabled>
+                                <!-- Opciones del select aquí -->
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="provincia" class="form-label fw-bold">Provincia</label>
-                            <select class="form-select border-desaturated" name="provincia" id="provincia" required>
-                                <option selected>Select one</option>
-                                <option value="">New Delhi</option>
-                                <option value="">Istanbul</option>
-                                <option value="">Jakarta</option>
+                            <select class="form-select border-desaturated custom-select-disabled" name="provincia" id="provincia" required disabled >
+                                <!-- Opciones del select aquí -->
                             </select>
                         </div>
+                        
                         <div class="col-md-6">
                             <label for="ciudad" class="form-label fw-bold">Ciudad</label>
-                            <select class="form-select border-desaturated" name="ciudad" id="ciudad" required>
-                                <option selected>Select one</option>
-                                <option value="">New Delhi</option>
-                                <option value="">Istanbul</option>
-                                <option value="">Jakarta</option>
+                            <select class="form-select border-desaturated custom-select-disabled" name="ciudad" id="ciudad" required disabled >
+                                
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="dirección" class="form-label fw-bold">Dirección</label>
-                            <input type="text" class="form-control border-desaturated" name="dirección" id="dirección" required />
+                            <input type="text" class="form-control border-desaturated" name="dirección" id="dirección" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su dirección.
                             </div>
@@ -167,8 +160,20 @@ Mi Veris - Politica-privacidad-datos
 @push('scripts')
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
+    
 
 <script>
+
+    //variables globales
+
+    let codeprovincia;
+    let identificacion;
+    let datosUsuario = [];
+    let provincias = [];
+    let ciudades = [];
+
+    // llamada al dom
     document.addEventListener('DOMContentLoaded', async function() {
         const respone = await obtenerPPD();
         console.log('dsd',respone);
@@ -180,7 +185,66 @@ Mi Veris - Politica-privacidad-datos
                 $('#inlineRadioCancelacionSi').prop('checked', true);
             }
         }
+        await obtenerDatosUsuario();
+        provincias = await obtenerProvincias();
+        ciudades = await obtenerCiudades(codeprovincia);
+        llenarDatosUsuario(provincias, ciudades);
     });
+
+    //obtener datos usuario
+
+    async function obtenerDatosUsuario() {
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion={{Session::get('userData')->codigoTipoIdentificacion}}&numeroIdentificacion={{Session::get('userData')->numeroIdentificacion}}`;
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        
+        const data = await call(args);
+        console.log('datosUsuario',data);
+        if (data.code == 200) {
+            datosUsuario = data.data;
+            sexo = data.data.sexo;
+            codeprovincia = data.data.codigoProvincia;
+            identificacion = data.data.numeroIdentificacion;
+        }
+    } 
+
+    //setear los datos del usuario
+    function llenarDatosUsuario(provincias , ciudades){
+        
+        $('#primerNombre').val("{{ Session::get('userData')->primerNombre }}");
+        $('#segundoNombre').val("{{ Session::get('userData')->segundoNombre }}");
+        $('#prmerApellido').val("{{ Session::get('userData')->primerApellido }}");
+        $('#segundoApellido').val("{{ Session::get('userData')->segundoApellido }}");
+        $('#fechaNacimiento').val("{{ Session::get('userData')->fechaNacimiento }}");
+        $('#numeroIdentificacion').val("{{ Session::get('userData')->numeroIdentificacion }}");
+        $('#telefono').val("{{ Session::get('userData')->telefonoMovil}}");
+        $('#correoElctronico').val("{{ Session::get('userData')->mail}}");
+        $('#dirección').val(datosUsuario.direccionDomicilio);
+    
+        // llenar el select de provincia
+        $.each(provincias, function (index, value) {
+            if (value.codigoProvincia == datosUsuario.codigoProvincia) {
+                $('#provincia').append('<option value="' + value.codigoProvincia + '" selected>' + value.nombreProvincia + '</option>');
+            } else {
+                $('#provincia').append('<option value="' + value.codigoProvincia + '">' + value.nombreProvincia + '</option>');
+            }
+        });
+        // llenar el select de ciudad
+        $.each(ciudades, function (index, value) {
+            if (value.codigoCiudad == datosUsuario.codigoCiudad) {
+                $('#ciudad').append('<option value="' + value.codigoCiudad + '" selected>' + value.nombreCiudad + '</option>');
+            } else {
+                $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
+            }
+        });
+
+        // llenar el select de pais con datos quemados
+        $('#pais').append('<option value="1" selected>Ecuador</option>');
+
+    }
+        
 
     //metodos jquery
     // boton confirmar politicas
@@ -227,7 +291,6 @@ Mi Veris - Politica-privacidad-datos
     }
     //obtener las politicas
     async function obtenerPPD(){
-        console.log('obtenerPPDsisis');
         let args = [];
         args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
         args["method"] = "GET";
@@ -246,4 +309,10 @@ Mi Veris - Politica-privacidad-datos
 </script>
 <script>
 </script>
+<style>
+    .custom-select-disabled {
+        background-color: white !important; /* Color de fondo */
+        color: black !important; /* Color del texto */
+    }
+</style>
 @endpush

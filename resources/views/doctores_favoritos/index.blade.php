@@ -7,6 +7,28 @@ Mi Veris - Doctores favoritos
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- Modal convenios-->
+    <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <form class="modal-content rounded-4">
+                <div class="modal-header d-none">
+                    <button type="button" class="btn-close fw-bold top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3 pt-4">
+                    <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
+                    <div class="row gx-2 justify-content-between align-items-center">
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer px-3 pb-3">
+                    <button type="button" class="btn fw-normal m-0" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <!-- Modal de error -->
 
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
@@ -134,7 +156,7 @@ Mi Veris - Doctores favoritos
                                         </div>
                                         <div class="card-footer text-end p-3">
                                             <button type="button" class="btn btn-outline-primary-veris btn-sm me-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
-                                            <a href="#!" class="btn btn-sm btn-primary-veris">Reservar Cita</a>
+                                            <div class="btn btn-sm btn-primary-veris" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(doctores)}'>Reservar cita</div>
                                         </div>
                                     </div>
                                 </div>`;
@@ -149,6 +171,71 @@ Mi Veris - Doctores favoritos
         
         
         return data;
+
+    }
+
+    
+
+    // consultar convenios 
+    async function consultarConvenios(event) {
+        console.log('entro a consultar convenios');
+        let listaConvenios = $('#listaConvenios');
+        listaConvenios.empty();
+        listaConvenios.append(`<div class="text-center p-2"><small>Nos estamos comunicando con tu aseguradora, el proceso puede tardar unos minutos</small></div>`);
+
+        let dataRel = $(event.currentTarget).data('rel');
+        let dataOnline = dataRel.esOnline;  
+        let dataCodigoEspecialidad = dataRel.codigoEspecialidad;
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
+        let tipoIdentificacion = '{{ Session::get('userData')->codigoTipoIdentificacion }}';
+        
+
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        if (data.code == 200){
+            if(data.data.length > 0){
+                
+                
+
+                
+                // llenar el modal con los convenios
+                listaConvenios.empty();
+                let elemento = '';
+                data.data.forEach((convenios) => {
+                    console.log('convenioslrrtd', convenios);
+                    let params = {};
+                    params.convenios = convenios;
+                    params.online = dataOnline;
+                    params.especialidad = {
+                        codigoEspecialidad: dataCodigoEspecialidad,
+                        codigoServicio: dataRel.codigoServicio,
+                        codigoPrestacion: dataRel.codigoPrestacion,
+                        codigoSucursal: dataRel.codigoSucursal,
+                        nombre: dataRel.nombreEspecialidad,
+                    };
+                    params = btoa(JSON.stringify(params));
+                    let ruta = `/citas-elegir-fecha-doctor/${params}`;
+                    elemento += `<a href="${ruta}" class="stretched-link">
+                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
+                                        <label for="listGroupCheckableRadios2">
+                                            ${convenios.nombreConvenio}
+                                        </label> 
+                                    </div>
+                                </a>`;
+                });
+                listaConvenios.append(elemento);
+
+                // abrir modal
+                $('#convenioModal').modal('show');
+
+
+            }
+        }
 
     }
 
