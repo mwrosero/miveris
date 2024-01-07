@@ -29,6 +29,22 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </div>
         </div>
     </div>
+    <!-- modal NO HAY FECHA DISPONIBLES -->
+    <div class="modal fade" id="sinFechaDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinFechaDisponiblesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body p-2">
+                    <div class="text-center">
+                        <h1 class="modal-title fs-5 mb-3" id="sinFechaDisponiblesLabel">Veris</h1>
+                        <p class="mb-0">No tiene fechas disponibles.</p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center p-2 pt-3">
+                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elige fecha y doctor') }}</h5>
     <section class="p-3 mb-3">
@@ -97,9 +113,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     const nextBtn = document.querySelector('.next-btn');
 
     let currentDate = new Date();
+    let fechasDisponibles = []; // Variable global para almacenar las fechas disponibles
 
-    function renderCalendar(listaFechas) {
-        console.log(listaFechas); 
+    function renderCalendar() {
+        console.log('Lista de fecha: ' + fechasDisponibles); 
 
         calendarGrid.innerHTML = '';
         const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
@@ -134,17 +151,26 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             dayElement.textContent = i;
             dayElement.setAttribute('fechaSeleccionada-rel', fechaSeleccionada);
 
-            if (currentDate.getMonth() === new Date().getMonth() && i === new Date().getDate() && currentDate.getFullYear() === new Date().getFullYear()) {
+            if (fechasDisponibles.length > 0 && fechaSeleccionada === fechasDisponibles[0]) {
+                // Agregar la clase 'selected-day' a la primera fecha disponible
                 dayElement.classList.add('selected-day');
             }
-
-            dayElement.addEventListener('click', async () => {
-                _fechaSeleccionada = fechaSeleccionada;
-                $('.calendar-day').removeClass('selected-day');
-                $('.'+classFechaSeleccionada).addClass('selected-day');
-                // Aquí puedes hacer algo con la fecha seleccionada, como enviarla al servidor para la cita médica.
-                await consultarMedicos(fechaSeleccionada);
-            });
+            
+            if (fechasDisponibles.includes(fechaSeleccionada)) {
+                // Habilitar solo para fechas disponibles
+                dayElement.addEventListener('click', async () => {
+                    _fechaSeleccionada = fechaSeleccionada;
+                    console.log('_fechaSeleccionada: ' + _fechaSeleccionada);
+                    console.log('fechaSeleccionada: ' + fechaSeleccionada);
+                    $('.calendar-day').removeClass('selected-day');
+                    $('.' + classFechaSeleccionada).addClass('selected-day');
+                    // Aquí puedes hacer algo con la fecha seleccionada, como enviarla al servidor para la cita médica.
+                    await consultarMedicos(fechaSeleccionada);
+                });
+            } else {
+                // Deshabilitar para fechas no disponibles
+                dayElement.classList.add('unavailable-day');
+            }
 
             calendarGrid.appendChild(dayElement);
         }
@@ -162,12 +188,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     const calendarContainer = document.querySelector('.calendar-container');
     const toggleCalendarBtn = document.getElementById('toggle-calendar-btn');
+    const chevronIcon = document.querySelector('#toggle-calendar-btn i');
 
     toggleCalendarBtn.addEventListener('click', () => {
         if (calendarContainer.style.maxHeight) {
             calendarContainer.style.maxHeight = null;
+            chevronIcon.className = 'bi bi-chevron-compact-up';
         } else {
             calendarContainer.style.maxHeight = '135px';
+            chevronIcon.className = 'bi bi-chevron-compact-down';
         }
     });
 
@@ -191,12 +220,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         const data = await call(args);
 
         if (data.code == 200){
+            fechasDisponibles = data.data; // Almacenar las fechas disponibles en la variable global
             let elemento = '';
 
             if(data.data.length > 0){
-                renderCalendar(data.data);
-                await consultarMedicos(data.data[0]);
+                renderCalendar();
+                await consultarMedicos(fechasDisponibles[0]);
             } else {
+                renderCalendar();
+                $('#sinFechaDisponibles').modal('show');
+                /* Mostrar la modal cuando No hay fecha disponibles. */
                 console.log("No hay fechas disponibles");
             }
             

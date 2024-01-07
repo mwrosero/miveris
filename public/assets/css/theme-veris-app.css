@@ -765,6 +765,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
   width: 32px;
   /* Ajusta el ancho de los días según sea necesario */
   font-size: 1rem;
+  margin: auto;
 }
 
 .calendar-day.empty-day {
@@ -788,7 +789,22 @@ Due to the split circle of progress-left and progress right, we must use the ani
   color: var(--bg-vris-very-dark-blue);
   border-radius: 50rem;
 }
-
+.unavailable-day {
+  cursor: not-allowed; /* Cambia el cursor a "no permitido" */
+  color: #ccc; /* Cambia el color del texto a gris */
+  pointer-events: none; /* Deshabilita eventos de puntero, como clics */
+  user-select: none; /* Evita la selección de texto */
+  opacity: 0.7; /* Ajusta la opacidad para indicar visualmente la indisponibilidad */
+  /* Agrega cualquier otro estilo que desees para indicar la indisponibilidad */
+}
+.calendar-day.previous-month-day {
+  cursor: not-allowed; /* Cambia el cursor a "no permitido" */
+  color: #ccc; /* Cambia el color del texto a gris */
+  pointer-events: none; /* Deshabilita eventos de puntero, como clics */
+  user-select: none; /* Evita la selección de texto */
+  opacity: 0.7; /* Ajusta la opacidad para indicar visualmente la indisponibilidad */
+  /* Agrega cualquier otro estilo que desees para indicar la indisponibilidad */
+}
 .top-n35 {
   top: -35% !important;
 }
