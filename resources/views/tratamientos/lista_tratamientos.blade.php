@@ -25,8 +25,6 @@ $data = json_decode(base64_decode($params));
         </div>
     </div>
 
-    
-
     <!-- Modal Examenes presencial -->
     <div class="modal fade" id="mensajeLaboratorioPresencialModal" tabindex="-1" aria-labelledby="mensajeLaboratorioPresencialModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -86,7 +84,20 @@ $data = json_decode(base64_decode($params));
                                 <!-- datos del tratamiento -->
                             </div>
                             <div class="col-3 col-md-2 col-lg-1">
-                                <div id="chart-progress" data-porcentaje="10" data-color="success"></div>
+                                <div class="progress-circle" id="progress-circle" data-percentage="10">
+                                    <span class="progress-left">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <span class="progress-right">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <div class="progress-value">
+                                        <div>
+                                            <span><i class="bi bi-check2 success"></i></span>
+                                            <p class="fs--2 mb-0"><span id="totalTratamientoRealizados">0</span>/<span id="totalTratamientoEnviados">7</span></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -106,9 +117,6 @@ $data = json_decode(base64_decode($params));
             <div class="col-12 col-md-6 col-lg-5">
                 <div class="px-3" id="contenedorTratamientoPendiente">
                     <!-- items -->
-                    
-                    
-                    
                 </div>
             </div>
         </div>
@@ -117,7 +125,6 @@ $data = json_decode(base64_decode($params));
             <div class="col-12 col-md-6 col-lg-5">
                 <div class="px-3" id="contenedorTratamientoRealizado">
                     <!-- items -->
-                    
                 </div>
             </div>
         </div>
@@ -132,7 +139,6 @@ $data = json_decode(base64_decode($params));
     console.log('uu',params)
     let codigoTratamiento = params.codigoTratamiento;
     let porcentaje = params.porcentajeAvanceTratamiento;
-
     console.log('porcentaje: ', porcentaje);
     
     
@@ -168,7 +174,7 @@ $data = json_decode(base64_decode($params));
                                 <p class="fs--2 mb-0">${data.data.datosConvenio.nombreConvenio}</p> `;
             datosTratamientoCard.append(elemento);
             // mostrar el porcentaje
-            document.getElementById("chart-progress").setAttribute("data-porcentaje", porcentaje);
+            document.getElementById("progress-circle").setAttribute("data-percentage", porcentaje);
             datosTratamiento = data.data;
 
             mostrarTratamientoenDiv();
@@ -225,7 +231,7 @@ $data = json_decode(base64_decode($params));
             });
             // mostrar el titulo de pendientes
             document.getElementById("tituloTratamientoPendiente").style.display = "block";
-            chartProgres("#chart-progress");
+            chartProgres("#progress-circle");
         }
         
     }
@@ -269,7 +275,7 @@ $data = json_decode(base64_decode($params));
             });
              // mostrar el titulo de realizados
             document.getElementById("tituloTratamientoRealizado").style.display = "block";
-            // chartProgres("#chart-progress");
+            // chartProgres("#progress-circle");
         }
        
 
