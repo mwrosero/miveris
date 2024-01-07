@@ -6,7 +6,27 @@ Mi Veris - Citas - Mis tratamientos
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
-<div class="flex-grow-1 container-p-y pt-0">
+    <!-- Modal de error -->
+
+    <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-grow-1 container-p-y pt-0">
+
+
+    
+
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Mis tratamientos') }}</h5>
     </div>
@@ -111,6 +131,13 @@ Mi Veris - Citas - Mis tratamientos
                 }
                 
             }
+        }
+        else if (data.code != 200) {
+            console.log('errorza');
+            // mostrar modal de error
+            $('#mensajeError').text(data.message);
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+
         }
         return data;
     }

@@ -44,6 +44,7 @@ Mi Veris - Historia clínica
     let codigoEspecialidad = {{$codigoEspecialidad}};
     let tipoIdentificacion = {{$tipoIdentificacion}};
     let numeroIdentificacion = {{$numeroIdentificacion}};
+    let esOnline = '{{$esOnline}}';
     let informacionDoctor = [];
     let dataDoctor = [];
 
@@ -59,10 +60,11 @@ Mi Veris - Historia clínica
 
     // Consultar los doctores según la especialedad seleccionada por el paciente
     async function consultarDoctores() {
+        console.log('Consultando doctores...');
          let args = [];
          canalOrigen = _canalOrigen
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-         args["endpoint"] = api_url + `/digitalestest/v1/hc/doctores?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${codigoEspecialidad}&esOnline=1 `;
+         args["endpoint"] = api_url + `/digitalestest/v1/hc/doctores?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${codigoEspecialidad}&esOnline=${esOnline}`;
          
          args["method"] = "GET";
          args["showLoader"] = true;
@@ -179,7 +181,8 @@ Mi Veris - Historia clínica
             let url = "{{route('historiaClinica.solicitar')}}?doctores=" + encodedJsonStr +
                     "&codigoEspecialidad=" + codigoEspecialidad +
                     "&tipoIdentificacion=" + tipoIdentificacion +
-                    "&numeroIdentificacion=" + numeroIdentificacion;
+                    "&numeroIdentificacion=" + numeroIdentificacion +
+                    "&esOnline=" + esOnline;
 
             // Redireccionar a la nueva URL
             window.location.href = url;

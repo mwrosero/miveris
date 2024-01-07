@@ -36,8 +36,8 @@ class CitasController extends Controller
         return view('citas.fecha_doctor')->with('params',$params);
     }
     // Return view detalle de la cita
-    public function detalleCita() {
-        return view('citas.detalle_cita');
+    public function detalleCita($params) {
+        return view('citas.detalle_cita')->with('params',$params);
     }
 
     // Return view datos de facturacion

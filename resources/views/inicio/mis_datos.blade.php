@@ -23,14 +23,11 @@ Mi Veris - Mis Datos
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">Mis Datos</h5>
 
-    @foreach (Session::get('userData') as $key => $value)
+    {{-- @foreach (Session::get('userData') as $key => $value)
     <p class="ps-4 mb-1 pb-2 bg-white">{{ $key }}: {{ $value }}</p>
     
  
-    @endforeach
-
-
-
+    @endforeach --}}
 
     
     <div class="row g-0 justify-content-center align-items-center">
