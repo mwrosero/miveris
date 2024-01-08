@@ -265,7 +265,7 @@
                 },
             });
 
-            // Inicializa apexchart
+            /* // Inicializa apexchart
             let chartElements = document.querySelectorAll(elemento);
             // Mapea valores de atributos personalizados a colores
             let colorMapping = {
@@ -325,7 +325,7 @@
                 // Crea una nueva instancia de ApexCharts para el elemento actual
                 let chart = new ApexCharts(chartElement, options);
                 chart.render();
-            });
+            }); */
         }
     </script>
 
