@@ -222,7 +222,7 @@ Mi Veris - Citas - Laboratorio
                                                                 
                                                             </div>
                                                             <div>
-                                                                ${determinarCondicionesBotones(detalles)}
+                                                                ${determinarCondicionesBotones(detalles, estado)}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -308,7 +308,7 @@ Mi Veris - Citas - Laboratorio
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                             </div>
                                                             <div>
-                                                                ${determinarbotonesRecetaMedica(detalles)}  
+                                                                ${determinarCondicionesBotones(detalles, estado)} 
                                                             </div>
                                                         </div>
                                                     </div>
@@ -406,7 +406,7 @@ Mi Veris - Citas - Laboratorio
 
     // determinar condiciones de los botones 
 
-    function determinarCondicionesBotones(datosServicio){
+    function determinarCondicionesBotones(datosServicio, estado) {
         let services = datosServicio;
         console.log('services', services);
 
@@ -475,28 +475,37 @@ Mi Veris - Citas - Laboratorio
                     respuesta += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
 
 
-                    // condición para 'verResultados'
-                    if (datosServicio.verResultados == "S") {
-                        respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2
-                        "><i class="bi me-2"></i> Ver resultados</a>`;
-                    } else {
-                        respuesta += ``;
-                    }
-
-                    //condición para 'aplicaSolicitud'
-                    if (datosServicio.aplicaSolicitud == "S") {
-                        respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                    } 
-                    else if (datosServicio.permitePago == "S"){
-                        let params = {};
-                        params.idPaciente = datosServicio.pacPacNumero;
-                        params.numeroOrden = datosServicio.idOrden;
-                        params.codigoEmpresa = datosServicio.codigoEmpresa;
-                        let ulrParams = btoa(JSON.stringify(params));
+                    if(estado == 'REALIZADO'){
+                        // clear respuesta
+                        respuesta = "";
                         
-                        respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
-                    }
+                        respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver orden</a>`;
+                    } 
+                    else{
 
+                        // condición para 'verResultados'
+                        if (datosServicio.verResultados == "S") {
+                            respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2
+                            "><i class="bi me-2"></i> Ver resultados</a>`;
+                        } else {
+                            respuesta += ``;
+                        }
+
+                        //condición para 'aplicaSolicitud'
+                        if (datosServicio.aplicaSolicitud == "S") {
+                            respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                        } 
+                        else if (datosServicio.permitePago == "S"){
+                            let params = {};
+                            params.idPaciente = datosServicio.pacPacNumero;
+                            params.numeroOrden = datosServicio.idOrden;
+                            params.codigoEmpresa = datosServicio.codigoEmpresa;
+                            let ulrParams = btoa(JSON.stringify(params));
+                            
+                            respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                        }
+                    }
+                    
                     return respuesta;
 
                     break;
@@ -528,6 +537,8 @@ Mi Veris - Citas - Laboratorio
 
         }
     }
+
+    
 
 
 
