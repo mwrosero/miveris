@@ -1,3 +1,13 @@
+<div id= "botonAtras" class="d-none">
+	<div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
+		<a href="{{ route('login') }}" class="text-decoration-none">
+			<div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 16px;">
+				<img src="../../assets/img/svg/atras.svg" class="cursor-pointer prev-image" alt="Atrás">
+				<label style="font-family: 'Gotham Rounded'; font-size: 20px;">Atrás</label>
+			</div>
+		</a>
+	</div>
+</div>
 @extends('template.login')
 @section('title')
     Mi Veris - Crear Cuenta
@@ -5,6 +15,7 @@
 
 @section('content')
 <!-- Logo -->
+
 <div class="text-center mb-2">
     <img class="logo-login" src="../../assets/img/veris/isotipo.svg">
 </div>
@@ -204,8 +215,8 @@
 <script>
 	document.addEventListener("DOMContentLoaded", async function () {
         await obtenerIdentificacion();
-        await obtenerProvincias();
-        await obtenerCiudades();
+        const dataProvincia = await obtenerProvincias();
+		
 
         $('body').on('change', '#provincia', async function(){
         	await obtenerCiudades();
@@ -217,6 +228,11 @@
 
     const passwordInput2 = document.getElementById('password2');
     const togglePassword2 = document.getElementById('togglePassword2');
+	
+	const botonAtras = document.getElementById('botonAtras');
+
+
+
 
     togglePassword.addEventListener('click', function() {
         if (passwordInput.type === 'password') {
@@ -240,17 +256,36 @@
 
     // Espera a que el DOM esté listo
 	document.addEventListener("DOMContentLoaded", async function () {
+		const primerNombreInput = document.getElementById('primerNombre');
+		const primerApellidoInput = document.getElementById('primerApellido');
+		const segundoApellidoInput = document.getElementById('segundoApellido');
 		const form = document.getElementById("registroWizard");
 		const step1 = document.querySelector(".step1");
 		const step2 = document.querySelector(".step2");
 		const step3 = document.querySelector(".step3");
 		const nextButton = document.querySelector(".next-button");
-		//const prevButton = document.querySelector(".prev-button");
+		const prevButton = document.querySelector(".prev-button");
 		const registerButton = document.querySelector(".btn-registrar");
 		const confirmarButton = document.querySelector(".btn-confirmar");
 
+		primerNombreInput.addEventListener('input', function(e) {
+			const valor = e.target.value;
+			e.target.value = valor.replace(/[0-9]/g, ''); // Eliminar números del valor
+		});
+
+		primerApellidoInput.addEventListener('input', function(e) {
+			const valor = e.target.value;
+			e.target.value = valor.replace(/[0-9]/g, ''); // Eliminar números del valor
+		});
+
+		segundoApellidoInput.addEventListener('input', function(e) {
+			const valor = e.target.value;
+			e.target.value = valor.replace(/[0-9]/g, ''); // Eliminar números del valor
+		});
+
 		// Al hacer clic en "Siguiente", valida los campos y muestra el paso 2 si son válidos
 		nextButton.addEventListener("click", async function (e) {
+			
 			e.preventDefault();
 			let errors = false;
             let msg = `<ul class="ms-0 text-start" id="itemsMsg">`;
@@ -280,7 +315,12 @@
 	            if(getInput('telefono') == ""){
 	                errors = true;
 	                msg += `<li class="ms-0">Campo teléfono es requerido</li>`;
+	            } else if(getInput('telefono').length < 10){
+					console.log(getInput('telefono').length);
+	            	errors = true;
+	                msg += `<li class="ms-0">Campo teléfono debe tener al menos 10 dígitos</li>`;
 	            }
+
 	            if(getInput('password') == "" || getInput('password').length < ""){
 	            	errors = true;
 	                msg += `<li class="ms-0">Campo contraseña es requerido</li>`;	
@@ -322,6 +362,7 @@
 			if(!errors){
 				step1.classList.add("d-none");
 				step2.classList.remove("d-none");
+				botonAtras.classList.remove("d-none");
 			}else{
 				msg += `</ul>`;
 				$('#modalAlertTitle').html(title);
@@ -330,31 +371,43 @@
 			}
 		});
 
-		// Al hacer clic en "Anterior", vuelve al paso 1
-		/*prevButton.addEventListener("click", function (e) {
-			e.preventDefault();
-			step2.classList.add("d-none");
-			step1.classList.remove("d-none");
-		});*/
+
+		// // Al hacer clic en "Anterior", vuelve al paso 1
+		// prevButton.addEventListener("click", function (e) {
+		// 	console.log('click atras');
+		// 	e.preventDefault();
+		// 	step2.classList.add("d-none");
+		// 	step1.classList.remove("d-none");
+			
+		// });
 
 		// Aquí puedes escuchar el evento submit del formulario para enviar los datos.
 		registerButton.addEventListener("click", async function (e) {
+			console.log('click registrar');
 			e.preventDefault();
 			let errors = false;
             let msg = `<ul class="ms-0 text-start">`;
 			let title = 'Campos requeridos';
 			
-			if(getInput('primerNombre') == ""){
+			if(campoEstaVacio(getInput('primerNombre'))){
 			    errors = true;
 			    msg += `<li class="ms-0">Campo primer nombre es requerido</li>`;
 			}
-			if(getInput('primerApellido') == ""){
+			if(campoEstaVacio(getInput('primerApellido'))){
 			    errors = true;
 			    msg += `<li class="ms-0">Campo primer apellido es requerido</li>`;
 			}
-			if(getInput('segundoApellido') == ""){
+			if(campoEstaVacio(getInput('segundoApellido'))){
 			    errors = true;
 			    msg += `<li class="ms-0">Campo primer apellido es requerido</li>`;
+			}
+			if (campoEstaVacio(document.getElementById('ciudad').value)) {
+				errors = true;
+				msg += `<li class="ms-0">Campo ciudad es requerido</li>`;
+			}
+			if (campoEstaVacio(document.getElementById('provincia').value)) {
+				errors = true;
+				msg += `<li class="ms-0">Campo provincia es requerido</li>`;
 			}
 			$('#modalAlertButtonCancelar').addClass('d-none');
 			$('#modalAlertButtonAccion').addClass('d-none');
@@ -380,6 +433,10 @@
 			    $('#modalAlert').modal('show');
 			}
 		});
+
+		function campoEstaVacio(valor) {
+			return !valor.trim();
+		}
 
 		confirmarButton.addEventListener("click", async function (e) {
 			e.preventDefault();
@@ -410,6 +467,17 @@
 			}
 		});
 	});
+
+
+	// capturar codigoProvincia del select
+	$('body').on('change', '#provincia', async function(){
+		let codigoProvincia = $(this).val();
+		await obtenerCiudades(codigoProvincia);
+	});
+
+	
+
+
 
    
 </script>
