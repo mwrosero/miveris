@@ -3,9 +3,15 @@
     Veris - Olvide Contraseña
 @endsection
 @section('back-button')
-<div class="bg-labe-grayish px-3 py-2 position-absolute w-100">
-    <a href="{{route('login')}}" class="text-dark-veris"><i class="bi bi-arrow-left"></i> {{ __('Atrás') }}</a>
+<div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
+    <a href="{{ route('login') }}" class="text-decoration-none">
+        <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 16px;">
+            <img src="../../assets/img/svg/atras.svg" class="cursor-pointer prev-image" alt="Atrás">
+            <label style="font-family: 'Gotham Rounded'; font-size: 20px;">Atrás</label>
+        </div>
+    </a>
 </div>
+
 @endsection
 @section('content')
 <!-- Logo -->
