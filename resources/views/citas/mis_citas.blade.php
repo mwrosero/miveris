@@ -7,6 +7,39 @@ Mi Veris - Citas - Mis citas
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- offcanva ver pdf -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="verPdf" aria-labelledby="verPdfLabel">
+        <div class="offcanvas-header py-2">
+            <h5 class="offcanvas-title" id="verPdfLabel">Mis documentos</h5>
+            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atras</b></button>
+        </div>
+        <br>
+        <br>
+        <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
+            <div>
+                <div class="list-group gap-2 mb-3 verPdf">
+                    <button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
+                        <span class="text-veris fw-bold">
+                            RECOMENDACIONES
+                        </span>
+                        <i class="bi bi-download ms-auto"></i>
+                    </button>
+                </div>
+                <div class="list-group gap-2 mb-3 verPdf">
+                    <button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
+                        <span class="text-veris fw-bold">
+                            FACTURA
+                        </span>
+                        <i class="bi bi-download ms-auto"></i>
+                    </button>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+
     <!-- Filtro -->
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Mis citas') }}</h5>
@@ -160,6 +193,7 @@ Mi Veris - Citas - Mis citas
                                                     <p class="fw-normal fs--2 mb-0">${capitalizarElemento(historial.nombrePaciente)}</p>
                                                     <div class="d-flex justify-content-end align-items-center mt-3">
                                                         <div>
+                                                            <a href="#" class="btn btn-sm btn-outline-primary-veris shadow-none" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf"><i class="bi bi-file-earmark-pdf"></i> Ver PDF</a>
                                                             <a href=${quitarComillas(historial.urlEncuesta)} class="btn btn-sm btn-outline-primary-veris shadow-none">Calificar</a>
                                                             <a href="/citas" class="btn btn-sm btn-primary-veris shadow-none">Reagendar</a>
                                                         </div>
@@ -328,7 +362,6 @@ Mi Veris - Citas - Mis citas
                                 </span>
                             </label>`;
             divContenedor.append(elemento);
-
         });
     }
 

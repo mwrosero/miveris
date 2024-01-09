@@ -157,13 +157,9 @@ $data = json_decode(base64_decode($params));
     console.log('uu',params)
     let codigoTratamiento = params.codigoTratamiento;
     let porcentaje = params.porcentajeAvanceTratamiento;
-<<<<<<< HEAD
-    console.log('porcentaje: ', porcentaje);
-=======
     let secuenciaAtencion = [];
     let ultimoTratamiento = [];
     let idPaciente ;
->>>>>>> developer
     
     
     let datosTratamiento = [];
