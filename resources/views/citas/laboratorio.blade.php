@@ -215,11 +215,10 @@ Mi Veris - Citas - Laboratorio
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
                                                         </div>
-                                                        <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${determinarValorNull(detalles.fechaCaducidad)}</b></p>
-                                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                                        ${determinarFechasCaducadas(detalles)}
+                                                       <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
-                                                                
                                                             </div>
                                                             <div>
                                                                 ${determinarCondicionesBotones(detalles, estado)}
@@ -350,10 +349,54 @@ Mi Veris - Citas - Laboratorio
         return data;
     }
 
+    // descargar documento pdf
+     
+    async function descargarDocumentoPdf(datos){
+        console.log('datosPdf', datos);
+        console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
+        let args = [];
+        let canalOrigen = 'APP_CMV'
+        
+        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+
+            window.open(pdfUrl, '_blank');
+
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+
+        } catch (error) {
+            console.error('Error al obtener el PDF:', error);
+        }
+    }
+
 
 
 
     // funciones js 
+
+    // determinar fechas caducadas
+    function determinarFechasCaducadas(datos){
+
+        if (datos.tipoServicio == "FARMACIA") {
+            return ``;
+        } else{
+            if (datos.esCaducado == "S") {
+                return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            } else {
+                return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            }
+
+        }
+
+
+    }
 
     // determinar si es comprar o por comprar
     function determinarEstado(estado){
@@ -479,7 +522,8 @@ Mi Veris - Citas - Laboratorio
                         // clear respuesta
                         respuesta = "";
                         
-                        respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver orden</a>`;
+                        respuesta += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2" 
+                            ></i> Ver orden</div>`;
                     } 
                     else{
 
@@ -511,6 +555,16 @@ Mi Veris - Citas - Laboratorio
                     break;
 
                 case "RECETAS" :
+
+                    let respuestaRecetas = "";
+                    
+                    respuestaRecetas += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver receta</div>`;
+
+                    if(estado == 'REALIZADO'){
+                        respuestaRecetas = "";
+                        respuestaRecetas += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2" 
+                            ></i> Ver orden</div>`;
+                    }
                     if(datosServicio.aplicaSolicitud == "S"){
                         return `<a href="/farmacia-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                     }
@@ -620,6 +674,19 @@ Mi Veris - Citas - Laboratorio
         console.log('pendientes');
         const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
         await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
+    });
+
+
+    // boton ver orden
+    $(document).on('click', '.btn.text-primary-veris.fw-normal.fs--1', function(){
+        let datos = $(this).data('rel');
+        descargarDocumentoPdf(datos);
+    });
+
+    // boton ver orden  realizado
+    $(document).on('click', '.btnVerOrden', function(){
+        let datos = $(this).data('rel');
+        descargarDocumentoPdf(datos);
     });
 </script>
 @endpush
