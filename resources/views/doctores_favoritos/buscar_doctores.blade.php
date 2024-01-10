@@ -7,6 +7,23 @@ Mi Veris - Buscar doctor
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+
+
+    <!-- Modal mensaje doctor agregado -->
+    <div class="modal fade" id="mensajeDoctorAgregadoModal" tabindex="-1" aria-labelledby="mensajeDoctorAgregadoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
+                    <p class="fs--1 fw-bold m-0 mt-3">Doctor agregado a tus favoritos</p>
+                </div>
+                <div class="modal-footer pb-3 pt-0 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- filtro -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroSearchDoctors" aria-labelledby="filtroSearchDoctorsLabel">
         <div class="offcanvas-header py-2">
@@ -51,14 +68,15 @@ Mi Veris - Buscar doctor
             </div>
             <div class="col-auto col-lg-10">
                 <div class="row gy-3" id="doctoresFavoritos">
-                    <!-- Mensaje No hay doctores disponibles -->
-                    <div class="col-12 d-flex justify-content-center d-none" id="noHayDoctores">
-                        <div class="card bg-transparent shadow-none">
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img src="{{ asset('assets/img/svg/doctors_search.svg') }}" class="img-fluid mb-3" alt="">
-                                    <h5>No hay doctores disponibles</h5>
-                                </div>
+                    
+                </div>
+                <!-- Mensaje No hay doctores disponibles -->
+                <div class="col-12 d-flex justify-content-center d-none" id="noHayDoctores">
+                    <div class="card bg-transparent shadow-none">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <img src="{{ asset('assets/img/svg/doctors_search.svg') }}" class="img-fluid mb-3" alt="">
+                                <h5>No hay doctores disponibles</h5>
                             </div>
                         </div>
                     </div>
@@ -72,12 +90,43 @@ Mi Veris - Buscar doctor
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    flatpickr("#fechaDesde", {
-        // maxDate: "today"
+    let fechaDesdePicker = flatpickr("#fechaDesde", {
+        maxDate: new Date().fp_incr(0),
+        onChange: function(selectedDates, dateStr, instance) {
+            if (!document.getElementById('fechaHasta').disabled) {
+                fechaHastaPicker.set('minDate', dateStr);
+            } else {
+                document.getElementById('fechaHasta').disabled = false;
+                fechaHastaPicker = flatpickr("#fechaHasta", {
+                    minDate: dateStr,
+                    maxDate: new Date().fp_incr(0)
+                });
+            }
+        }
     });
-    flatpickr("#fechaHasta", {
-        // maxDate: "today"
+
+    let fechaHastaPicker = flatpickr("#fechaHasta", {
+        maxDate: new Date().fp_incr(0),
+        minDate: new Date(), 
+        onChange: function(selectedDates, dateStr, instance) {
+        }
     });
+
+    document.getElementById('fechaHasta').disabled = true;
+    // quitar el readonly
+
+    $("#fechaDesde").removeAttr("readonly");
+    $("#fechaHasta").removeAttr("readonly");
+    // no permitir autocomplete
+    $("#fechaDesde").attr("autocomplete", "off");
+    $("#fechaHasta").attr("autocomplete", "off");
+
+
+
+</script>
+
+<script>
+    
 
     // variables globales
     let dataEspecialidades = [];
@@ -85,7 +134,7 @@ Mi Veris - Buscar doctor
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function() {
         await consultarEspecialidades();
-        await obtenerDisponibilidadDoctor(dataEspecialidades[0]);
+        await obtenerDisponibilidadDoctor();
     });
 
     // funciones asyncronas
@@ -128,13 +177,27 @@ Mi Veris - Buscar doctor
     // consultar disponibilidad de doctores
 
     async function obtenerDisponibilidadDoctor(doctores) {
+        console.log('filtrott', doctores);
         let args = [];
         let canalOrigen = _canalOrigen;
         let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
-        let codigoSucursal = doctores.codigoSucursal ? doctores.codigoSucursal : '';
-        let codigoEspecialidad = doctores.codigoEspecialidad;
-        let fechaDesde = $('#fechaDesde').val();
-        let fechaHasta = $('#fechaHasta').val();
+        let codigoSucursal = '';
+        let codigoEspecialidad = '';
+        let fechaDesde = '';
+        let fechaHasta = '';
+
+        if (doctores == undefined){
+            doctores = {
+                codigoEspecialidad: '',
+                codigoSucursal: '',
+            }
+        } else{
+            
+            codigoSucursal = doctores.codigoSucursal ? doctores.codigoSucursal : '';
+            codigoEspecialidad = doctores.codigoEspecialidad;
+            fechaDesde = $('#fechaDesde').val();
+            fechaHasta = $('#fechaHasta').val();
+        }
         
         fechaDesde = esFechaValida(fechaDesde) ? formatearFecha(fechaDesde) : '';
         fechaHasta = esFechaValida(fechaHasta) ? formatearFecha(fechaHasta) : '';
@@ -144,8 +207,13 @@ Mi Veris - Buscar doctor
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
+        console.log('data.data.length', data.data.length);
         if (data.code == 200){
             if (data.data.length == 0){
+                console.log('no hay doctores'); 
+                // limpiar doctores
+
+                $('#doctoresFavoritos').empty();
                 $('#noHayDoctores').removeClass('d-none');
             } else{
                 let doctores = data.data;
@@ -153,12 +221,12 @@ Mi Veris - Buscar doctor
                 html.empty();
                 let elemento = '';
                 data.data.forEach(element => {
-                    elemento = `<div class="col-12 col-md-6">
+                    elemento += `<div class="col-12 col-md-6">
                                         <div class="card">
                                             <div class="card-body p-3">
                                                 <div class="row gx-2 align-items-center">
                                                     <div class="col-3">
-                                                        <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='https://i.pinimg.com/474x/93/b5/f9/93b5f9913d2e4316cd6e541c67b9aed0.jpg'; this.style.height='50px'; this.style.width='50px';">
+                                                        <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
                                                     </div>
                                                     <div class="col-7">
                                                         <h6 class="fw-bold mb-0">Dr(a) ${capitalizarElemento(element.primerNombre)} ${capitalizarElemento(element.segundoNombre)} ${capitalizarElemento(element.primerApellido)} ${capitalizarElemento(element.segundoApellido)}</h6>
@@ -166,8 +234,8 @@ Mi Veris - Buscar doctor
                                                         <p class="fs--2 mb-0">${capitalizarElemento(element.nombreEspecialidad)}</p>
                                                     </div>
                                                     <div class="col-2 text-center">
-                                                        <a href="#!" class="btn rounded-pill btn-icon btn-primary-veris" onclick="agregarDoctorFavorito(${element})"
-                                                        ><i class="bi bi-plus-lg"></i></a>
+                                                        <div class="btn rounded-pill btn-icon btn-primary-veris" data-rel='${ JSON.stringify(element) }'
+                                                        ><i class="bi bi-plus-lg"></i></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -183,6 +251,7 @@ Mi Veris - Buscar doctor
 
     // agregar doctores favoritos 
     async function agregarDoctorFavorito(doctor) {
+        console.log('doctor', doctor);
 
         let args = [];
         let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
@@ -210,9 +279,21 @@ Mi Veris - Buscar doctor
         console.log('data', data);
         if (data.code == 200) {
             console.log('doctor agregado');
+            $('#mensajeDoctorAgregadoModal').modal('show');
+
         }
 
     }
+
+
+    
+
+    //agregar doctor favorito boton +
+    $(document).on('click', '.btn-icon', async function() {
+        let doctor = $(this).data('rel');
+        console.log('doctor', doctor);
+        await agregarDoctorFavorito(doctor);
+    });
 
 
     
@@ -228,7 +309,7 @@ Mi Veris - Buscar doctor
     $('#aplicarFiltros').on('click', async function(){
         
         let especialidadSeleccionada = $('input[name="listGroupRadios"]:checked').data('rel');
-        console.log(especialidadSeleccionada);
+        console.log('filtros',especialidadSeleccionada);
         let fechaDesde = $('#fechaDesde').val();
         let fechaHasta = $('#fechaHasta').val();
         fechaDesde = formatearFecha(fechaDesde);

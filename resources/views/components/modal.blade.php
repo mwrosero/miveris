@@ -2,7 +2,7 @@
 @props(['id' => 'modalAlert', 'title' => 'Título', 'message' => ''])
 
 <div class="modal fade" id="{{ $id }}" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-alert-component modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-alert-component modal-dialog-centered mx-auto" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title mx-auto title-section fw-bold" id="modalAlertTitle">{{ $title }}</h5>

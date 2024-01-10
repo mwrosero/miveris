@@ -180,11 +180,11 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
-                                    <h6 class="fw-bold fs--1 mb-0">{{ __('Citas pasadas') }}</h6>
+                                    <h6 class="fw-bold fs--1 mb-0">{{ __('Próximas citas') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('assets/img/svg/clock.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Citas pasadas') }}" width="52">
+                                <img src="{{ asset('assets/img/svg/calendario.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Próximas citas') }}" width="52">
                             </div>
                         </div>
                     </a>
@@ -196,16 +196,17 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body py-0 px-2">
-                                    <h6 class="fw-bold fs--1 mb-0">{{ __('Próximas citas') }}</h6>
+                                    <h6 class="fw-bold fs--1 mb-0">{{ __('Historial de citas') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('assets/img/svg/calendario.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Próximas citas') }}" width="52">
+                                <img src="{{ asset('assets/img/svg/clock.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Historial de citas') }}" width="52">
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
+            
         </div>
     </section>
 </div>
@@ -215,6 +216,7 @@ Mi Veris - Citas
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
