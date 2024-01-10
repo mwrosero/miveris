@@ -103,15 +103,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let codigoUsuario;
         let tipoIdentificacion;
         let nombreCompleto;
+        let numeroPaciente;
 
         if(dataRel != ""){
             codigoUsuario = dataRel.numeroIdentificacion;
             tipoIdentificacion = dataRel.tipoIdentificacion;
             nombreCompleto = dataRel.primerNombre + ' ' + dataRel.primerApellido + ' ' + dataRel.segundoApellido;
+            numeroPaciente = atob(dataRel.idPersona);
         }else{
             codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
             tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
             nombreCompleto = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}";
+            numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
         }
 
         args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
@@ -139,7 +142,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     params.paciente = {
                         "numeroIdentificacion": codigoUsuario,
                         "tipoIdentificacion": tipoIdentificacion,
-                        "nombrePaciente": nombreCompleto
+                        "nombrePaciente": nombreCompleto,
+                        "numeroPaciente": numeroPaciente
                     };
                     console.log(params);
                     let ulrParams = btoa(JSON.stringify(params));
@@ -194,12 +198,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         ruta = `/citas-elegir-especialidad/${ulrParams}`;
                     }
 
-                
                 window.location.href = ruta;
-            }
-
-            
-              
+            }              
         }
 
         return data;
@@ -217,41 +217,42 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let backgroundClass = pacienteYoGenero === "F" ? "bg-strong-magenta" : (pacienteYoGenero === "M" ? "bg-soft-blue" : "bg-soft-green");
         let elemento = '';
         elemento += `<div class="col-6 col-md-3 mb-3">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <a data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel="" >
-                                    <div class="d-flex justify-content-center align-items-center mb-2">
-                                        <div class="avatar me-2">
-                                            <span class="avatar-initial rounded-circle ${backgroundClass}">${pacienteYo.charAt(0).toUpperCase()}</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-veris fw-bold fs--2 mb-0">${pacienteYo}</p>
-                                    <p class="text-veris fs--3 mb-0">{{ __('Yo') }}</p>
-                                </a>
+            <div class="card">
+                <div class="card-body text-center">
+                    <a data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel="" >
+                        <div class="d-flex justify-content-center align-items-center mb-2">
+                            <div class="avatar me-2">
+                                <span class="avatar-initial rounded-circle ${backgroundClass}">${pacienteYo.charAt(0).toUpperCase()}</span>
                             </div>
                         </div>
-                    </div> `;
+                        <p class="text-veris fw-bold fs--2 mb-0">${pacienteYo}</p>
+                        <p class="text-veris fs--3 mb-0">{{ __('Yo') }}</p>
+                    </a>
+                </div>
+            </div>
+        </div> `;
+
         if(familiar != null){
             familiar.forEach((pacientes) => {
                 // console.log('pacientes', pacientes);
                 let backgroundClass = pacientes.genero === "F" ? "bg-strong-magenta" : (pacientes.genero === "M" ? "bg-soft-blue" : "bg-soft-green");
 
                 elemento += `<div class="col-6 col-md-3 mb-3">
-                                    <div class="card">
-                                        <div class="card-body text-center">
-                                            
-                                            <div data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
-                                               <div class="d-flex justify-content-center align-items-center mb-2">
-                                                    <div class="avatar me-2">
-                                                        <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
-                                                    </div>
-                                                </div>
-                                                <p class="text-veris fw-bold fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
-                                                <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
-                                            </div>
-                                        </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            
+                            <div data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
+                               <div class="d-flex justify-content-center align-items-center mb-2">
+                                    <div class="avatar me-2">
+                                        <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
                                     </div>
-                                </div> `;
+                                </div>
+                                <p class="text-veris fw-bold fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
+                                <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> `;
 
             });
         }
