@@ -5,7 +5,12 @@ Mi Veris - Historia clínica
 @push('css')
 <!-- css -->
 @endpush
+
 @section('content')
+@php
+    $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Historia clínica') }}</h5>
     <section class="p-3 pt-0 mb-3">
@@ -40,11 +45,12 @@ Mi Veris - Historia clínica
 
 <script>
 
-    // variables globales
-    let codigoEspecialidad = {{$codigoEspecialidad}};
-    let tipoIdentificacion = {{$tipoIdentificacion}};
-    let numeroIdentificacion = {{$numeroIdentificacion}};
-    let esOnline = '{{$esOnline}}';
+    // variables 
+    let codigoEspecialidad =  {{ $data->codigoEspecialidad }};
+    let tipoIdentificacion = {{ $data->tipoIdentificacion }};
+    let numeroIdentificacion = "{{ $data->numeroIdentificacion }}";
+    console.log('numeroIdentificacion888', numeroIdentificacion);
+    let esOnline =  "{{ $data->esOnline }}";
     let informacionDoctor = [];
     let dataDoctor = [];
 
@@ -173,9 +179,6 @@ Mi Veris - Historia clínica
             let encodedJsonStr = encodeURIComponent(jsonStr);
 
             // Obtener los valores adicionales
-            let codigoEspecialidad = {{$codigoEspecialidad}};
-            let tipoIdentificacion = {{$tipoIdentificacion}};
-            let numeroIdentificacion = {{$numeroIdentificacion}};
 
             // Crear la URL con todos los parámetros
             let url = "{{route('historiaClinica.solicitar')}}?doctores=" + encodedJsonStr +

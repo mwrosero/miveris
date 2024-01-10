@@ -17,7 +17,7 @@ $data = json_decode(base64_decode($params));
                 <div class="modal-body">
                     <h5 class="fw-bold text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
-                    <a href="#" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
+                    <a href="#" class="btn btn-primary-veris w-100" id="btnRecetaMedicaSi">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn w-100">No lo he hecho</a>
                 </div>
            
@@ -41,8 +41,6 @@ $data = json_decode(base64_decode($params));
         </div>
     </div>
     <div class="flex-grow-1 container-p-y pt-0">
-
-    
 
     <!-- Modal Examenes presencial -->
     <div class="modal fade" id="mensajeLaboratorioPresencialModal" tabindex="-1" aria-labelledby="mensajeLaboratorioPresencialModalLabel" aria-hidden="true">
@@ -103,12 +101,26 @@ $data = json_decode(base64_decode($params));
                                 <!-- datos del tratamiento -->
                             </div>
                             <div class="col-3 col-md-2 col-lg-1">
-                                <div id="chart-progress" data-porcentaje="10" data-color="success"></div>
+                                <div class="progress-circle" id="progress-circle" data-percentage="10">
+                                    <span class="progress-left">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <span class="progress-right">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                    <div class="progress-value">
+                                        <div>
+                                            <span><i class="bi bi-check2 success"></i></span>
+                                            <p class="fs--2 mb-0"><span id="totalTratamientoRealizados">0</span>/<span id="totalTratamientoEnviados">7</span></p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-end rounded-0 pb-2">
-                        <a href="#" class="btn btn-sm btn-label-primary-veris px-3 mb-2">Ver PDF</a>
+                        <a href="#" class="btn btn-sm btn-label-primary-veris px-3 mb-2" id="verPdf"
+                        >Ver PDF</a>
                     </div>
                 </div>  
                 <div class="card rounded-0 border-0" id="cardPromocion">
@@ -123,9 +135,6 @@ $data = json_decode(base64_decode($params));
             <div class="col-12 col-md-6 col-lg-5">
                 <div class="px-3" id="contenedorTratamientoPendiente">
                     <!-- items -->
-                    
-                    
-                    
                 </div>
             </div>
         </div>
@@ -134,7 +143,6 @@ $data = json_decode(base64_decode($params));
             <div class="col-12 col-md-6 col-lg-5">
                 <div class="px-3" id="contenedorTratamientoRealizado">
                     <!-- items -->
-                    
                 </div>
             </div>
         </div>
@@ -149,12 +157,13 @@ $data = json_decode(base64_decode($params));
     console.log('uu',params)
     let codigoTratamiento = params.codigoTratamiento;
     let porcentaje = params.porcentajeAvanceTratamiento;
-
-    console.log('porcentaje: ', porcentaje);
+    let secuenciaAtencion = [];
+    let ultimoTratamiento = [];
+    let idPaciente ;
     
     
     let datosTratamiento = [];
-    let ultimoTratamiento = [];
+    let ultimoTratamientoData = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerTratamientos();
@@ -173,19 +182,19 @@ $data = json_decode(base64_decode($params));
         const data = await call(args);
         console.log('sssisis',data);
         if(data.code == 200){
-            datosTratamiento = data.data.pendientes;
-            var ultimoTratamiento = datosTratamiento[datosTratamiento.length - 1];
-            console.log('ultimoTratamiento: ', ultimoTratamiento.nombreEspecialidad);
+            secuenciaAtencion = data.data;
+            ultimoTratamiento = data.data;
+                
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
             let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
                                 <p class="fw-bold fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
-                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedicoAtencion)}</p>
-                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${ultimoTratamiento.fechaOrden}</b></p>
+                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
+                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
                                 <p class="fs--2 mb-0">${data.data.datosConvenio.nombreConvenio}</p> `;
             datosTratamientoCard.append(elemento);
             // mostrar el porcentaje
-            document.getElementById("chart-progress").setAttribute("data-porcentaje", porcentaje);
+            document.getElementById("progress-circle").setAttribute("data-percentage", porcentaje);
             datosTratamiento = data.data;
 
             mostrarTratamientoenDiv();
@@ -208,6 +217,99 @@ $data = json_decode(base64_decode($params));
 
     }
 
+    // cambiar el estado del tratamiento a realizada
+    async function detalleTratamientoRealizado(datos){
+        console.log('datosJson', datos);
+        let datosExterna;
+        if (datos.esExterna == 'S') {
+            datosExterna = true;
+        } else {
+            datosExterna = false;
+        }
+        let args = [];
+        let canalOrigen = 'APP_CMV'
+        
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
+        args["method"] = "PUT";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify(
+            {
+                "codigoTratamiento": datos.codigoTratamiento,
+                "lineaDetalleTratamiento": datos.lineaDetalleTratamiento,
+                "recetas": [
+                    {
+                        "secuenciaReceta": datos.secuenciaReceta,
+                        "esCompraExterna": datosExterna,
+                        "fechaRealizado": obtenerFechaActual()
+                    }
+                ],
+                "generarSolicitud": false,
+                "fechaRealizado": obtenerFechaActual()
+            }
+        );
+
+        console.log('args', args["data"]);
+
+        const data = await call(args);
+        if (data.code == 200) {
+            console.log('datos', data.data);
+            // cerrar modal
+            $('#recetaMedicaModal').modal('hide');
+            // actualizar la lista de tratamientos
+            await obtenerTratamientos();
+
+        } else if (data.code != 200) {
+            console.log('errorza');
+            // mostrar modal de error
+            $('#mensajeError').text(data.message);
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+
+        }
+        
+
+    }
+
+    // recibir fechas y horas actuales
+    function obtenerFechaActual(){
+        let fechaActual = new Date();
+
+        let dia = String(fechaActual.getDate()).padStart(2, '0');
+        let mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Enero es 0
+        let anio = fechaActual.getFullYear();
+
+        let horas = String(fechaActual.getHours()).padStart(2, '0');
+        let minutos = String(fechaActual.getMinutes()).padStart(2, '0');
+        let segundos = String(fechaActual.getSeconds()).padStart(2, '0');
+
+        return `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
+    }
+
+    
+
+    // descargar documento pdf
+     
+    async function descargarDocumentoPdf(datos){
+        console.log('datosPdf', datos);
+        console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
+        let args = [];
+        let canalOrigen = 'APP_CMV'
+        
+        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+        } catch (error) {
+            console.error('Error al obtener el PDF:', error);
+        }
+    }
     
     
     // funciones js
@@ -218,6 +320,7 @@ $data = json_decode(base64_decode($params));
         let divContenedor = $('#contenedorTratamientoPendiente');
         divContenedor.empty(); // Limpia el contenido actual
         if(data.length > 0){
+            idPaciente = datosTratamiento.idPaciente;
             data.forEach((tratamientos) => {
                 
                     let elemento = `<div class="card mb-3">
@@ -228,7 +331,7 @@ $data = json_decode(base64_decode($params));
                                             </div>
                                             ${determinarFechasCaducadas(tratamientos)}
                                             <div id="recetaMedicaMensaje">
-                                                ${determinarMensajeRecetaMedica(tratamientos.nombreServicio)}
+                                                ${determinarMensajeRecetaMedica(tratamientos)}
                                             </div> 
                                             
                                             <div class="d-flex justify-content-between align-items-center mt-2">
@@ -249,7 +352,7 @@ $data = json_decode(base64_decode($params));
             });
             // mostrar el titulo de pendientes
             document.getElementById("tituloTratamientoPendiente").style.display = "block";
-            chartProgres("#chart-progress");
+            chartProgres("#progress-circle");
         }
         
     }
@@ -293,7 +396,7 @@ $data = json_decode(base64_decode($params));
             });
              // mostrar el titulo de realizados
             document.getElementById("tituloTratamientoRealizado").style.display = "block";
-            // chartProgres("#chart-progress");
+            // chartProgres("#progress-circle");
         }
        
 
@@ -352,13 +455,21 @@ $data = json_decode(base64_decode($params));
 
     // determinar si es receta medica o no mensaje 
     function determinarMensajeRecetaMedica(servicio){
-        if(servicio == "RECETA MÉDICA"){
-            return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a> `;
+         
+        if(servicio.nombreServicio == "RECETA MÉDICA"){
+            let servicioStr = JSON.stringify(servicio);
+            return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal" data-rel='${servicioStr}'>¿Ya compraste esta receta?</a>`;
         }
         else{
             return ``;
         }
     }
+
+
+    
+    
+
+
 
     // determinar si es receta medica o no botones
     function determinarbotonesRecetaMedica(servicio, esAgendable, tipoServicio, aplicaSolicitud){
@@ -409,6 +520,7 @@ $data = json_decode(base64_decode($params));
     // determinar condiciones de los botones 
 
     function determinarCondicionesBotones(datosServicio){
+        let services = datosServicio;
 
         if (datosServicio.length == 0) {
             return `<div></div>`;
@@ -418,48 +530,62 @@ $data = json_decode(base64_decode($params));
             switch (datosServicio.tipoCard) {
                 case "AGENDA" :
                     let respuestaAgenda = "";
-                    if(datosServicio.esAgendable == "S"){
+                    // Agregar ver orden 
+                    respuestaAgenda += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
 
-                        if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
-                            if (datosServicio.habilitaBotonAgendar == 'S') {
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
-                            } else {
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
-
+                    if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
+                        if (datosServicio.habilitaBotonAgendar == 'S') {
+                            let modalidad;
+                            if (datosServicio.modalidad === 'online') {
+                                modalidad = 'S';
+                            } else if (datosServicio.modalidad === 'presencial') {
+                                modalidad = 'N';
                             }
 
-                        }else if (datosServicio.estado == 'ATENDIDO'){
+                            let params = @json($data);
+                            params.especialidad = {
+                                codigoEspecialidad: datosServicio.codigoEspecialidad
+                            };
+                            params.esOnline = modalidad;
+                            let urlParams = btoa(JSON.stringify(params));
+                            respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                        } else {
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
 
-                            // mostrar boton de ver orden
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2"><i class="bi me-2"></i> Ver orden</a>`;
-
-                        }else if (datosServicio.estado == 'AGENDADO'){
-                            // mostrar boton de ver orden
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
-
-                            if (datosServicio.permitePago == 'S'){
-                                // mostrar boton de pagar
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
-                            } 
-                            if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
-                                
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
-                            } 
-                            
-                            if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
-                                // mostrar boton de informacion
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})"></i> Información</a>`;
-                            } 
                         }
 
+                    }else if (datosServicio.estado == 'ATENDIDO'){
+
+                        // mostrar boton de ver orden
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2"><i class="bi me-2"></i> Ver orden</a>`;
+
+                    }else if (datosServicio.estado == 'AGENDADO'){
+                        // mostrar boton de ver orden
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
+
+                        if (datosServicio.permitePago == 'S'){
+                            // mostrar boton de pagar
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                        } 
+                        if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                            
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                        } 
+                        
+                        if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                            // mostrar boton de informacion
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})"></i> Información</a>`;
+                        } 
                     }
 
+                    
                     return respuestaAgenda;
-
                     break;
 
                 case "LAB":
                     let respuesta = "";
+                    respuesta += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+
 
                     // condición para 'verResultados'
                     if (datosServicio.verResultados == "S") {
@@ -472,8 +598,15 @@ $data = json_decode(base64_decode($params));
                     //condición para 'aplicaSolicitud'
                     if (datosServicio.aplicaSolicitud == "S") {
                         respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                    } else {
-                        respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    } 
+                    if (datosServicio.permitePago == "S"){
+                        let params = @json($data);
+                        params.idPaciente = idPaciente;
+                        params.numeroOrden = datosServicio.idOrden;
+                        params.codigoEmpresa = datosServicio.codigoEmpresa;
+                        let ulrParams = btoa(JSON.stringify(params));
+                        
+                        respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
                     }
 
                     return respuesta;
@@ -490,12 +623,16 @@ $data = json_decode(base64_decode($params));
                     }
                     break;
                 case "ODONTOLOGIA" :
+                    let respuestaOdontologia = "";
+                    respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
                     if (datosServicio.esAgendable == "N") {
-                        return `<a class="btn btn-sm btn-primary-veris fw-normal fs--1" onclick="agendarCitaOdontologia()"><i class="bi me-2"></i> Agendar</a>`;
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
                       
                     } else {
-                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
                     }
+
+                    return respuestaOdontologia;
 
                     break;
 
@@ -512,7 +649,6 @@ $data = json_decode(base64_decode($params));
     }
 
     // mostrar informacion
-
     function mostrarInformacion(mensaje){
 
         if (mensaje == null) {
@@ -527,9 +663,6 @@ $data = json_decode(base64_decode($params));
 
     }
 
-    
-
-
     // determinar valores null 
     function determinarValoresNull(valor){
         if(valor == null){
@@ -543,16 +676,39 @@ $data = json_decode(base64_decode($params));
     // formatear fecha
     function formatearFecha(fecha) {
         const meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
-        
-        // Asumiendo que la fecha entra en formato "DD-MM-YYYY"
         const partes = fecha.split('-');
         const dia = partes[0];
-        const mes = meses[parseInt(partes[1], 10) - 1]; // Convertir a número y restar 1 porque los meses en JavaScript comienzan en 0
+        const mes = meses[parseInt(partes[1], 10) - 1];
         const año = partes[2];
 
         return `${mes} ${dia}, ${año}`;
     }
 
+    // boton ver pdf
+    $('#verPdf').click(function(){
+        descargarDocumentoPdf(ultimoTratamientoData);
+    });
+
+    // asignacion de datos al modal receta medica
+    $('#recetaMedicaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); 
+        var datos = JSON.parse(button.attr('data-rel'));
+        $('#btnRecetaMedicaSi').data('rel', datos);
+    });
+
+
+
+    // boton receta medica si lo hice
+    $('#btnRecetaMedicaSi').click(async function(){
+        let datos = $(this).data('rel');
+        await detalleTratamientoRealizado(datos);
+    });
+
+    // boton ver orden
+    $(document).on('click', '.btn.text-primary-veris.fw-normal.fs--1', function(){
+        let datos = $(this).data('rel');
+        descargarDocumentoPdf(datos);
+    });
 
 </script>
 @endpush

@@ -233,8 +233,6 @@ Mi Veris - Resultados
                                     <button class="btn btn-lg btn-primary-veris w-100 mt-3" target="_blank" onclick="verInforme('${resultados.codigoOrdenApoyos}' , '${resultados.tipo}')">Ver informe</button>
                                 </div>
                                  `;
-
-
                              });
 
                 
@@ -255,7 +253,7 @@ Mi Veris - Resultados
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
 
-        args["endpoint"] = api_url + `/digitalestest/v1/examenes/archivoresultado?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/examenes/archivoresultado?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
        
         args["method"] = "GET";
         args["showLoader"] = true;
