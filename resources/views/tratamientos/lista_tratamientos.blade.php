@@ -183,16 +183,14 @@ $data = json_decode(base64_decode($params));
         console.log('sssisis',data);
         if(data.code == 200){
             secuenciaAtencion = data.data;
-            datosTratamiento = data.data.pendientes;
-            var ultimoTratamiento = datosTratamiento[datosTratamiento.length - 1];
-            ultimoTratamientoData = ultimoTratamiento;
-            console.log('ultimoTratamiento: ', ultimoTratamiento.nombreEspecialidad);
+            ultimoTratamiento = data.data;
+                
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
             let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
                                 <p class="fw-bold fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
-                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedicoAtencion)}</p>
-                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${ultimoTratamiento.fechaOrden}</b></p>
+                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
+                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
                                 <p class="fs--2 mb-0">${data.data.datosConvenio.nombreConvenio}</p> `;
             datosTratamientoCard.append(elemento);
             // mostrar el porcentaje
@@ -304,13 +302,10 @@ $data = json_decode(base64_decode($params));
         try {
             const blob = await callInformes(args);
             const pdfUrl = URL.createObjectURL(blob);
-
             window.open(pdfUrl, '_blank');
-
             setTimeout(() => {
                 URL.revokeObjectURL(pdfUrl);
             }, 100);
-
         } catch (error) {
             console.error('Error al obtener el PDF:', error);
         }
