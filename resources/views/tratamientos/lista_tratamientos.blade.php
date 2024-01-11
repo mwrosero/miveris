@@ -183,6 +183,7 @@ $data = json_decode(base64_decode($params));
         console.log('sssisis',data);
         if(data.code == 200){
             secuenciaAtencion = data.data;
+            ultimoTratamientoData = data.data;
             ultimoTratamiento = data.data;
                 
             let datosTratamientoCard =  $('#datosTratamientoCard');
@@ -294,8 +295,9 @@ $data = json_decode(base64_decode($params));
         console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
         let args = [];
         let canalOrigen = 'APP_CMV'
+        let secuenciaAtencion = datos.secuenciaAtenciones;
         
-        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
@@ -367,7 +369,8 @@ $data = json_decode(base64_decode($params));
         divContenedorRealizados.empty(); // Limpia el contenido actual
         if(data.length > 0){
             data.forEach((tratamientos) =>{
-                console.log('tratamientosee: ', tratamientos.nombreServicio); 
+
+                
 
                 let elemento = `<div class="card mb-3">
                                     <div class="card-body fs--2 p-3">
