@@ -250,6 +250,12 @@ Mi Veris - Citas - Mis tratamientos
         }
         
         data.forEach((tratamientosRealizados) =>{
+            let params = { 
+                    "codigoTratamiento": tratamientosRealizados.codigoTratamiento,
+                    "porcentajeAvanceTratamiento": tratamientosRealizados.porcentajeAvanceTratamiento
+                }
+                let ulrParams = btoa(JSON.stringify(params));
+                console.log('ulrParams', params);
             let elemento = `<div class="col-12 col-md-6">
                                 <div class="card">
                                     <div class="card-body position-relative p-3">
@@ -282,7 +288,8 @@ Mi Veris - Citas - Mis tratamientos
                                                 <p class="fw-light fs--2 mb-0">Terminado el: <b class="text-primary-veris fw-light fs--2" id="fechaTratamiento">${tratamientosRealizados.fechaTratamiento}</b></p>
                                             </div>
                                             <div class="col-md-3">
-                                                <a href="#" class="btn btn-sm btn-primary-veris px-2">Ver todo</a>
+                                                <a href="/tratamiento/${ulrParams}"
+                                                 class="btn btn-sm btn-primary-veris px-2">Ver todo</a>
                                             </div>
                                         </div>
                                     </div>

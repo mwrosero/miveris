@@ -69,21 +69,7 @@ if(isset($data->convenio)){
                             <p class="fs--2 mb-0">{{ isset($data->convenio) ? $data->convenio->nombreConvenio : '' }}</p>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-start align-items-center border-top py-3 px-2">
-                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
-                    </div>
-                    <div class="card-footer d-flex justify-content-start align-items-center border-top py-3 px-2">
-                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage">Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.</p>
-                    </div>
-                    <div class="card-footer d-flex justify-content-start align-items-center border-top py-3 px-2">
-                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
-                    </div>
-                    <div class="card-footer d-flex justify-content-start align-items-center border-top py-3 px-2">
-                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
+                    <div class="card-footer px-2 pb-2" id="msg-cita">
                     </div>
                 </div>
             </div>
@@ -126,15 +112,47 @@ if(isset($data->convenio)){
 
             console.log(porcentajeDescuentoCopago,subtotalCopago,valorTotalCopago)
             let elem = ``;
-            if(porcentajeDescuentoCopago == 0){
+            /*if(porcentajeDescuentoCopago == 0){
                 elem += `<h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>`;
             }else{
                 elem += `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
                             <del id="precioBase">$${valorTotalCopago}<</del>
                         </p>
                         <h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}<</h3>`;
-            }
+            }*/
+            elem += `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
+                        <del id="precioBase">$${valor}</del>
+                    </p>
+                    <h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>`;
             $('.box-precio').html(elem);
+
+            let elemMsg = ``;
+
+            if({{ $data->horario->porcentajeDescuento }} == 0 && "{{ $data->convenio->permiteReserva }}" == "S" && "{{ $data->convenio->permitePago }}" == "S" ){
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
+                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
+                        <p class="fs--1 lh-1 mb-0" id="infoMessage">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
+                    </div>`;
+            }
+            if({{ $data->horario->porcentajeDescuento }} > 0 && "{{ $data->convenio->permitePago }}" == "S" ){
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
+                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
+                        <p class="fs--1 lh-1 mb-0" id="infoMessage">Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.</p>
+                    </div>`;
+            }
+            if("{{ $data->online }}" == "S"){
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
+                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
+                        <p class="fs--1 lh-1 mb-0" id="infoMessage">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
+                    </div>`;
+            }
+            if("{{ $data->convenio->permitePago }}" == "N"){
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
+                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
+                        <p class="fs--1 lh-1 mb-0" id="infoMessage"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
+                    </div>`;
+            }
+            $('#msg-cita').append(elemMsg)
         }
         return data;
     }

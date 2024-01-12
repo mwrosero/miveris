@@ -89,8 +89,8 @@ Mi Veris - Historia clínica
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        if (numeroIdentificacion == '') {
-            numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+        if (numeroIdentificacion != '') {
+            codigoUsuario = numeroIdentificacion;
         }
         if (codigoTipoIdentificacion == '') {
             codigoTipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
@@ -105,7 +105,7 @@ Mi Veris - Historia clínica
         html.empty();
 
         if (data.code == 200){
-            
+            let datas = {};
            
             if (!(data && data.data)) {
                 if(esAdmin == 'S'){
@@ -128,7 +128,16 @@ Mi Veris - Historia clínica
                     let element = '';
 
                     data.data.forEach((especialidades) => {
-                        element += `<a href="/lista-doctores/${especialidades.codigoEspecialidad}/${codigoTipoIdentificacion}/${numeroIdentificacion}/${especialidades.esOnline}
+                        console.log('especialidades', especialidades);
+                        datas.codigoEspecialidad = especialidades.codigoEspecialidad;
+                        datas.tipoIdentificacion  = codigoTipoIdentificacion;
+                        datas.numeroIdentificacion = codigoUsuario;
+                        datas.esOnline = especialidades.esOnline;
+
+                        let params = btoa(JSON.stringify(datas));
+                        console.log('params', params);
+
+                        element += `<a href="/lista-doctores/${params}
                         " class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
                                         <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0" onerror="this.src='{{ asset('assets/img/svg/doctor_light.svg') }}'">
                                         <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
