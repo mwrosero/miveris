@@ -766,6 +766,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
   /* Ajusta el ancho de los días según sea necesario */
   font-size: 1rem;
   margin: auto;
+  
 }
 
 .calendar-day.empty-day {
