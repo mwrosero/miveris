@@ -4,20 +4,86 @@ Mi Veris - Citas - Información de pago
 @endsection
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Información de pago') }}</h5>
+    <!-- Modal confirmar Pago-->
+    <div class="modal fade" id="confirmarPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmarPagoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="avatar avatar-lg mx-auto mb-3">
+                            <span class="avatar-initial rounded-circle bg-primary">
+                                <i class="fa-regular fa-credit-card fs-2"></i>
+                            </span>
+                        </div>
+                        <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">Confirmar pago</h1>
+                    </div>
+                    <p class="fs--1 mb-3" style="line-height: 16px;"><b class="text-primary">Para continuar con la transacción</b> ingresa el <b>código de seguridad</b> enviado a tu teléfono y/o correo electrónico.</p>
+                    <div class="input-group input-group-merge">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="text" class="form-control" name="code" id="code" placeholder="Código de seguridad (OTP)" required />
+                    </div>
+                    <div class="invalid-feedback">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Código inválido
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal informacion-->
+    <div class="modal fade" id="informacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="informacionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body px-3 py-4">
+                    <div class="text-center">
+                        <div class="avatar avatar-lg mx-auto mb-3">
+                            <span class="avatar-initial rounded-circle bg-primary">
+                                <i class="fa-solid fa-info fs-2"></i>
+                            </span>
+                        </div>
+                        <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">Información</h1>
+                        <p class="fs--1 mb-3" style="line-height: 16px;">Esta tarjeta ya está agregada</p>
+                    </div>
+                    <a href="{{route('citas.seleccionarTarjeta')}}" class="btn btn-lg btn-primary-veris w-100 mb-2">Ver tarjeta agregada</a>
+                    <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">Ingresar nueva tarjeta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal tarjeta rechazada-->
+    <div class="modal fade" id="tarjetaRechazada" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="tarjetaRechazadaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body px-3">
+                    <div class="text-center">
+                        <div class="avatar avatar-lg mx-auto">
+                            <span class="avatar-initial rounded-circle bg-transparent">
+                                <i class="bi bi-exclamation-triangle-fill fs-2 text-danger-veris"></i>
+                            </span>
+                        </div>
+                        <h1 class="modal-title fs-5 mb-3" id="tarjetaRechazadaLabel">Tarjeta rechazada</h1>
+                    </div>
+                    <button type="button" class="btn btn-lg btn-primary-veris w-100" data-bs-dismiss="modal">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Información de pago') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
-            <div class="col-auto col-md-5">
+            <div class="col-auto col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body text-center">
                         <img src="{{ asset('assets/img/card/tarjeta_pago.png') }}" class="img-fluid mb-3" alt="{{ __('tarjeta de pago') }}">
                         <ul class="list-group bg-white mb-3">
                             <li class="list-group-item border-0 text-primary-veris d-flex justify-content-between align-items-center">
                                 Total a pagar:
-                                <span class="badge text-primary-veris">$7.00</span>
+                                <span class="badge text-primary-veris">$27.00</span>
                             </li>
                         </ul>
-
                         <!-- content-pago -->
                         <div class="card card-body">
                             <form class="row g-3">
