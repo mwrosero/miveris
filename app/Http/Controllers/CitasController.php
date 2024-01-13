@@ -44,10 +44,25 @@ class CitasController extends Controller
     public function datosFacturacion() {
         return view('citas.datos_facturacion');
     }
-
+    // return view seleccionar tarjeta
+    public function seleccionarTarjeta() {
+        return view('citas.seleccionar_tarjeta');
+    }
     // Return view informacion de pago
     public function citaInformacionPago() {
         return view('citas.informacion_pago');
+    }
+    // Return view Autenticacion Registro de tarjeta
+    public function authRegistroTarjeta() {
+        return view('citas.autenticacion_registro_tarjeta');
+    }
+    // Return view Autenticacion exitosa
+    public function authExitosa() {
+        return view('citas.autenticacion_exitosa');
+    }
+    // Return view Confirmar pago
+    public function confirmarPago() {
+        return view('citas.confirmar_pago');
     }
     // Return view mensaje cita agendada
     public function citaAgendada() {
