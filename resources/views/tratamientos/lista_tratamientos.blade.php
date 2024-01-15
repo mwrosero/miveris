@@ -581,6 +581,7 @@ $data = json_decode(base64_decode($params));
     function mostrarBannerPromocion(datos){
         let params = @json($data);
         params.codigoTratamiento = codigoTratamiento;
+        params.convenio = ultimoTratamiento.datosConvenio;
         let ulrParams = btoa(JSON.stringify(params));
 
         let divContenedor = $('#cardPromocion');
@@ -712,22 +713,38 @@ $data = json_decode(base64_decode($params));
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                         if(datosServicio.permiteReserva == 'S'){
                             if (datosServicio.habilitaBotonAgendar == 'S') {
-                                let modalidad;
-                                if (datosServicio.modalidad === 'online') {
-                                    modalidad = 'S';
-                                } else if (datosServicio.modalidad === 'presencial') {
-                                    modalidad = 'N';
-                                }
+                                if(datosServicio.modalidad == 'PRESENCIAL'){
+                                    // abrir modal videoconsulta
+                                    respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"><i class="bi me-2"></i> Agendar</div>`;
+                                } else {
+                                    let modalidad;
+                                    if (datosServicio.modalidad === 'ONLINE') {
+                                        modalidad = 'S';
+                                    } else if (datosServicio.modalidad === 'PRESENCIAL') {
+                                        modalidad = 'N';
+                                    }
 
-                                let params = @json($data);
-                                params.especialidad = {
-                                    codigoEspecialidad: datosServicio.codigoEspecialidad
-                                };
-                                params.esOnline = modalidad;
-                                let urlParams = btoa(JSON.stringify(params));
-                                respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                                    let params = @json($data);
+                                    params.especialidad = {
+                                        codigoEspecialidad: datosServicio.codigoEspecialidad,
+                                        nombre : datosServicio.nombreServicio,
+                                        imagen : datosServicio.urlImagenTipoServicio,
+                                        esOnline : modalidad,
+                                        codigoServicio : datosServicio.codigoServicio,
+                                        codigoPrestacion : datosServicio.codigoPrestacion,
+                                        codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+                                    };
+                                    params.esOnline = modalidad;
+                                    params.convenio = ultimoTratamiento.datosConvenio;
+                                    
+                                    let urlParams = btoa(JSON.stringify(params));
+                                    respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                                }
                             } else {
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
+                                                        <i class="bi me-2"></i>
+                                                        Agendar
+                                                    </a>`;
 
                             }
                         } 
@@ -800,7 +817,7 @@ $data = json_decode(base64_decode($params));
                     if (estado == 'REALIZADO') {
                         return `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-bs-toggle="offcanvas" 
                         data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>
-                        <i class="bi me-2"></i> Ver recetaS</div>`;
+                        <i class="bi me-2"></i> Ver receta</div>`;
                     } else {
                         if(datosServicio.aplicaSolicitud == "S"){
                             return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
@@ -815,12 +832,11 @@ $data = json_decode(base64_decode($params));
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
                     respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
-                    if (datosServicio.esAgendable == "N") {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                    
+                    // ABRIRE MODAL DE VIDEO CONSULTA
+                    respuestaOdontologia += `<div href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"><i class="bi me-2"></i> Agendar</div>`;
                       
-                    } else {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
-                    }
+                    
 
                     return respuestaOdontologia;
 
