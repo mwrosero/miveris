@@ -558,6 +558,8 @@ $data = json_decode(base64_decode($params));
                                             <span id="estado"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span></span>
                                         </div>
                                         <div>
+
+                                        ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
                                             
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-2">
@@ -638,13 +640,15 @@ $data = json_decode(base64_decode($params));
                     }
                 
             }
-            if (datos.estado == "AGENDADO") {
+            if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
+
                 dataFechas = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h5>
                                 <p class="fw-bold fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
                                 <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
                 
             }
+
 
         }
 
@@ -756,9 +760,6 @@ $data = json_decode(base64_decode($params));
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
 
                                     if(datosServicio.modalidad == 'PRESENCIAL'){
-                                        // abrir modal videoconsulta
-                                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"><i class="bi me-2"></i> Agendar</a>`;
-                                    } else {
                                         let modalidad;
                                         if (datosServicio.modalidad === 'ONLINE') {
                                             modalidad = 'S';
@@ -778,9 +779,34 @@ $data = json_decode(base64_decode($params));
                                         };
                                         params.esOnline = modalidad;
                                         params.convenio = ultimoTratamiento.datosConvenio;
+
+                                        let urlParams = btoa(JSON.stringify(params));
+                                        respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none me-1" ><i class="bi me-2"></i> Agendar</a>`;
+                                    } else {
+                                        let modalidad;
+                                        if (datosServicio.modalidad === 'ONLINE') {
+                                            modalidad = 'S';
+                                        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+                                            modalidad = 'N';
+                                        }
+
+                                        let params = @json($data);
+                                        params.especialidad = {
+                                            codigoEspecialidad: datosServicio.codigoEspecialidad,
+                                            nombre : datosServicio.nombreServicio,
+                                            imagen : datosServicio.urlImagenTipoServicio,
+                                            esOnline : modalidad,
+                                            codigoServicio : datosServicio.codigoServicio,
+                                            codigoPrestacion : datosServicio.codigoPrestacion,
+                                            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+                                        };
+                                        params.online = modalidad;
+                                        params.convenio = ultimoTratamiento.datosConvenio;
                                         
                                         let urlParams = btoa(JSON.stringify(params));
-                                        respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                                        // ir a fechas
+                                        respuestaAgenda += `<a href="/citas-elegir-fecha-doctor/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none me-1" ><i class="bi me-2"></i> Agendar</a>`;
+                                        
                                     }
                                 } else {
                                     respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
@@ -800,6 +826,7 @@ $data = json_decode(base64_decode($params));
                     }else if (datosServicio.estado == 'ATENDIDO'){
 
                         // mostrar boton de ver orden
+                        respuestaAgenda = ``;
                         respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris m-2"><i class="bi me-2"></i> Ver orden</a>`;
 
                     }else if (datosServicio.estado == 'AGENDADO'){
