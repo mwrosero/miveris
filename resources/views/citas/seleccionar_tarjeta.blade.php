@@ -73,7 +73,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
     async function cargarListaTarjetas(){
         $('#listado-tarjetas').empty();
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu=${ btoa("{{ Session::get('userData')->numeroIdentificacion }}") }   `;
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu={{ Session::get('userData')->numeroIdentificacion }}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
