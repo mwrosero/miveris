@@ -8,7 +8,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 //dd(Session::get('userData'));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-    <!-- Modal -->
+    <!-- Modal Metodo de pago -->
     <div class="modal fade" id="metodoPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="metodoPagoLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
@@ -22,8 +22,25 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </div>
         </div>
     </div>
+    <!-- Modal Validacion -->
+    <div class="modal fade" id="modalRequeridos" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-alert-component modal-dialog-centered mx-auto" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto title-section fw-bold" id="modalAlertTitleRequeridos">Campos requeridos</h5>
+                </div>
+                <div class="modal-body text-center fs-14 mb-2" id="modalAlertMessageRequeridos">
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-veris w-100 m-0 fw-bold" data-bs-dismiss="modal" id="modalAlertButton">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Datos de facturación') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-24">Datos de facturación</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -34,35 +51,48 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <div class="col-md-6">
                                 <div class="row g-3">
                                     <div class="col-md-12">
-                                        <label for="tipoIdentificacion" class="form-label fw-bold fs--2">{{ __('Elige tu documento') }} *</label>
+                                        <label for="tipoIdentificacion" class="form-label fw-bold fs--2">Elige tu documento *</label>
                                         <select class="form-select bg-neutral" name="tipoIdentificacion" id="tipoIdentificacion" required>
-                                            <option selected disabled value="">Seleccionar...</option>
-                                            <option value="">Cédula de identidad</option>
-                                            <option value="">RUC</option>
+                                            <option value="2">CÉDULA</option>
+                                            <option value="1">RUC</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Elegir el tipo de documento.
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="numeroIdentificacion" class="form-label fw-bold fs--2">{{ __('Número de documento') }} *</label>
+                                        <label for="numeroIdentificacion" class="form-label fw-bold fs--2">Número de documento *</label>
                                         <input type="number" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0975375835" required />
                                         <div class="valid-feedback">
                                             Ingrese un numero de identificacion.
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <label for="nombre" class="form-label fw-bold fs--2">{{ __('Nombres y Apellidos') }} *</label>
-                                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="María Yanina Donoso Samaniego" required />
+                                    <div class="col-md-12 d-none box-ruc">
+                                        <label for="razonSocial" class="form-label fw-bold fs--2">Razón Social *</label>
+                                        <input type="text" class="form-control" name="razonSocial" id="razonSocial" placeholder="" required />
                                         <div class="valid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
-                                        <label for="direccion" class="form-label fw-bold fs--2">{{ __('Dirección') }} *</label>
-                                        <input type="text" class="form-control bg-neutral" name="direccion" id="direccion" placeholder="Colinas de los ceibos, 318" required />
-                                        <div class="invalid-feedback">
-                                            Ingrese una direccion.
+                                    <div class="col-md-12 d-none box-no-ruc">
+                                        <label for="primerNombre" class="form-label fw-bold fs--2">Primer Nombre *</label>
+                                        <input type="text" class="form-control" name="primerNombre" id="primerNombre" placeholder="" required />
+                                        <div class="valid-feedback">
+                                            Ingrese su nombres y apellidos.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 d-none box-no-ruc">
+                                        <label for="primerApellido" class="form-label fw-bold fs--2">Primer Apellido *</label>
+                                        <input type="text" class="form-control" name="primerApellido" id="primerApellido" placeholder="" required />
+                                        <div class="valid-feedback">
+                                            Ingrese su nombres y apellidos.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 d-none box-no-ruc">
+                                        <label for="segundoApellido" class="form-label fw-bold fs--2">Segundo Apellido *</label>
+                                        <input type="text" class="form-control" name="segundoApellido" id="segundoApellido" placeholder="" required />
+                                        <div class="valid-feedback">
+                                            Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                 </div>
@@ -70,14 +100,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <div class="col-md-6">
                                 <div class="row g-3">
                                     <div class="col-md-12">
-                                        <label for="telefono" class="form-label fw-bold fs--2">{{ __('Teléfono') }} *</label>
+                                        <label for="direccion" class="form-label fw-bold fs--2">Dirección *</label>
+                                        <input type="text" class="form-control bg-neutral" name="direccion" id="direccion" placeholder="" required />
+                                        <div class="invalid-feedback">
+                                            Ingrese una direccion.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="telefono" class="form-label fw-bold fs--2">Teléfono *</label>
                                         <input type="number" class="form-control" name="telefono" id="telefono" placeholder="+593 097 989 3554" required />
                                         <div class="valid-feedback">
                                             Ingrese un telefono.
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="mail" class="form-label fw-bold fs--2">{{ __('Email') }} *</label>
+                                        <label for="mail" class="form-label fw-bold fs--2">Email *</label>
                                         <input type="email" class="form-control" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
                                         <div class="valid-feedback">
                                             Ingrese un correo electronico.
@@ -86,27 +123,27 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     <div class="col-md-12">
                                         <ul class="list-group fs--1 bg-neutral rounded-3">
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-bold">
-                                                {{ __('Detalle de factura') }}
+                                                Detalle de factura
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0">
-                                                {{ __('Subtotal') }}:
-                                                <span class="badge text-dark fw-normal fs--1 p-0">$36.00</span>
+                                                Subtotal
+                                                <span class="badge text-dark fw-normal fs--1 p-0" id="subtotal"></span>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0">
-                                                {{ __('Crédito/convenio') }}:
-                                                <span class="badge text-dark fw-normal fs--1 p-0">-$32.00</span>
+                                                Crédito/convenio
+                                                <span class="badge text-dark fw-normal fs--1 p-0" id="creditoConvenio"></span>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0">
-                                                {{ __('Descuento aplicado') }}:
-                                                <span class="badge text-dark fw-normal fs--1 p-0">-$1.00</span>
+                                                Descuento aplicado
+                                                <span class="badge text-dark fw-normal fs--1 p-0" id="descuentoAplicado"></span>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0">
-                                                {{ __('IVA') }}:
-                                                <span class="badge text-dark fw-normal fs--1 p-0">+$4.00</span>
+                                                IVA
+                                                <span class="badge text-dark fw-normal fs--1 p-0" id="iva"></span>
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-bold">
-                                                {{ __('Total') }}:
-                                                <span class="badge text-dark fw-normal fs--1 p-0">7.00</span>
+                                                Total
+                                                <span class="badge text-dark fw-normal fs--1 p-0" id="total"></span>
                                             </li>
                                         </ul>
                                     </div>
@@ -116,7 +153,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="form-check d-flex justify-content-center">
                                     <input class="form-check-input terminos-input me-2" type="checkbox" value="" id="checkTerminosCondicion" required>
                                     <label class="form-check-label fs--1" for="checkTerminosCondicion">
-                                        {{ __('Acepto los Términos y condiciones') }}
+                                        Acepto los Términos y condiciones
                                     </label>
                                     <div class="invalid-feedback">
                                         Debes aceptar antes de enviar
@@ -125,9 +162,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             </div>
                             <div class="col-12">
                                 <div class="btn-master w-lg-50 mx-auto">
-                                    <a href="{{route('citas.citaInformacionPago')}}" class="btn text-white shadow-none">{{ __('Continuar') }}</a>
+                                    <a href="#" id="btn-next" class="btn disabled text-white shadow-none">Continuar</a>
                                     |
-                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total">$7.00</p>
+                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="totalLabel"></p>
                                 </div>
                             </div>
                         </form>
@@ -143,6 +180,29 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let dataCita = @json($data);
     document.addEventListener("DOMContentLoaded", async function () {
         await reservarCita();
+
+        $('body').on('change', '#tipoIdentificacion', function(){
+            if($(this).val() == '2'){
+                $('.box-ruc').addClass('d-none');
+                $('.box-no-ruc').removeClass('d-none');
+            }else{
+                $('.box-no-ruc').addClass('d-none');
+                $('.box-ruc').removeClass('d-none');
+            }
+        })
+
+        $('body').on('change', '#checkTerminosCondicion', function(){
+            if($('#checkTerminosCondicion').is(':checked')) {
+                $('#btn-next').removeClass('disabled');
+            } else {
+                $('#btn-next').addClass('disabled');
+            }
+        });
+
+        $('body').on('click', '#btn-next', async function(){
+            //validar formulario datos factura
+            await validarDatosFactura();
+        })
     });
 
     async function reservarCita(){
@@ -182,7 +242,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "valorDescuento": dataCita.precio.valorDescuento,
             "valorSubtotalCita": dataCita.precio.valor,
             "numeroAutorizacion": dataCita.precio.numeroAutorizacion,
-            "esEmbarazada": "string",            
+            "esEmbarazada": "N",            
             "fechaSeleccionada": dataCita.horario.dia2,
             /*Si estoy modificando/tratamiento o sino N*/
             "estaPagada": "N"
@@ -233,7 +293,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "tipoServicio": "CITA",
             "codigoConvenio": dataCita.convenio.codigoConvenio,
             "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
-            "codigoSolicitud": 0,
             "tipoSolicitud": null,
             "listaCitas": [{
                 "codigoReserva": dataCita.reserva.codigoReserva
@@ -254,15 +313,140 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function consultarDatosFactura(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${ dataCita.preTransaccion.codigoPreTransaccion }&virusu=${ btoa("{{ Session::get('userData')->numeroIdentificacion }}") }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}+numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
-        args["method"] = "POST";
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${ dataCita.preTransaccion.codigoPreTransaccion }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}&numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
+        args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
         console.log(data);
 
         if (data.code == 200){
             dataCita.facturacion = data.data;
-            await crearPreTransaccion();
+            mostrarInfo();
+        }else{
+            alert(data.message);
+        }
+    }
+
+    function mostrarInfo(){
+        /*Datos de Facturación*/
+        $('#tipoIdentificacion').val(dataCita.facturacion.datosFactura.codigoTipoIdentificacion).trigger('change');
+        $('#numeroIdentificacion').val(dataCita.facturacion.datosFactura.codigoUsuario);
+        $('#nombre').val(dataCita.facturacion.datosFactura.nombreCliente);
+        $('#primerNombre').val(dataCita.facturacion.datosFactura.primerNombre);
+        $('#primerApellido').val(dataCita.facturacion.datosFactura.primerApellido);
+        $('#segundoApellido').val(dataCita.facturacion.datosFactura.segundoApellido);
+        $('#direccion').val(dataCita.facturacion.datosFactura.direccion);
+        $('#telefono').val(dataCita.facturacion.datosFactura.telefonoCelular);
+        $('#mail').val(dataCita.facturacion.datosFactura.email);
+
+        if(dataCita.facturacion.datosFactura.codigoTipoIdentificacion == 2){
+            $('.box-ruc').addClass('d-none');
+            $('.box-no-ruc').removeClass('d-none');
+        }else{
+            $('.box-no-ruc').addClass('d-none');
+            $('.box-ruc').removeClass('d-none');
+        }
+
+
+        /*Detalle de factura*/
+        $('#subtotal').html(`$${dataCita.facturacion.totales.subtotal}`)
+        $('#creditoConvenio').html(`$${dataCita.facturacion.totales.creditoConvenio}`)
+        $('#descuentoAplicado').html(`$${dataCita.facturacion.totales.descuentoAplicado}`)
+        $('#iva').html(`$${dataCita.facturacion.totales.iva}`)
+        $('#total').html(`$${dataCita.facturacion.totales.total}`)
+        $('#totalLabel').html(`$${dataCita.facturacion.totales.total}`)
+    }
+
+    async function validarDatosFactura(){
+        let errors = false;
+        let msg = `<ul class="ms-0 text-start" id="itemsMsg">`;
+
+        var tipoIdentificacion = $("#tipoIdentificacion").val();
+        if (tipoIdentificacion == 1) {
+            // Validar razonSocial
+            var razonSocial = $("#razonSocial").val();
+            if (razonSocial.trim() === "") {
+                errors = true;
+                msg += `<li class="ms-0">El campo Razon Social es obligatorio.</li>`;
+            }
+        } else if (tipoIdentificacion == 2) {
+            // Validar numeroIdentificacion
+            var numeroIdentificacion = $("#numeroIdentificacion").val();
+            if (numeroIdentificacion.length !== 10) {
+                errors = true;
+                msg += `<li class="ms-0">El campo Numero Identificación debe tener 10 dígitos.</li>`;
+            }
+
+            // Validar nombres y apellidos
+            var primerNombre = $("#primerNombre").val();
+            var primerApellido = $("#primerApellido").val();
+            var segundoApellido = $("#segundoApellido").val();
+            if (primerNombre.trim() === "" || primerApellido.trim() === "" || segundoApellido.trim() === "") {
+                errors = true;
+                msg += `<li class="ms-0">Los campos Primer Nombre, Primer Apellido y Segundo Apellido son obligatorios.</li>`;
+            }
+        }
+
+        // Validar campos obligatorios comunes
+        var direccion = $("#direccion").val();
+        var telefono = $("#telefono").val();
+        var mail = $("#mail").val();
+        if (direccion.trim() === "" || telefono.trim() === "" || mail.trim() === "") {
+            errors = true;
+            msg += `<li class="ms-0">Los campos Dirección, Teléfono y Correo Electrónico son obligatorios.</li>`;
+        }
+        msg += `</ul>`;
+
+        if(errors){
+            $('#modalAlertMessageRequeridos').html(msg);
+            var myModal = new bootstrap.Modal(document.getElementById('modalRequeridos'));
+            myModal.show();
+        }else{
+            await crearTransaccionVirtual();
+        }
+
+    }
+
+    async function crearTransaccionVirtual(){
+        let tipoBoton = "NUVEI";
+        if(dataCita.facturacion.datosFactura.permiteNuvei != "S"){
+            tipoBoton = "KUSHKI";
+        }
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/crear_transaccion_virtual?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({            
+            "codigoUsuario": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "codigoTipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
+            "numeroIdentificacion": getInput('numeroIdentificacion'),
+            "nombreFactura": getInput('razonSocial'),
+            "primerNombre": getInput('primerNombre'),
+            "primerApellido": getInput('primerApellido'),
+            "segundoApellido": getInput('segundoApellido'),
+            "direccionFactura": getInput('direccion'),
+            "telefonoFactura": getInput('telefono'),
+            "mailFactura": getInput('email'),
+            "direccionIP": "",
+            "emailFactura": "",
+            "modeloDispositivo": "",
+            "versionSO": "",
+            "plataformaOrigen": "WEB",
+            "tipoBoton": tipoBoton,
+            "sistemaOperativo": "",
+            "idNavegador": "",
+            "idiomaNavegador": "",
+            "navegadorUA": "",
+            "canalOrigenDigital": _canalOrigen
+        });
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            dataCita.transaccionVirtual = data.data;
+            var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
+            myModal.show();
         }else{
             alert(data.message);
         }
