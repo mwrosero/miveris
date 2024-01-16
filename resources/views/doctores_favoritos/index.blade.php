@@ -149,7 +149,7 @@ Mi Veris - Doctores favoritos
                                                     <h6 class="fw-bold mb-0">Dr(a) ${doctores.primerNombre} ${doctores.segundoNombre} ${doctores.primerApellido} ${doctores.segundoApellido}</h6>
                                                     <p class="text-primary-veris fw-bold fs--2 mb-0">${doctores.nombreSucursal}</p>
                                                     <p class="fs--2 mb-0">${doctores.nombreEspecialidad}</p>
-                                                    <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">  ${disponibilidad}
+                                                    <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">  ${determinarValorNull(doctores.dia)}
                                                         </b></p>
                                                 </div>
                                             </div>

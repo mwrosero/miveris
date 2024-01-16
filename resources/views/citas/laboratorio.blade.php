@@ -119,25 +119,19 @@ Mi Veris - Citas - Laboratorio
             }
         }
     });
-
     let fechaHastaPicker = flatpickr("#fechaHasta", {
         maxDate: new Date().fp_incr(0),
         minDate: new Date(), 
         onChange: function(selectedDates, dateStr, instance) {
         }
     });
-
     document.getElementById('fechaHasta').disabled = true;
     // quitar el readonly
-
     $("#fechaDesde").removeAttr("readonly");
     $("#fechaHasta").removeAttr("readonly");
     // no permitir autocomplete
     $("#fechaDesde").attr("autocomplete", "off");
     $("#fechaHasta").attr("autocomplete", "off");
-
-
-
 </script>
 
 <script>
