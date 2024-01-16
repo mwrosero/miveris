@@ -11,7 +11,6 @@ $data = json_decode(base64_decode($params));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- offcanva detalle Receta médica -->
-
     <div class="offcanvas offcanvas-end" tabindex="-1" id="detalleRecetaMedica" aria-labelledby="detalleRecetaMedicaLabel">
         <div class="offcanvas-header py-2">
             <div class="d-flex justify-content-between">
@@ -54,8 +53,6 @@ $data = json_decode(base64_decode($params));
         </div>
     </div>
 
-
-
     <!-- Modal Receta médica -->
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -69,10 +66,8 @@ $data = json_decode(base64_decode($params));
             </div>
         </div>
     </div>
-
     
     <!-- Modal de error -->
-
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -119,7 +114,6 @@ $data = json_decode(base64_decode($params));
             </div>
         </div>
     </div>
-
 
     <!-- Modal ver informacion -->
     <div class="modal fade" id="informacionModal" tabindex="-1" aria-labelledby="informacionModalLabel" aria-hidden="true">
@@ -196,7 +190,7 @@ $data = json_decode(base64_decode($params));
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue" id="tituloTratamientoPendiente" style="display: none;">{{ __('Pendientes') }}</h5>
         <div class="row g-0 justify-content-center">
             <div class="col-12 col-md-6 col-lg-5">
-                <div class="px-3" id="contenedorTratamientoPendiente">
+                <div class="px-0" id="contenedorTratamientoPendiente">
                     <!-- items -->
                 </div>
             </div>
@@ -204,7 +198,7 @@ $data = json_decode(base64_decode($params));
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue" id="tituloTratamientoRealizado" style="display: none;">{{ __('Realizados') }}</h5>
         <div class="row g-0 justify-content-center">
             <div class="col-12 col-md-6 col-lg-5">
-                <div class="px-3" id="contenedorTratamientoRealizado">
+                <div class="px-0" id="contenedorTratamientoRealizado">
                     <!-- items -->
                 </div>
             </div>
@@ -474,7 +468,6 @@ $data = json_decode(base64_decode($params));
                                         ${receta.indicaciones}
                                     </small>
                                 </div>
-                                
                                 <i class="fa-solid fa-bell ms-auto"></i>
                             </label>`;
             });
@@ -509,13 +502,11 @@ $data = json_decode(base64_decode($params));
                                             
                                             <div class="d-flex justify-content-between align-items-center mt-2">
                                                 <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                                <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" width="26" alt="receta medica">
+                                                    <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" width="26" alt="receta medica">
                                                 </div>
-                                                <div>
+                                                <div class="d-flex">
                                                     ${determinarCondicionesBotones(tratamientos, estado)}
-                                                        
                                                 </div>
-                                                
                                             </div>
                                         </div>
                                     </div>`;
@@ -555,13 +546,11 @@ $data = json_decode(base64_decode($params));
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                             <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                            <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" width="26" alt="receta medica">
-                                            
+                                                <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" width="26" alt="receta medica">
                                             </div>
-                                            <div>
+                                            <div class="d-flex">
                                                 ${determinarCondicionesBotones(tratamientos, estado)}
                                             </div>
-                                            
                                         </div>
                                     </div>
                                 </div>`;
@@ -652,19 +641,19 @@ $data = json_decode(base64_decode($params));
     
         if(tipoServicio == "FARMACIA" && aplicaSolicitud == 'S'){
             // Código para RECETA MÉDICA
-            return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                    <a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+            return `<a href="#" class="btn text-primary-veris">Ver receta</a>
+                    <a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else if (tipoServicio == "FARMACIA" && (aplicaSolicitud == 'N' || aplicaSolicitud == null)) {
             // Código para RECETA MÉDICA
-            return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                    <a href="/farmacia-domicilio/${codigoTratamiento}"  class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+            return `<a href="#" class="btn text-primary-veris">Ver receta</a>
+                    <a href="/farmacia-domicilio/${codigoTratamiento}"  class="btn btn-sm btn-primary-veris disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else if (tipoServicio == "LABORATORIO" && esAgendable == 'N') {
             // Código para LABORATORIO
-            return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver receta</a>
-                    <a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+            return `<a href="#" class="btn text-primary-veris">Ver receta</a>
+                    <a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else {
             // Código para otros servicios
-            let botonAgendarClase = "btn btn-sm btn-primary-veris fw-normal fs--1";
+            let botonAgendarClase = "btn btn-sm btn-primary-veris shadow-none me-1";
             let botonAgendarDisabled = "";
 
             // Si esAgendable no es 'S', deshabilitar el botón
@@ -673,7 +662,7 @@ $data = json_decode(base64_decode($params));
                 botonAgendarDisabled = " disabled";
             }
 
-            return `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver orden</a>
+            return `<a href="#" class="btn text-primary-veris">Ver orden</a>
                     <a href="#" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
         }
     }
@@ -682,12 +671,12 @@ $data = json_decode(base64_decode($params));
     // determinar si es receta medica o no botones realizados
     function determinarbotonesRecetaMedicaRealizados(servicio){
         if(servicio == "FARMACIA"){
-            return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver receta</a> `;
+            return `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Ver receta</a> `;
                                             
         }
         else{
             
-            return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver orden</a> `;
+            return `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Ver orden</a> `;
         }
     }
 
@@ -707,7 +696,7 @@ $data = json_decode(base64_decode($params));
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
-                    respuestaAgenda += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</a>`;
 
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                         if(datosServicio.permiteReserva == 'S'){
@@ -725,39 +714,39 @@ $data = json_decode(base64_decode($params));
                                 };
                                 params.esOnline = modalidad;
                                 let urlParams = btoa(JSON.stringify(params));
-                                respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                                respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Agendar</a>`;
                             } else {
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris disabled"><i class="bi me-2"></i> Agendar</a>`;
 
                             }
                         } 
                         else{
                             // abrir modal no permite reserva
-                            respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal"><i class="bi me-2"></i> Agendar</div>`;
+                            respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none me-1" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal"><i class="bi me-2"></i> Agendar</div>`;
                         }
                         
 
                     }else if (datosServicio.estado == 'ATENDIDO'){
 
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2"><i class="bi me-2"></i> Ver orden</a>`;
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris m-2"><i class="bi me-2"></i> Ver orden</a>`;
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Ver orden</a>`;
 
                         if (datosServicio.permitePago == 'S'){
                             // mostrar boton de pagar
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Pagar</a>`;
                         } 
                         if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                         } 
                         
                         if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                             // mostrar boton de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})"></i> Información</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})"></i> Información</a>`;
                         } 
                     }
 
@@ -767,12 +756,12 @@ $data = json_decode(base64_decode($params));
 
                 case "LAB":
                     let respuesta = "";
-                    respuesta += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none me-1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</a>`;
 
 
                     // condición para 'verResultados'
                     if (datosServicio.verResultados == "S") {
-                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2
+                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris m-2
                         "><i class="bi me-2"></i> Ver resultados</a>`;
                     } else {
                         respuesta += ``;
@@ -780,7 +769,7 @@ $data = json_decode(base64_decode($params));
 
                     //condición para 'aplicaSolicitud'
                     if (datosServicio.aplicaSolicitud == "S") {
-                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                     } 
                     if (datosServicio.permitePago == "S"){
                         let params = @json($data);
@@ -789,7 +778,7 @@ $data = json_decode(base64_decode($params));
                         params.codigoEmpresa = datosServicio.codigoEmpresa;
                         let ulrParams = btoa(JSON.stringify(params));
                         
-                        respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                        respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Pagar</a>`;
                     }
 
                     return respuesta;
@@ -798,12 +787,12 @@ $data = json_decode(base64_decode($params));
 
                 case "RECETAS" :
                     if (estado == 'REALIZADO') {
-                        return `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-bs-toggle="offcanvas" 
+                        return `<div class="btn btn-sm btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" 
                         data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>
                         <i class="bi me-2"></i> Ver recetaS</div>`;
                     } else {
                         if(datosServicio.aplicaSolicitud == "S"){
-                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                         }
                     }
                     
@@ -814,12 +803,12 @@ $data = json_decode(base64_decode($params));
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuestaOdontologia += ` <div  class="btn text-primary-veris" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
                     if (datosServicio.esAgendable == "N") {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris disabled"><i class="bi me-2"></i> Agendar</a>`;
                       
                     } else {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Agendar</a>`;
                     }
 
                     return respuestaOdontologia;

@@ -8,10 +8,26 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 //dd(Session::get('userData'));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Datos de facturación') }}</h5>
+    <!-- Modal -->
+    <div class="modal fade" id="metodoPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="metodoPagoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body px-3 py-4">
+                    <div class="text-center">
+                        <h1 class="modal-title fs-5 mb-3" id="metodoPagoLabel">Selecciona el método de pago</h1>
+                    </div>
+                    <a href="{{route('citas.seleccionarTarjeta')}}" class="btn btn-lg btn-primary-veris w-100 mb-2">Seleccionar tarjeta</a>
+                    <a href="{{route('citas.citaInformacionPago')}}" class="btn btn-lg btn-outline-primary-veris w-100">Agregar otro método de pago</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Datos de facturación') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
-            <div class="col-md-8">
+            <div class="col-md-10 col-lg-8">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body">
                         <form class="row g-3">
