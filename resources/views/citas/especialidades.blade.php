@@ -5,6 +5,7 @@ Elige la especialidad
 @section('content')
 @php
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+// dd($data);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
@@ -134,17 +135,23 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         const data = await call(args);
         let params = @json($data);
         params.especialidad = especialidad;
+
+        let path_url = "/citas-elegir-central-medica";
+        if(params.online == "S"){
+            path_url = "/citas-elegir-fecha-doctor";
+        }
         
         if (data.code == 200 && data.data != null){
             let urlParamsNo = btoa(JSON.stringify(params));
-            $("#btn-no-tratamiento").attr("href","/citas-elegir-fecha-doctor/"+urlParamsNo);
+            $("#btn-no-tratamiento").attr("href",path_url+"/"+urlParamsNo);
             params.tratamiento = data.data;
             let urlParamsSi = btoa(JSON.stringify(params));
-            $("#btn-si-tratamiento").attr("href","/citas-elegir-fecha-doctor/"+urlParamsSi);
+            $("#btn-si-tratamiento").attr("href",path_url+"/"+urlParamsSi);
 
             $('#tratamiento-content').empty();
+            var roundedValue = (data.data.porcentajeAvanceTratamiento % 10 >= 5) ? Math.ceil(data.data.porcentajeAvanceTratamiento / 10) * 10 : Math.floor(data.data.porcentajeAvanceTratamiento / 10) * 10;
 
-            let elem = `<div class="progress-circle" data-percentage="${data.data.porcentajeAvanceTratamiento}">
+            let elem = `<div class="progress-circle" data-percentage="${roundedValue}">
                 <span class="progress-left">
                     <span class="progress-bar"></span>
                 </span>
@@ -167,7 +174,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             myModal.show();
         }else{
             let urlParams = btoa(JSON.stringify(params));
-            location.href = "/citas-elegir-fecha-doctor/"+urlParams;
+            location.href = path_url+"/"+urlParams;
         }
 
     }

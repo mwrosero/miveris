@@ -178,9 +178,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             } else {
 
                 let params = @json($data);
-                params.convenio = null;
-                params.numeroIdentificacion = codigoUsuario;
-                params.tipoIdentificacion = tipoIdentificacion;
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                };
+                params.paciente = {
+                    "numeroIdentificacion": codigoUsuario,
+                    "tipoIdentificacion": tipoIdentificacion,
+                    "nombrePaciente": nombreCompleto,
+                    "numeroPaciente": numeroPaciente
+                };
                 let ulrParams = btoa(JSON.stringify(params));
                 listaConvenios.empty();
                 if (ordenExterna == 'S') {

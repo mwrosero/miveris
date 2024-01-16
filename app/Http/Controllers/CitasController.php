@@ -41,8 +41,8 @@ class CitasController extends Controller
     }
 
     // Return view datos de facturacion
-    public function datosFacturacion() {
-        return view('citas.datos_facturacion');
+    public function datosFacturacion($params) {
+        return view('citas.datos_facturacion')->with('params',$params);
     }
     // return view seleccionar tarjeta
     public function seleccionarTarjeta() {
