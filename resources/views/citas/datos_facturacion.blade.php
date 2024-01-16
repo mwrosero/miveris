@@ -3,6 +3,10 @@
 Mi Veris - Citas - Datos de facturación
 @endsection
 @section('content')
+@php
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+//dd(Session::get('userData'));
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="metodoPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="metodoPagoLabel" aria-hidden="true">
@@ -136,6 +140,133 @@ Mi Veris - Citas - Datos de facturación
 @endsection
 @push('scripts')
 <script>
+    let dataCita = @json($data);
+    document.addEventListener("DOMContentLoaded", async function () {
+        await reservarCita();
+    });
+
+    async function reservarCita(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/reservar?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+
+        let datosReserva = {
+            "numeroIdentificacion": dataCita.paciente.numeroIdentificacion,
+            "tipoIdentificacion": dataCita.paciente.tipoIdentificacion,
+            "idIntervalos": dataCita.horario.idIntervalo,
+            "codigoEmpresa": 1,
+            "codigoEspecialidad": dataCita.especialidad.codigoEspecialidad,
+            "codigoPrestacion": dataCita.especialidad.codigoPrestacion,
+            "usuarioLogin": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "esOnline": dataCita.online,
+            "origen": 4,
+            "motivoConsulta": "",
+            "codigoServicio": dataCita.especialidad.codigoServicio,
+            "canalOrigenAgendamiento": "MVE",
+            "codigoEmpresaRegistro": 1,
+            "codigoSucursalRegistro": null,
+            "porcentajeDescuento": dataCita.horario.porcentajeDescuento,
+            // "permitePago": dataCita.convenio.permitePago,
+            "permitePago": "S",
+            "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
+            "canalOrigen": _canalOrigen,
+            "enviarLinkPago": null,
+            //"tipoProcesoVUA": "",
+            /*precio*/
+            "valorizacion": dataCita.precio.valorCanalVirtual,
+            /*precio o reagendamiento*/
+            "secuenciaTransaccion": dataCita.precio.secuenciaTransaccion,
+            "valorCita": dataCita.precio.valorCanalVirtual,
+            "valorDescuento": dataCita.precio.valorDescuento,
+            "valorSubtotalCita": dataCita.precio.valor,
+            "numeroAutorizacion": dataCita.precio.numeroAutorizacion,
+            "esEmbarazada": "string",            
+            "fechaSeleccionada": dataCita.horario.dia2,
+            /*Si estoy modificando/tratamiento o sino N*/
+            "estaPagada": "N"
+        }
+
+        /*Para reagendamiento*/
+        //"codigoReservaCambio": "string",
+        
+        if(dataCita.online == "N"){
+            datosReserva.codigoSucursal = dataCita.central.codigoSucursal;
+        }    
+
+        /*Solo si tiene convenio seleccionado*/
+        if(dataCita.convenio.codigoConvenio){
+            datosReserva.codigoEmpConvenio = 1;
+            datosReserva.codigoConvenio = dataCita.convenio.codigoConvenio;
+            datosReserva.idCliente = dataCita.convenio.idCliente;
+        }
+
+        if(dataCita.tratamiento){
+            /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
+            datosReserva.numeroOrden = dataCita.tratamiento.numeroOrden;
+            datosReserva.codigoEmpOrden = dataCita.tratamiento.codigoEmpresaOrden;
+            datosReserva.lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
+        }
+
+        args["data"] = JSON.stringify(datosReserva);
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            dataCita.reserva = data.data;
+            await crearPreTransaccion();
+        }else{
+            alert(data.message);
+        }
+    }
+
+    async function crearPreTransaccion(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/crear_pretransaccion?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "idPaciente":{{ Session::get('userData')->numeroPaciente }},
+            //"codigoPreTransaccion": dataCita.reserva.secuenciaTransaccion,
+            "tipoServicio": "CITA",
+            "codigoConvenio": dataCita.convenio.codigoConvenio,
+            "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
+            "codigoSolicitud": 0,
+            "tipoSolicitud": null,
+            "listaCitas": [{
+                "codigoReserva": dataCita.reserva.codigoReserva
+            }],
+            "paquete": null,
+            "listaOrdenes": null
+        });
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            dataCita.reserva = data.data;
+            await consultarDatosFactura();
+        }else{
+            alert(data.message);
+        }
+    }
+
+    async function consultarDatosFactura(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${}&virusu=${ btoa("{{ Session::get('userData')->numeroIdentificacion }}") }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}+numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            dataCita.facturacion = data.data;
+            await crearPreTransaccion();
+        }else{
+            alert(data.message);
+        }
+    }
 
 </script>
 @endpush

@@ -107,12 +107,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     let params = @json($data);
                     params.central = central;
                     let urlParams = btoa(JSON.stringify(params));
+                    let path_central = "{{ asset('assets/img/card/avatar_central_medica.png') }}";
+                    if(verificarImagen(central.nombre_foto)){
+                        path_central = central.nombre_foto;
+                    }
                     elemento += `<div class="col-auto col-md-6">
                                     <div class="card">
                                         <div class="card-body px-2 py-2">
                                             <div class="row gx-2">
                                                 <div class="col-3">
-                                                    <img src="${central.nombre_foto}" class="card-img-top" alt="${central.nombreTipoSucursal}">
+                                                    <img src="${path_central}" class="card-img-top" alt="${central.nombreTipoSucursal}">
                                                 </div>
                                                 <div class="col-9">
                                                     <h6 class="fw-bold mb-1">${central.nombreSucursal}</h6>
