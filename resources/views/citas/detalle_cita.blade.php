@@ -16,7 +16,7 @@ if ($hora >= 12) {
 }
 
 $medPayPlan = null;
-if(isset($data->convenio)){
+if(isset($data->convenio->informacionExternaPlan)){
     $medPayPlan = $data->convenio->informacionExternaPlan;
 }
 
@@ -31,18 +31,7 @@ if(isset($data->convenio)){
                         <h5 class="text-primary-veris fw-bold m-1">{{ __('Precio') }} </h5>
                     </div>
                     <div class="card-body p-2 my-3">
-                        <div class="row gx-0 justify-content-evenly align-items-center">
-                            <div class="col-5">
-                                <div class="text-center">
-                                    @if(isset($data->convenio) && $data->convenio->rutaImagenConvenio)
-                                    <img src="{{ $data->convenio->rutaImagenConvenio }}" width="86" alt="$data->convenio->nombreConvenio">
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-5 text-end box-precio">
-                                
-                            </div>
-                            <p class="text-center text-primary-veris fs--2 mb-0" id="infoDescuento">{{-- __('*Se aplicó un 5% de descuento por pago en app') --}}</p>
+                        <div class="row gx-0 justify-content-evenly align-items-center box-precio">
                         </div>
                     </div>
                     {{-- <div class="card-footer d-flex justify-content-between border-top p-2" id="contentLinkPago">
@@ -66,7 +55,7 @@ if(isset($data->convenio)){
                             <p class="fs--2 mb-0">{{ $data->horario->dia2 }} <b class="text-normal text-primary-veris fw-normal">{{ $data->horario->horaInicio }} {{ $meridiano }}</b></p>
                             <p class="fs--2 mb-0">Dr(a) {{ $data->horario->nombreMedico }}</p>
                             <p class="fs--2 mb-0">{{ $data->paciente->nombrePaciente }}</p>
-                            <p class="fs--2 mb-0">{{ isset($data->convenio) ? $data->convenio->nombreConvenio : '' }}</p>
+                            <p class="fs--2 mb-0">{{ isset($data->convenio->nombreConvenio) ? $data->convenio->nombreConvenio : '' }}</p>
                         </div>
                     </div>
                     <div class="card-footer px-2 pb-2" id="msg-cita">
@@ -74,7 +63,7 @@ if(isset($data->convenio)){
                 </div>
             </div>
             <div class="col-md-12 text-center mt-5">
-                <a href="{{route('citas.datosFacturacion')}}" class="btn btn-primary-veris w-25 px-3 py-3">{{ __('Pagar') }}</a>
+                <a href="#" id="btn-pagar" class="btn btn-primary-veris d-none w-25 px-3 py-3">{{ __('Pagar') }}</a>
             </div>
         </div>
     </section>
@@ -91,7 +80,7 @@ if(isset($data->convenio)){
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion={{ $data->paciente->tipoIdentificacion}}&numeroIdentificacion={{ $data->paciente->numeroIdentificacion}}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad}}&secuenciaAfiliado={{ isset($data->convenio) ? $data->convenio->secuenciaAfiliado : '' }}&codigoConvenio={{ isset($data->convenio) ? $data->convenio->codigoConvenio : '' }}&idIntervalos={{ $data->horario->idIntervalo }}&esOnline={{ $data->online }}&porcentajeDescuento={{ $data->horario->porcentajeDescuento }}`
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion={{ $data->paciente->tipoIdentificacion}}&numeroIdentificacion={{ $data->paciente->numeroIdentificacion}}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad}}&secuenciaAfiliado={{ isset($data->convenio->secuenciaAfiliado) ? $data->convenio->secuenciaAfiliado : '' }}&codigoConvenio={{ isset($data->convenio->codigoConvenio) ? $data->convenio->codigoConvenio : '' }}&idIntervalos={{ $data->horario->idIntervalo }}&esOnline={{ $data->online }}&porcentajeDescuento={{ $data->horario->porcentajeDescuento }}`
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -109,21 +98,45 @@ if(isset($data->convenio)){
             let porcentajeDescuentoCopago = porcentajeDescuento;
             let subtotalCopago = valor;
             let valorTotalCopago = valorCanalVirtual;
+            let params = @json($data);
 
             console.log(porcentajeDescuentoCopago,subtotalCopago,valorTotalCopago)
             let elem = ``;
-            /*if(porcentajeDescuentoCopago == 0){
-                elem += `<h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>`;
-            }else{
-                elem += `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
-                            <del id="precioBase">$${valorTotalCopago}<</del>
-                        </p>
-                        <h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}<</h3>`;
-            }*/
-            elem += `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
+            let descuentoLabel = ``;
+            if(porcentajeDescuentoCopago > 0){
+                descuentoLabel = `*Se aplicó un ${porcentajeDescuentoCopago}% de descuento por pago en app`;
+            }
+
+            if(params.convenio.codigoConvenio){
+                elem += `<div class="col-5">
+                    <div class="text-center">
+                        @if(isset($data->convenio->rutaImagenConvenio))
+                        <img src="{{ $data->convenio->rutaImagenConvenio }}" width="86" alt="">
+                        @endif
+                    </div>
+                </div>
+                <div class="col-5 text-end">`;
+                if(porcentajeDescuentoCopago > 0){
+                    `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
                         <del id="precioBase">$${valor}</del>
-                    </p>
-                    <h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>`;
+                    </p>`;
+                }
+                elem += `<h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>
+                </div>
+                <p class="text-center text-primary-veris fs--2 mb-0" id="infoDescuento"></p>`;
+            }else{
+                elem += `<div class="col-12 text-center">`
+                if(porcentajeDescuentoCopago > 0){
+                    `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
+                        <del id="precioBase">$${valor}</del>
+                    </p>`;
+                }
+                elem += `<h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>
+                </div>
+                <p class="text-center text-primary-veris fs--2 mb-0" id="infoDescuento"></p>`;
+            }
+
+
             $('.box-precio').html(elem);
 
             let elemMsg = ``;
@@ -153,6 +166,11 @@ if(isset($data->convenio)){
                     </div>`;
             }
             $('#msg-cita').append(elemMsg)
+            
+            params.precio = data.data;
+            let urlParams = btoa(JSON.stringify(params));
+            $('#btn-pagar').attr('href','/citas-datos-facturacion/'+urlParams);
+            $('#btn-pagar').removeClass('d-none');
         }
         return data;
     }
