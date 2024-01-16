@@ -245,7 +245,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         console.log(data);
 
         if (data.code == 200){
-            dataCita.reserva = data.data;
+            dataCita.preTransaccion = data.data;
             await consultarDatosFactura();
         }else{
             alert(data.message);
@@ -254,7 +254,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function consultarDatosFactura(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${}&virusu=${ btoa("{{ Session::get('userData')->numeroIdentificacion }}") }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}+numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${ dataCita.preTransaccion.codigoPreTransaccion }&virusu=${ btoa("{{ Session::get('userData')->numeroIdentificacion }}") }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}+numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         const data = await call(args);
