@@ -139,7 +139,7 @@ Mi Veris - Citas - Familia y amigos
 @endsection
 @push('scripts')
 <script></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ 
 <script>
     // variables globales
     let datostiposIdentificacion;
