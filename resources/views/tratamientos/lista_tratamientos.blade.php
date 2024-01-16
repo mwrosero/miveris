@@ -147,6 +147,21 @@ $data = json_decode(base64_decode($params));
         </div>
     </div>
 
+    <!-- Modal infomracion de la cita -->
+    <div class="modal fade" id="informacionCitaModal" tabindex="-1" aria-labelledby="informacionCitaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal" id = "mensajeInformacionCita"></p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Tratamiento') }}</h5>  
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0">
@@ -491,11 +506,12 @@ $data = json_decode(base64_decode($params));
                 
                     let elemento = `<div class="card mb-3">
                                         <div class="card-body fs--2 p-3">
+                                            ${determinarEsOnline(tratamientos)}
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio} </h6>
                                                 <span class="text-warning-veris" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                             </div>
-                                            ${determinarFechasCaducadas(tratamientos)}
+                                            ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
                                             <div id="recetaMedicaMensaje">
                                                 ${determinarMensajeRecetaMedica(tratamientos)}
                                             </div> 
@@ -566,6 +582,19 @@ $data = json_decode(base64_decode($params));
 
     }
 
+    // determinar si es online o presencial
+    function determinarEsOnline(datos){
+        if(datos.modalidad == 'ONLINE'){
+            return `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                        <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
+                    </div>
+                    `;
+        }
+        else{
+            return ``;
+        }
+    }
+
     // mostrar banner de promocion
     function mostrarBannerPromocion(datos){
         let params = @json($data);
@@ -593,18 +622,33 @@ $data = json_decode(base64_decode($params));
     }
 
     // determinar fechas caducadas
-    function determinarFechasCaducadas(datos){
+    function determinarFechasCaducadas(datos, datosTratamiento){ 
 
-        if (datos.tipoServicio == "FARMACIA") {
-            return ``;
-        } else{
-            if (datos.esCaducado == "S") {
-                return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-            } else {
-                return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+        let dataFechas = ``;
+        console.log('datosTratamientoxx', datosTratamiento);
+        
+        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
+            console.log('dsisssisisi');
+
+            if (datos.estado == "PENDIENTE_AGENDAR") {
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
+                
+            }
+            if (datos.estado == "AGENDADO") {
+                dataFechas = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h5>
+                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
+                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
+                                <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
+                
             }
 
         }
+
+        return dataFechas;
 
         
     }
@@ -700,48 +744,58 @@ $data = json_decode(base64_decode($params));
                     respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</a>`;
 
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
-                        if(datosServicio.permiteReserva == 'S'){
-                            if (datosServicio.habilitaBotonAgendar == 'S') {
-                                if(datosServicio.modalidad == 'PRESENCIAL'){
-                                    // abrir modal videoconsulta
-                                    respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"><i class="bi me-2"></i> Agendar</div>`;
-                                } else {
-                                    let modalidad;
-                                    if (datosServicio.modalidad === 'ONLINE') {
-                                        modalidad = 'S';
-                                    } else if (datosServicio.modalidad === 'PRESENCIAL') {
-                                        modalidad = 'N';
+
+
+                        if(datosServicio.esCaducado == 'S'){
+                            // mostrar boton de informacion que llama al modal de informacion
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1 btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Información</a>`;
+                            
+                        } else {
+
+                            if(datosServicio.permiteReserva == 'S'){
+                                if (datosServicio.habilitaBotonAgendar == 'S') {
+
+                                    if(datosServicio.modalidad == 'PRESENCIAL'){
+                                        // abrir modal videoconsulta
+                                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"><i class="bi me-2"></i> Agendar</a>`;
+                                    } else {
+                                        let modalidad;
+                                        if (datosServicio.modalidad === 'ONLINE') {
+                                            modalidad = 'S';
+                                        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+                                            modalidad = 'N';
+                                        }
+
+                                        let params = @json($data);
+                                        params.especialidad = {
+                                            codigoEspecialidad: datosServicio.codigoEspecialidad,
+                                            nombre : datosServicio.nombreServicio,
+                                            imagen : datosServicio.urlImagenTipoServicio,
+                                            esOnline : modalidad,
+                                            codigoServicio : datosServicio.codigoServicio,
+                                            codigoPrestacion : datosServicio.codigoPrestacion,
+                                            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+                                        };
+                                        params.esOnline = modalidad;
+                                        params.convenio = ultimoTratamiento.datosConvenio;
+                                        
+                                        let urlParams = btoa(JSON.stringify(params));
+                                        respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
                                     }
+                                } else {
+                                    respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
+                                                            <i class="bi me-2"></i>
+                                                            Agendar
+                                                        </a>`;
 
-                                    let params = @json($data);
-                                    params.especialidad = {
-                                        codigoEspecialidad: datosServicio.codigoEspecialidad,
-                                        nombre : datosServicio.nombreServicio,
-                                        imagen : datosServicio.urlImagenTipoServicio,
-                                        esOnline : modalidad,
-                                        codigoServicio : datosServicio.codigoServicio,
-                                        codigoPrestacion : datosServicio.codigoPrestacion,
-                                        codigoTipoAtencion : datosServicio.codigoTipoAtencion,
-                                    };
-                                    params.esOnline = modalidad;
-                                    params.convenio = ultimoTratamiento.datosConvenio;
-                                    
-                                    let urlParams = btoa(JSON.stringify(params));
-                                    respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
                                 }
-                            } else {
-                                respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
-                                                        <i class="bi me-2"></i>
-                                                        Agendar
-                                                    </a>`;
-
+                            } 
+                            else{
+                                // abrir modal no permite reserva
+                                respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none me-1" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal"><i class="bi me-2"></i> Agendar</div>`;
                             }
-                        } 
-                        else{
-                            // abrir modal no permite reserva
-                            respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none me-1" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal"><i class="bi me-2"></i> Agendar</div>`;
+   
                         }
-                        
 
                     }else if (datosServicio.estado == 'ATENDIDO'){
 
@@ -914,6 +968,21 @@ $data = json_decode(base64_decode($params));
         // pasar data rel a modal
         $('#detalleRecetaMedica').attr('data-rel', JSON.stringify(datos));
     });
+
+    // boton informacion
+    $(document).on('click', '.btn-informacion', function(){
+        let datos = $(this).data('rel');
+        console.log('datos', datos.mensaje);
+
+        // pasar mensaje a modal
+        $('#mensajeInformacionCita').text(datos.mensaje);
+
+
+    });
+
+    
+
+
 
 
     // boton ver pdf receta
