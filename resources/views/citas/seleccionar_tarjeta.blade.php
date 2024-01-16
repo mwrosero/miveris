@@ -32,8 +32,8 @@ Mi Veris - Citas - Selecciona tu tarjeta
             <div class="col-md-6 col-lg-4">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body p-0">
-                        <form class="row g-3">
-                            <div class="col-12">
+                        <form class="row g-3" id="listado-tarjetas">
+                            {{-- <div class="col-12">
                                 <div class="form-check custom-option custom-option-basic border-primary">
                                     <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="customRadioTemp1">
                                         <input name="customRadioTemp" class="form-check-input" type="radio" value="" id="customRadioTemp1">
@@ -46,89 +46,17 @@ Mi Veris - Citas - Selecciona tu tarjeta
                                         </span>
                                     </label>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-check custom-option custom-option-basic">
-                                    <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="customRadioTemp2">
-                                        <input name="customRadioTemp" class="form-check-input" type="radio" value="" id="customRadioTemp2" disabled>
-                                        <span class="custom-option-header w-100">
-                                            <div class="d-flex">
-                                                <img src="{{ asset('assets/img/svg/diners.svg')}}" class="me-3" alt="diners">
-                                                <span class="fs--2 mb-0">
-                                                    ****3466
-                                                    <br>
-                                                    <b class="fw-normal text-danger-veris">Tarjeta vencida.</b>
-                                                </span>
-                                            </div>
-                                            <a href="#" class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></a>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-check custom-option custom-option-basic border-primary">
-                                    <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="customRadioTemp3">
-                                        <input name="customRadioTemp" class="form-check-input" type="radio" value="" id="customRadioTemp3">
-                                        <span class="custom-option-header w-100">
-                                            <div>
-                                                <img src="{{ asset('assets/img/svg/discover.svg')}}" class="me-3" alt="discover">
-                                                <span class="fs--2 mb-0">****3466</span>
-                                            </div>
-                                            <a href="#" class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></a>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-check custom-option custom-option-basic border-primary">
-                                    <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="customRadioTemp4">
-                                        <input name="customRadioTemp" class="form-check-input" type="radio" value="" id="customRadioTemp4">
-                                        <span class="custom-option-header w-100">
-                                            <div>
-                                                <img src="{{ asset('assets/img/svg/mastecard.svg')}}" class="me-3" alt="mastecard">
-                                                <span class="fs--2 mb-0">****3466</span>
-                                            </div>
-                                            <a href="#" class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></a>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-check custom-option custom-option-basic border-primary">
-                                    <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="customRadioTemp5">
-                                        <input name="customRadioTemp" class="form-check-input" type="radio" value="" id="customRadioTemp5">
-                                        <span class="custom-option-header w-100">
-                                            <div>
-                                                <img src="{{ asset('assets/img/card/visa.png')}}" class="me-3" width="25" height="20" alt="visa">
-                                                <span class="fs--2 mb-0">****3466</span>
-                                            </div>
-                                            <a href="#" class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></a>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-check custom-option custom-option-basic border-primary">
-                                    <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="customRadioTemp6">
-                                        <input name="customRadioTemp" class="form-check-input" type="radio" value="" id="customRadioTemp6">
-                                        <span class="custom-option-header w-100">
-                                            <div>
-                                                <img src="{{ asset('assets/img/svg/maestro.svg')}}" class="me-3" alt="maestro">
-                                                <span class="fs--2 mb-0">****3466</span>
-                                            </div>
-                                            <a href="#" class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></a>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
+                            </div> --}}
+                        </form>
+                        <div class="row mt-3">
                             <div class="col-12">
                                 <div class="btn-master w-100 mx-auto">
-                                    <a href="{{route('citas.agendada')}}" class="btn text-white shadow-none">{{ __('Pagar') }}</a>
+                                    <a href="{{route('citas.agendada')}}" class="btn disabled text-white shadow-none">{{ __('Pagar') }}</a>
                                     |
                                     <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total">$134.00</p>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,6 +66,54 @@ Mi Veris - Citas - Selecciona tu tarjeta
 @endsection
 @push('scripts')
 <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+        await cargarListaTarjetas();
+    });
+
+    async function cargarListaTarjetas(){
+        $('#listado-tarjetas').empty();
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu=${ btoa("{{ Session::get('userData')->numeroIdentificacion }}") }   `;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            let elem = ``;
+            if(data.data.length == 0){
+                elem += `<div class="col-12 text-center">
+                    No tiene tarjetas guardadas
+                </div>`;
+            }else{
+                $.each(data.data, function(key, value){
+                    let disabledItem = "";
+                    let elemDisabledItem = "";
+                    if(value.tarjetaVencida){
+                        disabledItem = "disabled";
+                        elemDisabledItem = `<br><b class="fw-normal text-danger-veris">Tarjeta vencida.</b>`;
+                    }
+                    elem += `<div class="col-12">
+                        <div class="form-check custom-option custom-option-basic border-primary">
+                            <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="card-${value.codigoTarjetaSuscrita}">
+                                <input ${disabledItem} name="customRadioTemp" class="form-check-input" type="radio" value="" id="card-${value.codigoTarjetaSuscrita}">
+                                <span class="custom-option-header w-100">
+                                    <div>
+                                        <img src="${value.urlIconoMarca}" class="me-3" alt="amex">
+                                        <span class="fs--2 mb-0">****${value.cuatroUltimosDigitos} ${elemDisabledItem}</span>
+                                    </div>
+                                    <a href="#" codigoTarjetaSuscrita-rel="${value.codigoTarjetaSuscrita}" class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></a>
+                                </span>
+                            </label>
+                        </div>
+                    </div>`
+                });
+            } 
+            $('#listado-tarjetas').append(elem);          
+        }else{
+            alert(data.message);
+        }
+    }
 
 </script>
 @endpush
