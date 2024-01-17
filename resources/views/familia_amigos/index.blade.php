@@ -3,6 +3,7 @@
 Mi Veris - Citas - Familia y amigos
 @endsection
 @section('content')
+
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="parentescoFamiliarModal" tabindex="-1" aria-labelledby="parentescoFamiliarModalLabel" aria-hidden="true">
