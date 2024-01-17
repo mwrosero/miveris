@@ -44,6 +44,12 @@ class CitasController extends Controller
     public function datosFacturacion($params) {
         return view('citas.datos_facturacion')->with('params',$params);
     }
+
+    // Return view pago con kushki
+    public function pagoKushki($params) {
+        return view('citas.pago_kushki')->with('params',$params);
+    }
+
     // return view seleccionar tarjeta
     public function seleccionarTarjeta() {
         return view('citas.seleccionar_tarjeta');

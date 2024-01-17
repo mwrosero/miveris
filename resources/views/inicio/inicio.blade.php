@@ -344,7 +344,7 @@ Mi Veris - Inicio
                                                     <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div class="progress-circle" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+                                                    <div class="progress-circle" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
                                                         <span class="progress-left">
                                                             <span class="progress-bar"></span>
                                                         </span>

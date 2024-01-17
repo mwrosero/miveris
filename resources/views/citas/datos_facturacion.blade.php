@@ -427,9 +427,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "segundoApellido": getInput('segundoApellido'),
             "direccionFactura": getInput('direccion'),
             "telefonoFactura": getInput('telefono'),
-            "mailFactura": getInput('email'),
+            "mailFactura": getInput('mail'),
+            "emailFactura": getInput('mail'),
             "direccionIP": "",
-            "emailFactura": "",
             "modeloDispositivo": "",
             "versionSO": "",
             "plataformaOrigen": "WEB",
@@ -445,8 +445,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if (data.code == 200){
             dataCita.transaccionVirtual = data.data;
-            var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
-            myModal.show();
+            if(dataCita.facturacion.datosFactura.permiteNuvei == "S"){
+                var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
+                myModal.show();
+            }else{
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/citas-pago-kushki/${ulrParams}`;
+                window.location.href = ruta;
+            }
         }else{
             alert(data.message);
         }
