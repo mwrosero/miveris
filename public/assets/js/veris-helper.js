@@ -609,3 +609,7 @@ verificarImagen(urlImagen, function(existeImagen) {
         console.log('La imagen no existe o no es accesible.');
     }
 });
+
+function roundToDraw(porcentajeAvanceTratamiento){
+    return ((porcentajeAvanceTratamiento % 10 >= 5) ? Math.ceil(porcentajeAvanceTratamiento / 10) * 10 : Math.floor(porcentajeAvanceTratamiento / 10) * 10);
+}

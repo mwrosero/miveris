@@ -209,7 +209,7 @@ Mi Veris - Citas - Mis tratamientos
                                                     <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="fecha-enviado fw-normal text-primary-veris">${tratamientos.fechaTratamiento}</b></p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div class="progress-circle" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+                                                    <div class="progress-circle" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
                                                         <span class="progress-left">
                                                             <span class="progress-bar"></span>
                                                         </span>
