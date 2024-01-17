@@ -81,10 +81,15 @@ async function callInformes(args) {
             hideLoader();
         }
 
-        // console.error("Error en la solicitud: ", error.message);
-        toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.", "ERROR");
+        // Construye un objeto de error para devolver información relevante
+        let errorInfo = {
+            status: error.message.includes('HTTP error') ? parseInt(error.message.replace(/\D/g, '')) : 500, // Extrae el código de estado del mensaje de error, o asume 500 si no es específico
+            message: 'Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.'
+        };
 
-        throw error;
+        
+
+        return errorInfo;
     }
 }
 
