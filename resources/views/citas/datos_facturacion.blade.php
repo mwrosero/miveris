@@ -16,8 +16,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="text-center">
                         <h1 class="modal-title fs-5 mb-3" id="metodoPagoLabel">Selecciona el método de pago</h1>
                     </div>
-                    <a href="{{route('citas.seleccionarTarjeta')}}" class="btn btn-lg btn-primary-veris w-100 mb-2">Seleccionar tarjeta</a>
-                    <a href="{{route('citas.citaInformacionPago')}}" class="btn btn-lg btn-outline-primary-veris w-100">Agregar otro método de pago</a>
+                    <a href="#" id="btn-seleccionar-tarjeta" class="btn btn-lg btn-primary-veris w-100 mb-2">Seleccionar tarjeta</a>
+                    <a href="#" id="btn-agregar-tarjeta" class="btn btn-lg btn-outline-primary-veris w-100">Agregar otro método de pago</a>
                 </div>
             </div>
         </div>
@@ -399,6 +399,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if(errors){
             $('#modalAlertMessageRequeridos').html(msg);
+            let ulrParams = btoa(JSON.stringify(dataCita));
+            $('#btn-seleccionar-tarjeta').attr("href",`/citas-seleccionar-tarjeta/${ulrParams}`)
+            $('#btn-agregar-tarjeta').attr("href",`/citas-informacion-pago/${ulrParams}`)
             var myModal = new bootstrap.Modal(document.getElementById('modalRequeridos'));
             myModal.show();
         }else{

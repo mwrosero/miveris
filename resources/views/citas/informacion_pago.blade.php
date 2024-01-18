@@ -3,6 +3,10 @@
 Mi Veris - Citas - Información de pago
 @endsection
 @section('content')
+@php
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+//dd(Session::get('userData'));
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal confirmar Pago-->
     <div class="modal fade" id="confirmarPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmarPagoLabel" aria-hidden="true">
@@ -44,7 +48,7 @@ Mi Veris - Citas - Información de pago
                         <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">Información</h1>
                         <p class="fs--1 mb-3" style="line-height: 16px;">Esta tarjeta ya está agregada</p>
                     </div>
-                    <a href="{{route('citas.seleccionarTarjeta')}}" class="btn btn-lg btn-primary-veris w-100 mb-2">Ver tarjeta agregada</a>
+                    <a href="#" class="btn btn-lg btn-primary-veris w-100 mb-2">Ver tarjeta agregada</a>
                     <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">Ingresar nueva tarjeta</button>
                 </div>
             </div>
