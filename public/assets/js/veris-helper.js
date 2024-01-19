@@ -448,6 +448,29 @@ async function aplicarFiltros(contexto) {
     }
 }
 
+async function aplicarFiltrosCitas(contexto) {
+    const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').attr('numeroIdentificacion');
+    let fechaDesde = $('#fechaDesde').val() || '';
+    let fechaHasta = $('#fechaHasta').val() || '';
+    const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
+    let estadoCitas;
+    if (document.getElementById('pills-actuales-tab').getAttribute('aria-selected') === 'true') {
+        estadoCitas = 'ACTUAL';
+    } else if (document.getElementById('pills-historial-tab').getAttribute('aria-selected') === 'true') {
+        estadoCitas = 'HISTORICO';
+    }
+
+    if (contexto === 'contextoAplicarFiltros') {
+        if (estadoCitas === 'ACTUAL'){
+            await obtenerCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);
+        }
+        else if (estadoCitas === 'HISTORICO'){
+            await obtenerHistorialCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);
+        }
+
+    }
+}
+
 // limpiar filtros
 async function limpiarFiltros(contexto) {
     if (contexto === 'contextoLimpiarFiltros') {

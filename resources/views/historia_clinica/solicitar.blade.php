@@ -119,8 +119,9 @@ Mi Veris - Historia clínica
     var doctores = urlParams.get('doctores');
     var codigoEspecialidad = urlParams.get('codigoEspecialidad');
     var tipoIdentificacion = urlParams.get('tipoIdentificacion');
+    
     var numeroIdentificacion = urlParams.get('numeroIdentificacion');
-
+    console.log(66,numeroIdentificacion)
     // Si 'doctores' es una cadena JSON, conviértela a un objeto JavaScript
     if (doctores) {
         doctores = JSON.parse(decodeURIComponent(doctores));
@@ -141,7 +142,7 @@ Mi Veris - Historia clínica
     async function solicitarHistoriaClinica() {
 
         let args = [];
-        let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
+        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
 
         // Obtener los valores de los campos
         let fechaDesde = document.getElementById('fechaDesde').value;
