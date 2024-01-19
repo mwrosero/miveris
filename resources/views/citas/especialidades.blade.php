@@ -149,9 +149,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $("#btn-si-tratamiento").attr("href",path_url+"/"+urlParamsSi);
 
             $('#tratamiento-content').empty();
-            var roundedValue = (data.data.porcentajeAvanceTratamiento % 10 >= 5) ? Math.ceil(data.data.porcentajeAvanceTratamiento / 10) * 10 : Math.floor(data.data.porcentajeAvanceTratamiento / 10) * 10;
-
-            let elem = `<div class="progress-circle" data-percentage="${roundedValue}">
+            
+            let elem = `<div class="progress-circle" data-percentage="${ roundToDraw(data.data.porcentajeAvanceTratamiento) }">
                 <span class="progress-left">
                     <span class="progress-bar"></span>
                 </span>

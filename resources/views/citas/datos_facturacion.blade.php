@@ -23,17 +23,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         </div>
     </div>
     <!-- Modal Validacion -->
-    <div class="modal fade" id="modalRequeridos" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-alert-component modal-dialog-centered mx-auto" role="document">
+    <div class="modal fade" id="modalRequeridos" tabindex="-1" aria-labelledby="modalRequeridosModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title mx-auto title-section fw-bold" id="modalAlertTitleRequeridos">Campos requeridos</h5>
                 </div>
-                <div class="modal-body text-center fs-14 mb-2" id="modalAlertMessageRequeridos">
-                    
+                <div class="modal-body text-center p-3" id="modalAlertMessageRequeridos">
+                    {{-- <i class="bi bi-exclamation-triangle-fill text-primary-veris h2"></i> --}}
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn bg-veris w-100 m-0 fw-bold" data-bs-dismiss="modal" id="modalAlertButton">Aceptar</button>
+                <div class="modal-footer pb-3 pt-0 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="row g-3">
                                     <div class="col-md-12">
                                         <label for="tipoIdentificacion" class="form-label fw-bold fs--2">Elige tu documento *</label>
-                                        <select class="form-select bg-neutral" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                                        <select class="form-select" name="tipoIdentificacion" id="tipoIdentificacion" required>
                                             <option value="2">CÉDULA</option>
                                             <option value="1">RUC</option>
                                         </select>
@@ -62,7 +62,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                     <div class="col-md-12">
                                         <label for="numeroIdentificacion" class="form-label fw-bold fs--2">Número de documento *</label>
-                                        <input type="number" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0975375835" required />
+                                        <input type="number" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0975375835" required />
                                         <div class="valid-feedback">
                                             Ingrese un numero de identificacion.
                                         </div>
@@ -101,7 +101,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="row g-3">
                                     <div class="col-md-12">
                                         <label for="direccion" class="form-label fw-bold fs--2">Dirección *</label>
-                                        <input type="text" class="form-control bg-neutral" name="direccion" id="direccion" placeholder="" required />
+                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="" required />
                                         <div class="invalid-feedback">
                                             Ingrese una direccion.
                                         </div>
@@ -149,11 +149,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 text-center mt-5">
+                            <div class="col-12 text-center mt-4">
                                 <div class="form-check d-flex justify-content-center">
                                     <input class="form-check-input terminos-input me-2" type="checkbox" value="" id="checkTerminosCondicion" required>
                                     <label class="form-check-label fs--1" for="checkTerminosCondicion">
-                                        Acepto los Términos y condiciones
+                                        Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank">Términos y condiciones</a>
                                     </label>
                                     <div class="invalid-feedback">
                                         Debes aceptar antes de enviar
@@ -359,9 +359,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function validarDatosFactura(){
         let errors = false;
-        let msg = `<ul class="ms-0 text-start" id="itemsMsg">`;
+        let msg = `<ul class="ms-0 text-start fs--1" id="itemsMsg">`;
 
-        var tipoIdentificacion = $("#tipoIdentificacion").val();
+        var tipoIdentificacion = parseInt($("#tipoIdentificacion").val());
         if (tipoIdentificacion == 1) {
             // Validar razonSocial
             var razonSocial = $("#razonSocial").val();
@@ -374,7 +374,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             var numeroIdentificacion = $("#numeroIdentificacion").val();
             if (numeroIdentificacion.length !== 10) {
                 errors = true;
-                msg += `<li class="ms-0">El campo Numero Identificación debe tener 10 dígitos.</li>`;
+                msg += `<li class="ms-0">El campo Numero Documento debe tener 10 dígitos.</li>`;
             }
 
             // Validar nombres y apellidos
@@ -427,9 +427,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "segundoApellido": getInput('segundoApellido'),
             "direccionFactura": getInput('direccion'),
             "telefonoFactura": getInput('telefono'),
-            "mailFactura": getInput('email'),
+            "mailFactura": getInput('mail'),
+            "emailFactura": getInput('mail'),
             "direccionIP": "",
-            "emailFactura": "",
             "modeloDispositivo": "",
             "versionSO": "",
             "plataformaOrigen": "WEB",
@@ -445,8 +445,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if (data.code == 200){
             dataCita.transaccionVirtual = data.data;
-            var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
-            myModal.show();
+            if(dataCita.facturacion.datosFactura.permiteNuvei == "S"){
+                var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
+                myModal.show();
+            }else{
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/citas-pago-kushki/${ulrParams}`;
+                window.location.href = ruta;
+            }
         }else{
             alert(data.message);
         }

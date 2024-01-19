@@ -170,6 +170,32 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </a>`;
                 });
 
+                /*Agregar ninguno*/
+                let params = @json($data);
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                };
+                params.paciente = {
+                    "numeroIdentificacion": codigoUsuario,
+                    "tipoIdentificacion": tipoIdentificacion,
+                    "nombrePaciente": nombreCompleto,
+                    "numeroPaciente": numeroPaciente
+                };
+                let ulrParams = btoa(JSON.stringify(params));
+                ruta = `/citas-elegir-especialidad/${ulrParams}`;
+                
+                elemento += `<a href="${ruta}" class="stretched-link">
+                                <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                                    <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
+                                    <label for="listGroupCheckableRadios2">
+                                        Ninguno
+                                    </label> 
+                                </div>
+                            </a>`;
+
                 listaConvenios.append(elemento); 
                 
                 // mostrar modal
@@ -193,18 +219,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 let ulrParams = btoa(JSON.stringify(params));
                 listaConvenios.empty();
                 if (ordenExterna == 'S') {
+                    
+                    if(online == 'S'){
+                        console.log('entro a ruta online');
+                        ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;
                         
-                        if(online == 'S'){
-                            console.log('entro a ruta online');
-                            ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;
-                            
-                        }else{
-                            ruta = `/registrar-orden-externa/${ulrParams}`;
-                        }
+                    }else{
+                        ruta = `/registrar-orden-externa/${ulrParams}`;
                     }
-                    else {
-                        ruta = `/citas-elegir-especialidad/${ulrParams}`;
-                    }
+                }
+                else {
+                    ruta = `/citas-elegir-especialidad/${ulrParams}`;
+                }
 
                 window.location.href = ruta;
             }              
