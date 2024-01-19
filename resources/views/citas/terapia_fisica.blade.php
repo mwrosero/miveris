@@ -254,7 +254,7 @@ Mi Veris - Citas - Terapia física
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada , estado)}</span>
                                                         </div>
-                                                        ${determinarFechasCaducadas(detalles, estado)}
+                                                        ${determinarFechasCaducadas(detalles, laboratorio)}
                                                        <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
@@ -344,7 +344,7 @@ Mi Veris - Citas - Terapia física
 
                                                         </div>
 
-                                                        ${determinarFechasCaducadas(detalles, estado)}
+                                                        ${determinarFechasCaducadas(detalles, laboratorio)}
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
@@ -427,33 +427,48 @@ Mi Veris - Citas - Terapia física
     // funciones js 
 
     // determinar fechas caducadas
-    function determinarFechasCaducadas(datos , estado){
+    // determinar fechas caducadas
+    function determinarFechasCaducadas(datos, datosTratamiento){ 
 
-        console.log('estadosa', estado);
+        let dataFechas = ``;
 
-        if (estado == 'REALIZADO'){
-            return `<p class="fs--2 fw-bold mb-0">${capitalizarElemento(datos.nombreSucursal)}</p>
-                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(datos.detalleReserva.fechaReserva)}</p>
-                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(datos.detalleReserva.nombreMedicoReserva)}</p>
-                    <p class="fw-light  fs--2
-                    mb-0">${determinarValoresNull(datos.nombrePaciente)}</p> `;
-        } else{
+        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
 
-            if (datos.tipoServicio == "FARMACIA") {
-                return ``;
-            } else{
-                if (datos.esCaducado == "S") {
-                    return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                } else {
-                    return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                }
-
+            if (datos.estado == "PENDIENTE_AGENDAR") {
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
+                
             }
-        
+            if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
+
+                dataFechas = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h5>
+                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
+                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
+                                <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
+                
+            }
+
+
         }
+        else{
+            if (datos.estado == "PENDIENTE_AGENDAR") {
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
+                
+            }
+        }
+
+        return dataFechas;
 
 
     }
+
 
     // determinar si es comprar o por comprar
     function determinarEstado(estado , estadoTratamiento){
