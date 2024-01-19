@@ -627,10 +627,8 @@ $data = json_decode(base64_decode($params));
     function determinarFechasCaducadas(datos, datosTratamiento){ 
 
         let dataFechas = ``;
-        console.log('datosTratamientoxx', datosTratamiento);
         
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
-            console.log('dsisssisisi');
 
             if (datos.estado == "PENDIENTE_AGENDAR") {
                     if (datos.esCaducado == "S") {
@@ -650,6 +648,16 @@ $data = json_decode(base64_decode($params));
             }
 
 
+        }
+        else{
+            if (datos.estado == "PENDIENTE_AGENDAR") {
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
+                
+            }
         }
 
         return dataFechas;
@@ -745,7 +753,8 @@ $data = json_decode(base64_decode($params));
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
-                    respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</a>`;
+                    respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal"><i class="bi me-2"></i> Ver orden</a>`;
+                    
 
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
 
@@ -827,7 +836,8 @@ $data = json_decode(base64_decode($params));
 
                         // mostrar boton de ver orden
                         respuestaAgenda = ``;
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris m-2"><i class="bi me-2"></i> Ver orden</a>`;
+                        respuestaAgenda += ` <div class="btn btn-sm btn-primary-veris shadow-none me-1" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal"><i class="bi me-2"></i> Ver orden</div>`;  
+                    
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
@@ -853,31 +863,44 @@ $data = json_decode(base64_decode($params));
                     break;
 
                 case "LAB":
+                    console.log('estadossss', estado);
                     let respuesta = "";
-                    respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none me-1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</a>`;
-
-
-                    // condición para 'verResultados'
-                    if (datosServicio.verResultados == "S") {
-                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris m-2
-                        "><i class="bi me-2"></i> Ver resultados</a>`;
-                    } else {
-                        respuesta += ``;
-                    }
-
-                    //condición para 'aplicaSolicitud'
-                    if (datosServicio.aplicaSolicitud == "S") {
-                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                    } 
-                    if (datosServicio.permitePago == "S"){
-                        let params = @json($data);
-                        params.idPaciente = idPaciente;
-                        params.numeroOrden = datosServicio.idOrden;
-                        params.codigoEmpresa = datosServicio.codigoEmpresa;
-                        let ulrParams = btoa(JSON.stringify(params));
+                    if (estado == 'PENDIENTE'){
                         
-                        respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Pagar</a>`;
+                        respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none me-1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</a>`;
+
+
+                        // condición para 'verResultados'
+                        if (datosServicio.verResultados == "S") {
+                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris m-2
+                            "><i class="bi me-2"></i> Ver resultados</a>`;
+                        } else {
+                            respuesta += ``;
+                        }
+
+                        //condición para 'aplicaSolicitud'
+                        if (datosServicio.aplicaSolicitud == "S") {
+                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                        } 
+                        if (datosServicio.permitePago == "S"){
+                            let params = @json($data);
+                            params.idPaciente = idPaciente;
+                            params.numeroOrden = datosServicio.idOrden;
+                            params.codigoEmpresa = datosServicio.codigoEmpresa;
+                            let ulrParams = btoa(JSON.stringify(params));
+                            
+                            respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Pagar</a>`;
+                        }
+                    } 
+
+                    else if (estado == 'REALIZADO'){
+                        console.log('estadossss2', estado);
+                        respuesta = "";
+                        respuesta += ` <div class="btn btn-sm btn-primary-veris shadow-none me-1" id="verOrdenCard"
+                        data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    
                     }
+                    
 
                     return respuesta;
 
@@ -981,7 +1004,7 @@ $data = json_decode(base64_decode($params));
     });
 
     // boton ver orden
-    $(document).on('click', '.btn.text-primary-veris.fw-normal.fs--1', function(){
+    $(document).on('click', '#verOrdenCard', function(){
         let datos = $(this).data('rel');
         descargarDocumentoPdf(datos);
     });
@@ -1008,10 +1031,6 @@ $data = json_decode(base64_decode($params));
     });
 
     
-
-
-
-
     // boton ver pdf receta
     $(document).on('click', '.verPdfReceta', function(){
         let datos = $('#detalleRecetaMedica').attr('data-rel');
