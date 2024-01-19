@@ -5,7 +5,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
 @section('content')
 @php
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
-//dd(Session::get('userData'));
+// dd($data);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal noExisteTarjeta-->

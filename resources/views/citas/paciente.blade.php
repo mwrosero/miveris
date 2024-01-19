@@ -132,7 +132,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     console.log('convenios', convenios);
                     let params = @json($data);
                     params.convenio = convenios;
-                    let urlParams = btoa(JSON.stringify(params));
+                    let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     elemento += `<a href="/citas-elegir-especialidad/${urlParams}"
                         class="stretched-link">`;
                     // params.numeroIdentificacion = codigoUsuario;
@@ -145,7 +145,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         "numeroPaciente": numeroPaciente
                     };
                     console.log(params);
-                    let ulrParams = btoa(JSON.stringify(params));
+                    let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let ruta = '';
                     if (ordenExterna == 'S') {
                         
@@ -184,7 +184,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     "nombrePaciente": nombreCompleto,
                     "numeroPaciente": numeroPaciente
                 };
-                let ulrParams = btoa(JSON.stringify(params));
+                let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                 ruta = `/citas-elegir-especialidad/${ulrParams}`;
                 
                 elemento += `<a href="${ruta}" class="stretched-link">
@@ -216,7 +216,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     "nombrePaciente": nombreCompleto,
                     "numeroPaciente": numeroPaciente
                 };
-                let ulrParams = btoa(JSON.stringify(params));
+                let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                 listaConvenios.empty();
                 if (ordenExterna == 'S') {
                     

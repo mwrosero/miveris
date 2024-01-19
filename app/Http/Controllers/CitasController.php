@@ -52,6 +52,8 @@ class CitasController extends Controller
 
     // return view seleccionar tarjeta
     public function seleccionarTarjeta($params) {
+        // dd($params);
+        $params = str_replace('|', '/', $params);
         return view('citas.seleccionar_tarjeta')->with('params',$params);;
     }
     // Return view informacion de pago

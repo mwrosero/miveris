@@ -399,9 +399,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if(errors){
             $('#modalAlertMessageRequeridos').html(msg);
-            let ulrParams = btoa(JSON.stringify(dataCita));
-            $('#btn-seleccionar-tarjeta').attr("href",`/citas-seleccionar-tarjeta/${ulrParams}`)
-            $('#btn-agregar-tarjeta').attr("href",`/citas-informacion-pago/${ulrParams}`)
             var myModal = new bootstrap.Modal(document.getElementById('modalRequeridos'));
             myModal.show();
         }else{
@@ -451,9 +448,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(dataCita.facturacion.datosFactura.permiteNuvei == "S"){
                 var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
                 myModal.show();
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                console.log(ulrParams);
+                $('#btn-seleccionar-tarjeta').attr("href",`/citas-seleccionar-tarjeta/${ulrParams.replace(/\//g, '|')}`)
+                $('#btn-agregar-tarjeta').attr("href",`/citas-informacion-pago/${ulrParams.replace(/\//g, '|')}`)
             }else{
                 let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-pago-kushki/${ulrParams}`;
+                let ruta = `/citas-pago-kushki/${ulrParams.replace(/\//g, '|')}`;
                 window.location.href = ruta;
             }
         }else{
