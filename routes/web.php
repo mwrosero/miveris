@@ -62,8 +62,8 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/citas-revisa-tus-datos/{params}',[CitasController::class, 'detalleCita'])->name('citas.detalleCita')->withoutMiddleware(['guest']);
     Route::get('/citas-datos-facturacion/{params}',[CitasController::class, 'datosFacturacion'])->name('citas.datosFacturacion')->withoutMiddleware(['guest']);
     Route::get('/citas-pago-kushki/{params}', [CitasController::class, 'pagoKushki'])->name('citas.pagoKushki')->withoutMiddleware(['guest']);
-    Route::get('/citas-seleccionar-tarjeta', [CitasController::class, 'seleccionarTarjeta'])->name('citas.seleccionarTarjeta')->withoutMiddleware(['guest']);
-    Route::get('/citas-informacion-pago',[CitasController::class, 'citaInformacionPago'])->name('citas.citaInformacionPago')->withoutMiddleware(['guest']);
+    Route::get('/citas-seleccionar-tarjeta/{params}', [CitasController::class, 'seleccionarTarjeta'])->name('citas.seleccionarTarjeta')->withoutMiddleware(['guest']);
+    Route::get('/citas-informacion-pago/{params}',[CitasController::class, 'citaInformacionPago'])->name('citas.citaInformacionPago')->withoutMiddleware(['guest']);
     Route::get('/citas-autenticacion-registro-tarjeta',[CitasController::class, 'authRegistroTarjeta'])->name('citas.authRegistroTarjeta')->withoutMiddleware(['guest']);
     Route::get('/citas-autenticacion-exitosa',[CitasController::class, 'authExitosa'])->name('citas.authExitosa')->withoutMiddleware(['guest']);
     Route::get('/citas-confirmar-pago',[CitasController::class, 'confirmarPago'])->name('citas.confirmarPago')->withoutMiddleware(['guest']);

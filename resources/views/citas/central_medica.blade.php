@@ -106,7 +106,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 data.data.forEach((central) => {
                     let params = @json($data);
                     params.central = central;
-                    let urlParams = btoa(JSON.stringify(params));
+                    let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let path_central = "{{ asset('assets/img/card/avatar_central_medica.png') }}";
                     if(verificarImagen(central.nombre_foto)){
                         path_central = central.nombre_foto;

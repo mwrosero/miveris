@@ -51,12 +51,14 @@ class CitasController extends Controller
     }
 
     // return view seleccionar tarjeta
-    public function seleccionarTarjeta() {
-        return view('citas.seleccionar_tarjeta');
+    public function seleccionarTarjeta($params) {
+        // dd($params);
+        $params = str_replace('|', '/', $params);
+        return view('citas.seleccionar_tarjeta')->with('params',$params);;
     }
     // Return view informacion de pago
-    public function citaInformacionPago() {
-        return view('citas.informacion_pago');
+    public function citaInformacionPago($params) {
+        return view('citas.informacion_pago')->with('params',$params);;
     }
     // Return view Autenticacion Registro de tarjeta
     public function authRegistroTarjeta() {

@@ -90,7 +90,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 data.data.forEach((especialidad) => {
                     let params = @json($data);
                     params.especialidad = especialidad;
-                    let urlParams = btoa(JSON.stringify(params));
+                    let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let path_url = "citas-elegir-central-medica";
                     if(params.online == "S"){
                         path_url = "citas-elegir-fecha-doctor";
@@ -142,10 +142,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         
         if (data.code == 200 && data.data != null){
-            let urlParamsNo = btoa(JSON.stringify(params));
+            let urlParamsNo = encodeURIComponent(btoa(JSON.stringify(params)));
             $("#btn-no-tratamiento").attr("href",path_url+"/"+urlParamsNo);
             params.tratamiento = data.data;
-            let urlParamsSi = btoa(JSON.stringify(params));
+            let urlParamsSi = encodeURIComponent(btoa(JSON.stringify(params)));
             $("#btn-si-tratamiento").attr("href",path_url+"/"+urlParamsSi);
 
             $('#tratamiento-content').empty();
@@ -172,7 +172,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             var myModal = new bootstrap.Modal(document.getElementById('citaPendienteModal'));
             myModal.show();
         }else{
-            let urlParams = btoa(JSON.stringify(params));
+            let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
             location.href = path_url+"/"+urlParams;
         }
 
