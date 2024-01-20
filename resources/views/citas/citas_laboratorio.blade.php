@@ -46,7 +46,7 @@ Mi Veris - Citas - Citas Laboratorio
                         </div>
                         <div class="col-auto">
                             <div class="btn-master w-100">
-                                <a href="{{route('citas.citaInformacionPago')}}" class="btn text-white shadow-none">{{ __('Pagar') }}</a>
+                                <a href="/citas-confirmar-pago" class="btn text-white shadow-none">{{ __('Pagar') }}</a>
                                 |
                                 <p class="btn text-white mb-0 shadow-none cursor-inherit" id="btntotal"></p>
                             </div>

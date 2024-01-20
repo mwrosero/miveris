@@ -149,7 +149,7 @@ if(isset($data->convenio->informacionExternaPlan)){
             }
             if({{ $data->horario->porcentajeDescuento }} > 0 && "{{ $data->convenio->permitePago }}" == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
-                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
+                        <i class="bi bi-info-circle-fill h4 mb-0 mx-3 text-warning"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage">Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.</p>
                     </div>`;
             }

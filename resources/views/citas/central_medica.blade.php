@@ -103,14 +103,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(data.data.length > 0){
                 listaCentrales.empty();
 
-                data.data.forEach((central) => {
+                //data.data.forEach((central) => {
+                for (const central of data.data) {
                     let params = @json($data);
                     params.central = central;
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let path_central = "{{ asset('assets/img/card/avatar_central_medica.png') }}";
-                    if(verificarImagen(central.nombre_foto)){
+
+                    const existeImagen = await verificarImagen(central.nombre_foto);
+                    if (existeImagen) {
                         path_central = central.nombre_foto;
                     }
+                    
+                    console.log(99)
                     elemento += `<div class="col-auto col-md-6">
                                     <div class="card">
                                         <div class="card-body px-2 py-2">
@@ -129,7 +134,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         </div>
                                     </div>
                                 </div>`
-                });
+                };
                 
             } else {
                 listaCentrales.empty();

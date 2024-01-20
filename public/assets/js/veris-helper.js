@@ -608,22 +608,41 @@ function mostrarListaPacientesFiltro(){
     });
 }
 
-function verificarImagen(urlImagen, callback) {
-    var img = new Image();
-        img.onload = function() {
-        // La imagen se cargó exitosamente
-        callback(true);
-    };
+async function verificarImagen(urlImagen) {
+    return new Promise((resolve) => {
+        const img = new Image();
 
-    img.onerror = function() {
-        // Hubo un error al cargar la imagen
-        callback(false);
-    };
-    img.src = urlImagen;
+        img.onload = function() {
+            // La imagen se cargó exitosamente
+            resolve(true);
+        };
+
+        img.onerror = function() {
+            // Hubo un error al cargar la imagen
+            resolve(false);
+        };
+
+        img.src = urlImagen;
+    });
 }
 
+
+// async function verificarImagen(urlImagen, callback) {
+//     var img = new Image();
+//         img.onload = function() {
+//         // La imagen se cargó exitosamente
+//         callback(true);
+//     };
+
+//     img.onerror = function() {
+//         // Hubo un error al cargar la imagen
+//         callback(false);
+//     };
+//     img.src = urlImagen;
+// }
+
 // Ejemplo de uso
-var urlImagen = 'https://ejemplo.com/imagen.jpg';
+/*var urlImagen = 'https://ejemplo.com/imagen.jpg';
 
 verificarImagen(urlImagen, function(existeImagen) {
     if (existeImagen) {
@@ -631,7 +650,7 @@ verificarImagen(urlImagen, function(existeImagen) {
     } else {
         console.log('La imagen no existe o no es accesible.');
     }
-});
+});*/
 
 function roundToDraw(porcentajeAvanceTratamiento){
     return ((porcentajeAvanceTratamiento % 10 >= 5) ? Math.ceil(porcentajeAvanceTratamiento / 10) * 10 : Math.floor(porcentajeAvanceTratamiento / 10) * 10);

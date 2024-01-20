@@ -58,6 +58,7 @@ class CitasController extends Controller
     }
     // Return view informacion de pago
     public function citaInformacionPago($params) {
+        $params = str_replace('|', '/', $params);
         return view('citas.informacion_pago')->with('params',$params);;
     }
     // Return view Autenticacion Registro de tarjeta
@@ -73,8 +74,8 @@ class CitasController extends Controller
         return view('citas.confirmar_pago');
     }
     // Return view mensaje cita agendada
-    public function citaAgendada() {
-        return view('citas.cita_agendada');
+    public function citaAgendada($params) {
+        return view('citas.cita_agendada')->with('params',$params);
     }
 
     // Return view Laboratorio
@@ -122,7 +123,6 @@ class CitasController extends Controller
     public function registrarOrdenesExternasUbicacion($params) {
         return view('citas.laboratorio_domicilioExterna')->with('params',$params);
     }
-
 
     // Return view Mis citas
     public function misCitas() {

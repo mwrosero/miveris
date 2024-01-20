@@ -202,7 +202,7 @@
 
 
             var swiper = new Swiper('.swiper-proximas-citas', {
-                slidesPerView: 1,
+                slidesPerView: 3,
                 spaceBetween: 8,
                 navigation: {
                     nextEl: '.btn-next',

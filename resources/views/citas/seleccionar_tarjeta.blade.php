@@ -104,6 +104,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if (data.code == 200){
             console.log(data.data);
+            if(data.data.estado.toUpperCase() == "APPROVED"){
+                dataCita.registroPago = data.data;
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                window.location.href = ruta;
+            }
         }
         
     }
@@ -125,7 +131,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     No tiene tarjetas guardadas
                 </div>`;
             }else{
-                $.each(data.data, function(key, value){
+                // $.each(data.data, function(key, value){
+                for (const value of data.data) {
                     if(value.tipoBoton == "NUV"){
                         count++;
                         let disabledItem = "";
@@ -135,10 +142,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             elemDisabledItem = `<br><b class="fw-normal text-danger-veris">Tarjeta vencida.</b>`;
                         }
                         let path_card = "{{ asset('assets/img/veris/credit-card.svg') }}";
-                        if(verificarImagen(value.urlIconoMarca)){
+                        const existeImagen = await verificarImagen(value.nombre_foto);
+                        if (existeImagen) {
                             path_card = value.nombre_foto;
-                        }
-                        
+                        }                     
                         elem += `<div class="col-12">
                             <div class="form-check custom-option custom-option-basic border-primary">
                                 <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="card-${value.codigoTarjetaSuscrita}">
@@ -154,7 +161,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             </div>
                         </div>`
                     }
-                });
+                };
             }
             if(count == 0){
                 var myModal = new bootstrap.Modal(document.getElementById('noExisteTarjeta'));
