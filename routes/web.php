@@ -68,7 +68,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/citas-autenticacion-exitosa',[CitasController::class, 'authExitosa'])->name('citas.authExitosa')->withoutMiddleware(['guest']);
     Route::get('/citas-confirmar-pago',[CitasController::class, 'confirmarPago'])->name('citas.confirmarPago')->withoutMiddleware(['guest']);
     
-    Route::get('/citas-agendada',[CitasController::class, 'citaAgendada'])->name('citas.agendada')->withoutMiddleware(['guest']);
+    Route::get('/cita-agendada/{params}',[CitasController::class, 'citaAgendada'])->name('citas.agendada')->withoutMiddleware(['guest']);
     #Laboratorio
     Route::get('/laboratorio',[CitasController::class, 'laboratorio'])->name('citas.laboratorio')->withoutMiddleware(['guest']);
     Route::get('/laboratorio-domicilio/{codigoTratamiento}', [CitasController::class, 'laboratorioDomicilio'])->name('citas.laboratorioDomicilio')->withoutMiddleware((['guest']));

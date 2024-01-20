@@ -302,8 +302,6 @@ Mi Veris - Inicio
         return data;
     }
 
-
-    //metodos js
     //aceptar politicas
     $('#aceptarPDP').click(async function(){
             console.log("clicks");
@@ -395,10 +393,6 @@ Mi Veris - Inicio
         
     }
 
-    
-
-    
-
     // mostrar mensaje de no hay tratamientos
     function mostrarNoExistenTratamientos() {
         let data = datosTratamientos;
@@ -430,12 +424,9 @@ Mi Veris - Inicio
                             <h5 class="fw-bold border-start-veris ps-3 fs-18">Mis citas</h5>
                             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
                         </div>
-                        <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">
-                            <div class="swiper swipertratamientos pt-3 pb-4 px-2 mx-n2">
-                                <div class="swiper-wrapper" id="contenedorTratamientoHome">`;
-
-                                    
-            
+                        <div class="position-relative mb-3" id="contenedorCitasHomePrincipal">
+                            <div class="swiper swiper-proximas-citas pt-3 pb-4 px-2 mx-n2">
+                                <div class="swiper-wrapper" id="contenedorCitasHome">`;    
 
         data.forEach((citas) => {
             elemento += `<div class="swiper-slide">
@@ -587,16 +578,12 @@ Mi Veris - Inicio
         }
     }
 
-    
-
 </script>
 <style>
     .btn-transition {
-    opacity: 0;
-    transition: opacity 0.01s ease;
-}
-
-
+        opacity: 0;
+        transition: opacity 0.01s ease;
+    }
 </style>
 
 @endpush
