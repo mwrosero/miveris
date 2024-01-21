@@ -54,7 +54,9 @@ input[type="number"]::-webkit-outer-spin-button {
 .fs-14{font-size: 14px;}
 .fs-18{font-size: 18px;}
 .fs-45{font-size: 45px;}
-
+.fw-medium{
+    font-weight: 500 !important;
+}
 .authentication-wrapper.authentication-basic .authentication-inner:before,
 .authentication-wrapper.authentication-basic .authentication-inner:after{
     position: relative;

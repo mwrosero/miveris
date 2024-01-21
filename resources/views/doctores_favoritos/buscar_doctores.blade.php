@@ -7,15 +7,13 @@ Mi Veris - Buscar doctor
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-
-
     <!-- Modal mensaje doctor agregado -->
     <div class="modal fade" id="mensajeDoctorAgregadoModal" tabindex="-1" aria-labelledby="mensajeDoctorAgregadoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-bold m-0 mt-3">Doctor agregado a tus favoritos</p>
+                    <p class="fs--1 fw-medium m-0 mt-3">Doctor agregado a tus favoritos</p>
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
                     <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Entendido</button>
@@ -23,7 +21,6 @@ Mi Veris - Buscar doctor
             </div>
         </div>
     </div>
-
     <!-- filtro -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroSearchDoctors" aria-labelledby="filtroSearchDoctorsLabel">
         <div class="offcanvas-header py-2">
@@ -51,8 +48,9 @@ Mi Veris - Buscar doctor
             </form>
         </div>
     </div>
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Buscar doctore') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Buscar doctor') }}</h5>
+    </div>
     <section class="p-3 pt-0 mb-3">
         <form class="d-flex justify-content-center">
             <div class="col-md-4 my-3">
@@ -160,7 +158,7 @@ Mi Veris - Buscar doctor
             dataEspecialidades.forEach(element => {
                 elemento += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                                     <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" value="${element.nombreEspecialidad}" ${firstItem ? 'checked' : ''} data-rel='${ JSON.stringify(element) }'>
-                                    <span class="text-veris fw-bold">
+                                    <span class="text-veris fw-medium">
                                         ${capitalizarElemento(element.nombreEspecialidad)}
                                         <small class="fs--2 d-block fw-normal text-body-secondary">${element.nombreSucursal}</small>
                                     </span>
@@ -229,8 +227,8 @@ Mi Veris - Buscar doctor
                                                         <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
                                                     </div>
                                                     <div class="col-7">
-                                                        <h6 class="fw-bold mb-0">Dr(a) ${capitalizarElemento(element.primerNombre)} ${capitalizarElemento(element.segundoNombre)} ${capitalizarElemento(element.primerApellido)} ${capitalizarElemento(element.segundoApellido)}</h6>
-                                                        <p class="text-primary-veris fw-bold fs--2 mb-0">${capitalizarElemento(element.nombreSucursal)}</p>
+                                                        <h6 class="fw-medium mb-0">Dr(a) ${capitalizarElemento(element.primerNombre)} ${capitalizarElemento(element.segundoNombre)} ${capitalizarElemento(element.primerApellido)} ${capitalizarElemento(element.segundoApellido)}</h6>
+                                                        <p class="text-primary-veris fw-medium fs--2 mb-0">${capitalizarElemento(element.nombreSucursal)}</p>
                                                         <p class="fs--2 mb-0">${capitalizarElemento(element.nombreEspecialidad)}</p>
                                                     </div>
                                                     <div class="col-2 text-center">

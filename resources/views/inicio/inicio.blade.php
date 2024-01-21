@@ -9,38 +9,38 @@ Mi Veris - Inicio
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
                 <div class="modal-header">
-                    <button type="button" class="btn-close fw-bold bg-transparent me-1 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close fw-medium bg-transparent me-2 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body px-2 pt-2">
+                <div class="modal-body px-3 pt-2">
                     <h5 class="text-center mb-4">¿Qué quieres agendar?</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
-                        <div class="col-6 col-lg-6 mb-3">
+                        <div class="col-6 col-lg-6">
                             <div class="card mb-3">
                                 <a href="/mis-tratamientos">
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-9">
-                                            <div class="card-body py-0 px-2">
-                                                <h6 class="fw-bold fs--2 mb-0">{{ __('Lo que envió') }} {{ __('mi doctor') }}</h6>
+                                        <div class="col-9 col-md-auto">
+                                            <div class="card-body p-0 ps-2">
+                                                <h6 class="fw-medium fs--2 mb-0">{{ __('Lo que envió') }} <br> {{ __('mi doctor') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-3 border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                            <img src="{{ asset('assets/img/svg/paste.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="paste" width="40">
+                                        <div class="col-3 col-md-auto">
+                                            <img src="{{ asset('assets/img/card/svg/paste.svg') }}" class="img-fluid" alt="paste">
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         </div>
-                        <div class="col-6 col-lg-6 mb-3">
+                        <div class="col-6 col-lg-6">
                             <div class="card mb-3">
                                 <a href="/citas">
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-9">
-                                            <div class="card-body py-0 px-2">
-                                                <h6 class="fw-bold fs--2 mb-0">{{ __('Una nueva') }} {{ __('cita médica') }}</h6>
+                                        <div class="col-9 col-md-auto">
+                                            <div class="card-body p-0 ps-2">
+                                                <h6 class="fw-medium fs--2 mb-0">{{ __('Una nueva') }} <br> {{ __('cita médica') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-3 border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                            <img src="{{ asset('assets/img/svg/doctor.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="doctor" width="40">
+                                        <div class="col-3 col-md-auto">
+                                            <img src="{{ asset('assets/img/card/svg/doctor.svg') }}" class="img-fluid" alt="doctor">
                                         </div>
                                     </div>
                                 </a>
@@ -56,7 +56,7 @@ Mi Veris - Inicio
     </div>
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h6 class="fw-bold border-start-veris ps-3 fs-18">{{ __('Acceso rápido') }}</h6>
+            <h6 class="fw-medium border-start-veris ps-3 fs-18">{{ __('Accesos rápidos') }}</h6>
         </div>
         <div class="position-relative mb-3">
             <div class="swiper swiper-acceso-rapidos pt-3 pb-4 px-2 mx-n2">
@@ -66,12 +66,12 @@ Mi Veris - Inicio
                             <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal">
                                 <div class="row g-0 justify-content-between align-items-center">
                                     <div class="col-9 col-md-auto">
-                                        <div class="card-body py-0 px-2">
-                                            <h6 class="fw-bold fs--1 mb-0">{{ __('Agendar cita médica') }}</h6>
+                                        <div class="card-body p-0 ps-2">
+                                            <h6 class="fw-medium fs--1 mb-0">{{ __('Agendar cita médica') }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                        <img src="{{ asset('assets/img/svg/doctora.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="52">
+                                    <div class="col-3 col-md-auto">
+                                        <img src="{{ asset('assets/img/card/svg/doctora.svg') }}" class="img-fluid" alt="" >
                                     </div>
                                 </div>
                             </a>
@@ -82,12 +82,12 @@ Mi Veris - Inicio
                             <a href="#">
                                 <div class="row g-0 justify-content-between align-items-center">
                                     <div class="col-9 col-md-auto">
-                                        <div class="card-body py-0 px-2">
-                                            <h6 class="fw-bold fs--1 mb-0">{{ __('Comprar promociones') }}</h6>
+                                        <div class="card-body p-0 ps-2">
+                                            <h6 class="fw-medium fs--1 mb-0">{{ __('Comprar promociones') }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                        <img src="{{ asset('assets/img/svg/comprar.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="52">
+                                    <div class="col-3 col-md-auto">
+                                        <img src="{{ asset('assets/img/card/svg/comprar.svg') }}" class="img-fluid" alt="" >
                                     </div>
                                 </div>
                             </a>
@@ -98,12 +98,12 @@ Mi Veris - Inicio
                             <a href="/servicio-domicilio" >
                                 <div class="row g-0 justify-content-between align-items-center">
                                     <div class="col-9 col-md-auto">
-                                        <div class="card-body py-0 px-2">
-                                            <h6 class="fw-bold fs--1 mb-0">{{ __('Solicitar servicios') }} <br> {{ __('a domicilio') }}</h6>
+                                        <div class="card-body p-0 ps-2">
+                                            <h6 class="fw-medium fs--1 mb-0">{{ __('Solicitar servicios') }} <br> {{ __('a domicilio') }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-3 col-md-auto border-0 border-start rounded-start-circle d-flex justify-content-center align-items-center">
-                                        <img src="{{ asset('assets/img/svg/motociclista.svg') }}" class="img-fluid my-3 mx-2 pe-1" alt="" width="52">
+                                    <div class="col-3 col-md-auto">
+                                        <img src="{{ asset('assets/img/card/svg/motociclista.svg') }}" class="img-fluid" alt="" >
                                     </div>
                                 </div>
                             </a>
@@ -118,7 +118,7 @@ Mi Veris - Inicio
     <!-- Tratamientos dinamico -->
     <section class="bg-light-grayish-blue p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold border-start-veris ps-3 fs-18">Mis tratamientos</h5>
+            <h5 class="fw-medium border-start-veris ps-3 fs-18">Mis tratamientos</h5>
             <a href="{{route('tratamientos')}}"
             class="fs--2" style="display: visible;" id="verTodosTratamientos">Ver todos</a>
         </div>
@@ -146,7 +146,12 @@ Mi Veris - Inicio
 </div>
 @endsection
 @push('scripts')
+<<<<<<< HEAD
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
+=======
    
+>>>>>>> developer
 
     
 <script>
@@ -338,7 +343,7 @@ Mi Veris - Inicio
                                             <div class="row gx-0 justify-content-between align-items-center mb-3">
                                                 <div class="col-9">
                                                     <h6 class="card-title text-primary-veris mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
-                                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
+                                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
                                                     <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                                 </div>
                                                 <div class="col-3">
@@ -375,7 +380,7 @@ Mi Veris - Inicio
                                         <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
                                             <img class="rounded-circle" src=${quitarComillas(detalle.urlImagenTipoServicio)}  width="26" alt="icono">
                                         </div>
-                                        <p class="fw-bold fs--2 mb-0">${capitalizarElemento(detalle.nombreServicio)}</p>
+                                        <p class="fw-medium fs--2 mb-0">${capitalizarElemento(detalle.nombreServicio)}</p>
                                             
                                     </div>
                                     <a href="/tratamiento/${paramsBase64}"
@@ -421,7 +426,7 @@ Mi Veris - Inicio
 
         elemento += `<section class="bg-light-grayish-blue p-3 mb-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="fw-bold border-start-veris ps-3 fs-18">Mis citas</h5>
+                            <h5 class="fw-medium border-start-veris ps-3 fs-18">Mis citas</h5>
                             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
                         </div>
                         <div class="position-relative mb-3" id="contenedorCitasHomePrincipal">
@@ -433,10 +438,10 @@ Mi Veris - Inicio
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(citas.especialidad)}</h6>
-                                            <span class="fs--2 text-success fw-bold">${esPagada(citas.estaPagada)}</span>
+                                            <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
+                                            <span class="fs--2 text-success fw-medium">${esPagada(citas.estaPagada)}</span>
                                         </div>
-                                        <p class="fw-bold fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
+                                        <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
                                         <p class="fw-normal fs--2 mb-0">${citas.fecha} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
                                         <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
                                         <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
@@ -488,7 +493,7 @@ Mi Veris - Inicio
                                         <div class="swiper-wrapper" id="contenedorUrgenciasAmbulatorias">
                                             <!-- Puedes agregar citas dinámicamente aquí desde JavaScript -->
                                             <div class="d-flex justify-content-between align-items-center">
-                                            <h5 class="fw-bold border-start-veris ps-3">Urgencias ambulatorias</h5>
+                                            <h5 class="fw-medium border-start-veris ps-3">Urgencias ambulatorias</h5>
                                             <a href="#!" class="fs--2">Ver todos</a>
                                         </div>`;
 
@@ -497,10 +502,10 @@ Mi Veris - Inicio
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(urgencias.modulo)}</h6>
-                                                <span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Reservado</span>
+                                                <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(urgencias.modulo)}</h6>
+                                                <span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i> Reservado</span>
                                             </div>
-                                            <p class="fw-bold fs--2 mb-0">${capitalizarElemento(urgencias.nombreSucursal)}</p>
+                                            <p class="fw-medium fs--2 mb-0">${capitalizarElemento(urgencias.nombreSucursal)}</p>
                                             <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20
                                                     AM</b></p>
                                             <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
@@ -572,9 +577,9 @@ Mi Veris - Inicio
     // funcion esPagada para saber si la cita esta pagada
     function esPagada(pagada){
         if(pagada == 'S'){
-            return `<span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>`;
+            return `<span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>`;
         } else {
-            return `<span class="fs--2 text-danger-veris fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita no pagada</span>`;
+            return `<span class="fs--2 text-danger-veris fw-medium"><i class="fa-solid fa-circle me-1"></i> Cita no pagada</span>`;
         }
     }
 
