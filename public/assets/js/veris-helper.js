@@ -655,3 +655,12 @@ verificarImagen(urlImagen, function(existeImagen) {
 function roundToDraw(porcentajeAvanceTratamiento){
     return ((porcentajeAvanceTratamiento % 10 >= 5) ? Math.ceil(porcentajeAvanceTratamiento / 10) * 10 : Math.floor(porcentajeAvanceTratamiento / 10) * 10);
 }
+
+// Función para capitalizar la primera letra
+function capitalizarPrimeraLetra(texto) {
+    return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
+}
+
+function capitalizarCadaPalabra(texto) {
+    return texto.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+}

@@ -38,7 +38,7 @@ Mi Veris - Resultados
     </div>
     @include('components.barraFiltro')
     @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
-    <section class="p-3 pt-0 mb-3">
+    <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-lg-10">
                 <div class="row g-3" id="resultadosIP">
@@ -84,11 +84,7 @@ Mi Veris - Resultados
 @endsection
 @push('scripts')
 <!-- script -->
-
-
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-
 <script>
     let fechaDesdePicker = flatpickr("#fechaDesde", {
         maxDate: new Date().fp_incr(0),
@@ -197,9 +193,9 @@ Mi Veris - Resultados
                         elemento += `<div class="col-12 col-md-6">
                                         <div class="card h-100">
                                             <div class="card-body p-3">
-                                                <h6 class="text-primary-veris fw-bold fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
-                                                <p class="fw-bold fs--2 mb-1" id="nombreResultadoLab" style="color: #0055AA !important">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
-                                                <p class="fw-bold fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
+                                                <h6 class="text-primary-veris fw-medium fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
+                                                <p class="text-one-line fw-medium fs--2 mb-1" id="nombreResultadoLab" style="color: #0055AA !important">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
+                                                <p class="fw-medium fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
                                                 <p class="fw-normal fs--2 mb-1">Realizado: <b class="fw-normal" id="fecha">${resultados.dia}</b></p>
                                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                                     <div class="avatar me-2">

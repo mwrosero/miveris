@@ -73,65 +73,67 @@ Mi Veris - Citas - Familia y amigos
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Familia y amigos') }}</h5>
     </div>
     <section class="p-3 mb-3">
-        <div class="row justify-content-center">
-            <div class="col-auto col-md-4">
-                <ul class="list-group bg-white">
-                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
-                        <div class="mx-auto">
-                            <div class="fw-bold h6 mb-0">Hola <b class="user-auth">{{ Session::get('userData')->nombre }}</b></div>
-                            <p class="fs--2 mb-0">Agrega personas a tu lista de familiares y amigos</p>
-                        </div>
-                    </li>
-                </ul>
-                <div class="card bg-transparent shadow-none mb-4">
-                    <div class="card-body py-3 px-0">
-                        <form class="row g-3">
-                            <div class="col-md-12">
-                                <label for="tipoIdentificacion" class="form-label fw-bold">{{ __('Tipo de identificación') }} *</label>
-                                <select class="form-select form-filter" name="tipoIdentificacion" id="tipoIdentificacion" required>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Elegir el tipo de identificación.
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="numeroIdentificacion" class="form-label fw-bold">{{ __('Número de identificación') }} *</label>
-                                <input type="text" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="Ingresa tu número de identificación" required />
-                                <div class="invalid-feedback">
-                                    Ingresar número de identificación.
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-outline-primary-veris bg-white w-100" type="submit" id="btnBuscar">
-                                    Buscar</button>
-                            </div>
-                        </form> 
-                    </div>
-                </div>
-                <div id="resultadoConsulta" style="display: none;">
-                    <ul class="list-group bg-white mb-3">
-                        <li class="list-group-item border-0 d-flex justify-content-start align-items-center px-3 py-2">
-                            <div class="me-auto">
-                                <div class="fw-bold h6 mb-0">Personas</div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <ul class="list-group bg-white">
+                        <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
+                            <div class="mx-auto">
+                                <div class="fw-bold h6 mb-0">Hola <b class="user-auth">{{ Session::get('userData')->nombre }}</b></div>
+                                <p class="fs--2 mb-0">Agrega personas a tu lista de familiares y amigos</p>
                             </div>
                         </li>
                     </ul>
-                    <div class="card mx-auto mx-lg-3">
-                        <div class="card-body p-2">
-                            <p class="text-secondary fs--1 mb-0"> <b class="hora-cita text-veris fw-bold" id="nombrePersona"></b></p>
-                            <p class="text-secondary fs--1 mb-0" >Número de identificación: <b class="hora-cita text-veris fw-bold" id="numeroIdentificacionPersona"></b></p>
-                            <p class="text-secondary fs--1 mb-0 " >Ciudad: <b class="hora-cita text-veris fw-bold" id="ciudadPersona"></b></p>
-                            <p class="text-secondary fs--1 mb-0 " >Fecha de nacimiento: <b class="hora-cita text-veris fw-bold" id="fechaNacimientoPersona"></b></p>
-                            <div class="d-flex justify-content-end align-items-center mt-3">
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-sm btn-primary-veris" data-bs-toggle="modal" data-bs-target="#parentescoFamiliarModal" id ="btnAgregarPersona">
-                                    Agregar
-                                </button>
+                    <div class="card bg-transparent shadow-none mb-4">
+                        <div class="card-body py-3 px-0">
+                            <form class="row g-3">
+                                <div class="col-md-12">
+                                    <label for="tipoIdentificacion" class="form-label fw-bold">{{ __('Tipo de identificación') }} *</label>
+                                    <select class="form-select form-filter" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Elegir el tipo de identificación.
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="numeroIdentificacion" class="form-label fw-bold">{{ __('Número de identificación') }} *</label>
+                                    <input type="text" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="Ingresa tu número de identificación" required />
+                                    <div class="invalid-feedback">
+                                        Ingresar número de identificación.
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-outline-primary-veris bg-white w-100" type="submit" id="btnBuscar">
+                                        Buscar</button>
+                                </div>
+                            </form> 
+                        </div>
+                    </div>
+                    <div id="resultadoConsulta" style="display: none;">
+                        <ul class="list-group bg-white mb-3">
+                            <li class="list-group-item border-0 d-flex justify-content-start align-items-center px-3 py-2">
+                                <div class="me-auto">
+                                    <div class="fw-bold h6 mb-0">Personas</div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="card mx-auto mx-lg-3">
+                            <div class="card-body p-2">
+                                <p class="text-secondary fs--1 mb-0"> <b class="hora-cita text-veris fw-bold" id="nombrePersona"></b></p>
+                                <p class="text-secondary fs--1 mb-0" >Número de identificación: <b class="hora-cita text-veris fw-bold" id="numeroIdentificacionPersona"></b></p>
+                                <p class="text-secondary fs--1 mb-0 " >Ciudad: <b class="hora-cita text-veris fw-bold" id="ciudadPersona"></b></p>
+                                <p class="text-secondary fs--1 mb-0 " >Fecha de nacimiento: <b class="hora-cita text-veris fw-bold" id="fechaNacimientoPersona"></b></p>
+                                <div class="d-flex justify-content-end align-items-center mt-3">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-sm btn-primary-veris" data-bs-toggle="modal" data-bs-target="#parentescoFamiliarModal" id ="btnAgregarPersona">
+                                        Agregar
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    
                 </div>
-                
             </div>
         </div>
     </section>
