@@ -246,7 +246,6 @@ Mi Veris - Citas - Laboratorio
                                                     </div>
                                                 </div>
                                             </div>
-<<<<<<< HEAD
                                         </div>
                                         <div class="d-flex justify-content-center mb-3">
                                             <div class="col-12 col-md-10 col-lg-8">
@@ -266,21 +265,6 @@ Mi Veris - Citas - Laboratorio
                                                        <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
-=======
-                                            <div class="d-flex justify-content-center mb-3">
-                                                <div class="col-12 col-md-10 col-lg-8">
-                                                    <div class="row g-3" id="cardTratamientoLaboratorio">
-                                                        <!-- items -->
-                                                        `;
-                            
-                                laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                    elementos += `<div class="col-12 col-md-6">
-                                                    <div class="card">
-                                                        <div class="card-body p-2">
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                                <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada , estado)}</span>
->>>>>>> developer
                                                             </div>
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
