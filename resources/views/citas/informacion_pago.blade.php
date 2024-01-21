@@ -8,6 +8,34 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd($data);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
+    <!-- Modal Autenticar tarjeta-->
+    <div class="modal fade" id="autenticarPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="autenticarPagoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="avatar avatar-lg mx-auto mb-3">
+                            <span class="avatar-initial rounded-circle bg-primary">
+                                <i class="bi bi-lock fs-2"></i>
+                            </span>
+                        </div>
+                        {{-- <h1 class="modal-title fs-5 mb-3" id="autenticarPagoLabel">Confirmar pago</h1> --}}
+                    </div>
+                    <p class="fs--1 mb-3" style="line-height: 16px;"><b class="text-primary">Para autenticar tu tarjeta</b> ingresa el <b>código de seguridad</b> enviado a tu teléfono y/o correo electrónico.</p>
+                    <div class="input-group input-group-merge mb-3">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input type="text" class="form-control code-otp" name="codeAutenticar" id="codeAutenticar" placeholder="Código de seguridad (OTP)" required />
+                    </div>
+                    <div class="invalid-feedback mb-3">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>Código inválido
+                    </div>
+                    <button type="button" id="btn-autenticar-otp" class="btn btn-action-otp btn-lg btn-primary-veris w-100 mb-2">Autenticar</button>
+                    <button type="button" class="btn btn-lg btn-primary-veris w-100 mb-2 btn-close-modal d-none" data-bs-dismiss="modal">Entendido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal confirmar Pago-->
     <div class="modal fade" id="confirmarPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmarPagoLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -19,16 +47,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <i class="fa-regular fa-credit-card fs-2"></i>
                             </span>
                         </div>
-                        <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">Confirmar pago</h1>
+                        {{-- <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">Confirmar pago</h1> --}}
                     </div>
                     <p class="fs--1 mb-3" style="line-height: 16px;"><b class="text-primary">Para continuar con la transacción</b> ingresa el <b>código de seguridad</b> enviado a tu teléfono y/o correo electrónico.</p>
-                    <div class="input-group input-group-merge">
+                    <div class="input-group input-group-merge mb-3">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                        <input type="text" class="form-control" name="code" id="code" placeholder="Código de seguridad (OTP)" required />
+                        <input type="text" class="form-control code-otp" name="codePagar" id="codePagar" placeholder="Código de seguridad (OTP)" required />
                     </div>
-                    <div class="invalid-feedback">
+                    <div class="invalid-feedback mb-3">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>Código inválido
                     </div>
+                    <button type="button" id="btn-pagar-otp" class="btn btn-action-otp btn-lg btn-primary-veris w-100 mb-2">Confirmar pago</button>
+                    <button type="button" class="btn btn-lg btn-primary-veris w-100 mb-2 btn-close-modal d-none" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
@@ -85,7 +115,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <ul class="list-group bg-white mb-3">
                             <li class="list-group-item border-0 text-primary-veris d-flex justify-content-between align-items-center">
                                 Total a pagar:
-                                <span class="badge text-primary-veris">$27.00</span>
+                                <span class="badge text-primary-veris">${{ $data->facturacion->totales->total }}</span>
                             </li>
                         </ul>
                         <!-- content-pago -->
@@ -141,31 +171,36 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 $('#messages').text("Invalid Card Data");
             }else{
                 submitButton.attr("disabled", "disabled").text("Procesando pago...");
-                let uid = "0923796304";
-                let email = "mwrosero@gmail.com";
+                let uid = "{{ Session::get('userData')->numeroIdentificacion }}";
+                let email = "{{ Session::get('userData')->mail }}";
                 Payment.addCard(uid, email, cardToSave, successHandler, errorHandler);
             }
-            console.log(0)
+
             e.preventDefault();
-            console.log(1)
         });
+
+        $('#btn-pagar').removeClass('disabled');
 
         let successHandler = async function (cardResponse) {
             console.log(cardResponse.card);
             if (cardResponse.card.status === 'valid') {
+                dataCita.tarjeta = cardResponse.card;
                 $('#btn-pagar').addClass('disabled');
-                await registrarTarjeta(cardResponse);
+                await registrarTarjeta();
                 /*$('#messages').html('Card Successfully Added<br>' +
                 'status: ' + cardResponse.card.status + '<br>' +
                 "Card Token: " + cardResponse.card.token + "<br>" +
                 "transaction_reference: " + cardResponse.card.transaction_reference
                 );*/
-            }else if(cardResponse.card.status === 'review') {
-                $('#messages').html('Card Under Review<br>' +
+            }else if(cardResponse.card.status === 'review' || cardResponse.card.status === 'pending') {
+                dataCita.tarjeta = cardResponse.card;
+                $('#btn-pagar').addClass('disabled');
+                await solicitarOTP();
+                /*$('#messages').html('Card Under Review<br>' +
                 'status: ' + cardResponse.card.status + '<br>' +
                 "Card Token: " + cardResponse.card.token + "<br>" +
                 "transaction_reference: " + cardResponse.card.transaction_reference
-                );
+                );*/
             }else{
                 $('#messages').html('Error<br>' +
                 'status: ' + cardResponse.card.status + '<br>' +
@@ -183,9 +218,52 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             submitButton.text(submitInitialText);
         };
 
+        $('body').on('click', '#btn-autenticar-otp', async function(){
+            $('#btn-autenticar-otp').addClass('disabled');
+            let codeOTP = $('#codeAutenticar').val();
+            autenticarOTP(codeOTP);
+        });
+
+        $('body').on('click', '.btn-close-modal', function(){
+            $('.btn-close-modal').addClass('d-none');
+            $('.btn-action-otp').removeClass('disabled');
+            $('#btn-pagar').removeClass('disabled');
+            $('#btn-pagar').attr("disabled", "disabled").text("Pagar");
+        })
+
     });
 
-    async function registrarTarjeta(cardResponse){
+    async function autenticarOTP(codeOTP){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas/verificacion`;
+        args["method"] = "POST";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        args["data"] = JSON.stringify({
+            "virusu": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "canalOrigenDigital": _canalOrigen,
+            "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
+            "valorOTP": codeOTP,
+            "datosTarjetaSuscrita": dataCita.tarjeta
+        });
+        const data = await call(args);
+        
+        if(data.code == 200){
+            if(data.data.estado == "APPROVED"){
+                await pagarCita();
+            }else if(data.data.estado == "PENDING"){
+                $('#btn-autenticar-otp').removeClass('disabled');
+                $('#autenticarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show()
+            }else{
+                $('.btn-close-modal').removeClass('d-none');
+                $('#autenticarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show()
+            }
+        }else{
+            $('#btn-autenticar-otp').removeClass('disabled');
+        }
+    }
+
+    async function registrarTarjeta(){
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas`;
         args["method"] = "POST";
@@ -194,12 +272,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["data"] = JSON.stringify({
             "virusu": "{{ Session::get('userData')->numeroIdentificacion }}",
             "canalOrigenDigital": _canalOrigen,
-            "card": cardResponse.card
+            "card": dataCita.tarjeta
         });
         const data = await call(args);
         
         if(data.code == 200){
-            dataCita.tarjeta = cardResponse.card;
             await pagarCita();
         }
     }
@@ -228,8 +305,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
                 //window.location.href = ruta;
             }
-        }
-        
+        }        
+    }
+
+    async function solicitarOTP(){
+        var myModal = new bootstrap.Modal(document.getElementById('autenticarPago'));
+        myModal.show();
     }
 </script>
 @endpush

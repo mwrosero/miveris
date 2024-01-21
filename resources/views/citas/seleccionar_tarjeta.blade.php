@@ -5,7 +5,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
 @section('content')
 @php
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
-// dd($data);
+// dd(Session::get('userData')->numeroIdentificacion);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal noExisteTarjeta-->
@@ -57,7 +57,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="btn-master w-100 mx-auto">
                                     <div id="btn-pagar" class="btn disabled text-white shadow-none">{{ __('Pagar') }}</div>
                                     |
-                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total">$134.00</p>
+                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total">${{ $data->facturacion->totales->total }}</p>
                                 </div>
                             </div>
                         </div>
