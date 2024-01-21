@@ -824,28 +824,20 @@ $data = json_decode(base64_decode($params));
                                                         </a>`;
 
                                 }
-
-                                let params = @json($data);
-                                params.especialidad = {
-                                    codigoEspecialidad: datosServicio.codigoEspecialidad
-                                };
-                                params.esOnline = modalidad;
-                                let urlParams = btoa(JSON.stringify(params));
-                                respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none">Agendar</a>`;
-                            } else {
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris disabled">Agendar</a>`;
-
+                            } 
+                            else{
+                                // abrir modal no permite reserva
+                                respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none me-1" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal"><i class="bi me-2"></i> Agendar</div>`;
                             }
-                        } 
-                        else{
-                            // abrir modal no permite reserva
-                            respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</div>`;
+   
                         }
 
                     }else if (datosServicio.estado == 'ATENDIDO'){
 
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris"> Ver orden</a>`;
+                        respuestaAgenda = ``;
+                        respuestaAgenda += ` <div class="btn btn-sm btn-primary-veris shadow-none me-1" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal"><i class="bi me-2"></i> Ver orden</div>`;  
+                    
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
@@ -873,27 +865,7 @@ $data = json_decode(base64_decode($params));
                 case "LAB":
                     console.log('estadossss', estado);
                     let respuesta = "";
-                    respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
-
-
-                    // condición para 'verResultados'
-                    if (datosServicio.verResultados == "S") {
-                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris m-2
-                        "><i class="bi me-2"></i> Ver resultados</a>`;
-                    } else {
-                        respuesta += ``;
-                    }
-
-                    //condición para 'aplicaSolicitud'
-                    if (datosServicio.aplicaSolicitud == "S") {
-                        respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                    } 
-                    if (datosServicio.permitePago == "S"){
-                        let params = @json($data);
-                        params.idPaciente = idPaciente;
-                        params.numeroOrden = datosServicio.idOrden;
-                        params.codigoEmpresa = datosServicio.codigoEmpresa;
-                        let ulrParams = btoa(JSON.stringify(params));
+                    if (estado == 'PENDIENTE'){
                         
                         respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none me-1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</a>`;
 
@@ -952,13 +924,12 @@ $data = json_decode(base64_decode($params));
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <div  class="btn text-primary-veris" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</div>`;
-                    if (datosServicio.esAgendable == "N") {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris disabled">Agendar</a>`;
+                    respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    
+                    // ABRIRE MODAL DE VIDEO CONSULTA
+                    respuestaOdontologia += `<div href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"><i class="bi me-2"></i> Agendar</div>`;
                       
-                    } else {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Agendar</a>`;
-                    }
+                    
 
                     return respuestaOdontologia;
 
