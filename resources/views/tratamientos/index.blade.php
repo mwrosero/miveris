@@ -83,6 +83,11 @@ Mi Veris - Citas - Mis tratamientos
     let datosTratamientos = [];
     let familiar = [];
     let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+    let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+    let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+    let nombrePaciente = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}";
+    let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
+
 
     // llamar al dom 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -184,6 +189,12 @@ Mi Veris - Citas - Mis tratamientos
                     "codigoTratamiento": tratamientos.codigoTratamiento,
                     "porcentajeAvanceTratamiento": tratamientos.porcentajeAvanceTratamiento
                 }
+                params.paciente = {
+                    "numeroIdentificacion": numeroIdentificacion,
+                    "tipoIdentificacion": tipoIdentificacion,
+                    "nombrePaciente": nombrePaciente,
+                    "numeroPaciente": numeroPaciente
+                }
                 let ulrParams = btoa(JSON.stringify(params));
                 console.log('ulrParams', params);
 
@@ -198,7 +209,11 @@ Mi Veris - Citas - Mis tratamientos
                                                     <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="fecha-enviado fw-normal text-primary-veris">${tratamientos.fechaTratamiento}</b></p>
                                                 </div>
                                                 <div class="col-3">
+<<<<<<< HEAD
                                                     <div class="progress-circle ms-auto" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+=======
+                                                    <div class="progress-circle" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
+>>>>>>> developer
                                                         <span class="progress-left">
                                                             <span class="progress-bar"></span>
                                                         </span>
@@ -254,6 +269,13 @@ Mi Veris - Citas - Mis tratamientos
                     "codigoTratamiento": tratamientosRealizados.codigoTratamiento,
                     "porcentajeAvanceTratamiento": tratamientosRealizados.porcentajeAvanceTratamiento
                 }
+                params.paciente = {
+                    "numeroIdentificacion": numeroIdentificacion,
+                    "tipoIdentificacion": tipoIdentificacion,
+                    "nombrePaciente": nombrePaciente,
+                    "numeroPaciente": numeroPaciente
+                }
+
                 let ulrParams = btoa(JSON.stringify(params));
                 console.log('ulrParams', params);
             let elemento = `<div class="col-12 col-md-6">
@@ -429,8 +451,15 @@ Mi Veris - Citas - Mis tratamientos
         
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+        paciente = texto;
+        console.log('textoPaciente', texto);
 
         identificacionSeleccionada = texto.numeroPaciente;
+        numeroIdentificacion = texto.numeroIdentificacion;
+        tipoIdentificacion = texto.tipoIdentificacion;
+        nombrePaciente = texto.primerNombre + ' ' + texto.primerApellido + ' ' + texto.segundoApellido;
+        numeroPaciente = texto.numeroPaciente;
+         
         
         // colocar el nombre del filtro
         const elemento = document.getElementById('nombreFiltro');

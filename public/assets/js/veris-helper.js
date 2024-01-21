@@ -81,10 +81,15 @@ async function callInformes(args) {
             hideLoader();
         }
 
-        // console.error("Error en la solicitud: ", error.message);
-        toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.", "ERROR");
+        // Construye un objeto de error para devolver información relevante
+        let errorInfo = {
+            status: error.message.includes('HTTP error') ? parseInt(error.message.replace(/\D/g, '')) : 500, // Extrae el código de estado del mensaje de error, o asume 500 si no es específico
+            message: 'Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.'
+        };
 
-        throw error;
+        
+
+        return errorInfo;
     }
 }
 
@@ -443,6 +448,29 @@ async function aplicarFiltros(contexto) {
     }
 }
 
+async function aplicarFiltrosCitas(contexto) {
+    const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').attr('numeroIdentificacion');
+    let fechaDesde = $('#fechaDesde').val() || '';
+    let fechaHasta = $('#fechaHasta').val() || '';
+    const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
+    let estadoCitas;
+    if (document.getElementById('pills-actuales-tab').getAttribute('aria-selected') === 'true') {
+        estadoCitas = 'ACTUAL';
+    } else if (document.getElementById('pills-historial-tab').getAttribute('aria-selected') === 'true') {
+        estadoCitas = 'HISTORICO';
+    }
+
+    if (contexto === 'contextoAplicarFiltros') {
+        if (estadoCitas === 'ACTUAL'){
+            await obtenerCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);
+        }
+        else if (estadoCitas === 'HISTORICO'){
+            await obtenerHistorialCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);
+        }
+
+    }
+}
+
 // limpiar filtros
 async function limpiarFiltros(contexto) {
     if (contexto === 'contextoLimpiarFiltros') {
@@ -580,22 +608,41 @@ function mostrarListaPacientesFiltro(){
     });
 }
 
-function verificarImagen(urlImagen, callback) {
-    var img = new Image();
-        img.onload = function() {
-        // La imagen se cargó exitosamente
-        callback(true);
-    };
+async function verificarImagen(urlImagen) {
+    return new Promise((resolve) => {
+        const img = new Image();
 
-    img.onerror = function() {
-        // Hubo un error al cargar la imagen
-        callback(false);
-    };
-    img.src = urlImagen;
+        img.onload = function() {
+            // La imagen se cargó exitosamente
+            resolve(true);
+        };
+
+        img.onerror = function() {
+            // Hubo un error al cargar la imagen
+            resolve(false);
+        };
+
+        img.src = urlImagen;
+    });
 }
 
+
+// async function verificarImagen(urlImagen, callback) {
+//     var img = new Image();
+//         img.onload = function() {
+//         // La imagen se cargó exitosamente
+//         callback(true);
+//     };
+
+//     img.onerror = function() {
+//         // Hubo un error al cargar la imagen
+//         callback(false);
+//     };
+//     img.src = urlImagen;
+// }
+
 // Ejemplo de uso
-var urlImagen = 'https://ejemplo.com/imagen.jpg';
+/*var urlImagen = 'https://ejemplo.com/imagen.jpg';
 
 verificarImagen(urlImagen, function(existeImagen) {
     if (existeImagen) {
@@ -603,4 +650,8 @@ verificarImagen(urlImagen, function(existeImagen) {
     } else {
         console.log('La imagen no existe o no es accesible.');
     }
-});
+});*/
+
+function roundToDraw(porcentajeAvanceTratamiento){
+    return ((porcentajeAvanceTratamiento % 10 >= 5) ? Math.ceil(porcentajeAvanceTratamiento / 10) * 10 : Math.floor(porcentajeAvanceTratamiento / 10) * 10);
+}

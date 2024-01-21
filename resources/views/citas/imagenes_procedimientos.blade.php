@@ -7,6 +7,24 @@ Mi Veris - Citas - Imágenes y procedimientos
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- Modal de error -->
+
+    <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Veris</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Filtro -->
     
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Imágenes y procedimientos') }}</h5>
@@ -195,184 +213,193 @@ Mi Veris - Citas - Imágenes y procedimientos
         args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
-        console.log('datalabor', data);
-        console.log('estado', estado);
-        if(estado == 'PENDIENTE'){
-            console.log('entrando a pendiente');
-            if (data.code == 200) {
-                if(data.data.items.length == 0){
-                    console.log('entrando a pendiente vacio', admin);
-                    if (admin === 'S') {
-                        let html = $('#contenedorTratamientosImagenes');
-                        html.empty();
-                        $('#mensajeNoTienesImagenesProcedimientos').removeClass('d-none');
-                        $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
-                    } else if (admin === 'N') {
-                        let html = $('#contenedorTratamientosImagenes');
-                        html.empty();
-                        $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
-                        $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
-                    }
-                    
-                    
-                }else{
-                    if (admin === 'S') {
-                        datosLaboratorio = data.data.items;
-                        console.log('datosLaboratorio',datosLaboratorio);
-                        let html = $('#contenedorTratamientosImagenes');
-                        $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
-                        $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
-                        html.empty();
+        if (data.code == 200){
 
-                        let elementos = ''; // Definir la variable fuera del bucle
+        
+            if(estado == 'PENDIENTE'){
+                console.log('entrando a pendiente');
+                if (data.code == 200) {
+                    if(data.data.items.length == 0){
+                        console.log('entrando a pendiente vacio', admin);
+                        if (admin === 'S') {
+                            let html = $('#contenedorTratamientosImagenes');
+                            html.empty();
+                            $('#mensajeNoTienesImagenesProcedimientos').removeClass('d-none');
+                            $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
+                        } else if (admin === 'N') {
+                            let html = $('#contenedorTratamientosImagenes');
+                            html.empty();
+                            $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
+                            $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
+                        }
+                        
+                        
+                    }else{
+                        if (admin === 'S') {
+                            datosLaboratorio = data.data.items;
+                            console.log('datosLaboratorio',datosLaboratorio);
+                            let html = $('#contenedorTratamientosImagenes');
+                            $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
+                            $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
+                            html.empty();
 
-                        data.data.items.forEach((laboratorio) => {
-                            elementos += `<div class="col-12 mb-4">
-                                            <div class="card">
-                                                <div class="card-body py-2 px-3">
-                                                    <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                    <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
-                                                    <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                    <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                            let elementos = ''; // Definir la variable fuera del bucle
+
+                            data.data.items.forEach((laboratorio) => {
+                                elementos += `<div class="col-12 mb-4">
+                                                <div class="card">
+                                                    <div class="card-body py-2 px-3">
+                                                        <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
+                                                        <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
+                                                        <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
+                                                        <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
+                                                        <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="d-flex justify-content-center mb-3">
-                                            <div class="col-12 col-md-10 col-lg-8">
-                                                <div class="row g-3" id="cardTratamientoLaboratorio">
-                                                    <!-- items -->
-                                                    `;
-                        
-                            laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                elementos += `<div class="col-12 col-md-6">
-                                                <div class="card">
-                                                    <div class="card-body p-2">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                            <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada , estado)}</span>
-                                                        </div>
-                                                        ${determinarFechasCaducadas(detalles, estado)}
-                                                       <div class="d-flex justify-content-between align-items-center mt-2">
-                                                            <div class="avatar me-2">
-                                                                <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <div class="col-12 col-md-10 col-lg-8">
+                                                    <div class="row g-3" id="cardTratamientoLaboratorio">
+                                                        <!-- items -->
+                                                        `;
+                            
+                                laboratorio.detallesTratamiento.forEach((detalles) =>{
+                                    elementos += `<div class="col-12 col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body p-2">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                                <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada , estado)}</span>
                                                             </div>
-                                                            <div>
-                                                                ${determinarCondicionesBotones(detalles, estado)}
+                                                            ${determinarFechasCaducadas(detalles, laboratorio)}
+                                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                                                <div class="avatar me-2">
+                                                                    <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                </div>
+                                                                <div>
+                                                                    ${determinarCondicionesBotones(detalles, estado)}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>`;                        
+                                });
+                                elementos += `
+                                                </div>
+                                            </div>
+                                        </div>`;
+                            });
+                            html.append(elementos); // Agregar todos los elementos después del bucle
+
+                        } else if (admin === 'N') {
+                            let html = $('#contenedorTratamientosImagenes');
+                            html.empty();
+                            $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
+
+                        }
+                        return data;
+                    } 
+                }
+            }
+            else if(estado == 'REALIZADO'){
+                console.log('entrando a realizado');
+                
+                
+                if (data.code == 200) {
+                    if(data.data.items.length == 0){
+                        console.log('entrando a realizado vacio');
+                        if (admin === 'S') {
+                            let html = $('#contenedorTratamientosImagenesRealizados');
+                            html.empty();
+                            $('#mensajeNoTienesImagenesProcedimientosRealizados').removeClass('d-none');
+                            $('#mensajeNoTienesPermisosAdministradorRealizados').addClass('d-none');
+                        } else if (admin === 'N') {
+                            let html = $('#contenedorTratamientosImagenesRealizados');
+                            html.empty();
+                            $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
+                            $('#mensajeNoTienesImagenesProcedimientosRealizados').addClass('d-none');
+                        }
+                        
+                    }else{
+                        if (admin === 'S'){
+                            console.log('entrando a realizado lleno');
+                            datosLaboratorio = data.data.items;
+                            console.log('datosLaboratorio',datosLaboratorio);
+                            let html = $('#contenedorTratamientosImagenesRealizados');
+                            html.empty();
+                            console.log('datosLaboratorioR',datosLaboratorio);
+
+                            let elementos = ''; 
+
+                            datosLaboratorio.forEach((laboratorio) => {
+                                elementos += `<div class="col-12 mb-4">
+                                                <div class="card">
+                                                    <div class="card-body py-2 px-3">
+                                                        <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
+                                                        <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
+                                                        <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
+                                                        <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
+                                                        <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <div class="col-12 col-md-10 col-lg-8">
+                                                    <div class="row g-3" id="cardTratamientoLaboratorio">
+                                                        <!-- items -->
+                                                        `;
+                            
+                                laboratorio.detallesTratamiento.forEach((detalles) =>{
+                                    elementos += `<div class="col-12 col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body p-2">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                                <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada, estado)}</span>
+
+                                                            </div>
+
+                                                            ${determinarFechasCaducadas(detalles, laboratorio)}
+                                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                                <div class="avatar me-2">
+                                                                    <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                </div>
+                                                                <div>
+                                                                    ${determinarCondicionesBotones(detalles, estado)} 
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                            </div>`;                        
-                            });
-                            elementos += `
+                                                    `;                        
+                                });
+                                elementos += `
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>`;
-                        });
-                        html.append(elementos); // Agregar todos los elementos después del bucle
+                                        </div>`;
+                            });
+                            html.append(elementos); // Agregar todos los elementos después del bucle
+                        } else if (admin === 'N') {
+                            let html = $('#contenedorTratamientosImagenesRealizados');
+                            html.empty();
+                            $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
 
-                    } else if (admin === 'N') {
-                        let html = $('#contenedorTratamientosImagenes');
-                        html.empty();
-                        $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
+                        }
 
-                    }
+                    } 
                     return data;
                 } 
             }
+
         }
-        else if(estado == 'REALIZADO'){
-            console.log('entrando a realizado');
-            
-            
-            if (data.code == 200) {
-                if(data.data.items.length == 0){
-                    console.log('entrando a realizado vacio');
-                    if (admin === 'S') {
-                        let html = $('#contenedorTratamientosImagenesRealizados');
-                        html.empty();
-                        $('#mensajeNoTienesImagenesProcedimientosRealizados').removeClass('d-none');
-                        $('#mensajeNoTienesPermisosAdministradorRealizados').addClass('d-none');
-                    } else if (admin === 'N') {
-                        let html = $('#contenedorTratamientosImagenesRealizados');
-                        html.empty();
-                        $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
-                        $('#mensajeNoTienesImagenesProcedimientosRealizados').addClass('d-none');
-                    }
-                    
-                }else{
-                    if (admin === 'S'){
-                        console.log('entrando a realizado lleno');
-                        datosLaboratorio = data.data.items;
-                        console.log('datosLaboratorio',datosLaboratorio);
-                        let html = $('#contenedorTratamientosImagenesRealizados');
-                        html.empty();
-                        console.log('datosLaboratorioR',datosLaboratorio);
+        if (data.code != 200) {
+            // mostrar mensaje de error
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+            $('#mensajeError').text(data.message);
 
-                        let elementos = ''; 
-
-                        datosLaboratorio.forEach((laboratorio) => {
-                            elementos += `<div class="col-12 mb-4">
-                                            <div class="card">
-                                                <div class="card-body py-2 px-3">
-                                                    <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                    <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
-                                                    <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                    <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-center mb-3">
-                                            <div class="col-12 col-md-10 col-lg-8">
-                                                <div class="row g-3" id="cardTratamientoLaboratorio">
-                                                    <!-- items -->
-                                                    `;
-                        
-                            laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                elementos += `<div class="col-12 col-md-6">
-                                                <div class="card">
-                                                    <div class="card-body p-2">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                            <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada, estado)}</span>
-
-                                                        </div>
-
-                                                        ${determinarFechasCaducadas(detalles, estado)}
-                                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                                            <div class="avatar me-2">
-                                                                <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
-                                                            </div>
-                                                            <div>
-                                                                ${determinarCondicionesBotones(detalles, estado)} 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                                `;                        
-                            });
-                            elementos += `
-                                            </div>
-                                        </div>
-                                    </div>`;
-                        });
-                        html.append(elementos); // Agregar todos los elementos después del bucle
-                    } else if (admin === 'N') {
-                        let html = $('#contenedorTratamientosImagenesRealizados');
-                        html.empty();
-                        $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
-
-                    }
-
-                } 
-                return data;
-            } 
         }
     }
     // consultar grupo familiar
@@ -425,38 +452,44 @@ Mi Veris - Citas - Imágenes y procedimientos
 
     // funciones js 
 
-    // determinar fechas caducadas
-    function determinarFechasCaducadas(datos , estado){
+   // determinar fechas caducadas
+   function determinarFechasCaducadas(datos, datosTratamiento){ 
 
-        console.log('DATOSASA', datos);
+        let dataFechas = ``;
 
-        if (estado == 'REALIZADO'){
-            if (datos.tipoServicio == 'LABORATORIO'){
-                return ``; 
+        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
+
+            if (datos.estado == "PENDIENTE_AGENDAR") {
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
+                
             }
-            else{
-                return `<p class="fs--2 fw-bold mb-0">${capitalizarElemento(datos.nombreSucursal)}</p>
-                    <p class="fw-normal fs--2 mb-0">Dr(a) ${determinarValoresNull(datos.detalleReserva.fechaReserva)}</p>
-                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(datos.detalleReserva.nombreMedicoReserva)}</p>
-                    <p class="fw-light  fs--2
-                    mb-0">${determinarValoresNull(datos.nombrePaciente)}</p> `; 
+            if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
+
+                dataFechas = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h5>
+                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
+                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
+                                <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
+                
             }
 
-            
-        } else{
 
-            if (datos.tipoServicio == "FARMACIA") {
-                return ``;
-            } else{
-                if (datos.esCaducado == "S") {
-                    return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                } else {
-                    return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                }
-
-            }
-        
         }
+        else{
+            if (datos.estado == "PENDIENTE_AGENDAR") {
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
+                
+            }
+        }
+
+        return dataFechas;
 
 
     }

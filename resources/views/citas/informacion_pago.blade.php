@@ -3,6 +3,10 @@
 Mi Veris - Citas - Información de pago
 @endsection
 @section('content')
+@php
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+// dd($data);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal confirmar Pago-->
     <div class="modal fade" id="confirmarPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmarPagoLabel" aria-hidden="true">
@@ -44,7 +48,7 @@ Mi Veris - Citas - Información de pago
                         <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">Información</h1>
                         <p class="fs--1 mb-3" style="line-height: 16px;">Esta tarjeta ya está agregada</p>
                     </div>
-                    <a href="{{route('citas.seleccionarTarjeta')}}" class="btn btn-lg btn-primary-veris w-100 mb-2">Ver tarjeta agregada</a>
+                    <a href="#" class="btn btn-lg btn-primary-veris w-100 mb-2">Ver tarjeta agregada</a>
                     <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">Ingresar nueva tarjeta</button>
                 </div>
             </div>
@@ -86,33 +90,12 @@ Mi Veris - Citas - Información de pago
                         </ul>
                         <!-- content-pago -->
                         <div class="card card-body">
-                            <form class="row g-3">
-                                <div class="col-md-12">
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text border-end-0" id="titularTarjeta"><i class="bi bi-person"></i></span>
-                                        <input type="text" class="form-control border-start-0" id="titularTarjeta" placeholder="Nombre del titular de la tarjeta" required />
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text border-end-0" id="numeroTarjeta"><i class="bi bi-credit-card"></i></span>
-                                        <input type="text" class="form-control border-start-0" id="numeroTarjeta" placeholder="Número de tarjeta" required />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text border-end-0" id="fecha"><i class="bi bi-calendar2"></i></span>
-                                        <input type="text" class="form-control border-start-0" id="fecha" placeholder="MM/AA" required />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text border-end-0" id="ccv"><i class="bi bi-lock"></i></span>
-                                        <input type="text" class="form-control border-start-0" id="ccv" placeholder="CCV" required />
-                                    </div>
-                                </div>
+                            <form id="add-card-form" class="row g-3">
                                 <div class="col-12">
-                                    <button class="btn btn-primary-veris w-100" type="submit">Pagar</button>
+                                    <div class="payment-form" id="my-card" data-capture-name="true"></div>
+                                    <button id="btn-pagar" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light">PAGAR</button>
+                                    <br/>
+                                    <div id="messages"></div>
                                 </div>
                             </form>
                         </div>
@@ -123,13 +106,13 @@ Mi Veris - Citas - Información de pago
                                 <img src="{{asset('assets/img/card/pci.png')}}" class="img-fluid" alt="{{ __('pci') }}">
                             </div>
                         </div>
-                        <div class="d-flex justify-content-between border-top p-2">
+                        {{-- <div class="d-flex justify-content-between border-top p-2">
                             <div class="text-start mx-1">
                                 <p class="fs--2 mb-0 fw-bold">{{ __('¿Alguien más pagará esta cita?') }}</p>
                                 <p class="fs--2 mb-0">{{ __('Genera tu link de pago') }}</p>
                             </div>
                             <a href="#" class="btn btn-sm btn-label-primary-veris fs--1 mx-1">{{ __('Enviar link') }}</a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -138,7 +121,115 @@ Mi Veris - Citas - Información de pago
 </div>
 @endsection
 @push('scripts')
+<link href="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.js" charset="UTF-8"></script>
 <script>
+    let dataCita = @json($data);
+    document.addEventListener("DOMContentLoaded", async function () {
+        //https://api-phantomx.veris.com.ec/digitalestest/v1/seguridad/parametrosNuvei?codigoAplicacion=MI_VERIS_WEB
+        Payment.init('{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', 'NUVEISTG-EC-CLIENT', 'rvpKAv2tc49x6YL38fvtv5jJxRRiPs');
 
+        let form = $("#add-card-form");
+        let submitButton = form.find("button");
+        let submitInitialText = submitButton.text();
+
+        $("#add-card-form").submit(function (e) {
+            let myCard = $('#my-card');
+            $('#messages').text("");
+            let cardToSave = myCard.PaymentForm('card');
+            if (cardToSave == null) {
+                $('#messages').text("Invalid Card Data");
+            }else{
+                submitButton.attr("disabled", "disabled").text("Procesando pago...");
+                let uid = "0923796304";
+                let email = "mwrosero@gmail.com";
+                Payment.addCard(uid, email, cardToSave, successHandler, errorHandler);
+            }
+            console.log(0)
+            e.preventDefault();
+            console.log(1)
+        });
+
+        let successHandler = async function (cardResponse) {
+            console.log(cardResponse.card);
+            if (cardResponse.card.status === 'valid') {
+                $('#btn-pagar').addClass('disabled');
+                await registrarTarjeta(cardResponse);
+                /*$('#messages').html('Card Successfully Added<br>' +
+                'status: ' + cardResponse.card.status + '<br>' +
+                "Card Token: " + cardResponse.card.token + "<br>" +
+                "transaction_reference: " + cardResponse.card.transaction_reference
+                );*/
+            }else if(cardResponse.card.status === 'review') {
+                $('#messages').html('Card Under Review<br>' +
+                'status: ' + cardResponse.card.status + '<br>' +
+                "Card Token: " + cardResponse.card.token + "<br>" +
+                "transaction_reference: " + cardResponse.card.transaction_reference
+                );
+            }else{
+                $('#messages').html('Error<br>' +
+                'status: ' + cardResponse.card.status + '<br>' +
+                "message Token: " + cardResponse.card.message + "<br>"
+                );
+            }
+            submitButton.removeAttr("disabled");
+            submitButton.text(submitInitialText);
+        };
+
+        let errorHandler = function (err) {
+            console.log(err.error);
+            $('#messages').html(err.error.type);
+            submitButton.removeAttr("disabled");
+            submitButton.text(submitInitialText);
+        };
+
+    });
+
+    async function registrarTarjeta(cardResponse){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas`;
+        args["method"] = "POST";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        args["data"] = JSON.stringify({
+            "virusu": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "canalOrigenDigital": _canalOrigen,
+            "card": cardResponse.card
+        });
+        const data = await call(args);
+        
+        if(data.code == 200){
+            dataCita.tarjeta = cardResponse.card;
+            await pagarCita();
+        }
+    }
+
+    async function pagarCita(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
+            "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
+            "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
+            "canalOrigenDigital": _canalOrigen,
+            "tokenNuvei": dataCita.tarjeta.token
+        });
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            console.log(data.data);
+            if(data.data.estado.toUpperCase() == "APPROVED"){
+                dataCita.registroPago = data.data;
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                //window.location.href = ruta;
+            }
+        }
+        
+    }
 </script>
 @endpush

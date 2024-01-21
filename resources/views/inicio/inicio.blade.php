@@ -79,7 +79,7 @@ Mi Veris - Inicio
                     </div>
                     <div class="swiper-slide">
                         <div class="card">
-                            <a href="{{route('home.promociones')}}">
+                            <a href="#">
                                 <div class="row g-0 justify-content-between align-items-center">
                                     <div class="col-9 col-md-auto">
                                         <div class="card-body p-0 ps-2">
@@ -95,7 +95,7 @@ Mi Veris - Inicio
                     </div>
                     <div class="swiper-slide">
                         <div class="card">
-                            <a href="#">
+                            <a href="/servicio-domicilio" >
                                 <div class="row g-0 justify-content-between align-items-center">
                                     <div class="col-9 col-md-auto">
                                         <div class="card-body p-0 ps-2">
@@ -146,8 +146,12 @@ Mi Veris - Inicio
 </div>
 @endsection
 @push('scripts')
+<<<<<<< HEAD
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
+=======
+   
+>>>>>>> developer
 
     
 <script>
@@ -303,8 +307,6 @@ Mi Veris - Inicio
         return data;
     }
 
-
-    //metodos js
     //aceptar politicas
     $('#aceptarPDP').click(async function(){
             console.log("clicks");
@@ -345,7 +347,7 @@ Mi Veris - Inicio
                                                     <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div class="progress-circle" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+                                                    <div class="progress-circle" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
                                                         <span class="progress-left">
                                                             <span class="progress-bar"></span>
                                                         </span>
@@ -396,10 +398,6 @@ Mi Veris - Inicio
         
     }
 
-    
-
-    
-
     // mostrar mensaje de no hay tratamientos
     function mostrarNoExistenTratamientos() {
         let data = datosTratamientos;
@@ -431,12 +429,9 @@ Mi Veris - Inicio
                             <h5 class="fw-medium border-start-veris ps-3 fs-18">Mis citas</h5>
                             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
                         </div>
-                        <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">
-                            <div class="swiper swipertratamientos pt-3 pb-4 px-2 mx-n2">
-                                <div class="swiper-wrapper" id="contenedorTratamientoHome">`;
-
-                                    
-            
+                        <div class="position-relative mb-3" id="contenedorCitasHomePrincipal">
+                            <div class="swiper swiper-proximas-citas pt-3 pb-4 px-2 mx-n2">
+                                <div class="swiper-wrapper" id="contenedorCitasHome">`;    
 
         data.forEach((citas) => {
             elemento += `<div class="swiper-slide">
@@ -588,16 +583,12 @@ Mi Veris - Inicio
         }
     }
 
-    
-
 </script>
 <style>
     .btn-transition {
-    opacity: 0;
-    transition: opacity 0.01s ease;
-}
-
-
+        opacity: 0;
+        transition: opacity 0.01s ease;
+    }
 </style>
 
 @endpush

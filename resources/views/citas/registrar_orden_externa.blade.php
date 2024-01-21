@@ -59,7 +59,7 @@ $data1 = json_decode($data);
                             </div>
                             <div class="col-md-12">
                                 <label for="numeroIdentificacion" class="form-label fw-bold">Cédula o pasaporte *</label>
-                                <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
+                                <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required disabled/>
                             </div>
                             <div class="col-md-12">
                                 <label for="email" class="form-label fw-bold">Email *</label>
@@ -183,11 +183,11 @@ $data1 = json_decode($data);
     
     console.log('params', params);
     // recuperar variables del path
-    let tipoIdentificacion = params.tipoIdentificacion;
-    let numeroIdentificacion = params.numeroIdentificacion;
+    let tipoIdentificacion = params.paciente.tipoIdentificacion
+    let numeroIdentificacion = params.paciente.numeroIdentificacion;
     let convenio = params.convenio;
-    let codigoConvenio = params.codigoConvenio;
-    let nombreConvenio = params.nombreConvenio;
+    let codigoConvenio = params.convenio.codigoConvenio;
+    let nombreConvenio = params.convenio.nombreConvenio;
     let datosPaciente = [];
 
     

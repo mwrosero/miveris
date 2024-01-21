@@ -3,6 +3,7 @@
 Mi Veris - Citas - Familia y amigos
 @endsection
 @section('content')
+
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="parentescoFamiliarModal" tabindex="-1" aria-labelledby="parentescoFamiliarModalLabel" aria-hidden="true">
@@ -138,7 +139,7 @@ Mi Veris - Citas - Familia y amigos
 @endsection
 @push('scripts')
 <script></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ 
 <script>
     // variables globales
     let datostiposIdentificacion;

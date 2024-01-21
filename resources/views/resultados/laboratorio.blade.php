@@ -17,11 +17,26 @@ Mi Veris - Resultados
             </div>
         </div>
     </div>
+
+    <!-- modal  ha ocurrido un error -->
+    <div class="modal fade" id="haOcurridoUnErrorModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body" id="modalBody">
+                    <div class="text-center">
+                        <h5 class="mt-3">Veris</h5>
+                        <p>Ha ocurrido un error inesperado</p>
+                        <button type="button" class="btn btn-primary-veris shadow-none" data-bs-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- filtro -->
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Resultados') }}</h5>
     </div>
-    @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
+    @include('components.barraFiltro')
     @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
     <section class="p-3 pt-0 mb-3">
         <div class="row justify-content-center">
@@ -69,6 +84,46 @@ Mi Veris - Resultados
 @endsection
 @push('scripts')
 <!-- script -->
+
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+<script>
+    let fechaDesdePicker = flatpickr("#fechaDesde", {
+        maxDate: new Date().fp_incr(0),
+        onChange: function(selectedDates, dateStr, instance) {
+            if (!document.getElementById('fechaHasta').disabled) {
+                fechaHastaPicker.set('minDate', dateStr);
+            } else {
+                document.getElementById('fechaHasta').disabled = false;
+                fechaHastaPicker = flatpickr("#fechaHasta", {
+                    minDate: dateStr,
+                    maxDate: new Date().fp_incr(0)
+                });
+            }
+        }
+    });
+
+    let fechaHastaPicker = flatpickr("#fechaHasta", {
+        maxDate: new Date().fp_incr(0),
+        minDate: new Date(), 
+        onChange: function(selectedDates, dateStr, instance) {
+        }
+    });
+
+    document.getElementById('fechaHasta').disabled = true;
+    // quitar el readonly
+
+    $("#fechaDesde").removeAttr("readonly");
+    $("#fechaHasta").removeAttr("readonly");
+    // no permitir autocomplete
+    $("#fechaDesde").attr("autocomplete", "off");
+    $("#fechaHasta").attr("autocomplete", "off");
+
+
+
+</script>
 
 <script>
    
@@ -187,16 +242,24 @@ Mi Veris - Resultados
         args["showLoader"] = true;
         try {
             const blob = await callInformes(args);
-            const pdfUrl = URL.createObjectURL(blob);
+            console.log('blob', blob);
 
-            window.open(pdfUrl, '_blank');
+            if (blob.status == 200) {
+                const pdfUrl = URL.createObjectURL(blob.data);
 
-            setTimeout(() => {
-                URL.revokeObjectURL(pdfUrl);
-            }, 100);
+                window.open(pdfUrl, '_blank');
+
+                setTimeout(() => {
+                    URL.revokeObjectURL(pdfUrl);
+                }, 100);
+            } else {
+                $('#haOcurridoUnErrorModal').modal('show');
+            }
+
 
         } catch (error) {
             console.error('Error al obtener el PDF:', error);
+            
         }
         }
   

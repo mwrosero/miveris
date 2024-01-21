@@ -4,8 +4,8 @@ Mi Veris - Citas
 @endsection
 @section('content')
 @php
-    $paramsPresencial = base64_encode(json_encode(["online" => "N"])); 
-    $paramsOnline = base64_encode(json_encode(["online" => "S"]));
+    $paramsPresencial = urlencode(base64_encode(json_encode(["online" => "N"])));
+    $paramsOnline = urlencode(base64_encode(json_encode(["online" => "S"])));
     
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
@@ -214,9 +214,6 @@ Mi Veris - Citas
 @push('scripts')
 <script>
 </script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
