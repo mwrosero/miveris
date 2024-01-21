@@ -146,12 +146,8 @@ Mi Veris - Inicio
 </div>
 @endsection
 @push('scripts')
-<<<<<<< HEAD
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
-=======
-   
->>>>>>> developer
 
     
 <script>

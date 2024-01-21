@@ -824,7 +824,6 @@ $data = json_decode(base64_decode($params));
                                                         </a>`;
 
                                 }
-<<<<<<< HEAD
 
                                 let params = @json($data);
                                 params.especialidad = {
@@ -841,26 +840,12 @@ $data = json_decode(base64_decode($params));
                         else{
                             // abrir modal no permite reserva
                             respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</div>`;
-=======
-                            } 
-                            else{
-                                // abrir modal no permite reserva
-                                respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none me-1" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal"><i class="bi me-2"></i> Agendar</div>`;
-                            }
-   
->>>>>>> developer
                         }
 
                     }else if (datosServicio.estado == 'ATENDIDO'){
 
                         // mostrar boton de ver orden
-<<<<<<< HEAD
                         respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris"> Ver orden</a>`;
-=======
-                        respuestaAgenda = ``;
-                        respuestaAgenda += ` <div class="btn btn-sm btn-primary-veris shadow-none me-1" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal"><i class="bi me-2"></i> Ver orden</div>`;  
-                    
->>>>>>> developer
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
@@ -888,7 +873,6 @@ $data = json_decode(base64_decode($params));
                 case "LAB":
                     console.log('estadossss', estado);
                     let respuesta = "";
-<<<<<<< HEAD
                     respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
 
 
@@ -910,9 +894,6 @@ $data = json_decode(base64_decode($params));
                         params.numeroOrden = datosServicio.idOrden;
                         params.codigoEmpresa = datosServicio.codigoEmpresa;
                         let ulrParams = btoa(JSON.stringify(params));
-=======
-                    if (estado == 'PENDIENTE'){
->>>>>>> developer
                         
                         respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none me-1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</a>`;
 
@@ -971,7 +952,6 @@ $data = json_decode(base64_decode($params));
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-<<<<<<< HEAD
                     respuestaOdontologia += ` <div  class="btn text-primary-veris" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</div>`;
                     if (datosServicio.esAgendable == "N") {
                         respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris disabled">Agendar</a>`;
@@ -979,14 +959,6 @@ $data = json_decode(base64_decode($params));
                     } else {
                         respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Agendar</a>`;
                     }
-=======
-                    respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
-                    
-                    // ABRIRE MODAL DE VIDEO CONSULTA
-                    respuestaOdontologia += `<div href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"><i class="bi me-2"></i> Agendar</div>`;
-                      
-                    
->>>>>>> developer
 
                     return respuestaOdontologia;
 
