@@ -12,37 +12,37 @@ Mi Veris - Resultados
     </div>
     <section class="p-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-bold border-start-veris ps-3 fs-18">{{ __('¿Qué resultados deseas ver?') }}</h5>
+            <h5 class="fw-medium border-start-veris ps-3 fs-18">{{ __('¿Qué resultados deseas ver?') }}</h5>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-6 col-lg-4 mb-3">
+        <div class="row g-3 g-lg-4 justify-content-center">
+            <div class="col-6 col-lg-4">
                 <div class="card mb-3">
                     <a href="{{route('resultados.laboratorio')}}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
-                                <div class="card-body py-0 px-2">
-                                    <h6 class="fw-bold fs--1 mb-0">{{ __('Laboratorio') }}</h6>
+                                <div class="card-body p-0 ps-2">
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Laboratorio') }}</h6>
                                 </div>
                             </div>
-                            <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center" style="background: #F1F8E2; border-top-right-radius: 7.375rem; border-bottom-right-radius: 7.375rem;">
-                                <img src="{{ asset('assets/img/svg/microscopio.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Laboratorio') }}" width="40">
+                            <div class="col-3 col-md-auto">
+                                <img src="{{ asset('assets/img/card/svg/microscopio.svg') }}" class="img-fluid" alt="{{ __('Laboratorio') }}">
                             </div>
                         </div>
                     </a>
                 </div>
             </div>
 
-            <div class="col-6 col-lg-4 mb-3">
+            <div class="col-6 col-lg-4">
                 <div class="card mb-3">
                     <a href="{{ route('resultados.ImagenesProcedimientos') }}">
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
-                                <div class="card-body py-0 px-2">
-                                    <h6 class="fw-bold fs--1 mb-0">{{ __('Imágenes y procedimientos') }}</h6>
+                                <div class="card-body p-0 ps-2">
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Imágenes y procedimientos') }}</h6>
                                 </div>
                             </div>
-                            <div class="col-3 col-md-auto rounded-start-circle d-flex justify-content-center align-items-center" style="background: #DEDAF0; border-top-right-radius: 7.375rem; border-bottom-right-radius: 7.375rem;">
-                                <img src="{{ asset('assets/img/svg/imagen.svg') }}" class="img-fluid my-3 me-1 pe-1 ms-3" alt="{{ __('Imágenes y procedimientos') }}" width="40">
+                            <div class="col-3 col-md-auto">
+                                <img src="{{ asset('assets/img/card/svg/imagen.svg') }}" class="img-fluid" alt="{{ __('Imágenes y procedimientos') }}">
                             </div>
                         </div>
                     </a>

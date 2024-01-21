@@ -23,6 +23,7 @@
             onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
             id="codigoAutorizacion"
             name="codigoAutorizacion"
+            placeholder="Código de autorización"
             autofocus
             required />
     </div>

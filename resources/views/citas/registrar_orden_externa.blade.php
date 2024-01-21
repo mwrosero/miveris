@@ -29,8 +29,9 @@ $data1 = json_decode($data);
         </div>
     </div>
 
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Nueva orden externa') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Nueva orden externa') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-6 col-lg-5">
@@ -69,12 +70,12 @@ $data1 = json_decode($data);
                                 <label for="telefono" class="form-label fw-bold">Teléfono *</label>
                                 <input type="number" class="form-control bg-neutral" name="telefono" id="telefono"  required />
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 d-none">
                                 <label for="conveio" class="form-label fw-bold">Elige el convenio *</label>
                                 <input type="text" class="form-control bg-neutral" name="conveio" id="conveio" placeholder="Convenio" disabled />
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit">Siguiente</button>
+                                <button class="btn btn-primary-veris w-100" type="submit">Siguiente</button>
                             </div>
                         </form>
                     </div>
@@ -137,7 +138,7 @@ $data1 = json_decode($data);
 
             // Agregar botón de eliminación
             var btnEliminar = document.createElement('button');
-            btnEliminar.classList.add('btn', 'btn-sm', 'fs--2', 'text-danger', 'shadow-none');
+            btnEliminar.classList.add('btn', 'btn-sm', 'fs-1', 'text-danger', 'shadow-none');
             btnEliminar.innerHTML = '<i class="bi bi-trash"></i>';
             btnEliminar.addEventListener('click', function() {
                 event.preventDefault();

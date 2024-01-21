@@ -117,7 +117,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     
                     console.log(99)
                     elemento += `<div class="col-auto col-md-6">
-                                    <div class="card">
+                                    <div class="card h-100">
                                         <div class="card-body px-2 py-2">
                                             <div class="row gx-2">
                                                 <div class="col-3">
