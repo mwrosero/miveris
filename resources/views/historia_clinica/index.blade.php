@@ -15,9 +15,9 @@ Mi Veris - Historia clínica
     @include('components.offCanvaHC', ['context' => 'contextoLimpiarFiltros'])
     <section class="p-3 pt-0 mb-3">
         <div class="row justify-content-center">
-            <div class="col-auto col-lg-10">
+            <div class="col-auto col-lg-10 d-none">
             </div>
-            <div class="row gy-3 justify-content-center">
+            <div class="row gx-2 gy-3 justify-content-center">
                 <div class="col-12 col-lg-5">
                     <div class="d-flex flex-column flex-md-row gap-4 py-md-5 align-items-center justify-content-center">
                         <div class="list-group gap-2 w-100" id='especialidadesAtendidas'>
@@ -52,7 +52,6 @@ Mi Veris - Historia clínica
                 <!-- Mensaje END -->
 
             </div>
-
         </div>
     </section>
 </div>

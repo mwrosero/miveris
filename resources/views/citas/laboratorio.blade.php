@@ -34,21 +34,21 @@ Mi Veris - Citas - Laboratorio
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
+                    <button class="nav-link px-8 px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
+                    <button class="nav-link px-8 px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
-                <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
+                <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     @include('components.barraFiltro')
                     @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenes">
+                    <div id="contenedorTratamientosImagenes" class="px-2 px-md-0">
                     </div>
                     <!-- Mensaje No tienes órdenes de laboratorio -->
-                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientos">
+                    <div class="col-12 d-flex justify-content-center mt-3 d-none" id="mensajeNoTienesImagenesProcedimientos">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
@@ -66,7 +66,7 @@ Mi Veris - Citas - Laboratorio
                     <!-- Mensaje END -->
 
                     <!-- Mensaje No tienes permisos de administrador -->
-                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesPermisosAdministrador">
+                    <div class="col-12 d-flex justify-content-center mt-3 d-none" id="mensajeNoTienesPermisosAdministrador">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
@@ -79,12 +79,12 @@ Mi Veris - Citas - Laboratorio
                     </div>
                     <!-- Mensaje END -->
                 </div>
-                <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
+                <div class="tab-pane fade mt-3" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenesRealizados">
+                    <div id="contenedorTratamientosImagenesRealizados" class="px-2 px-md-0">
                     </div>
                     <!-- Mensaje No tienes órdenes de laboratorio realizadas -->
-                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">
+                    <div class="col-12 d-flex justify-content-center mt-3 d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
@@ -102,7 +102,7 @@ Mi Veris - Citas - Laboratorio
                     <!-- Mensaje END -->
 
                     <!-- Mensaje No tienes permisos de administrador -->
-                    <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesPermisosAdministradorRealizados">
+                    <div class="col-12 d-flex justify-content-center mt-3 d-none" id="mensajeNoTienesPermisosAdministradorRealizados">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">

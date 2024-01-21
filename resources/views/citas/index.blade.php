@@ -72,7 +72,7 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body p-0 ps-2">
-                                    <h6 class="fw-medium fs--1 mb-0">{{ __('Consulta médica') }}</h6>
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Consulta médica') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
@@ -89,7 +89,7 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body p-0 ps-2">
-                                    <h6 class="fw-medium fs--1 mb-0">{{ __('Laboratorio') }}</h6>
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Laboratorio') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
@@ -106,7 +106,7 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body p-0 ps-2">
-                                    <h6 class="fw-medium fs--1 mb-0">{{ __('Imágenes y procedimientos') }}</h6>
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Imágenes y procedimientos') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
@@ -123,7 +123,7 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body p-0 ps-2">
-                                    <h6 class="fw-medium fs--1 mb-0">{{ __('Terapia física') }}</h6>
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Terapia física') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
@@ -140,7 +140,7 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body p-0 ps-2">
-                                    <h6 class="fw-medium fs--1 mb-0">{{ __('Recetas médicas') }}</h6>
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Recetas médicas') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
@@ -157,7 +157,7 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body p-0 ps-2">
-                                    <h6 class="fw-medium fs--1 mb-0">{{ __('Orden externa') }}</h6>
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Orden externa') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
@@ -180,7 +180,7 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body p-0 ps-2">
-                                    <h6 class="fw-medium fs--1 mb-0">{{ __('Próximas ') }} <br> {{ __('citas') }}</h6>
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Próximas ') }} <br> {{ __('citas') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
@@ -196,7 +196,7 @@ Mi Veris - Citas
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-auto">
                                 <div class="card-body p-0 ps-2">
-                                    <h6 class="fw-medium fs--1 mb-0">{{ __('Historial de ') }} <br>{{ __('citas') }}</h6>
+                                    <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Historial de ') }} <br>{{ __('citas') }}</h6>
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">

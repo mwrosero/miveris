@@ -8,28 +8,25 @@ Mi Veris - Citas - Terapia física
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Filtro -->
-    
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Terapia física') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Terapia física') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
+                    <button class="nav-link px-8 px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
+                    <button class="nav-link px-8 px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
-            <div class="tab-content bg-transparent" id="pills-tabContent">
+            <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
-                <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
-                    
+                <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     <!-- Card header items -->
-
-                    <div id="contenedorTratamientosImagenes">
-                        
-
+                    <div id="contenedorTratamientosImagenes" class="px-2 px-md-0">
                     </div>
                     
                     <!-- Mensaje No tienes ordenes de terapia -->
@@ -64,12 +61,9 @@ Mi Veris - Citas - Terapia física
                     </div>
                     <!-- Mensaje END -->
                 </div>
-                <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
-                    
+                <div class="tab-pane fade mt-3" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenesRealizados">
-                        
-
+                    <div id="contenedorTratamientosImagenesRealizados" class="px-2 px-md-0">
                     </div>
 
                     <!-- Mensaje No tienes ordenes de terapia realizadas -->

@@ -22,9 +22,7 @@ Mi Veris - Citas - Servicios a domicilio
         </div>
     </div>
 
-
     <!-- Modal de error -->
-
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -44,59 +42,61 @@ Mi Veris - Citas - Servicios a domicilio
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Servicios a domicilio') }}</h5>
     </div>
     <section class="pt-3 px-0 px-md-3 pb-0">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <form class="row g-3">
-                            <div class="d-flex justify-content-between">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
-                                    <label class="form-check-label cursor-pointer fw-bold" for="inlineRadio1">Laboratorio</label>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <form class="row g-3">
+                                <div class="d-flex justify-content-between">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+                                        <label class="form-check-label cursor-pointer fw-bold" for="inlineRadio1">Laboratorio</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                        <label class="form-check-label cursor-pointer fw-bold" for="inlineRadio2">Farmacia</label>
+                                    </div>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                    <label class="form-check-label cursor-pointer fw-bold" for="inlineRadio2">Farmacia</label>
+                                <div class="col-md-12">
+                                    <label for="paciente" class="form-label fw-bold">Selecciona el paciente</label>
+                                    <select class="form-select bg-neutral" name="paciente" id="paciente" >
+                                        <option selected disabled value="">Elegir...</option>
+                                        <option value="">...</option>
+                                        <option value="">...</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Elegir un paciente
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="paciente" class="form-label fw-bold">Selecciona el paciente</label>
-                                <select class="form-select bg-neutral" name="paciente" id="paciente" >
-                                    <option selected disabled value="">Elegir...</option>
-                                    <option value="">...</option>
-                                    <option value="">...</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Elegir un paciente
+                                <div class="col-md-12">
+                                    <label for="paciente" class="form-label fw-bold">Selecciona la ciudad</label>
+                                    <select class="form-select bg-neutral" name="ciudad" id="ciudad" required>
+                                        <option selected disabled value="">Elegir...</option>
+                                        <option value="">...</option>
+                                        <option value="">...</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Elegir una ciudad
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="paciente" class="form-label fw-bold">Selecciona la ciudad</label>
-                                <select class="form-select bg-neutral" name="ciudad" id="ciudad" required>
-                                    <option selected disabled value="">Elegir...</option>
-                                    <option value="">...</option>
-                                    <option value="">...</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Elegir una ciudad
+                                <div class="col-md-12">
+                                    <input type="number" class="form-control bg-neutral"  name="telefono" id="telefono" value="" placeholder="Teléfono móvil" required />
+                                    <div class="invalid-feedback">
+                                        Ingrese un numero de telefono
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <input type="number" class="form-control bg-neutral"  name="telefono" id="telefono" value="" placeholder="Teléfono móvil" required />
-                                <div class="invalid-feedback">
-                                    Ingrese un numero de telefono
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control bg-neutral"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
+                                    <div class="invalid-feedback">
+                                        Ingrese una direccion
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <input type="text" class="form-control bg-neutral"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
-                                <div class="invalid-feedback">
-                                    Ingrese una direccion
+                                <div class="col-12">
+                                    <button class="btn btn-lg btn-primary-veris w-100" type="submit"><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-lg btn-primary-veris w-100" type="submit"><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

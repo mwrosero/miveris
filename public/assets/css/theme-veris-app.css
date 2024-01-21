@@ -482,6 +482,30 @@ h1,
 /* This for loop creates the 	necessary css animation names 
 Due to the split circle of progress-left and progress right, we must use the animations on each side. 
 */
+.progress-circle[data-percentage="0"] .progress-right .progress-bar {
+  animation: loading-0 1.5s linear forwards;
+}
+
+.progress-circle[data-percentage="0"] .progress-left .progress-bar {
+  animation: 0;
+}
+
+.progress-circle[data-percentage="3"] .progress-right .progress-bar {
+  animation: loading-0-3 1.5s linear forwards;
+}
+
+.progress-circle[data-percentage="3"] .progress-left .progress-bar {
+  animation: 0;
+}
+
+.progress-circle[data-percentage="5"] .progress-right .progress-bar {
+  animation: loading-0-5 1.5s linear forwards;
+}
+
+.progress-circle[data-percentage="5"] .progress-left .progress-bar {
+  animation: 0;
+}
+
 .progress-circle[data-percentage="10"] .progress-right .progress-bar {
   animation: loading-1 1.5s linear forwards;
 }
@@ -560,6 +584,41 @@ Due to the split circle of progress-left and progress right, we must use the ani
 
 .progress-circle[data-percentage="100"] .progress-left .progress-bar {
   animation: loading-5 1.5s linear forwards 1.5s;
+}
+@keyframes loading-0 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(36);
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes loading-0-3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(36);
+    transform: rotate(9deg);
+  }
+}
+
+@keyframes loading-0-5 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(36);
+    transform: rotate(18deg);
+  }
 }
 
 @keyframes loading-1 {
@@ -696,7 +755,11 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .text-lime-veris {
   color: var(--bg-vris-strong-cyan-lime-green) !important;
 }
-
+.text-one-line{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .top-25 {
   top: 25% !important;
 }
@@ -725,6 +788,15 @@ Due to the split circle of progress-left and progress right, we must use the ani
   height: 90% !important;
 }
 
+.p-8{padding: 2rem !important;}
+.px-8{
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+.py-8{
+  padding-top: 2rem !important; /* 32px */
+  padding-bottom: 2rem !important; /* 32px */
+}
 /* caledario */
 .border-24 {
   border-radius: 24px !important;
@@ -906,6 +978,9 @@ Due to the split circle of progress-left and progress right, we must use the ani
 @media (min-width: 992px) {
   .ml-lg-10 {
     margin-left: 10.5rem !important;
+  }
+  .fs--lg-1{
+    font-size: 0.874rem !important;
   }
 }
 
