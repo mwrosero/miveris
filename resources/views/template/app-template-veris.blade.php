@@ -202,7 +202,6 @@
                 },
             });
 
-
             var swiper = new Swiper('.swiper-proximas-citas', {
                 slidesPerView: 1,
                 spaceBetween: 8,

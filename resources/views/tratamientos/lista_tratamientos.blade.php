@@ -15,7 +15,7 @@ $data = json_decode(base64_decode($params));
         <div class="offcanvas-header py-2">
             <div class="d-flex justify-content-between">
                 <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close">
-                    <i class="bi bi-arrow-left"></i> <b class="fw-bold">Atrás</b>
+                    <i class="bi bi-arrow-left"></i> <b class="fw-medium">Atrás</b>
                 </button>
                 <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
             </div>
@@ -28,7 +28,7 @@ $data = json_decode(base64_decode($params));
                 <div class="list-group gap-2 mb-3 verPdf">
                     <label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
                         <div class="d-flex flex-column">
-                            <small class="text-veris fw-bold denominacion">
+                            <small class="text-veris fw-medium denominacion">
                                 RECOMENDACIONES
                             </small>
                             <small class="text-veris fw-light concentracion">
@@ -58,7 +58,7 @@ $data = json_decode(base64_decode($params));
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h5 class="fw-bold text-center">{{ __('Receta médica') }}</h5>
+                    <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
                     <a href="#" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn w-100">No lo he hecho</a>
@@ -72,7 +72,7 @@ $data = json_decode(base64_decode($params));
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>
                     <p class="fs--1 fw-normal" id="mensajeError" >
                 </p>
                 </div>
@@ -89,7 +89,7 @@ $data = json_decode(base64_decode($params));
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal">{{ __('Para realizarte este examen acercate a una central médica') }}</p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
@@ -104,7 +104,7 @@ $data = json_decode(base64_decode($params));
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal">{{ __('Para agendar esta videoconsulta llama al') }} <b>{{ __('6009600') }}</b></p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
@@ -120,7 +120,7 @@ $data = json_decode(base64_decode($params));
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal" id = "mensajeInformacion"></p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
@@ -136,7 +136,7 @@ $data = json_decode(base64_decode($params));
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Veris') }}</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Veris') }}</h1>
                     <p class="fs--1 fw-normal" id = "mensajeNoPermiteReserva"
                     >{{ __('Reserva no permitida por este canal') }}</p>
                 </div>
@@ -151,14 +151,14 @@ $data = json_decode(base64_decode($params));
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0">
             <div class="col-md-12">
-                <div class="card rounded-0 border-0">
+                <div class="card rounded-0 border-0 shadow-none">
                     <div class="card-body p-3 pb-0">
-                        <div class="row justify-content-between align-items-center">
+                        <div class="row gx-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-10" id="datosTratamientoCard">
                                 <!-- datos del tratamiento -->
                             </div>
                             <div class="col-3 col-md-2 col-lg-1">
-                                <div class="progress-circle" id="progress-circle" data-percentage="10">
+                                <div class="progress-circle ms-auto" id="progress-circle" data-percentage="10">
                                     <span class="progress-left">
                                         <span class="progress-bar"></span>
                                     </span>
@@ -168,14 +168,14 @@ $data = json_decode(base64_decode($params));
                                     <div class="progress-value">
                                         <div>
                                             <span><i class="bi bi-check2 success"></i></span>
-                                            <p class="fs--2 mb-0"><span id="totalTratamientoRealizados">0</span>/<span id="totalTratamientoEnviados">7</span></p>
+                                            <p class="text-success fs--2 mb-0"><span id="totalTratamientoRealizados">0</span>/<span id="totalTratamientoEnviados">7</span></p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-end rounded-0 pb-2">
+                    <div class="card-footer d-flex justify-content-end rounded-0 px-3 pb-2">
                         <a href="#" class="btn btn-sm btn-label-primary-veris px-3 mb-2" id="verPdf"
                         >Ver PDF</a>
                     </div>
@@ -190,7 +190,7 @@ $data = json_decode(base64_decode($params));
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue" id="tituloTratamientoPendiente" style="display: none;">{{ __('Pendientes') }}</h5>
         <div class="row g-0 justify-content-center">
             <div class="col-12 col-md-6 col-lg-5">
-                <div class="px-0" id="contenedorTratamientoPendiente">
+                <div class="px-2" id="contenedorTratamientoPendiente">
                     <!-- items -->
                 </div>
             </div>
@@ -198,7 +198,7 @@ $data = json_decode(base64_decode($params));
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue" id="tituloTratamientoRealizado" style="display: none;">{{ __('Realizados') }}</h5>
         <div class="row g-0 justify-content-center">
             <div class="col-12 col-md-6 col-lg-5">
-                <div class="px-0" id="contenedorTratamientoRealizado">
+                <div class="px-2" id="contenedorTratamientoRealizado">
                     <!-- items -->
                 </div>
             </div>
@@ -246,9 +246,9 @@ $data = json_decode(base64_decode($params));
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
             let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
-                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
+                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
-                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris ms-2" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
+                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
                                 <p class="fs--2 mb-0">${data.data.datosConvenio.nombreConvenio}</p> `;
             datosTratamientoCard.append(elemento);
             // mostrar el porcentaje
@@ -458,7 +458,7 @@ $data = json_decode(base64_decode($params));
             data.data.forEach((receta) => {
                 elementos += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
                                 <div class="d-flex flex-column">
-                                    <small class="text-veris fw-bold denominacion">
+                                    <small class="text-veris fw-medium denominacion">
                                         ${receta.denominacion}
                                     </small>
                                     <small class="text-veris fw-light concentracion">
@@ -492,7 +492,7 @@ $data = json_decode(base64_decode($params));
                     let elemento = `<div class="card mb-3">
                                         <div class="card-body fs--2 p-3">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio} </h6>
+                                                <h6 class="text-primary-veris fw-medium mb-0">${tratamientos.nombreServicio} </h6>
                                                 <span class="text-warning-veris" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                             </div>
                                             ${determinarFechasCaducadas(tratamientos)}
@@ -538,7 +538,7 @@ $data = json_decode(base64_decode($params));
                 let elemento = `<div class="card mb-3">
                                     <div class="card-body fs--2 p-3">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="text-primary-veris fw-bold mb-0">${tratamientos.nombreServicio}</h6>
+                                            <h6 class="text-primary-veris fw-medium mb-0">${tratamientos.nombreServicio}</h6>
                                             <span id="estado"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span></span>
                                         </div>
                                         <div>
@@ -577,7 +577,7 @@ $data = json_decode(base64_decode($params));
         let elemento = `<div class="card rounded-0 border-0">
                             <div class="card-body p-3 position-relative px-lg-5"
                                 style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
-                                <h4 class="fw-bold text-white mb-0">Compra y gestiona</h4>
+                                <h4 class="fw-medium text-white mb-0">Compra y gestiona</h4>
                                 <h6 class=" fw-light text-white mb-0">tu <b>tratamiento</b> sin <b>filas</b></h6>
                                 <div class="d-flex justify-content-end mt-3">
                                     <a href="/tu-tratamiento/${ulrParams}
@@ -676,7 +676,7 @@ $data = json_decode(base64_decode($params));
         }
         else{
             
-            return `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Ver orden</a> `;
+            return `<a href="#" class="btn btn-sm btn-primary-veris shadow-none"> Ver orden</a> `;
         }
     }
 
@@ -714,26 +714,26 @@ $data = json_decode(base64_decode($params));
                                 };
                                 params.esOnline = modalidad;
                                 let urlParams = btoa(JSON.stringify(params));
-                                respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Agendar</a>`;
+                                respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none">Agendar</a>`;
                             } else {
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris disabled"><i class="bi me-2"></i> Agendar</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris disabled">Agendar</a>`;
 
                             }
                         } 
                         else{
                             // abrir modal no permite reserva
-                            respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none me-1" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal"><i class="bi me-2"></i> Agendar</div>`;
+                            respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</div>`;
                         }
                         
 
                     }else if (datosServicio.estado == 'ATENDIDO'){
 
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris m-2"><i class="bi me-2"></i> Ver orden</a>`;
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris"> Ver orden</a>`;
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Ver orden</a>`;
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none"> Ver orden</a>`;
 
                         if (datosServicio.permitePago == 'S'){
                             // mostrar boton de pagar
@@ -756,7 +756,7 @@ $data = json_decode(base64_decode($params));
 
                 case "LAB":
                     let respuesta = "";
-                    respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none me-1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</a>`;
+                    respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
 
 
                     // condición para 'verResultados'
@@ -803,12 +803,12 @@ $data = json_decode(base64_decode($params));
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <div  class="btn text-primary-veris" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuestaOdontologia += ` <div  class="btn text-primary-veris" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</div>`;
                     if (datosServicio.esAgendable == "N") {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris disabled"><i class="bi me-2"></i> Agendar</a>`;
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris disabled">Agendar</a>`;
                       
                     } else {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi me-2"></i> Agendar</a>`;
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Agendar</a>`;
                     }
 
                     return respuestaOdontologia;

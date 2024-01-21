@@ -21,20 +21,20 @@ Mi Veris - Citas - Laboratorio
                     <button class="nav-link px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
-            <div class="tab-content bg-transparent" id="pills-tabContent">
+            <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     @include('components.barraFiltro')
                     @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                     <!-- Card header items -->
                     <div id="contenedorTratamientosImagenes">
                     </div>
-                    <!-- Mensaje No tienes ordenes de laboratorio -->
+                    <!-- Mensaje No tienes órdenes de laboratorio -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientos">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes ordenes de laboratorio</h5>
-                                    <p>En esta sección podrás revisar tus ordenes de laboratorio</p>
+                                    <h5>No tienes órdenes de laboratorio</h5>
+                                    <p>En esta sección podrás revisar tus órdenes de laboratorio</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-green">
                                             <img src="{{ asset('assets/img/svg/microscopio.svg') }}" alt="microscopio" class="rounded-circle">
@@ -64,13 +64,13 @@ Mi Veris - Citas - Laboratorio
                     <!-- Card header items -->
                     <div id="contenedorTratamientosImagenesRealizados">
                     </div>
-                    <!-- Mensaje No tienes ordenes de laboratorio realizadas -->
+                    <!-- Mensaje No tienes órdenes de laboratorio realizadas -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes ordenes de laboratorio realizadas</h5>
-                                    <p>En esta sección podrás revisar tus ordenes de laboratorio realizadas</p>
+                                    <h5>No tienes órdenes de laboratorio realizadas</h5>
+                                    <p>En esta sección podrás revisar tus órdenes de laboratorio realizadas</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-green">
                                             <img src="{{ asset('assets/img/svg/microscopio.svg') }}" alt="microscopio" class="rounded-circle">
@@ -233,7 +233,7 @@ Mi Veris - Citas - Laboratorio
                                         </div>
                                         <div class="d-flex justify-content-center mb-3">
                                             <div class="col-12 col-md-10 col-lg-8">
-                                                <div class="row g-3" id="cardTratamientoLaboratorio">
+                                                <div class="row g-0 g-md-3" id="cardTratamientoLaboratorio">
                                                     <!-- items -->
                                                     `;
                         

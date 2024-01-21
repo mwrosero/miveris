@@ -13,7 +13,7 @@ Mi Veris - Doctores favoritos
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
                 <div class="modal-header d-none">
-                    <button type="button" class="btn-close fw-bold top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-3 pt-4">
                     <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
@@ -30,12 +30,11 @@ Mi Veris - Doctores favoritos
         </div>
     </div>
     <!-- Modal de error -->
-
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>
                     <p class="fs--1 fw-normal" id="mensajeError" >
                 </p>
                 </div>
@@ -146,8 +145,8 @@ Mi Veris - Doctores favoritos
                                                 </div>
 
                                                 <div class="col-9">
-                                                    <h6 class="fw-bold mb-0">Dr(a) ${doctores.primerNombre} ${doctores.segundoNombre} ${doctores.primerApellido} ${doctores.segundoApellido}</h6>
-                                                    <p class="text-primary-veris fw-bold fs--2 mb-0">${doctores.nombreSucursal}</p>
+                                                    <h6 class="fw-medium mb-0">Dr(a) ${doctores.primerNombre} ${doctores.segundoNombre} ${doctores.primerApellido} ${doctores.segundoApellido}</h6>
+                                                    <p class="text-primary-veris fw-medium fs--2 mb-0">${doctores.nombreSucursal}</p>
                                                     <p class="fs--2 mb-0">${doctores.nombreEspecialidad}</p>
                                                     <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">  ${disponibilidad}
                                                         </b></p>

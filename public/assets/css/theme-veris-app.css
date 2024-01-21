@@ -321,7 +321,9 @@ html:not([dir="rtl"]) .border-start-veris {
 .fs-24 {
   font-size: 1.5rem;
 }
-
+.fw-medium{
+  font-weight: 500 !important;
+}
 .form-label {
   color: var(--bg-vris-very-dark-blue) !important;
 }
@@ -345,6 +347,7 @@ h2,
 h1,
 .h1 {
   color: var(--bg-vris-very-dark-blue) !important;
+  font-weight: 500 !important;
 }
 
 .lh-normal {
@@ -392,7 +395,7 @@ h1,
   height: 64px;
   /* line-height: 100%; */
   background: none;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   box-shadow: none;
   position: relative;
 }

@@ -12,7 +12,7 @@ Mi Veris - Citas - Mis tratamientos
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>
                     <p class="fs--1 fw-normal" id="mensajeError" >
                 </p>
                 </div>
@@ -40,13 +40,13 @@ Mi Veris - Citas - Mis tratamientos
                     <button class="nav-link px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
-            <div class="tab-content bg-transparent" id="pills-tabContent">
+            <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     <div class="d-flex justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
-                            <div class="row g-3" id="contenedorTratamiento">
+                            <div class="row gx-0 gy-3 g-md-3" id="contenedorTratamiento">
                                 <!-- items dinamicos de tratamientos -->
                             </div>
                         </div>
@@ -190,15 +190,15 @@ Mi Veris - Citas - Mis tratamientos
                 let elemento = `<div class="col-12 col-md-6">
                                     <div class="card">
                                         <div class="card-body p-3">
-                                            <div class="row gx-0 justify-content-between align-items-center">
+                                            <div class="row gx-0 justify-content-between align-items-center mb-3">
                                                 <div class="col-9">
                                                     <h6 class="card-title text-primary-veris mb-0">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
-                                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
+                                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
                                                     <p class="card-text fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                                     <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="fecha-enviado fw-normal text-primary-veris">${tratamientos.fechaTratamiento}</b></p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div class="progress-circle" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+                                                    <div class="progress-circle ms-auto" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
                                                         <span class="progress-left">
                                                             <span class="progress-bar"></span>
                                                         </span>
@@ -208,17 +208,17 @@ Mi Veris - Citas - Mis tratamientos
                                                         <div class="progress-value">
                                                             <div>
                                                                 <span><i class="bi bi-check2 success"></i></span>
-                                                                <p class="fs--2 mb-0">${tratamientos.totalTratamientoRealizados}/${tratamientos.totalTratamientoEnviados}</p>
+                                                                <p class="text-success fs--2 mb-0">${tratamientos.totalTratamientoRealizados}/${tratamientos.totalTratamientoEnviados}</p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="d-flex justify-content-end align-items-center">
-                                                    <a href="/tratamiento/${ulrParams}
-                                                    " class="btn btn-sm btn-primary-veris shadow-none">
-                                                        ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
-                                                    </a>
-                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-end align-items-center">
+                                                <a href="/tratamiento/${ulrParams}
+                                                " class="btn btn-sm btn-primary-veris shadow-none">
+                                                    ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -264,7 +264,7 @@ Mi Veris - Citas - Mis tratamientos
                                         </div>
                                         <div class="text-center">
                                             <div class="col-auto">
-                                                <div class="progress-circle" data-percentage="${tratamientosRealizados.porcentajeAvanceTratamiento}">
+                                                <div class="progress-circle mx-auto" data-percentage="${tratamientosRealizados.porcentajeAvanceTratamiento}">
                                                     <span class="progress-left">
                                                         <span class="progress-bar"></span>
                                                     </span>
@@ -283,7 +283,7 @@ Mi Veris - Citas - Mis tratamientos
                                         </div>
                                         <div class="row g-0 justify-content-between align-items-end">
                                             <div class="col-md-9">
-                                                <p class="fw-bold fs--2 mb-0" style="color: #003B83;">¡Tratamiento terminado!</p>
+                                                <p class="fw-medium fs--2 mb-0" style="color: #003B83;">¡Tratamiento terminado!</p>
                                                 <p class="fw-normal fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientosRealizados.nombreMedico)}</p>
                                                 <p class="fw-light fs--2 mb-0">Terminado el: <b class="text-primary-veris fw-light fs--2" id="fechaTratamiento">${tratamientosRealizados.fechaTratamiento}</b></p>
                                             </div>
@@ -312,7 +312,7 @@ Mi Veris - Citas - Mis tratamientos
         let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
                                 checked>
-                                <span class="text-veris fw-bold">
+                                <span class="text-veris fw-medium">
                                     ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
                                 </span>
@@ -323,7 +323,7 @@ Mi Veris - Citas - Mis tratamientos
         data.forEach((Pacientes) => {
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
-                                <span class="text-veris fw-bold">
+                                <span class="text-veris fw-medium">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
