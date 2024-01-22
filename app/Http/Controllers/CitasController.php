@@ -70,8 +70,9 @@ class CitasController extends Controller
         return view('citas.autenticacion_exitosa');
     }
     // Return view Confirmar pago
-    public function confirmarPago() {
-        return view('citas.confirmar_pago');
+    public function confirmarPago($params) {
+        $params = str_replace('|', '/', $params);
+        return view('citas.confirmar_pago')->with('params',$params);
     }
     // Return view mensaje cita agendada
     public function citaAgendada($params) {

@@ -74,21 +74,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
-                                    <div class="col-md-12 d-none box-no-ruc">
+                                    <div class="col-md-12 box-no-ruc">
                                         <label for="primerNombre" class="form-label fw-bold fs--2">Primer Nombre *</label>
                                         <input type="text" class="form-control" name="primerNombre" id="primerNombre" placeholder="" required />
                                         <div class="valid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
-                                    <div class="col-md-12 d-none box-no-ruc">
+                                    <div class="col-md-12 box-no-ruc">
                                         <label for="primerApellido" class="form-label fw-bold fs--2">Primer Apellido *</label>
                                         <input type="text" class="form-control" name="primerApellido" id="primerApellido" placeholder="" required />
                                         <div class="valid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
-                                    <div class="col-md-12 d-none box-no-ruc">
+                                    <div class="col-md-12 box-no-ruc">
                                         <label for="segundoApellido" class="form-label fw-bold fs--2">Segundo Apellido *</label>
                                         <input type="text" class="form-control" name="segundoApellido" id="segundoApellido" placeholder="" required />
                                         <div class="valid-feedback">
