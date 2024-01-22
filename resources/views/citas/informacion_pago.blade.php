@@ -195,7 +195,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }else if(cardResponse.card.status === 'review' || cardResponse.card.status === 'pending') {
                 dataCita.tarjeta = cardResponse.card;
                 $('#btn-pagar').addClass('disabled');
-                await solicitarOTP();
+                await solicitarOTP('autenticarPago');
                 /*$('#messages').html('Card Under Review<br>' +
                 'status: ' + cardResponse.card.status + '<br>' +
                 "Card Token: " + cardResponse.card.token + "<br>" +
@@ -221,7 +221,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         $('body').on('click', '#btn-autenticar-otp', async function(){
             $('#btn-autenticar-otp').addClass('disabled');
             let codeOTP = $('#codeAutenticar').val();
-            autenticarOTP(codeOTP);
+            autenticarOTP(codeOTP,'registro');
+        });
+
+        $('body').on('click', '#btn-pagar-otp', async function(){
+            $('#btn-pagar-otp').addClass('disabled');
+            let codeOTP = $('#codePagar').val();
+            autenticarOTP(codeOTP,'pago');
         });
 
         $('body').on('click', '.btn-close-modal', function(){
@@ -233,7 +239,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     });
 
-    async function autenticarOTP(codeOTP){
+    async function autenticarOTP(codeOTP,type){
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas/verificacion`;
         args["method"] = "POST";
@@ -250,16 +256,32 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         
         if(data.code == 200){
             if(data.data.estado == "APPROVED"){
-                await pagarCita();
+                if(type == "pago"){
+                    let ulrParams = btoa(JSON.stringify(dataCita));
+                    let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                    window.location.href = ruta;
+                }else{
+                    await pagarCita();
+                }
             }else if(data.data.estado == "PENDING"){
-                $('#btn-autenticar-otp').removeClass('disabled');
-                $('#autenticarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show()
+                if(type == "pago"){
+                    $('#btn-pagar-otp').removeClass('disabled');
+                    $('#confirmarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show();
+                }else{
+                    $('#btn-autenticar-otp').removeClass('disabled');
+                    $('#autenticarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show();
+                }
             }else{
                 $('.btn-close-modal').removeClass('d-none');
-                $('#autenticarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show()
+                if(type == "pago"){
+                    $('#confirmarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show();
+                }else{
+                    $('#autenticarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show();
+                }
             }
         }else{
             $('#btn-autenticar-otp').removeClass('disabled');
+            $('#btn-pagar-otp').removeClass('disabled');
         }
     }
 
@@ -303,13 +325,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 dataCita.registroPago = data.data;
                 let ulrParams = btoa(JSON.stringify(dataCita));
                 let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
-                //window.location.href = ruta;
+                window.location.href = ruta;
+            }else if(data.data.estado.toUpperCase() == "PENDING"){
+                //36417002140808
+                await solicitarOTP('confirmarPago');
             }
         }        
     }
 
-    async function solicitarOTP(){
-        var myModal = new bootstrap.Modal(document.getElementById('autenticarPago'));
+    async function solicitarOTP(idModal){
+        var myModal = new bootstrap.Modal(document.getElementById(idModal));
         myModal.show();
     }
 </script>

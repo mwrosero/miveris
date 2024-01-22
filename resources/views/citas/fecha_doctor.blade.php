@@ -166,6 +166,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     $('.' + classFechaSeleccionada).addClass('selected-day');
                     // Aquí puedes hacer algo con la fecha seleccionada, como enviarla al servidor para la cita médica.
                     await consultarMedicos(fechaSeleccionada);
+                    calendarContainer.style.maxHeight = '135px';
+                    chevronIcon.className = 'bi bi-chevron-compact-down';
                 });
             } else {
                 // Deshabilitar para fechas no disponibles
