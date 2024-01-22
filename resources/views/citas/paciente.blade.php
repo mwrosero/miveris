@@ -13,7 +13,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
                 <div class="modal-header d-none">
-                    <button type="button" class="btn-close fw-bold top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-3 pt-4">
                     <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
@@ -29,19 +29,37 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </form>
         </div>
     </div>
+
+    <!-- Modal noPermiteReserva-->
+    <div class="modal fade" id="noPermiteReserva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noPermiteReservaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body p-2">
+                    <div class="text-center">
+                        <h1 class="modal-title fs-5 mb-3" id="noPermiteReservaLabel">Veris</h1>
+                        <p class="mb-0" id="noPermiteReservaMsg"></p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center p-2 pt-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elegir paciente') }}</h5>
     <section class="p-3 mb-3">
-        <div class="row" id="listaPacientes">
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body text-center">
+        <div class="row g-3" id="listaPacientes">
+            <div class="col-6 col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center px-2">
                         <a href="{{route('familia')}}">
                             <div class="d-flex justify-content-center align-items-center mb-2">
                                 <div class="avatar me-2">
                                     <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
                                 </div>
                             </div>
-                            <p class="text-veris fw-bold fs--2">{{ __('Agregar nuevo paciente') }}</p>
+                            <p class="text-veris fw-medium fs--2">{{ __('Agregar nuevo paciente') }}</p>
                         </a>
                     </div>
                 </div>
@@ -59,14 +77,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let ordenExterna = params.ordenExterna;
     let convenios = params.convenio;
 
-    console.log('conv', convenios);
-
-    console.log('online', online);  
-    console.log('ordenExterna', ordenExterna);
-
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarGrupoFamiliar();
+
+        $('body').on('click','.convenio-item', function(){
+            reservaNoPermitida($(this).attr("url-rel"), $(this).attr("data-rel"))
+        })
     });
 
     // funciones asyncronas
@@ -79,7 +96,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log('dataFa', data);
+        
         if(data.code == 200){
             familiar = data.data;
             mostrarListaPacientes();
@@ -97,7 +114,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let args = [];
         let canalOrigen = _canalOrigen;
         let dataRel = $(event.currentTarget).data('rel');
-        console.log('dataRel', dataRel);
         
         let codigoUsuario;
         let tipoIdentificacion;
@@ -128,13 +144,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(data.data.length > 0){
                 listaConvenios.empty();
                 data.data.forEach((convenios) => {
-
-                    console.log('convenios', convenios);
                     let params = @json($data);
                     params.convenio = convenios;
-                    let urlParams = btoa(JSON.stringify(params));
-                    elemento += `<a href="/citas-elegir-especialidad/${urlParams}"
-                        class="stretched-link">`;
+                    let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     // params.numeroIdentificacion = codigoUsuario;
                     // params.tipoIdentificacion = tipoIdentificacion;
                     // params.nombrePaciente = nombreCompleto;
@@ -144,15 +156,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         "nombrePaciente": nombreCompleto,
                         "numeroPaciente": numeroPaciente
                     };
-                    console.log(params);
-                    let ulrParams = btoa(JSON.stringify(params));
+                    let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let ruta = '';
                     if (ordenExterna == 'S') {
                         
                         if(online == 'S'){
-                            console.log('entro a ruta online');
-                            ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;
-                            
+                            ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;                            
                         }else{
                             ruta = `/registrar-orden-externa/${ulrParams}`;
                         }
@@ -160,14 +169,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     else {
                         ruta = `/citas-elegir-especialidad/${ulrParams}`;
                     }
-                    elemento += `<a href="${ruta}" class="stretched-link">
+                    let functionValidacion = ``;
+                    if(convenios.permiteReserva == "N"){
+                        ruta = `#`;
+                    }
+                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                                        <label for="listGroupCheckableRadios2">
+                                        <label for="listGroupCheckableRadios2" class="cursor-pointer">
                                             ${convenios.nombreConvenio}
                                         </label> 
                                     </div>
-                                </a>`;
+                                </div>`;
                 });
 
                 /*Agregar ninguno*/
@@ -184,15 +197,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     "nombrePaciente": nombreCompleto,
                     "numeroPaciente": numeroPaciente
                 };
-                let ulrParams = btoa(JSON.stringify(params));
+                let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                 ruta = `/citas-elegir-especialidad/${ulrParams}`;
                 
-                elemento += `<a href="${ruta}" class="stretched-link">
+                elemento += `<a href="${ruta}" class="d-block">
                                 <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                                    <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                                    <label for="listGroupCheckableRadios2">
-                                        Ninguno
-                                    </label> 
+                                    NINGUNO
                                 </div>
                             </a>`;
 
@@ -216,12 +226,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     "nombrePaciente": nombreCompleto,
                     "numeroPaciente": numeroPaciente
                 };
-                let ulrParams = btoa(JSON.stringify(params));
+                let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                 listaConvenios.empty();
                 if (ordenExterna == 'S') {
                     
                     if(online == 'S'){
-                        console.log('entro a ruta online');
                         ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;
                         
                     }else{
@@ -246,20 +255,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let pacienteYo = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->segundoNombre }} {{ Session::get('userData')->primerApellido }}";
         
         let pacienteYoGenero = "{{ Session::get('userData')->sexo }}";
-        // console.log('pacienteYoGenero', pacienteYoGenero);
 
         let backgroundClass = pacienteYoGenero === "F" ? "bg-strong-magenta" : (pacienteYoGenero === "M" ? "bg-soft-blue" : "bg-soft-green");
         let elemento = '';
-        elemento += `<div class="col-6 col-md-3 mb-3">
-            <div class="card">
-                <div class="card-body text-center">
+        elemento += `<div class="col-6 col-md-3">
+            <div class="card h-100 cursor-pointer">
+                <div class="card-body text-center px-2">
                     <a data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel="" >
                         <div class="d-flex justify-content-center align-items-center mb-2">
                             <div class="avatar me-2">
                                 <span class="avatar-initial rounded-circle ${backgroundClass}">${pacienteYo.charAt(0).toUpperCase()}</span>
                             </div>
                         </div>
-                        <p class="text-veris fw-bold fs--2 mb-0">${pacienteYo}</p>
+                        <p class="text-veris fw-medium fs--2 mb-0">${pacienteYo}</p>
                         <p class="text-veris fs--3 mb-0">{{ __('Yo') }}</p>
                     </a>
                 </div>
@@ -268,12 +276,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if(familiar != null){
             familiar.forEach((pacientes) => {
-                // console.log('pacientes', pacientes);
                 let backgroundClass = pacientes.genero === "F" ? "bg-strong-magenta" : (pacientes.genero === "M" ? "bg-soft-blue" : "bg-soft-green");
 
-                elemento += `<div class="col-6 col-md-3 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
+                elemento += `<div class="col-6 col-md-3">
+                    <div class="card h-100 cursor-pointer">
+                        <div class="card-body text-center px-2">
                             
                             <div data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
                                <div class="d-flex justify-content-center align-items-center mb-2">
@@ -281,7 +288,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
                                     </div>
                                 </div>
-                                <p class="text-veris fw-bold fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
+                                <p class="text-veris fw-medium fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
                                 <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
                             </div>
                         </div>
@@ -290,10 +297,24 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             });
         }
-
         listaPacientes.append(elemento);
     }
 
+    async function reservaNoPermitida(url, data){
+        console.log(url);
+        let convenio = JSON.parse(atob(decodeURIComponent(data)));
+        $('#noPermiteReservaMsg').html(convenio.convenio.mensajeBloqueoReserva)
+        if(convenio.convenio.permiteReserva == "S"){
+            location.href = $url;
+        }else{
+            $('#convenioModal').modal('hide');
+            var myModal = new bootstrap.Modal(document.getElementById('noPermiteReserva'));
+            setTimeout(function(){
+                $('.modal-backdrop').remove();
+                myModal.show();
+            },250);
+        }
+    }
    
     
     

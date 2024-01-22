@@ -166,6 +166,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     $('.' + classFechaSeleccionada).addClass('selected-day');
                     // Aquí puedes hacer algo con la fecha seleccionada, como enviarla al servidor para la cita médica.
                     await consultarMedicos(fechaSeleccionada);
+                    calendarContainer.style.maxHeight = '135px';
+                    chevronIcon.className = 'bi bi-chevron-compact-down';
                 });
             } else {
                 // Deshabilitar para fechas no disponibles
@@ -304,7 +306,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     let params = @json($data);
                     //params.medico = medico;
                     params.horario = horario;
-                    let urlParams = btoa(JSON.stringify(params));
+                    let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     elemento += `<div class="card card-body rounded-3 position-relative py-2 mb-2">
                         <a href="/citas-revisa-tus-datos/${urlParams}">`;
                     if(horario.porcentajeDescuento > 0){

@@ -16,8 +16,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="text-center">
                         <h1 class="modal-title fs-5 mb-3" id="metodoPagoLabel">Selecciona el método de pago</h1>
                     </div>
-                    <a href="{{route('citas.seleccionarTarjeta')}}" class="btn btn-lg btn-primary-veris w-100 mb-2">Seleccionar tarjeta</a>
-                    <a href="{{route('citas.citaInformacionPago')}}" class="btn btn-lg btn-outline-primary-veris w-100">Agregar otro método de pago</a>
+                    <a href="#" id="btn-seleccionar-tarjeta" class="btn btn-lg btn-primary-veris w-100 mb-2">Seleccionar tarjeta</a>
+                    <a href="#" id="btn-agregar-tarjeta" class="btn btn-lg btn-outline-primary-veris w-100">Agregar otro método de pago</a>
                 </div>
             </div>
         </div>
@@ -74,21 +74,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
-                                    <div class="col-md-12 d-none box-no-ruc">
+                                    <div class="col-md-12 box-no-ruc">
                                         <label for="primerNombre" class="form-label fw-bold fs--2">Primer Nombre *</label>
                                         <input type="text" class="form-control" name="primerNombre" id="primerNombre" placeholder="" required />
                                         <div class="valid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
-                                    <div class="col-md-12 d-none box-no-ruc">
+                                    <div class="col-md-12 box-no-ruc">
                                         <label for="primerApellido" class="form-label fw-bold fs--2">Primer Apellido *</label>
                                         <input type="text" class="form-control" name="primerApellido" id="primerApellido" placeholder="" required />
                                         <div class="valid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
-                                    <div class="col-md-12 d-none box-no-ruc">
+                                    <div class="col-md-12 box-no-ruc">
                                         <label for="segundoApellido" class="form-label fw-bold fs--2">Segundo Apellido *</label>
                                         <input type="text" class="form-control" name="segundoApellido" id="segundoApellido" placeholder="" required />
                                         <div class="valid-feedback">
@@ -448,9 +448,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(dataCita.facturacion.datosFactura.permiteNuvei == "S"){
                 var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
                 myModal.show();
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                console.log(ulrParams);
+                $('#btn-seleccionar-tarjeta').attr("href",`/citas-seleccionar-tarjeta/${ulrParams.replace(/\//g, '|')}`)
+                $('#btn-agregar-tarjeta').attr("href",`/citas-informacion-pago/${ulrParams.replace(/\//g, '|')}`)
             }else{
                 let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-pago-kushki/${ulrParams}`;
+                let ruta = `/citas-pago-kushki/${ulrParams.replace(/\//g, '|')}`;
                 window.location.href = ruta;
             }
         }else{

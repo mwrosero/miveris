@@ -45,26 +45,28 @@ Mi Veris - Citas - Familia y amigos
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Familia y amigos') }}</h5>
     </div>
-    <section class="p-3 mb-3">
-        <div class="row justify-content-center">
-            <div class="col-auto col-md-4">
-                <div class="card bg-transparent shadow-none mb-4">
-                    <div class="card-body p-3">
-                        <div class="text-center d-none" id="noPeopleAdded">
-                            <i class="bi bi-person" style="font-size: 128px;"></i>
-                            <p class="fw-bold">Aún no tiene personas agregadas</p>
-                        </div>
-                        <div class="card-footer p-0 mb-3">
-                            <a href="{{route('familia')}}" class="btn btn-primary-veris m-0 w-100 py-3">Agregar</a>
-                        </div>
-                        <div class="d-flex flex-column flex-md-row gap-4 align-items-center justify-content-center">
-                            <div class="list-group list-group-radio d-grid gap-2 border-0 w-100" id="familia-lista">
-                                <!-- Puedes agregar familias dinámicamente aquí desde JavaScript -->
+    <section class="py-4 mb-3">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-4">
+                    <div class="card bg-transparent shadow-none mb-4">
+                        <div class="card-body p-0">
+                            <div class="text-center d-none" id="noPeopleAdded">
+                                <i class="bi bi-person" style="font-size: 128px;"></i>
+                                <p class="fw-bold">Aún no tiene personas agregadas</p>
                             </div>
+                            <div class="card-footer p-0 mb-3">
+                                <a href="{{route('familia')}}" class="btn btn-primary-veris m-0 w-100 py-3">Agregar</a>
+                            </div>
+                            <div class="d-flex flex-column flex-md-row gap-4 align-items-center justify-content-center">
+                                <div class="list-group list-group-radio d-grid gap-2 border-0 w-100" id="familia-lista">
+                                    <!-- Puedes agregar familias dinámicamente aquí desde JavaScript -->
+                                </div>
+                            </div>
+                            
                         </div>
-                        
+                       
                     </div>
-                   
                 </div>
             </div>
         </div>

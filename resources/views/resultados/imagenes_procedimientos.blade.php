@@ -19,25 +19,20 @@ Mi Veris - Resultados
     </div>
 
     <!-- filtro -->
-    <div class="tab-content bg-transparent" id="pills-tabContent">
+    <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
         @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
         @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
-    
     </div>
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Resultados') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Resultados') }}</h5>
+    </div>
     <section class="p-3 pt-0 mb-3">
-        
         <div class="row justify-content-center">
-            
-            
             <div class="col-auto col-lg-10">
                 <div class="row gy-3" id="resultadosIP">
                     <!-- items dinamicos -->
-                    
                 </div>
             </div>
-
             <!-- Mensaje No tienes ordenes de terapia realizadas -->
             <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesResultadosRealizados">
                 <div class="card bg-transparent shadow-none">

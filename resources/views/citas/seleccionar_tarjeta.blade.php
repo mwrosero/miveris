@@ -3,6 +3,10 @@
 Mi Veris - Citas - Selecciona tu tarjeta
 @endsection
 @section('content')
+@php
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+// dd(Session::get('userData')->numeroIdentificacion);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal noExisteTarjeta-->
     <div class="modal fade" id="noExisteTarjeta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noExisteTarjetaLabel" aria-hidden="true">
@@ -18,7 +22,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
                         <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">No existen tarjetas guardadas</h1>
                         <p class="fs--1 mb-3 mx-3" style="line-height: 16px;">Para realizar el pago debes ingresar una tarjeta</p>
                     </div>
-                    <a href="{{route('citas.citaInformacionPago')}}" class="btn btn-lg btn-primary-veris w-100 mb-2">Ingresar tarjeta</a>
+                    <a href="/citas-informacion-pago/{{ $params }}" class="btn btn-lg btn-primary-veris w-100 mb-2">Ingresar tarjeta</a>
                 </div>
             </div>
         </div>
@@ -35,8 +39,8 @@ Mi Veris - Citas - Selecciona tu tarjeta
                         <form class="row g-3" id="listado-tarjetas">
                             {{-- <div class="col-12">
                                 <div class="form-check custom-option custom-option-basic border-primary">
-                                    <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="customRadioTemp1">
-                                        <input name="customRadioTemp" class="form-check-input" type="radio" value="" id="customRadioTemp1">
+                                    <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="card1Wallet">
+                                        <input name="cardWallet" class="form-check-input" type="radio" value="" id="card1Wallet">
                                         <span class="custom-option-header w-100">
                                             <div>
                                                 <img src="{{ asset('assets/img/svg/amex.svg')}}" class="me-3" alt="amex">
@@ -51,9 +55,9 @@ Mi Veris - Citas - Selecciona tu tarjeta
                         <div class="row mt-3">
                             <div class="col-12">
                                 <div class="btn-master w-100 mx-auto">
-                                    <a href="{{route('citas.agendada')}}" class="btn disabled text-white shadow-none">{{ __('Pagar') }}</a>
+                                    <div id="btn-pagar" class="btn disabled text-white shadow-none">{{ __('Pagar') }}</div>
                                     |
-                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total">$134.00</p>
+                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total">${{ $data->facturacion->totales->total }}</p>
                                 </div>
                             </div>
                         </div>
@@ -66,9 +70,73 @@ Mi Veris - Citas - Selecciona tu tarjeta
 @endsection
 @push('scripts')
 <script>
+    let dataCita = @json($data);
     document.addEventListener("DOMContentLoaded", async function () {
         await cargarListaTarjetas();
+
+        $('body').on('change', 'input[name="cardWallet"]', function() {
+            $('#btn-pagar').removeClass('disabled');
+            let dataCard = JSON.parse($(this).attr('data-rel'))
+            dataCita.tarjeta = dataCard;
+        });
+        
+        $('body').on('click', '#btn-pagar', async function(){
+            await pagarCita();
+        })
+
+        $('body').on('click', '.btn-delete-card', async function(){
+            let tarjeta = $(this).attr("codigoTarjetaSuscrita-rel")
+            await eliminarTarjeta(tarjeta)
+        })
+
     });
+
+    async function eliminarTarjeta(tarjeta){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&codigoTarjetaSuscrita=${tarjeta}`;
+        args["method"] = "DELETE";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            $('.tarjeta-'+tarjeta).remove();
+        }
+    }
+
+    async function pagarCita(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
+            "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
+            "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
+            "canalOrigenDigital": _canalOrigen,
+            "tokenNuvei": dataCita.tarjeta.tokenNuvei
+        });
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            console.log(data.data);
+            if(data.data.estado.toUpperCase() == "APPROVED"){
+                dataCita.registroPago = data.data;
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                window.location.href = ruta;
+            }else if(data.data.estado.toUpperCase() == "PENDING"){
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/citas-confirmar-pago/${ulrParams.replace(/\//g, '|')}`;
+                window.location.href = ruta;
+            }
+        }
+        
+    }
 
     async function cargarListaTarjetas(){
         $('#listado-tarjetas').empty();
@@ -81,33 +149,48 @@ Mi Veris - Citas - Selecciona tu tarjeta
 
         if (data.code == 200){
             let elem = ``;
+            let count = 0;
             if(data.data.length == 0){
                 elem += `<div class="col-12 text-center">
                     No tiene tarjetas guardadas
                 </div>`;
             }else{
-                $.each(data.data, function(key, value){
-                    let disabledItem = "";
-                    let elemDisabledItem = "";
-                    if(value.tarjetaVencida){
-                        disabledItem = "disabled";
-                        elemDisabledItem = `<br><b class="fw-normal text-danger-veris">Tarjeta vencida.</b>`;
+                // $.each(data.data, function(key, value){
+                for (const value of data.data) {
+                    if(value.tipoBoton == "NUV"){
+                        count++;
+                        let disabledItem = "";
+                        let elemDisabledItem = "";
+                        if(value.tarjetaVencida){
+                            disabledItem = "disabled";
+                            elemDisabledItem = `<br><b class="fw-normal text-danger-veris">Tarjeta vencida.</b>`;
+                        }
+                        let path_card = "{{ asset('assets/img/icons/payments') }}/"+value.marca.toLowerCase()+".png";
+                        /*let path_card = "{{ asset('assets/img/veris/credit-card.svg') }}";
+                        const existeImagen = await verificarImagen(value.nombre_foto);
+                        if (existeImagen) {
+                            path_card = value.nombre_foto;
+                        }*/                     
+                        elem += `<div class="col-12 tarjeta-${value.codigoTarjetaSuscrita}">
+                            <div class="form-check custom-option custom-option-basic border-primary">
+                                <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="card-${value.codigoTarjetaSuscrita}">
+                                    <input ${disabledItem} name="cardWallet" class="form-check-input" type="radio" value="" id="card-${value.codigoTarjetaSuscrita}" data-rel='${ JSON.stringify(value) }'>
+                                    <span class="custom-option-header w-100">
+                                        <div>
+                                            <img src="${path_card}" class="me-3 w-25" alt="" >
+                                            <span class="fs--2 mb-0">****${value.cuatroUltimosDigitos} ${elemDisabledItem}</span>
+                                        </div>
+                                        <button type="button" codigoTarjetaSuscrita-rel="${value.codigoTarjetaSuscrita}" class="btn btn-sm text-danger shadow-none btn-delete-card"><i class="bi bi-trash fs-4"></i></button>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>`
                     }
-                    elem += `<div class="col-12">
-                        <div class="form-check custom-option custom-option-basic border-primary">
-                            <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="card-${value.codigoTarjetaSuscrita}">
-                                <input ${disabledItem} name="customRadioTemp" class="form-check-input" type="radio" value="" id="card-${value.codigoTarjetaSuscrita}">
-                                <span class="custom-option-header w-100">
-                                    <div>
-                                        <img src="${value.urlIconoMarca}" class="me-3" alt="amex">
-                                        <span class="fs--2 mb-0">****${value.cuatroUltimosDigitos} ${elemDisabledItem}</span>
-                                    </div>
-                                    <a href="#" codigoTarjetaSuscrita-rel="${value.codigoTarjetaSuscrita}" class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></a>
-                                </span>
-                            </label>
-                        </div>
-                    </div>`
-                });
+                };
+            }
+            if(count == 0){
+                var myModal = new bootstrap.Modal(document.getElementById('noExisteTarjeta'));
+                myModal.show();
             } 
             $('#listado-tarjetas').append(elem);          
         }else{

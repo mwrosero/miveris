@@ -55,7 +55,9 @@ Mi Veris - Citas - Detalle
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Detalle') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Detalle') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-5">
@@ -70,7 +72,7 @@ Mi Veris - Citas - Detalle
                             <div class="col-auto text-end lh-1">
                                 <h5 class="text-primary-veris mb-0">$ 54.19</h5>
                                 <p class="text-veris fs--1 fw-semibold mb-0">-30% OFF</p>
-                                <p class="text-secondary fs--1 mb-0"><del>$ 54.19</del></p>
+                                <p class="fs--1 mb-0" style="color: #6E7A8C !important;"><del>$ 54.19</del></p>
                             </div>
                         </div>
 

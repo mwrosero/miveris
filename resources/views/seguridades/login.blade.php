@@ -22,7 +22,7 @@
     </div>
     @endif
     <div class="mb-3 mt-5">
-        <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación *</label>
+        <label for="numeroIdentificacion" class="form-label fw-medium">Número de identificación *</label>
         <input type="text"
             class="form-control"
             id="numeroIdentificacion"
@@ -37,7 +37,7 @@
     </div>
     <div class="mb-3 form-password-toggle">
         <div class="d-flex justify-content-between">
-            <label class="form-label fw-bold" for="password">Contraseña *</label>
+            <label class="form-label fw-medium" for="password">Contraseña *</label>
         </div>
         <div class="input-group input-group-merge">
             <input type="password"
@@ -54,7 +54,7 @@
         <a class="txt-veris fs-12" href="/olvide-clave"> {{ __('Olvidé mi contraseña')}}</a>
     </div>
     <div class="mt-5 mb-3">
-        <button class="btn d-grid w-100 bg-veris rounded" id="btnLogin" type="submit">{{ __('Iniciar Sesión')}}</button>
+        <button class="btn d-grid w-100 bg-veris rounded" id="btnLogin" type="submit">{{ __('Iniciar sesión')}}</button>
     </div>
     <div class="mb-3">
         <a href="registrar-cuenta" class="btn d-grid w-100 bg-alt rounded">{{ __('Crear una cuenta')}}</a>

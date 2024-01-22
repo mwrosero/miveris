@@ -7,13 +7,11 @@ Mi Veris - Citas - Receta médica
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- offcanva detalle Receta médica -->
-
     <div class="offcanvas offcanvas-end" tabindex="-1" id="detalleRecetaMedica" aria-labelledby="detalleRecetaMedicaLabel">
         <div class="offcanvas-header py-2">
             <div class="d-flex justify-content-between">
-                <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close">
+                <button type="button" class="btn d-block d-md-none" data-bs-dismiss="offcanvas" aria-label="Close">
                     <i class="bi bi-arrow-left"></i> <b class="fw-bold">Atrás</b>
                 </button>
                 <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
@@ -21,8 +19,7 @@ Mi Veris - Citas - Receta médica
         </div>
         
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
-            <small>Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
-            <br>
+            <small class="d-none">Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
             <div>
                 <div class="list-group gap-2 mb-3 verPdf">
                     <label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
@@ -45,14 +42,12 @@ Mi Veris - Citas - Receta médica
             
         </div>
         
-        <div class="offcanvas-footer py-2">
-            <div class="col-md-12 mb-3">
-                <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0 py-3 mr-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+        <div class="offcanvas-footer px-4">
+            <div class="col-md-12">
+                <button class="btn btn-primary-veris w-100 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
-
-
 
     <!-- Modal Receta médica -->
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
@@ -67,34 +62,29 @@ Mi Veris - Citas - Receta médica
             </div>
         </div>
     </div>
-
     <!-- Filtro -->
-    
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Receta médica') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Receta médica') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
+                    <button class="nav-link px-8 px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
+                    <button class="nav-link px-8 px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
-            <div class="tab-content bg-transparent" id="pills-tabContent">
+            <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 
-                <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
-                    
+                <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenes">
-                        
-
+                    <div id="contenedorTratamientosImagenes" class="px-2 px-lg-0">
                     </div>
                     
-
-
                     <!-- Mensaje No tienes ordenes de terapia -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientos">
                         <div class="card bg-transparent shadow-none">
@@ -127,16 +117,11 @@ Mi Veris - Citas - Receta médica
                     </div>
                     <!-- Mensaje END -->
                 </div>
-                <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
+                <div class="tab-pane fade mt-3" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
                     
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenesRealizados">
-                        
-
+                    <div id="contenedorTratamientosImagenesRealizados" class="px-2 px-lg-0">
                     </div>
-                    
-                    
-
 
                     <!-- Mensaje No tienes ordenes de terapia realizadas -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">
@@ -475,10 +460,10 @@ Mi Veris - Citas - Receta médica
                                     <small class="text-veris fw-bold denominacion">
                                         ${receta.denominacion}
                                     </small>
-                                    <small class="text-veris fw-light concentracion">
+                                    <small class="text-veris fw-light concentracion" style="color: #3D4E66;">
                                         ${receta.concentracion} ${receta.formaFarmaceutica}
                                     </small>
-                                    <small class="text-veris fw-light indicaciones">
+                                    <small class="text-veris fw-light indicaciones style="color: #3D4E66;"">
                                         ${receta.indicaciones}
                                     </small>
                                 </div>
