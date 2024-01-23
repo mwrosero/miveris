@@ -71,6 +71,7 @@ if(isset($data->convenio->informacionExternaPlan)){
 @endsection
 @push('scripts')
 <script>
+    let dataCita = @json($data);
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerPrecio();
     });
@@ -168,11 +169,97 @@ if(isset($data->convenio->informacionExternaPlan)){
             $('#msg-cita').append(elemMsg)
             
             params.precio = data.data;
-            let urlParams = btoa(JSON.stringify(params));
+            dataCita.precio = data.data;
+            await reservarCita();
+            /*let urlParams = btoa(JSON.stringify(params));
             $('#btn-pagar').attr('href','/citas-datos-facturacion/'+urlParams);
-            $('#btn-pagar').removeClass('d-none');
+            $('#btn-pagar').removeClass('d-none');*/
         }
         return data;
+    }
+
+    async function reservarCita(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/reservar?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+
+        let datosReserva = {
+            "numeroIdentificacion": dataCita.paciente.numeroIdentificacion,
+            "tipoIdentificacion": dataCita.paciente.tipoIdentificacion,
+            "idIntervalos": dataCita.horario.idIntervalo,
+            "codigoEmpresa": 1,
+            "codigoEspecialidad": dataCita.especialidad.codigoEspecialidad,
+            "codigoPrestacion": dataCita.especialidad.codigoPrestacion,
+            "usuarioLogin": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "esOnline": dataCita.online,
+            "origen": 4,
+            "motivoConsulta": "",
+            "codigoServicio": dataCita.especialidad.codigoServicio,
+            "canalOrigenAgendamiento": "MVE",
+            "codigoEmpresaRegistro": 1,
+            "codigoSucursalRegistro": null,
+            "porcentajeDescuento": dataCita.horario.porcentajeDescuento,
+            // "permitePago": dataCita.convenio.permitePago,
+            "permitePago": "S",
+            "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
+            "canalOrigen": _canalOrigen,
+            "enviarLinkPago": null,
+            //"tipoProcesoVUA": "",
+            /*precio*/
+            "valorizacion": dataCita.precio.valorCanalVirtual,
+            /*precio o reagendamiento*/
+            "secuenciaTransaccion": dataCita.precio.secuenciaTransaccion,
+            "valorCita": dataCita.precio.valorCanalVirtual,
+            "valorDescuento": dataCita.precio.valorDescuento,
+            "valorSubtotalCita": dataCita.precio.valor,
+            "numeroAutorizacion": dataCita.precio.numeroAutorizacion,
+            "esEmbarazada": "N",            
+            "fechaSeleccionada": dataCita.horario.dia2,
+            /*Si estoy modificando/tratamiento o sino N*/
+            "estaPagada": "N"
+        }
+
+        /*Para reagendamiento*/
+        //"codigoReservaCambio": "string",
+        
+        if(dataCita.online == "N"){
+            datosReserva.codigoSucursal = dataCita.central.codigoSucursal;
+        }    
+
+        /*Solo si tiene convenio seleccionado*/
+        if(dataCita.convenio.codigoConvenio){
+            datosReserva.codigoEmpConvenio = 1;
+            datosReserva.codigoConvenio = dataCita.convenio.codigoConvenio;
+            datosReserva.idCliente = dataCita.convenio.idCliente;
+        }
+
+        if(dataCita.tratamiento){
+            /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
+            datosReserva.numeroOrden = dataCita.tratamiento.numeroOrden;
+            datosReserva.codigoEmpOrden = dataCita.tratamiento.codigoEmpresaOrden;
+            datosReserva.lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
+        }
+
+        args["data"] = JSON.stringify(datosReserva);
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            dataCita.reserva = data.data;
+            if(data.data.permitePago == "S"){
+                let urlParams = btoa(JSON.stringify(params));
+                $('#btn-pagar').attr('href','/citas-datos-facturacion/'+urlParams.replace(/\//g, '|'));
+                $('#btn-pagar').removeClass('d-none');
+            }else{
+                let urlParams = btoa(JSON.stringify(params));
+                $('#btn-pagar').attr('href','/cita-agendada/'+urlParams.replace(/\//g, '|'));
+                $('#btn-pagar').removeClass('d-none');
+            }
+        }else{
+            alert(data.message);
+        }
     }
 </script>
 @endpush
