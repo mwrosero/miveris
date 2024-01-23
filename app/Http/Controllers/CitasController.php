@@ -62,12 +62,14 @@ class CitasController extends Controller
         return view('citas.informacion_pago')->with('params',$params);;
     }
     // Return view Autenticacion Registro de tarjeta
-    public function authRegistroTarjeta() {
-        return view('citas.autenticacion_registro_tarjeta');
+    public function authRegistroTarjeta($params) {
+        $params = str_replace('|', '/', $params);
+        return view('citas.autenticacion_registro_tarjeta')->with('params',$params);
     }
     // Return view Autenticacion exitosa
-    public function authExitosa() {
-        return view('citas.autenticacion_exitosa');
+    public function authExitosa($params) {
+        $params = str_replace('|', '/', $params);
+        return view('citas.autenticacion_exitosa')->with('params',$params);
     }
     // Return view Confirmar pago
     public function confirmarPago($params) {
@@ -76,6 +78,7 @@ class CitasController extends Controller
     }
     // Return view mensaje cita agendada
     public function citaAgendada($params) {
+        $params = str_replace('|', '/', $params);
         return view('citas.cita_agendada')->with('params',$params);
     }
 

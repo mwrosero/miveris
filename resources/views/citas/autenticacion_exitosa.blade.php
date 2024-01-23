@@ -3,6 +3,10 @@
 Mi Veris - Citas - Autenticación exitosa
 @endsection
 @section('content')
+@php
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+// dd(Session::get('userData')->numeroIdentificacion);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -21,7 +25,7 @@ Mi Veris - Citas - Autenticación exitosa
                             <p class="fs--1 text-center mt-0 mb-3">Tu tarjeta se confirmó con éxito.</p>
                             <img src="{{ asset('assets/img/svg/autenticacion_exitosa.svg')}}" alt="">
                             <div class="col-12">
-                                <a href="#" class="btn btn-lg btn-primary-veris w-100">Continuar</a>
+                                <button type="button" id="btn-pagar-otp" class="btn btn-lg btn-primary-veris w-100">Continuar</button>
                             </div>
                         </form>
                     </div>
@@ -33,6 +37,47 @@ Mi Veris - Citas - Autenticación exitosa
 @endsection
 @push('scripts')
 <script>
+    let dataCita = @json($data);
+    document.addEventListener("DOMContentLoaded", async function () {
+        $('body').on('click', '#btn-pagar-otp', async function(){
+            $('#btn-pagar-otp').addClass('disabled');
+            pagarCita();
+        });
+    });
 
+    async function pagarCita(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
+            "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
+            "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
+            "canalOrigenDigital": _canalOrigen,
+            "tokenNuvei": dataCita.tarjeta.token
+        });
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            console.log(data.data);
+            if(data.data.estado.toUpperCase() == "APPROVED"){
+                dataCita.registroPago = data.data;
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                window.location.href = ruta;
+            }else if(data.data.estado.toUpperCase() == "PENDING"){
+                dataCita.registroPago = data.data;
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/citas-confirmar-pago/${ulrParams.replace(/\//g, '|')}`;
+                window.location.href = ruta;
+            }
+        }else{
+            alert(data.message);
+            $('#btn-pagar-otp').removeClass('disabled');
+        }        
+    }
 </script>
 @endpush
