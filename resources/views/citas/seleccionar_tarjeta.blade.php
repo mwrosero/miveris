@@ -130,6 +130,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
                 window.location.href = ruta;
             }else if(data.data.estado.toUpperCase() == "PENDING"){
+                dataCita.registroPago = data.data;
                 let ulrParams = btoa(JSON.stringify(dataCita));
                 let ruta = `/citas-confirmar-pago/${ulrParams.replace(/\//g, '|')}`;
                 window.location.href = ruta;

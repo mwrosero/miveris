@@ -3,6 +3,10 @@
 Mi Veris - Citas - Autenticación y registro de tarjeta
 @endsection
 @section('content')
+@php
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+// dd($data);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal codeigo incorrecto -->
     <div class="modal fade" id="codeinvalid" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="codeinvalidLabel" aria-hidden="true">
@@ -38,7 +42,8 @@ Mi Veris - Citas - Autenticación y registro de tarjeta
                         <h1 class="modal-title fs-5 mb-3" id="conformarPagoLabel">No se permiten más intentos</h1>
                         <p class="fs--1 mx-3 mb-3" style="line-height: 16px;">Haz alcanzado el número máximo de intentos con este código</p>
                     </div>
-                    <button type="button" class="btn btn-lg btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                    <a href="{{ url()->previous() }}" class="btn btn-lg btn-primary-veris w-100">Entiendo</a>
+                    {{-- javascript:history.back() --}}
                 </div>
             </div>
         </div>
@@ -63,13 +68,13 @@ Mi Veris - Citas - Autenticación y registro de tarjeta
                             <p class="fs--1 mt-0 mb-3" style="line-height: 16px;"><b class="text-primary">Para autenticar tu tarjeta</b> ingresa el <b>código de seguridad</b> enviado a tu teléfono y/o correo electrónico.</p>
                             <div class="input-group input-group-merge">
                                 <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input type="text" class="form-control" name="code" id="code" placeholder="Código de seguridad (OTP)" required />
+                                <input type="text" class="form-control" name="codeAutenticar" id="codeAutenticar" placeholder="Código de seguridad (OTP)" required />
                             </div>
                             <div class="invalid-feedback">
                                 <i class="bi bi-exclamation-triangle-fill me-2"></i>Código inválido
                             </div>
                             <div class="col-12 mt-5 pt-md-5">
-                                <button type="submit" class="btn btn-lg btn-primary-veris w-100">Autenticar</button>
+                                <button type="button" id="btn-autenticar-otp" class="btn btn-lg btn-primary-veris w-100">Autenticar</button>
                             </div>
                         </form>
                     </div>
@@ -81,6 +86,50 @@ Mi Veris - Citas - Autenticación y registro de tarjeta
 @endsection
 @push('scripts')
 <script>
+    let dataCita = @json($data);
+        document.addEventListener("DOMContentLoaded", async function () {
+
+        $('body').on('click', '#btn-autenticar-otp', async function(){
+            $('#btn-autenticar-otp').addClass('disabled');
+            let codeOTP = $('#codeAutenticar').val();
+            autenticarOTP(codeOTP);
+        });
+
+    });
+    async function autenticarOTP(codeOTP){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas/verificacion`;
+        args["method"] = "POST";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        args["data"] = JSON.stringify({
+            "virusu": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "canalOrigenDigital": _canalOrigen,
+            "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
+            "valorOTP": codeOTP,
+            "datosTarjetaSuscrita": dataCita.tarjeta
+        });
+        const data = await call(args);
+        
+        if(data.code == 200){
+            if(data.data.estado == "APPROVED"){
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/citas-autenticacion-exitosa/${ulrParams.replace(/\//g, '|')}`;
+                window.location.href = ruta;
+            }else if(data.data.estado == "PENDING"){
+                $('#btn-autenticar-otp').removeClass('disabled');
+                //$('#label').html(data.data.mensajeNuvei);
+                var myModal = new bootstrap.Modal(document.getElementById('codeinvalid'));
+                myModal.show();
+            }else{
+                var myModal = new bootstrap.Modal(document.getElementById('intentoFallido'));
+                myModal.show();
+            }
+        }else{
+            $('#btn-autenticar-otp').removeClass('disabled');
+            alert(data.message);
+        }
+    }
 
 </script>
 @endpush
