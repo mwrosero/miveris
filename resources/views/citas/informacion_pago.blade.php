@@ -187,20 +187,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 dataCita.tarjeta = cardResponse.card;
                 $('#btn-pagar').addClass('disabled');
                 await registrarTarjeta();
-                /*$('#messages').html('Card Successfully Added<br>' +
-                'status: ' + cardResponse.card.status + '<br>' +
-                "Card Token: " + cardResponse.card.token + "<br>" +
-                "transaction_reference: " + cardResponse.card.transaction_reference
-                );*/
             }else if(cardResponse.card.status === 'review' || cardResponse.card.status === 'pending') {
                 dataCita.tarjeta = cardResponse.card;
-                $('#btn-pagar').addClass('disabled');
-                await solicitarOTP('autenticarPago');
-                /*$('#messages').html('Card Under Review<br>' +
-                'status: ' + cardResponse.card.status + '<br>' +
-                "Card Token: " + cardResponse.card.token + "<br>" +
-                "transaction_reference: " + cardResponse.card.transaction_reference
-                );*/
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/citas-autenticacion-registro-tarjeta/${ulrParams.replace(/\//g, '|')}`;
+                window.location.href = ruta;
+                // $('#btn-pagar').addClass('disabled');
+                // await solicitarOTP('autenticarPago');
             }else{
                 $('#messages').html('Error<br>' +
                 'status: ' + cardResponse.card.status + '<br>' +

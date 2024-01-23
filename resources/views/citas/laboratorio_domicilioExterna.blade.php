@@ -101,7 +101,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     
 </script>
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_tHt53kdevXWEWJii_qfBOsjf7fjI510&callback=initMap">
 </script>
 <script>
     function initMap() {

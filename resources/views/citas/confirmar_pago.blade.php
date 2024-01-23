@@ -28,6 +28,27 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         </div>
     </div>
 
+    <!-- Modal intento fallido -->
+    <div class="modal fade" id="intentoFallido" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="intentoFallidoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body px-3">
+                    <div class="text-center">
+                        <div class="avatar avatar-lg mx-auto">
+                            <span class="avatar-initial rounded-circle bg-transparent">
+                                <i class="bi bi-exclamation-triangle-fill fs-2 text-danger-veris"></i>
+                            </span>
+                        </div>
+                        <h1 class="modal-title fs-5 mb-3" id="conformarPagoLabel">No se permiten más intentos</h1>
+                        <p class="fs--1 mx-3 mb-3" style="line-height: 16px;">Haz alcanzado el número máximo de intentos con este código</p>
+                    </div>
+                    <a href="#" id="btn-intentos-fallidos" class="btn btn-lg btn-primary-veris w-100">Entiendo</a>
+                    {{-- javascript:history.back() --}}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Confirmar pago') }}</h5>
     </div>
@@ -86,19 +107,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "canalOrigenDigital": _canalOrigen,
             "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
             "valorOTP": codeOTP,
-            "datosTarjetaSuscrita": dataCita.tarjeta
+            //"datosTarjetaSuscrita": dataCita.tarjeta
         });
         const data = await call(args);
         
         if(data.code == 200){
             if(data.data.estado == "APPROVED"){
-                if(type == "pago"){
-                    let ulrParams = btoa(JSON.stringify(dataCita));
-                    let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
-                    window.location.href = ruta;
-                }else{
-                    await pagarCita();
-                }
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                window.location.href = ruta;
             }else if(data.data.estado == "PENDING"){
                 if(type == "pago"){
                     $('#btn-pagar-otp').removeClass('disabled');
@@ -108,12 +125,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     $('#autenticarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show();
                 }
             }else{
-                $('.btn-close-modal').removeClass('d-none');
-                if(type == "pago"){
-                    $('#confirmarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show();
-                }else{
-                    $('#autenticarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show();
-                }
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/citas-informacion-pago/${ulrParams.replace(/\//g, '|')}`;
+                $('#btn-intentos-fallidos').attr("href",ruta);
+                var myModal = new bootstrap.Modal(document.getElementById('intentoFallido'));
+                myModal.show();
             }
         }else{
             $('#btn-autenticar-otp').removeClass('disabled');
@@ -151,7 +167,5 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }        
     }
-
-
 </script>
 @endpush

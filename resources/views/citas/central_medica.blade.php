@@ -110,10 +110,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let path_central = "{{ asset('assets/img/card/avatar_central_medica.png') }}";
 
-                    const existeImagen = await verificarImagen(central.nombre_foto);
+                    /*const existeImagen = await verificarImagen(central.nombre_foto);
                     if (existeImagen) {
                         path_central = central.nombre_foto;
-                    }
+                    }*/
                     
                     console.log(99)
                     elemento += `<div class="col-auto col-md-6">
