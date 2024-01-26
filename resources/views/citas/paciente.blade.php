@@ -73,6 +73,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     // variables globales
     let familiar = [];
     let params = @json($data);
+    // let local = localStorage.getItem('cita-{{ $params }}');
+    // let dataCita = JSON.parse(atob(local));
     let online = params.online;
     let ordenExterna = params.ordenExterna;
     let convenios = params.convenio;

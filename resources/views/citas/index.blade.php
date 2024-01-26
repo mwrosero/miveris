@@ -4,9 +4,10 @@ Mi Veris - Citas
 @endsection
 @section('content')
 @php
-    $paramsPresencial = urlencode(base64_encode(json_encode(["online" => "N"])));
-    $paramsOnline = urlencode(base64_encode(json_encode(["online" => "S"])));
-    
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+    $paramsPresencial = base64_encode(json_encode(["online" => "N"]));
+    $paramsOnline = base64_encode(json_encode(["online" => "S"]));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
@@ -21,6 +22,7 @@ Mi Veris - Citas
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
                             <div class="card mb-3">
+                                {{-- <a href="#" class="nextStep" url-rel="/citas-elegir-paciente/" data-rel="{{ $paramsPresencial }}">PRUEBA</a> --}}
                                 <a href="{{route('citas.listaPacientes',['params' => $paramsPresencial])}}">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-9 col-md-auto">
@@ -218,6 +220,13 @@ Mi Veris - Citas
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerPPD();
+
+        $('body').on('click', '.nextStep', function(){
+            let url = $(this).attr('url-rel');
+            let data = $(this).attr('data-rel');
+            localStorage.setItem('cita-{{ $tokenCita }}', data);
+            location.href = url + "{{ $tokenCita }}";
+        })
     });
 
     async function obtenerPPD(){
