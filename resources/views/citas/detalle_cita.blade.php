@@ -170,10 +170,9 @@ if(isset($data->convenio->informacionExternaPlan)){
             
             params.precio = data.data;
             dataCita.precio = data.data;
-            await reservarCita();
-            /*let urlParams = btoa(JSON.stringify(params));
+            let urlParams = btoa(JSON.stringify(params));
             $('#btn-pagar').attr('href','/citas-datos-facturacion/'+urlParams);
-            $('#btn-pagar').removeClass('d-none');*/
+            $('#btn-pagar').removeClass('d-none');
         }
         return data;
     }
@@ -248,15 +247,7 @@ if(isset($data->convenio->informacionExternaPlan)){
 
         if (data.code == 200){
             dataCita.reserva = data.data;
-            if(data.data.permitePago == "S"){
-                let urlParams = btoa(JSON.stringify(params));
-                $('#btn-pagar').attr('href','/citas-datos-facturacion/'+urlParams.replace(/\//g, '|'));
-                $('#btn-pagar').removeClass('d-none');
-            }else{
-                let urlParams = btoa(JSON.stringify(params));
-                $('#btn-pagar').attr('href','/cita-agendada/'+urlParams.replace(/\//g, '|'));
-                $('#btn-pagar').removeClass('d-none');
-            }
+            await crearPreTransaccion();
         }else{
             alert(data.message);
         }
