@@ -56,7 +56,7 @@ Mi Veris - Buscar doctor
             <div class="col-md-4 my-3">
                 <div class="input-group search-box">
                     <span class="input-group-text bg-transparent border-0" id="search"><i class="bi bi-search"></i></span>
-                    <input type="search" class="form-control bg-transparent border-0" name="search" id="search" placeholder="Buscar" aria-describedby="search" />
+                    <input type="search" class="form-control bg-transparent border-0" name="search" id="searchDoctor" placeholder="Buscar" aria-describedby="search" />
                 </div>
             </div>
         </form>
@@ -128,6 +128,7 @@ Mi Veris - Buscar doctor
 
     // variables globales
     let dataEspecialidades = [];
+    let dataDoctores = [];
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function() {
@@ -215,6 +216,7 @@ Mi Veris - Buscar doctor
                 $('#noHayDoctores').removeClass('d-none');
             } else{
                 let doctores = data.data;
+                dataDoctores = data.data;
                 let html = $('#doctoresFavoritos');
                 html.empty();
                 let elemento = '';
@@ -331,6 +333,62 @@ Mi Veris - Buscar doctor
 
         return `${dia}/${mes}/${año}`;
     }
+
+    // buscar doctor por filtro 
+    $("form").on("submit", function(e) {
+        e.preventDefault();
+        let search = $("#searchDoctor").val().toLowerCase(); // Obtener el valor y convertirlo a minúsculas
+        console.log('search', dataDoctores);
+
+        // Filtrar los doctores basados en el criterio de búsqueda
+        let doctoresFiltrados = dataDoctores.filter(function(doctor) {
+            
+            // permitir valores nulos
+            return determinarValorNull(doctor.primerNombre).toLowerCase().includes(search) || 
+            determinarValorNull(doctor.segundoNombre).toLowerCase().includes(search) ||
+            determinarValorNull(doctor.primerApellido).toLowerCase().includes(search) ||
+            determinarValorNull(doctor.segundoApellido).toLowerCase().includes(search);
+        });
+
+        // Construir el HTML basado en los doctores filtrados
+        let html = $('#doctoresFavoritos');
+        html.empty(); // Limpiar los doctores actuales
+
+        let elemento = '';
+        console.log('doctoresFiltrados', doctoresFiltrados);
+        if (doctoresFiltrados.length == 0){
+            $('#noHayDoctores').removeClass('d-none');
+        } else{
+            $('#noHayDoctores').addClass('d-none');
+            
+            doctoresFiltrados.forEach(element => { // Usar `doctoresFiltrados` en lugar de `dataDoctores`
+                elemento += `<div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-body p-3">
+                                        <div class="row gx-2 align-items-center">
+                                            <div class="col-3">
+                                                <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
+                                            </div>
+                                            <div class="col-7">
+                                                <h6 class="fw-medium mb-0">Dr(a) ${capitalizarElemento(element.primerNombre)} ${capitalizarElemento(element.segundoNombre)} ${capitalizarElemento(element.primerApellido)} ${capitalizarElemento(element.segundoApellido)}</h6>
+                                                <p class="text-primary-veris fw-medium fs--2 mb-0">${capitalizarElemento(element.nombreSucursal)}</p>
+                                                <p class="fs--2 mb-0">${capitalizarElemento(element.nombreEspecialidad)}</p>
+                                            </div>
+                                            <div class="col-2 text-center">
+                                                <div class="btn rounded-pill btn-icon btn-primary-veris" data-rel='${ JSON.stringify(element) }'>
+                                                    <i class="bi bi-plus-lg"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>`;
+            });
+            html.append(elemento); // Actualizar el HTML del contenedor de doctores
+        }
+    });
+
+
 
 </script>
 @endpush

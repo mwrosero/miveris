@@ -12,8 +12,6 @@ $data1 = json_decode($data);
 @endphp
 
 <div class="flex-grow-1 container-p-y pt-0">
-
-
       <!-- Modal mensaje -->
       <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">

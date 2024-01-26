@@ -305,7 +305,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let convenio = JSON.parse(atob(decodeURIComponent(data)));
         $('#noPermiteReservaMsg').html(convenio.convenio.mensajeBloqueoReserva)
         if(convenio.convenio.permiteReserva == "S"){
-            location.href = $url;
+            location.href = url;
         }else{
             $('#convenioModal').modal('hide');
             var myModal = new bootstrap.Modal(document.getElementById('noPermiteReserva'));

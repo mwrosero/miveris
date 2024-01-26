@@ -5,7 +5,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
 @section('content')
 @php
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
-// dd($data);
+// dd(Session::get('userData')->numeroIdentificacion);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal noExisteTarjeta-->
@@ -57,7 +57,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="btn-master w-100 mx-auto">
                                     <div id="btn-pagar" class="btn disabled text-white shadow-none">{{ __('Pagar') }}</div>
                                     |
-                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total">$134.00</p>
+                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total">${{ $data->facturacion->totales->total }}</p>
                                 </div>
                             </div>
                         </div>
@@ -84,7 +84,27 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             await pagarCita();
         })
 
+        $('body').on('click', '.btn-delete-card', async function(){
+            let tarjeta = $(this).attr("codigoTarjetaSuscrita-rel")
+            await eliminarTarjeta(tarjeta)
+        })
+
     });
+
+    async function eliminarTarjeta(tarjeta){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&codigoTarjetaSuscrita=${tarjeta}`;
+        args["method"] = "DELETE";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            $('.tarjeta-'+tarjeta).remove();
+        }
+    }
 
     async function pagarCita(){
         let args = [];
@@ -108,6 +128,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 dataCita.registroPago = data.data;
                 let ulrParams = btoa(JSON.stringify(dataCita));
                 let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                window.location.href = ruta;
+            }else if(data.data.estado.toUpperCase() == "PENDING"){
+                dataCita.registroPago = data.data;
+                let ulrParams = btoa(JSON.stringify(dataCita));
+                let ruta = `/citas-confirmar-pago/${ulrParams.replace(/\//g, '|')}`;
                 window.location.href = ruta;
             }
         }
@@ -141,12 +166,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             disabledItem = "disabled";
                             elemDisabledItem = `<br><b class="fw-normal text-danger-veris">Tarjeta vencida.</b>`;
                         }
-                        let path_card = "{{ asset('assets/img/veris/credit-card.svg') }}";
+                        let path_card = "{{ asset('assets/img/icons/payments') }}/"+value.marca.toLowerCase()+".png";
+                        /*let path_card = "{{ asset('assets/img/veris/credit-card.svg') }}";
                         const existeImagen = await verificarImagen(value.nombre_foto);
                         if (existeImagen) {
                             path_card = value.nombre_foto;
-                        }                     
-                        elem += `<div class="col-12">
+                        }*/                     
+                        elem += `<div class="col-12 tarjeta-${value.codigoTarjetaSuscrita}">
                             <div class="form-check custom-option custom-option-basic border-primary">
                                 <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="card-${value.codigoTarjetaSuscrita}">
                                     <input ${disabledItem} name="cardWallet" class="form-check-input" type="radio" value="" id="card-${value.codigoTarjetaSuscrita}" data-rel='${ JSON.stringify(value) }'>
@@ -155,7 +181,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                             <img src="${path_card}" class="me-3 w-25" alt="" >
                                             <span class="fs--2 mb-0">****${value.cuatroUltimosDigitos} ${elemDisabledItem}</span>
                                         </div>
-                                        <a href="#" codigoTarjetaSuscrita-rel="${value.codigoTarjetaSuscrita}" class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></a>
+                                        <button type="button" codigoTarjetaSuscrita-rel="${value.codigoTarjetaSuscrita}" class="btn btn-sm text-danger shadow-none btn-delete-card"><i class="bi bi-trash fs-4"></i></button>
                                     </span>
                                 </label>
                             </div>
