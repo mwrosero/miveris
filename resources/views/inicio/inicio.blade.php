@@ -67,7 +67,7 @@ Mi Veris - Inicio
                                 <div class="row g-0 justify-content-between align-items-center">
                                     <div class="col-9 col-md-auto">
                                         <div class="card-body p-0 ps-2">
-                                            <h6 class="fw-medium fs--1 mb-0">{{ __('Agendar cita médica') }}</h6>
+                                            <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendar cita médica') }}</h6>
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-auto">
@@ -83,7 +83,7 @@ Mi Veris - Inicio
                                 <div class="row g-0 justify-content-between align-items-center">
                                     <div class="col-9 col-md-auto">
                                         <div class="card-body p-0 ps-2">
-                                            <h6 class="fw-medium fs--1 mb-0">{{ __('Comprar promociones') }}</h6>
+                                            <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Comprar promociones') }}</h6>
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-auto">
@@ -99,7 +99,7 @@ Mi Veris - Inicio
                                 <div class="row g-0 justify-content-between align-items-center">
                                     <div class="col-9 col-md-auto">
                                         <div class="card-body p-0 ps-2">
-                                            <h6 class="fw-medium fs--1 mb-0">{{ __('Solicitar servicios') }} <br> {{ __('a domicilio') }}</h6>
+                                            <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Solicitar servicios') }} <br> {{ __('a domicilio') }}</h6>
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-auto">
@@ -343,7 +343,7 @@ Mi Veris - Inicio
                                                     <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div class="progress-circle" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
+                                                    <div class="progress-circle ms-auto" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
                                                         <span class="progress-left">
                                                             <span class="progress-bar"></span>
                                                         </span>
