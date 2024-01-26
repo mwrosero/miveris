@@ -982,6 +982,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
   .fs--lg-1{
     font-size: 0.874rem !important;
   }
+  
 }
 
 @media (min-width: 768px) {

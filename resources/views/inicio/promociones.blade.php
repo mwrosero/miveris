@@ -27,12 +27,12 @@ Mi Veris - Citas - Promociones
                         <div class="card w-100">
                             <a href="{{route('home.promocionDetalle')}}">
                                 <div class="row g-0 justify-content-between align-items-center">
-                                    <div class="col-3 col-md-auto rounded-end-circle d-flex justify-content-center align-items-center py-2" style="background: #E7E9EC;">
-                                        <img src="{{ asset('assets/img/svg/Character.svg') }}" class="img-fluid ms-1 ps-1 me-3" alt="{{ __('promoción') }}" width="64">
+                                    <div class="col-3">
+                                        <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
                                     </div>
                                     <div class="col-9">
-                                        <div class="card-body py-2 px-3">
-                                            <h6 class="text-end fw-medium">Prevención y Cuidado Mamario Integral</h6>
+                                        <div class="card-body p-2">
+                                            <h6 class="text-end fw-medium text-one-line">Prevención y Cuidado Mamario Integral</h6>
                                             <div class="d-flex justify-content-end">
                                                 <span class="badge bg-primary d-flex align-items-center px-3 mx-3">-20%</span>
                                                 <div class="content-precio text-end">
@@ -51,12 +51,12 @@ Mi Veris - Citas - Promociones
                         <div class="card w-100">
                             <a href="{{route('home.promocionDetalle')}}">
                                 <div class="row g-0 justify-content-between align-items-center">
-                                    <div class="col-3 col-md-auto rounded-end-circle d-flex justify-content-center align-items-center py-2" style="background: #E7E9EC;">
-                                        <img src="{{ asset('assets/img/svg/Character.svg') }}" class="img-fluid ms-1 ps-1 me-3" alt="{{ __('promoción') }}" width="64">
+                                    <div class="col-3">
+                                        <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
                                     </div>
                                     <div class="col-9">
-                                        <div class="card-body py-2 px-3">
-                                            <h6 class="text-end fw-medium">Cuida Tu Corazón: CONTROL HIPERTENSIÓN</h6>
+                                        <div class="card-body p-2">
+                                            <h6 class="text-end fw-medium text-one-line">Cuida Tu Corazón: CONTROL HIPERTENSIÓN</h6>
                                             <div class="d-flex justify-content-end">
                                                 <span class="badge bg-primary d-flex align-items-center px-3 mx-3">-20%</span>
                                                 <div class="content-precio text-end">
@@ -75,12 +75,12 @@ Mi Veris - Citas - Promociones
                         <div class="card w-100">
                             <a href="{{route('home.promocionDetalle')}}">
                                 <div class="row g-0 justify-content-between align-items-center">
-                                    <div class="col-3 col-md-auto rounded-end-circle d-flex justify-content-center align-items-center py-2" style="background: #E7E9EC;">
-                                        <img src="{{ asset('assets/img/svg/Character.svg') }}" class="img-fluid ms-1 ps-1 me-3" alt="{{ __('promoción') }}" width="64">
+                                    <div class="col-3">
+                                        <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
                                     </div>
                                     <div class="col-9">
-                                        <div class="card-body py-2 px-3">
-                                            <h6 class="text-end fw-medium">Ecografía Mamaria + Consulta Ginecología</h6>
+                                        <div class="card-body p-2">
+                                            <h6 class="text-end fw-medium text-one-line">Ecografía Mamaria + Consulta Ginecología</h6>
                                             <div class="d-flex justify-content-end">
                                                 <span class="badge bg-primary d-flex align-items-center px-3 mx-3">-20%</span>
                                                 <div class="content-precio text-end">
@@ -99,12 +99,12 @@ Mi Veris - Citas - Promociones
                         <div class="card w-100">
                             <a href="{{route('home.promocionDetalle')}}">
                                 <div class="row g-0 justify-content-between align-items-center">
-                                    <div class="col-3 col-md-auto rounded-end-circle d-flex justify-content-center align-items-center py-2" style="background: #E7E9EC;">
-                                        <img src="{{ asset('assets/img/svg/Character.svg') }}" class="img-fluid ms-1 ps-1 me-3" alt="{{ __('promoción') }}" width="64">
+                                    <div class="col-3">
+                                        <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
                                     </div>
                                     <div class="col-9">
-                                        <div class="card-body py-2 px-3">
-                                            <h6 class="text-end fw-medium">Plan Cuidado Esencial Femenino (Imagen y consulta)</h6>
+                                        <div class="card-body p-2">
+                                            <h6 class="text-end fw-medium text-one-line">Plan Cuidado Esencial Femenino (Imagen y consulta)</h6>
                                             <div class="d-flex justify-content-end">
                                                 <span class="badge bg-primary d-flex align-items-center px-3 mx-3">-20%</span>
                                                 <div class="content-precio text-end">
