@@ -203,6 +203,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             //validar formulario datos factura
             await validarDatosFactura();
         })
+
     });
 
     async function reservarCita(){
