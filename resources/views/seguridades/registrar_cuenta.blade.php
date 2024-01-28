@@ -1,18 +1,17 @@
-<div id= "botonAtras" class="d-none">
-	<div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
-		<a href="{{ route('login') }}" class="text-decoration-none">
-			<div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 16px;">
-				<img src="../../assets/img/svg/atras.svg" class="cursor-pointer prev-image" alt="Atrás">
-				<label style="font-family: 'Gotham Rounded'; font-size: 20px;">Atrás</label>
-			</div>
-		</a>
-	</div>
-</div>
 @extends('template.login')
 @section('title')
     Mi Veris - Crear Cuenta
 @endsection
-
+@section('back-button')
+<div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
+    <a href="{{ route('login') }}" class="text-decoration-none">
+        <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 16px;">
+            <img src="../../assets/img/svg/atras.svg" class="cursor-pointer prev-image" alt="Atrás">
+            <label class="fw-medium" style="font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
+        </div>
+    </a>
+</div>
+@endsection
 @section('content')
 <!-- Logo -->
 

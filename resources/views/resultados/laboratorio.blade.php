@@ -36,8 +36,10 @@ Mi Veris - Resultados
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Resultados') }}</h5>
     </div>
-    @include('components.barraFiltro')
-    @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
+    <div class="tab-content bg-transparent px-0 px-lg-4">
+        @include('components.barraFiltro')
+        @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-lg-10">

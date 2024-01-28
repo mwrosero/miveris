@@ -63,9 +63,9 @@ Mi Veris - Doctores favoritos
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Doctores favoritos') }}</h5>
     </div>
-    <section class="p-3 mb-3">
+    <section class="p-3 pt-0">
         <div class="row justify-content-center" >
-            <div class="col-12 col-md-6 col-lg-4 text-center mt-5 mb-5">
+            <div class="col-12 col-md-6 col-lg-4 text-center my-4">
                 <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-100 py-3">Buscar doctor</a>
             </div>
         </div>
@@ -145,8 +145,8 @@ Mi Veris - Doctores favoritos
 
                                                 <div class="col-9">
                                                     <h6 class="fw-medium mb-0">Dr(a) ${capitalizarPrimeraLetra(doctores.primerNombre)} ${capitalizarPrimeraLetra(doctores.segundoNombre)} ${capitalizarPrimeraLetra(doctores.primerApellido)} ${capitalizarPrimeraLetra(doctores.segundoApellido)}</h6>
-                                                    <p class="text-primary-veris fw-medium fs--2 mb-0">${doctores.nombreSucursal}</p>
-                                                    <p class="fs--2 mb-0">${doctores.nombreEspecialidad}</p>
+                                                    <p class="text-primary-veris fw-medium fs--2 mb-0">${capitalizarCadaPalabra(doctores.nombreSucursal)}</p>
+                                                    <p class="fs--2 mb-0">${capitalizarPrimeraLetra(doctores.nombreEspecialidad)}</p>
                                                     <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">  ${determinarValorNull(doctores.dia)}
                                                         </b></p>
                                                 </div>
