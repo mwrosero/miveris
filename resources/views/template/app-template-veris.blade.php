@@ -139,7 +139,7 @@
             console.log('elemento',elemento);
 
             var swiper = new Swiper('.swiper-acceso-rapidos', {
-                slidesPerView: 1,
+                // slidesPerView: 1,
                 spaceBetween: 8,
                 navigation: {
                     nextEl: '.btn-next',
@@ -156,21 +156,21 @@
                 breakpoints: {
                     300: {
                         slidesPerView: 2,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     768: {
                         slidesPerView: 2,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     1024: {
                         slidesPerView: 3,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                 },
             });
 
-            var swiper = new Swiper('.swipertratamientos', {
-                slidesPerView: 1,
+            var swiperTratamiento = new Swiper('.swiper-tratamientos', {
+                // slidesPerView: 1,
                 spaceBetween: 8,
                 navigation: {
                     nextEl: '.btn-next',
@@ -187,21 +187,21 @@
                 breakpoints: {
                     640: {
                         slidesPerView: 1,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     768: {
                         slidesPerView: 2,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     1024: {
                         slidesPerView: 3,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                 },
             });
 
-            var swiper = new Swiper('.swiper-proximas-citas', {
-                slidesPerView: 3,
+            var swiperProximasCitas = new Swiper('.swiper-proximas-citas', {
+                // slidesPerView: 1,
                 spaceBetween: 8,
                 navigation: {
                     nextEl: '.btn-next',
@@ -218,21 +218,21 @@
                 breakpoints: {
                     640: {
                         slidesPerView: 1,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     768: {
                         slidesPerView: 2,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     1024: {
                         slidesPerView: 3,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                 },
             });
 
-            var swiper = new Swiper('.swiper-urgencias-ambulatorias', {
-                slidesPerView: 1,
+            var swiperUrgenciasAmbulatorias = new Swiper('.swiper-urgencias-ambulatorias', {
+                // slidesPerView: 1,
                 spaceBetween: 8,
                 navigation: {
                     nextEl: '.btn-next',
@@ -249,15 +249,15 @@
                 breakpoints: {
                     640: {
                         slidesPerView: 1,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     768: {
                         slidesPerView: 2,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     1024: {
                         slidesPerView: 3,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                 },
             });

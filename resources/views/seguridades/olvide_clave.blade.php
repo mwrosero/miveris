@@ -7,7 +7,7 @@
     <a href="{{ route('login') }}" class="text-decoration-none">
         <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 16px;">
             <img src="../../assets/img/svg/atras.svg" class="cursor-pointer prev-image" alt="Atrás">
-            <label style="font-family: 'Gotham Rounded'; font-size: 20px;">Atrás</label>
+            <label class="fw-medium" style="font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
         </div>
     </a>
 </div>
