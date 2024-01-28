@@ -357,8 +357,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     //params.medico = medico;
                     dataCita.horario = horario;
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    elemento += `<div class="card card-horario card-body rounded-3 position-relative py-2 mb-2" data-horario='${JSON.stringify(horario)}'>
-                    <a href="/citas-revisa-tus-datos/${urlParams}">`;
+                    let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
+                    elemento += `<div class="card card-horario card-body rounded-3 position-relative py-2 mb-2 btn-disponibilidad-medico
+                    " data-horario='${JSON.stringify(horario)}'>
+                    <a href="${ruta}">`;
                     if(horario.porcentajeDescuento > 0){
                         elemento += `<div class="badge-discount-top fs--3 fw-bold"><span>-${horario.porcentajeDescuento}%</span></div>`
                     }
