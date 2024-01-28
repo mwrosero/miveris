@@ -153,7 +153,9 @@ body {
 html:not([dir="rtl"]) .border-start-veris {
   border-left: 3px solid var(--bg-vris-blue) !important;
 }
-
+.border-start-grenadier{
+  border-left: 3px solid var(--bg-vris-strong-red) !important;
+}
 .btn-outline-primary-veris {
   color: var(--bg-vris-blue) !important;
   border-color: var(--bg-vris-blue) !important;
@@ -707,28 +709,32 @@ Due to the split circle of progress-left and progress right, we must use the ani
   font-size: 1rem;
 }
 
-.swiper-pagination:not(.swiper-thumbnails) {
+/* .swiper-pagination:not(.swiper-thumbnails) {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
-.swiper-pagination-bullet:not(.swiper-thumbnail) {
+/* .swiper-pagination-bullet:not(.swiper-thumbnail) {
   width: 1rem !important;
   height: .375rem !important;
   transition: width .2s ease-in-out, height .2s ease-in-out, background-color .2s ease-in-out !important;
   border-radius: 50rem !important;
   background-color: rgba(102, 98, 118, .4) !important;
   opacity: 1 !important;
-}
+} */
 
-.swiper-pagination-bullet-active:not(.swiper-thumbnail) {
+/* .swiper-pagination-bullet-active:not(.swiper-thumbnail) {
   background-color: #666276 !important;
-}
+} */
 
-.swiper-horizontal>.swiper-pagination-bullets:not(.swiper-thumbnails) .swiper-pagination-bullet-active,
+/* .swiper-horizontal>.swiper-pagination-bullets:not(.swiper-thumbnails) .swiper-pagination-bullet-active,
 .swiper-pagination-bullets:not(.swiper-thumbnails).swiper-pagination-horizontal .swiper-pagination-bullet-active {
   width: 2rem !important;
+} */
+
+.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal{
+  bottom: 0px !important;
 }
 
 .rounded-4 {

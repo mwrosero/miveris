@@ -427,9 +427,15 @@ async function recuperarContrasena(){
 
 async function aplicarFiltros(contexto) {
     const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').val();
+    const parentesco = $('input[name="listGroupRadios"]:checked').attr('parentesco');
+    console.log('parentesco', parentesco);
     let fechaDesde = $('#fechaDesde').val() || '';
     let fechaHasta = $('#fechaHasta').val() || '';
     const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
+    if (parentesco === 'YO') {
+
+        esAdmin = 'S';
+    }
     let estadoTratamiento;
 
     if ($('#pills-pendientes-tab').attr('aria-selected') === 'true') {
@@ -658,8 +664,22 @@ function roundToDraw(porcentajeAvanceTratamiento){
 
 // Función para capitalizar la primera letra
 function capitalizarPrimeraLetra(texto) {
-    return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
+    // Verificar si el texto es null o undefined
+    if (texto === null || texto === undefined) {
+        return '';
+    }
+
+    try {
+        // Intenta realizar la capitalización
+        return texto.charAt(0).toUpperCase() + texto.slice(1).toLowerCase();
+    } catch (error) {
+        // En caso de error, imprime el error en la consola y retorna una cadena vacía
+        console.error("Error al capitalizar:", error);
+        return '';
+    }
 }
+
+
 
 function capitalizarCadaPalabra(texto) {
     return texto.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
@@ -670,4 +690,8 @@ function capitalizarPalabrasUnidasPorGuion(cadena) {
     .split('-')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join('-');
+}
+
+function agregarEspacios(cadena) {
+    return cadena.replace(/\//g, ' / ');
 }

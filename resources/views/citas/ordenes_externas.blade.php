@@ -6,6 +6,10 @@ Mi Veris - Órdenes externas
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="nuevaOrdenExternaModal" tabindex="-1" aria-labelledby="nuevaOrdenExternaModalLabel" aria-hidden="true">
@@ -221,7 +225,7 @@ Mi Veris - Órdenes externas
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -243,18 +247,7 @@ Mi Veris - Órdenes externas
 
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
-
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
-                                checked>
-                                <span class="text-veris fw-medium">
-                                    ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
-                                    <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
-                                </span>
-                            </label>`;
-        divContenedor.append(elementoYo);
-
-        console.log('sss',data);
+        let elemento = '';
         data.forEach((Pacientes) => {
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
@@ -327,28 +320,31 @@ Mi Veris - Órdenes externas
     // btn si o no
     $('#btnSi').on('click', function(){
 
-        let params = {
-            "ordenExterna" :  "S" ,
-            "online" : "S"
-        }
-        let ulrParams = btoa(JSON.stringify(params));
+        let params = {}
+        // capturar los datos del paciente del filtro
+        params.online = 'S';
+        params.ordenExterna = 'S';
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+                    
+        let url = `/citas-elegir-paciente/`
 
 
         // recireccionar a registrar orden externa
-        window.location.href = `/citas-elegir-paciente/${ulrParams}`;
-
+        window.location.href = url + "{{ $tokenCita }}";
     });
 
     $('#btnNo').on('click', function(){
 
-        let params = {
-            "ordenExterna" :  "S" ,
-            "online" : "N"
-        }
-        let ulrParams = btoa(JSON.stringify(params));
-
+        let params = {}
+        // capturar los datos del paciente del filtro
+        params.online = 'N';
+        params.ordenExterna = 'S';
+        
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
         // window.location.href = `/citas-elegir-paciente/${ulrParams}`;
-        window.location.href = `/citas-elegir-paciente/${ulrParams}`;
+        window.location.href = `/citas-elegir-paciente/{{ $tokenCita }}`;
+
     });
 
     // determinar botones pagar o solicitar

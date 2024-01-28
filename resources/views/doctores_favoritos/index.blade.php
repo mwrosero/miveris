@@ -6,6 +6,10 @@ Mi Veris - Doctores favoritos
 <!-- css -->
 @endpush
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
 
     <!-- Modal convenios-->
@@ -100,6 +104,8 @@ Mi Veris - Doctores favoritos
     // llamada al dom 
      document.addEventListener("DOMContentLoaded", async function () {
         await obtenerDoctorFavorito();
+
+
     });
 
 
@@ -206,17 +212,32 @@ Mi Veris - Doctores favoritos
                 data.data.forEach((convenios) => {
                     console.log('convenioslrrtd', convenios);
                     let params = {};
-                    params.convenios = convenios;
+                    
                     params.online = dataOnline;
+                    params.convenio = convenios;
+                    params.convenio.origen = 'doctorFavorito';  
                     params.especialidad = {
                         codigoEspecialidad: dataCodigoEspecialidad,
+                        nombre: dataRel.nombreEspecialidad,
+                        imagen: dataRel.imagenEspecialidad,
                         codigoServicio: dataRel.codigoServicio,
+                        esOnline: dataRel.esOnline,
                         codigoPrestacion: dataRel.codigoPrestacion,
                         codigoSucursal: dataRel.codigoSucursal,
-                        nombre: dataRel.nombreEspecialidad,
+                        origen: 'doctorFavorito',
+                        
                     };
-                    params = btoa(JSON.stringify(params));
-                    let ruta = `/citas-elegir-fecha-doctor/${params}`;
+                    params.paciente = {
+                        numeroIdentificacion: '{{ Session::get('userData')->numeroIdentificacion }}',
+                        tipoIdentificacion:  '{{ Session::get('userData')->codigoTipoIdentificacion }}',
+                        nombrePaciente: '{{ Session::get('userData')->primerNombre }}',
+                        numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
+                        origen: 'doctorFavorito',
+                    }
+                    params.origen = 'doctorFavorito';
+                    localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+                    let url = `/citas-elegir-fecha-doctor/`;
+                    let ruta = url + "{{ $tokenCita }}";
                     elemento += `<a href="${ruta}" class="stretched-link">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">

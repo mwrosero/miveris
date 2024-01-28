@@ -32,12 +32,10 @@ Mi Veris - Citas - Receta médica
                                 indicaciones
                             </small>
                         </div>
-                        
                         <i class="fa-solid fa-bell ms-auto"></i>
                     </label>
                 </div>
             </div>
-            
         </div>
         
         <div class="offcanvas-footer px-4">
@@ -456,7 +454,7 @@ Mi Veris - Citas - Receta médica
                 elementos += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
                                 <div class="d-flex flex-column">
                                     <small class="text-veris fw-medium denominacion">
-                                        ${receta.denominacion}
+                                        ${agregarEspacios(receta.denominacion)}
                                     </small>
                                     <small class="text-veris fw-light concentracion" style="color: #3D4E66;">
                                         ${receta.concentracion} ${receta.formaFarmaceutica}

@@ -12,18 +12,15 @@ $data = json_decode(base64_decode($params));
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- offcanva detalle Receta médica -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="detalleRecetaMedica" aria-labelledby="detalleRecetaMedicaLabel">
-        <div class="offcanvas-header py-2">
-            <div class="d-flex justify-content-between">
-                <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close">
-                    <i class="bi bi-arrow-left"></i> <b class="fw-medium">Atrás</b>
-                </button>
-                <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
-            </div>
+        <div class="offcanvas-header justify-content-between align-items-center py-2">
+            <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
+            <button type="button" class="btn d-block d-md-none" data-bs-dismiss="offcanvas" aria-label="Close">
+                <i class="bi bi-arrow-left"></i><b class="fw-medium">Atrás</b>
+            </button>
         </div>
         
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
-            <small>Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
-            <br>
+            <small class="d-none">Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
             <div>
                 <div class="list-group gap-2 mb-3 verPdf">
                     <label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
@@ -38,17 +35,14 @@ $data = json_decode(base64_decode($params));
                                 indicaciones
                             </small>
                         </div>
-                        
                         <i class="fa-solid fa-bell ms-auto"></i>
                     </label>
                 </div>
             </div>
-            
         </div>
-        
-        <div class="offcanvas-footer py-2">
-            <div class="col-md-12 mb-3">
-                <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0 py-3 mr-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+        <div class="offcanvas-footer px-4">
+            <div class="col-md-12">
+                <button class="btn btn-primary-veris w-100 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
@@ -225,10 +219,10 @@ $data = json_decode(base64_decode($params));
 <script>
 
     // variables globales
-    let params = @json($data);
-    console.log('uu',params)
-    let codigoTratamiento = params.codigoTratamiento;
-    let porcentaje = params.porcentajeAvanceTratamiento;
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let codigoTratamiento = dataCita.tratamiento.codigoTratamiento;
+    let porcentaje = dataCita.tratamiento.porcentajeAvanceTratamiento;
     let secuenciaAtencion = [];
     let ultimoTratamiento = [];
     let idPaciente ;
@@ -260,7 +254,7 @@ $data = json_decode(base64_decode($params));
                 
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
-            let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
+            let elemento = `<h6 class="card-title fs--1 text-veris mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h6>
                                 <p class="fw-medium fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
                                 <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
@@ -474,7 +468,7 @@ $data = json_decode(base64_decode($params));
                 elementos += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
                                 <div class="d-flex flex-column">
                                     <small class="text-veris fw-medium denominacion">
-                                        ${receta.denominacion}
+                                        ${agregarEspacios(receta.denominacion)}
                                     </small>
                                     <small class="text-veris fw-light concentracion">
                                         ${receta.concentracion} ${receta.formaFarmaceutica}
@@ -640,7 +634,7 @@ $data = json_decode(base64_decode($params));
             }
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
 
-                dataFechas = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h5>
+                dataFechas = `<h6 class="card-title fs--1 text-veris mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
                                 <p class="fw-bold fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
                                 <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
@@ -742,8 +736,6 @@ $data = json_decode(base64_decode($params));
 
     function determinarCondicionesBotones(datosServicio, estado){
         let services = datosServicio;
-        console.log('datosServicio22', datosServicio);
-
         if (datosServicio.length == 0) {
             return `<div></div>`;
         }
@@ -769,52 +761,18 @@ $data = json_decode(base64_decode($params));
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
 
                                     if(datosServicio.modalidad == 'PRESENCIAL'){
-                                        let modalidad;
-                                        if (datosServicio.modalidad === 'ONLINE') {
-                                            modalidad = 'S';
-                                        } else if (datosServicio.modalidad === 'PRESENCIAL') {
-                                            modalidad = 'N';
-                                        }
-
-                                        let params = @json($data);
-                                        params.especialidad = {
-                                            codigoEspecialidad: datosServicio.codigoEspecialidad,
-                                            nombre : datosServicio.nombreServicio,
-                                            imagen : datosServicio.urlImagenTipoServicio,
-                                            esOnline : modalidad,
-                                            codigoServicio : datosServicio.codigoServicio,
-                                            codigoPrestacion : datosServicio.codigoPrestacion,
-                                            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
-                                        };
-                                        params.esOnline = modalidad;
-                                        params.convenio = ultimoTratamiento.datosConvenio;
-
-                                        let urlParams = btoa(JSON.stringify(params));
-                                        respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none">Agendar</a>`;
-                                    } else {
-                                        let modalidad;
-                                        if (datosServicio.modalidad === 'ONLINE') {
-                                            modalidad = 'S';
-                                        } else if (datosServicio.modalidad === 'PRESENCIAL') {
-                                            modalidad = 'N';
-                                        }
-
-                                        let params = @json($data);
-                                        params.especialidad = {
-                                            codigoEspecialidad: datosServicio.codigoEspecialidad,
-                                            nombre : datosServicio.nombreServicio,
-                                            imagen : datosServicio.urlImagenTipoServicio,
-                                            esOnline : modalidad,
-                                            codigoServicio : datosServicio.codigoServicio,
-                                            codigoPrestacion : datosServicio.codigoPrestacion,
-                                            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
-                                        };
-                                        params.online = modalidad;
-                                        params.convenio = ultimoTratamiento.datosConvenio;
                                         
-                                        let urlParams = btoa(JSON.stringify(params));
+                                        let ruta = '/citas-elegir-central-medica/';
+                                        let urlCompleta = ruta + "{{ $params }}"
+                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
+                                        
+                                         
+                                    } else {
+                                        
+                                        let ruta = '/citas-elegir-fecha-doctor/';
+                                        let urlCompleta = ruta + "{{ $params }}"
                                         // ir a fechas
-                                        respuestaAgenda += `<a href="/citas-elegir-fecha-doctor/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none">Agendar</a>`;
+                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
                                         
                                     }
                                 } else {
@@ -846,13 +804,10 @@ $data = json_decode(base64_decode($params));
                         if (datosServicio.permitePago == 'S'){
                             // mostrar boton de pagar
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
-                        } 
-                        if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                        }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
-                        } 
-                        
-                        if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                        } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                             // mostrar boton de informacion
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
                         } 
@@ -867,7 +822,7 @@ $data = json_decode(base64_decode($params));
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
                         
-                        respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
+                        respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
 
 
                         // condición para 'verResultados'
@@ -881,15 +836,15 @@ $data = json_decode(base64_decode($params));
                         //condición para 'aplicaSolicitud'
                         if (datosServicio.aplicaSolicitud == "S") {
                             respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                        } 
+                        } else
                         if (datosServicio.permitePago == "S"){
-                            let params = @json($data);
+                            let params = {}
                             params.idPaciente = idPaciente;
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
                             
-                            respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
+                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
                         }
                     } 
 
@@ -1038,6 +993,36 @@ $data = json_decode(base64_decode($params));
         datos = JSON.parse(datos);
 
         obtenerRecetaPdf(datos);
+    });
+
+    // setear los valores del agendamiento en localstorage
+
+    $(document).on('click', '.btn-agendar', function(){
+        let datosServicio = $(this).data('rel');
+        console.log('datosServicio', datosServicio);
+
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = 'S';
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = 'N';
+        }
+
+        dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+        };
+        dataCita.convenio = ultimoTratamiento.datosConvenio;
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     });
 
     
