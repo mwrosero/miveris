@@ -52,7 +52,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <div class="row g-3" id="listaPacientes">
             <div class="col-6 col-md-3">
                 <div class="card h-100">
-                    <div class="card-body text-center px-2">
+                    <div class="card-body text-center px-4">
                         <a href="{{route('familia')}}">
                             <div class="d-flex justify-content-center align-items-center mb-2">
                                 <div class="avatar me-2">

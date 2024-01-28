@@ -18,12 +18,12 @@ Mi Veris - Inicio
                             <div class="card mb-3">
                                 <a href="/mis-tratamientos">
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-9 col-md-auto">
+                                        <div class="col-7 col-md-7">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Lo que envió') }} <br> {{ __('mi doctor') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-3 col-md-auto">
+                                        <div class="col-5 col-md-4">
                                             <img src="{{ asset('assets/img/card/svg/paste.svg') }}" class="img-fluid" alt="paste">
                                         </div>
                                     </div>
@@ -34,12 +34,12 @@ Mi Veris - Inicio
                             <div class="card mb-3">
                                 <a href="/citas">
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-9 col-md-auto">
+                                        <div class="col-7 col-md-7">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Una nueva') }} <br> {{ __('cita médica') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-3 col-md-auto">
+                                        <div class="col-5 col-md-4">
                                             <img src="{{ asset('assets/img/card/svg/doctor.svg') }}" class="img-fluid" alt="doctor">
                                         </div>
                                     </div>
@@ -59,19 +59,19 @@ Mi Veris - Inicio
             <h6 class="fw-medium border-start-veris ps-3 fs-18">{{ __('Accesos rápidos') }}</h6>
         </div>
         <div class="position-relative mb-3">
-            <div class="swiper swiper-acceso-rapidos pt-3 pb-4 px-2 mx-n2">
+            <div class="swiper swiper-acceso-rapidos py-3 px-2 mx-n2">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div class="card">
                             <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal">
                                 <div class="row g-0 justify-content-between align-items-center">
-                                    <div class="col-9 col-md-auto">
+                                    <div class="col-7 col-md-7">
                                         <div class="card-body p-0 ps-2">
                                             <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendar cita médica') }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-3 col-md-auto">
-                                        <img src="{{ asset('assets/img/card/svg/doctora.svg') }}" class="img-fluid" alt="" >
+                                    <div class="col-5 col-md-auto">
+                                        <img src="{{ asset('assets/img/card/svg/doctora.svg') }}" class="img-fluid" alt=""  >
                                     </div>
                                 </div>
                             </a>
@@ -81,13 +81,13 @@ Mi Veris - Inicio
                         <div class="card">
                             <a href="{{route('home.promociones')}}">
                                 <div class="row g-0 justify-content-between align-items-center">
-                                    <div class="col-9 col-md-auto">
+                                    <div class="col-7 col-md-7">
                                         <div class="card-body p-0 ps-2">
                                             <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Comprar promociones') }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-3 col-md-auto">
-                                        <img src="{{ asset('assets/img/card/svg/comprar.svg') }}" class="img-fluid" alt="" >
+                                    <div class="col-5 col-md-auto">
+                                        <img src="{{ asset('assets/img/card/svg/comprar.svg') }}" class="img-fluid" alt=""  >
                                     </div>
                                 </div>
                             </a>
@@ -97,13 +97,13 @@ Mi Veris - Inicio
                         <div class="card">
                             <a href="/servicio-domicilio" >
                                 <div class="row g-0 justify-content-between align-items-center">
-                                    <div class="col-9 col-md-auto">
+                                    <div class="col-7 col-md-7">
                                         <div class="card-body p-0 ps-2">
                                             <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Solicitar servicios') }} <br> {{ __('a domicilio') }}</h6>
                                         </div>
                                     </div>
-                                    <div class="col-3 col-md-auto">
-                                        <img src="{{ asset('assets/img/card/svg/motociclista.svg') }}" class="img-fluid" alt="" >
+                                    <div class="col-5 col-md-auto">
+                                        <img src="{{ asset('assets/img/card/svg/motociclista.svg') }}" class="img-fluid" alt=""  >
                                     </div>
                                 </div>
                             </a>
@@ -122,8 +122,8 @@ Mi Veris - Inicio
             <a href="{{route('tratamientos')}}"
             class="fs--2" style="display: visible;" id="verTodosTratamientos">Ver todos</a>
         </div>
-        <div class="position-relative mb-3" id="contenedorTratamientosHomePrincipal">
-            <div class="swiper swipertratamientos pt-3 pb-4 px-2 mx-n2">
+        <div class="mb-3" id="contenedorTratamientosHomePrincipal">
+            <div class="swiper swipertratamientos py-3 px-2 mx-n2">
                 <div class="swiper-wrapper" id="contenedorTratamientoHome">
                     <!-- Puedes agregar tratamientos dinámicamente aquí desde JavaScript -->
                 </div>
@@ -334,8 +334,8 @@ Mi Veris - Inicio
 
             data.forEach((tratamientos) => {
                 let elemento = `<div class="swiper-slide">
-                                    <div class="card">
-                                        <div class="card-body p-2">
+                                    <div class="card h-100">
+                                        <div class="card-body p-3">
                                             <div class="row gx-0 justify-content-between align-items-center mb-3">
                                                 <div class="col-9">
                                                     <h6 class="card-title text-primary-veris mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
@@ -359,7 +359,7 @@ Mi Veris - Inicio
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="list-group list-group-checkable d-grid gap-2 border-0 mb-3">`;
+                                            <div class="list-group list-group-checkable d-grid align-items-center h-50 gap-2 border-0">`;
 
                 // Bucle anidado para detalleTratamiento
                 tratamientos.detallesTratamiento.forEach((detalle) => {
@@ -371,7 +371,7 @@ Mi Veris - Inicio
                     // convertir objeto a base64
                     let paramsBase64 = btoa(JSON.stringify(params));
 
-                    elemento += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-3" for="">
+                    elemento += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 p-2 my-auto">
                                     <div class="d-flex gap-2 align-items-center">
                                         <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
                                             <img class="rounded-circle" src=${quitarComillas(detalle.urlImagenTipoServicio)}  width="26" alt="icono">

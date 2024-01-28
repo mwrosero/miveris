@@ -183,11 +183,17 @@ html:not([dir="rtl"]) .border-start-veris {
   border-color: transparent;
   background: #E9F7FF !important;
 }
-
-.swiper-acceso-rapidos {
+.swiper{
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide{
+  height: auto !important;
+}
+/* .swiper-acceso-rapidos {
   width: 100%;
   overflow: hidden !important;
-}
+} */
 
 .btn-prev::after,
 .swiper-button-prev::after {
