@@ -139,7 +139,7 @@
             console.log('elemento',elemento);
 
             var swiper = new Swiper('.swiper-acceso-rapidos', {
-                slidesPerView: 1,
+                // slidesPerView: 1,
                 spaceBetween: 8,
                 navigation: {
                     nextEl: '.btn-next',
@@ -156,15 +156,15 @@
                 breakpoints: {
                     300: {
                         slidesPerView: 2,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     768: {
                         slidesPerView: 2,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                     1024: {
                         slidesPerView: 3,
-                        spaceBetween: 8,
+                        // spaceBetween: 8,
                     },
                 },
             });

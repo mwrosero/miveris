@@ -110,12 +110,21 @@ Mi Veris - Politica-privacidad-datos
                                 Ingrese su segundo apellido.
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <label for="fechaNacimiento" class="form-label fw-bold">Fecha de nacimiento</label>
                             <input type="text" class="form-control border-desaturated" name="fechaNacimiento" id="fechaNacimiento" required readonly />
                             <div class="invalid-feedback">
                                 Ingrese su fecha de naciemiento.
                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="sexo" class="form-label fw-bold">Sexo</label>
+                            <select class="form-select border-desaturated custom-select-disabled" name="sexo" id="sexo" required disabled >
+                                <!-- Opciones del select aquí -->
+                                <option value="0">Elegir</option>
+                                <option value="f">Femenino</option>
+                                <option value="m">Masculino</option>
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación</label>

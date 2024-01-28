@@ -664,3 +664,10 @@ function capitalizarPrimeraLetra(texto) {
 function capitalizarCadaPalabra(texto) {
     return texto.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 }
+
+function capitalizarPalabrasUnidasPorGuion(cadena) {
+    return cadena
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join('-');
+}
