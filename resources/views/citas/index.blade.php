@@ -4,9 +4,8 @@ Mi Veris - Citas
 @endsection
 @section('content')
 @php
-    $paramsPresencial = urlencode(base64_encode(json_encode(["online" => "N"])));
-    $paramsOnline = urlencode(base64_encode(json_encode(["online" => "S"])));
-    
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
@@ -21,7 +20,8 @@ Mi Veris - Citas
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
                             <div class="card mb-3">
-                                <a href="{{route('citas.listaPacientes',['params' => $paramsPresencial])}}">
+                                
+                                <a  id="cita-presencial" >
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-7 col-md-7">
                                             <div class="card-body p-0 ps-2">
@@ -38,7 +38,7 @@ Mi Veris - Citas
 
                         <div class="col-6 col-lg-6">
                             <div class="card mb-3">
-                                <a href="{{route('citas.listaPacientes',['params' => $paramsOnline])}}">
+                                <a  id="cita-virtual">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-7 col-md-7">
                                             <div class="card-body p-0 ps-2">
@@ -218,6 +218,13 @@ Mi Veris - Citas
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerPPD();
+
+        $('body').on('click', '.nextStep', function(){
+            let url = $(this).attr('url-rel');
+            let data = $(this).attr('data-rel');
+            localStorage.setItem('cita-{{ $tokenCita }}', data);
+            location.href = url + "{{ $tokenCita }}";
+        })
     });
 
     async function obtenerPPD(){
@@ -252,5 +259,32 @@ Mi Veris - Citas
             })
         }*/
     }
+
+    // setear los parametros de la cita presencial
+    $('#cita-presencial').on('click', function(){
+
+        let params = {}
+        params.online = 'N';
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+        // redireccionar a la pagina de citas
+        window.location.href = "/citas-elegir-paciente/" + "{{ $tokenCita }}";
+    });
+
+
+    // setear los parametros de la cita virtual
+
+    $('#cita-virtual').on('click', function(){
+
+        let params = {}
+        params.online = 'S';
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+        // redireccionar a la pagina de citas
+        window.location.href = "/citas-elegir-paciente/" + "{{ $tokenCita }}";
+    });
+
 </script>
 @endpush

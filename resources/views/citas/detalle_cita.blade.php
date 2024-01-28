@@ -6,19 +6,19 @@ Mi Veris - Citas - Revisa tus datos
 @php
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd($data);
-$partesHora = explode(':', $data->horario->horaInicio);
-$hora = (int)$partesHora[0];
-// Determinar si es AM o PM
-if ($hora >= 12) {
-    $meridiano = "PM";
-} else {
-    $meridiano = "AM";
-}
+// $partesHora = explode(':', $data->horario->horaInicio);
+// $hora = (int)$partesHora[0];
+// // Determinar si es AM o PM
+// if ($hora >= 12) {
+//     $meridiano = "PM";
+// } else {
+//     $meridiano = "AM";
+// }
 
-$medPayPlan = null;
-if(isset($data->convenio->informacionExternaPlan)){
-    $medPayPlan = $data->convenio->informacionExternaPlan;
-}
+// $medPayPlan = null;
+// if(isset($data->convenio->informacionExternaPlan)){
+//     $medPayPlan = $data->convenio->informacionExternaPlan;
+// }
 
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
@@ -49,13 +49,13 @@ if(isset($data->convenio->informacionExternaPlan)){
                         <h5 class="text-primary-veris fw-bold m-1">{{ __('Detalles de la cita') }}</h5>
                     </div>
                     <div class="card-body px-2">
-                        <div class="mx-1 mt-3">
-                            <p class="text-primary-veris fw-bold mb-0">{{ $data->especialidad->nombre }}</p>
+                        <div class="mx-1 mt-3" id="contentDetalleCita">
+                            {{-- <p class="text-primary-veris fw-bold mb-0"  id="nombreEspecialidad"></p>
                             <p class="fw-bold fs--1 mb-0">{{ isset($data->central) ? $data->central->nombreSucursal : 'VIRTUAL' }}</p>
                             <p class="fs--2 mb-0">{{ $data->horario->dia2 }} <b class="text-normal text-primary-veris fw-normal">{{ $data->horario->horaInicio }} {{ $meridiano }}</b></p>
                             <p class="fs--2 mb-0">Dr(a) {{ $data->horario->nombreMedico }}</p>
                             <p class="fs--2 mb-0">{{ $data->paciente->nombrePaciente }}</p>
-                            <p class="fs--2 mb-0">{{ isset($data->convenio->nombreConvenio) ? $data->convenio->nombreConvenio : '' }}</p>
+                            <p class="fs--2 mb-0">{{ isset($data->convenio->nombreConvenio) ? $data->convenio->nombreConvenio : '' }}</p> --}}
                         </div>
                     </div>
                     <div class="card-footer px-2 pb-2" id="msg-cita">
@@ -71,26 +71,76 @@ if(isset($data->convenio->informacionExternaPlan)){
 @endsection
 @push('scripts')
 <script>
-    let dataCita = @json($data);
+
+    // variables globales
+
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let online = dataCita?.online;
+    let nombreEspecialidad = dataCita.especialidad.nombre;
+    let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
+    let numeroIdentificacion = dataCita.paciente.numeroIdentificacion;
+    let codigoEspecialidad = dataCita.especialidad.codigoEspecialidad;
+    let secuenciaAfiliado = dataCita.convenio.secuenciaAfiliado || '' ;
+    let codigoConvenio = dataCita.convenio.codigoConvenio;
+    let idIntervalo = dataCita.horario.idIntervalo;
+    let porcentajeDescuentos = dataCita.horario.porcentajeDescuento;
+    let medPayPlan = dataCita.convenio.informacionExternaPlan;
+    let permitePago = dataCita.convenio.permitePago;
+    let permiteReserva = dataCita.convenio.permiteReserva;
+    let dia2 = dataCita.horario.dia2;
+    let idCliente = dataCita.convenio.idCliente;
+    let rutaImagenConvenio = dataCita.convenio.rutaImagenConvenio;
+    let horaInicio = dataCita.horario.horaInicio;
+
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerPrecio();
+        llenarDataDetallesCitas();
     });
+
+    // llenar los datos en contentDetalleCita con los datos de dataCita
+    function llenarDataDetallesCitas(){
+        let elem = ``;
+        elem += `<p class="text-primary-veris fw-bold mb-0"  id="nombreEspecialidad">${nombreEspecialidad}</p>
+        <p class="fw-bold fs--1 mb-0">${dataCita.central.nombreSucursal}</p>
+        <p class="fs--2 mb-0">${dataCita.horario.dia2} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} ${determinarMeridiano(horaInicio)}</b></p>
+        <p class="fs--2 mb-0">Dr(a) ${dataCita.horario.nombreMedico}</p>
+        <p class="fs--2 mb-0">${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}</p>
+        <p class="fs--2 mb-0">${dataCita.convenio.nombreConvenio}</p>`;
+        $('#contentDetalleCita').html(elem);
+
+        if(dataCita.convenio.codigoConvenio){
+            $('#contentLinkPago').removeClass('d-none');
+        }
+
+    }
+
+    // determinar si es PM o AM segun horaInicio
+    function determinarMeridiano(horaInicio){
+        let partesHora = horaInicio.split(':');
+        let hora = parseInt(partesHora[0]);
+        let meridiano = "AM";
+        if (hora >= 12) {
+            meridiano = "PM";
+        }
+        return meridiano;
+    }
 
     // consultar grupo familiar
     async function obtenerPrecio() {
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion={{ $data->paciente->tipoIdentificacion}}&numeroIdentificacion={{ $data->paciente->numeroIdentificacion}}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad}}&secuenciaAfiliado={{ isset($data->convenio->secuenciaAfiliado) ? $data->convenio->secuenciaAfiliado : '' }}&codigoConvenio={{ isset($data->convenio->codigoConvenio) ? $data->convenio->codigoConvenio : '' }}&idIntervalos={{ $data->horario->idIntervalo }}&esOnline={{ $data->online }}&porcentajeDescuento={{ $data->horario->porcentajeDescuento }}`
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${codigoEspecialidad}&secuenciaAfiliado=${secuenciaAfiliado}&codigoConvenio=${codigoConvenio}&idIntervalos=${idIntervalo}&esOnline=${online}&porcentajeDescuento=${porcentajeDescuentos}`
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
         args["data"] = JSON.stringify({
-            "fechaSeleccionada": "{{ $data->horario->dia2 }}",
-            "idCliente": "{{ $data->convenio->idCliente }}",
+            "fechaSeleccionada": dia2,
+            "idCliente": idCliente,
             "estaPagada": "N",
             "esEmbarazada": "N",
-            "medPayPlan": @JSON($medPayPlan)
+            "medPayPlan": medPayPlan
         });
         const data = await call(args);
         
@@ -99,7 +149,7 @@ if(isset($data->convenio->informacionExternaPlan)){
             let porcentajeDescuentoCopago = porcentajeDescuento;
             let subtotalCopago = valor;
             let valorTotalCopago = valorCanalVirtual;
-            let params = @json($data);
+            let params = {};
 
             console.log(porcentajeDescuentoCopago,subtotalCopago,valorTotalCopago)
             let elem = ``;
@@ -108,12 +158,10 @@ if(isset($data->convenio->informacionExternaPlan)){
                 descuentoLabel = `*Se aplicó un ${porcentajeDescuentoCopago}% de descuento por pago en app`;
             }
 
-            if(params.convenio.codigoConvenio){
+            if(codigoConvenio){
                 elem += `<div class="col-5">
                     <div class="text-center">
-                        @if(isset($data->convenio->rutaImagenConvenio))
-                        <img src="{{ $data->convenio->rutaImagenConvenio }}" width="86" alt="">
-                        @endif
+                        <img src="${rutaImagenConvenio}" alt="" class="img-fluid" width="86" height="">
                     </div>
                 </div>
                 <div class="col-5 text-end">`;
@@ -142,25 +190,25 @@ if(isset($data->convenio->informacionExternaPlan)){
 
             let elemMsg = ``;
 
-            if({{ $data->horario->porcentajeDescuento }} == 0 && "{{ $data->convenio->permiteReserva }}" == "S" && "{{ $data->convenio->permitePago }}" == "S" ){
+            if(porcentajeDescuentos == 0 && permiteReserva == "S" && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
                         <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
                     </div>`;
             }
-            if({{ $data->horario->porcentajeDescuento }} > 0 && "{{ $data->convenio->permitePago }}" == "S" ){
+            if(porcentajeDescuentos > 0 && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
                         <i class="bi bi-info-circle-fill h4 mb-0 mx-3 text-warning"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage">Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.</p>
                     </div>`;
             }
-            if("{{ $data->online }}" == "S"){
+            if(online == "S"){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
                         <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
                     </div>`;
             }
-            if("{{ $data->convenio->permitePago }}" == "N"){
+            if(permitePago == "N"){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
                         <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
@@ -170,10 +218,9 @@ if(isset($data->convenio->informacionExternaPlan)){
             
             params.precio = data.data;
             dataCita.precio = data.data;
-            await reservarCita();
-            /*let urlParams = btoa(JSON.stringify(params));
+            let urlParams = btoa(JSON.stringify(params));
             $('#btn-pagar').attr('href','/citas-datos-facturacion/'+urlParams);
-            $('#btn-pagar').removeClass('d-none');*/
+            $('#btn-pagar').removeClass('d-none');
         }
         return data;
     }
@@ -248,15 +295,7 @@ if(isset($data->convenio->informacionExternaPlan)){
 
         if (data.code == 200){
             dataCita.reserva = data.data;
-            if(data.data.permitePago == "S"){
-                let urlParams = btoa(JSON.stringify(params));
-                $('#btn-pagar').attr('href','/citas-datos-facturacion/'+urlParams.replace(/\//g, '|'));
-                $('#btn-pagar').removeClass('d-none');
-            }else{
-                let urlParams = btoa(JSON.stringify(params));
-                $('#btn-pagar').attr('href','/cita-agendada/'+urlParams.replace(/\//g, '|'));
-                $('#btn-pagar').removeClass('d-none');
-            }
+            await crearPreTransaccion();
         }else{
             alert(data.message);
         }

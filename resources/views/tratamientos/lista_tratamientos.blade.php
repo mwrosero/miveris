@@ -219,10 +219,10 @@ $data = json_decode(base64_decode($params));
 <script>
 
     // variables globales
-    let params = @json($data);
-    console.log('uu',params)
-    let codigoTratamiento = params.codigoTratamiento;
-    let porcentaje = params.porcentajeAvanceTratamiento;
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let codigoTratamiento = dataCita.tratamiento.codigoTratamiento;
+    let porcentaje = dataCita.tratamiento.porcentajeAvanceTratamiento;
     let secuenciaAtencion = [];
     let ultimoTratamiento = [];
     let idPaciente ;
@@ -736,8 +736,6 @@ $data = json_decode(base64_decode($params));
 
     function determinarCondicionesBotones(datosServicio, estado){
         let services = datosServicio;
-        console.log('datosServicio22', datosServicio);
-
         if (datosServicio.length == 0) {
             return `<div></div>`;
         }
@@ -763,52 +761,18 @@ $data = json_decode(base64_decode($params));
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
 
                                     if(datosServicio.modalidad == 'PRESENCIAL'){
-                                        let modalidad;
-                                        if (datosServicio.modalidad === 'ONLINE') {
-                                            modalidad = 'S';
-                                        } else if (datosServicio.modalidad === 'PRESENCIAL') {
-                                            modalidad = 'N';
-                                        }
-
-                                        let params = @json($data);
-                                        params.especialidad = {
-                                            codigoEspecialidad: datosServicio.codigoEspecialidad,
-                                            nombre : datosServicio.nombreServicio,
-                                            imagen : datosServicio.urlImagenTipoServicio,
-                                            esOnline : modalidad,
-                                            codigoServicio : datosServicio.codigoServicio,
-                                            codigoPrestacion : datosServicio.codigoPrestacion,
-                                            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
-                                        };
-                                        params.esOnline = modalidad;
-                                        params.convenio = ultimoTratamiento.datosConvenio;
-
-                                        let urlParams = btoa(JSON.stringify(params));
-                                        respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none">Agendar</a>`;
-                                    } else {
-                                        let modalidad;
-                                        if (datosServicio.modalidad === 'ONLINE') {
-                                            modalidad = 'S';
-                                        } else if (datosServicio.modalidad === 'PRESENCIAL') {
-                                            modalidad = 'N';
-                                        }
-
-                                        let params = @json($data);
-                                        params.especialidad = {
-                                            codigoEspecialidad: datosServicio.codigoEspecialidad,
-                                            nombre : datosServicio.nombreServicio,
-                                            imagen : datosServicio.urlImagenTipoServicio,
-                                            esOnline : modalidad,
-                                            codigoServicio : datosServicio.codigoServicio,
-                                            codigoPrestacion : datosServicio.codigoPrestacion,
-                                            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
-                                        };
-                                        params.online = modalidad;
-                                        params.convenio = ultimoTratamiento.datosConvenio;
                                         
-                                        let urlParams = btoa(JSON.stringify(params));
+                                        let ruta = '/citas-elegir-central-medica/';
+                                        let urlCompleta = ruta + "{{ $params }}"
+                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
+                                        
+                                         
+                                    } else {
+                                        
+                                        let ruta = '/citas-elegir-fecha-doctor/';
+                                        let urlCompleta = ruta + "{{ $params }}"
                                         // ir a fechas
-                                        respuestaAgenda += `<a href="/citas-elegir-fecha-doctor/${urlParams}" class="btn btn-sm btn-primary-veris shadow-none">Agendar</a>`;
+                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
                                         
                                     }
                                 } else {
@@ -840,13 +804,10 @@ $data = json_decode(base64_decode($params));
                         if (datosServicio.permitePago == 'S'){
                             // mostrar boton de pagar
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
-                        } 
-                        if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                        }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
-                        } 
-                        
-                        if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                        } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                             // mostrar boton de informacion
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
                         } 
@@ -861,7 +822,7 @@ $data = json_decode(base64_decode($params));
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
                         
-                        respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
+                        respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
 
 
                         // condición para 'verResultados'
@@ -875,15 +836,15 @@ $data = json_decode(base64_decode($params));
                         //condición para 'aplicaSolicitud'
                         if (datosServicio.aplicaSolicitud == "S") {
                             respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                        } 
+                        } else
                         if (datosServicio.permitePago == "S"){
-                            let params = @json($data);
+                            let params = {}
                             params.idPaciente = idPaciente;
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
                             
-                            respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
+                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
                         }
                     } 
 
@@ -1032,6 +993,36 @@ $data = json_decode(base64_decode($params));
         datos = JSON.parse(datos);
 
         obtenerRecetaPdf(datos);
+    });
+
+    // setear los valores del agendamiento en localstorage
+
+    $(document).on('click', '.btn-agendar', function(){
+        let datosServicio = $(this).data('rel');
+        console.log('datosServicio', datosServicio);
+
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = 'S';
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = 'N';
+        }
+
+        dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+        };
+        dataCita.convenio = ultimoTratamiento.datosConvenio;
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     });
 
     
