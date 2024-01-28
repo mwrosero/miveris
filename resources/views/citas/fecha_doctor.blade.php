@@ -46,6 +46,23 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         </div>
     </div>
 
+    <! -- modal no hay medicos disponibles -->
+    <div class="modal fade" id="sinMedicosDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinMedicosDisponiblesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body p-2">
+                    <div class="text-center">
+                        <h1 class="modal-title fs-5 mb-3" id="sinMedicosDisponiblesLabel">Veris</h1>
+                        <p class="mb-0">No tiene médicos disponibles.</p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center p-2 pt-3">
+                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elige fecha y doctor') }}</h5>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -103,6 +120,31 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @push('scripts')
 <script>
+
+
+    // Variables globales
+
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let dataOrigen = dataCita?.origen;  
+    let online = dataCita?.online;
+    let codigoEspecialidad = dataCita?.especialidad.codigoEspecialidad;
+
+    let codigoSucursal;
+    if(dataOrigen == 'central'){
+        codigoSucursal = dataCita?.central.codigoSucursal;
+    }else if (dataOrigen == 'doctorFavorito'){
+        codigoSucursal = dataCita?.especialidad.codigoSucursal;
+    } else {
+        codigoSucursal = ""
+    }
+    let codigoServicio = dataCita?.especialidad.codigoServicio || ' ';
+    let codigoPrestacion = dataCita?.especialidad.codigoPrestacion || ' ';
+    let nombreSucursal = dataCita?.central?.nombreSucursal || ' ';
+    let nombreEspecialidad = dataCita?.especialidad.nombre || ' ';
+    
+
+
     let _fechaSeleccionada;
     const daysOfWeek = ["D", "L", "M", "M", "J", "V", "S"];
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -209,6 +251,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let data = $(this).attr("data-rel");
             consultarDisponibilidadMedico(data);
         })
+        // Listener para seleccionar un horario
+        $('body').on('click', '.card-horario', function () {
+            let horario = $(this).data('horario');
+            guardarHorarioEnDataCita(horario);
+        });
     });
 
     async function consultarFechasDisponibles(){
@@ -216,7 +263,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoSucursal={{ isset($data->central) ? $data->central->codigoSucursal : '' }}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -243,7 +290,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function consultarMedicos(fechaSeleccionada){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoSucursal={{ isset($data->central) ? $data->central->codigoSucursal : '' }}&codigoServicio={{ $data->especialidad->codigoServicio }}&codigoPrestacion={{ $data->especialidad->codigoPrestacion }}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -262,8 +309,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </div>
                                 <div class="col-9">
                                     <h6 class="fw-bold mb-0">Dr(a) ${medico.nombreMedico}</h6>
-                                    <p class="text-primary-veris fw-bold fs--2 mb-0">{{ isset($data->central) ? $data->central->nombreSucursal : 'VIRTUAL' }}</p>
-                                    <p class="fs--2 mb-0">{{ $data->especialidad->nombre }}</p>
+                                    <p class="text-primary-veris fw-bold fs--2 mb-0">${nombreSucursal}</p>
+                                    <p class="fs--2 mb-0">${nombreEspecialidad}</p>
                                     <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">${medico.disponibilidad}</b></p>
                                     <p class="fs--2 mb-0">Horarios: <b class="fw-normal text-primary-veris" id="horarios">${medico.horario}</b></p>
                                 </div>
@@ -277,6 +324,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>`;
                 })
             }else{
+                $('#sinMedicosDisponibles').modal('show');
+                /* Mostrar la modal cuando No hay médicos disponibles. */
+                console.log("No hay médicos disponibles");
                 
             }
 
@@ -292,23 +342,25 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         listaHorariosMedico.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoSucursal={{ isset($data->central) ? $data->central->codigoSucursal : '' }}&codigoServicio={{ $data->especialidad->codigoServicio }}&codigoPrestacion={{ $data->especialidad->codigoPrestacion }}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log(data);
+        console.log(7,data);
 
         if (data.code == 200){
             let elemento = '';
 
             if(data.data.length > 0){
                 data.data.forEach((horario) => {
-                    let params = @json($data);
+                    let params = {};
                     //params.medico = medico;
-                    params.horario = horario;
+                    dataCita.horario = horario;
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    elemento += `<div class="card card-body rounded-3 position-relative py-2 mb-2">
-                        <a href="/citas-revisa-tus-datos/${urlParams}">`;
+                    let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
+                    elemento += `<div class="card card-horario card-body rounded-3 position-relative py-2 mb-2 btn-disponibilidad-medico
+                    " data-horario='${JSON.stringify(horario)}'>
+                    <a href="${ruta}">`;
                     if(horario.porcentajeDescuento > 0){
                         elemento += `<div class="badge-discount-top fs--3 fw-bold"><span>-${horario.porcentajeDescuento}%</span></div>`
                     }
@@ -327,6 +379,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         return data;
+    }
+
+    function guardarHorarioEnDataCita(horario) {
+        dataCita.horario = horario;
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>
 @endpush

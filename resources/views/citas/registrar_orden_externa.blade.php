@@ -73,7 +73,8 @@ $data1 = json_decode($data);
                                 <input type="text" class="form-control bg-neutral" name="conveio" id="conveio" placeholder="Convenio" disabled />
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary-veris w-100" type="submit">Siguiente</button>
+                                <button class="btn btn-primary-veris w-100" type="submit" id="botonSiguiente">Siguiente</button>
+
                             </div>
                         </form>
                     </div>
@@ -140,10 +141,24 @@ $data1 = json_decode($data);
             btnEliminar.innerHTML = '<i class="bi bi-trash"></i>';
             btnEliminar.addEventListener('click', function() {
                 event.preventDefault();
-                this.parentNode.remove();
-                inputUpload.value = '';
-                totalArchivos--; // Disminuir el contador
+                this.parentNode.remove(); // Elimina el div del archivo
+                totalArchivos--; // Disminuye el contador de archivos
+
+                // Actualiza la lista de archivos en el input
+                var dataTransfer = new DataTransfer();
+                for (var i = 0; i < inputUpload.files.length; i++) {
+                    if (inputUpload.files[i].name !== archivo.name) {
+                        dataTransfer.items.add(inputUpload.files[i]);
+                    }
+                }
+                inputUpload.files = dataTransfer.files;
+
+                // Verifica si aún hay archivos después de la eliminación
+                if (inputUpload.files.length === 0) {
+                    $('#botonSiguiente').prop('disabled', true);
+                }
             });
+
 
             archivoDiv.appendChild(btnEliminar);
             fileListContainer.appendChild(archivoDiv);
@@ -179,27 +194,35 @@ $data1 = json_decode($data);
 <script>
     // variables globales
     let params = @json($data1);
-    
-    console.log('params', params);
-    // recuperar variables del path
-    let tipoIdentificacion = params.paciente.tipoIdentificacion
-    let numeroIdentificacion = params.paciente.numeroIdentificacion;
-    let convenio = params.convenio;
-    let codigoConvenio = params.convenio.codigoConvenio;
-    let nombreConvenio = params.convenio.nombreConvenio;
-    let datosPaciente = [];
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
 
-    
+
+
+
+    let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
+    let numeroIdentificacion = dataCita.paciente.numeroIdentificacion;
+    let nombrePaciente = dataCita.paciente.primerNombre;
+    let convenio = dataCita?.convenio;
+    let codigoConvenio = dataCita?.convenio.codigoConvenio;
+    let nombreConvenio = dataCita?.convenio.nombreConvenio;
+    let direccion = dataCita?.paciente.direccion;
+    let datosPaciente = [];
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function() {
         
-        // consultar datos del usuario
-        await consultarDatosUsuario();
         // ocultar convenio si es null
-        if (convenio == null) {
+        console.log('convenio', convenio);
+        if (convenio.length == 0) {
             $('#conveio').parent().hide();
         }
+        
+        llenarDatos();
+
+        $('#botonSiguiente').prop('disabled', true);
+
+        
 
     });
 
@@ -235,28 +258,6 @@ $data1 = json_decode($data);
         return data;
     }
 
-    // consultar los datos del usuario
-    async function consultarDatosUsuario() {
-        let args = [];
-        let canalOrigen = _canalOrigen;
-        args["endpoint"] = api_url + `/digitalestest/v1/pacientes/${numeroIdentificacion}?tipoIdentificacion=${tipoIdentificacion}&canalOrigen=${canalOrigen}`
-        args["method"] = "GET";
-        args["showLoader"] = true;
-        const data = await call(args);
-        console.log('dataRERER', data);
-        if (data.code == 200) {
-            // llenar los datos del paciente en el formulario
-
-            datosPaciente = data.data;
-            $('#paciente').val(datosPaciente.nombreCompleto);
-            $('#numeroIdentificacion').val(datosPaciente.numeroIdentificacion);
-            $('#email').val(datosPaciente.mail);
-            $('#telefono').val(datosPaciente.telefonoMovil);
-            $('#conveio').val(nombreConvenio);
-
-        }
-        return data;
-    }
 
     // crear solicitud de orden externa
 
@@ -273,11 +274,11 @@ $data1 = json_decode($data);
         
 
         let formData = new FormData();
-        formData.append("tipoIdentificacionPaciente", datosPaciente.codigoTipoIdentificacion);
-        formData.append("identificacionPaciente", datosPaciente.numeroIdentificacion);
-        formData.append("nombrePaciente", datosPaciente.nombreCompleto);
-        formData.append("direccion", datosPaciente.direccion);
-        formData.append("telefono", datosPaciente.telefonoMovil);
+        formData.append("tipoIdentificacionPaciente", tipoIdentificacion);
+        formData.append("identificacionPaciente",  numeroIdentificacion);
+        formData.append("nombrePaciente", nombrePaciente);
+        formData.append("direccion", direccion);
+        formData.append("telefono", telefono);
         formData.append("files", files);
         args["data"] = formData;
 
@@ -290,7 +291,8 @@ $data1 = json_decode($data);
             // mostrar modal de exito
             $('#mensajeOrdenExitosa').modal('show');
             $('#btnEntendido').on('click', function(){
-                // window.location.href = "{{ route('citas') }}";
+                // redireccionar a ordenes externas
+                window.location.href = `/ordenes-externas`;
             });
         }
         return data;
@@ -301,9 +303,45 @@ $data1 = json_decode($data);
 
     $("form").on('submit', async function(e) {
         e.preventDefault(); 
+
         await crearSolicitudLaboratorioDomicilio();
     });
     
+
+    // llenar datos con localstorage
+    function llenarDatos() {
+        if (dataCita) {
+            $('#paciente').val(
+                (dataCita.paciente.primerNombre || '') + ' ' +
+                (dataCita.paciente.segundoNombre || '') + ' ' +
+                (dataCita.paciente.primerApellido || '') + ' ' +
+                (dataCita.paciente.segundoApellido || '')
+            );
+
+            $('#numeroIdentificacion').val(dataCita.paciente.numeroIdentificacion);
+            $('#email').val(dataCita.paciente.correo);
+            $('#telefono').val(dataCita.paciente.telefono);
+            $('#conveio').val(dataCita.convenio.codigoConvenio);
+
+
+
+        }
+    }
+
+
+    // habilitar boton siguiente si hay datos en el formulario y hay archivos cargados 
+    $('#upload').on('change', function(){
+        if($('#upload').val() != '' && $('#email').val() != '' && $('#telefono').val() != ''){
+            $('#botonSiguiente').prop('disabled', false);
+        }else{
+            $('#botonSiguiente').prop('disabled', true);
+        }
+    });
+
+
+
+
+
 
 
 

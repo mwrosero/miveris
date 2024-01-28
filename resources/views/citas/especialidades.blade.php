@@ -60,6 +60,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @push('scripts')
 <script>
     // variables globales
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let online = dataCita.online;
+    let numeroPaciente = dataCita.paciente.numeroPaciente;
+    let convenio = dataCita.convenio.codigoConvenio || ' ';
+
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
@@ -75,11 +81,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}`
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log(data);
+        console.log(77,data);
 
         if (data.code == 200){
             let elemento = '';
@@ -88,7 +94,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 listaEspecialidades.empty();
 
                 data.data.forEach((especialidad) => {
-                    let params = @json($data);
+                    let params = {}
                     params.especialidad = especialidad;
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let path_url = "citas-elegir-central-medica";
@@ -129,24 +135,28 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function consultarSiEsTratamiento(dataEspecialidad){
         let especialidad = JSON.parse(dataEspecialidad);
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online={{ $data->online }}&idPaciente={{ $data->paciente->numeroPaciente }}&codigoServicio=${ especialidad.codigoServicio }&codigoPrestacion=${ especialidad.codigoPrestacion }&codigoConvenio={{ isset($data->convenio) ? $data->convenio->codigoConvenio : '' }}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&idPaciente=${numeroPaciente}
+        &codigoServicio=${ especialidad.codigoServicio }&codigoPrestacion=${ especialidad.codigoPrestacion }&codigoConvenio=${ convenio }`;
+        
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        let params = @json($data);
-        params.especialidad = especialidad;
+        let params = {}
+        dataCita.especialidad = especialidad;
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
 
         let path_url = "/citas-elegir-central-medica";
-        if(params.online == "S"){
+        if(online == "S"){
             path_url = "/citas-elegir-fecha-doctor";
         }
         
         if (data.code == 200 && data.data != null){
             let urlParamsNo = encodeURIComponent(btoa(JSON.stringify(params)));
-            $("#btn-no-tratamiento").attr("href",path_url+"/"+urlParamsNo);
+            $("#btn-no-tratamiento").attr("href",path_url+"/"+ "{{ $params }}" );
             params.tratamiento = data.data;
             let urlParamsSi = encodeURIComponent(btoa(JSON.stringify(params)));
-            $("#btn-si-tratamiento").attr("href",path_url+"/"+urlParamsSi);
+            $("#btn-si-tratamiento").attr("href",path_url+"/"+ "{{ $params }}" );
 
             $('#tratamiento-content').empty();
             
@@ -173,7 +183,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             myModal.show();
         }else{
             let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
-            location.href = path_url+"/"+urlParams;
+            location.href = path_url+"/"+ "{{ $params }}" ;
         }
 
     }

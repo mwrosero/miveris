@@ -6,8 +6,6 @@ Mi Veris - Citas
 @php
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
-    $paramsPresencial = base64_encode(json_encode(["online" => "N"]));
-    $paramsOnline = base64_encode(json_encode(["online" => "S"]));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
@@ -22,8 +20,8 @@ Mi Veris - Citas
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
                             <div class="card mb-3">
-                                {{-- <a href="#" class="nextStep" url-rel="/citas-elegir-paciente/" data-rel="{{ $paramsPresencial }}">PRUEBA</a> --}}
-                                <a href="{{route('citas.listaPacientes',['params' => $paramsPresencial])}}">
+                                
+                                <a  id="cita-presencial" >
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-9 col-md-auto">
                                             <div class="card-body p-0 ps-2">
@@ -40,7 +38,7 @@ Mi Veris - Citas
 
                         <div class="col-6 col-lg-6">
                             <div class="card mb-3">
-                                <a href="{{route('citas.listaPacientes',['params' => $paramsOnline])}}">
+                                <a  id="cita-virtual">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-9 col-md-auto">
                                             <div class="card-body p-0 ps-2">
@@ -261,5 +259,32 @@ Mi Veris - Citas
             })
         }*/
     }
+
+    // setear los parametros de la cita presencial
+    $('#cita-presencial').on('click', function(){
+
+        let params = {}
+        params.online = 'N';
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+        // redireccionar a la pagina de citas
+        window.location.href = "/citas-elegir-paciente/" + "{{ $tokenCita }}";
+    });
+
+
+    // setear los parametros de la cita virtual
+
+    $('#cita-virtual').on('click', function(){
+
+        let params = {}
+        params.online = 'S';
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+        // redireccionar a la pagina de citas
+        window.location.href = "/citas-elegir-paciente/" + "{{ $tokenCita }}";
+    });
+
 </script>
 @endpush

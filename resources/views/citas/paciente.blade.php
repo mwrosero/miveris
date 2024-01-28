@@ -72,19 +72,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 <script>
     // variables globales
     let familiar = [];
-    let params = @json($data);
-    // let local = localStorage.getItem('cita-{{ $params }}');
-    // let dataCita = JSON.parse(atob(local));
-    let online = params.online;
-    let ordenExterna = params.ordenExterna;
-    let convenios = params.convenio;
+    // CAPTURAR PARAMETROS
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let online = dataCita?.online;
+    let ordenExterna = dataCita?.ordenExterna;
+    let dataPaciente;
+    
 
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarGrupoFamiliar();
-
         $('body').on('click','.convenio-item', function(){
-            reservaNoPermitida($(this).attr("url-rel"), $(this).attr("data-rel"))
+            reservaNoPermitida($(this).attr("url-rel"), $(this).attr("data-rel"));
         })
     });
 
@@ -94,7 +94,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -116,22 +116,26 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let args = [];
         let canalOrigen = _canalOrigen;
         let dataRel = $(event.currentTarget).data('rel');
-        
+        dataPaciente = dataRel;
+        console.log("dataRel", dataRel);
         let codigoUsuario;
         let tipoIdentificacion;
         let nombreCompleto;
         let numeroPaciente;
+        let direccion;
+        let telefono;
+        let correo;
+
 
         if(dataRel != ""){
             codigoUsuario = dataRel.numeroIdentificacion;
             tipoIdentificacion = dataRel.tipoIdentificacion;
             nombreCompleto = dataRel.primerNombre + ' ' + dataRel.primerApellido + ' ' + dataRel.segundoApellido;
             numeroPaciente = atob(dataRel.idPersona);
-        }else{
-            codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-            tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
-            nombreCompleto = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}";
-            numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
+            direccion = dataRel.direccion;
+            telefono = dataRel.telefono;
+            correo = dataRel.correo;
+
         }
 
         args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
@@ -146,35 +150,28 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(data.data.length > 0){
                 listaConvenios.empty();
                 data.data.forEach((convenios) => {
-                    let params = @json($data);
+                    let params = {}
+                    params.online = online;
                     params.convenio = convenios;
-                    let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    // params.numeroIdentificacion = codigoUsuario;
-                    // params.tipoIdentificacion = tipoIdentificacion;
-                    // params.nombrePaciente = nombreCompleto;
-                    params.paciente = {
-                        "numeroIdentificacion": codigoUsuario,
-                        "tipoIdentificacion": tipoIdentificacion,
-                        "nombrePaciente": nombreCompleto,
-                        "numeroPaciente": numeroPaciente
-                    };
-                    let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
+                    params.paciente = dataRel;
+                    
+
                     let ruta = '';
                     if (ordenExterna == 'S') {
-                        
                         if(online == 'S'){
-                            ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;                            
+                            ruta = `/registrar-orden-externa-ubicacion/{{ $params }}`;                       
                         }else{
-                            ruta = `/registrar-orden-externa/${ulrParams}`;
+                            ruta = `/registrar-orden-externa/{{ $params }}`;
                         }
                     }
                     else {
-                        ruta = `/citas-elegir-especialidad/${ulrParams}`;
+                        ruta = `/citas-elegir-especialidad/{{ $params }}`;
                     }
                     let functionValidacion = ``;
                     if(convenios.permiteReserva == "N"){
                         ruta = `#`;
                     }
+                    let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
@@ -184,25 +181,30 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                 </div>`;
                 });
-
                 /*Agregar ninguno*/
-                let params = @json($data);
+                let params = {}
+                params.online = online;
                 params.convenio = {
                     "permitePago": "S",
                     "permiteReserva": "S",
                     "idCliente": null,
                     "codigoConvenio": null,
+
                 };
-                params.paciente = {
-                    "numeroIdentificacion": codigoUsuario,
-                    "tipoIdentificacion": tipoIdentificacion,
-                    "nombrePaciente": nombreCompleto,
-                    "numeroPaciente": numeroPaciente
-                };
+                params.paciente = dataRel;
                 let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                ruta = `/citas-elegir-especialidad/${ulrParams}`;
-                
-                elemento += `<a href="${ruta}" class="d-block">
+                ruta = `/citas-elegir-especialidad/{{ $params }}`;
+                if (ordenExterna == 'S') {
+                    if(online == 'S'){
+                        ruta = `/registrar-orden-externa-ubicacion/{{ $params }}`;                          
+                    }else{
+
+                        ruta = `/registrar-orden-externa/{{ $params }}`;
+                    }
+                }
+
+
+                elemento += `<a href="${ruta}" class="d-block" data-rel='${ulrParams}' id="convenioNinguno">
                                 <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                     NINGUNO
                                 </div>
@@ -215,32 +217,30 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 
             } else {
 
-                let params = @json($data);
-                params.convenio = {
+                let params = {}
+                dataCita.online = online;
+                dataCita.convenio = {
                     "permitePago": "S",
                     "permiteReserva": "S",
                     "idCliente": null,
                     "codigoConvenio": null,
                 };
-                params.paciente = {
-                    "numeroIdentificacion": codigoUsuario,
-                    "tipoIdentificacion": tipoIdentificacion,
-                    "nombrePaciente": nombreCompleto,
-                    "numeroPaciente": numeroPaciente
-                };
+                dataCita.paciente = dataRel;
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
                 let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                 listaConvenios.empty();
                 if (ordenExterna == 'S') {
-                    
+                    console.log("orden externa");
                     if(online == 'S'){
-                        ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;
+                        ruta = `/registrar-orden-externa-ubicacion/{{ $params }}`;
                         
                     }else{
-                        ruta = `/registrar-orden-externa/${ulrParams}`;
+                        ruta = `/registrar-orden-externa/{{ $params }}`;
                     }
                 }
                 else {
-                    ruta = `/citas-elegir-especialidad/${ulrParams}`;
+                    ruta = `/citas-elegir-especialidad/{{ $params }}`;
                 }
 
                 window.location.href = ruta;
@@ -254,27 +254,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     function mostrarListaPacientes(){
 
         let listaPacientes = $('#listaPacientes');
-        let pacienteYo = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->segundoNombre }} {{ Session::get('userData')->primerApellido }}";
         
-        let pacienteYoGenero = "{{ Session::get('userData')->sexo }}";
-
-        let backgroundClass = pacienteYoGenero === "F" ? "bg-strong-magenta" : (pacienteYoGenero === "M" ? "bg-soft-blue" : "bg-soft-green");
         let elemento = '';
-        elemento += `<div class="col-6 col-md-3">
-            <div class="card h-100 cursor-pointer">
-                <div class="card-body text-center px-2">
-                    <a data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel="" >
-                        <div class="d-flex justify-content-center align-items-center mb-2">
-                            <div class="avatar me-2">
-                                <span class="avatar-initial rounded-circle ${backgroundClass}">${pacienteYo.charAt(0).toUpperCase()}</span>
-                            </div>
-                        </div>
-                        <p class="text-veris fw-medium fs--2 mb-0">${pacienteYo}</p>
-                        <p class="text-veris fs--3 mb-0">{{ __('Yo') }}</p>
-                    </a>
-                </div>
-            </div>
-        </div> `;
+        
 
         if(familiar != null){
             familiar.forEach((pacientes) => {
@@ -302,11 +284,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         listaPacientes.append(elemento);
     }
 
-    async function reservaNoPermitida(url, data){
-        console.log(url);
+    async function reservaNoPermitida(url, data ){
         let convenio = JSON.parse(atob(decodeURIComponent(data)));
+        console.log("convenio", convenio);
         $('#noPermiteReservaMsg').html(convenio.convenio.mensajeBloqueoReserva)
         if(convenio.convenio.permiteReserva == "S"){
+            // Actualizar dataCita con los datos del convenio
+            dataCita.convenio = convenio.convenio;
+            dataCita.paciente = dataPaciente;
+            // Aquí puedes añadir cualquier otra información relevante a dataCita
+
+            // Guardar el objeto actualizado en localStorage
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
             location.href = url;
         }else{
             $('#convenioModal').modal('hide');
@@ -317,6 +307,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             },250);
         }
     }
+
+    // setear cita en localstorage cuando se escoge un convenio ninguno
+    $('body').on('click', '#convenioNinguno', function() {
+        let params = {}
+        dataCita.online = online;
+        dataCita.convenio = {
+            "permitePago": "S",
+            "permiteReserva": "S",
+            "idCliente": null,
+            "codigoConvenio": null,
+        };
+        dataCita.paciente = dataPaciente;
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
+    });
    
     
     
