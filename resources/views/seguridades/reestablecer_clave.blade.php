@@ -17,11 +17,12 @@
     <img class="logo-login" src="../../assets/img/veris/isotipo.svg">
 </div>
 <!-- Content Recuperar Clave -->
-<p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-bold">Recupera tu contraseña</p>
-<p class="fs-6 mb-3 text-center bg-colortext">Hemos enviado un código al correo electrónico con el que creaste tu cuenta.</p>
+<p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-medium">Recupera tu contraseña</p>
+<p class="fs--1 mb-2 text-center text-dark-veris fw-normal">Ingresa el código que enviamos a tu correo.</p>
+<p class="fs--2 text-center text-dark-veris fw-medium" id="mailUsuario"></p>    <!-- Resultado: 'm**************@gmail.com' -->
 <form id="formAuthentication" class="mb-3">
     <div class="mb-3">
-        <label for="codigoAutorizacion" class="form-label bg-colortext fw-bold mt-3">Código de autorización *</label>
+        <label for="codigoAutorizacion" class="form-label bg-colortext fw-medium mt-3">Código de autorización *</label>
         <input type="text"
             class="form-control form-filter border-0"
             oninput="limitarCaracteres(this, 10)"
@@ -29,12 +30,11 @@
             id="codigoAutorizacion"
             name="codigoAutorizacion"
             placeholder="Código de autorización"
-            autofocus
             required />
     </div>
     <div class="mb-2 form-password-toggle">
         <div class="d-flex justify-content-between">
-            <label class="form-label fw-bold" for="password">Contraseña *</label>
+            <label class="form-label fw-medium" for="password">Contraseña *</label>
         </div>
         <div class="input-group input-group-merge">
             <input type="password"
@@ -42,7 +42,6 @@
             class="form-control form-filter border-0"
             name="password"
             placeholder="Ingresa tu contraseña"
-            aria-describedby="password"
             required />
             <span id="togglePassword" class="input-group-text cursor-pointer form-filter border-0"
             ><i class="ti ti-eye-off"></i></span>
@@ -50,7 +49,7 @@
     </div>
     <div class="mb-3 form-password-toggle">
         <div class="d-flex justify-content-between">
-            <label class="form-label fw-bold" for="password">Contraseña *</label>
+            <label class="form-label fw-medium" for="password">Contraseña *</label>
         </div>
         <div class="input-group input-group-merge">
             <input type="password"
@@ -58,7 +57,6 @@
             class="form-control form-filter border-0"
             name="password2"
             placeholder="Confirma la contraseña"
-            aria-describedby="password2"
             required />
             <span id="togglePassword2" class="input-group-text cursor-pointer form-filter border-0"
             ><i class="ti ti-eye-off"></i></span>
@@ -165,5 +163,32 @@
         });
     });
 
+    function ocultarCorreoElectronico(correo) {
+        // Encuentra la posición del caracter '@'
+        const posicionArroba = correo.indexOf('@');
+        
+        // Si no se encuentra el caracter '@' o está al inicio, no hace nada
+        if (posicionArroba <= 1) {
+            return correo;
+        }
+
+        // Obtiene la primera letra del correo
+        const primeraLetra = correo.charAt(0);
+
+        // Genera una cadena de asteriscos con la longitud correcta
+        const asteriscos = '*'.repeat(posicionArroba - 1);
+
+        // Concatena la primera letra con los asteriscos y el resto del correo
+        const correoOculto = primeraLetra + asteriscos + correo.slice(posicionArroba);
+
+        return correoOculto;
+    }
+
+    // Ejemplo de uso
+    const correoOriginal = 'micorreoestestweb@gmail.com';
+    const correoOculto = ocultarCorreoElectronico(correoOriginal);
+    let mailUsuario = document.getElementById('mailUsuario');
+    mailUsuario.innerText = correoOculto;
+    console.log(correoOculto);  // Resultado: 'e**************@gmail.com'
 </script>
 @endsection

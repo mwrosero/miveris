@@ -23,12 +23,12 @@ Mi Veris - Citas
                                 
                                 <a  id="cita-presencial" >
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-9 col-md-auto">
+                                        <div class="col-7 col-md-7">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Cita') }} <br> {{ __('presencial') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-3 col-md-auto cita-presencial">
+                                        <div class="col-5 col-md-4 cita-presencial">
                                             <img src="{{ asset('assets/img/card/svg/consulta_presencial.svg') }}" class="img-fluid rounded-2" alt="{{ __('Cita presencial') }}">
                                         </div>
                                     </div>
@@ -40,12 +40,12 @@ Mi Veris - Citas
                             <div class="card mb-3">
                                 <a  id="cita-virtual">
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-9 col-md-auto">
+                                        <div class="col-7 col-md-7">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Cita virtual') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-3 col-md-auto">
+                                        <div class="col-5 col-md-4">
                                             <img src="{{ asset('assets/img/card/svg/consulta_virtual.svg') }}" class="img-fluid rounded-2" alt="{{ __('Cita virtual') }}">
                                         </div>
                                     </div>
@@ -178,12 +178,12 @@ Mi Veris - Citas
                 <div class="card">
                     <a href="{{route('citas.misCitas')}}">
                         <div class="row g-0 justify-content-between align-items-center">
-                            <div class="col-9 col-md-auto">
+                            <div class="col-8 col-md-7">
                                 <div class="card-body p-0 ps-2">
                                     <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Próximas ') }} <br> {{ __('citas') }}</h6>
                                 </div>
                             </div>
-                            <div class="col-3 col-md-auto">
+                            <div class="col-4 col-md-auto">
                                 <img src="{{ asset('assets/img/card/svg/calendario.svg') }}" class="img-fluid rounded-2" alt="{{ __('Próximas citas') }}">
                             </div>
                         </div>
@@ -194,12 +194,12 @@ Mi Veris - Citas
                 <div class="card">
                     <a href="{{route('citas.misCitas')}}">
                         <div class="row g-0 justify-content-between align-items-center">
-                            <div class="col-9 col-md-auto">
+                            <div class="col-8 col-md-7">
                                 <div class="card-body p-0 ps-2">
                                     <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Historial de ') }} <br>{{ __('citas') }}</h6>
                                 </div>
                             </div>
-                            <div class="col-3 col-md-auto">
+                            <div class="col-4 col-md-auto">
                                 <img src="{{ asset('assets/img/card/svg/clock.svg') }}" class="img-fluid rounded-2" alt="{{ __('Historial de citas') }}">
                             </div>
                         </div>
