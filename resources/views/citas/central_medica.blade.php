@@ -54,12 +54,25 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 <script>
     // variables globales
 
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let online = dataCita?.online;
+    let codigoEspecialidad = dataCita.especialidad.codigoEspecialidad;
+
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarCiudadesEspecialidad();
-
-        $('body').on('change', '#ciudad', consultarCentralesPorCiudad)
+        $('body').on('change', '#ciudad', consultarCentralesPorCiudad);
     });
+
+    // Listener para el botón 'Ver Médicos'
+    $('body').on('click', '.btn-ver-medicos', function (e) {
+        e.preventDefault();
+        let centralMedica = $(this).closest('.card-central-medica').data('central-medica');
+        guardarCentralEnLocalStorage(centralMedica);
+    });
+
+
 
     async function consultarCiudadesEspecialidad() {
         let args = [];
@@ -91,7 +104,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let ciudad = JSON.parse($('#ciudad option:selected').attr("data-rel"));
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad={{ $data->especialidad->codigoEspecialidad }}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=true`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=true`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -105,8 +118,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
                 //data.data.forEach((central) => {
                 for (const central of data.data) {
-                    let params = @json($data);
-                    params.central = central;
+                    let params = {};
+                    dataCita.central = central;
+                    
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let path_central = "{{ asset('assets/img/card/avatar_central_medica.png') }}";
 
@@ -117,7 +131,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     
                     console.log(99)
                     elemento += `<div class="col-auto col-md-6">
-                                    <div class="card h-100">
+                                    <div class="card h-100 card-central-medica" data-central-medica='${ JSON.stringify(central) }'>
                                         <div class="card-body px-2 py-2">
                                             <div class="row gx-2">
                                                 <div class="col-3">
@@ -130,8 +144,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                             </div>
                                         </div>
                                         <div class="card-footer text-end pb-2">
-                                            <a href="/citas-elegir-fecha-doctor/${urlParams}" class="btn btn-sm btn-primary-veris">{{ __('Ver Médicos') }}</a>
+                                            <a href="/citas-elegir-fecha-doctor/{{$params}}"
+                                            class="btn btn-sm btn-primary-veris btn-ver-medicos">{{ __('Ver Médicos') }}</a>
                                         </div>
+
                                     </div>
                                 </div>`
                 };
@@ -149,6 +165,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         return data;
+    }
+
+    function guardarCentralEnLocalStorage(centralMedica) {
+        // Aquí guardamos la central médica seleccionada en dataCita y luego en localStorage
+        dataCita.central = centralMedica;
+        dataCita.origen = 'central';
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
+        window.location.href = "/citas-elegir-fecha-doctor/{{$params}}";
     }
 
 </script>

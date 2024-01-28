@@ -6,6 +6,10 @@ Mi Veris - Citas - Mis tratamientos
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+@endphp
     <!-- Modal de error -->
 
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
@@ -87,7 +91,7 @@ Mi Veris - Citas - Mis tratamientos
     let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
     let nombrePaciente = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}";
     let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
-
+    
 
     // llamar al dom 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -106,7 +110,7 @@ Mi Veris - Citas - Mis tratamientos
     
     // obtener tratamiento por id
     async function obtenerTratamientosId(id='', fechaDesde='', fechaHasta='', estadoTratamiento='PENDIENTE', esAdmin='S') {
-
+        
         let args = [];
         let canalOrigen = _canalOrigen;
         if (id == '') {
@@ -120,8 +124,18 @@ Mi Veris - Citas - Mis tratamientos
         args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
-        console.log(data.data.items);
+        console.log(22,data.data.tienePermisoAdmin);
+        
         if(data.code == 200){
+            if (data.data.tienePermisoAdmin == false) {
+                esAdmin = 'N';
+            }
+
+            // si el usuario es yo mismo es admin es true
+            if (id == "{{ Session::get('userData')->numeroPaciente }}") {
+                esAdmin = 'S';
+            }
+
             datosTratamientos = data.data.items;
             
             if (document.getElementById('pills-pendientes-tab').getAttribute('aria-selected') === 'true') {
@@ -153,7 +167,7 @@ Mi Veris - Citas - Mis tratamientos
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -196,7 +210,6 @@ Mi Veris - Citas - Mis tratamientos
                     "numeroPaciente": numeroPaciente
                 }
                 let ulrParams = btoa(JSON.stringify(params));
-                console.log('ulrParams', params);
 
                 let elemento = `<div class="col-12 col-md-6">
                                     <div class="card">
@@ -226,8 +239,8 @@ Mi Veris - Citas - Mis tratamientos
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-end align-items-center">
-                                                <a href="/tratamiento/${ulrParams}
-                                                " class="btn btn-sm btn-primary-veris shadow-none">
+                                                <a href="/tratamiento/{{ $tokenCita }}" data-rel='${JSON.stringify(params)}' 
+                                                 class="btn btn-sm btn-primary-veris shadow-none btn-tratamiento">
                                                     ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
                                                 </a>
                                             </div>
@@ -327,20 +340,14 @@ Mi Veris - Citas - Mis tratamientos
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
-                                checked>
-                                <span class="text-veris fw-medium">
-                                    ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
-                                    <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
-                                </span>
-                            </label>`;
-        divContenedor.append(elementoYo);
+        let isFirstElement = true; // Variable para identificar el primer elemento
 
-        console.log('sss',data);
         data.forEach((Pacientes) => {
+            let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
+            isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
+
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
                                 <span class="text-veris fw-medium">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
@@ -348,9 +355,9 @@ Mi Veris - Citas - Mis tratamientos
                                 </span>
                             </label>`;
             divContenedor.append(elemento);
-
         });
     }
+
     // mostrar no tiene tratamiento pendientes
     function mostrarMensajeNoTieneTratamiento(){
         
@@ -443,7 +450,6 @@ Mi Veris - Citas - Mis tratamientos
         const contexto = $(this).data('context');
         aplicarFiltros(contexto);
 
-
         
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
@@ -459,11 +465,8 @@ Mi Veris - Citas - Mis tratamientos
         
         // colocar el nombre del filtro
         const elemento = document.getElementById('nombreFiltro');
-        if (texto == 'YO') {
-            elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-        } else{
-            elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
-        }
+        elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
+        
         
     });
 
@@ -509,5 +512,23 @@ Mi Veris - Citas - Mis tratamientos
 
         await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
     });
+
+
+    // funcion para setear los valores del tratamiento en el localstorage
+    $(document).on('click', '.btn-tratamiento', function(){
+
+        let dataTratamiento = $(this).data('rel');
+        
+        let paciente = $('input[name="listGroupRadios"]:checked').data('rel');
+        
+        let params = { }
+        params.paciente = paciente;
+        params.tratamiento = dataTratamiento;
+        
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+    });
+
+
+
 </script>
 @endpush
