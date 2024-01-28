@@ -671,3 +671,7 @@ function capitalizarPalabrasUnidasPorGuion(cadena) {
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join('-');
 }
+
+function agregarEspacios(cadena) {
+    return cadena.replace(/\//g, ' / ');
+}
