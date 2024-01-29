@@ -232,14 +232,30 @@ $data = json_decode(base64_decode($params));
     let secuenciaAtencion = [];
     let ultimoTratamiento = [];
     let idPaciente ;
-    
-    
     let datosTratamiento = [];
     let ultimoTratamientoData = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+        
         await obtenerTratamientos();
+        llenarPorcentajeBarra();
+
     });
+
+    // llenar el porcentaje de la barra con los datos del tratamiento
+    function llenarPorcentajeBarra(){
+        let porcentaje = datosTratamiento.porcentajeAvanceTratamiento;
+        document.getElementById("progress-circle").setAttribute("data-percentage", porcentaje);
+        // llenar el totalTratamientoEnviados y totalTratamientoRealizados
+        // limpiar el contenido
+        console.log('datosTratamientoee', datosTratamiento.totalTratamientoEnviados);
+        $('#totalTratamientoEnviados').empty();
+        $('#totalTratamientoRealizados').empty();
+        $('#totalTratamientoEnviados').append(datosTratamiento.totalTratamientoEnviados);
+        $('#totalTratamientoRealizados').append(datosTratamiento.totalTratamientoRealizados);
+
+
+    }
     
     // funciones asyncronas
     // obtener tratamientos  ​/tratamientos​/{idTratamiento}
@@ -599,7 +615,7 @@ $data = json_decode(base64_decode($params));
 
     // mostrar banner de promocion
     function mostrarBannerPromocion(datos){
-        let params = @json($data);
+        let params = {};
         params.codigoTratamiento = codigoTratamiento;
         params.convenio = ultimoTratamiento.datosConvenio;
         let ulrParams = btoa(JSON.stringify(params));
@@ -850,7 +866,7 @@ $data = json_decode(base64_decode($params));
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
                             
-                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
+                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
                         }
                     } 
 
@@ -1027,6 +1043,36 @@ $data = json_decode(base64_decode($params));
             codigoSucursal : datosServicio.codigoSucursal,
         };
         dataCita.convenio = ultimoTratamiento.datosConvenio;
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+    });
+
+    // boton btn-Pagar
+    $(document).on('click', '.btn-Pagar', function(){
+        let datosServicio = $(this).data('rel');
+        console.log('datosServicio', datosServicio);
+
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = 'S';
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = 'N';
+        }
+
+        dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+        };
+        dataCita.convenio = ultimoTratamiento.datosConvenio;
+        dataCita.datosTratamiento = datosServicio;
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     });

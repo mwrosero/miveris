@@ -63,11 +63,11 @@ Mi Veris - Citas - Citas Laboratorio
 
     // variables globales
 
-    let params = @json($data);
-    console.log('params', params);
-    let idPaciente = params.idPaciente;
-    let numeroOrden = params.numeroOrden;
-    let codigoEmpresa = params.codigoEmpresa;
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let idPaciente = dataCita.paciente.numeroPaciente;
+    let numeroOrden = dataCita.datosTratamiento.idOrden;
+    let codigoEmpresa = dataCita.datosTratamiento.codigoEmpresa;
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
