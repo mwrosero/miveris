@@ -226,14 +226,30 @@ $data = json_decode(base64_decode($params));
     let secuenciaAtencion = [];
     let ultimoTratamiento = [];
     let idPaciente ;
-    
-    
     let datosTratamiento = [];
     let ultimoTratamientoData = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+        
         await obtenerTratamientos();
+        llenarPorcentajeBarra();
+
     });
+
+    // llenar el porcentaje de la barra con los datos del tratamiento
+    function llenarPorcentajeBarra(){
+        let porcentaje = datosTratamiento.porcentajeAvanceTratamiento;
+        document.getElementById("progress-circle").setAttribute("data-percentage", porcentaje);
+        // llenar el totalTratamientoEnviados y totalTratamientoRealizados
+        // limpiar el contenido
+        console.log('datosTratamientoee', datosTratamiento.totalTratamientoEnviados);
+        $('#totalTratamientoEnviados').empty();
+        $('#totalTratamientoRealizados').empty();
+        $('#totalTratamientoEnviados').append(datosTratamiento.totalTratamientoEnviados);
+        $('#totalTratamientoRealizados').append(datosTratamiento.totalTratamientoRealizados);
+
+
+    }
     
     // funciones asyncronas
     // obtener tratamientos  ​/tratamientos​/{idTratamiento}
@@ -593,21 +609,23 @@ $data = json_decode(base64_decode($params));
 
     // mostrar banner de promocion
     function mostrarBannerPromocion(datos){
-        let params = @json($data);
+        let params = {};
         params.codigoTratamiento = codigoTratamiento;
         params.convenio = ultimoTratamiento.datosConvenio;
         let ulrParams = btoa(JSON.stringify(params));
 
         let divContenedor = $('#cardPromocion');
         divContenedor.empty(); // Limpia el contenido actual
+        let ruta = "/tu-tratamiento/" + "{{ $params }}";
         let elemento = `<div class="card rounded-0 border-0">
                             <div class="card-body p-3 position-relative px-lg-5"
                                 style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
                                 <h4 class="fw-medium text-white mb-0">Compra y gestiona</h4>
                                 <h6 class=" fw-light text-white mb-0">tu <b>tratamiento</b> sin <b>filas</b></h6>
                                 <div class="d-flex justify-content-end mt-3">
-                                    <a href="/tu-tratamiento/${ulrParams}
-                                    " class="btn btn-sm btn-primary-veris px-4">Ver tratamiento</a>
+                                    <a href=" ${ruta}
+                                    " class="btn btn-sm btn-primary-veris px-4 btn-verPromocion
+                                    " data-rel='${JSON.stringify(datos)}'>Ver tratamiento</a>
                                 </div>
                             </div>
                             <div class="position-absolute end-7 bottom-40">
@@ -844,7 +862,7 @@ $data = json_decode(base64_decode($params));
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
                             
-                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
+                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
                         }
                     } 
 
@@ -1021,6 +1039,66 @@ $data = json_decode(base64_decode($params));
             codigoSucursal : datosServicio.codigoSucursal,
         };
         dataCita.convenio = ultimoTratamiento.datosConvenio;
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+    });
+
+    // boton btn-Pagar
+    $(document).on('click', '.btn-Pagar', function(){
+        let datosServicio = $(this).data('rel');
+        console.log('datosServicio', datosServicio);
+
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = 'S';
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = 'N';
+        }
+
+        dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+        };
+        dataCita.convenio = ultimoTratamiento.datosConvenio;
+        dataCita.datosTratamiento = datosServicio;
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+    });
+
+    // boton btn-verPromocion
+    $(document).on('click', '.btn-verPromocion', function(){
+        let datosPromocion = $(this).data('rel');
+
+        // let modalidad;
+        // if (datosPromocion.modalidad === 'ONLINE') {
+        //     modalidad = 'S';
+        // } else if (datosPromocion.modalidad === 'PRESENCIAL') {
+        //     modalidad = 'N';
+        // }
+
+        // dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosPromocion.codigoEspecialidad,
+            nombre : datosPromocion.nombreEspecialidad,
+            imagen : datosPromocion.urlImagenEspecialidad,
+            
+            codigoServicio : datosPromocion.codigoServicio,
+            codigoPrestacion : datosPromocion.codigoPrestacion,
+            codigoTipoAtencion : datosPromocion.codigoTipoAtencion,
+            codigoSucursal : datosPromocion.codigoSucursal,
+        };
+
+        dataCita.convenio = datosPromocion.datosConvenio;
+        dataCita.datosTratamiento = datosPromocion;
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     });
