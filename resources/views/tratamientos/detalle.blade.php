@@ -129,13 +129,12 @@ $data = json_decode(base64_decode($params));
     // variables globales
     let datosValorizacion = [];
 
-
-    let params = @json($data);
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
 
     
 
-    let codigoTratamiento = params.codigoTratamiento;
-    console.log('codigoTratamientotrt', codigoTratamiento);
+    let codigoTratamiento = dataCita.datosTratamiento.codigoTratamiento;
     // llamada al dom
     
     document.addEventListener("DOMContentLoaded", async function () {
