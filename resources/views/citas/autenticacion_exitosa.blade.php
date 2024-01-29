@@ -37,7 +37,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @push('scripts')
 <script>
-    let dataCita = @json($data);
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+
     document.addEventListener("DOMContentLoaded", async function () {
         $('body').on('click', '#btn-pagar-otp', async function(){
             $('#btn-pagar-otp').addClass('disabled');
@@ -65,19 +67,23 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             console.log(data.data);
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                guardarData()
+                let ruta = `/cita-agendada/{{ $params }}`;
                 window.location.href = ruta;
             }else if(data.data.estado.toUpperCase() == "PENDING"){
                 dataCita.registroPago = data.data;
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-confirmar-pago/${ulrParams.replace(/\//g, '|')}`;
+                guardarData()
+                let ruta = `/citas-confirmar-pago/{{ $params }}`;
                 window.location.href = ruta;
             }
         }else{
             alert(data.message);
             $('#btn-pagar-otp').removeClass('disabled');
         }        
+    }
+
+    function guardarData(){
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>
 @endpush
