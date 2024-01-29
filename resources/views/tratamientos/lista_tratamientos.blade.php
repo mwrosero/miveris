@@ -616,14 +616,16 @@ $data = json_decode(base64_decode($params));
 
         let divContenedor = $('#cardPromocion');
         divContenedor.empty(); // Limpia el contenido actual
+        let ruta = "/tu-tratamiento/" + "{{ $params }}";
         let elemento = `<div class="card rounded-0 border-0">
                             <div class="card-body p-3 position-relative px-lg-5"
                                 style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
                                 <h4 class="fw-medium text-white mb-0">Compra y gestiona</h4>
                                 <h6 class=" fw-light text-white mb-0">tu <b>tratamiento</b> sin <b>filas</b></h6>
                                 <div class="d-flex justify-content-end mt-3">
-                                    <a href="/tu-tratamiento/${ulrParams}
-                                    " class="btn btn-sm btn-primary-veris px-4">Ver tratamiento</a>
+                                    <a href=" ${ruta}
+                                    " class="btn btn-sm btn-primary-veris px-4 btn-verPromocion
+                                    " data-rel='${JSON.stringify(datos)}'>Ver tratamiento</a>
                                 </div>
                             </div>
                             <div class="position-absolute end-7 bottom-40">
@@ -1067,6 +1069,36 @@ $data = json_decode(base64_decode($params));
         };
         dataCita.convenio = ultimoTratamiento.datosConvenio;
         dataCita.datosTratamiento = datosServicio;
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+    });
+
+    // boton btn-verPromocion
+    $(document).on('click', '.btn-verPromocion', function(){
+        let datosPromocion = $(this).data('rel');
+
+        // let modalidad;
+        // if (datosPromocion.modalidad === 'ONLINE') {
+        //     modalidad = 'S';
+        // } else if (datosPromocion.modalidad === 'PRESENCIAL') {
+        //     modalidad = 'N';
+        // }
+
+        // dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosPromocion.codigoEspecialidad,
+            nombre : datosPromocion.nombreEspecialidad,
+            imagen : datosPromocion.urlImagenEspecialidad,
+            
+            codigoServicio : datosPromocion.codigoServicio,
+            codigoPrestacion : datosPromocion.codigoPrestacion,
+            codigoTipoAtencion : datosPromocion.codigoTipoAtencion,
+            codigoSucursal : datosPromocion.codigoSucursal,
+        };
+
+        dataCita.convenio = datosPromocion.datosConvenio;
+        dataCita.datosTratamiento = datosPromocion;
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     });
