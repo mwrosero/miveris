@@ -12,18 +12,15 @@ $data = json_decode(base64_decode($params));
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- offcanva detalle Receta médica -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="detalleRecetaMedica" aria-labelledby="detalleRecetaMedicaLabel">
-        <div class="offcanvas-header py-2">
-            <div class="d-flex justify-content-between">
-                <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close">
-                    <i class="bi bi-arrow-left"></i> <b class="fw-medium">Atrás</b>
-                </button>
-                <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
-            </div>
+        <div class="offcanvas-header justify-content-between align-items-center py-2">
+            <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
+            <button type="button" class="btn d-block d-md-none" data-bs-dismiss="offcanvas" aria-label="Close">
+                <i class="bi bi-arrow-left"></i><b class="fw-medium">Atrás</b>
+            </button>
         </div>
         
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
-            <small>Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
-            <br>
+            <small class="d-none">Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
             <div>
                 <div class="list-group gap-2 mb-3 verPdf">
                     <label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
@@ -38,17 +35,14 @@ $data = json_decode(base64_decode($params));
                                 indicaciones
                             </small>
                         </div>
-                        
                         <i class="fa-solid fa-bell ms-auto"></i>
                     </label>
                 </div>
             </div>
-            
         </div>
-        
-        <div class="offcanvas-footer py-2">
-            <div class="col-md-12 mb-3">
-                <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0 py-3 mr-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+        <div class="offcanvas-footer px-4">
+            <div class="col-md-12">
+                <button class="btn btn-primary-veris w-100 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
@@ -276,7 +270,7 @@ $data = json_decode(base64_decode($params));
                 
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
-            let elemento = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
+            let elemento = `<h6 class="card-title fs--1 text-veris mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h6>
                                 <p class="fw-medium fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
                                 <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
@@ -490,7 +484,7 @@ $data = json_decode(base64_decode($params));
                 elementos += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
                                 <div class="d-flex flex-column">
                                     <small class="text-veris fw-medium denominacion">
-                                        ${receta.denominacion}
+                                        ${agregarEspacios(receta.denominacion)}
                                     </small>
                                     <small class="text-veris fw-light concentracion">
                                         ${receta.concentracion} ${receta.formaFarmaceutica}
@@ -656,7 +650,7 @@ $data = json_decode(base64_decode($params));
             }
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
 
-                dataFechas = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h5>
+                dataFechas = `<h6 class="card-title fs--1 text-veris mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
                                 <p class="fw-bold fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
                                 <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
