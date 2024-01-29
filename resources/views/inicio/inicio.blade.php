@@ -422,24 +422,30 @@ Mi Veris - Inicio
         let elemento = '';
 
         data.forEach((citas) => {
+            let classElem = 'justify-content-between';
+            if(citas.estaPagada == "S"){
+                classElem = 'justify-content-end';
+            }
             elemento +=`<div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
-                                        <span class="fs--2 text-success fw-medium">${esPagada(citas.estaPagada)}</span>
-                                    </div>
-                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
-                                    <p class="fw-normal fs--2 mb-0">${citas.fecha} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
-                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                                    <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                        <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
+                            <span class="fs--2 text-success fw-medium">${esPagada(citas.estaPagada)}</span>
+                        </div>
+                        <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
+                        <p class="fw-normal fs--2 mb-0">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                        <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
+                        <div class="d-flex ${classElem} align-items-center mt-3">`
+            if(citas.estaPagada == "N"){
+                elemento += `<button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>`;
+            }
+            elemento += `   <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
         });
         divContenedor.append(elemento);
     } 

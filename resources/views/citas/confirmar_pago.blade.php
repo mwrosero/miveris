@@ -87,7 +87,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @push('scripts')
 <script>
-    let dataCita = @json($data);
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+
     document.addEventListener("DOMContentLoaded", async function () {
         $('body').on('click', '#btn-pagar-otp', async function(){
             $('#btn-pagar-otp').addClass('disabled');
@@ -113,8 +115,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         
         if(data.code == 200){
             if(data.data.estado == "APPROVED"){
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                guardarData();
+                let ruta = `/cita-agendada/{{ $params }}`;
                 window.location.href = ruta;
             }else if(data.data.estado == "PENDING"){
                 if(type == "pago"){
@@ -125,8 +127,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     $('#autenticarPago .invalid-feedback').html(`<i class="bi bi-exclamation-triangle-fill me-2"></i>${data.data.mensajeNuvei}`).show();
                 }
             }else{
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-informacion-pago/${ulrParams.replace(/\//g, '|')}`;
+                let ruta = `/citas-informacion-pago/{{ $params }}`;
                 $('#btn-intentos-fallidos').attr("href",ruta);
                 var myModal = new bootstrap.Modal(document.getElementById('intentoFallido'));
                 myModal.show();
@@ -158,14 +159,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             console.log(data.data);
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                guardarData();
+                let ruta = `/cita-agendada/{{ $params }}`;
                 window.location.href = ruta;
             }else if(data.data.estado.toUpperCase() == "PENDING"){
                 //36417002140808
                 await solicitarOTP('confirmarPago');
             }
         }        
+    }
+
+    function guardarData(){
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>
 @endpush
