@@ -54,10 +54,8 @@ $data = json_decode(base64_decode($params));
             <div class="col-auto col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none rounded-0">
                     <div class="card-header rounded-0 position-relative" style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
-                        <div class="content-text text-white lh-1">
-                            <p class="mb-0">Veris te regala un</p>
-                            <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
-                            <p class="mb-0">por pagar en app</p>
+                        <div class="content-text text-white lh-1" id="contenedorPrincipal-descuento">
+                            
                         </div>
                         <div class="promo-img position-absolute">
                             <img src="{{ asset('assets/img/svg/regalo.svg') }}" class="card-img-top" alt="">
@@ -108,7 +106,7 @@ $data = json_decode(base64_decode($params));
                             </div>
                         </div>
                         <div class="p-3">
-                            <button type="button" class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprar</button>
+                            <a  class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprara</a>
                             <a href="#" class="btn w-100 mb-3">Ahora no</a>
                         </div>
                         
@@ -141,6 +139,26 @@ $data = json_decode(base64_decode($params));
 
         await valorizacionServicios();
     });
+
+    // llenar contenedor principal descuento
+    function llenarContenedorPrincipalDescuento() {
+        let contenedorPrincipalDescuento = $('#contenedorPrincipal-descuento');
+        contenedorPrincipalDescuento.empty();
+        if (dataCita.convenio.length > 0){
+            contenedorPrincipalDescuento.append(`<p class="mb-0">Veris te regala un</p>
+                                                <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
+                                                <p class="mb-0">por pagar en app</p>`);
+        } else {
+            contenedorPrincipalDescuento.append(`<p class="mb-0">Veris te regala un</p>
+                                                <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
+                                                <p class="mb-0">por pagar en app</p>`);
+        }
+
+
+
+
+        
+    }
 
 
     // funciones asyncronas
@@ -382,11 +400,13 @@ $data = json_decode(base64_decode($params));
     // boton comprar redireccionar a la pagina de pago
     $('#btnComprar').on('click', function() {
         // capturar los valores de los inputs
+        console.log('entro a comprar');
         let inputs = $('.input-group input').toArray();
         let cantidadServicios = [];
-        
-        
-        window.location.href = "/citas-datos-facturacion";
+        let ruta = '/citas-datos-facturacion/' + '{{ $params }}';
+        console.log('ruta', ruta);  
+        // window.location.href = "${ruta}";
+        window.location.href = ruta;
     })
     
     // boton cancelar redireccionar a la pagina de citas
