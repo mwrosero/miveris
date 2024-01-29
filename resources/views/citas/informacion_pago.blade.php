@@ -115,12 +115,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <ul class="list-group bg-white mb-3">
                             <li class="list-group-item border-0 text-primary-veris d-flex justify-content-between align-items-center">
                                 Total a pagar:
-                                <span class="badge text-primary-veris">${{ $data->facturacion->totales->total }}</span>
+                                <span class="badge text-primary-veris" id="totalInfo"></span>
                             </li>
                         </ul>
                         <!-- content-pago -->
                         <div class="card card-body">
-                            <form id="add-card-form" class="row g-3">
+                            <form id="add-card-form" class="row g-3 d-none">
                                 <div class="col-12">
                                     <div class="payment-form" id="my-card" data-capture-name="true"></div>
                                     <button id="btn-pagar" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light">PAGAR</button>
@@ -154,10 +154,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 <link href="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.css" rel="stylesheet" type="text/css" />
 <script src="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.js" charset="UTF-8"></script>
 <script>
-    let dataCita = @json($data);
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
+        $('#totalInfo').html(`$${dataCita.facturacion.totales.total}`);
         //https://api-phantomx.veris.com.ec/digitalestest/v1/seguridad/parametrosNuvei?codigoAplicacion=MI_VERIS_WEB
-        Payment.init('{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', 'NUVEISTG-EC-CLIENT', 'rvpKAv2tc49x6YL38fvtv5jJxRRiPs');
+        let credenciales = await obtenerCredenciales();
+        console.log(credenciales)
+        // Payment.init('{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', 'NUVEISTG-EC-CLIENT', 'rvpKAv2tc49x6YL38fvtv5jJxRRiPs');
+        Payment.init('{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', credenciales.applicationCode, credenciales.applicationKey);
+
+        setTimeout(function(){
+            $('.expiry').val('');
+            $('.cvc').val('');
+            $('#add-card-form').removeClass('d-none');
+        },1000);
 
         let form = $("#add-card-form");
         let submitButton = form.find("button");
@@ -189,15 +200,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 await registrarTarjeta();
             }else if(cardResponse.card.status === 'review' || cardResponse.card.status === 'pending') {
                 dataCita.tarjeta = cardResponse.card;
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-autenticacion-registro-tarjeta/${ulrParams.replace(/\//g, '|')}`;
+                let ruta = `/citas-autenticacion-registro-tarjeta/{{ $params }}`;
+                guardarData();
                 window.location.href = ruta;
                 // $('#btn-pagar').addClass('disabled');
                 // await solicitarOTP('autenticarPago');
             }else{
                 $('#messages').html('Error<br>' +
-                'status: ' + cardResponse.card.status + '<br>' +
-                "message Token: " + cardResponse.card.message + "<br>"
+                    'status: ' + cardResponse.card.status + '<br>' +
+                    "message Token: " + cardResponse.card.message + "<br>"
                 );
             }
             submitButton.removeAttr("disabled");
@@ -232,6 +243,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     });
 
+    async function obtenerCredenciales(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/parametrosNuvei?codigoAplicacion=MI_VERIS_WEB`;
+        args["method"] = "GET";
+        args["bodyType"] = "json";
+        args["showLoader"] = false;
+        const data = await call(args);
+        return data;
+    }
+
+
     async function autenticarOTP(codeOTP,type){
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas/verificacion`;
@@ -250,8 +272,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(data.code == 200){
             if(data.data.estado == "APPROVED"){
                 if(type == "pago"){
-                    let ulrParams = btoa(JSON.stringify(dataCita));
-                    let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                    let ruta = `/cita-agendada/{{ $params }}`;
+                    guardarData();
                     window.location.href = ruta;
                 }else{
                     await pagarCita();
@@ -316,8 +338,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             console.log(data.data);
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                let ruta = `/cita-agendada/{{ $params }}`;
+                guardarData();
                 window.location.href = ruta;
             }else if(data.data.estado.toUpperCase() == "PENDING"){
                 //36417002140808
@@ -329,6 +351,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function solicitarOTP(idModal){
         var myModal = new bootstrap.Modal(document.getElementById(idModal));
         myModal.show();
+    }
+
+    function guardarData(){
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>
 @endpush

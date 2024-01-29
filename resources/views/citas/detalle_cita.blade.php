@@ -63,7 +63,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 </div>
             </div>
             <div class="col-md-12 text-center mt-5">
-                <a href="#" id="btn-pagar" class="btn btn-primary-veris d-none w-25 px-3 py-3">{{ __('Pagar') }}</a>
+                {{-- <a href="#" id="btn-pagar" class="btn btn-primary-veris d-none w-25 px-3 py-3">{{ __('Pagar') }}</a> --}}
+                <button id="btn-pagar" class="btn btn-primary-veris d-none w-25 px-3 py-3">{{ __('Pagar') }}</button>
             </div>
         </div>
     </section>
@@ -96,17 +97,22 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerPrecio();
         llenarDataDetallesCitas();
+
+        $('body').on('click', '#btn-pagar', function () {
+            reservarCita();
+        });
     });
 
     // llenar los datos en contentDetalleCita con los datos de dataCita
     function llenarDataDetallesCitas(){
-        let elem = ``;
-        elem += `<p class="text-primary-veris fw-bold mb-0"  id="nombreEspecialidad">${nombreEspecialidad}</p>
-        <p class="fw-bold fs--1 mb-0">${dataCita.central.nombreSucursal}</p>
-        <p class="fs--2 mb-0">${dataCita.horario.dia2} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} ${determinarMeridiano(horaInicio)}</b></p>
-        <p class="fs--2 mb-0">Dr(a) ${dataCita.horario.nombreMedico}</p>
-        <p class="fs--2 mb-0">${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}</p>
-        <p class="fs--2 mb-0">${dataCita.convenio.nombreConvenio}</p>`;
+        let elem = `<p class="text-primary-veris fw-bold mb-0"  id="nombreEspecialidad">${nombreEspecialidad}</p>
+            <p class="fw-bold fs--1 mb-0">${dataCita.central.nombreSucursal}</p>
+            <p class="fs--2 mb-0">${dataCita.horario.dia2} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} ${determinarMeridiano(horaInicio)}</b></p>
+            <p class="fs--2 mb-0">Dr(a) ${dataCita.horario.nombreMedico}</p>
+            <p class="fs--2 mb-0">${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}</p>`;
+        if(dataCita.convenio.codigoConvenio){
+            elem += `<p class="fs--2 mb-0">${dataCita.convenio.nombreConvenio}</p>`
+        }
         $('#contentDetalleCita').html(elem);
 
         if(dataCita.convenio.codigoConvenio){
@@ -131,7 +137,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${codigoEspecialidad}&secuenciaAfiliado=${secuenciaAfiliado}&codigoConvenio=${codigoConvenio}&idIntervalos=${idIntervalo}&esOnline=${online}&porcentajeDescuento=${porcentajeDescuentos}`
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${codigoEspecialidad}&secuenciaAfiliado=${secuenciaAfiliado}&codigoConvenio=${(codigoConvenio) ? codigoConvenio : '' }&idIntervalos=${idIntervalo}&esOnline=${online}&porcentajeDescuento=${porcentajeDescuentos}`
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -216,10 +222,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
             $('#msg-cita').append(elemMsg)
             
-            params.precio = data.data;
             dataCita.precio = data.data;
-            let urlParams = btoa(JSON.stringify(params));
-            $('#btn-pagar').attr('href','/citas-datos-facturacion/'+urlParams);
+            //let urlParams = btoa(JSON.stringify(params));
+            $('#btn-pagar').attr('href','/citas-datos-facturacion/{{ $params }}');
             $('#btn-pagar').removeClass('d-none');
         }
         return data;
@@ -249,7 +254,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "codigoSucursalRegistro": null,
             "porcentajeDescuento": dataCita.horario.porcentajeDescuento,
             // "permitePago": dataCita.convenio.permitePago,
-            "permitePago": "S",
+            "permitePago": dataCita.convenio.permitePago,
             "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
             "canalOrigen": _canalOrigen,
             "enviarLinkPago": null,
@@ -289,16 +294,27 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             datosReserva.lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
         }
 
+        console.log(args);
         args["data"] = JSON.stringify(datosReserva);
         const data = await call(args);
-        console.log(data);
 
         if (data.code == 200){
             dataCita.reserva = data.data;
-            await crearPreTransaccion();
+            if(data.data.permitePago == "S"){
+                guardarData();
+                location.href = '/citas-datos-facturacion/{{ $params }}';
+            }else{
+                location.href = '/cita-agendada/{{ $params }}';
+            }
         }else{
+            //guardarData();
+            //location.href = '/citas-datos-facturacion/{{ $params }}';
             alert(data.message);
         }
+    }
+
+    function guardarData(){
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>
 @endpush

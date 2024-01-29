@@ -4,7 +4,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
 @endsection
 @section('content')
 @php
-$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+// $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd(Session::get('userData')->numeroIdentificacion);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
@@ -57,7 +57,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="btn-master w-100 mx-auto">
                                     <div id="btn-pagar" class="btn disabled text-white shadow-none">{{ __('Pagar') }}</div>
                                     |
-                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total">${{ $data->facturacion->totales->total }}</p>
+                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total"></p>
                                 </div>
                             </div>
                         </div>
@@ -70,8 +70,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @push('scripts')
 <script>
-    let dataCita = @json($data);
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+
     document.addEventListener("DOMContentLoaded", async function () {
+        $('#total').html(`$${dataCita.facturacion.totales.total}`);
         await cargarListaTarjetas();
 
         $('body').on('change', 'input[name="cardWallet"]', function() {
@@ -126,13 +129,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             console.log(data.data);
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/cita-agendada/${ulrParams.replace(/\//g, '|')}`;
+                guardarData();
+                let ruta = `/cita-agendada/{{ $params }}`;
                 window.location.href = ruta;
             }else if(data.data.estado.toUpperCase() == "PENDING"){
                 dataCita.registroPago = data.data;
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-confirmar-pago/${ulrParams.replace(/\//g, '|')}`;
+                guardarData();
+                let ruta = `/citas-confirmar-pago/{{ $params }}`;
                 window.location.href = ruta;
             }
         }
@@ -197,6 +200,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }else{
             alert(data.message);
         }
+    }
+
+    function guardarData(){
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 
 </script>
