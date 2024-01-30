@@ -149,9 +149,8 @@ $data = json_decode(base64_decode($params));
                                                 <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
                                                 <p class="mb-0">por pagar en app</p>`);
         } else {
-            contenedorPrincipalDescuento.append(`<p class="mb-0">Veris te regala un</p>
-                                                <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
-                                                <p class="mb-0">por pagar en app</p>`);
+            contenedorPrincipalDescuento.append(`<p class="mb-0">Compra y gestiona </p>
+                                                <p class="mb-0">tu tratamiento en app</p>`);
         }
 
 
