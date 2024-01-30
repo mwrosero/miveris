@@ -427,9 +427,15 @@ Mi Veris - Inicio
                 classElem = 'justify-content-end';
             }
             elemento +=`<div class="swiper-slide">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
+                <div class="card h-100">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="w-100">`;
+            if(citas.esVirtual == "S"){
+                elemento += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                        <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
+                    </div>`;
+            }
+                    elemento += `<div class="d-flex justify-content-between align-items-center">
                             <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
                             <span class="fs--2 text-success fw-medium">${esPagada(citas.estaPagada)}</span>
                         </div>
@@ -442,6 +448,7 @@ Mi Veris - Inicio
                 elemento += `<button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>`;
             }
             elemento += `   <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
+                            </div>
                         </div>
                     </div>
                 </div>
