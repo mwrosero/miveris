@@ -220,7 +220,7 @@ Mi Veris - Citas - Laboratorio a domicilio
     
     // boton entendido
     $('#btnEntendido').click(function() {
-        window.location.href = `/tratamiento/${codigoTratamiento}`;
+        window.location.href = "/"
     });
 
 
