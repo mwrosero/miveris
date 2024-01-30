@@ -61,7 +61,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                     <div class="col-md-12">
                                         <label for="numeroIdentificacion" class="form-label fw-bold fs--2">Número de documento *</label>
-                                        <input type="number" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0975375835" required />
+                                        <input type="number" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
                                         <div class="valid-feedback">
                                             Ingrese un numero de identificacion.
                                         </div>
@@ -107,7 +107,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                     <div class="col-md-12">
                                         <label for="telefono" class="form-label fw-bold fs--2">Teléfono *</label>
-                                        <input type="number" class="form-control" name="telefono" id="telefono" placeholder="+593 097 989 3554" required />
+                                        <input type="number" class="form-control" name="telefono" id="telefono" placeholder="+593 999 999 9999" required />
                                         <div class="valid-feedback">
                                             Ingrese un telefono.
                                         </div>
@@ -183,6 +183,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     document.addEventListener("DOMContentLoaded", async function () {
         //await reservarCita();
+        if(!dataCita.reserva){
+            window.history.back();
+        }
+
         await crearPreTransaccion();
 
         $('body').on('change', '#tipoIdentificacion', function(){
