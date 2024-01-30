@@ -22,9 +22,10 @@ Mi Veris - Historia clínica
             </div>
         </div>
     </div>
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Historia clínica') }}</h5>
-    <section class="p-3 pt-0 mb-3">
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Historia clínica') }}</h5>
+    </div>
+    <section class="mb-3">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-7 col-lg-5 py-4">
@@ -39,7 +40,7 @@ Mi Veris - Historia clínica
                                 <div class="col-md-12">
                                     <label for="fechaHasta" class="form-label fw-bold">{{ __('Hasta la fecha') }}</label>
                                     <input    
-                                    class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaHasta" id="fechaHasta" required />
+                                    class="form-control bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
                                 </div>
                                 <div class="col-md-12">
                                     <label for="motivo" class="form-label fw-bold">{{ __('Motivo de su consulta') }}</label>
@@ -51,7 +52,7 @@ Mi Veris - Historia clínica
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" value="" id="terminoCondicionCheck" required />
                                         <label class="form-check-label fs--1" for="terminoCondicionCheck">
-                                            Acepto los Términos y condiciones
+                                            Acepto los términos y condiciones
                                         </label>
                                     </div>
                                 </div>
@@ -119,8 +120,9 @@ Mi Veris - Historia clínica
     var doctores = urlParams.get('doctores');
     var codigoEspecialidad = urlParams.get('codigoEspecialidad');
     var tipoIdentificacion = urlParams.get('tipoIdentificacion');
+    
     var numeroIdentificacion = urlParams.get('numeroIdentificacion');
-
+    console.log(66,numeroIdentificacion)
     // Si 'doctores' es una cadena JSON, conviértela a un objeto JavaScript
     if (doctores) {
         doctores = JSON.parse(decodeURIComponent(doctores));
@@ -141,7 +143,7 @@ Mi Veris - Historia clínica
     async function solicitarHistoriaClinica() {
 
         let args = [];
-        let codigoUsuario = {{ Session::get('userData')->numeroIdentificacion }};
+        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
 
         // Obtener los valores de los campos
         let fechaDesde = document.getElementById('fechaDesde').value;

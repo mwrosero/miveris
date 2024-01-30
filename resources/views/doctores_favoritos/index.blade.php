@@ -6,6 +6,10 @@ Mi Veris - Doctores favoritos
 <!-- css -->
 @endpush
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
 
     <!-- Modal convenios-->
@@ -13,7 +17,7 @@ Mi Veris - Doctores favoritos
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
                 <div class="modal-header d-none">
-                    <button type="button" class="btn-close fw-bold top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-3 pt-4">
                     <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
@@ -30,12 +34,11 @@ Mi Veris - Doctores favoritos
         </div>
     </div>
     <!-- Modal de error -->
-
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>
                     <p class="fs--1 fw-normal" id="mensajeError" >
                 </p>
                 </div>
@@ -64,29 +67,29 @@ Mi Veris - Doctores favoritos
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Doctores favoritos') }}</h5>
     </div>
-    <section class="p-3 mb-3">
+    <section class="p-3 pt-0">
         <div class="row justify-content-center" >
-            <div class="col-12 col-md-6 text-center mt-5 mb-5">
-                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-50 py-3">Buscar doctor</a>
+            <div class="col-12 col-md-6 col-lg-4 text-center my-4">
+                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-100 py-3">Buscar doctor</a>
             </div>
-            <div class="row justify-content-center"  id="doctoresFavoritos" >
-            </div>
-            <!-- Doctor favorito dinamico -->
+        </div>
 
-            <!-- Mensaje Aún no tienes doctores favoritos -->
-            <div class="col-12 d-flex justify-content-center d-none" id="noDoctorFavorito">
-                <div class="card bg-transparent shadow-none">
-                    <div class="card-body">
-                        <div class="text-center">
-                            <img src="{{ asset('assets/img/svg/doctors_favoritos.svg') }}" class="img-fluid" alt="">
-                            <h5>Aún no tienes doctores favoritos</h5>
-                        </div>
+        <div class="row justify-content-center"  id="doctoresFavoritos" >
+        </div>
+        <!-- Doctor favorito dinamico -->
+
+        <!-- Mensaje Aún no tienes doctores favoritos -->
+        <div class="col-12 d-flex justify-content-center d-none" id="noDoctorFavorito">
+            <div class="card bg-transparent shadow-none">
+                <div class="card-body">
+                    <div class="text-center">
+                        <img src="{{ asset('assets/img/svg/doctors_favoritos.svg') }}" class="img-fluid" alt="">
+                        <h5>Aún no tienes doctores favoritos</h5>
                     </div>
                 </div>
             </div>
-            <!-- Mensaje END -->
-            
         </div>
+        <!-- Mensaje END -->
     </section>
 </div>
 @endsection
@@ -101,6 +104,8 @@ Mi Veris - Doctores favoritos
     // llamada al dom 
      document.addEventListener("DOMContentLoaded", async function () {
         await obtenerDoctorFavorito();
+
+
     });
 
 
@@ -136,20 +141,19 @@ Mi Veris - Doctores favoritos
             // Ahora iterar sobre los resultados para construir el HTML
             resultados.forEach((disponibilidad, index) => {
                 let doctores = data.data[index];
-                elemento+= `<div class="col-12 col-lg-4 mb-3">
+                elemento+= `<div class="col-12 col-md-6 col-lg-4 mb-3">
                                     <div class="card">
                                         <div class="card-body p-3">
                                             <div class="row gx-2">
                                                 <div class="col-3 d-flex justify-content-center align-items-center">
                                                     <img src=${doctores.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
-
                                                 </div>
 
                                                 <div class="col-9">
-                                                    <h6 class="fw-bold mb-0">Dr(a) ${doctores.primerNombre} ${doctores.segundoNombre} ${doctores.primerApellido} ${doctores.segundoApellido}</h6>
-                                                    <p class="text-primary-veris fw-bold fs--2 mb-0">${doctores.nombreSucursal}</p>
-                                                    <p class="fs--2 mb-0">${doctores.nombreEspecialidad}</p>
-                                                    <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">  ${disponibilidad}
+                                                    <h6 class="fw-medium mb-0">Dr(a) ${capitalizarPrimeraLetra(doctores.primerNombre)} ${capitalizarPrimeraLetra(doctores.segundoNombre)} ${capitalizarPrimeraLetra(doctores.primerApellido)} ${capitalizarPrimeraLetra(doctores.segundoApellido)}</h6>
+                                                    <p class="text-primary-veris fw-medium fs--2 mb-0">${capitalizarCadaPalabra(doctores.nombreSucursal)}</p>
+                                                    <p class="fs--2 mb-0">${capitalizarPrimeraLetra(doctores.nombreEspecialidad)}</p>
+                                                    <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">  ${determinarValorNull(doctores.dia)}
                                                         </b></p>
                                                 </div>
                                             </div>
@@ -208,17 +212,32 @@ Mi Veris - Doctores favoritos
                 data.data.forEach((convenios) => {
                     console.log('convenioslrrtd', convenios);
                     let params = {};
-                    params.convenios = convenios;
+                    
                     params.online = dataOnline;
+                    params.convenio = convenios;
+                    params.convenio.origen = 'doctorFavorito';  
                     params.especialidad = {
                         codigoEspecialidad: dataCodigoEspecialidad,
+                        nombre: dataRel.nombreEspecialidad,
+                        imagen: dataRel.imagenEspecialidad,
                         codigoServicio: dataRel.codigoServicio,
+                        esOnline: dataRel.esOnline,
                         codigoPrestacion: dataRel.codigoPrestacion,
                         codigoSucursal: dataRel.codigoSucursal,
-                        nombre: dataRel.nombreEspecialidad,
+                        origen: 'doctorFavorito',
+                        
                     };
-                    params = btoa(JSON.stringify(params));
-                    let ruta = `/citas-elegir-fecha-doctor/${params}`;
+                    params.paciente = {
+                        numeroIdentificacion: '{{ Session::get('userData')->numeroIdentificacion }}',
+                        tipoIdentificacion:  '{{ Session::get('userData')->codigoTipoIdentificacion }}',
+                        nombrePaciente: '{{ Session::get('userData')->primerNombre }}',
+                        numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
+                        origen: 'doctorFavorito',
+                    }
+                    params.origen = 'doctorFavorito';
+                    localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+                    let url = `/citas-elegir-fecha-doctor/`;
+                    let ruta = url + "{{ $tokenCita }}";
                     elemento += `<a href="${ruta}" class="stretched-link">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">

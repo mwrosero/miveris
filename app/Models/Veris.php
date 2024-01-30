@@ -15,6 +15,9 @@ class Veris extends Model
     public const CANAL_ORIGEN = 'MVE_CMV';
     public const APPLICATION = 'UEhBTlRPTVhfRU1QUkVTQVJJQUw=';
     public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
+    public const KUSHKI_MERCHANT_ID = '10000003012872942409151942277385';
+    public const ENVIRONMENT_NUVEI = "stg";
+    public const TEST_ENVIRONMENT_KUSHKI = true;
 
     static function call(Array $config)
     {

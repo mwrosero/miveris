@@ -7,27 +7,22 @@ Mi Veris - Citas - Receta médica
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- offcanva detalle Receta médica -->
-
     <div class="offcanvas offcanvas-end" tabindex="-1" id="detalleRecetaMedica" aria-labelledby="detalleRecetaMedicaLabel">
-        <div class="offcanvas-header py-2">
-            <div class="d-flex justify-content-between">
-                <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close">
-                    <i class="bi bi-arrow-left"></i> <b class="fw-bold">Atrás</b>
-                </button>
-                <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
-            </div>
+        <div class="offcanvas-header justify-content-between align-items-center py-2">
+            <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
+            <button type="button" class="btn d-block d-md-none" data-bs-dismiss="offcanvas" aria-label="Close">
+                <i class="bi bi-arrow-left"></i><b class="fw-medium">Atrás</b>
+            </button>
         </div>
         
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
-            <small>Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
-            <br>
+            <small class="d-none">Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
             <div>
                 <div class="list-group gap-2 mb-3 verPdf">
                     <label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
                         <div class="d-flex flex-column">
-                            <small class="text-veris fw-bold denominacion">
+                            <small class="text-veris fw-medium denominacion">
                                 RECOMENDACIONES
                             </small>
                             <small class="text-veris fw-light concentracion">
@@ -37,29 +32,25 @@ Mi Veris - Citas - Receta médica
                                 indicaciones
                             </small>
                         </div>
-                        
                         <i class="fa-solid fa-bell ms-auto"></i>
                     </label>
                 </div>
             </div>
-            
         </div>
         
-        <div class="offcanvas-footer py-2">
-            <div class="col-md-12 mb-3">
-                <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0 py-3 mr-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+        <div class="offcanvas-footer px-4">
+            <div class="col-md-12">
+                <button class="btn btn-primary-veris w-100 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
-
-
 
     <!-- Modal Receta médica -->
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body">
-                    <h5 class="fw-bold text-center">{{ __('Receta médica') }}</h5>
+                    <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
                     <a href="#" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn w-100">No lo he hecho</a>
@@ -67,34 +58,29 @@ Mi Veris - Citas - Receta médica
             </div>
         </div>
     </div>
-
     <!-- Filtro -->
-    
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Receta médica') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Receta médica') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
+                    <button class="nav-link px-8 px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
+                    <button class="nav-link px-8 px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
-            <div class="tab-content bg-transparent" id="pills-tabContent">
+            <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 
-                <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
-                    
+                <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenes">
-                        
-
+                    <div id="contenedorTratamientosImagenes" class="px-2 px-lg-0">
                     </div>
                     
-
-
                     <!-- Mensaje No tienes ordenes de terapia -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientos">
                         <div class="card bg-transparent shadow-none">
@@ -127,16 +113,11 @@ Mi Veris - Citas - Receta médica
                     </div>
                     <!-- Mensaje END -->
                 </div>
-                <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
+                <div class="tab-pane fade mt-3" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
                     
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenesRealizados">
-                        
-
+                    <div id="contenedorTratamientosImagenesRealizados" class="px-2 px-lg-0">
                     </div>
-                    
-                    
-
 
                     <!-- Mensaje No tienes ordenes de terapia realizadas -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">
@@ -267,8 +248,8 @@ Mi Veris - Citas - Receta médica
                                             <div class="card">
                                                 <div class="card-body py-2 px-3">
                                                     <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                    <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
-                                                    <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                    <h5 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
+                                                    <p class="fs--2 fw-medium mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
                                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
                                                     <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
                                                     <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
@@ -286,8 +267,8 @@ Mi Veris - Citas - Receta médica
                                                 <div class="card">
                                                     <div class="card-body p-2">
                                                         <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                            <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
+                                                            <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                            <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada)}</span>
                                                         </div>
                                                         ${determinarFechasCaducadas(detalles)}
                                                        <div class="d-flex justify-content-between align-items-center mt-2">
@@ -355,8 +336,8 @@ Mi Veris - Citas - Receta médica
                                             <div class="card">
                                                 <div class="card-body py-2 px-3">
                                                     <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                    <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
-                                                    <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                    <h5 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
+                                                    <p class="fs--2 fw-medium mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
                                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
                                                     <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
                                                     <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
@@ -373,10 +354,12 @@ Mi Veris - Citas - Receta médica
                                 elementos += `<div class="card">
                                                     <div class="card-body p-2">
                                                         <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                            <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
-                                                                     </div>
-                                                        <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
+                                                            <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                            <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada)}</span>
+                                                        </div>
+
+                                                        ${determinarFechasCaducadas(detalles, laboratorio)}
+                                         
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
@@ -470,13 +453,13 @@ Mi Veris - Citas - Receta médica
             data.data.forEach((receta) => {
                 elementos += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
                                 <div class="d-flex flex-column">
-                                    <small class="text-veris fw-bold denominacion">
-                                        ${receta.denominacion}
+                                    <small class="text-veris fw-medium denominacion">
+                                        ${agregarEspacios(receta.denominacion)}
                                     </small>
-                                    <small class="text-veris fw-light concentracion">
+                                    <small class="text-veris fw-light concentracion" style="color: #3D4E66;">
                                         ${receta.concentracion} ${receta.formaFarmaceutica}
                                     </small>
-                                    <small class="text-veris fw-light indicaciones">
+                                    <small class="text-veris fw-light indicaciones style="color: #3D4E66;"">
                                         ${receta.indicaciones}
                                     </small>
                                 </div>
@@ -573,18 +556,43 @@ Mi Veris - Citas - Receta médica
     // funciones js 
 
     // determinar fechas caducadas
-    function determinarFechasCaducadas(datos){
+    function determinarFechasCaducadas(datos, datosTratamiento){ 
 
-        if (datos.tipoServicio == "FARMACIA") {
-            return ``;
-        } else{
-            if (datos.esCaducado == "S") {
-                return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-            } else {
-                return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+        let dataFechas = ``;
+
+        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
+
+            if (datos.estado == "PENDIENTE_AGENDAR") {
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
+                
+            }
+            if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
+
+                dataFechas = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h5>
+                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
+                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
+                                <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
+                
             }
 
+
         }
+        else{
+            if (datos.estado == "PENDIENTE_AGENDAR") {
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
+                
+            }
+        }
+
+        return dataFechas;
 
 
     }
@@ -598,20 +606,20 @@ Mi Veris - Citas - Receta médica
         }
     }
 
-    // determinar fechas caducadas
-    function determinarFechasCaducadas(datos){
-        // si es receta medica no mostrar fechas
-        console.log('datos: ', datos.tipoServicio);
-        if (datos.tipoServicio == "FARMACIA") {
-            return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a> `;
-        } else{
-            if (datos.esCaducado == "S") {
-                return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-            } else {
-                return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-            }
-        }
-    }
+    // // determinar fechas caducadas
+    // function determinarFechasCaducadas(datos){
+    //     // si es receta medica no mostrar fechas
+    //     console.log('datos: ', datos.tipoServicio);
+    //     if (datos.tipoServicio == "FARMACIA") {
+    //         return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal">¿Ya compraste esta receta?</a> `;
+    //     } else{
+    //         if (datos.esCaducado == "S") {
+    //             return `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+    //         } else {
+    //             return `<p class="fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+    //         }
+    //     }
+    // }
 
     // determinar si es receta medica o no botones
     function determinarbotonesRecetaMedica(detalles) {
@@ -648,7 +656,7 @@ Mi Veris - Citas - Receta médica
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
-                    respuestaAgenda += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuestaAgenda += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'> Ver orden</div>`;
 
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                         if (datosServicio.habilitaBotonAgendar == 'S') {
@@ -665,28 +673,28 @@ Mi Veris - Citas - Receta médica
                             };
                             params.esOnline = modalidad;
                             let urlParams = btoa(JSON.stringify(params));
-                            respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                            respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>`;
                         } else {
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"> Agendar</a>`;
 
                         }
 
                     }else if (datosServicio.estado == 'ATENDIDO'){
 
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2"><i class="bi me-2"></i> Ver orden</a>`;
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2"> Ver orden</a>`;
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"><i class="bi me-2"></i> Ver orden</a>`;
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3"> Ver orden</a>`;
 
                         if (datosServicio.permitePago == 'S'){
                             // mostrar boton de pagar
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Pagar</a>`;
                         } 
                         if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                         } 
                         
                         if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
@@ -701,22 +709,21 @@ Mi Veris - Citas - Receta médica
 
                 case "LAB":
                     let respuesta = "";
-                    respuesta += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuesta += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'> Ver orden</div>`;
 
 
                     if(estado == 'REALIZADO'){
                         // clear respuesta
                         respuesta = "";
                         
-                        respuesta += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2" 
-                            ></i> Ver orden</div>`;
+                        respuesta += `<button class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     } 
                     else{
 
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
                             respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2
-                            "><i class="bi me-2"></i> Ver resultados</a>`;
+                            "> Ver resultados</a>`;
                         } else {
                             respuesta += ``;
                         }
@@ -732,7 +739,7 @@ Mi Veris - Citas - Receta médica
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
                             
-                            respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                            respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Pagar</a>`;
                         }
                     }
                     
@@ -744,14 +751,14 @@ Mi Veris - Citas - Receta médica
 
                     let respuestaRecetas = "";
                     
-                    respuestaRecetas += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuestaRecetas += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'> Ver orden</div>`;
 
                     if(estado == 'REALIZADO'){
                         respuestaRecetas = "";
                         // abrir offcanvas
                         respuestaRecetas += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-bs-toggle="offcanvas" 
                         data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>
-                        <i class="bi me-2"></i> Ver receta</div>`;
+                         Ver receta</div>`;
 
                     } else {
                         if(datosServicio.aplicaSolicitud == "S"){
@@ -759,7 +766,7 @@ Mi Veris - Citas - Receta médica
                         }
                         else{
                             // return boton ver receta
-                            respuestaRecetas += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver receta</a>`;
+                            respuestaRecetas += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Ver receta</a>`;
                         }
                     }
                     
@@ -767,12 +774,12 @@ Mi Veris - Citas - Receta médica
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'> Ver orden</div>`;
                     if (datosServicio.esAgendable == "N") {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"> Agendar</a>`;
                       
                     } else {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>`;
                     }
 
                     return respuestaOdontologia;
@@ -801,7 +808,7 @@ Mi Veris - Citas - Receta médica
         let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
                                 checked>
-                                <span class="text-veris fw-bold">
+                                <span class="text-veris fw-medium">
                                     ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
                                 </span>
@@ -812,7 +819,7 @@ Mi Veris - Citas - Receta médica
         data.forEach((Pacientes) => {
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
-                                <span class="text-veris fw-bold">
+                                <span class="text-veris fw-medium">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>

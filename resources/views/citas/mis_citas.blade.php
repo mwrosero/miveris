@@ -48,28 +48,27 @@ Mi Veris - Citas - Mis citas
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5 active" id="pills-actuales-tab" data-bs-toggle="pill" data-bs-target="#pills-actuales" type="button" role="tab" aria-controls="pills-actuales" aria-selected="true">Próximas</button>
+                    <button class="nav-link px-8 px-md-5 active" id="pills-actuales-tab" data-bs-toggle="pill" data-bs-target="#pills-actuales" type="button" role="tab" aria-controls="pills-actuales" aria-selected="true">Próximas</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5" id="pills-historial-tab" data-bs-toggle="pill" data-bs-target="#pills-historial" type="button" role="tab" aria-controls="pills-historial" aria-selected="false">Historial</button>
+                    <button class="nav-link px-8 px-md-5" id="pills-historial-tab" data-bs-toggle="pill" data-bs-target="#pills-historial" type="button" role="tab" aria-controls="pills-historial" aria-selected="false">Historial</button>
                 </li>
             </ul>
-            <div class="tab-content bg-transparent" id="pills-tabContent">
+            <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
-                <div class="tab-pane fade show active" id="pills-actuales" role="tabpanel" aria-labelledby="pills-actuales-tab" tabindex="0">
+                <div class="tab-pane fade mt-3 show active" id="pills-actuales" role="tabpanel" aria-labelledby="pills-actuales-tab" tabindex="0">
                     <!-- botn de agendar -->
                     <div class="text-center">
                         <a href="/citas" class="btn btn-primary-veris px-lg-5 mb-4 px-5 p-3">Agendar cita</a>
                     </div>
-                    <div class="d-flex justify-content-center mb-4">
+                    <div class="d-flex justify-content-center mb-4 px-2">
                         <div class="col-12 col-md-10 col-lg-8">
                             <div class="row g-3" id="citasActuales">
                                 <!-- items dinamicos -->
                             </div>
                         </div>
                     </div>
-
                     <!-- Mensaje No tiene cita -->
                     <div class="d-flex justify-content-center d-none" id="mensajeNoCita">
                         <div class="card bg-transparent shadow-none">
@@ -84,8 +83,8 @@ Mi Veris - Citas - Mis citas
                     </div>
                     <!-- Mensaje END -->
                 </div>
-                <div class="tab-pane fade" id="pills-historial" role="tabpanel" aria-labelledby="pills-historial-tab" tabindex="0">
-                    <div class="d-flex justify-content-center mb-4">
+                <div class="tab-pane fade mt-3" id="pills-historial" role="tabpanel" aria-labelledby="pills-historial-tab" tabindex="0">
+                    <div class="d-flex justify-content-center mb-4 px-2">
                         <div class="col-12 col-md-10 col-lg-8">
                             <div class="row g-3" id="historialCitas">
                                 <!-- items dinamicos -->
@@ -127,7 +126,7 @@ Mi Veris - Citas - Mis citas
 
     document.addEventListener("DOMContentLoaded", async function () {
         const elemento = document.getElementById('nombreFiltro');
-        elemento.innerHTML = 'Todas las citas';
+        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         await obtenerHistorialCitas();
         await obtenerCitas();
         await consultarGrupoFamiliar();
@@ -213,12 +212,16 @@ Mi Veris - Citas - Mis citas
 
     }
 
-    async function obtenerCitas(){
+    async function obtenerCitas(fechaDesde, fechaHasta, pacienteSeleccionado , esAdmin, estadoCitas) {
+        console.log("pacienteSeleccionado", pacienteSeleccionado);
         let args = [];
         let canalOrigen = _canalOrigen;
         let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
-        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
 
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+        if (pacienteSeleccionado) {
+            numeroPaciente = pacienteSeleccionado;
+        }
 
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
@@ -335,7 +338,7 @@ Mi Veris - Citas - Mis citas
     }
 
 
-    // mostrar lista de pacientes
+    // mostrar lista de pacientes en el filtro
     function mostrarListaPacientesFiltro(){
 
         let data = familiar;
@@ -344,7 +347,8 @@ Mi Veris - Citas - Mis citas
         divContenedor.empty(); // Limpia el contenido actual
 
         let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" checked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
+                                checked>
                                 <span class="text-veris fw-bold">
                                     ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
@@ -355,45 +359,33 @@ Mi Veris - Citas - Mis citas
         console.log('sss',data);
         data.forEach((Pacientes) => {
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadiosI" id="listGroupRadios1" value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
                                 <span class="text-veris fw-bold">
+                                    
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
                                 </span>
                             </label>`;
             divContenedor.append(elemento);
+
         });
     }
+
 
     // aplicar filtros
     $('#aplicarFiltros').on('click', async function(){
         let contexto = $(this).data('context');
-        let pacienteSeleccionado = $('input[name="listGroupRadiosI"]:checked').val();
-        let fechaDesde = $('#fechaDesde').val();
-        let fechaHasta = $('#fechaHasta').val();
-        let esAdmin = $('input[name="listGroupRadiosI"]:checked').attr('esAdmin');
-        let estadoCitas;
-        if (document.getElementById('pills-actuales-tab').getAttribute('aria-selected') === 'true') {
-            estadoCitas = 'ACTUAL';
-        } else if (document.getElementById('pills-historial-tab').getAttribute('aria-selected') === 'true') {
-            estadoCitas = 'HISTORICO';
-        }
+        aplicarFiltrosCitas(contexto);
+        // Obtener el texto completo de la opción seleccionada data-rel
+        const texto = $('input[name="listGroupRadios"]:checked').data('rel');
 
+        console.log('texto', texto);
 
-        
-
-
-
-
-
-        if (contexto === 'contextoAplicarFiltros') {
-            if (estadoCitas === 'ACTUAL'){
-                await obtenerCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin);
-            }
-            else if (estadoCitas === 'HISTORICO'){
-                await obtenerHistorialCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);
-            }
-
+        const elemento = document.getElementById('nombreFiltro');
+        if (texto == 'YO') {
+            elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+        } else{
+            elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
         }
 
     });

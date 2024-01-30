@@ -101,14 +101,51 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     
 </script>
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_tHt53kdevXWEWJii_qfBOsjf7fjI510&callback=initMap">
 </script>
 <script>
     function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: -34.397, lng: 150.644},
+    // Opciones por defecto del mapa
+        var mapOptions = {
+            center: {lat: -34.397, lng: 150.644}, // Coordenadas por defecto
             zoom: 8
-        });
+        };
+
+        // Crear mapa
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Intentar geolocalizar al usuario
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                // Centrar el mapa en la ubicación del usuario
+                map.setCenter(userLocation);
+                map.setZoom(14); // Ajustar el zoom para acercar al usuario
+
+                // Opcional: Colocar un marcador en la ubicación del usuario
+                var marker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    title: 'Tu ubicación'
+                });
+            }, function() {
+                handleLocationError(true, map.getCenter());
+            });
+        } else {
+            // El navegador no soporta Geolocalización
+            handleLocationError(false, map.getCenter());
+        }
+    }
+
+    // Función para manejar errores de geolocalización
+    function handleLocationError(browserHasGeolocation, pos) {
+        console.log(browserHasGeolocation ?
+                    'Error: El servicio de Geolocalización falló.' :
+                    'Error: Tu navegador no soporta geolocalización.');
     }
 </script>
 <script>
@@ -116,11 +153,14 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     // variables globales
 
     let params = @json($data);
-    console.log('params', params);
+
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarCiudadesEspecialidad();
+        llenarDatos();
 
         
     });
@@ -152,19 +192,34 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     $("form").on('submit', async function(e) {
         e.preventDefault(); 
 
-        // enviar datos por parametros
-        params.Uciudad = $('#ciudad').val();
-        params.Udireccion = $('#direccion').val();
-        params.UnumeroIdentificacion = $('#numeroIdentificacion').val();
-        params.Uemail = $('#email').val();
-        params.Utelefono = $('#telefono').val();
-        params.Ureferencias = $('#referencias').val();
-
-        let ulrParams = btoa(JSON.stringify(params)); 
-        console.log('ulrParams', ulrParams);
+        // setear datos en localstorage
         
-        window.location.href = `/registrar-orden-externa/${ulrParams}`;
+        dataCita.paciente.direccion = $('#direccion').val();
+        dataCita.paciente.numeroIdentificacion = $('#numeroIdentificacion').val();
+        dataCita.paciente.correo = $('#email').val();
+        dataCita.paciente.telefono = $('#telefono').val();
+        dataCita.paciente.referencias = $('#referencias').val();
+        dataCita.paciente.codigoCiudad = $('#ciudad').val();
+        dataCita.paciente.nombreCiudad = $('#ciudad option:selected').text();
+        
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
+        window.location.href = `/registrar-orden-externa/{{ $params }}`;
     });
+
+
+    // llenar datos con localstorage
+    function llenarDatos(){
+        console.log('dataCita', dataCita);
+        if(dataCita){
+            $('#direccion').val(dataCita.paciente.direccion);
+            $('#numeroIdentificacion').val(dataCita.paciente.numeroIdentificacion);
+            $('#email').val(dataCita.paciente.correo);
+            $('#telefono').val(dataCita.paciente.telefono);
+        }
+    }
+
 </script>
     
 @endpush

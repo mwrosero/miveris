@@ -13,7 +13,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
                 <div class="modal-header d-none">
-                    <button type="button" class="btn-close fw-bold top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-3 pt-4">
                     <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
@@ -29,19 +29,37 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </form>
         </div>
     </div>
+
+    <!-- Modal noPermiteReserva-->
+    <div class="modal fade" id="noPermiteReserva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noPermiteReservaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body p-2">
+                    <div class="text-center">
+                        <h1 class="modal-title fs-5 mb-3" id="noPermiteReservaLabel">Veris</h1>
+                        <p class="mb-0" id="noPermiteReservaMsg"></p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center p-2 pt-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elegir paciente') }}</h5>
     <section class="p-3 mb-3">
-        <div class="row" id="listaPacientes">
-            <div class="col-6 col-md-3 mb-3">
-                <div class="card">
-                    <div class="card-body text-center">
+        <div class="row g-3" id="listaPacientes">
+            <div class="col-6 col-md-3">
+                <div class="card h-100">
+                    <div class="card-body text-center px-4">
                         <a href="{{route('familia')}}">
                             <div class="d-flex justify-content-center align-items-center mb-2">
                                 <div class="avatar me-2">
                                     <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
                                 </div>
                             </div>
-                            <p class="text-veris fw-bold fs--2">{{ __('Agregar nuevo paciente') }}</p>
+                            <p class="text-veris fw-medium fs--2">{{ __('Agregar nuevo paciente') }}</p>
                         </a>
                     </div>
                 </div>
@@ -54,19 +72,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 <script>
     // variables globales
     let familiar = [];
-    let params = @json($data);
-    let online = params.online;
-    let ordenExterna = params.ordenExterna;
-    let convenios = params.convenio;
-
-    console.log('conv', convenios);
-
-    console.log('online', online);  
-    console.log('ordenExterna', ordenExterna);
+    // CAPTURAR PARAMETROS
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let online = dataCita?.online;
+    let ordenExterna = dataCita?.ordenExterna;
+    let dataPaciente;
+    
 
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarGrupoFamiliar();
+        $('body').on('click','.convenio-item', function(){
+            reservaNoPermitida($(this).attr("url-rel"), $(this).attr("data-rel"));
+        })
     });
 
     // funciones asyncronas
@@ -75,11 +94,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log('dataFa', data);
+        
         if(data.code == 200){
             familiar = data.data;
             mostrarListaPacientes();
@@ -90,7 +109,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // consultar lista de convenios
     async function consultarConvenios(event) {
-        console.log('entro');
         let listaConvenios = $('#listaConvenios');
         listaConvenios.empty();
         listaConvenios.append(`<div class="text-center p-2"><small>Nos estamos comunicando con tu aseguradora, el proceso puede tardar unos minutos</small></div>`);
@@ -98,20 +116,26 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let args = [];
         let canalOrigen = _canalOrigen;
         let dataRel = $(event.currentTarget).data('rel');
-        console.log('dataRel', dataRel);
-        
+        dataPaciente = dataRel;
+        console.log("dataRel", dataRel);
         let codigoUsuario;
         let tipoIdentificacion;
         let nombreCompleto;
+        let numeroPaciente;
+        let direccion;
+        let telefono;
+        let correo;
+
 
         if(dataRel != ""){
             codigoUsuario = dataRel.numeroIdentificacion;
             tipoIdentificacion = dataRel.tipoIdentificacion;
             nombreCompleto = dataRel.primerNombre + ' ' + dataRel.primerApellido + ' ' + dataRel.segundoApellido;
-        }else{
-            codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-            tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
-            nombreCompleto = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}";
+            numeroPaciente = atob(dataRel.idPersona);
+            direccion = dataRel.direccion;
+            telefono = dataRel.telefono;
+            correo = dataRel.correo;
+
         }
 
         args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
@@ -126,46 +150,65 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(data.data.length > 0){
                 listaConvenios.empty();
                 data.data.forEach((convenios) => {
-
-                    console.log('convenios', convenios);
-                    let params = @json($data);
+                    let params = {}
+                    params.online = online;
                     params.convenio = convenios;
-                    let urlParams = btoa(JSON.stringify(params));
-                    elemento += `<a href="/citas-elegir-especialidad/${urlParams}"
-                        class="stretched-link">`;
-                    // params.numeroIdentificacion = codigoUsuario;
-                    // params.tipoIdentificacion = tipoIdentificacion;
-                    // params.nombrePaciente = nombreCompleto;
-                    params.paciente = {
-                        "numeroIdentificacion": codigoUsuario,
-                        "tipoIdentificacion": tipoIdentificacion,
-                        "nombrePaciente": nombreCompleto
-                    };
-                    console.log(params);
-                    let ulrParams = btoa(JSON.stringify(params));
+                    params.paciente = dataRel;
+                    
+
                     let ruta = '';
                     if (ordenExterna == 'S') {
-                        
                         if(online == 'S'){
-                            console.log('entro a ruta online');
-                            ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;
-                            
+                            ruta = `/registrar-orden-externa-ubicacion/{{ $params }}`;                       
                         }else{
-                            ruta = `/registrar-orden-externa/${ulrParams}`;
+                            ruta = `/registrar-orden-externa/{{ $params }}`;
                         }
                     }
                     else {
-                        ruta = `/citas-elegir-especialidad/${ulrParams}`;
+                        ruta = `/citas-elegir-especialidad/{{ $params }}`;
                     }
-                    elemento += `<a href="${ruta}" class="stretched-link">
+                    let functionValidacion = ``;
+                    if(convenios.permiteReserva == "N"){
+                        ruta = `#`;
+                    }
+                    let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
+                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                                        <label for="listGroupCheckableRadios2">
+                                        <label for="listGroupCheckableRadios2" class="cursor-pointer">
                                             ${convenios.nombreConvenio}
                                         </label> 
                                     </div>
-                                </a>`;
+                                </div>`;
                 });
+                /*Agregar ninguno*/
+                let params = {}
+                params.online = online;
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+
+                };
+                params.paciente = dataRel;
+                let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
+                ruta = `/citas-elegir-especialidad/{{ $params }}`;
+                if (ordenExterna == 'S') {
+                    if(online == 'S'){
+                        ruta = `/registrar-orden-externa-ubicacion/{{ $params }}`;                          
+                    }else{
+
+                        ruta = `/registrar-orden-externa/{{ $params }}`;
+                    }
+                }
+
+
+                elemento += `<a href="${ruta}" class="d-block" data-rel='${ulrParams}' id="convenioNinguno">
+                                <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                                    NINGUNO
+                                </div>
+                            </a>`;
 
                 listaConvenios.append(elemento); 
                 
@@ -174,32 +217,34 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 
             } else {
 
-                let params = @json($data);
-                params.convenio = null;
-                params.numeroIdentificacion = codigoUsuario;
-                params.tipoIdentificacion = tipoIdentificacion;
-                let ulrParams = btoa(JSON.stringify(params));
+                let params = {}
+                dataCita.online = online;
+                dataCita.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                };
+                dataCita.paciente = dataRel;
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
+                let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                 listaConvenios.empty();
                 if (ordenExterna == 'S') {
+                    console.log("orden externa");
+                    if(online == 'S'){
+                        ruta = `/registrar-orden-externa-ubicacion/{{ $params }}`;
                         
-                        if(online == 'S'){
-                            console.log('entro a ruta online');
-                            ruta = `/registrar-orden-externa-ubicacion/${ulrParams}`;
-                            
-                        }else{
-                            ruta = `/registrar-orden-externa/${ulrParams}`;
-                        }
+                    }else{
+                        ruta = `/registrar-orden-externa/{{ $params }}`;
                     }
-                    else {
-                        ruta = `/citas-elegir-especialidad/${ulrParams}`;
-                    }
+                }
+                else {
+                    ruta = `/citas-elegir-especialidad/{{ $params }}`;
+                }
 
-                
                 window.location.href = ruta;
-            }
-
-            
-              
+            }              
         }
 
         return data;
@@ -209,56 +254,74 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     function mostrarListaPacientes(){
 
         let listaPacientes = $('#listaPacientes');
-        let pacienteYo = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->segundoNombre }} {{ Session::get('userData')->primerApellido }}";
         
-        let pacienteYoGenero = "{{ Session::get('userData')->sexo }}";
-        // console.log('pacienteYoGenero', pacienteYoGenero);
-
-        let backgroundClass = pacienteYoGenero === "F" ? "bg-strong-magenta" : (pacienteYoGenero === "M" ? "bg-soft-blue" : "bg-soft-green");
         let elemento = '';
-        elemento += `<div class="col-6 col-md-3 mb-3">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <a data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel="" >
-                                    <div class="d-flex justify-content-center align-items-center mb-2">
-                                        <div class="avatar me-2">
-                                            <span class="avatar-initial rounded-circle ${backgroundClass}">${pacienteYo.charAt(0).toUpperCase()}</span>
-                                        </div>
-                                    </div>
-                                    <p class="text-veris fw-bold fs--2 mb-0">${pacienteYo}</p>
-                                    <p class="text-veris fs--3 mb-0">{{ __('Yo') }}</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div> `;
+        
+
         if(familiar != null){
             familiar.forEach((pacientes) => {
-                // console.log('pacientes', pacientes);
                 let backgroundClass = pacientes.genero === "F" ? "bg-strong-magenta" : (pacientes.genero === "M" ? "bg-soft-blue" : "bg-soft-green");
 
-                elemento += `<div class="col-6 col-md-3 mb-3">
-                                    <div class="card">
-                                        <div class="card-body text-center">
-                                            
-                                            <div data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
-                                               <div class="d-flex justify-content-center align-items-center mb-2">
-                                                    <div class="avatar me-2">
-                                                        <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
-                                                    </div>
-                                                </div>
-                                                <p class="text-veris fw-bold fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
-                                                <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
-                                            </div>
-                                        </div>
+                elemento += `<div class="col-6 col-md-3">
+                    <div class="card h-100 cursor-pointer">
+                        <div class="card-body text-center px-2">
+                            
+                            <div data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
+                               <div class="d-flex justify-content-center align-items-center mb-2">
+                                    <div class="avatar me-2">
+                                        <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
                                     </div>
-                                </div> `;
+                                </div>
+                                <p class="text-veris fw-medium fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
+                                <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div> `;
 
             });
         }
-
         listaPacientes.append(elemento);
     }
 
+    async function reservaNoPermitida(url, data ){
+        let convenio = JSON.parse(atob(decodeURIComponent(data)));
+        console.log("convenio", convenio);
+        $('#noPermiteReservaMsg').html(convenio.convenio.mensajeBloqueoReserva)
+        if(convenio.convenio.permiteReserva == "S"){
+            // Actualizar dataCita con los datos del convenio
+            dataCita.convenio = convenio.convenio;
+            dataCita.paciente = dataPaciente;
+            // Aquí puedes añadir cualquier otra información relevante a dataCita
+
+            // Guardar el objeto actualizado en localStorage
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
+            location.href = url;
+        }else{
+            $('#convenioModal').modal('hide');
+            var myModal = new bootstrap.Modal(document.getElementById('noPermiteReserva'));
+            setTimeout(function(){
+                $('.modal-backdrop').remove();
+                myModal.show();
+            },250);
+        }
+    }
+
+    // setear cita en localstorage cuando se escoge un convenio ninguno
+    $('body').on('click', '#convenioNinguno', function() {
+        let params = {}
+        dataCita.online = online;
+        dataCita.convenio = {
+            "permitePago": "S",
+            "permiteReserva": "S",
+            "idCliente": null,
+            "codigoConvenio": null,
+        };
+        dataCita.paciente = dataPaciente;
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
+    });
    
     
     

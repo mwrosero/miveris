@@ -153,7 +153,9 @@ body {
 html:not([dir="rtl"]) .border-start-veris {
   border-left: 3px solid var(--bg-vris-blue) !important;
 }
-
+.border-start-grenadier{
+  border-left: 3px solid var(--bg-vris-strong-red) !important;
+}
 .btn-outline-primary-veris {
   color: var(--bg-vris-blue) !important;
   border-color: var(--bg-vris-blue) !important;
@@ -183,11 +185,17 @@ html:not([dir="rtl"]) .border-start-veris {
   border-color: transparent;
   background: #E9F7FF !important;
 }
-
-.swiper-acceso-rapidos {
+.swiper{
+  width: 100%;
+  height: 100%;
+}
+.swiper-slide{
+  height: auto !important;
+}
+/* .swiper-acceso-rapidos {
   width: 100%;
   overflow: hidden !important;
-}
+} */
 
 .btn-prev::after,
 .swiper-button-prev::after {
@@ -231,11 +239,18 @@ html:not([dir="rtl"]) .border-start-veris {
   transition: all .3s ease-in-out !important;
   border-radius: 50% !important;
   background-color: #E0E6E9 !important;
-  color: rgba(0, 113, 206, 0.75) !important;
+  color: rgba(0, 113, 206, 0.25) !important;
   text-align: center !important;
   border: 0 !important;
   box-shadow: 0 .125rem .125rem -.125rem rgba(31, 27, 45, .08), 0 .25rem .75rem rgba(31, 27, 45, .08) !important;
   z-index: 10 !important;
+}
+.btn-next:not(.swiper-button-disabled),
+.btn-prev:not(.swiper-button-disabled) {
+  /* Estilos aquí */
+  color: #0071CE !important;
+  background: rgba(204, 234, 250, 0.80) !important;
+  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);
 }
 
 .bg-dark-blue-veris {
@@ -321,7 +336,9 @@ html:not([dir="rtl"]) .border-start-veris {
 .fs-24 {
   font-size: 1.5rem;
 }
-
+.fw-medium{
+  font-weight: 500 !important;
+}
 .form-label {
   color: var(--bg-vris-very-dark-blue) !important;
 }
@@ -345,6 +362,7 @@ h2,
 h1,
 .h1 {
   color: var(--bg-vris-very-dark-blue) !important;
+  font-weight: 500 !important;
 }
 
 .lh-normal {
@@ -392,7 +410,7 @@ h1,
   height: 64px;
   /* line-height: 100%; */
   background: none;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   box-shadow: none;
   position: relative;
 }
@@ -479,6 +497,30 @@ h1,
 /* This for loop creates the 	necessary css animation names 
 Due to the split circle of progress-left and progress right, we must use the animations on each side. 
 */
+.progress-circle[data-percentage="0"] .progress-right .progress-bar {
+  animation: loading-0 1.5s linear forwards;
+}
+
+.progress-circle[data-percentage="0"] .progress-left .progress-bar {
+  animation: 0;
+}
+
+.progress-circle[data-percentage="3"] .progress-right .progress-bar {
+  animation: loading-0-3 1.5s linear forwards;
+}
+
+.progress-circle[data-percentage="3"] .progress-left .progress-bar {
+  animation: 0;
+}
+
+.progress-circle[data-percentage="5"] .progress-right .progress-bar {
+  animation: loading-0-5 1.5s linear forwards;
+}
+
+.progress-circle[data-percentage="5"] .progress-left .progress-bar {
+  animation: 0;
+}
+
 .progress-circle[data-percentage="10"] .progress-right .progress-bar {
   animation: loading-1 1.5s linear forwards;
 }
@@ -558,6 +600,41 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .progress-circle[data-percentage="100"] .progress-left .progress-bar {
   animation: loading-5 1.5s linear forwards 1.5s;
 }
+@keyframes loading-0 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(36);
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes loading-0-3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(36);
+    transform: rotate(9deg);
+  }
+}
+
+@keyframes loading-0-5 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(36);
+    transform: rotate(18deg);
+  }
+}
 
 @keyframes loading-1 {
   0% {
@@ -632,28 +709,32 @@ Due to the split circle of progress-left and progress right, we must use the ani
   font-size: 1rem;
 }
 
-.swiper-pagination:not(.swiper-thumbnails) {
+/* .swiper-pagination:not(.swiper-thumbnails) {
   display: flex;
   justify-content: center;
   align-items: center;
-}
+} */
 
-.swiper-pagination-bullet:not(.swiper-thumbnail) {
+/* .swiper-pagination-bullet:not(.swiper-thumbnail) {
   width: 1rem !important;
   height: .375rem !important;
   transition: width .2s ease-in-out, height .2s ease-in-out, background-color .2s ease-in-out !important;
   border-radius: 50rem !important;
   background-color: rgba(102, 98, 118, .4) !important;
   opacity: 1 !important;
-}
+} */
 
-.swiper-pagination-bullet-active:not(.swiper-thumbnail) {
+/* .swiper-pagination-bullet-active:not(.swiper-thumbnail) {
   background-color: #666276 !important;
-}
+} */
 
-.swiper-horizontal>.swiper-pagination-bullets:not(.swiper-thumbnails) .swiper-pagination-bullet-active,
+/* .swiper-horizontal>.swiper-pagination-bullets:not(.swiper-thumbnails) .swiper-pagination-bullet-active,
 .swiper-pagination-bullets:not(.swiper-thumbnails).swiper-pagination-horizontal .swiper-pagination-bullet-active {
   width: 2rem !important;
+} */
+
+.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal{
+  bottom: 0px !important;
 }
 
 .rounded-4 {
@@ -693,7 +774,11 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .text-lime-veris {
   color: var(--bg-vris-strong-cyan-lime-green) !important;
 }
-
+.text-one-line{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .top-25 {
   top: 25% !important;
 }
@@ -722,6 +807,15 @@ Due to the split circle of progress-left and progress right, we must use the ani
   height: 90% !important;
 }
 
+.p-8{padding: 2rem !important;}
+.px-8{
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+.py-8{
+  padding-top: 2rem !important; /* 32px */
+  padding-bottom: 2rem !important; /* 32px */
+}
 /* caledario */
 .border-24 {
   border-radius: 24px !important;
@@ -766,6 +860,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
   /* Ajusta el ancho de los días según sea necesario */
   font-size: 1rem;
   margin: auto;
+  
 }
 
 .calendar-day.empty-day {
@@ -903,6 +998,10 @@ Due to the split circle of progress-left and progress right, we must use the ani
   .ml-lg-10 {
     margin-left: 10.5rem !important;
   }
+  .fs--lg-1{
+    font-size: 0.874rem !important;
+  }
+  
 }
 
 @media (min-width: 768px) {

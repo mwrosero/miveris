@@ -12,8 +12,6 @@ $data1 = json_decode($data);
 @endphp
 
 <div class="flex-grow-1 container-p-y pt-0">
-
-
       <!-- Modal mensaje -->
       <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -29,8 +27,9 @@ $data1 = json_decode($data);
         </div>
     </div>
 
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Nueva orden externa') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Nueva orden externa') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-6 col-lg-5">
@@ -59,7 +58,7 @@ $data1 = json_decode($data);
                             </div>
                             <div class="col-md-12">
                                 <label for="numeroIdentificacion" class="form-label fw-bold">Cédula o pasaporte *</label>
-                                <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
+                                <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required disabled/>
                             </div>
                             <div class="col-md-12">
                                 <label for="email" class="form-label fw-bold">Email *</label>
@@ -69,12 +68,13 @@ $data1 = json_decode($data);
                                 <label for="telefono" class="form-label fw-bold">Teléfono *</label>
                                 <input type="number" class="form-control bg-neutral" name="telefono" id="telefono"  required />
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 d-none">
                                 <label for="conveio" class="form-label fw-bold">Elige el convenio *</label>
                                 <input type="text" class="form-control bg-neutral" name="conveio" id="conveio" placeholder="Convenio" disabled />
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit">Siguiente</button>
+                                <button class="btn btn-primary-veris w-100" type="submit" id="botonSiguiente">Siguiente</button>
+
                             </div>
                         </form>
                     </div>
@@ -137,14 +137,28 @@ $data1 = json_decode($data);
 
             // Agregar botón de eliminación
             var btnEliminar = document.createElement('button');
-            btnEliminar.classList.add('btn', 'btn-sm', 'fs--2', 'text-danger', 'shadow-none');
+            btnEliminar.classList.add('btn', 'btn-sm', 'fs-1', 'text-danger', 'shadow-none');
             btnEliminar.innerHTML = '<i class="bi bi-trash"></i>';
             btnEliminar.addEventListener('click', function() {
                 event.preventDefault();
-                this.parentNode.remove();
-                inputUpload.value = '';
-                totalArchivos--; // Disminuir el contador
+                this.parentNode.remove(); // Elimina el div del archivo
+                totalArchivos--; // Disminuye el contador de archivos
+
+                // Actualiza la lista de archivos en el input
+                var dataTransfer = new DataTransfer();
+                for (var i = 0; i < inputUpload.files.length; i++) {
+                    if (inputUpload.files[i].name !== archivo.name) {
+                        dataTransfer.items.add(inputUpload.files[i]);
+                    }
+                }
+                inputUpload.files = dataTransfer.files;
+
+                // Verifica si aún hay archivos después de la eliminación
+                if (inputUpload.files.length === 0) {
+                    $('#botonSiguiente').prop('disabled', true);
+                }
             });
+
 
             archivoDiv.appendChild(btnEliminar);
             fileListContainer.appendChild(archivoDiv);
@@ -180,27 +194,35 @@ $data1 = json_decode($data);
 <script>
     // variables globales
     let params = @json($data1);
-    
-    console.log('params', params);
-    // recuperar variables del path
-    let tipoIdentificacion = params.tipoIdentificacion;
-    let numeroIdentificacion = params.numeroIdentificacion;
-    let convenio = params.convenio;
-    let codigoConvenio = params.codigoConvenio;
-    let nombreConvenio = params.nombreConvenio;
-    let datosPaciente = [];
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
 
-    
+
+
+
+    let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
+    let numeroIdentificacion = dataCita.paciente.numeroIdentificacion;
+    let nombrePaciente = dataCita.paciente.primerNombre;
+    let convenio = dataCita?.convenio;
+    let codigoConvenio = dataCita?.convenio.codigoConvenio;
+    let nombreConvenio = dataCita?.convenio.nombreConvenio;
+    let direccion = dataCita?.paciente.direccion;
+    let datosPaciente = [];
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function() {
         
-        // consultar datos del usuario
-        await consultarDatosUsuario();
         // ocultar convenio si es null
-        if (convenio == null) {
+        console.log('convenio', convenio);
+        if (convenio.length == 0) {
             $('#conveio').parent().hide();
         }
+        
+        llenarDatos();
+
+        $('#botonSiguiente').prop('disabled', true);
+
+        
 
     });
 
@@ -236,28 +258,6 @@ $data1 = json_decode($data);
         return data;
     }
 
-    // consultar los datos del usuario
-    async function consultarDatosUsuario() {
-        let args = [];
-        let canalOrigen = _canalOrigen;
-        args["endpoint"] = api_url + `/digitalestest/v1/pacientes/${numeroIdentificacion}?tipoIdentificacion=${tipoIdentificacion}&canalOrigen=${canalOrigen}`
-        args["method"] = "GET";
-        args["showLoader"] = true;
-        const data = await call(args);
-        console.log('dataRERER', data);
-        if (data.code == 200) {
-            // llenar los datos del paciente en el formulario
-
-            datosPaciente = data.data;
-            $('#paciente').val(datosPaciente.nombreCompleto);
-            $('#numeroIdentificacion').val(datosPaciente.numeroIdentificacion);
-            $('#email').val(datosPaciente.mail);
-            $('#telefono').val(datosPaciente.telefonoMovil);
-            $('#conveio').val(nombreConvenio);
-
-        }
-        return data;
-    }
 
     // crear solicitud de orden externa
 
@@ -274,11 +274,11 @@ $data1 = json_decode($data);
         
 
         let formData = new FormData();
-        formData.append("tipoIdentificacionPaciente", datosPaciente.codigoTipoIdentificacion);
-        formData.append("identificacionPaciente", datosPaciente.numeroIdentificacion);
-        formData.append("nombrePaciente", datosPaciente.nombreCompleto);
-        formData.append("direccion", datosPaciente.direccion);
-        formData.append("telefono", datosPaciente.telefonoMovil);
+        formData.append("tipoIdentificacionPaciente", tipoIdentificacion);
+        formData.append("identificacionPaciente",  numeroIdentificacion);
+        formData.append("nombrePaciente", nombrePaciente);
+        formData.append("direccion", direccion);
+        formData.append("telefono", telefono);
         formData.append("files", files);
         args["data"] = formData;
 
@@ -291,7 +291,8 @@ $data1 = json_decode($data);
             // mostrar modal de exito
             $('#mensajeOrdenExitosa').modal('show');
             $('#btnEntendido').on('click', function(){
-                // window.location.href = "{{ route('citas') }}";
+                // redireccionar a ordenes externas
+                window.location.href = `/ordenes-externas`;
             });
         }
         return data;
@@ -302,9 +303,45 @@ $data1 = json_decode($data);
 
     $("form").on('submit', async function(e) {
         e.preventDefault(); 
+
         await crearSolicitudLaboratorioDomicilio();
     });
     
+
+    // llenar datos con localstorage
+    function llenarDatos() {
+        if (dataCita) {
+            $('#paciente').val(
+                (dataCita.paciente.primerNombre || '') + ' ' +
+                (dataCita.paciente.segundoNombre || '') + ' ' +
+                (dataCita.paciente.primerApellido || '') + ' ' +
+                (dataCita.paciente.segundoApellido || '')
+            );
+
+            $('#numeroIdentificacion').val(dataCita.paciente.numeroIdentificacion);
+            $('#email').val(dataCita.paciente.correo);
+            $('#telefono').val(dataCita.paciente.telefono);
+            $('#conveio').val(dataCita.convenio.codigoConvenio);
+
+
+
+        }
+    }
+
+
+    // habilitar boton siguiente si hay datos en el formulario y hay archivos cargados 
+    $('#upload').on('change', function(){
+        if($('#upload').val() != '' && $('#email').val() != '' && $('#telefono').val() != ''){
+            $('#botonSiguiente').prop('disabled', false);
+        }else{
+            $('#botonSiguiente').prop('disabled', true);
+        }
+    });
+
+
+
+
+
 
 
 

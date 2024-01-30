@@ -8,8 +8,6 @@ Mi Veris - Citas - Citas Laboratorio
 @php
     $data = json_decode(base64_decode($params));
 @endphp
-
-
 <div class="flex-grow-1 container-p-y pt-0">
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Citas / Laboratorio') }}</h5>
     <section class="pt-3 px-0 px-md-3 pb-0">
@@ -46,7 +44,7 @@ Mi Veris - Citas - Citas Laboratorio
                         </div>
                         <div class="col-auto">
                             <div class="btn-master w-100">
-                                <a href="{{route('citas.citaInformacionPago')}}" class="btn text-white shadow-none">{{ __('Pagar') }}</a>
+                                <a href="/citas-datos-facturacion/{{ $params }}" class="btn text-white shadow-none">{{ __('Pagar') }}</a>
                                 |
                                 <p class="btn text-white mb-0 shadow-none cursor-inherit" id="btntotal"></p>
                             </div>
@@ -63,11 +61,11 @@ Mi Veris - Citas - Citas Laboratorio
 
     // variables globales
 
-    let params = @json($data);
-    console.log('params', params);
-    let idPaciente = params.idPaciente;
-    let numeroOrden = params.numeroOrden;
-    let codigoEmpresa = params.codigoEmpresa;
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let idPaciente = dataCita.paciente.numeroPaciente;
+    let numeroOrden = dataCita.datosTratamiento.idOrden;
+    let codigoEmpresa = dataCita.datosTratamiento.codigoEmpresa;
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {

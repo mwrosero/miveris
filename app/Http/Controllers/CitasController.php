@@ -41,17 +41,45 @@ class CitasController extends Controller
     }
 
     // Return view datos de facturacion
-    public function datosFacturacion() {
-        return view('citas.datos_facturacion');
+    public function datosFacturacion($params) {
+        return view('citas.datos_facturacion')->with('params',$params);
     }
 
+    // Return view pago con kushki
+    public function pagoKushki($params) {
+        return view('citas.pago_kushki')->with('params',$params);
+    }
+
+    // return view seleccionar tarjeta
+    public function seleccionarTarjeta($params) {
+        // dd($params);
+        // $params = str_replace('|', '/', $params);
+        return view('citas.seleccionar_tarjeta')->with('params',$params);;
+    }
     // Return view informacion de pago
-    public function citaInformacionPago() {
-        return view('citas.informacion_pago');
+    public function citaInformacionPago($params) {
+        // $params = str_replace('|', '/', $params);
+        return view('citas.informacion_pago')->with('params',$params);;
+    }
+    // Return view Autenticacion Registro de tarjeta
+    public function authRegistroTarjeta($params) {
+        // $params = str_replace('|', '/', $params);
+        return view('citas.autenticacion_registro_tarjeta')->with('params',$params);
+    }
+    // Return view Autenticacion exitosa
+    public function authExitosa($params) {
+        // $params = str_replace('|', '/', $params);
+        return view('citas.autenticacion_exitosa')->with('params',$params);
+    }
+    // Return view Confirmar pago
+    public function confirmarPago($params) {
+        // $params = str_replace('|', '/', $params);
+        return view('citas.confirmar_pago')->with('params',$params);
     }
     // Return view mensaje cita agendada
-    public function citaAgendada() {
-        return view('citas.cita_agendada');
+    public function citaAgendada($params) {
+        // $params = str_replace('|', '/', $params);
+        return view('citas.cita_agendada')->with('params',$params);
     }
 
     // Return view Laboratorio
@@ -99,7 +127,6 @@ class CitasController extends Controller
     public function registrarOrdenesExternasUbicacion($params) {
         return view('citas.laboratorio_domicilioExterna')->with('params',$params);
     }
-
 
     // Return view Mis citas
     public function misCitas() {

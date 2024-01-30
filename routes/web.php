@@ -60,9 +60,15 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/citas-elegir-central-medica/{params}',[CitasController::class, 'listaCentralMedica'])->name('citas.listaCentralMedica')->withoutMiddleware(['guest']);
     Route::get('/citas-elegir-fecha-doctor/{params}',[CitasController::class, 'fechaDoctor'])->name('citas.fechaDoctor')->withoutMiddleware(['guest']);
     Route::get('/citas-revisa-tus-datos/{params}',[CitasController::class, 'detalleCita'])->name('citas.detalleCita')->withoutMiddleware(['guest']);
-    Route::get('/citas-datos-facturacion',[CitasController::class, 'datosFacturacion'])->name('citas.datosFacturacion')->withoutMiddleware(['guest']);
-    Route::get('/citas-informacion-pago',[CitasController::class, 'citaInformacionPago'])->name('citas.citaInformacionPago')->withoutMiddleware(['guest']);
-    Route::get('/citas-agendada',[CitasController::class, 'citaAgendada'])->name('citas.agendada')->withoutMiddleware(['guest']);
+    Route::get('/citas-datos-facturacion/{params}',[CitasController::class, 'datosFacturacion'])->name('citas.datosFacturacion')->withoutMiddleware(['guest']);
+    Route::get('/citas-pago-kushki/{params}', [CitasController::class, 'pagoKushki'])->name('citas.pagoKushki')->withoutMiddleware(['guest']);
+    Route::get('/citas-seleccionar-tarjeta/{params}', [CitasController::class, 'seleccionarTarjeta'])->name('citas.seleccionarTarjeta')->withoutMiddleware(['guest']);
+    Route::get('/citas-informacion-pago/{params}',[CitasController::class, 'citaInformacionPago'])->name('citas.citaInformacionPago')->withoutMiddleware(['guest']);
+    Route::get('/citas-autenticacion-registro-tarjeta/{params}',[CitasController::class, 'authRegistroTarjeta'])->name('citas.authRegistroTarjeta')->withoutMiddleware(['guest']);
+    Route::get('/citas-autenticacion-exitosa/{params}',[CitasController::class, 'authExitosa'])->name('citas.authExitosa')->withoutMiddleware(['guest']);
+    Route::get('/citas-confirmar-pago/{params}',[CitasController::class, 'confirmarPago'])->name('citas.confirmarPago')->withoutMiddleware(['guest']);
+    
+    Route::get('/cita-agendada/{params}',[CitasController::class, 'citaAgendada'])->name('citas.agendada')->withoutMiddleware(['guest']);
     #Laboratorio
     Route::get('/laboratorio',[CitasController::class, 'laboratorio'])->name('citas.laboratorio')->withoutMiddleware(['guest']);
     Route::get('/laboratorio-domicilio/{codigoTratamiento}', [CitasController::class, 'laboratorioDomicilio'])->name('citas.laboratorioDomicilio')->withoutMiddleware((['guest']));
@@ -119,7 +125,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
 
     #Solicitar historia clínica
     Route::get('/historia-clinica', [HistoriaClinicaController::class, 'historiaClinica'])->name('historiaClinica')->withoutMiddleware(['guest']);
-    Route::get('/lista-doctores/{codigoEspecialidad}/{tipoIdentificacion}/{numeroIdentificacion}/{esOnline}', [HistoriaClinicaController::class, 'listaDoctoresHistoriaClinica'])->name('historiaClinica.listaDoctores')->withoutMiddleware(['guest']);
+    Route::get('/lista-doctores/{params}', [HistoriaClinicaController::class, 'listaDoctoresHistoriaClinica'])->name('historiaClinica.listaDoctores')->withoutMiddleware(['guest']);
     Route::get('/solicitar-historia-clinica', [HistoriaClinicaController::class, 'solicitarHistoriaClinica'])->name('historiaClinica.solicitar')->withoutMiddleware(['guest']);
 
     #Experiencia

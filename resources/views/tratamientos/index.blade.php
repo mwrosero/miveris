@@ -6,13 +6,17 @@ Mi Veris - Citas - Mis tratamientos
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+@endphp
     <!-- Modal de error -->
 
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>
                     <p class="fs--1 fw-normal" id="mensajeError" >
                 </p>
                 </div>
@@ -34,28 +38,28 @@ Mi Veris - Citas - Mis tratamientos
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
+                    <button class="nav-link px-8 px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
+                    <button class="nav-link px-8 px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
                 </li>
             </ul>
-            <div class="tab-content bg-transparent" id="pills-tabContent">
+            <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
-                <div class="tab-pane fade show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
+                <div class="tab-pane fade mt-3 px-2 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     <div class="d-flex justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
-                            <div class="row g-3" id="contenedorTratamiento">
+                            <div class="row gx-0 gy-3 g-md-3" id="contenedorTratamiento">
                                 <!-- items dinamicos de tratamientos -->
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane fade" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
+                <div class="tab-pane fade mt-3 px-2" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
                     <div class="d-flex justify-content-center">
                         <div class="col-12 col-md-10 col-lg-8">
-                            <div class="row g-3" id="contenedorTratamientoRealizados">
+                            <div class="row gx-0 gy-3 g-md-3" id="contenedorTratamientoRealizados">
                                 <!-- items dinamicos de tratamientos realizados -->
                             </div>
                         </div>
@@ -83,6 +87,11 @@ Mi Veris - Citas - Mis tratamientos
     let datosTratamientos = [];
     let familiar = [];
     let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+    let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+    let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+    let nombrePaciente = "{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}";
+    let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
+    
 
     // llamar al dom 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -101,7 +110,7 @@ Mi Veris - Citas - Mis tratamientos
     
     // obtener tratamiento por id
     async function obtenerTratamientosId(id='', fechaDesde='', fechaHasta='', estadoTratamiento='PENDIENTE', esAdmin='S') {
-
+        
         let args = [];
         let canalOrigen = _canalOrigen;
         if (id == '') {
@@ -115,8 +124,18 @@ Mi Veris - Citas - Mis tratamientos
         args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
-        console.log(data.data.items);
+        console.log(22,data.data.tienePermisoAdmin);
+        
         if(data.code == 200){
+            if (data.data.tienePermisoAdmin == false) {
+                esAdmin = 'N';
+            }
+
+            // si el usuario es yo mismo es admin es true
+            if (id == "{{ Session::get('userData')->numeroPaciente }}") {
+                esAdmin = 'S';
+            }
+
             datosTratamientos = data.data.items;
             
             if (document.getElementById('pills-pendientes-tab').getAttribute('aria-selected') === 'true') {
@@ -148,7 +167,7 @@ Mi Veris - Citas - Mis tratamientos
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -184,21 +203,26 @@ Mi Veris - Citas - Mis tratamientos
                     "codigoTratamiento": tratamientos.codigoTratamiento,
                     "porcentajeAvanceTratamiento": tratamientos.porcentajeAvanceTratamiento
                 }
+                params.paciente = {
+                    "numeroIdentificacion": numeroIdentificacion,
+                    "tipoIdentificacion": tipoIdentificacion,
+                    "nombrePaciente": nombrePaciente,
+                    "numeroPaciente": numeroPaciente
+                }
                 let ulrParams = btoa(JSON.stringify(params));
-                console.log('ulrParams', params);
 
                 let elemento = `<div class="col-12 col-md-6">
                                     <div class="card">
                                         <div class="card-body p-3">
-                                            <div class="row gx-0 justify-content-between align-items-center">
+                                            <div class="row gx-0 justify-content-between align-items-center mb-3">
                                                 <div class="col-9">
-                                                    <h6 class="card-title text-primary-veris mb-0">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
-                                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
-                                                    <p class="card-text fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
+                                                    <h6 class="card-title text-one-line text-primary-veris mb-0">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
+                                                    <p class="fw-medium text-one-line fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
+                                                    <p class="card-text text-one-line fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                                     <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="fecha-enviado fw-normal text-primary-veris">${tratamientos.fechaTratamiento}</b></p>
                                                 </div>
                                                 <div class="col-3">
-                                                    <div class="progress-circle" data-percentage="${tratamientos.porcentajeAvanceTratamiento}">
+                                                    <div class="progress-circle ms-auto" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
                                                         <span class="progress-left">
                                                             <span class="progress-bar"></span>
                                                         </span>
@@ -207,18 +231,18 @@ Mi Veris - Citas - Mis tratamientos
                                                         </span>
                                                         <div class="progress-value">
                                                             <div>
-                                                                <span><i class="bi bi-check2 success"></i></span>
-                                                                <p class="fs--2 mb-0">${tratamientos.totalTratamientoRealizados}/${tratamientos.totalTratamientoEnviados}</p>
+                                                                <span><i class="bi bi-check2 fw-medium success"></i></span>
+                                                                <p class="fw-medium text-success fs--2 mb-0">${tratamientos.totalTratamientoRealizados}/${tratamientos.totalTratamientoEnviados}</p>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="d-flex justify-content-end align-items-center">
-                                                    <a href="/tratamiento/${ulrParams}
-                                                    " class="btn btn-sm btn-primary-veris shadow-none">
-                                                        ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
-                                                    </a>
-                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-end align-items-center">
+                                                <a href="/tratamiento/{{ $tokenCita }}" data-rel='${JSON.stringify(params)}' 
+                                                 class="btn btn-sm btn-primary-veris shadow-none btn-tratamiento">
+                                                    ${ botonMisTratamientosPorcentaje(tratamientos.porcentajeAvanceTratamiento) }
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -250,15 +274,28 @@ Mi Veris - Citas - Mis tratamientos
         }
         
         data.forEach((tratamientosRealizados) =>{
+            let params = { 
+                    "codigoTratamiento": tratamientosRealizados.codigoTratamiento,
+                    "porcentajeAvanceTratamiento": tratamientosRealizados.porcentajeAvanceTratamiento
+                }
+                params.paciente = {
+                    "numeroIdentificacion": numeroIdentificacion,
+                    "tipoIdentificacion": tipoIdentificacion,
+                    "nombrePaciente": nombrePaciente,
+                    "numeroPaciente": numeroPaciente
+                }
+
+                let ulrParams = btoa(JSON.stringify(params));
+                console.log('ulrParams', params);
             let elemento = `<div class="col-12 col-md-6">
-                                <div class="card">
+                                <div class="card h-100">
                                     <div class="card-body position-relative p-3">
                                         <div class="position-absolute end-0">
                                             <img src="{{ asset('assets/img/svg/golden.svg') }}" class="pe-3" alt="golden">
                                         </div>
                                         <div class="text-center">
                                             <div class="col-auto">
-                                                <div class="progress-circle" data-percentage="${tratamientosRealizados.porcentajeAvanceTratamiento}">
+                                                <div class="progress-circle mx-auto" data-percentage="${tratamientosRealizados.porcentajeAvanceTratamiento}">
                                                     <span class="progress-left">
                                                         <span class="progress-bar"></span>
                                                     </span>
@@ -267,22 +304,23 @@ Mi Veris - Citas - Mis tratamientos
                                                     </span>
                                                     <div class="progress-value">
                                                         <div>
-                                                            <span><i class="bi bi-check2 success"></i></span>
-                                                            <p class="fs--2 mb-0">${tratamientosRealizados.totalTratamientoRealizados}/${tratamientosRealizados.totalTratamientoEnviados}</p>
+                                                            <span><i class="bi bi-check2 fw-medium success"></i></span>
+                                                            <p class="fw-medium text-success fs--2 mb-0">${tratamientosRealizados.totalTratamientoRealizados}/${tratamientosRealizados.totalTratamientoEnviados}</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h6 class="card-title mb-2">${capitalizarElemento(tratamientosRealizados.nombreEspecialidad)}</h6>
+                                            <h6 class="card-title mb-2 text-primary-veris">${capitalizarElemento(tratamientosRealizados.nombreEspecialidad)}</h6>
                                         </div>
-                                        <div class="row g-0 justify-content-between align-items-end">
-                                            <div class="col-md-9">
-                                                <p class="fw-bold fs--2 mb-0" style="color: #003B83;">¡Tratamiento terminado!</p>
-                                                <p class="fw-normal fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientosRealizados.nombreMedico)}</p>
+                                        <div class="row g-3 g-lg-0 justify-content-between align-items-end">
+                                            <div class="col-8 col-md-8">
+                                                <p class="fw-medium fs--2 mb-0" style="color: #003B83;">¡Tratamiento terminado!</p>
+                                                <p class="fw-normal text-one-line fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientosRealizados.nombreMedico)}</p>
                                                 <p class="fw-light fs--2 mb-0">Terminado el: <b class="text-primary-veris fw-light fs--2" id="fechaTratamiento">${tratamientosRealizados.fechaTratamiento}</b></p>
                                             </div>
-                                            <div class="col-md-3">
-                                                <a href="#" class="btn btn-sm btn-primary-veris px-2">Ver todo</a>
+                                            <div class="col-4 col-md-4 text-end">
+                                                <a href="/tratamiento/${ulrParams}"
+                                                 class="btn btn-sm btn-primary-veris">Ver todo</a>
                                             </div>
                                         </div>
                                     </div>
@@ -302,30 +340,24 @@ Mi Veris - Citas - Mis tratamientos
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
-                                checked>
-                                <span class="text-veris fw-bold">
-                                    ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
-                                    <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
-                                </span>
-                            </label>`;
-        divContenedor.append(elementoYo);
+        let isFirstElement = true; // Variable para identificar el primer elemento
 
-        console.log('sss',data);
         data.forEach((Pacientes) => {
+            let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
+            isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
+
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
-                                <span class="text-veris fw-bold">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
+                                <span class="text-veris fw-medium">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
                                 </span>
                             </label>`;
             divContenedor.append(elemento);
-
         });
     }
+
     // mostrar no tiene tratamiento pendientes
     function mostrarMensajeNoTieneTratamiento(){
         
@@ -356,7 +388,7 @@ Mi Veris - Citas - Mis tratamientos
         divContenedorRealizados.empty(); // Limpia el contenido actual
         
         let elemento = `<div class="col-12 d-flex justify-content-center" id="mensajeNoTieneTratamientoRealizados">
-                                    <div class="card bg-transparent shadow-none">
+                                    <div class="card h-100 bg-transparent shadow-none">
                                         <div class="card-body">
                                             <div class="text-center">
                                                 <h5>No tienes tratamientos realizados</h5>
@@ -418,20 +450,23 @@ Mi Veris - Citas - Mis tratamientos
         const contexto = $(this).data('context');
         aplicarFiltros(contexto);
 
-
         
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+        paciente = texto;
+        console.log('textoPaciente', texto);
 
         identificacionSeleccionada = texto.numeroPaciente;
+        numeroIdentificacion = texto.numeroIdentificacion;
+        tipoIdentificacion = texto.tipoIdentificacion;
+        nombrePaciente = texto.primerNombre + ' ' + texto.primerApellido + ' ' + texto.segundoApellido;
+        numeroPaciente = texto.numeroPaciente;
+         
         
         // colocar el nombre del filtro
         const elemento = document.getElementById('nombreFiltro');
-        if (texto == 'YO') {
-            elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-        } else{
-            elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
-        }
+        elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
+        
         
     });
 
@@ -477,5 +512,23 @@ Mi Veris - Citas - Mis tratamientos
 
         await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
     });
+
+
+    // funcion para setear los valores del tratamiento en el localstorage
+    $(document).on('click', '.btn-tratamiento', function(){
+
+        let dataTratamiento = $(this).data('rel');
+        
+        let paciente = $('input[name="listGroupRadios"]:checked').data('rel');
+        
+        let params = { }
+        params.paciente = paciente;
+        params.tratamiento = dataTratamiento;
+        
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+    });
+
+
+
 </script>
 @endpush

@@ -71,7 +71,7 @@
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
                 <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">No</button>
-                <a class="btn btn-lg btn-primary-veris w-100" id= "logout">Si, cerrar</a>
+                <a class="btn btn-lg btn-primary-veris w-100" id="logout">Si, cerrar</a>
             </div>
         </div>
     </div>
@@ -290,28 +290,29 @@
             case 'PENDIENTE_PAGO':
                 categoriaNotificacion = 'Pago pendiente';
                 break;
+
+            case 'ORDEN_HC':
+                categoriaNotificacion = 'Revisa tus ordenes';
+                break;
         }
         return categoriaNotificacion;
     }
 
     //determinar boton notificacion
     function determinarBotonNotificacion(categoria){
+        console.log(2,categoria)
         let botonNotificacion = '';
         switch (categoria) {
             case 'PENDIENTE_PAGO':
                 botonNotificacion = ``;
                 break;
             case 'CITA_MEDICA':
-                botonNotificacion = `<a href="#!" class="btn btn-sm btn-outline-primary-veris">Agendar cita</a>`;
+                botonNotificacion = `<a href="/citas" class="btn btn-sm btn-outline-primary-veris">Agendar cita</a>`;
                 break;
-            
+            case 'ORDEN_HC':
+                botonNotificacion = `<a href="/mis-tratamientos" class="btn btn-sm btn-outline-primary-veris">Ver</a>`;
+                break;
         }
-
-        if (categoria !== 'PENDIENTE_PAGO' && categoria !== 'CITA_MEDICA') {
-            botonNotificacion = `<a href="/mis-tratamientos" class="btn btn-sm btn-outline-primary-veris">Ver detalle</a>`;
-        }
-
-
         return botonNotificacion;
     }
 
