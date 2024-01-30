@@ -599,8 +599,7 @@ $data = json_decode(base64_decode($params));
         if(datos.modalidad == 'ONLINE'){
             return `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
                         <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
-                    </div>
-                    `;
+                    </div>`;
         }
         else{
             return ``;
@@ -802,22 +801,20 @@ $data = json_decode(base64_decode($params));
                                         
                                         let ruta = '/citas-elegir-central-medica/';
                                         let urlCompleta = ruta + "{{ $params }}"
-                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
+                                        respuestaAgenda += `<a href="${urlCompleta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
                                         
-                                         
                                     } else {
                                         
                                         let ruta = '/citas-elegir-fecha-doctor/';
                                         let urlCompleta = ruta + "{{ $params }}"
                                         // ir a fechas
-                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
+                                        respuestaAgenda += `<a href="${urlCompleta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
                                         
                                     }
                                 } else {
                                     respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
-                                                            
-                                                            Agendar
-                                                        </a>`;
+                                            Agendar
+                                        </a>`;
 
                                 }
                             } 
@@ -1059,8 +1056,13 @@ $data = json_decode(base64_decode($params));
             codigoSucursal : datosServicio.codigoSucursal,
             origen: "Listatratamientos"
         };
+        dataCita.origen = "Listatratamientos";
         dataCita.convenio = ultimoTratamiento.datosConvenio;
         dataCita.convenio.origen = "Listatratamientos";
+
+        dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
+        dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
+        dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     });

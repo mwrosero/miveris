@@ -13,8 +13,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             <div class="col-md-8">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body text-center">
-                        @if($data->online == "N")
-                        <div class="content-presencial">
+                        <div class="content-presencial d-none">
                             <i class="bi bi-check-circle-fill h1 text-primary-veris"></i>
                             <h3 class="fw-bold mb-4">Cita agendada</h3>
                             <p class="mb-5">Tu cita se agendó exitosamente. <br> ¡Nos vemos pronto!</p>
@@ -23,9 +22,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <a href="/" class="btn btn-primary-veris w-50">Volver al inicio</a>
                             </div>
                         </div>
-                        @else
                         <!-- cita agendada online -->
-                        <div class="content-online">
+                        <div class="content-online d-none">
                             <i class="bi bi-check-circle-fill h1 text-primary-veris"></i>
                             <h3 class="fw-bold mb-4">Cita agendada</h3>
                             <p class="mb-5">Recuerda conectarte <b>10 minutos antes de la cita.</b></p>
@@ -37,7 +35,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <a href="/" class="btn btn-primary-veris w-50">Volver al inicio</a>
                             </div>
                         </div>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -47,6 +44,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @push('scripts')
 <script>
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
 
+    document.addEventListener("DOMContentLoaded", async function () {
+        if(dataCita.online == "S"){
+            $('.content-online').removeClass('d-none');
+        }else{
+            $('.content-presencial').removeClass('d-none');
+        }
+    });
 </script>
 @endpush

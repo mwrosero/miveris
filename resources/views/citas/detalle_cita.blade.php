@@ -98,16 +98,40 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         await obtenerPrecio();
         llenarDataDetallesCitas();
 
+        if(dataCita.reserva){
+            eliminarReserva();
+        }
+
         $('body').on('click', '#btn-pagar', function () {
             reservarCita();
         });
     });
 
+    async function eliminarReserva(){
+        let args = [];
+        let canalOrigen = _canalOrigen
+        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/eliminarReserva?codigoReserva=${dataCita.reserva.codigoReserva}`
+        args["method"] = "PUT";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        //Menos para edictar reserva 
+        if(data.code == 200){
+            delete dataCita.reserva;
+            guardarData();
+        }
+
+    }
+
     // llenar los datos en contentDetalleCita con los datos de dataCita
     function llenarDataDetallesCitas(){
-        let elem = `<p class="text-primary-veris fw-bold mb-0"  id="nombreEspecialidad">${nombreEspecialidad}</p>
-            <p class="fw-bold fs--1 mb-0">${dataCita.central.nombreSucursal}</p>
-            <p class="fs--2 mb-0">${dataCita.horario.dia2} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} ${determinarMeridiano(horaInicio)}</b></p>
+        let elem = `<p class="text-primary-veris fw-bold mb-0"  id="nombreEspecialidad">${nombreEspecialidad}</p>`;
+        if(dataCita.online == "N"){    
+            elem += `<p class="fw-bold fs--1 mb-0">${dataCita.central.nombreSucursal}</p>`;
+        }
+        elem += `<p class="fs--2 mb-0">${dataCita.horario.dia2} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} ${determinarMeridiano(horaInicio)}</b></p>
             <p class="fs--2 mb-0">Dr(a) ${dataCita.horario.nombreMedico}</p>
             <p class="fs--2 mb-0">${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}</p>`;
         if(dataCita.convenio.codigoConvenio){
