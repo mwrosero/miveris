@@ -131,9 +131,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.online == "N"){    
             elem += `<p class="fw-bold fs--1 mb-0">${dataCita.central.nombreSucursal}</p>`;
         }
+        let nombrePaciente;
+        if(dataCita.paciente.nombrePaciente){
+            nombrePaciente = dataCita.paciente.nombrePaciente;
+        }else{
+            nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}`;
+        }
         elem += `<p class="fs--2 mb-0">${dataCita.horario.dia2} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} ${determinarMeridiano(horaInicio)}</b></p>
             <p class="fs--2 mb-0">Dr(a) ${dataCita.horario.nombreMedico}</p>
-            <p class="fs--2 mb-0">${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}</p>`;
+            <p class="fs--2 mb-0">${nombrePaciente}</p>`;
         if(dataCita.convenio.codigoConvenio){
             elem += `<p class="fs--2 mb-0">${dataCita.convenio.nombreConvenio}</p>`
         }
@@ -160,15 +166,37 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function obtenerPrecio() {
         let args = [];
         let canalOrigen = _canalOrigen
+        let codigoReserva = ''; 
+        let numeroOrden = ''; 
+        let codigoEmpOrden = '';
+        let lineaDetalle = '';
+        let aplicaCredito = 'N';
+        let aplicaProntoPago = 'S';
+
+        if(dataCita.horario.porcentajeDescuento > 0){
+            aplicaCredito = "S";
+        }
+
+        if(dataCita.convenio.aplicaProntoPago){
+            aplicaProntoPago = dataCita.convenio.aplicaProntoPago;
+        }
+
+        if(dataCita.reservaEdit){
+            codigoReserva = dataCita.reservaEdit.idCita;
+            numeroOrden = dataCita.reservaEdit.numeroOrden;
+            codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden;
+            lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden;
+        }
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${codigoEspecialidad}&secuenciaAfiliado=${secuenciaAfiliado}&codigoConvenio=${(codigoConvenio) ? codigoConvenio : '' }&idIntervalos=${idIntervalo}&esOnline=${online}&porcentajeDescuento=${porcentajeDescuentos}`
+
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${dataCita.convenio.permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
         args["data"] = JSON.stringify({
             "fechaSeleccionada": dia2,
             "idCliente": idCliente,
-            "estaPagada": "N",
+            "estaPagada": (dataCita.reservaEdit) ? dataCita.reservaEdit.estaPagada : 'N',
             "esEmbarazada": "N",
             "medPayPlan": medPayPlan
         });
@@ -176,16 +204,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         
         if(data.code == 200){
             let { valor, porcentajeDescuento, valorCanalVirtual  } = data.data;
-            let porcentajeDescuentoCopago = porcentajeDescuento;
-            let subtotalCopago = valor;
-            let valorTotalCopago = valorCanalVirtual;
+            var porcentajeDescuentoCopago = porcentajeDescuento;
+            var subtotalCopago = valor;
+            var valorTotalCopago = valorCanalVirtual;
             let params = {};
 
-            console.log(porcentajeDescuentoCopago,subtotalCopago,valorTotalCopago)
             let elem = ``;
             let descuentoLabel = ``;
             if(porcentajeDescuentoCopago > 0){
-                descuentoLabel = `*Se aplicó un ${porcentajeDescuentoCopago}% de descuento por pago en app`;
+                descuentoLabel = `*Se aplicó un ${porcentajeDescuentoCopago}% ${data.data.mensajeDescuento}`;
             }
 
             if(codigoConvenio){
@@ -202,17 +229,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 }
                 elem += `<h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>
                 </div>
-                <p class="text-center text-primary-veris fs--2 mb-0" id="infoDescuento"></p>`;
+                <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
             }else{
                 elem += `<div class="col-12 text-center">`
                 if(porcentajeDescuentoCopago > 0){
-                    `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
+                    elem += `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
                         <del id="precioBase">$${valor}</del>
                     </p>`;
                 }
                 elem += `<h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>
                 </div>
-                <p class="text-center text-primary-veris fs--2 mb-0" id="infoDescuento"></p>`;
+                <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
             }
 
 
@@ -226,17 +253,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <p class="fs--1 lh-1 mb-0" id="infoMessage">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
                     </div>`;
             }
+            //Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.
             if(porcentajeDescuentos > 0 && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
                         <i class="bi bi-info-circle-fill h4 mb-0 mx-3 text-warning"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage">Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.</p>
+                        <p class="fs--1 lh-1 mb-0" id="infoMessage">${data.data.mensajeAlerta}</p>
                     </div>`;
             }
             if(online == "S"){
-                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
-                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
-                    </div>`;
+                if(dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") {
+                    elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
+                            <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
+                            <p class="fs--1 lh-1 mb-0" id="infoMessage">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
+                        </div>`;
+                }
             }
             if(permitePago == "N"){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
@@ -248,7 +278,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             
             dataCita.precio = data.data;
             //let urlParams = btoa(JSON.stringify(params));
-            $('#btn-pagar').attr('href','/citas-datos-facturacion/{{ $params }}');
+            if (dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") {
+                $('#btn-pagar').attr('href','/citas-datos-facturacion/{{ $params }}');
+            }else{
+                $('#btn-pagar').html('Continuar');
+                $('#btn-pagar').attr('href','/cita-agendada/{{ $params }}');
+            }
             $('#btn-pagar').removeClass('d-none');
         }
         return data;
@@ -260,6 +295,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
+
+        let estaPagada = "N";
+        if(dataCita.reservaEdit != null ) {
+            estaPagada = dataCita.reservaEdit.estaPagada;
+        }
 
         let datosReserva = {
             "numeroIdentificacion": dataCita.paciente.numeroIdentificacion,
@@ -294,7 +334,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "esEmbarazada": "N",            
             "fechaSeleccionada": dataCita.horario.dia2,
             /*Si estoy modificando/tratamiento o sino N*/
-            "estaPagada": "N"
+            "estaPagada": estaPagada
         }
 
         /*Para reagendamiento*/
@@ -318,7 +358,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             datosReserva.lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
         }
 
-        console.log(args);
+        if(dataCita.reservaEdit){
+            /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
+            datosReserva.numeroOrden = dataCita.reservaEdit.numeroOrden;
+            datosReserva.codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden;
+            datosReserva.lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden;
+            datosReserva.codigoReservaCambio = dataCita.reservaEdit.idCita;
+        }
+
         args["data"] = JSON.stringify(datosReserva);
         const data = await call(args);
 

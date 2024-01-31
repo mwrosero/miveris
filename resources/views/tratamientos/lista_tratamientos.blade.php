@@ -177,7 +177,7 @@ $data = json_decode(base64_decode($params));
                                     <div class="progress-value">
                                         <div>
                                             <span><i class="bi bi-check2 success"></i></span>
-                                            <p class="fw-medium text-success fs--2 mb-0"><span id="totalTratamientoRealizados">0</span>/<span id="totalTratamientoEnviados">7</span></p>
+                                            <p class="fw-medium text-success fs--2 mb-0"><span id="totalTratamientoRealizados"> </span>/<span id="totalTratamientoEnviados"></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -631,7 +631,7 @@ $data = json_decode(base64_decode($params));
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="96" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="85" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         } else {
@@ -647,7 +647,7 @@ $data = json_decode(base64_decode($params));
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="96" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="85" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         }
