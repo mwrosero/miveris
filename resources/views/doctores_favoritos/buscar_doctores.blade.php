@@ -25,7 +25,7 @@ Mi Veris - Buscar doctor
     <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroSearchDoctors" aria-labelledby="filtroSearchDoctorsLabel">
         <div class="offcanvas-header py-2">
             <h5 class="offcanvas-title" id="filtroSearchDoctorsLabel">Filtros</h5>
-            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atras</b></button>
+            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atrás</b></button>
         </div>
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
             <form action="">
@@ -161,7 +161,7 @@ Mi Veris - Buscar doctor
                                     <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" value="${element.nombreEspecialidad}" ${firstItem ? 'checked' : ''} data-rel='${ JSON.stringify(element) }'>
                                     <span class="text-veris fw-medium">
                                         ${capitalizarElemento(element.nombreEspecialidad)}
-                                        <small class="fs--2 d-block fw-normal text-body-secondary">${element.nombreSucursal}</small>
+                                        <small class="fs--2 d-block fw-normal text-body-secondary">${capitalizarElemento(element.nombreSucursal)}</small>
                                     </span>
                                 </label>`;
                 

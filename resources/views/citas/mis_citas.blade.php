@@ -12,7 +12,7 @@ Mi Veris - Citas - Mis citas
     <div class="offcanvas offcanvas-end" tabindex="-1" id="verPdf" aria-labelledby="verPdfLabel">
         <div class="offcanvas-header py-2">
             <h5 class="offcanvas-title" id="verPdfLabel">Mis documentos</h5>
-            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atras</b></button>
+            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atrás</b></button>
         </div>
         <br>
         <br>
@@ -233,10 +233,14 @@ Mi Veris - Citas - Mis citas
         if (data.code == 200){
 
             if (data.data.length == 0) {
+                // clear div citasActuales
+
+                $('#citasActuales').empty();
                 $('#mensajeNoCita').removeClass('d-none');
             } else{
 
                 let citasActuales = $('#citasActuales');
+                $('#mensajeNoCita').addClass('d-none');
                 citasActuales.empty();
 
                 // forEach de data.data
@@ -245,24 +249,35 @@ Mi Veris - Citas - Mis citas
 
                     let element = `<div class="col-12 col-md-6">
                                         <div class="card">
-                                            <div class="card-body p-2">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(cita.especialidad)}</h6>
-                                                    ${determinarMensajeEstadoCita(cita.mensajeEstado)}
+                                            <div class="card-body p-2">`
+                                            if (cita.esVirtual == 'S') {
+                                                element += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                                                                <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
+                                                            </div>`;
+                                            }
+                        element += `<div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(cita.especialidad)}</h6>
+                                        ${determinarMensajeEstadoCita(cita.mensajeEstado)}
 
-                                                </div>
-                                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
-                                                <p class="fw-normal fs--2 mb-0"> <b class="hora-cita fw-normal text-primary-veris">${cita.dia}</b></p>
-                                                <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(cita.medico)}</p>
-                                                <p class="fw-normal fs--2 mb-0">${cita.nombrePaciente}</p>
+                                    </div>
+                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
+                                    <p class="fw-normal fs--2 mb-0"> <b class="hora-cita fw-normal text-primary-veris">${cita.dia}</b></p>
+                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(cita.medico)}</p>
+                                    <p class="fw-normal fs--2 mb-0">${cita.nombrePaciente}</p>
 
-                                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                                    ${determinarBotonCita(cita)}
-                                                </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        ${determinarBotonCita(cita)}
+                                        `;
 
-                                            </div>
-                                        </div>
+                        if (cita.esVirtual == "S") {
+                            element += `<a href="${cita.idTeleconsulta}" class="btn btn-sm btn-primary-veris m-3">Conectarme</a>
                                     </div>`;
+                        }
+
+                        element += `</div>
+                                </div>
+                            </div>
+                        </div>`;
                     citasActuales.append(element);
 
                 });
@@ -347,7 +362,7 @@ Mi Veris - Citas - Mis citas
         divContenedor.empty(); // Limpia el contenido actual
 
         let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroIdentificacion }}" data-rel='YO'
                                 checked>
                                 <span class="text-veris fw-bold">
                                     ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
@@ -359,7 +374,7 @@ Mi Veris - Citas - Mis citas
         console.log('sss',data);
         data.forEach((Pacientes) => {
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroIdentificacion}" esAdmin= ${Pacientes.esAdmin} unchecked>
                                 <span class="text-veris fw-bold">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}

@@ -1,6 +1,6 @@
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme-veris pe-3" id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none p-2 px-3 bg-dark-blue-veris">
-        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" style="margin-bottom: 0.210rem;">
+        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" style="margin-bottom: 0.23rem;">
             <i class="ti ti-menu-2 ti-sm text-white"></i>
         </a>
     </div>
@@ -14,7 +14,11 @@
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1" id="dropdownNotifications">
                 <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
-                    <i class="fa-solid fa-bell"></i>
+                    <i class="fa-solid fa-bell"> 
+                        <span class="badge bg-danger rounded-pill d-none" id="numeroNotificaciones"></span>
+
+                    </i>
+                    
                 </a>
             </li>
 
@@ -331,6 +335,11 @@
         // enviar el id de la notificacion de las notificaciones que estan en la pagina actual
         console.log('activar notificacion ');
         activarNotificacion();
+        $('#numeroNotificaciones').addClass('d-none');
+        // clear numero notificaciones
+        numeroNotificaciones();
+
+
 
     });
 
@@ -375,3 +384,19 @@
 
 
 </script>
+<style>
+    .fa-solid.fa-bell {
+        position: relative;
+        font-size: 24px; /* ajusta el tamaño según sea necesario */
+    }
+
+    #numeroNotificaciones {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        transform: translate(50%, 50%);
+        font-size: 12px; /* ajusta el tamaño del texto según sea necesario */
+    }
+
+
+</style>

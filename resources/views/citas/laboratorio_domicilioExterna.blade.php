@@ -29,7 +29,12 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
 
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Laboratorio a domicilio') }}</h5>
+    
     <div id="map" style="height: 400px;"></div>
+    <input id="searchBox" class="form-control mt-3 mb-3 w-50 mx-auto
+    "  type="text" placeholder="Buscar ubicación">
+
+
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             
@@ -101,52 +106,113 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     
 </script>
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_tHt53kdevXWEWJii_qfBOsjf7fjI510&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_tHt53kdevXWEWJii_qfBOsjf7fjI510&callback=initMap&libraries=places">
 </script>
+
 <script>
     function initMap() {
     // Opciones por defecto del mapa
-        var mapOptions = {
-            center: {lat: -34.397, lng: 150.644}, // Coordenadas por defecto
-            zoom: 8
-        };
+    var mapOptions = {
+        center: {lat: -34.397, lng: 150.644}, // Coordenadas por defecto
+        zoom: 8
+    };
 
-        // Crear mapa
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    // Crear mapa
+    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-        // Intentar geolocalizar al usuario
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var userLocation = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                };
+    // Agregar Autocompletado
+    var input = document.getElementById('searchBox');
+    var searchBox = new google.maps.places.SearchBox(input);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-                // Centrar el mapa en la ubicación del usuario
-                map.setCenter(userLocation);
-                map.setZoom(14); // Ajustar el zoom para acercar al usuario
+    // Sesgar los resultados del SearchBox hacia la vista actual del mapa.
+    map.addListener('bounds_changed', function() {
+        searchBox.setBounds(map.getBounds());
+    });
 
-                // Opcional: Colocar un marcador en la ubicación del usuario
-                var marker = new google.maps.Marker({
-                    position: userLocation,
-                    map: map,
-                    title: 'Tu ubicación'
-                });
-            }, function() {
-                handleLocationError(true, map.getCenter());
-            });
-        } else {
-            // El navegador no soporta Geolocalización
-            handleLocationError(false, map.getCenter());
+    var markers = [];
+    // Escuchar el evento cuando un usuario selecciona una predicción y recupera
+    // más detalles para ese lugar.
+    searchBox.addListener('places_changed', function() {
+        var places = searchBox.getPlaces();
+
+        if (places.length == 0) {
+            return;
         }
-    }
 
-    // Función para manejar errores de geolocalización
-    function handleLocationError(browserHasGeolocation, pos) {
-        console.log(browserHasGeolocation ?
-                    'Error: El servicio de Geolocalización falló.' :
-                    'Error: Tu navegador no soporta geolocalización.');
+        // Eliminar los marcadores existentes
+        markers.forEach(function(marker) {
+            marker.setMap(null);
+        });
+        markers = [];
+
+        // Para cada lugar, obtener el icono, nombre y ubicación.
+        var bounds = new google.maps.LatLngBounds();
+        places.forEach(function(place) {
+            if (!place.geometry) {
+                console.log("El lugar devuelto no contiene geometría");
+                return;
+            }
+            var icon = {
+                url: place.icon,
+                size: new google.maps.Size(71, 71),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(17, 34),
+                scaledSize: new google.maps.Size(25, 25)
+            };
+
+            // Crear un marcador para cada lugar.
+            markers.push(new google.maps.Marker({
+                map: map,
+                icon: icon,
+                title: place.name,
+                position: place.geometry.location
+            }));
+
+            if (place.geometry.viewport) {
+                // Solo geocodifica si el lugar tiene una geometría.
+                bounds.union(place.geometry.viewport);
+            } else {
+                bounds.extend(place.geometry.location);
+            }
+        });
+        map.fitBounds(bounds);
+    });
+
+    // Intentar geolocalizar al usuario
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            var userLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            // Centrar el mapa en la ubicación del usuario
+            map.setCenter(userLocation);
+            map.setZoom(14); // Ajustar el zoom para acercar al usuario
+
+            // Opcional: Colocar un marcador en la ubicación del usuario
+            var marker = new google.maps.Marker({
+                position: userLocation,
+                map: map,
+                title: 'Tu ubicación'
+            });
+        }, function() {
+            handleLocationError(true, map.getCenter());
+        });
+    } else {
+        // El navegador no soporta Geolocalización
+        handleLocationError(false, map.getCenter());
     }
+}
+
+// Función para manejar errores de geolocalización
+function handleLocationError(browserHasGeolocation, pos) {
+    console.log(browserHasGeolocation ?
+                'Error: El servicio de Geolocalización falló.' :
+                'Error: Tu navegador no soporta geolocalización.');
+}
+
 </script>
 <script>
 

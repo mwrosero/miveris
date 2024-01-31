@@ -294,7 +294,7 @@ html:not([dir="rtl"]) .border-start-veris {
   padding: 8px 16px;
   border-radius: 8px;
 }
-
+.card{border-radius: 0.5rem !important;}
 .card-body {
   color: var(--bg-vris-very-dark-blue) !important;
 }
@@ -947,7 +947,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .shadow-veris {
   box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 }
-
+.btn, .btn-sm, .btn-lg{border-radius: 0.5rem !important;}
 .btn-check:checked+.btn,
 :not(.btn-check)+.btn:active,
 .btn:first-child:active,
@@ -989,9 +989,6 @@ Due to the split circle of progress-left and progress right, we must use the ani
     right: -5% !important;
   }
 
-  .w-lg-50 {
-    width: 50% !important;
-  }
 }
 
 @media (min-width: 992px) {
@@ -1009,7 +1006,9 @@ Due to the split circle of progress-left and progress right, we must use the ani
     top: -25%;
     right: -7%;
   }
-
+  .w-md-50 {
+    width: 50% !important;
+  }
 }
 
 
@@ -1027,7 +1026,6 @@ input::-webkit-inner-spin-button {
     right: 0%;
   }
 }
-
 
 /* Firefox */
 input[type=number] {
