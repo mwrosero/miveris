@@ -142,7 +142,7 @@ Mi Veris - Doctores favoritos
             resultados.forEach((disponibilidad, index) => {
                 let doctores = data.data[index];
                 elemento+= `<div class="col-12 col-md-6 col-lg-4 mb-3">
-                                    <div class="card">
+                                    <div class="card h-100">
                                         <div class="card-body p-3">
                                             <div class="row gx-2">
                                                 <div class="col-3 d-flex justify-content-center align-items-center">

@@ -10,8 +10,8 @@ Mi Veris - Citas - Mis tratamientos
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
+<div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal de error -->
-
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -26,10 +26,6 @@ Mi Veris - Citas - Mis tratamientos
             </div>
         </div>
     </div>
-    <div class="flex-grow-1 container-p-y pt-0">
-
-
-    
 
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Mis tratamientos') }}</h5>
