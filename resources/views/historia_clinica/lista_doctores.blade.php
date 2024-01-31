@@ -12,7 +12,9 @@ Mi Veris - Historia clínica
 
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Historia clínica') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Historia clínica') }}</h5>
+    </div>
     <section class="p-3 pt-0 mb-3">
         <div class="row justify-content-center">
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white py-2 mb-3" id= "checkEspecialidad">
@@ -26,14 +28,10 @@ Mi Veris - Historia clínica
             <div class="col-12 col-lg-10">
                 <div class="row g-3" id="listaDoctores">
                     <!-- items  doctores -->
-                    
-                    
-                    
                 </div>
             </div>
-            <div class="col-12 col-lg-6 text-center mt-5" id="btnContinuar" >
-                <a  class="btn btn-primary-veris w-50 py-3" 
-                >Continuar</a>
+            <div class="col-12 col-lg-3 text-center mt-5" id="btnContinuar" >
+                <a  class="btn btn-primary-veris w-100 py-3" >Continuar</a>
             </div>
         </div>
     </section>
@@ -122,8 +120,8 @@ Mi Veris - Historia clínica
                                                         <img src='${quitarComillas(element.imagen)}' onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'" class="card-img-top" width="62" alt="centro medico">
                                                     </div>
                                                     <div class="col-8">
-                                                        <h6 class="fs--1 fw-bold mb-0">Dr(a) ${element.nombreMedico}</h6>
-                                                        <p class="fs--2 mb-0">${element.nombreEspecialidad}</p>
+                                                        <h6 class="fs--1 fw-medium mb-0">Dr(a) ${capitalizarCadaPalabra(element.nombreMedico)}</h6>
+                                                        <p class="fs--2 mb-0">${capitalizarCadaPalabra(element.nombreEspecialidad)}</p>
                                                     </div>
                                                     <div class="col-1 text-center">
                                                         <div class="form-check">

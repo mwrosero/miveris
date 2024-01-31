@@ -76,7 +76,8 @@ $data = json_decode(base64_decode($params));
             </div>
         </div>
     </div>
-    <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- <div class="flex-grow-1 container-p-y pt-0"> -->
 
     <!-- Modal Examenes presencial -->
     <div class="modal fade" id="mensajeLaboratorioPresencialModal" tabindex="-1" aria-labelledby="mensajeLaboratorioPresencialModalLabel" aria-hidden="true">
@@ -156,7 +157,10 @@ $data = json_decode(base64_decode($params));
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Tratamiento') }}</h5>  
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Tratamiento') }}</h5>
+    </div>
+
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0">
             <div class="col-md-12">
@@ -177,7 +181,7 @@ $data = json_decode(base64_decode($params));
                                     <div class="progress-value">
                                         <div>
                                             <span><i class="bi bi-check2 success"></i></span>
-                                            <p class="fw-medium text-success fs--2 mb-0"><span id="totalTratamientoRealizados">0</span>/<span id="totalTratamientoEnviados">7</span></p>
+                                            <p class="fw-medium text-success fs--2 mb-0"><span id="totalTratamientoRealizados"> </span>/<span id="totalTratamientoEnviados"></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -270,7 +274,7 @@ $data = json_decode(base64_decode($params));
                 
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
-            let elemento = `<h6 class="card-title fs--1 text-veris mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h6>
+            let elemento = `<h5 class="card-title card-g text-primary-veris mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
                                 <p class="fw-medium fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
                                 <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
@@ -631,7 +635,7 @@ $data = json_decode(base64_decode($params));
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="96" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="85" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         } else {
@@ -647,7 +651,7 @@ $data = json_decode(base64_decode($params));
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="96" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="85" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         }

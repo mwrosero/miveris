@@ -12,7 +12,7 @@ Mi Veris - Citas - Mis citas
     <div class="offcanvas offcanvas-end" tabindex="-1" id="verPdf" aria-labelledby="verPdfLabel">
         <div class="offcanvas-header py-2">
             <h5 class="offcanvas-title" id="verPdfLabel">Mis documentos</h5>
-            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atras</b></button>
+            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atrás</b></button>
         </div>
         <br>
         <br>
