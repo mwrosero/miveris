@@ -455,7 +455,8 @@ async function aplicarFiltros(contexto) {
 }
 
 async function aplicarFiltrosCitas(contexto) {
-    const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').attr('numeroIdentificacion');
+    const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').val();
+    console.log('pacientexx', pacienteSeleccionado);  
     let fechaDesde = $('#fechaDesde').val() || '';
     let fechaHasta = $('#fechaHasta').val() || '';
     const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');

@@ -6,6 +6,10 @@ Mi Veris - Citas - Laboratorio
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
 
     <!-- Modal de error -->
@@ -640,8 +644,9 @@ Mi Veris - Citas - Laboratorio
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
                             
-                            respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
-                        }
+                            
+                            respuesta += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                          }
                     }
                     
                     return respuesta;
@@ -781,6 +786,41 @@ Mi Veris - Citas - Laboratorio
     $(document).on('click', '.btnVerOrden', function(){
         let datos = $(this).data('rel');
         descargarDocumentoPdf(datos);
+    });
+
+
+    // boton btn-Pagar
+    $(document).on('click', '.btn-Pagar', function(){
+        let datosServicio = $(this).data('rel');
+        // capturar datarel del filtro
+        let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+        console.log('datosServicio', datosServicio);
+
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = 'S';
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = 'N';
+        }
+        let dataCita = {};
+        dataCita.online = modalidad;
+        dataCita.paciente = dataPaciente;
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+           
+        };
+        dataCita.convenio = ultimoTratamiento.datosConvenio;
+        dataCita.datosTratamiento = datosServicio;
+        dataCita.origen = 'LABORATORIO';
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
     });
 </script>
 @endpush
