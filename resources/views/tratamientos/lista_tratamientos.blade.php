@@ -882,9 +882,9 @@ $data = json_decode(base64_decode($params));
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
-                            
                             respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
-                        }
+                       
+                             }
                     } 
 
                     else if (estado == 'REALIZADO'){
