@@ -1,6 +1,6 @@
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme-veris pe-3" id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none p-2 px-3 bg-dark-blue-veris">
-        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" style="margin-bottom: 0.210rem;">
+        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" style="margin-bottom: 0.23rem;">
             <i class="ti ti-menu-2 ti-sm text-white"></i>
         </a>
     </div>

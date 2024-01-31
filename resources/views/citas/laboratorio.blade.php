@@ -41,9 +41,9 @@ Mi Veris - Citas - Laboratorio
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
+                @include('components.barraFiltro')
+                @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
-                    @include('components.barraFiltro')
-                    @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                     <!-- Card header items -->
                     <div id="contenedorTratamientosImagenes" class="px-2 px-md-0">
                     </div>
