@@ -179,7 +179,7 @@ Mi Veris - Inicio
         await obtenerCitas();
         await obtenerUrgenciasAmbulatorias();
         await consultarConvenios();
-        await consultarDatosPaciente();
+        // await consultarDatosPaciente();
         // initializeSwiper('.swipertratamientos');
         // initializeSwiper('.swiper-proximas-citas');
     });
@@ -470,7 +470,7 @@ Mi Veris - Inicio
             }
             elemento +=`<div class="swiper-slide">
                 <div class="card h-100">
-                    <div class="card-body d-flex align-items-center">
+                    <div class="card-body d-flex align-items-center p-3">
                         <div class="w-100">`;
             if(citas.esVirtual == "S"){
                 elemento += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
@@ -499,7 +499,7 @@ Mi Veris - Inicio
             elemento += `   <a href="${ruta}" class="btn btn-sm btn-primary-veris btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>Nueva fecha</a> `
             if (citas.esVirtual == "S") {
                 elemento += `<a href="${citas.idTeleconsulta}
-                " class="btn btn-sm btn-primary-veris m-3">Conectarme</a>`;
+                " class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
             }
             elemento += `
                             </div>
@@ -546,7 +546,7 @@ Mi Veris - Inicio
                                     <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
                                     <p class="fw-normal fs--2 mb-0">${urgencias.paciente}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="d-flex justify-content-between align-items-center m-0 ms-3">
                                         <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
                                         <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
                                     </div>
@@ -639,11 +639,26 @@ Mi Veris - Inicio
                     "secuenciaAfiliado" : null,
                 };
         }
+        // params.paciente = {
+        //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
+        //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
+        //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
+        //     "numeroPaciente": datosPaciente.numeroPaciente
+        // }
         params.paciente = {
-            "numeroIdentificacion": datosPaciente.numeroIdentificacion,
-            "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
-            "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
-            "numeroPaciente": datosPaciente.numeroPaciente,
+            "numeroIdentificacion": data.numeroIdentificacion,
+            "tipoIdentificacion": data.tipoIdentificacion,
+            "nombrePaciente": data.nombrePaciente,
+            "numeroPaciente": data.numeroPaciente
+        }
+
+        params.reservaEdit = {
+            "estaPagada": data.estaPagada,
+            "numeroOrden": data.numeroOrden,
+            "lineaDetalleOrden": data.lineaDetalleOrden,
+            "codigoEmpresaOrden": data.codigoEmpresaOrden,
+            "idOrdenAgendable": data.idOrdenAgendable,
+            "idCita": data.idCita
         }
         params.origen = "inicios";
 
