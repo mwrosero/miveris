@@ -71,7 +71,7 @@
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
                 <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">No</button>
-                <a class="btn btn-lg btn-primary-veris w-100" id= "logout">Si, cerrar</a>
+                <a class="btn btn-lg btn-primary-veris w-100" id="logout">Si, cerrar</a>
             </div>
         </div>
     </div>

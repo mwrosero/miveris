@@ -86,8 +86,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @push('scripts')
 <script>
-    let dataCita = @json($data);
-        document.addEventListener("DOMContentLoaded", async function () {
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    
+    document.addEventListener("DOMContentLoaded", async function () {
 
         $('body').on('click', '#btn-autenticar-otp', async function(){
             $('#btn-autenticar-otp').addClass('disabled');
@@ -113,8 +115,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         
         if(data.code == 200){
             if(data.data.estado == "APPROVED"){
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-autenticacion-exitosa/${ulrParams.replace(/\//g, '|')}`;
+                let ruta = `/citas-autenticacion-exitosa/{{ $params }}`;
                 window.location.href = ruta;
             }else if(data.data.estado == "PENDING"){
                 $('#btn-autenticar-otp').removeClass('disabled');

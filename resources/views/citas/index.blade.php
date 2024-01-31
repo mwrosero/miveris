@@ -21,7 +21,7 @@ Mi Veris - Citas
                         <div class="col-6 col-lg-6">
                             <div class="card mb-3">
                                 
-                                <a  id="cita-presencial" >
+                                <a class="cursor-pointer" id="cita-presencial" >
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-7 col-md-7">
                                             <div class="card-body p-0 ps-2">
@@ -38,7 +38,7 @@ Mi Veris - Citas
 
                         <div class="col-6 col-lg-6">
                             <div class="card mb-3">
-                                <a  id="cita-virtual">
+                                <a class="cursor-pointer" id="cita-virtual">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-7 col-md-7">
                                             <div class="card-body p-0 ps-2">

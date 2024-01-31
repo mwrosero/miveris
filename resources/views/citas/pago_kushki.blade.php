@@ -4,7 +4,7 @@ Mi Veris - Citas - Información de pago
 @endsection
 @section('content')
 @php
-$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+// $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd(Session::get('userData'));
 // dd($data);
 @endphp
@@ -21,7 +21,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <ul class="list-group bg-white mb-3">
                             <li class="list-group-item border-0 text-primary-veris d-flex justify-content-between align-items-center">
                                 Total a pagar:
-                                <span class="badge text-primary-veris">${{ $data->facturacion->totales->total }}</span>
+                                <span class="badge text-primary-veris" id="totalInfo"></span>
                             </li>
                         </ul>
                         <!-- content-pago -->
@@ -54,18 +54,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 </div>
 @endsection
 @push('scripts')
-{{-- <script src="https://cdn.kushkipagos.com/kushki-checkout.js" charset="utf-8"></script> --}}
-<script src="https://cdn-uat.kushkipagos.com/kushki-checkout.js" charset="utf-8"></script>
+<script src="https://cdn.kushkipagos.com/kushki-checkout.js" charset="utf-8"></script>
+{{-- <script src="https://cdn-uat.kushkipagos.com/kushki-checkout.js" charset="utf-8"></script> --}}
 
 <script>
-	let dataCita = @json($data);
+	let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+
     document.addEventListener("DOMContentLoaded", async function () {
+        $('#totalInfo').html(`$${dataCita.facturacion.totales.total}`);
 		kushki = new KushkiCheckout({
 	        form: "kushki-pay-form",
-	        merchant_id: {{ \App\Models\Veris::MERCHANT_ID }},
-	        amount: {{ $data->facturacion->totales->total }},//valoresPago.valorCanalVirtual , // Monto total
+	        merchant_id: {{ \App\Models\Veris::KUSHKI_MERCHANT_ID }},
+	        amount: dataCita.facturacion.totales.total,//valoresPago.valorCanalVirtual , // Monto total
 	        currency: "USD", // Codigo de moneda, por defecto "USD"
-	        inTestEnvironment:{{ \App\Models\Veris::ENVIRONMENT }},
+	        inTestEnvironment:Boolean({{ \App\Models\Veris::TEST_ENVIRONMENT_KUSHKI }}),
 	        isDeferred: true,
 	        is_subscription: false // true si se trata de una suscripcion (pago recurrente); false, si no.
 	    });

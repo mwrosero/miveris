@@ -3,6 +3,10 @@
 Mi Veris - Inicio
 @endsection
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
@@ -166,17 +170,55 @@ Mi Veris - Inicio
     //variables globales
     let datosTratamientos = [];
     let datosCitas = [];
+    let datosConvenios = [];
+    let datosPaciente = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerPPD();
         await obtenerTratamientos();
         await obtenerCitas();
         await obtenerUrgenciasAmbulatorias();
+        await consultarConvenios();
+        // await consultarDatosPaciente();
         // initializeSwiper('.swipertratamientos');
         // initializeSwiper('.swiper-proximas-citas');
     });
 
     //  ---Funciones asyncronas
+
+    
+
+    // servicio para consultar convenios
+    async function consultarConvenios(){
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
+        let codigoEmpresa = 1
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const dataConvenio = await call(args);
+        if(dataConvenio.code == 200){
+            datosConvenios = dataConvenio.data;
+        }
+       
+        return dataConvenio;
+    }
+
+    // servicio para consultar datos del paciente
+    async function consultarDatosPaciente(data){
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const dataPaciente = await call(args);
+        if(dataPaciente.code == 200){
+            datosPaciente = dataPaciente.data;
+        }
+        return dataPaciente;
+    }
     //obtener las politicas
     let _ppd;
     async function obtenerPPD(){
@@ -422,24 +464,49 @@ Mi Veris - Inicio
         let elemento = '';
 
         data.forEach((citas) => {
+            let classElem = 'justify-content-between';
+            if(citas.estaPagada == "S"){
+                classElem = 'justify-content-end';
+            }
             elemento +=`<div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
-                                        <span class="fs--2 text-success fw-medium">${esPagada(citas.estaPagada)}</span>
-                                    </div>
-                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
-                                    <p class="fw-normal fs--2 mb-0">${citas.fecha} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
-                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                                    <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
-                                        <button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
-                                        <a href="#" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
-                                    </div>
-                                </div>
+                <div class="card h-100">
+                    <div class="card-body d-flex align-items-center p-3">
+                        <div class="w-100">`;
+            if(citas.esVirtual == "S"){
+                elemento += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                        <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
+                    </div>`;
+            }
+                    elemento += `<div class="d-flex justify-content-between align-items-center">
+                            <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
+                            <span class="fs--2 text-success fw-medium">${esPagada(citas.estaPagada)}</span>
+                        </div>
+                        <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
+                        <p class="fw-normal fs--2 mb-0">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                        <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
+                        <div class="d-flex ${classElem} align-items-center mt-3">`
+            if(citas.estaPagada == "N"){
+                elemento += `<button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>`;
+            }
+            let ruta = '';
+            if (citas.esVirtual == "S") {
+                ruta = "/citas-elegir-fecha-doctor/" + "{{ $tokenCita }}" 
+            } else {
+                ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
+            }
+
+            elemento += `   <a href="${ruta}" class="btn btn-sm btn-primary-veris btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>Nueva fecha</a> `
+            if (citas.esVirtual == "S") {
+                elemento += `<a href="${citas.idTeleconsulta}
+                " class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
+            }
+            elemento += `
                             </div>
-                        </div>`;
+                        </div>
+                    </div>
+                </div>
+            </div>`;
         });
         divContenedor.append(elemento);
     } 
@@ -479,7 +546,7 @@ Mi Veris - Inicio
                                     <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
                                     <p class="fw-normal fs--2 mb-0">${urgencias.paciente}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="d-flex justify-content-between align-items-center m-0 ms-3">
                                         <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
                                         <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
                                     </div>
@@ -543,6 +610,62 @@ Mi Veris - Inicio
             return `<span class="fs--2 text-danger-veris fw-medium"><i class="fa-solid fa-circle me-1"></i> Cita no pagada</span>`;
         }
     }
+
+    // setear los valores de la cita en localstorage
+    $(document).on('click', '.btn-CambiarFechaCita', function(){
+        console.log('click entro a cambiar fecha');
+        let data = $(this).data('rel');
+        // const dataConvenio = await consultarConvenios(data);
+        // const dataPaciente = await consultarDatosPaciente(data);
+        
+        let params = {}
+        params.online = data.esVirtual;
+        params.especialidad = {
+            codigoEspecialidad: data.idEspecialidad,
+            codigoPrestacion  : data.codigoPrestacion,
+            codigoServicio   : data.codigoServicio,
+            codigoTipoAtencion: data.codigoTipoAtencion,
+            esOnline : data.esVirtual,
+            nombre : data.especialidad,
+        }
+        if (datosConvenios.length > 0) {
+            params.convenio = dataConvenio.data[0];
+        } else {
+            params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+        }
+        // params.paciente = {
+        //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
+        //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
+        //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
+        //     "numeroPaciente": datosPaciente.numeroPaciente
+        // }
+        params.paciente = {
+            "numeroIdentificacion": data.numeroIdentificacion,
+            "tipoIdentificacion": data.tipoIdentificacion,
+            "nombrePaciente": data.nombrePaciente,
+            "numeroPaciente": data.numeroPaciente
+        }
+
+        params.reservaEdit = {
+            "estaPagada": data.estaPagada,
+            "numeroOrden": data.numeroOrden,
+            "lineaDetalleOrden": data.lineaDetalleOrden,
+            "codigoEmpresaOrden": data.codigoEmpresaOrden,
+            "idOrdenAgendable": data.idOrdenAgendable,
+            "idCita": data.idCita
+        }
+        params.origen = "inicios";
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+    });
+
+    
 
 </script>
 <style>

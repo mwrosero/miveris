@@ -5,7 +5,6 @@ Mi Veris - Citas - Datos de facturación
 @section('content')
 @php
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
-//dd(Session::get('userData'));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal Metodo de pago -->
@@ -62,7 +61,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                     <div class="col-md-12">
                                         <label for="numeroIdentificacion" class="form-label fw-bold fs--2">Número de documento *</label>
-                                        <input type="number" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0975375835" required />
+                                        <input type="number" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
                                         <div class="valid-feedback">
                                             Ingrese un numero de identificacion.
                                         </div>
@@ -108,7 +107,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                     <div class="col-md-12">
                                         <label for="telefono" class="form-label fw-bold fs--2">Teléfono *</label>
-                                        <input type="number" class="form-control" name="telefono" id="telefono" placeholder="+593 097 989 3554" required />
+                                        <input type="number" class="form-control" name="telefono" id="telefono" placeholder="+593 999 999 9999" required />
                                         <div class="valid-feedback">
                                             Ingrese un telefono.
                                         </div>
@@ -121,7 +120,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <ul class="list-group fs--1 bg-neutral rounded-3">
+                                        <ul class="list-group fs--1 bg-neutral rounded-3 pt-2 pb-2">
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-bold">
                                                 Detalle de factura
                                             </li>
@@ -177,9 +176,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @push('scripts')
 <script>
-    let dataCita = @json($data);
+
+    // variables globales
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+
     document.addEventListener("DOMContentLoaded", async function () {
-        await reservarCita();
+        //await reservarCita();
+        if(!dataCita.reserva){
+            window.history.back();
+        }
+
+        await crearPreTransaccion();
 
         $('body').on('change', '#tipoIdentificacion', function(){
             if($(this).val() == '2'){
@@ -368,14 +376,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             var razonSocial = $("#razonSocial").val();
             if (razonSocial.trim() === "") {
                 errors = true;
-                msg += `<li class="ms-0">El campo Razon Social es obligatorio.</li>`;
+                msg += `<li class="ms-0">El campo Razón Social es obligatorio.</li>`;
             }
         } else if (tipoIdentificacion == 2) {
             // Validar numeroIdentificacion
             var numeroIdentificacion = $("#numeroIdentificacion").val();
             if (numeroIdentificacion.length !== 10) {
                 errors = true;
-                msg += `<li class="ms-0">El campo Numero Documento debe tener 10 dígitos.</li>`;
+                msg += `<li class="ms-0">El campo Número Documento debe tener 10 dígitos.</li>`;
             }
 
             // Validar nombres y apellidos
@@ -446,16 +454,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if (data.code == 200){
             dataCita.transaccionVirtual = data.data;
+            guardarData();
             if(dataCita.facturacion.datosFactura.permiteNuvei == "S"){
                 var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
                 myModal.show();
                 let ulrParams = btoa(JSON.stringify(dataCita));
                 console.log(ulrParams);
-                $('#btn-seleccionar-tarjeta').attr("href",`/citas-seleccionar-tarjeta/${ulrParams.replace(/\//g, '|')}`)
-                $('#btn-agregar-tarjeta').attr("href",`/citas-informacion-pago/${ulrParams.replace(/\//g, '|')}`)
+                $('#btn-seleccionar-tarjeta').attr("href",`/citas-seleccionar-tarjeta/{{ $params }}`)
+                $('#btn-agregar-tarjeta').attr("href",`/citas-informacion-pago/{{ $params }}`)
             }else{
                 let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-pago-kushki/${ulrParams.replace(/\//g, '|')}`;
+                let ruta = `/citas-pago-kushki/{{ $params }}`;
                 window.location.href = ruta;
             }
         }else{
@@ -463,5 +472,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     }
 
+    function guardarData(){
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+    }
 </script>
 @endpush
