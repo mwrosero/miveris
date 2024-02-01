@@ -7,6 +7,25 @@ Mi Veris - Citas - Elige fecha y doctor
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- Modal de error -->
+
+    <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Veris</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal" id="btnEntiendoError"
+                    >Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- modal position-absolute -->
     <div class="modal bg-transparent fade" id="elegirHorarioModal" tabindex="-1" aria-labelledby="elegirHorarioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -283,6 +302,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
             
             listaEspecialidades.append(elemento);    
+        } else if (data.code != 200){
+            $('#mensajeError').text(data.message);
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
         }
 
         return data;
@@ -385,5 +407,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         dataCita.horario = horario;
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
+
+
+    // btnEntiendoError redirecciona a la página inicial
+    $('#btnEntiendoError').click(function(){
+        window.location.href = "{{ route('home') }}";
+    });
+
 </script>
 @endpush
