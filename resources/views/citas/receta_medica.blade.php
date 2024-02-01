@@ -270,7 +270,7 @@ Mi Veris - Citas - Receta médica
                                                             <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada)}</span>
                                                         </div>
-                                                        ${determinarFechasCaducadas(detalles)}
+                                                        ${determinarFechasCaducadas(detalles, laboratorio)}
                                                        <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
@@ -564,7 +564,7 @@ Mi Veris - Citas - Receta médica
 
             if (datos.estado == "PENDIENTE_AGENDAR") {
                     if (datos.esCaducado == "S") {
-                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
                     } else {
                         dataFechas = `` ;
                     }
@@ -572,30 +572,26 @@ Mi Veris - Citas - Receta médica
             }
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
 
-                dataFechas = `<h5 class="card-title text-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h5>
-                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
+                dataFechas = `<h6 class="card-title fw-medium fs--2 text-dark-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
+                                <p class="fw-normal fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
-                                <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
-                
+                                <p class="fs--2 mb-0">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
             }
-
-
         }
         else{
             if (datos.estado == "PENDIENTE_AGENDAR") {
                     if (datos.esCaducado == "S") {
-                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
                     } else {
                         dataFechas = `` ;
                     }
-                
             }
         }
 
         return dataFechas;
 
 
-    }
+        }
 
     // determinar si es comprar o por comprar
     function determinarEstado(estado){

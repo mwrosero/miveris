@@ -613,7 +613,6 @@ Mi Veris - Citas - Imágenes y procedimientos
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
 
                         if (datosServicio.permitePago == 'S'){
                             // mostrar boton de pagar
@@ -812,8 +811,8 @@ Mi Veris - Citas - Imágenes y procedimientos
     });
 
 
-    // boton ver orden
-    $(document).on('click', '.btn.text-primary-veris.fw-normal.fs--1', function(){
+    // boton ver ordenCard
+    $(document).on('click', '#verOrdenCard', function(){
         let datos = $(this).data('rel');
         descargarDocumentoPdf(datos);
     });
