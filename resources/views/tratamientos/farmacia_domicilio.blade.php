@@ -88,7 +88,7 @@ Mi Veris - Citas - Farmacia a domicilio
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarPacientes();
         await consultarCiudades();
-        // await consultarFarmaciaDomicilio();
+        // await crearFarmaciaDomicilio();
         // // boton guardar
         // $('body').on('click','#btnGuardar', async function () {
         //     await guardarFarmaciaDomicilio();
@@ -102,14 +102,14 @@ Mi Veris - Citas - Farmacia a domicilio
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
             let html = '';
-            html += `<option value="">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
+            // html += `<option value="">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
             data.data.forEach(element => {
                 html += `<option data-rel='${ JSON.stringify(element) }'>${element.primerNombre} ${element.primerApellido} (${element.parentesco})</option>`;
             });
@@ -141,7 +141,7 @@ Mi Veris - Citas - Farmacia a domicilio
         return data;
     }
 
-    async function consultarFarmaciaDomicilio() {
+    async function crearFarmaciaDomicilio() {
         let args = [];
         args["endpoint"] = api_url + "/digitalestest/v1/domicilio/farmacia/solicitud";
         console.log('args["endpoint"]',args["endpoint"]);
@@ -222,12 +222,13 @@ Mi Veris - Citas - Farmacia a domicilio
             $('#direccion').removeClass('is-invalid');
         }
         // $('#mensajeSolicitudLlamadaModal').modal('show');
-        consultarFarmaciaDomicilio();
+        crearFarmaciaDomicilio();
     });
 
     $('#btnGuardarSolicitudLlamada').click(function() {
         $('#mensajeSolicitudLlamadaModal').modal('hide');
-        window.location.href = `/tratamiento/${codigoTratamiento}`;
+        window.history.back();
+        //window.location.href = `/tratamiento/${codigoTratamiento}`;
     });
 </script>
 @endpush

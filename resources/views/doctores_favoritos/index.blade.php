@@ -33,6 +33,22 @@ Mi Veris - Doctores favoritos
             </form>
         </div>
     </div>
+    <!-- Modal noPermiteReserva-->
+    <div class="modal fade" id="noPermiteReserva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noPermiteReservaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body p-2">
+                    <div class="text-center">
+                        <h1 class="modal-title fs-5 mb-3" id="noPermiteReservaLabel">Veris</h1>
+                        <p class="mb-0" id="noPermiteReservaMsg"></p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center p-2 pt-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -105,17 +121,44 @@ Mi Veris - Doctores favoritos
      document.addEventListener("DOMContentLoaded", async function () {
         await obtenerDoctorFavorito();
 
+        $('body').on('click','.convenio-item', function(){
+            reservaNoPermitida($(this).attr("url-rel"), $(this).attr("data-rel"));
+        })
 
     });
 
+     async function reservaNoPermitida(url, data ){
+        let convenio = JSON.parse(atob(decodeURIComponent(data)));
+        console.log("convenio", convenio);
+        $('#noPermiteReservaMsg').html(convenio.convenio.mensajeBloqueoReserva)
+        if(convenio.convenio.permiteReserva == "S"){
+            // Actualizar dataCita con los datos del convenio
+            console.log(convenio);
+            return;
+            dataCita.convenio = convenio.convenio;
+            dataCita.paciente = dataPaciente;
+            // Aquí puedes añadir cualquier otra información relevante a dataCita
 
-    // funciones asyncronas
+            // Guardar el objeto actualizado en localStorage
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+
+            location.href = url;
+        }else{
+            $('#convenioModal').modal('hide');
+            var myModal = new bootstrap.Modal(document.getElementById('noPermiteReserva'));
+            setTimeout(function(){
+                $('.modal-backdrop').remove();
+                myModal.show();
+            },250);
+        }
+    }
+
     // Consulta datos de los doctores favoritos
     async function obtenerDoctorFavorito() {
         let args = [];
         let canalOrigen = _canalOrigen;
         let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
-        
+        $('#doctoresFavoritos').empty();
 
         args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores/favoritos?codigoUsuario=${codigoUsuario}&idPersona=${codigoUsuario}&canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
@@ -127,10 +170,8 @@ Mi Veris - Doctores favoritos
         if (data.data == null) {
             // limpiar el html
             $('#doctoresFavoritos').html('');
-            
             $('#noDoctorFavorito').removeClass('d-none');
         }
-        else
         
         if(data.data.length > 0){
             let html = $('#doctoresFavoritos');
@@ -142,43 +183,37 @@ Mi Veris - Doctores favoritos
             resultados.forEach((disponibilidad, index) => {
                 let doctores = data.data[index];
                 elemento+= `<div class="col-12 col-md-6 col-lg-4 mb-3">
-                                    <div class="card h-100">
-                                        <div class="card-body p-3">
-                                            <div class="row gx-2">
-                                                <div class="col-3 d-flex justify-content-center align-items-center">
-                                                    <img src=${doctores.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
-                                                </div>
+                    <div class="card h-100">
+                        <div class="card-body p-3">
+                            <div class="row gx-2">
+                                <div class="col-3 d-flex justify-content-center align-items-center">
+                                    <img src=${doctores.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
+                                </div>
 
-                                                <div class="col-9">
-                                                    <h6 class="fw-medium mb-0">Dr(a) ${capitalizarPrimeraLetra(doctores.primerNombre)} ${capitalizarPrimeraLetra(doctores.segundoNombre)} ${capitalizarPrimeraLetra(doctores.primerApellido)} ${capitalizarPrimeraLetra(doctores.segundoApellido)}</h6>
-                                                    <p class="text-primary-veris fw-medium fs--2 mb-0">${capitalizarCadaPalabra(doctores.nombreSucursal)}</p>
-                                                    <p class="fs--2 mb-0">${capitalizarPrimeraLetra(doctores.nombreEspecialidad)}</p>
-                                                    <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">  ${determinarValorNull(doctores.dia)}
-                                                        </b></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-footer text-end p-3">
-                                            <button type="button" class="btn btn-outline-primary-veris btn-sm me-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
-                                            <div class="btn btn-sm btn-primary-veris" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(doctores)}'>Reservar cita</div>
-                                        </div>
-                                    </div>
-                                </div>`;
+                                <div class="col-9">
+                                    <h6 class="fw-medium mb-0">Dr(a) ${capitalizarPrimeraLetra(doctores.primerNombre)} ${capitalizarPrimeraLetra(doctores.segundoNombre)} ${capitalizarPrimeraLetra(doctores.primerApellido)} ${capitalizarPrimeraLetra(doctores.segundoApellido)}</h6>
+                                    <p class="text-primary-veris fw-medium fs--2 mb-0">${capitalizarCadaPalabra(doctores.nombreSucursal)}</p>
+                                    <p class="fs--2 mb-0">${capitalizarPrimeraLetra(doctores.nombreEspecialidad)}</p>
+                                    <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">  ${determinarValorNull(doctores.dia)}
+                                        </b></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end p-3">
+                            <button type="button" class="btn btn-outline-primary-veris btn-sm me-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
+                            <div class="btn btn-sm btn-primary-veris" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(doctores)}'>Reservar cita</div>
+                        </div>
+                    </div>
+                </div>`;
                 
             });
             html.append(elemento);
-
             
         } else {
             $('.d-none').removeClass('d-none');
-        }
-        
-        
+        }        
         return data;
-
     }
-
-    
 
     // consultar convenios 
     async function consultarConvenios(event) {
@@ -202,10 +237,6 @@ Mi Veris - Doctores favoritos
         const data = await call(args);
         if (data.code == 200){
             if(data.data.length > 0){
-                
-                
-
-                
                 // llenar el modal con los convenios
                 listaConvenios.empty();
                 let elemento = '';
@@ -234,25 +265,127 @@ Mi Veris - Doctores favoritos
                         numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
                         origen: 'doctorFavorito',
                     }
+                    params.codigoMedicoFavorito = dataRel.codigoProfesional;
+                    params.central = {
+                        codigoEmpresa: dataRel.codigoEmpresa,
+                        codigoSucursal: dataRel.codigoSucursal,
+                        nombreSucursal: dataRel.nombreSucursal
+                    }
                     params.origen = 'doctorFavorito';
                     localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
                     let url = `/citas-elegir-fecha-doctor/`;
                     let ruta = url + "{{ $tokenCita }}";
-                    elemento += `<a href="${ruta}" class="stretched-link">
+                    /*elemento += `<a href="${ruta}" class="stretched-link">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
                                         <label for="listGroupCheckableRadios2">
                                             ${convenios.nombreConvenio}
                                         </label> 
                                     </div>
-                                </a>`;
+                                </a>`;*/
+                    if(convenios.permiteReserva == "N"){
+                        ruta = `#`;
+                    }
+                    let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
+                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item">
+                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
+                                        <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                            ${convenios.nombreConvenio}
+                                        </label> 
+                                    </div>
+                                </div>`;
                 });
+
+
+                let params = {};
+                    
+                params.online = dataOnline;
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                };
+                params.convenio.origen = 'doctorFavorito';  
+                params.especialidad = {
+                    codigoEspecialidad: dataCodigoEspecialidad,
+                    nombre: dataRel.nombreEspecialidad,
+                    imagen: dataRel.imagenEspecialidad,
+                    codigoServicio: dataRel.codigoServicio,
+                    esOnline: dataRel.esOnline,
+                    codigoPrestacion: dataRel.codigoPrestacion,
+                    codigoSucursal: dataRel.codigoSucursal,
+                    origen: 'doctorFavorito',
+                    
+                };
+                params.paciente = {
+                    numeroIdentificacion: '{{ Session::get('userData')->numeroIdentificacion }}',
+                    tipoIdentificacion:  '{{ Session::get('userData')->codigoTipoIdentificacion }}',
+                    nombrePaciente: '{{ Session::get('userData')->primerNombre }}',
+                    numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
+                    origen: 'doctorFavorito',
+                }
+                params.codigoMedicoFavorito = dataRel.codigoProfesional;
+                params.central = {
+                    codigoEmpresa: dataRel.codigoEmpresa,
+                    codigoSucursal: dataRel.codigoSucursal,
+                    nombreSucursal: dataRel.nombreSucursal
+                }
+                params.origen = 'doctorFavorito';
+                let url = `/citas-elegir-fecha-doctor/`;
+                let ruta = url + "{{ $tokenCita }}";
+                let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
+                elemento += `<a href="${ruta}" class="d-block" data-rel='${ulrParams}' id="convenioNinguno">
+                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                        NINGUNO
+                    </div>
+                </a>`;
+
                 listaConvenios.append(elemento);
 
                 // abrir modal
                 $('#convenioModal').modal('show');
-
-
+            }else{
+                let params = {};
+                    
+                params.online = dataOnline;
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                };
+                params.convenio.origen = 'doctorFavorito';  
+                params.especialidad = {
+                    codigoEspecialidad: dataCodigoEspecialidad,
+                    nombre: dataRel.nombreEspecialidad,
+                    imagen: dataRel.imagenEspecialidad,
+                    codigoServicio: dataRel.codigoServicio,
+                    esOnline: dataRel.esOnline,
+                    codigoPrestacion: dataRel.codigoPrestacion,
+                    codigoSucursal: dataRel.codigoSucursal,
+                    origen: 'doctorFavorito',
+                    
+                };
+                params.paciente = {
+                    numeroIdentificacion: '{{ Session::get('userData')->numeroIdentificacion }}',
+                    tipoIdentificacion:  '{{ Session::get('userData')->codigoTipoIdentificacion }}',
+                    nombrePaciente: '{{ Session::get('userData')->primerNombre }}',
+                    numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
+                    origen: 'doctorFavorito',
+                }
+                params.codigoMedicoFavorito = dataRel.codigoProfesional;
+                params.central = {
+                    codigoEmpresa: dataRel.codigoEmpresa,
+                    codigoSucursal: dataRel.codigoSucursal,
+                    nombreSucursal: dataRel.nombreSucursal
+                }
+                params.origen = 'doctorFavorito';
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+                let url = `/citas-elegir-fecha-doctor/`;
+                let ruta = url + "{{ $tokenCita }}";
+                location.href = ruta;
             }
         }
 

@@ -496,7 +496,7 @@ Mi Veris - Inicio
                 ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
             }
 
-            elemento += `   <a href="${ruta}" class="btn btn-sm btn-primary-veris btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>Nueva fecha</a> `
+            elemento += `   <a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a> `
             if (citas.esVirtual == "S") {
                 elemento += `<a href="${citas.idTeleconsulta}
                 " class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
