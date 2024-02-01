@@ -29,6 +29,22 @@ Mi Veris - Citas - Laboratorio
         </div>
     </div>
 
+    <!-- Modal información -->
+    <div class="modal fade" id="modalInformacion" tabindex="-1" aria-labelledby="modalInformacionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Información</h1>
+                    <p class="fs--1 fw-normal" id="mensajeInformacion" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Filtro -->
     <div class="d-flex justify-content-between align-items-center bg-white">
@@ -265,12 +281,16 @@ Mi Veris - Citas - Laboratorio
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada , estado)}</span>
                                                         </div>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            ${determinarFechaCaducidadEncabezado(detalles, laboratorio)}
+                                                        </div>
+
                                                        <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                             </div>
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
-                                                        
+                                                                
                                                             <div>
                                                                 ${determinarCondicionesBotones(detalles, estado)}
                                                             </div>
@@ -477,12 +497,9 @@ Mi Veris - Citas - Laboratorio
 
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
 
+            
             if (datos.estado == "PENDIENTE_AGENDAR") {
-                    if (datos.esCaducado == "S") {
-                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                    } else {
-                        dataFechas = `` ;
-                    }
+                    
                 
             }
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
@@ -505,6 +522,26 @@ Mi Veris - Citas - Laboratorio
 
         return dataFechas;
 
+
+    }
+
+    // determinar fecha de caducidad encabezado
+    const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
+        let dataFechas;
+        
+        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
+            if (datos.estado == "PENDIENTE_AGENDAR" || datos.estado == null){
+                if (datos.esCaducado == "S") {
+                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                } else {
+                    // orden valida
+                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-success me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                }
+            }
+
+        }
+        
+        return dataFechas;
 
     }
 
@@ -655,23 +692,31 @@ Mi Veris - Citas - Laboratorio
                         } else {
                             respuesta += ``;
                         }
+                        if (datosServicio.esPagada == "S") {
+                            //ver informacion
+                            respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 btnInformacionLaboratorio" data-rel='${JSON.stringify(datosServicio)}'
+                            ><i class="bi me-2"></i> Información</a>`;
+                        } else{
 
-                        //condición para 'aplicaSolicitud'
-                        if (datosServicio.aplicaSolicitud == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                        } 
-                        else if (datosServicio.permitePago == "S"){
-                            let params = {};
-                            params.idPaciente = datosServicio.pacPacNumero;
-                            params.numeroOrden = datosServicio.idOrden;
-                            params.codigoEmpresa = datosServicio.codigoEmpresa;
-                            let ulrParams = btoa(JSON.stringify(params));
-                            
-                            let ruta = `/citas-laboratorio/` + "{{$tokenCita}}";
-                            
-                            respuesta += `<a href=" ${ruta}
-                            " class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
-                          }
+                        
+
+                            //condición para 'aplicaSolicitud'
+                            if (datosServicio.aplicaSolicitud == "S") {
+                                respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            } 
+                            else if (datosServicio.permitePago == "S"){
+                                let params = {};
+                                params.idPaciente = datosServicio.pacPacNumero;
+                                params.numeroOrden = datosServicio.idOrden;
+                                params.codigoEmpresa = datosServicio.codigoEmpresa;
+                                let ulrParams = btoa(JSON.stringify(params));
+                                
+                                let ruta = `/citas-laboratorio/` + "{{$tokenCita}}";
+                                
+                                respuesta += `<a href=" ${ruta}
+                                " class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                            }
+                        }
                     }
                     
                     return respuesta;
@@ -715,6 +760,16 @@ Mi Veris - Citas - Laboratorio
 
         }
     }
+
+
+    // mostrar informacion btnInformacionLaboratorio
+
+    $(document).on('click', '.btnInformacionLaboratorio', function(){
+        let datos = $(this).data('rel');
+        console.log('datos', datos);
+        $('#modalInformacion').modal('show');
+        $('#mensajeInformacion').text(datos.mensaje);
+    });
 
     
 
