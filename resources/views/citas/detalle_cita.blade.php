@@ -135,13 +135,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.paciente.nombrePaciente){
             nombrePaciente = dataCita.paciente.nombrePaciente;
         }else{
-            nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}`;
+            nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
         }
-        elem += `<p class="fs--2 mb-0">${dataCita.horario.dia2} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} ${determinarMeridiano(horaInicio)}</b></p>
-            <p class="fs--2 mb-0">Dr(a) ${dataCita.horario.nombreMedico}</p>
-            <p class="fs--2 mb-0">${nombrePaciente}</p>`;
+        elem += `<p class="fs--2 mb-0">${dataCita.horario.dia} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} - ${dataCita.horario.horaFin} ${determinarMeridiano(horaInicio)}</b></p>
+            <p class="fs--2 mb-0 text-capitalize">Dr(a) ${dataCita.horario.nombreMedico.toLowerCase()}</p>
+            <p class="fs--2 mb-0 text-capitalize">${nombrePaciente.toLowerCase()}</p>`;
         if(dataCita.convenio.codigoConvenio){
-            elem += `<p class="fs--2 mb-0">${dataCita.convenio.nombreConvenio}</p>`
+            elem += `<p class="fs--2 mb-0 text-capitalize">${dataCita.convenio.nombreConvenio.toLowerCase()}</p>`
         }
         $('#contentDetalleCita').html(elem);
 
