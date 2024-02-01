@@ -261,9 +261,10 @@ Mi Veris - Citas - Mis citas
 
                                     </div>
                                     <p class="fw-bold fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
-                                    <p class="fw-normal fs--2 mb-0"> <b class="hora-cita fw-normal text-primary-veris">${cita.dia}</b></p>
+                                    <p class="fw-normal fs--2 mb-0">${cita.dia} <b class="hora-cita fw-normal text-primary-veris"> ${cita.horaInicio}
+                                        </b></p>
                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(cita.medico)}</p>
-                                    <p class="fw-normal fs--2 mb-0">${cita.nombrePaciente}</p>
+                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(cita.nombrePaciente)}</p>
 
                                     <div class="d-flex justify-content-between align-items-center mt-3">
                                         ${determinarBotonCita(cita)}
