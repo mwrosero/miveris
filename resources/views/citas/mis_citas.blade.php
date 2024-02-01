@@ -192,7 +192,8 @@ Mi Veris - Citas - Mis citas
                                                     <p class="fw-normal fs--2 mb-0">${capitalizarElemento(historial.nombrePaciente)}</p>
                                                     <div class="d-flex justify-content-end align-items-center mt-3">
                                                         <div>
-                                                            <a href="#" class="btn btn-sm btn-outline-primary-veris shadow-none" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf"><i class="bi bi-file-earmark-pdf"></i> Ver PDF</a>
+                                                            <div class="btn btn-sm btn-outline-primary-veris shadow-none btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}
+                                                            ><i class="bi bi-file-earmark-pdf"></i> Ver PDF</div>
                                                             <a href=${quitarComillas(historial.urlEncuesta)} class="btn btn-sm btn-outline-primary-veris shadow-none">Calificar</a>
                                                             <a href="/citas" class="btn btn-sm btn-primary-veris shadow-none">Reagendar</a>
                                                         </div>
@@ -305,6 +306,81 @@ Mi Veris - Citas - Mis citas
 
         }
         return data;
+    }
+
+    // obtener lista de documentos 
+    async function obtenerListaDocumentos(datos) {
+        console.log('datossss', datos.secuenciaAtencion);    
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/documentos?secuenciaAtencion=${datos.secuenciaAtencion}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        if (data.code == 200) {
+            console.log('data', data);
+            let divContenedor = $('.verPdf');
+            divContenedor.empty(); // Limpia el contenido actual
+            data.data.forEach((documento) => {
+                let nuevosdatos = {}
+                nuevosdatos.datosCita = datos;
+                nuevosdatos.datosDocumento = documento;
+                let elemento = `<button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3 btnDescargarPdf" data-rel=${btoa(JSON.stringify(nuevosdatos))}>
+                                    <span class="text-veris fw-bold">
+                                        ${capitalizarElemento(documento.nombreDocumento)}
+                                    </span>
+                                    <i class="bi bi-download ms-auto"></i>
+                                </button>`;
+                divContenedor.append(elemento);
+            });
+        }
+
+
+
+        return data;
+    }
+
+    // descargar documento btnDescargarPdf
+    $(document).on('click', '.btnDescargarPdf', async function() {
+        let data = $(this).data('rel');
+        // decodificar data
+        data = JSON.parse(atob(data));
+        console.log('data', data);
+        await descargarDocumentoPdfPrincipal(data);
+    });
+
+    // descargar documento
+    async function descargarDocumentoPdfPrincipal(datos){
+
+        let args = [];
+        let canalOrigen = 'APP_CMV'
+        let secuenciaAtencion = datos.datosCita.secuenciaAtencion;
+        let tipoServicio = datos.datosDocumento.tipoServicio;
+        let numeroOrden = datos.datosDocumento.numeroOrden;
+
+        if (tipoServicio == 'RECETA') {
+            console.log('entro a receta');
+            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=&secuenciaReceta=${datos.datosDocumento.secuenciaReceta} `;
+        }
+        else {
+            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=${numeroOrden} `;
+        
+        }
+        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+        } catch (error) {
+            console.error('Error al obtener el PDF:', error);
+        }
     }
 
 
@@ -456,6 +532,16 @@ Mi Veris - Citas - Mis citas
 
         return horaFormateada;
     }
+
+
+    // ver pdf offcanvas
+    $(document).on('click', '.btnVerPdf', async function() {
+        let data = $(this).data('rel');
+        // decodificar data
+        data = JSON.parse(atob(data));
+        await obtenerListaDocumentos(data);
+    });
+
 
 
 

@@ -813,8 +813,8 @@ Mi Veris - Citas - Terapia física
     });
 
 
-    // boton ver orden
-    $(document).on('click', '.btn.text-primary-veris.fw-normal.fs--1', function(){
+    // boton ver ordenCard
+    $(document).on('click', '#verOrdenCard', function(){
         let datos = $(this).data('rel');
         descargarDocumentoPdf(datos);
     });
