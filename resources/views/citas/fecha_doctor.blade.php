@@ -220,15 +220,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if (fechasDisponibles.includes(fechaSeleccionada)) {
                 // Habilitar solo para fechas disponibles
                 dayElement.addEventListener('click', async () => {
-                    _fechaSeleccionada = fechaSeleccionada;
-                    console.log('_fechaSeleccionada: ' + _fechaSeleccionada);
-                    console.log('fechaSeleccionada: ' + fechaSeleccionada);
-                    $('.calendar-day').removeClass('selected-day');
-                    $('.' + classFechaSeleccionada).addClass('selected-day');
-                    // Aquí puedes hacer algo con la fecha seleccionada, como enviarla al servidor para la cita médica.
-                    await consultarMedicos(fechaSeleccionada);
-                    calendarContainer.style.maxHeight = '135px';
-                    chevronIcon.className = 'bi bi-chevron-compact-down';
+                    console.log(0)
+                    if(!$('.' + classFechaSeleccionada).hasClass('unavailable-day')){
+                        console.log(1)
+                        console.log(fechaSeleccionada)
+                        _fechaSeleccionada = fechaSeleccionada;
+                        console.log('_fechaSeleccionada: ' + _fechaSeleccionada);
+                        console.log('fechaSeleccionada: ' + fechaSeleccionada);
+                        $('.calendar-day').removeClass('selected-day');
+                        $('.' + classFechaSeleccionada).addClass('selected-day');
+                        // Aquí puedes hacer algo con la fecha seleccionada, como enviarla al servidor para la cita médica.
+                        await consultarMedicos(fechaSeleccionada);
+                        calendarContainer.style.maxHeight = '135px';
+                        chevronIcon.className = 'bi bi-chevron-compact-down';
+                    }
                 });
             } else {
                 // Deshabilitar para fechas no disponibles
@@ -280,9 +285,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function consultarFechasDisponibles(){
         let listaEspecialidades = $('#listaEspecialidades');
         listaEspecialidades.empty();
+        let codigoMedico = "";
+        if(dataCita.codigoMedicoFavorito){
+            codigoMedico = dataCita.codigoMedicoFavorito
+        }
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -311,6 +320,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     async function consultarMedicos(fechaSeleccionada){
+        console.log(fechaSeleccionada);
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
         args["method"] = "GET";
