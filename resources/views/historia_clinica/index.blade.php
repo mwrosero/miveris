@@ -7,10 +7,10 @@ Mi Veris - Historia clínica
 @endpush
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-    <!-- filtro -->
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Historia clínica') }}</h5>
     </div>
+    <!-- filtro -->
     @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
     @include('components.offCanvaHC', ['context' => 'contextoLimpiarFiltros'])
     <section class="p-3 pt-0 mb-3">

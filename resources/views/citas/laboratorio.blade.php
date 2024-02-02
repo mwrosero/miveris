@@ -6,6 +6,10 @@ Mi Veris - Citas - Laboratorio
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
 
     <!-- Modal de error -->
@@ -16,6 +20,22 @@ Mi Veris - Citas - Laboratorio
                 <div class="modal-body text-center px-2 pt-3 pb-0">
                     <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Veris</h1>
                     <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal información -->
+    <div class="modal fade" id="modalInformacion" tabindex="-1" aria-labelledby="modalInformacionLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Información</h1>
+                    <p class="fs--1 fw-normal" id="mensajeInformacion" >
                 </p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
@@ -41,9 +61,9 @@ Mi Veris - Citas - Laboratorio
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
+                @include('components.barraFiltro')
+                @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
-                    @include('components.barraFiltro')
-                    @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                     <!-- Card header items -->
                     <div id="contenedorTratamientosImagenes" class="px-2 px-md-0">
                     </div>
@@ -158,7 +178,7 @@ Mi Veris - Citas - Laboratorio
     // variables globales
     let datosLaboratorio = [];
     let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
-
+    let datosConvenios = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         const elemento = document.getElementById('nombreFiltro');
@@ -261,12 +281,16 @@ Mi Veris - Citas - Laboratorio
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada , estado)}</span>
                                                         </div>
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            ${determinarFechaCaducidadEncabezado(detalles, laboratorio)}
+                                                        </div>
+
                                                        <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                             </div>
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
-                                                        
+                                                                
                                                             <div>
                                                                 ${determinarCondicionesBotones(detalles, estado)}
                                                             </div>
@@ -398,7 +422,7 @@ Mi Veris - Citas - Laboratorio
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -409,6 +433,29 @@ Mi Veris - Citas - Laboratorio
 
         }
         return data;
+    }
+
+    // consultar convenios
+    async function consultarConvenios(datosPaciente) { 
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
+        if (datosPaciente) {
+            tipoIdentificacion = datosPaciente.tipoIdentificacion;
+            numeroIdentificacion = datosPaciente.numeroIdentificacion;
+        }
+        
+        let codigoEmpresa = 1
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const dataConvenio = await call(args);
+        console.log('dataConvenio', dataConvenio);
+        if(dataConvenio.code == 200){
+            datosConvenios = dataConvenio.data;
+        }
+       
+        return dataConvenio;
     }
 
     // descargar documento pdf
@@ -450,12 +497,9 @@ Mi Veris - Citas - Laboratorio
 
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
 
+            
             if (datos.estado == "PENDIENTE_AGENDAR") {
-                    if (datos.esCaducado == "S") {
-                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                    } else {
-                        dataFechas = `` ;
-                    }
+                    
                 
             }
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
@@ -478,6 +522,26 @@ Mi Veris - Citas - Laboratorio
 
         return dataFechas;
 
+
+    }
+
+    // determinar fecha de caducidad encabezado
+    const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
+        let dataFechas;
+        
+        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
+            if (datos.estado == "PENDIENTE_AGENDAR" || datos.estado == null){
+                if (datos.esCaducado == "S") {
+                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                } else {
+                    // orden valida
+                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-success me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                }
+            }
+
+        }
+        
+        return dataFechas;
 
     }
 
@@ -628,19 +692,30 @@ Mi Veris - Citas - Laboratorio
                         } else {
                             respuesta += ``;
                         }
+                        if (datosServicio.esPagada == "S") {
+                            //ver informacion
+                            respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 btnInformacionLaboratorio" data-rel='${JSON.stringify(datosServicio)}'
+                            ><i class="bi me-2"></i> Información</a>`;
+                        } else{
 
-                        //condición para 'aplicaSolicitud'
-                        if (datosServicio.aplicaSolicitud == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                        } 
-                        else if (datosServicio.permitePago == "S"){
-                            let params = {};
-                            params.idPaciente = datosServicio.pacPacNumero;
-                            params.numeroOrden = datosServicio.idOrden;
-                            params.codigoEmpresa = datosServicio.codigoEmpresa;
-                            let ulrParams = btoa(JSON.stringify(params));
-                            
-                            respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                        
+
+                            //condición para 'aplicaSolicitud'
+                            if (datosServicio.aplicaSolicitud == "S") {
+                                respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            } 
+                            else if (datosServicio.permitePago == "S"){
+                                let params = {};
+                                params.idPaciente = datosServicio.pacPacNumero;
+                                params.numeroOrden = datosServicio.idOrden;
+                                params.codigoEmpresa = datosServicio.codigoEmpresa;
+                                let ulrParams = btoa(JSON.stringify(params));
+                                
+                                let ruta = `/citas-laboratorio/` + "{{$tokenCita}}";
+                                
+                                respuesta += `<a href=" ${ruta}
+                                " class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                            }
                         }
                     }
                     
@@ -686,6 +761,16 @@ Mi Veris - Citas - Laboratorio
         }
     }
 
+
+    // mostrar informacion btnInformacionLaboratorio
+
+    $(document).on('click', '.btnInformacionLaboratorio', function(){
+        let datos = $(this).data('rel');
+        console.log('datos', datos);
+        $('#modalInformacion').modal('show');
+        $('#mensajeInformacion').text(datos.mensaje);
+    });
+
     
 
 
@@ -700,33 +785,26 @@ Mi Veris - Citas - Laboratorio
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
-                                checked>
-                                <span class="text-veris fw-bold">
-                                    ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
-                                    <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
-                                </span>
-                            </label>`;
-        divContenedor.append(elementoYo);
+        let isFirstElement = true; // Variable para identificar el primer elemento
 
-        console.log('sss',data);
         data.forEach((Pacientes) => {
+            let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
+            isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
+
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
-                                <span class="text-veris fw-bold">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
+                                <span class="text-veris fw-medium">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
                                 </span>
                             </label>`;
             divContenedor.append(elemento);
-
         });
     }
 
     // aplicar filtros
-    $('#aplicarFiltros').on('click', function() {
+    $('#aplicarFiltros').on('click', async function() {
         const contexto = $(this).data('context');
         aplicarFiltros(contexto);
 
@@ -734,6 +812,7 @@ Mi Veris - Citas - Laboratorio
 
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+        await consultarConvenios(texto);
 
         identificacionSeleccionada = texto.numeroPaciente;
 
@@ -781,6 +860,42 @@ Mi Veris - Citas - Laboratorio
     $(document).on('click', '.btnVerOrden', function(){
         let datos = $(this).data('rel');
         descargarDocumentoPdf(datos);
+    });
+
+
+    // boton btn-Pagar
+    $(document).on('click', '.btn-Pagar', function(){
+        let datosServicio = $(this).data('rel');
+        // capturar datarel del filtro
+        let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+        console.log('datospaciente', dataPaciente);
+
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = 'S';
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = 'N';
+        }
+        let dataCita = {};
+        dataCita.online = modalidad;
+        dataCita.paciente = dataPaciente;
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+           
+        };
+        dataCita.convenio = datosConvenios;
+        dataCita.datosTratamiento = datosServicio;
+        dataCita.datosTratamiento.numeroPaciente = datosServicio.pacPacNumero;
+        dataCita.origen = 'LABORATORIO';
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
     });
 </script>
 @endpush

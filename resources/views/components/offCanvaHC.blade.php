@@ -2,7 +2,7 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroTratamientos" aria-labelledby="filtroTratamientosLabel">
     <div class="offcanvas-header py-2">
         <h5 class="offcanvas-title" id="filtroTratamientosLabel">Filtros</h5>
-        <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atras</b></button>
+        <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atrás</b></button>
     </div>
     <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
         <div>

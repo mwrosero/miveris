@@ -114,8 +114,8 @@ Mi Veris - Inicio
                     </div>
                 </div>
             </div>
-            <button type="button" id="prevProperties" class="d-flex d-lg-none mt-n4 btn btn-prev"></button>
-            <button type="button" id="nextProperties" class="d-flex d-lg-none mt-n4 btn btn-next"></button>
+            <button type="button" id="prevProperties" class="d-flex d-lg-none mt-n4 btn btn-prev rounded-circle"></button>
+            <button type="button" id="nextProperties" class="d-flex d-lg-none mt-n4 btn btn-next rounded-circle"></button>
         </div>
     </section>
     <!-- Tratamientos dinamico -->
@@ -127,13 +127,13 @@ Mi Veris - Inicio
         <div class="swiper swiper-tratamientos position-relative py-3">
             <div class="swiper-wrapper mb-3 mb-md-0" id="contenedorTratamientoHome">
             </div>
-            <button type="button" class="mt-n4 btn btn-prev"></button>
-            <button type="button" class="mt-n4 btn btn-next"></button>
+            <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
+            <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
         </div>
         <div class="py-3" id="contenedorTratamientosHomePrincipal"></div>
     </section>
     <!-- Mis citas dinamico -->
-    <section class="bg-light-grayish-blue p-3 mb-3">
+    <section class="bg-light-grayish-blue p-3 mb-3" id="section-citas">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Mis citas</h5>
             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
@@ -141,13 +141,13 @@ Mi Veris - Inicio
         <div class="swiper swiper-proximas-citas position-relative py-3">
             <div class="swiper-wrapper" id=contenedorCitas>
             </div>
-            <button type="button" class="mt-n4 btn btn-prev"></button>
-            <button type="button" class="mt-n4 btn btn-next"></button>
+            <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
+            <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
         </div>
         <div class="py-3" id="contenedorCitasHomePrincipal"></div>
     </section>
     <!-- Urgencias ambulatorias dinamico -->
-    <section class="bg-light-grayish-blue p-3 mb-3">
+    <section class="bg-light-grayish-blue p-3 mb-3" id="section-urgencias">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-medium border-start-grenadier ps-3 fs-18 mb-0">Urgencias ambulatorias</h5>
             <a href="javascript:void(0)" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todos</a>
@@ -155,8 +155,8 @@ Mi Veris - Inicio
         <div class="swiper swiper-urgencias-ambulatorias position-relative py-3">
             <div class="swiper-wrapper" id="contenedorUrgenciasAmbulatorias">
             </div>
-            <button type="button" class="mt-n4 btn btn-prev"></button>
-            <button type="button" class="mt-n4 btn btn-next"></button>
+            <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
+            <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
         </div>
         <div class="py-3" id="contenedorUrgenciasAmbulatoriasMensaje"></div>
     </section>
@@ -179,7 +179,7 @@ Mi Veris - Inicio
         await obtenerCitas();
         await obtenerUrgenciasAmbulatorias();
         await consultarConvenios();
-        await consultarDatosPaciente();
+        // await consultarDatosPaciente();
         // initializeSwiper('.swipertratamientos');
         // initializeSwiper('.swiper-proximas-citas');
     });
@@ -470,7 +470,7 @@ Mi Veris - Inicio
             }
             elemento +=`<div class="swiper-slide">
                 <div class="card h-100">
-                    <div class="card-body d-flex align-items-center">
+                    <div class="card-body d-flex align-items-center p-3">
                         <div class="w-100">`;
             if(citas.esVirtual == "S"){
                 elemento += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
@@ -496,10 +496,10 @@ Mi Veris - Inicio
                 ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
             }
 
-            elemento += `   <a href="${ruta}" class="btn btn-sm btn-primary-veris btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>Nueva fecha</a> `
+            elemento += `   <a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a> `
             if (citas.esVirtual == "S") {
                 elemento += `<a href="${citas.idTeleconsulta}
-                " class="btn btn-sm btn-primary-veris m-3">Conectarme</a>`;
+                " class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
             }
             elemento += `
                             </div>
@@ -513,6 +513,7 @@ Mi Veris - Inicio
 
     // mostrar mensaje de no hay citas
     function mostrarNoExistenCitas() {
+        document.getElementById('section-citas').style.display = 'none';
         document.querySelector('.swiper-proximas-citas').style.display = 'none';
         let data = datosCitas;
         let divContenedor = $('#contenedorCitasHomePrincipal');
@@ -546,7 +547,7 @@ Mi Veris - Inicio
                                     <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
                                     <p class="fw-normal fs--2 mb-0">${urgencias.paciente}</p>
-                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div class="d-flex justify-content-between align-items-center m-0 ms-3">
                                         <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
                                         <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
                                     </div>
@@ -559,6 +560,7 @@ Mi Veris - Inicio
 
     // mostrar mensaje de no hay urgencias
     function mostrarNoExistenUrgencias() {
+        document.getElementById('section-urgencias').style.display = 'none';
         document.querySelector('.swiper-urgencias-ambulatorias').style.display = 'none';
         let data = datosCitas;
         let divContenedor = $('#contenedorUrgenciasAmbulatoriasMensaje');
@@ -639,11 +641,26 @@ Mi Veris - Inicio
                     "secuenciaAfiliado" : null,
                 };
         }
+        // params.paciente = {
+        //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
+        //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
+        //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
+        //     "numeroPaciente": datosPaciente.numeroPaciente
+        // }
         params.paciente = {
-            "numeroIdentificacion": datosPaciente.numeroIdentificacion,
-            "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
-            "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
-            "numeroPaciente": datosPaciente.numeroPaciente,
+            "numeroIdentificacion": data.numeroIdentificacion,
+            "tipoIdentificacion": data.tipoIdentificacion,
+            "nombrePaciente": data.nombrePaciente,
+            "numeroPaciente": data.numeroPaciente
+        }
+
+        params.reservaEdit = {
+            "estaPagada": data.estaPagada,
+            "numeroOrden": data.numeroOrden,
+            "lineaDetalleOrden": data.lineaDetalleOrden,
+            "codigoEmpresaOrden": data.codigoEmpresaOrden,
+            "idOrdenAgendable": data.idOrdenAgendable,
+            "idCita": data.idCita
         }
         params.origen = "inicios";
 

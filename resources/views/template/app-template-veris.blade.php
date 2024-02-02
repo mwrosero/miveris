@@ -145,10 +145,7 @@
                     nextEl: '.btn-next',
                     prevEl: '.btn-prev',
                 },
-                autoplay: {
-                    delay: 7500,
-                    disableOnInteraction: false,
-                },
+                autoplay: false,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
@@ -176,10 +173,7 @@
                     nextEl: '.btn-next',
                     prevEl: '.btn-prev',
                 },
-                autoplay: {
-                    delay: 7500,
-                    disableOnInteraction: false,
-                },
+                autoplay: false,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
@@ -207,10 +201,7 @@
                     nextEl: '.btn-next',
                     prevEl: '.btn-prev',
                 },
-                autoplay: {
-                    delay: 7500,
-                    disableOnInteraction: false,
-                },
+                autoplay: false,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
@@ -238,10 +229,7 @@
                     nextEl: '.btn-next',
                     prevEl: '.btn-prev',
                 },
-                autoplay: {
-                    delay: 7500,
-                    disableOnInteraction: false,
-                },
+                autoplay: false,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,

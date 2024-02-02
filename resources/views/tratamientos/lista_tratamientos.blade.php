@@ -54,7 +54,7 @@ $data = json_decode(base64_decode($params));
                 <div class="modal-body">
                     <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
-                    <a href="#" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
+                    <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn w-100">No lo he hecho</a>
                 </div>
             </div>
@@ -76,7 +76,8 @@ $data = json_decode(base64_decode($params));
             </div>
         </div>
     </div>
-    <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- <div class="flex-grow-1 container-p-y pt-0"> -->
 
     <!-- Modal Examenes presencial -->
     <div class="modal fade" id="mensajeLaboratorioPresencialModal" tabindex="-1" aria-labelledby="mensajeLaboratorioPresencialModalLabel" aria-hidden="true">
@@ -156,7 +157,10 @@ $data = json_decode(base64_decode($params));
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Tratamiento') }}</h5>  
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Tratamiento') }}</h5>
+    </div>
+
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0">
             <div class="col-md-12">
@@ -167,7 +171,7 @@ $data = json_decode(base64_decode($params));
                                 <!-- datos del tratamiento -->
                             </div>
                             <div class="col-3 col-md-2 col-lg-1">
-                                <div class="progress-circle ms-auto" id="progress-circle" data-percentage="10">
+                                <div class="progress-circle ms-auto" id="progress-circle" data-percentage="0">
                                     <span class="progress-left">
                                         <span class="progress-bar"></span>
                                     </span>
@@ -177,7 +181,7 @@ $data = json_decode(base64_decode($params));
                                     <div class="progress-value">
                                         <div>
                                             <span><i class="bi bi-check2 success"></i></span>
-                                            <p class="fw-medium text-success fs--2 mb-0"><span id="totalTratamientoRealizados">0</span>/<span id="totalTratamientoEnviados">7</span></p>
+                                            <p class="fw-medium text-success fs--2 mb-0"><span id="totalTratamientoRealizados"> </span>/<span id="totalTratamientoEnviados"></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -228,6 +232,7 @@ $data = json_decode(base64_decode($params));
     let idPaciente ;
     let datosTratamiento = [];
     let ultimoTratamientoData = [];
+    let dataRecetaTmp;
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         
@@ -270,7 +275,7 @@ $data = json_decode(base64_decode($params));
                 
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
-            let elemento = `<h6 class="card-title fs--1 text-veris mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h6>
+            let elemento = `<h5 class="card-title card-g text-primary-veris mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
                                 <p class="fw-medium fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
                                 <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
@@ -463,9 +468,8 @@ $data = json_decode(base64_decode($params));
         }
     }
 
-
-     //Consultar el detalle de una receta específica.
-     async function consultarDetalleReceta(datos){
+    //Consultar el detalle de una receta específica.
+    async function consultarDetalleReceta(datos){
         console.log('datosDetta', datos);
         let args = [];
         let canalOrigen = 'APP_CMV'
@@ -631,7 +635,7 @@ $data = json_decode(base64_decode($params));
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="96" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="85" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         } else {
@@ -647,7 +651,7 @@ $data = json_decode(base64_decode($params));
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="96" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="85" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         }
@@ -710,18 +714,12 @@ $data = json_decode(base64_decode($params));
          
         if(servicio.nombreServicio == "RECETA MÉDICA"){
             let servicioStr = JSON.stringify(servicio);
-            return `<a href="" class="fs--2" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal" data-rel='${servicioStr}'>¿Ya compraste esta receta?</a>`;
+            return `<a href="" class="fs--2 btn-compraste-receta" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal" data-rel='${servicioStr}'>¿Ya compraste esta receta?</a>`;
         }
         else{
             return ``;
         }
     }
-
-
-    
-    
-
-
 
     // determinar si es receta medica o no botones
     function determinarbotonesRecetaMedica(servicio, esAgendable, tipoServicio, aplicaSolicitud){
@@ -782,12 +780,11 @@ $data = json_decode(base64_decode($params));
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
-                    respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                    //respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
                     
 
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
-
-
+                        respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
                         if(datosServicio.esCaducado == 'S'){
                             // mostrar boton de informacion que llama al modal de informacion
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1 btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
@@ -834,14 +831,17 @@ $data = json_decode(base64_decode($params));
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
+                        //respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
 
                         if (datosServicio.permitePago == 'S'){
                             // mostrar boton de pagar
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
                         }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            respuestaAgenda += `<a href="#" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm ms-2 text-primary-veris border-none shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            if(datosServicio.modalidad == "ONLINE"){
+                                respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
+                            }
                         } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                             // mostrar boton de informacion
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
@@ -878,9 +878,9 @@ $data = json_decode(base64_decode($params));
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
-                            
                             respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
-                        }
+                       
+                             }
                     } 
 
                     else if (estado == 'REALIZADO'){
@@ -984,8 +984,6 @@ $data = json_decode(base64_decode($params));
         var datos = JSON.parse(button.attr('data-rel'));
         $('#btnRecetaMedicaSi').data('rel', datos);
     });
-
-
 
     // boton receta medica si lo hice
     $('#btnRecetaMedicaSi').click(async function(){

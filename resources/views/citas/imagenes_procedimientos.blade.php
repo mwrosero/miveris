@@ -187,7 +187,7 @@ Mi Veris - Citas - Imágenes y procedimientos
     // variables globales
     let datosLaboratorio = [];
     let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
-    let datosConvenio = [];
+    let datosConvenios = [];
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
@@ -432,6 +432,29 @@ Mi Veris - Citas - Imágenes y procedimientos
         return data;
     }
 
+    // consultar convenios
+    async function consultarConvenios(datosPaciente) { 
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
+        if (datosPaciente) {
+            tipoIdentificacion = datosPaciente.tipoIdentificacion;
+            numeroIdentificacion = datosPaciente.numeroIdentificacion;
+        }
+        
+        let codigoEmpresa = 1
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const dataConvenio = await call(args);
+        console.log('dataConvenio', dataConvenio);
+        if(dataConvenio.code == 200){
+            datosConvenios = dataConvenio.data;
+        }
+       
+        return dataConvenio;
+    }
+
     // descargar documento pdf
      
     async function descargarDocumentoPdf(datos){
@@ -553,7 +576,8 @@ Mi Veris - Citas - Imágenes y procedimientos
                                         
                                         let ruta = '/citas-elegir-central-medica/';
                                         let urlCompleta = ruta + "{{ $tokenCita }}"
-                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
+                                        respuestaAgenda += `<a href="${urlCompleta}
+                                        " class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
                                         
                                          
                                     } else {
@@ -561,7 +585,8 @@ Mi Veris - Citas - Imágenes y procedimientos
                                         let ruta = '/citas-elegir-fecha-doctor/';
                                         let urlCompleta = ruta + "{{ $tokenCita }}"
                                         // ir a fechas
-                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
+                                        respuestaAgenda += `<a href="${urlCompleta}
+                                        " class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
                                         
                                     }
                                 } else {
@@ -588,7 +613,6 @@ Mi Veris - Citas - Imágenes y procedimientos
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
 
                         if (datosServicio.permitePago == 'S'){
                             // mostrar boton de pagar
@@ -741,7 +765,7 @@ Mi Veris - Citas - Imágenes y procedimientos
     }
 
     // aplicar filtros
-    $('#aplicarFiltros').on('click', function() {
+    $('#aplicarFiltros').on('click', async function() {
         const contexto = $(this).data('context');
         aplicarFiltros(contexto);
 
@@ -749,6 +773,7 @@ Mi Veris - Citas - Imágenes y procedimientos
 
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+        await consultarConvenios(texto);
 
         identificacionSeleccionada = texto.numeroPaciente;
 
@@ -786,8 +811,8 @@ Mi Veris - Citas - Imágenes y procedimientos
     });
 
 
-    // boton ver orden
-    $(document).on('click', '.btn.text-primary-veris.fw-normal.fs--1', function(){
+    // boton ver ordenCard
+    $(document).on('click', '#verOrdenCard', function(){
         let datos = $(this).data('rel');
         descargarDocumentoPdf(datos);
     });
@@ -837,6 +862,44 @@ Mi Veris - Citas - Imágenes y procedimientos
             window.location.href = '/citas-elegir-central-medica/{{ $tokenCita }}';
         }
         
+    });
+
+
+    // boton agendar cita modal setear datos en localstorage 
+    $(document).on('click', '.btn-agendar', function(){
+        let datosServicio = $(this).data('rel');
+        console.log('datosServicio', datosServicio);
+
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = 'S';
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = 'N';
+        }
+    
+        let dataCita = {}
+        dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+            origen: "Listatratamientos"
+        };
+        dataCita.origen = "Listatratamientos";
+        dataCita.convenio = datosConvenios;
+        dataCita.convenio.origen = "Listatratamientos";
+        dataCita.tratamiento = datosServicio;
+        dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
+        dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
+        dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
     });
 
 

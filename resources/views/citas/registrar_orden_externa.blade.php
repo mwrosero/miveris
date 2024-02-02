@@ -17,11 +17,11 @@ $data1 = json_decode($data);
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-bold m-0 mt-3">Tu orden ha sido enviada exitosamente</p>
+                    <h5 class="fw-bold fs-24" id="titulo">Registro exitoso</h5>
+                    <p class="fs--1  m-0 mt-3" id="mensaje"></p>
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -290,6 +290,9 @@ $data1 = json_decode($data);
         if (data.code == 200) {
             // mostrar modal de exito
             $('#mensajeOrdenExitosa').modal('show');
+            $('#titulo').text('Registro exitoso');
+            
+            $('#mensaje').text( 'Tu solicitud está en revisión, un asesor la validará y pronto podrás continuar con tu proceso.' ); 
             $('#btnEntendido').on('click', function(){
                 // redireccionar a ordenes externas
                 window.location.href = `/ordenes-externas`;
