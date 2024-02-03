@@ -41,7 +41,7 @@ $data1 = json_decode($data);
                                 <i class="fa-solid fa-upload d-block d-sm-none"></i>
                                 <input type="file" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpg, image/jpeg, image/pdf," multiple />
                             </label>
-                            <div class="mt-0" id="fileList"></div>
+                            <div class="mt-0 text-nowrap overflow-hidden text-truncate" id="fileList"></div>
                             <p class="fs--1 mb-0 text-dark">Puedes subir hasta 5 fotos o archivos, cada uno de hasta 8Mb.</p>
                             <p class="fs--1 my-0 text-dark">Recuerda lo siguiente al enviar tu orden:</p>
                             <ul class="mx-3 my-0 px-3 fs--1 text-dark">
@@ -279,6 +279,7 @@ $data1 = json_decode($data);
         formData.append("nombrePaciente", nombrePaciente);
         formData.append("direccion", direccion);
         formData.append("telefono", telefono);
+        formData.append("origenInvocacion", "WEB_EXTERNA");
         formData.append("files", files);
         args["data"] = formData;
 

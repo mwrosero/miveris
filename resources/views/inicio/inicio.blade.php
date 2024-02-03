@@ -312,7 +312,7 @@ Mi Veris - Inicio
 
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
         console.log(args["endpoint"]);
         const data = await call(args);
         console.log('citas',data);
