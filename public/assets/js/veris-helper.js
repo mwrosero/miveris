@@ -434,9 +434,9 @@ async function recuperarContrasena(){
 // funciones para el filtro pendientes, realizadas 
 
 async function aplicarFiltros(contexto) {
+    console.log('contexto', contexto);
     const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').val();
     const parentesco = $('input[name="listGroupRadios"]:checked').attr('parentesco');
-    console.log('parentesco', parentesco);
     let fechaDesde = $('#fechaDesde').val() || '';
     let fechaHasta = $('#fechaHasta').val() || '';
     const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');

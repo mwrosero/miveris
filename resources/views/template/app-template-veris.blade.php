@@ -329,7 +329,6 @@
                     palabras[i] = primeraLetraMayuscula + palabra.substring(1);
                 }
                 const textoCapitalizado = palabras.join(" ");
-                console.log('textoCapitalizado',textoCapitalizado);
                 return textoCapitalizado;
             } catch (error) {
                 // Retornar el elemento original en caso de error
