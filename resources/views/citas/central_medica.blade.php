@@ -34,7 +34,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         <img src="{{ asset('assets/img/card/avatar_central_medica.png') }}" class="card-img-top" alt="centro medico">
                                     </div>
                                     <div class="col-9">
-                                        <h6 class="fw-bold mb-1">{{ __('VERIS - ALBORADA') }}</h6>
+                                        <h6 class="fw-medium mb-1">{{ __('VERIS - ALBORADA') }}</h6>
                                         <p class="fs--2">{{ __('Av. Rodolfo Baquerizo Nazur y José María Egas') }}.</p>
                                     </div>
                                 </div>
@@ -138,7 +138,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                                     <img src="${path_central}" class="card-img-top" alt="${central.nombreTipoSucursal}">
                                                 </div>
                                                 <div class="col-9">
-                                                    <h6 class="fw-bold mb-1">${central.nombreSucursal}</h6>
+                                                    <h6 class="fw-medium mb-1">${central.nombreSucursal}</h6>
                                                     <p class="fs--2">${central.direccion}</p>
                                                 </div>
                                             </div>
