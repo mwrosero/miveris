@@ -102,7 +102,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(data.code == 200){
             familiar = data.data;
             mostrarListaPacientes();
-
         }
         return data;
     }
@@ -117,6 +116,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let canalOrigen = _canalOrigen;
         let dataRel = $(event.currentTarget).data('rel');
         dataPaciente = dataRel;
+        console.log("--------------------------");
         console.log("dataRel", dataRel);
         let codigoUsuario;
         let tipoIdentificacion;

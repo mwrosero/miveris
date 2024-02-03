@@ -116,12 +116,51 @@ Mi Veris - Órdenes externas
         // consultar convenios
         await consultarConvenios();
 
+        $('body').on('click', '.btn-pagar', async function(){
+            let params = {};
+            let data = JSON.parse($(this).attr("data-rel"));
+
+            const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
+
+            params.paciente = paciente.data
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location.href = $(this).attr("url-rel");
+        })
+
+        $('body').on('click', '.btn-solicitar', async function(){
+            let params = {};
+            let data = JSON.parse($(this).attr("data-rel"));
+
+            const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
+
+            params.paciente = paciente.data
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location.href = $(this).attr("url-rel");
+        })
+
     });
 
     // funciones asyncronas
 
-     // consultar ordenes externas de laboratorio
-     async function consultarOrdenesExternasLaboratorio(_pacienteSeleccionado = '', tipoIdentificacion = '', _fechaDesde = '', _fechaHasta = '', _esAdmin = '') {
+    async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        
+        const data = await call(args);
+        console.log('datosUsuario',data);
+        if (data.code == 200) {
+            return data;
+        }
+        return [];
+    } 
+
+    // consultar ordenes externas de laboratorio
+    async function consultarOrdenesExternasLaboratorio(_pacienteSeleccionado = '', tipoIdentificacion = '', _fechaDesde = '', _fechaHasta = '', _esAdmin = '') {
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
@@ -139,11 +178,8 @@ Mi Veris - Órdenes externas
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log('dataOrde', data);
         if (data.code == 200){
-
-            if (data.data.length > 0) {
-
+            if(data.data.length > 0) {
                 // ocultar mensaje no hay ordenes
                 
                 $('#mensajeOrdenesExternas').addClass('d-none');
@@ -153,36 +189,25 @@ Mi Veris - Órdenes externas
                 let ordenesExternas = $('#ordenesExternas');
                 ordenesExternas.empty();
                 let elemento = '';
+                console.log(data.data);
 
                 data.data.forEach((ordenes) => {
 
-                    elemento = `<div class="col-12 col-md-6">
-                                    <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
-                                        <div class="card-body">
-                                            <h6 class="fw-medium mb-0">Orden externa laboratorio ${ordenes.codigoSolicitud}</h6>
-                                            <p class="fs--1 mb-0"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>
-
-
-                                            <p class="text-dark fw-medium fs--1 mb-2">${convertirFecha(ordenes.dia)} ${ordenes.hora}</p>
-                                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                                ${determinarEstadoOrden(ordenes)}
-                                                
-                                                ${determinarBotonesPagarSolicitar(ordenes)}
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> `;
-                    
-
+                    elemento += `<div class="col-12 col-md-6">
+                        <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
+                            <div class="card-body">
+                                <h6 class="fw-medium mb-0">Orden externa laboratorio ${ordenes.codigoSolicitud}</h6>
+                                <p class="fs--1 mb-0"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>
+                                <p class="text-dark fw-medium fs--1 mb-2">${convertirFecha(ordenes.dia)} <span style="color: #80BC00">${ordenes.hora}</span></p>
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    ${determinarEstadoOrden(ordenes)}                                    
+                                    ${determinarBotonesPagarSolicitar(ordenes)}
+                                </div>
+                            </div>
+                        </div>
+                    </div> `;
                 });
-
                 ordenesExternas.append(elemento);
-
-
-                                    
-
-
             } else {
                 dataConvenio = [];
                 // limpiar lista de ordenes
@@ -199,7 +224,6 @@ Mi Veris - Órdenes externas
             // mostrar mensaje error en el modal
             $('#mensajeError').text(data.message);
             $('#mensajeSolicitudLlamadaModalError').modal('show');
-            
         }
 
      }
@@ -237,9 +261,7 @@ Mi Veris - Órdenes externas
         }
     }
 
-
-
-     // consultar grupo familiar
+    // consultar grupo familiar
     async function consultarGrupoFamiliar() {
         let args = [];
         canalOrigen = _canalOrigen
@@ -282,7 +304,6 @@ Mi Veris - Órdenes externas
 
 
     // funciones js
-
     function mostrarListaPacientesFiltro(){
 
         let data = familiar;
@@ -356,11 +377,10 @@ Mi Veris - Órdenes externas
         const año = fechaObj.getFullYear();
 
         return `${dia}/${mes}/${año}`;
-    }
+    }   
 
     // btn si o no
     $('#btnSi').on('click', function(){
-
         let params = {}
         // capturar los datos del paciente del filtro
         params.online = 'S';
@@ -369,14 +389,11 @@ Mi Veris - Órdenes externas
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
                     
         let url = `/citas-elegir-paciente/`
-
-
         // recireccionar a registrar orden externa
         window.location.href = url + "{{ $tokenCita }}";
     });
 
     $('#btnNo').on('click', function(){
-
         let params = {}
         // capturar los datos del paciente del filtro
         params.online = 'N';
@@ -385,37 +402,35 @@ Mi Veris - Órdenes externas
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
         // window.location.href = `/citas-elegir-paciente/${ulrParams}`;
         window.location.href = `/citas-elegir-paciente/{{ $tokenCita }}`;
-
     });
 
     // determinar botones pagar o solicitar
     function determinarBotonesPagarSolicitar(data){
+        console.log(data);
         let params = {
             "idPaciente" : idPaciente,
             "numeroOrden" : data.numeroOrden,
             "codigoEmpresa" : data.codigoEmpresa,
-
         }
         let ulrParams = btoa(JSON.stringify(params));
         let elemento = '';
         if (data.codigoEstado == 'REV') {
             // no mostrar botones
             elemento = '';
-        } else{
+        } else if(data.codigoEstado == 'APR'){
             if(data.permitePago == 'S'){
-                elemento = `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fs--1">Pagar</a>`;
+                if(data.aplicoDomicilio == "N"){
+                    elemento = `<div url-rel="/citas-datos-facturacion/{{ $tokenCita }}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-pagar btn-primary-veris fs--1">Pagar</div>`;
+                }
                 
-            }else if(data.permitePago == 'N'){
-                elemento = `<a href="/citas-elegir-fecha-doctor/${ulrParams}" class="btn btn-sm btn-primary-veris fs--1">Solicitar</a>`;
             }
-
+            if(data.aplicoDomicilio == "S"){
+                elemento = `<div url-rel="/citas-elegir-fecha-doctor/{{ $tokenCita }}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-solicitar btn-primary-veris fs--1">Solicitar</div>`;
+            }
         }
         
         return elemento;
-
     }
-
-
 
 </script>
 @endpush
