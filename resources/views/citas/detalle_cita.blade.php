@@ -22,21 +22,23 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Revisa tus datos') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Revisa tus datos') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row g-3 justify-content-center">
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header bg-grayish-blue p-2">
-                        <h5 class="text-primary-veris fw-bold m-1">{{ __('Precio') }} </h5>
+                    <div class="card-header bg-grayish-blue p--2">
+                        <h5 class="text-primary-veris fw-medium m-1">{{ __('Precio') }} </h5>
                     </div>
-                    <div class="card-body p-2 my-3">
+                    <div class="card-body p--2 my-3">
                         <div class="row gx-0 justify-content-evenly align-items-center box-precio">
                         </div>
                     </div>
-                    {{-- <div class="card-footer d-flex justify-content-between border-top p-2" id="contentLinkPago">
+                    {{-- <div class="card-footer d-flex justify-content-between border-top p--2" id="contentLinkPago">
                         <div class="mx-1">
-                            <p class="fs--2 mb-0 fw-bold">{{ __('¿Alguien más pagará esta cita?') }}</p>
+                            <p class="fs--2 mb-0 fw-medium">{{ __('¿Alguien más pagará esta cita?') }}</p>
                             <p class="fs--2 mb-0">{{ __('Genera tu link de pago') }}</p>
                         </div>
                         <a href="#" class="btn btn-sm btn-label-primary-veris fs--1 mx-1">{{ __('Enviar link') }}</a>
@@ -45,13 +47,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </div>
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header bg-grayish-blue p-2">
-                        <h5 class="text-primary-veris fw-bold m-1">{{ __('Detalles de la cita') }}</h5>
+                    <div class="card-header bg-grayish-blue p--2">
+                        <h5 class="text-primary-veris fw-medium m-1">{{ __('Detalles de la cita') }}</h5>
                     </div>
                     <div class="card-body px-2">
                         <div class="mx-1 mt-3" id="contentDetalleCita">
-                            {{-- <p class="text-primary-veris fw-bold mb-0"  id="nombreEspecialidad"></p>
-                            <p class="fw-bold fs--1 mb-0">{{ isset($data->central) ? $data->central->nombreSucursal : 'VIRTUAL' }}</p>
+                            {{-- <p class="text-primary-veris fw-medium mb-0" id="nombreEspecialidad"></p>
+                            <p class="fw-medium fs--1 mb-0">{{ isset($data->central) ? $data->central->nombreSucursal : 'VIRTUAL' }}</p>
                             <p class="fs--2 mb-0">{{ $data->horario->dia2 }} <b class="text-normal text-primary-veris fw-normal">{{ $data->horario->horaInicio }} {{ $meridiano }}</b></p>
                             <p class="fs--2 mb-0">Dr(a) {{ $data->horario->nombreMedico }}</p>
                             <p class="fs--2 mb-0">{{ $data->paciente->nombrePaciente }}</p>
@@ -62,9 +64,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 text-center mt-5">
-                {{-- <a href="#" id="btn-pagar" class="btn btn-primary-veris d-none w-25 px-3 py-3">{{ __('Pagar') }}</a> --}}
-                <button id="btn-pagar" class="btn btn-primary-veris d-none w-25 px-3 py-3">{{ __('Pagar') }}</button>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-4 text-center mt-5">
+                {{-- <a href="#" id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100">{{ __('Pagar') }}</a> --}}
+                <button id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100">{{ __('Pagar') }}</button>
             </div>
         </div>
     </section>
@@ -78,7 +82,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     let online = dataCita?.online;
-    let nombreEspecialidad = dataCita.especialidad.nombre;
+    let nombreEspecialidad = capitalizarCadaPalabra(dataCita.especialidad.nombre);
     let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
     let numeroIdentificacion = dataCita.paciente.numeroIdentificacion;
     let codigoEspecialidad = dataCita.especialidad.codigoEspecialidad;
@@ -127,9 +131,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // llenar los datos en contentDetalleCita con los datos de dataCita
     function llenarDataDetallesCitas(){
-        let elem = `<p class="text-primary-veris fw-bold mb-0"  id="nombreEspecialidad">${nombreEspecialidad}</p>`;
+        let elem = `<p class="text-primary-veris fw-medium mb-0"  id="nombreEspecialidad">${capitalizarCadaPalabra(nombreEspecialidad)}</p>`;
         if(dataCita.online == "N"){    
-            elem += `<p class="fw-bold fs--1 mb-0">${dataCita.central.nombreSucursal}</p>`;
+            elem += `<p class="fw-medium fs--1 mb-0">${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}</p>`;
         }
         let nombrePaciente;
         if(dataCita.paciente.nombrePaciente){
@@ -138,10 +142,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}`;
         }
         elem += `<p class="fs--2 mb-0">${dataCita.horario.dia2} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} ${determinarMeridiano(horaInicio)}</b></p>
-            <p class="fs--2 mb-0">Dr(a) ${dataCita.horario.nombreMedico}</p>
-            <p class="fs--2 mb-0">${nombrePaciente}</p>`;
+            <p class="fs--2 mb-0">Dr(a) ${capitalizarCadaPalabra(dataCita.horario.nombreMedico)}</p>
+            <p class="fs--2 mb-0">${capitalizarCadaPalabra(nombrePaciente)}</p>`;
         if(dataCita.convenio.codigoConvenio){
-            elem += `<p class="fs--2 mb-0">${dataCita.convenio.nombreConvenio}</p>`
+            elem += `<p class="fs--2 mb-0">${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)}</p>`
         }
         $('#contentDetalleCita').html(elem);
 
@@ -227,7 +231,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <del id="precioBase">$${valor}</del>
                     </p>`;
                 }
-                elem += `<h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>
+                elem += `<h3 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago}</h3>
                 </div>
                 <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
             }else{
@@ -237,7 +241,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <del id="precioBase">$${valor}</del>
                     </p>`;
                 }
-                elem += `<h3 class="text-primary-veris fw-bold mb-0" id="precioTotal">$${valorTotalCopago}</h3>
+                elem += `<h3 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago}</h3>
                 </div>
                 <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
             }
@@ -250,28 +254,28 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(porcentajeDescuentos == 0 && permiteReserva == "S" && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
                         <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
+                        <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
                     </div>`;
             }
             //Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.
             if(porcentajeDescuentos > 0 && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
                         <i class="bi bi-info-circle-fill h4 mb-0 mx-3 text-warning"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage">${data.data.mensajeAlerta}</p>
+                        <p class="fs--1 lh-1 mb-0" id="infoMessage style="color: #0A2240;"data.data.mensajeAlerta}</p>
                     </div>`;
             }
             if(online == "S"){
                 if(dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") {
                     elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
                             <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
-                            <p class="fs--1 lh-1 mb-0" id="infoMessage">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
+                            <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
                         </div>`;
                 }
             }
             if(permitePago == "N"){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
                         <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
+                        <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
                     </div>`;
             }
             $('#msg-cita').append(elemMsg)

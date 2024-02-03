@@ -19,8 +19,8 @@ Mi Veris - Citas - Receta médica
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
             <small class="d-none">Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
             <div>
-                <div class="list-group gap-2 mb-3 verPdf">
-                    <label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
+                <div class="list-group gap--2 mb-3 verPdf">
+                    <label class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
                         <div class="d-flex flex-column">
                             <small class="text-veris fw-medium denominacion">
                                 RECOMENDACIONES
@@ -265,7 +265,7 @@ Mi Veris - Citas - Receta médica
                             laboratorio.detallesTratamiento.forEach((detalles) =>{
                                 elementos += `<div class="col-12 col-md-6">
                                                 <div class="card">
-                                                    <div class="card-body p-2">
+                                                    <div class="card-body p--2">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada)}</span>
@@ -352,7 +352,7 @@ Mi Veris - Citas - Receta médica
                         
                             laboratorio.detallesTratamiento.forEach((detalles) =>{
                                 elementos += `<div class="card">
-                                                    <div class="card-body p-2">
+                                                    <div class="card-body p--2">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada)}</span>
@@ -451,7 +451,7 @@ Mi Veris - Citas - Receta médica
             html.empty();
             let elementos = '';
             data.data.forEach((receta) => {
-                elementos += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
+                elementos += `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
                                 <div class="d-flex flex-column">
                                     <small class="text-veris fw-medium denominacion">
                                         ${agregarEspacios(receta.denominacion)}
@@ -805,7 +805,7 @@ Mi Veris - Citas - Receta médica
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+        let elementoYo = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
                                 checked>
                                 <span class="text-veris fw-medium">
@@ -817,7 +817,7 @@ Mi Veris - Citas - Receta médica
 
         console.log('sss',data);
         data.forEach((Pacientes) => {
-            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+            let elemento = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
                                 <span class="text-veris fw-medium">
                                     

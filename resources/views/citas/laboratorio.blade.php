@@ -256,7 +256,7 @@ Mi Veris - Citas - Laboratorio
                             laboratorio.detallesTratamiento.forEach((detalles) =>{
                                 elementos += `<div class="col-12 col-md-6">
                                                 <div class="card">
-                                                    <div class="card-body p-2">
+                                                    <div class="card-body p--2">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada , estado)}</span>
@@ -345,7 +345,7 @@ Mi Veris - Citas - Laboratorio
                                 laboratorio.detallesTratamiento.forEach((detalles) =>{
                                     elementos += `<div class="col-12 col-md-6">
                                                     <div class="card">
-                                                        <div class="card-body p-2">
+                                                        <div class="card-body p--2">
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                                 <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada, estado)}</span>
@@ -700,7 +700,7 @@ Mi Veris - Citas - Laboratorio
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+        let elementoYo = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
                                 checked>
                                 <span class="text-veris fw-bold">
@@ -712,7 +712,7 @@ Mi Veris - Citas - Laboratorio
 
         console.log('sss',data);
         data.forEach((Pacientes) => {
-            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+            let elemento = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
                                 <span class="text-veris fw-bold">
                                     

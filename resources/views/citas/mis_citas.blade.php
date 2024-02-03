@@ -18,16 +18,16 @@ Mi Veris - Citas - Mis citas
         <br>
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
             <div>
-                <div class="list-group gap-2 mb-3 verPdf">
-                    <button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
+                <div class="list-group gap--2 mb-3 verPdf">
+                    <button class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
                         <span class="text-veris fw-bold">
                             RECOMENDACIONES
                         </span>
                         <i class="bi bi-download ms-auto"></i>
                     </button>
                 </div>
-                <div class="list-group gap-2 mb-3 verPdf">
-                    <button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
+                <div class="list-group gap--2 mb-3 verPdf">
+                    <button class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
                         <span class="text-veris fw-bold">
                             FACTURA
                         </span>
@@ -181,7 +181,7 @@ Mi Veris - Citas - Mis citas
 
                     let element = `<div class="col-12 col-md-6">
                                             <div class="card">
-                                                <div class="card-body p-2">
+                                                <div class="card-body p--2">
                                                     <div class="d-flex justify-content-between align-items-center">
                                                         <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(historial.nombreEspecialidad)}</h6>
                                                         ${determinarMensajeEstadoCita(historial.mensajeEstado)}
@@ -245,7 +245,7 @@ Mi Veris - Citas - Mis citas
 
                     let element = `<div class="col-12 col-md-6">
                                         <div class="card">
-                                            <div class="card-body p-2">
+                                            <div class="card-body p--2">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(cita.especialidad)}</h6>
                                                     ${determinarMensajeEstadoCita(cita.mensajeEstado)}
@@ -346,7 +346,7 @@ Mi Veris - Citas - Mis citas
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+        let elementoYo = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
                                 checked>
                                 <span class="text-veris fw-bold">
@@ -358,7 +358,7 @@ Mi Veris - Citas - Mis citas
 
         console.log('sss',data);
         data.forEach((Pacientes) => {
-            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+            let elemento = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
                                 <span class="text-veris fw-bold">
                                     

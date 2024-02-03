@@ -12,19 +12,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content"> <!-- style="max-height: 300px;" -->
                 <div class="modal-body pb-0">
-                    <h6 class="text-center fw-bold mb-2">{{ __('Horarios') }}:</h6>
+                    <h6 class="text-center fw-medium mb-2">{{ __('Horarios') }}:</h6>
                     <div id="listaHorariosMedico">
                         {{-- <div class="card card-body rounded-3 position-relative py-2 mb-2">
                             <a href="{{route('citas.detalleCita')}}">
-                                <div class="badge-discount-top fs--3 fw-bold"><span>{{ __('-30%') }}</span></div>
+                                <div class="badge-discount-top fs--3 fw-medium"><span>{{ __('-30%') }}</span></div>
                                 <p class="fs--2 text-primary-veris text-center my-1">08:00 - 08:20</p>
-                                <div class="badge-discount-bottom fs--3 fw-bold"><span>{{ __('descuento') }}</span></div>
+                                <div class="badge-discount-bottom fs--3 fw-medium"><span>{{ __('descuento') }}</span></div>
                             </a>
                         </div> --}}
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center border-0 py-1">
-                    <button type="button" class="btn btn-sm w-100 text-primary-veris fw-bold shadow-none" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-sm w-100 text-primary-veris fw-medium shadow-none" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -33,37 +33,39 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="sinFechaDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinFechaDisponiblesLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-2">
+                <div class="modal-body p--2">
                     <div class="text-center">
                         <h1 class="modal-title fs-5 mb-3" id="sinFechaDisponiblesLabel">Veris</h1>
                         <p class="mb-0">No tiene fechas disponibles.</p>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-center p-2 pt-3">
+                <div class="modal-footer justify-content-center p--2 pt-3">
                     <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100">Aceptar</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <! -- modal no hay medicos disponibles -->
+    <!-- modal no hay medicos disponibles -->
     <div class="modal fade" id="sinMedicosDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinMedicosDisponiblesLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-2">
+                <div class="modal-body p--2">
                     <div class="text-center">
                         <h1 class="modal-title fs-5 mb-3" id="sinMedicosDisponiblesLabel">Veris</h1>
                         <p class="mb-0">No tiene médicos disponibles.</p>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-center p-2 pt-3">
+                <div class="modal-footer justify-content-center p--2 pt-3">
                     <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100">Aceptar</a>
                 </div>
             </div>
         </div>
     </div>
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elige fecha y doctor') }}</h5>
+    
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Elige fecha y doctor') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto" style="min-width: 375px;">
@@ -78,7 +80,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </div>
                                 <div class="calendar-grid" id="calendar-grid"></div>
                             </div>
-                            <button class="btn btn-sm shadow-none text-white fs-2 fw-bold w-100" id="toggle-calendar-btn"><i class="bi bi-chevron-compact-down"></i></button>
+                            <button class="btn btn-sm shadow-none text-white fs-2 fw-medium w-100" id="toggle-calendar-btn"><i class="bi bi-chevron-compact-down"></i></button>
                         </div>
                         <div class="card shadow-none border-24" style="background: var(--neutral-05, #F3F4F5);">
                             <div class="card-header border-bottom py-2">
@@ -87,21 +89,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <div class="card-body p-3">
                                 <div class="col-auto overflow-auto" id="listaMedicos" style="max-height: 433px;">
                                     {{-- <div class="card shadow-none mb-3">
-                                        <div class="card-body p-2">
+                                        <div class="card-body p--2">
                                             <div class="row g-2">
                                                 <div class="col-3 text-center">
                                                     <img src="{{ asset('assets/img/svg/avatar_doctor.svg') }}" class="img-fluid mt-4" alt="doctor" width="48">
                                                 </div>
                                                 <div class="col-9">
-                                                    <h6 class="fw-bold mb-0">Dr(a) Villon Asencio Abel Armando</h6>
-                                                    <p class="text-primary-veris fw-bold fs--2 mb-0">Veris - Alborada</p>
+                                                    <h6 class="fw-medium mb-0">Dr(a) Villon Asencio Abel Armando</h6>
+                                                    <p class="text-primary-veris fw-medium fs--2 mb-0">Veris - Alborada</p>
                                                     <p class="fs--2 mb-0">Cardiología</p>
                                                     <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">Do/Lu/Ma/Mi/Ju/Vi/Sa</b></p>
                                                     <p class="fs--2 mb-0">Horarios: <b class="fw-normal text-primary-veris" id="horarios">08h00 - 12h00</b></p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer text-end p-2">
+                                        <div class="card-footer text-end p--2">
                                             <button type="button" class="btn btn-sm btn-primary-veris" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal">
                                                 Elegir Cita
                                             </button>
@@ -302,21 +304,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(data.data.length > 0){
                 data.data.forEach((medico) => {
                     elemento += `<div class="card shadow-none mb-3">
-                        <div class="card-body p-2">
+                        <div class="card-body p--2">
                             <div class="row g-2">
                                 <div class="col-3 text-center">
                                     <img src="{{ asset('assets/img/svg/avatar_doctor.svg') }}" class="img-fluid mt-4" alt="doctor" width="48">
                                 </div>
                                 <div class="col-9">
-                                    <h6 class="fw-bold mb-0">Dr(a) ${medico.nombreMedico}</h6>
-                                    <p class="text-primary-veris fw-bold fs--2 mb-0">${nombreSucursal}</p>
-                                    <p class="fs--2 mb-0">${nombreEspecialidad}</p>
+                                    <h6 class="fw-medium mb-0">Dr(a) ${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
+                                    <p class="text-primary-veris fw-medium fs--2 mb-0">${nombreSucursal}</p>
+                                    <p class="fs--2 mb-0">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
                                     <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">${medico.disponibilidad}</b></p>
                                     <p class="fs--2 mb-0">Horarios: <b class="fw-normal text-primary-veris" id="horarios">${medico.horario}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer text-end p-2">
+                        <div class="card-footer text-end p--2">
                             <button type="button" class="btn btn-sm btn-primary-veris btn-disponibilidad-medico" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
                                 Elegir Cita
                             </button>
@@ -362,11 +364,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     " data-horario='${JSON.stringify(horario)}'>
                     <a href="${ruta}">`;
                     if(horario.porcentajeDescuento > 0){
-                        elemento += `<div class="badge-discount-top fs--3 fw-bold"><span>-${horario.porcentajeDescuento}%</span></div>`
+                        elemento += `<div class="badge-discount-top fs--3 fw-medium"><span>-${horario.porcentajeDescuento}%</span></div>`
                     }
                     elemento += `<p class="fs--2 text-primary-veris text-center my-1">${horario.horaInicio} - ${horario.horaFin}</p>`;
                     if(horario.porcentajeDescuento > 0){
-                        elemento += `<div class="badge-discount-bottom fs--3 fw-bold"><span>{{ __('descuento') }}</span></div>`;
+                        elemento += `<div class="badge-discount-bottom fs--3 fw-medium"><span>{{ __('descuento') }}</span></div>`;
                     }
                     elemento += `</a>
                         </div>`;

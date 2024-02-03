@@ -15,7 +15,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="card-body text-center">
                         <div class="content-presencial d-none">
                             <i class="bi bi-check-circle-fill h1 text-primary-veris"></i>
-                            <h3 class="fw-bold mb-4">Cita agendada</h3>
+                            <h3 class="fw-medium mb-4">Cita agendada</h3>
                             <p class="mb-5">Tu cita se agendó exitosamente. <br> ¡Nos vemos pronto!</p>
                             <img src="{{ asset('assets/img/svg/doctora_2.svg') }}" alt="cita agendada">
                             <div class="mt-5">
@@ -25,7 +25,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <!-- cita agendada online -->
                         <div class="content-online d-none">
                             <i class="bi bi-check-circle-fill h1 text-primary-veris"></i>
-                            <h3 class="fw-bold mb-4">Cita agendada</h3>
+                            <h3 class="fw-medium mb-4">Cita agendada</h3>
                             <p class="mb-5">Recuerda conectarte <b>10 minutos antes de la cita.</b></p>
                             <div class="d-flex justify-content-center align-items-center">
                                 <img src="{{ asset('assets/img/svg/doctora_2.svg') }}" class="d-none d-lg-block" alt="cita agendada">

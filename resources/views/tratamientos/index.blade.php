@@ -212,7 +212,7 @@ Mi Veris - Citas - Mis tratamientos
                                         <div class="card-body p-3">
                                             <div class="row gx-0 justify-content-between align-items-center mb-3">
                                                 <div class="col-9">
-                                                    <h6 class="card-title text-one-line text-primary-veris mb-0">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
+                                                    <h5 class="card-title text-one-line text-primary-veris mb-0 cart">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h5>
                                                     <p class="fw-medium text-one-line fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
                                                     <p class="card-text text-one-line fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                                     <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="fecha-enviado fw-normal text-primary-veris">${tratamientos.fechaTratamiento}</b></p>
@@ -306,11 +306,11 @@ Mi Veris - Citas - Mis tratamientos
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h6 class="card-title mb-2 text-primary-veris">${capitalizarElemento(tratamientosRealizados.nombreEspecialidad)}</h6>
+                                            <h5 class="card-title mb-2 text-primary-veris cartR">${capitalizarElemento(tratamientosRealizados.nombreEspecialidad)}</h5>
                                         </div>
                                         <div class="row g-3 g-lg-0 justify-content-between align-items-end">
                                             <div class="col-8 col-md-8">
-                                                <p class="fw-medium fs--2 mb-0" style="color: #003B83;">¡Tratamiento terminado!</p>
+                                                <p class="fw-medium fs--1 mb-0" style="color: #003B83;">¡Tratamiento terminado!</p>
                                                 <p class="fw-normal text-one-line fs--2 mb-0">Dr(a): ${capitalizarElemento(tratamientosRealizados.nombreMedico)}</p>
                                                 <p class="fw-light fs--2 mb-0">Terminado el: <b class="text-primary-veris fw-light fs--2" id="fechaTratamiento">${tratamientosRealizados.fechaTratamiento}</b></p>
                                             </div>

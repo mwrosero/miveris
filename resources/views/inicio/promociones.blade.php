@@ -31,7 +31,7 @@ Mi Veris - Citas - Promociones
                                         <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
                                     </div>
                                     <div class="col-9">
-                                        <div class="card-body p-2">
+                                        <div class="card-body p--2">
                                             <h6 class="text-end fw-medium text-one-line">Prevención y Cuidado Mamario Integral</h6>
                                             <div class="d-flex justify-content-end">
                                                 <span class="badge bg-primary d-flex align-items-center px-3 mx-3">-20%</span>
@@ -55,7 +55,7 @@ Mi Veris - Citas - Promociones
                                         <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
                                     </div>
                                     <div class="col-9">
-                                        <div class="card-body p-2">
+                                        <div class="card-body p--2">
                                             <h6 class="text-end fw-medium text-one-line">Cuida Tu Corazón: CONTROL HIPERTENSIÓN</h6>
                                             <div class="d-flex justify-content-end">
                                                 <span class="badge bg-primary d-flex align-items-center px-3 mx-3">-20%</span>
@@ -79,7 +79,7 @@ Mi Veris - Citas - Promociones
                                         <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
                                     </div>
                                     <div class="col-9">
-                                        <div class="card-body p-2">
+                                        <div class="card-body p--2">
                                             <h6 class="text-end fw-medium text-one-line">Ecografía Mamaria + Consulta Ginecología</h6>
                                             <div class="d-flex justify-content-end">
                                                 <span class="badge bg-primary d-flex align-items-center px-3 mx-3">-20%</span>
@@ -103,7 +103,7 @@ Mi Veris - Citas - Promociones
                                         <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
                                     </div>
                                     <div class="col-9">
-                                        <div class="card-body p-2">
+                                        <div class="card-body p--2">
                                             <h6 class="text-end fw-medium text-one-line">Plan Cuidado Esencial Femenino (Imagen y consulta)</h6>
                                             <div class="d-flex justify-content-end">
                                                 <span class="badge bg-primary d-flex align-items-center px-3 mx-3">-20%</span>

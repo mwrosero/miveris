@@ -280,7 +280,7 @@ Mi Veris - Citas - Imágenes y procedimientos
                                 laboratorio.detallesTratamiento.forEach((detalles) =>{
                                     elementos += `<div class="col-12 col-md-6">
                                                     <div class="card">
-                                                        <div class="card-body p-2">
+                                                        <div class="card-body p--2">
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <h6 class="text-primary-veris fs--1 fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                                 <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada , estado)}</span>
@@ -368,7 +368,7 @@ Mi Veris - Citas - Imágenes y procedimientos
                                 laboratorio.detallesTratamiento.forEach((detalles) =>{
                                     elementos += `<div class="col-12 col-md-6">
                                                     <div class="card">
-                                                        <div class="card-body p-2">
+                                                        <div class="card-body p--2">
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <h6 class="text-primary-veris fs--1 fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                                 <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada, estado)}</span>
@@ -728,7 +728,7 @@ Mi Veris - Citas - Imágenes y procedimientos
             let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
             isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
 
-            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+            let elemento = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
                                 <span class="text-veris fw-medium">
                                     
