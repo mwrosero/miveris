@@ -112,9 +112,9 @@ Mi Veris - Historia clínica
 
                 data.data.forEach((element, index) => {
                     elemento += `<div class="col-12 col-md-4">
-                                    <label class="form-check-label cursor-pointer" for="flexCheckDefault-${index}">
+                                    <label class="form-check-label cursor-pointer w-100" for="flexCheckDefault-${index}">
                                         <div class="card">
-                                            <div class="card-body p-2 pe-3">
+                                            <div class="card-body p--2 pe-3">
                                                 <div class="row gx-2 align-items-center">
                                                     <div class="col-3">
                                                         <img src='${quitarComillas(element.imagen)}' onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'" class="card-img-top" width="62" alt="centro medico">

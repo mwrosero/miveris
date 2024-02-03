@@ -123,7 +123,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <form id="add-card-form" class="row g-3 d-none">
                                 <div class="col-12">
                                     <div class="payment-form" id="my-card" data-capture-name="true"></div>
-                                    <button id="btn-pagar" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light">PAGAR</button>
+                                    <button id="btn-pagar" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light">Pagar</button>
                                     <br/>
                                     <div id="messages"></div>
                                 </div>
@@ -161,7 +161,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         //https://api-phantomx.veris.com.ec/digitalestest/v1/seguridad/parametrosNuvei?codigoAplicacion=MI_VERIS_WEB
         let credenciales = await obtenerCredenciales();
         console.log(credenciales)
-        Payment.init('{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', 'NUVEISTG-EC-CLIENT', 'rvpKAv2tc49x6YL38fvtv5jJxRRiPs');
+        Payment.init('{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', dataCita.transaccionVirtual.applicationCode, dataCita.transaccionVirtual.applicationKey);
+        // Payment.init('{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', 'NUVEISTG-EC-CLIENT', 'rvpKAv2tc49x6YL38fvtv5jJxRRiPs');
         // Payment.init('{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', credenciales.applicationCode, credenciales.applicationKey);
 
         setTimeout(function(){

@@ -75,7 +75,7 @@ Mi Veris - Inicio
                                     </div>
                                 </div>
                                 <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/doctora.svg') }}" class="img-fluid" alt=""  >
+                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="img-fluid" alt=""  >
                                 </div>
                             </div>
                         </a>
@@ -91,7 +91,7 @@ Mi Veris - Inicio
                                     </div>
                                 </div>
                                 <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/comprar.svg') }}" class="img-fluid" alt=""  >
+                                    <img src="{{ asset('assets/img/card/svg/comprar_1.svg') }}" class="img-fluid" alt=""  >
                                 </div>
                             </div>
                         </a>
@@ -107,7 +107,7 @@ Mi Veris - Inicio
                                     </div>
                                 </div>
                                 <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/motociclista.svg') }}" class="img-fluid" alt=""  >
+                                    <img src="{{ asset('assets/img/card/svg/motociclista_1.svg') }}" class="img-fluid" alt=""  >
                                 </div>
                             </div>
                         </a>

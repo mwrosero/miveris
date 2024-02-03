@@ -276,7 +276,7 @@ Mi Veris - Citas - Laboratorio
                             laboratorio.detallesTratamiento.forEach((detalles) =>{
                                 elementos += `<div class="col-12 col-md-6">
                                                 <div class="card">
-                                                    <div class="card-body p-2">
+                                                    <div class="card-body p--2">
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                             <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada , estado)}</span>
@@ -369,7 +369,7 @@ Mi Veris - Citas - Laboratorio
                                 laboratorio.detallesTratamiento.forEach((detalles) =>{
                                     elementos += `<div class="col-12 col-md-6">
                                                     <div class="card">
-                                                        <div class="card-body p-2">
+                                                        <div class="card-body p--2">
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                                 <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada, estado)}</span>
@@ -785,15 +785,33 @@ Mi Veris - Citas - Laboratorio
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
+<<<<<<< HEAD
         let isFirstElement = true; // Variable para identificar el primer elemento
+=======
+        let elementoYo = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
+                                checked>
+                                <span class="text-veris fw-bold">
+                                    ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
+                                    <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
+                                </span>
+                            </label>`;
+        divContenedor.append(elementoYo);
+>>>>>>> miguel
 
         data.forEach((Pacientes) => {
+<<<<<<< HEAD
             let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
             isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
 
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
                                 <span class="text-veris fw-medium">
+=======
+            let elemento = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                                <span class="text-veris fw-bold">
+>>>>>>> miguel
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>

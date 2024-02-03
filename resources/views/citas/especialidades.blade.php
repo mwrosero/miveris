@@ -16,10 +16,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <h6 class="fw-bold mb-4">Tienes una <b class="text-primary-veris">{{ __('cita pendiente') }}</b> {{ __('de esta especialidad en tu tratamiento de') }}:</h6>
+                    <h6 class="fw-medium mb-4">Tienes una <b class="text-primary-veris">{{ __('cita pendiente') }}</b> {{ __('de esta especialidad en tu tratamiento de') }}:</h6>
                     <div class="border rounded-3 mb-3 p-3" id="tratamiento-content">
                     </div>
-                    <p class="fw-bold">{{ __('¿Estas agendando por este motivo?') }}</p>
+                    <p class="fw-medium">{{ __('¿Estas agendando por este motivo?') }}</p>
                     <a href="#" type="button" id="btn-si-tratamiento" class="btn btn-primary-veris w-100 mb-3">{{ __('Agendar esta orden') }}</a>
                     <a href="#" type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris w-100 mb-3">{{ __('No') }}</a>
                     {{-- <button type="button" class="btn btn-outline-primary-veris w-100 mb-3" data-bs-dismiss="modal">{{ __('No') }}</button> --}}
@@ -31,15 +31,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elige la especialidad') }}</h5>
     <section class="p-3 mb-3">
         <div class="d-flex justify-content-center">
-            <div class="col-md-4 mb-3">
+            <div class="col-12 col-md-4 mb-3">
                 <div class="input-group search-box">
                     <span class="input-group-text bg-transparent border-0" id="search"><i class="bi bi-search"></i></span>
                     <input type="search" class="form-control bg-transparent border-0" name="buscar" id="buscar" placeholder="Buscar especialidad" aria-describedby="buscar" />
                 </div>
             </div>
         </div>
-        <div class="row" id="listaEspecialidades">
-            {{-- <div class="col-6 col-md-3 mb-3">
+        <div class="row g-3" id="listaEspecialidades">
+            {{-- <div class="col-6 col-md-3">
                 <div class="card">
                     <div class="card-body px-2 text-center">
                         <a href="{{route('citas.listaCentralMedica')}}">
@@ -48,7 +48,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     <img src="{{ asset('assets/img/svg/especialidades/alergologia.svg') }}" alt="especialidad">
                                 </div>
                             </div>
-                            <p class="text-veris fs--2 fw-bold mb-0">{{ __('Alergología') }}</p>
+                            <p class="text-veris fs--2 fw-medium mb-0">{{ __('Alergología') }}</p>
                         </a>
                     </div>
                 </div>
@@ -113,16 +113,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     if(params.online == "S"){
                         path_url = "citas-elegir-fecha-doctor";
                     }
-                    elemento += `<div class="col-6 col-md-3 mb-3">
-                                    <div class="card item-especialidad" type="button" data-rel='${ JSON.stringify(especialidad) }'>
+                    elemento += `<div class="col-6 col-md-3">
+                                    <div class="card item-especialidad h-100" type="button" data-rel='${ JSON.stringify(especialidad) }'>
                                         <div class="card-body px-2 text-center">
                                             <div class="w-100">
-                                                <div class="avatar avatar-lg mx-auto">
+                                                <div class="avatar avatar-lg mx-auto mb-3">
                                                     <div class="avatar-especialidad">
                                                         <img src="${especialidad.imagen}" alt="${especialidad.nombre}">
                                                     </div>
                                                 </div>
-                                                <p class="text-veris fs--2 fw-bold mb-0">${especialidad.nombre}</p>
+                                                <p class="text-veris fs--2 fw-medium text-one-line mb-0">${capitalizarCadaPalabra(especialidad.nombre)}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -186,7 +186,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>
                 </div>
             </div>
-            <h5 class="card-title h6 fw-bold mb-2 text-primary-veris">${data.data.nombreEspecialidad}</h5>
+            <h5 class="card-title h6 fw-medium mb-2 text-primary-veris">${capitalizarCadaPalabra(data.data.nombreEspecialidad)}</h5>
             <p class="fs--2 mb-0">{{ __('Tratamiento enviado') }}: <b class="fw-normal text-primary-veris" id="fechaCitaPendiente">${ data.data.fechaTratamiento }</b></p>`;
 
             $('#tratamiento-content').append(elem);
