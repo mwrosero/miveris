@@ -106,6 +106,14 @@ Mi Veris - Citas - Selecciona tu tarjeta
 
         if (data.code == 200){
             $('.tarjeta-'+tarjeta).remove();
+            if($('#listado-tarjetas .item-tarjeta').length == 0){
+                let elem = `<div class="col-12 text-center">
+                    No tiene tarjetas guardadas
+                </div>`;
+                $('#listado-tarjetas').append(elem);  
+                var myModal = new bootstrap.Modal(document.getElementById('noExisteTarjeta'));
+                myModal.show();
+            }
         }
     }
 
@@ -175,7 +183,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
                         if (existeImagen) {
                             path_card = value.nombre_foto;
                         }*/                     
-                        elem += `<div class="col-12 tarjeta-${value.codigoTarjetaSuscrita}">
+                        elem += `<div class="col-12 item-tarjeta tarjeta-${value.codigoTarjetaSuscrita}">
                             <div class="form-check custom-option custom-option-basic border-primary">
                                 <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center" for="card-${value.codigoTarjetaSuscrita}">
                                     <input ${disabledItem} name="cardWallet" class="form-check-input" type="radio" value="" id="card-${value.codigoTarjetaSuscrita}" data-rel='${ JSON.stringify(value) }'>
