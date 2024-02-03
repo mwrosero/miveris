@@ -4,13 +4,12 @@
 @endsection
 @section('back-button')
 <div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
-    <a href="{{ route('login') }}" class="text-decoration-none">
-        <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 16px;">
-            <img src="../../assets/img/svg/atras.svg" class="cursor-pointer prev-image" alt="Atrás">
-            <label class="fw-medium" style="font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
-        </div>
-    </a>
+    <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 16px; cursor: pointer;" onclick="regresar()">
+        <img src="../../assets/img/svg/atras.svg" alt="Atrás">
+        <label class="fw-medium" style="font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
+    </div>
 </div>
+
 @endsection
 @section('content')
 <!-- Logo -->
@@ -82,6 +81,7 @@
 	        <label for="telefono" class="form-label fw-bold">Teléfono *</label>
 	        <input type="tel"
 	            class="form-control form-filter border-0"
+				onkeypress="return validarNumero(event)"
 	            oninput="limitarCaracteres(this, 10)"
 	            id="telefono"
 	            name="telefono"
@@ -474,7 +474,19 @@
 		await obtenerCiudades(codigoProvincia);
 	});
 
-	
+	// regresar al paso anterior
+	function regresar(){
+		if (!document.querySelector(".step1").classList.contains("d-none")) {
+			window.location.href = '/login';
+		}else if (!document.querySelector(".step2").classList.contains("d-none")) {
+			document.querySelector(".step2").classList.add("d-none");
+			document.querySelector(".step1").classList.remove("d-none");
+		}else if (!document.querySelector(".step3").classList.contains("d-none")) {
+			document.querySelector(".step3").classList.add("d-none");
+			document.querySelector(".step2").classList.remove("d-none");
+		}
+		
+	}
 
 
 

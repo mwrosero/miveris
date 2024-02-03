@@ -1,6 +1,6 @@
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme-veris pe-3" id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none p-2 px-3 bg-dark-blue-veris">
-        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" style="margin-bottom: 0.23rem;">
+        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" style="margin-bottom: 0.225rem;">
             <i class="ti ti-menu-2 ti-sm text-white"></i>
         </a>
     </div>
@@ -12,6 +12,7 @@
         </a>
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
+<<<<<<< HEAD
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1" id="dropdownNotifications">
                 <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
                     <i class="fa-solid fa-bell"> 
@@ -19,10 +20,13 @@
 
                     </i>
                     
+=======
+            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-4 me-xl-1" id="dropdownNotifications">
+                <a class="nav-link dropdown-toggle hide-arrow fs-3" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
+                    <i class="fa-solid fa-bell"></i>
+>>>>>>> miguel
                 </a>
             </li>
-
-            
             <!--/ Notification -->
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -37,7 +41,7 @@
                     <li>
                         <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('misDatos')}}">
                             <i class="fa-solid fa-user text-primary-veris me-2 ti-sm"></i>
-                            <span class="align-middle">Mi datos</span>
+                            <span class="align-middle">Mis datos</span>
                         </a>
                     </li>
                     <li>
@@ -85,14 +89,17 @@
 <div class="modal fade" id="modalPPD" tabindex="-1" aria-labelledby="modalPPDLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
         <div class="modal-content">
+            
             <div class="modal-body p-4 text-center">
+                <h1 class="modal-title fs-5 fw-bold mb-3"  id="tituloInformacionCita"
+                    >{{ __('Información') }}</h1>
                 <p class="mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="https://www.veris.com.ec/politicas/" id="politicasPPD" target="_blank">políticas de privacidad de datos</a> 
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
                 <button type="button" id="aceptarPDP"  class="btn btn-primary-veris btn-lg btn-outline-primary-veris w-100">Aceptar</button>
             </div>
             <div class="">
-                <button type="button" class="btn  w-100" id="modalRecuerdame">Recuerdame más tarde </button>
+                <button type="button" class="btn  w-100" id="modalRecuerdame">Recuérdame más tarde </button>
             </div>
         </div>
     </div>

@@ -54,7 +54,7 @@ $data1 = json_decode($data);
                             <h5>Registro de datos del paciente</h5>
                             <div class="col-md-12">
                                 <label for="paciente" class="form-label fw-bold">Nombre del Paciente *</label>
-                                <input type="text" class="form-control bg-neutral" name="paciente" id="paciente" placeholder="Nombre del paciente" disabled />
+                                <input type="text" class="form-control " name="paciente" id="paciente" placeholder="Nombre del paciente" disabled />
                             </div>
                             <div class="col-md-12">
                                 <label for="numeroIdentificacion" class="form-label fw-bold">Cédula o pasaporte *</label>
@@ -62,11 +62,11 @@ $data1 = json_decode($data);
                             </div>
                             <div class="col-md-12">
                                 <label for="email" class="form-label fw-bold">Email *</label>
-                                <input type="email" class="form-control bg-neutral" name="email" id="email"  required />
+                                <input type="email" class="form-control " name="email" id="email"  required />
                             </div>
                             <div class="col-md-12">
                                 <label for="telefono" class="form-label fw-bold">Teléfono *</label>
-                                <input type="number" class="form-control bg-neutral" name="telefono" id="telefono"  required />
+                                <input type="number" class="form-control " name="telefono" id="telefono"  required />
                             </div>
                             <div class="col-md-12 d-none">
                                 <label for="conveio" class="form-label fw-bold">Elige el convenio *</label>
@@ -137,8 +137,8 @@ $data1 = json_decode($data);
 
             // Agregar botón de eliminación
             var btnEliminar = document.createElement('button');
-            btnEliminar.classList.add('btn', 'btn-sm', 'fs-1', 'text-danger', 'shadow-none');
-            btnEliminar.innerHTML = '<i class="bi bi-trash"></i>';
+            btnEliminar.classList.add('btn', 'btn-sm', 'text-danger', 'shadow-none');
+            btnEliminar.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20.125 5C20.4375 5 20.75 5.3125 20.75 5.625C20.75 5.97656 20.4375 6.25 20.125 6.25H3.875C3.52344 6.25 3.25 5.97656 3.25 5.625C3.25 5.3125 3.52344 5 3.875 5H7.625L8.91406 3.28125C9.26562 2.8125 9.8125 2.5 10.4375 2.5H13.5625C14.1484 2.5 14.6953 2.8125 15.0469 3.28125L16.375 5H20.125ZM9.1875 5H14.8125L14.0312 4.02344C13.9141 3.86719 13.7578 3.75 13.5625 3.75H10.4375C10.2422 3.75 10.0469 3.86719 9.92969 4.02344L9.1875 5ZM18.875 7.5C19.1875 7.5 19.5 7.8125 19.5 8.125V19.375C19.5 21.1328 18.0938 22.5 16.375 22.5H7.625C5.86719 22.5 4.5 21.1328 4.5 19.375V8.125C4.5 7.8125 4.77344 7.5 5.125 7.5C5.4375 7.5 5.75 7.8125 5.75 8.125V19.375C5.75 20.4297 6.57031 21.25 7.625 21.25H16.375C17.3906 21.25 18.25 20.4297 18.25 19.375V8.125C18.25 7.8125 18.5234 7.5 18.875 7.5ZM8.875 18.75C8.875 19.1016 8.5625 19.375 8.25 19.375C7.89844 19.375 7.625 19.1016 7.625 18.75V10C7.625 9.6875 7.89844 9.375 8.25 9.375C8.5625 9.375 8.875 9.6875 8.875 10V18.75ZM12.625 18.75C12.625 19.1016 12.3125 19.375 12 19.375C11.6484 19.375 11.375 19.1016 11.375 18.75V10C11.375 9.6875 11.6484 9.375 12 9.375C12.3125 9.375 12.625 9.6875 12.625 10V18.75ZM16.375 18.75C16.375 19.1016 16.0625 19.375 15.75 19.375C15.3984 19.375 15.125 19.1016 15.125 18.75V10C15.125 9.6875 15.3984 9.375 15.75 9.375C16.0625 9.375 16.375 9.6875 16.375 10V18.75Z" fill="#D84315"/></svg>';
             btnEliminar.addEventListener('click', function() {
                 event.preventDefault();
                 this.parentNode.remove(); // Elimina el div del archivo
@@ -199,14 +199,37 @@ $data1 = json_decode($data);
 
 
 
+    if (dataCita.origen == 'ordenExternaDomicilio') {
+        // deshabilitar campos
+        $('#paciente').prop('disabled', true);
+        $('#numeroIdentificacion').prop('disabled', true);
+        $('#email').prop('disabled', true);
+        $('#telefono').prop('disabled', true);
+        $('#conveio').prop('disabled', true);
+        // agregar bg-neutral a los campos faltantes
+        $('#paciente').addClass('bg-neutral');
+        $('#numeroIdentificacion').addClass('bg-neutral');
+        $('#email').addClass('bg-neutral');
+        $('#telefono').addClass('bg-neutral');
+        $('#conveio').addClass('bg-neutral');
 
+    }
     let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
     let numeroIdentificacion = dataCita.paciente.numeroIdentificacion;
     let nombrePaciente = dataCita.paciente.primerNombre;
     let convenio = dataCita?.convenio;
-    let codigoConvenio = dataCita?.convenio.codigoConvenio;
-    let nombreConvenio = dataCita?.convenio.nombreConvenio;
+    let codigoConvenio = dataCita.convenio.codigoConvenio || '';
+    let nombreConvenio = dataCita.convenio.nombreConvenio || '';
     let direccion = dataCita?.paciente.direccion;
+    let referencia = dataCita.paciente.referencias || '';
+    let codigoCiudad = dataCita?.paciente.codigoCiudad  || '';
+    let telefono = dataCita?.paciente.telefono;
+    let latitud = dataCita?.paciente.latitud || '';
+    let longitud = dataCita?.paciente.longitud  || '';
+    let esDomicilio = dataCita?.esDomicilio;
+    let codigoEmpresaConvenio = dataCita.convenio.codigoEmpresaConvenio || '';
+    let correo = dataCita?.paciente.correo;
+
     let datosPaciente = [];
 
     // llamada al dom
@@ -262,6 +285,18 @@ $data1 = json_decode($data);
     // crear solicitud de orden externa
 
     async function crearSolicitudLaboratorioDomicilio() {
+
+        // si origen es ordenExternaDomicilio
+        if (dataCita.origen !== 'ordenExternaDomicilio') {
+            
+            
+            nombrePaciente = $('#paciente').val();
+            correo = $('#email').val();
+            telefono = $('#telefono').val();
+            numeroIdentificacion = $('#numeroIdentificacion').val();
+            esDomicilio = false;
+        }
+
         let args = [];
         args["endpoint"] = api_url + "/digitalestest/v1/domicilio/laboratorio/solicitud";
         args["method"] = "POST";
@@ -280,7 +315,18 @@ $data1 = json_decode($data);
         formData.append("direccion", direccion);
         formData.append("telefono", telefono);
         formData.append("origenInvocacion", "WEB_EXTERNA");
-        formData.append("files", files);
+        formData.append("mail", correo);
+        formData.append("referencia", referencia);
+        formData.append("codigoCiudad", codigoCiudad);
+        formData.append("latitud", latitud);
+        formData.append("longitud", longitud);
+        formData.append("esDomicilio", esDomicilio);
+        formData.append("codigoEmpresaConvenio", codigoEmpresaConvenio);
+        formData.append("codigoConvenio", codigoConvenio);
+        formData.append("nombreConvenio", nombreConvenio);
+        formData.append("archivos", files);
+        
+
         args["data"] = formData;
 
 
@@ -293,12 +339,18 @@ $data1 = json_decode($data);
             $('#mensajeOrdenExitosa').modal('show');
             $('#titulo').text('Registro exitoso');
             
-            $('#mensaje').text( 'Tu solicitud está en revisión, un asesor la validará y pronto podrás continuar con tu proceso.' ); 
+            $('#mensaje').text(data.message);
             $('#btnEntendido').on('click', function(){
                 // redireccionar a ordenes externas
                 window.location.href = `/ordenes-externas`;
             });
+        } else if (data.code != 200) {
+            // mostrar modal de error
+            $('#mensajeOrdenExitosa').modal('show');
+            $('#titulo').text('Error');
+            $('#mensaje').text(data.message);
         }
+
         return data;
 
     }
@@ -340,12 +392,9 @@ $data1 = json_decode($data);
         }else{
             $('#botonSiguiente').prop('disabled', true);
         }
+
+        
     });
-
-
-
-
-
 
 
 

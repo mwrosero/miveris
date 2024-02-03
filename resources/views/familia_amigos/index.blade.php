@@ -118,7 +118,7 @@ Mi Veris - Citas - Familia y amigos
                             </li>
                         </ul>
                         <div class="card mx-auto mx-lg-3">
-                            <div class="card-body p-2">
+                            <div class="card-body p--2">
                                 <p class="text-secondary fs--1 mb-0"> <b class="hora-cita text-veris fw-medium" id="nombrePersona"></b></p>
                                 <p class="text-secondary fs--1 mb-0" >Número de identificación: <b class="hora-cita text-veris fw-medium" id="numeroIdentificacionPersona"></b></p>
                                 <p class="text-secondary fs--1 mb-0 " >Ciudad: <b class="hora-cita text-veris fw-medium" id="ciudadPersona"></b></p>
