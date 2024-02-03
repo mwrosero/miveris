@@ -124,6 +124,7 @@ Mi Veris - Órdenes externas
 
             params.paciente = paciente.data
 
+
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             location.href = $(this).attr("url-rel");
         })
@@ -228,7 +229,27 @@ Mi Veris - Órdenes externas
 
      }
 
-    // determinar estado de la orden
+    
+    // consultar datos de facturacion
+    async function consultarDatosFacturacion(data){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/datosFacturacion?canalOrigen=APP_CMV&codigoEmpresa=${data.codigoEmpresa}&numeroOrden=${data.numeroOrden}&idPaciente=${idPaciente}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const dataFacturacion = await call(args);
+        console.log('dataFacturacion', dataFacturacion);
+        if(dataFacturacion.code == 200){
+            return dataFacturacion.data;
+        }
+        return [];
+    }
+    
+
+
+
+
+    
+     // determinar estado de la orden
     function determinarEstadoOrden(data){
         let elemento = '';
         if (data.codigoEstado == 'REV') {

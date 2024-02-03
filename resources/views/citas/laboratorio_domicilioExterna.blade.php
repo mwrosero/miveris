@@ -18,7 +18,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-bold m-0 mt-3">Tu orden ha sido enviada exitosamente</p>
+                    <p class="fs--1 fw-bold m-0 mt-3" id="mensajeOrden">Orden generada exitosamente</p>
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
                     <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
@@ -292,7 +292,9 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
         // longitud y latitud
         dataCita.paciente.longitud = longitud;
         dataCita.paciente.latitud = latitud;
+        dataCita.esDomicilio = true;
         dataCita.origen = "ordenExternaDomicilio";
+
         
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
