@@ -35,6 +35,7 @@
   --bg-vris-light-grayish-cyan: #E2F3F5;
   --bg-vris-soft-blue: #66B4E9;
   --bg-vris-strong-magenta: #C52BD2;
+  --Neutral-10: #E7E9EC;
   --font: "Gotham Rounded", sans-serif;
 }
 
@@ -294,6 +295,9 @@ html:not([dir="rtl"]) .border-start-veris {
   padding: 8px 16px;
   border-radius: 8px;
 }
+.swiper-slide .card{
+  border: 1px solid var(--Neutral-10) !important;
+}
 .card{border-radius: 0.5rem !important;}
 .card-body {
   color: var(--bg-vris-very-dark-blue) !important;
@@ -414,7 +418,7 @@ h1,
   box-shadow: none;
   position: relative;
 }
-
+.p--2{padding: 0.75rem !important;}
 .progress-circle:after {
   content: "";
   width: 100%;
@@ -947,7 +951,10 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .shadow-veris {
   box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 }
-.btn, .btn-sm, .btn-lg{border-radius: 0.5rem !important;}
+.btn{
+  --bs-btn-padding-x: 1rem !important;
+  --bs-btn-padding-y: 0.5rem !important;
+}
 .btn-check:checked+.btn,
 :not(.btn-check)+.btn:active,
 .btn:first-child:active,

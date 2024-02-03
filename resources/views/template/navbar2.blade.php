@@ -1,6 +1,6 @@
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme-veris pe-3" id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none p-2 px-3 bg-dark-blue-veris">
-        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" style="margin-bottom: 0.23rem;">
+        <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" style="margin-bottom: 0.225rem;">
             <i class="ti ti-menu-2 ti-sm text-white"></i>
         </a>
     </div>
@@ -12,6 +12,7 @@
         </a>
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
+<<<<<<< HEAD
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1" id="dropdownNotifications">
                 <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
                     <i class="fa-solid fa-bell"> 
@@ -19,10 +20,13 @@
 
                     </i>
                     
+=======
+            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-4 me-xl-1" id="dropdownNotifications">
+                <a class="nav-link dropdown-toggle hide-arrow fs-3" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
+                    <i class="fa-solid fa-bell"></i>
+>>>>>>> miguel
                 </a>
             </li>
-
-            
             <!--/ Notification -->
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">

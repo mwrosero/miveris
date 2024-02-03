@@ -87,7 +87,7 @@ function crearElementoTratamiento(laboratorio) {
 
 function crearDetalleTratamiento(detalles) {
     return `<div class="card">
-                <div class="card-body p-2">
+                <div class="card-body p--2">
                     <div class="d-flex justify-content-between align-items-center">
                         <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
                         <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
