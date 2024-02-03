@@ -198,32 +198,27 @@ Mi Veris - Mis Datos
 
     // llenar formulario con datos del usuario
     function llenarDatosUsuario(provincias) {
-        $('#nombre').val(datosUsuario.nombre);
-        $('#primerApellido').val(datosUsuario.primerApellido);
-        $('#segundoApellido').val(datosUsuario.segundoApellido);
+        $('#nombre').val(capitalizarElemento(datosUsuario.nombre));
+        $('#primerApellido').val(capitalizarElemento(datosUsuario.primerApellido));
+        $('#segundoApellido').val(capitalizarElemento(datosUsuario.segundoApellido));
         $('#fechaNacimiento').val(convertirFechaNacimiento(datosUsuario.fechaNacimiento));
         $('#mail').val(datosUsuario.mail);
         $('#telefono').val(datosUsuario.telefonoMovil);
-        console.log('datosUsuario.codigoProvincia',datosUsuario.codigoProvincia);
-        // llenar el select de provincia
-        $.each(provincias, function (index, value) {
-            if (value.codigoProvincia == datosUsuario.codigoProvincia) {
-                $('#provincia').append('<option value="' + value.codigoProvincia + '" selected>' + value.nombreProvincia + '</option>');
-            } else {
-                $('#provincia').append('<option value="' + value.codigoProvincia + '">' + value.nombreProvincia + '</option>');
-            }
-        });
-        // llenar el select de ciudad
-        $.each(ciudades, function (index, value) {
-            if (value.codigoCiudad == datosUsuario.codigoCiudad) {
-                $('#ciudad').append('<option value="' + value.codigoCiudad + '" selected>' + value.nombreCiudad + '</option>');
-            } else {
-                $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
-            }
+        // Llenar el select de provincia
+        $.each(provincias, function(index, value) {
+            const isSelected = value.codigoProvincia == datosUsuario.codigoProvincia ? ' selected' : '';
+            $('#provincia').append(`<option value="${value.codigoProvincia}"${isSelected}>${capitalizarElemento(value.nombreProvincia)}</option>`);
         });
 
-        $('#ciudad').val(datosUsuario.codigoCiudad);
-        $('#direccion').val(datosUsuario.direccionDomicilio);
+        // Llenar el select de ciudad
+        $.each(ciudades, function(index, value) {
+            const isSelected = value.codigoCiudad == datosUsuario.codigoCiudad ? ' selected' : '';
+            $('#ciudad').append(`<option value="${value.codigoCiudad}"${isSelected}>${capitalizarElemento(value.nombreCiudad)}</option>`);
+        });
+
+        // Otros campos
+        $('#direccion').val(capitalizarElemento(datosUsuario.direccionDomicilio));
+    
         if (datosUsuario.sexo == 'M') {
             $('#sexo').val('M');
         } else {

@@ -199,7 +199,15 @@ $data1 = json_decode($data);
 
 
 
-
+    if (dataCita.origen == 'ordenExternaDomicilio') {
+        // deshabilitar campos
+        $('#paciente').prop('disabled', true);
+        $('#numeroIdentificacion').prop('disabled', true);
+        $('#email').prop('disabled', true);
+        $('#telefono').prop('disabled', true);
+        $('#conveio').prop('disabled', true);
+        
+    }
     let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
     let numeroIdentificacion = dataCita.paciente.numeroIdentificacion;
     let nombrePaciente = dataCita.paciente.primerNombre;
@@ -207,6 +215,7 @@ $data1 = json_decode($data);
     let codigoConvenio = dataCita?.convenio.codigoConvenio;
     let nombreConvenio = dataCita?.convenio.nombreConvenio;
     let direccion = dataCita?.paciente.direccion;
+
     let datosPaciente = [];
 
     // llamada al dom
@@ -276,10 +285,12 @@ $data1 = json_decode($data);
         let formData = new FormData();
         formData.append("tipoIdentificacionPaciente", tipoIdentificacion);
         formData.append("identificacionPaciente",  numeroIdentificacion);
-        formData.append("nombrePaciente", nombrePaciente);
+        formData.append("nombrePaciente", $('#paciente').val());
         formData.append("direccion", direccion);
         formData.append("telefono", telefono);
         formData.append("files", files);
+        
+
         args["data"] = formData;
 
 

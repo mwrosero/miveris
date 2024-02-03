@@ -193,6 +193,14 @@ function limitarCaracteres(input, maxCaracteres) {
     input.value = valor;
 }
 
+function validarNumero(event) {
+    // Verifica si el carácter es un número
+    if (event.which != 8 && event.which != 0 && (event.which < 48 || event.which > 57)) {
+        // Previene la entrada del carácter si no es un número
+        event.preventDefault();
+    }
+}
+
 function enmascararEmail(email) {
     // Dividir el correo electrónico en dos partes: nombre de usuario y dominio
     const partes = email.split('@');

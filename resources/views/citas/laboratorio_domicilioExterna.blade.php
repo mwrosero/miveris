@@ -49,7 +49,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
                             <div class="col-md-12">
                                 <label for="ciudad" class="form-label fw-bold">Selecciona tu Ciudad *</label>
-                                <select class="form-select bg-neutral" name="ciudad" id="ciudad" required>
+                                <select class="form-select" name="ciudad" id="ciudad" required>
                                     
                                 </select>
                             </div>
@@ -68,13 +68,13 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
                             <div class="col-md-12">
                                 <label for="email" class="form-label fw-bold">Email *</label>
-                                <input type="email" class="form-control bg-neutral" name="email" id="email"  required />
+                                <input type="email" class="form-control " name="email" id="email"  required />
                             </div>
 
 
                             <div class="col-md-12">
                                 <label for="telefono" class="form-label fw-bold">Teléfono *</label>
-                                <input type="number" class="form-control bg-neutral" name="telefono" id="telefono"  required />
+                                <input type="number" class="form-control" name="telefono" id="telefono"  required />
                             </div>
 
 
@@ -86,7 +86,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
 
                             <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit"
+                                <button class="btn btn-primary w-100" type="submit"  id="btnSiguiente" disabled
                                 >Siguiente</button>
                             </div>
                         </form>
@@ -110,108 +110,114 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 </script>
 
 <script>
+    let longitud;
+    let latitud;
     function initMap() {
-    // Opciones por defecto del mapa
-    var mapOptions = {
-        center: {lat: -34.397, lng: 150.644}, // Coordenadas por defecto
-        zoom: 8
-    };
+        // Opciones por defecto del mapa
+        var mapOptions = {
+            center: {lat: -34.397, lng: 150.644}, // Coordenadas por defecto
+            zoom: 8
+        };
 
-    // Crear mapa
-    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        // Crear mapa
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-    // Agregar Autocompletado
-    var input = document.getElementById('searchBox');
-    var searchBox = new google.maps.places.SearchBox(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        // Agregar Autocompletado
+        var input = document.getElementById('searchBox');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-    // Sesgar los resultados del SearchBox hacia la vista actual del mapa.
-    map.addListener('bounds_changed', function() {
-        searchBox.setBounds(map.getBounds());
-    });
-
-    var markers = [];
-    // Escuchar el evento cuando un usuario selecciona una predicción y recupera
-    // más detalles para ese lugar.
-    searchBox.addListener('places_changed', function() {
-        var places = searchBox.getPlaces();
-
-        if (places.length == 0) {
-            return;
-        }
-
-        // Eliminar los marcadores existentes
-        markers.forEach(function(marker) {
-            marker.setMap(null);
+        // Sesgar los resultados del SearchBox hacia la vista actual del mapa.
+        map.addListener('bounds_changed', function() {
+            searchBox.setBounds(map.getBounds());
         });
-        markers = [];
 
-        // Para cada lugar, obtener el icono, nombre y ubicación.
-        var bounds = new google.maps.LatLngBounds();
-        places.forEach(function(place) {
-            if (!place.geometry) {
-                console.log("El lugar devuelto no contiene geometría");
+        var markers = [];
+        // Escuchar el evento cuando un usuario selecciona una predicción y recupera
+        // más detalles para ese lugar.
+        searchBox.addListener('places_changed', function() {
+            var places = searchBox.getPlaces();
+
+            if (places.length == 0) {
                 return;
             }
-            var icon = {
-                url: place.icon,
-                size: new google.maps.Size(71, 71),
-                origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(17, 34),
-                scaledSize: new google.maps.Size(25, 25)
-            };
 
-            // Crear un marcador para cada lugar.
-            markers.push(new google.maps.Marker({
-                map: map,
-                icon: icon,
-                title: place.name,
-                position: place.geometry.location
-            }));
-
-            if (place.geometry.viewport) {
-                // Solo geocodifica si el lugar tiene una geometría.
-                bounds.union(place.geometry.viewport);
-            } else {
-                bounds.extend(place.geometry.location);
-            }
-        });
-        map.fitBounds(bounds);
-    });
-
-    // Intentar geolocalizar al usuario
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var userLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
-
-            // Centrar el mapa en la ubicación del usuario
-            map.setCenter(userLocation);
-            map.setZoom(14); // Ajustar el zoom para acercar al usuario
-
-            // Opcional: Colocar un marcador en la ubicación del usuario
-            var marker = new google.maps.Marker({
-                position: userLocation,
-                map: map,
-                title: 'Tu ubicación'
+            // Eliminar los marcadores existentes
+            markers.forEach(function(marker) {
+                marker.setMap(null);
             });
-        }, function() {
-            handleLocationError(true, map.getCenter());
-        });
-    } else {
-        // El navegador no soporta Geolocalización
-        handleLocationError(false, map.getCenter());
-    }
-}
+            markers = [];
 
-// Función para manejar errores de geolocalización
-function handleLocationError(browserHasGeolocation, pos) {
-    console.log(browserHasGeolocation ?
-                'Error: El servicio de Geolocalización falló.' :
-                'Error: Tu navegador no soporta geolocalización.');
-}
+            // Para cada lugar, obtener el icono, nombre y ubicación.
+            var bounds = new google.maps.LatLngBounds();
+            places.forEach(function(place) {
+                if (!place.geometry) {
+                    console.log("El lugar devuelto no contiene geometría");
+                    return;
+                }
+                var icon = {
+                    url: place.icon,
+                    size: new google.maps.Size(71, 71),
+                    origin: new google.maps.Point(0, 0),
+                    anchor: new google.maps.Point(17, 34),
+                    scaledSize: new google.maps.Size(25, 25)
+                };
+
+                // Crear un marcador para cada lugar.
+                markers.push(new google.maps.Marker({
+                    map: map,
+                    icon: icon,
+                    title: place.name,
+                    position: place.geometry.location
+                }));
+
+                if (place.geometry.viewport) {
+                    // Solo geocodifica si el lugar tiene una geometría.
+                    bounds.union(place.geometry.viewport);
+                } else {
+                    bounds.extend(place.geometry.location);
+                }
+            });
+            map.fitBounds(bounds);
+        });
+
+        // Intentar geolocalizar al usuario
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                
+                // setear longitud y latitud
+                longitud = position.coords.longitude;
+                latitud = position.coords.latitude;
+
+                // Centrar el mapa en la ubicación del usuario
+                map.setCenter(userLocation);
+                map.setZoom(14); // Ajustar el zoom para acercar al usuario
+
+                // Opcional: Colocar un marcador en la ubicación del usuario
+                var marker = new google.maps.Marker({
+                    position: userLocation,
+                    map: map,
+                    title: 'Tu ubicación'
+                });
+            }, function() {
+                handleLocationError(true, map.getCenter());
+            });
+        } else {
+            // El navegador no soporta Geolocalización
+            handleLocationError(false, map.getCenter());
+        }
+    }
+
+    // Función para manejar errores de geolocalización
+    function handleLocationError(browserHasGeolocation, pos) {
+        console.log(browserHasGeolocation ?
+                    'Error: El servicio de Geolocalización falló.' :
+                    'Error: Tu navegador no soporta geolocalización.');
+    }
 
 </script>
 <script>
@@ -255,6 +261,22 @@ function handleLocationError(browserHasGeolocation, pos) {
         return data;
     }
 
+    // disable button si hay campos vacios
+    $("form input, form textarea").on('keyup', function(){
+        let disabled = false;
+        $("form input, form textarea").each(function(){
+            if($(this).val() == ""){
+                disabled = true;
+            }
+        });
+
+        if(disabled){
+            $('#btnSiguiente').attr('disabled', true);
+        }else{
+            $('#btnSiguiente').attr('disabled', false);
+        }
+    });
+
     $("form").on('submit', async function(e) {
         e.preventDefault(); 
 
@@ -267,6 +289,10 @@ function handleLocationError(browserHasGeolocation, pos) {
         dataCita.paciente.referencias = $('#referencias').val();
         dataCita.paciente.codigoCiudad = $('#ciudad').val();
         dataCita.paciente.nombreCiudad = $('#ciudad option:selected').text();
+        // longitud y latitud
+        dataCita.paciente.longitud = longitud;
+        dataCita.paciente.latitud = latitud;
+        dataCita.origen = "ordenExternaDomicilio";
         
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
