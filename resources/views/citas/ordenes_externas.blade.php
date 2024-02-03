@@ -121,8 +121,11 @@ Mi Veris - Órdenes externas
             let data = JSON.parse($(this).attr("data-rel"));
 
             const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
+            const datosFacturacion = await consultarDatosFacturacion(data);
 
             params.paciente = paciente.data
+            params.detalleFacturacion = datosFacturacion;
+            params.origen = 'ordenExterna';
 
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
@@ -232,8 +235,13 @@ Mi Veris - Órdenes externas
     
     // consultar datos de facturacion
     async function consultarDatosFacturacion(data){
+        console.log('datafact', data);
+        let codigoPreTransaccion = data.codigoPreTransaccion;
+        let codigoTipoIdentificacion = data.tipoIdentificacion;
+        let numeroIdentificacion = data.numeroIdentificacion;
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/datosFacturacion?canalOrigen=APP_CMV&codigoEmpresa=${data.codigoEmpresa}&numeroOrden=${data.numeroOrden}&idPaciente=${idPaciente}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?idPreTransaccion=${codigoPreTransaccion}&codigoTipoIdentificacion=${codigoTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}
+        `;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataFacturacion = await call(args);
@@ -243,7 +251,7 @@ Mi Veris - Órdenes externas
         }
         return [];
     }
-    
+
 
 
 
@@ -441,7 +449,8 @@ Mi Veris - Órdenes externas
         } else if(data.codigoEstado == 'APR'){
             if(data.permitePago == 'S'){
                 if(data.aplicoDomicilio == "N"){
-                    elemento = `<div url-rel="/citas-datos-facturacion/{{ $tokenCita }}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-pagar btn-primary-veris fs--1">Pagar</div>`;
+                    ruta = `/citas-datos-facturacion/` + "{{ $tokenCita }}";
+                    elemento = `<div url-rel="${ruta}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-pagar btn-primary-veris fs--1">Pagar</div>`;
                 }
                 
             }
