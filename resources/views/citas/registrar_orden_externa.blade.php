@@ -54,7 +54,7 @@ $data1 = json_decode($data);
                             <h5>Registro de datos del paciente</h5>
                             <div class="col-md-12">
                                 <label for="paciente" class="form-label fw-bold">Nombre del Paciente *</label>
-                                <input type="text" class="form-control bg-neutral" name="paciente" id="paciente" placeholder="Nombre del paciente" disabled />
+                                <input type="text" class="form-control " name="paciente" id="paciente" placeholder="Nombre del paciente" disabled />
                             </div>
                             <div class="col-md-12">
                                 <label for="numeroIdentificacion" class="form-label fw-bold">Cédula o pasaporte *</label>
@@ -62,11 +62,11 @@ $data1 = json_decode($data);
                             </div>
                             <div class="col-md-12">
                                 <label for="email" class="form-label fw-bold">Email *</label>
-                                <input type="email" class="form-control bg-neutral" name="email" id="email"  required />
+                                <input type="email" class="form-control " name="email" id="email"  required />
                             </div>
                             <div class="col-md-12">
                                 <label for="telefono" class="form-label fw-bold">Teléfono *</label>
-                                <input type="number" class="form-control bg-neutral" name="telefono" id="telefono"  required />
+                                <input type="number" class="form-control " name="telefono" id="telefono"  required />
                             </div>
                             <div class="col-md-12 d-none">
                                 <label for="conveio" class="form-label fw-bold">Elige el convenio *</label>
@@ -199,14 +199,37 @@ $data1 = json_decode($data);
 
 
 
+    if (dataCita.origen == 'ordenExternaDomicilio') {
+        // deshabilitar campos
+        $('#paciente').prop('disabled', true);
+        $('#numeroIdentificacion').prop('disabled', true);
+        $('#email').prop('disabled', true);
+        $('#telefono').prop('disabled', true);
+        $('#conveio').prop('disabled', true);
+        // agregar bg-neutral a los campos faltantes
+        $('#paciente').addClass('bg-neutral');
+        $('#numeroIdentificacion').addClass('bg-neutral');
+        $('#email').addClass('bg-neutral');
+        $('#telefono').addClass('bg-neutral');
+        $('#conveio').addClass('bg-neutral');
 
+    }
     let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
     let numeroIdentificacion = dataCita.paciente.numeroIdentificacion;
     let nombrePaciente = dataCita.paciente.primerNombre;
     let convenio = dataCita?.convenio;
-    let codigoConvenio = dataCita?.convenio.codigoConvenio;
-    let nombreConvenio = dataCita?.convenio.nombreConvenio;
+    let codigoConvenio = dataCita.convenio.codigoConvenio || '';
+    let nombreConvenio = dataCita.convenio.nombreConvenio || '';
     let direccion = dataCita?.paciente.direccion;
+    let referencia = dataCita.paciente.referencias || '';
+    let codigoCiudad = dataCita?.paciente.codigoCiudad  || '';
+    let telefono = dataCita?.paciente.telefono;
+    let latitud = dataCita?.paciente.latitud || '';
+    let longitud = dataCita?.paciente.longitud  || '';
+    let esDomicilio = dataCita?.esDomicilio;
+    let codigoEmpresaConvenio = dataCita.convenio.codigoEmpresaConvenio || '';
+    let correo = dataCita?.paciente.correo;
+
     let datosPaciente = [];
 
     // llamada al dom
@@ -262,6 +285,18 @@ $data1 = json_decode($data);
     // crear solicitud de orden externa
 
     async function crearSolicitudLaboratorioDomicilio() {
+
+        // si origen es ordenExternaDomicilio
+        if (dataCita.origen !== 'ordenExternaDomicilio') {
+            
+            
+            nombrePaciente = $('#paciente').val();
+            correo = $('#email').val();
+            telefono = $('#telefono').val();
+            numeroIdentificacion = $('#numeroIdentificacion').val();
+            esDomicilio = false;
+        }
+
         let args = [];
         args["endpoint"] = api_url + "/digitalestest/v1/domicilio/laboratorio/solicitud";
         args["method"] = "POST";
@@ -280,7 +315,18 @@ $data1 = json_decode($data);
         formData.append("direccion", direccion);
         formData.append("telefono", telefono);
         formData.append("origenInvocacion", "WEB_EXTERNA");
-        formData.append("files", files);
+        formData.append("mail", correo);
+        formData.append("referencia", referencia);
+        formData.append("codigoCiudad", codigoCiudad);
+        formData.append("latitud", latitud);
+        formData.append("longitud", longitud);
+        formData.append("esDomicilio", esDomicilio);
+        formData.append("codigoEmpresaConvenio", codigoEmpresaConvenio);
+        formData.append("codigoConvenio", codigoConvenio);
+        formData.append("nombreConvenio", nombreConvenio);
+        formData.append("archivos", files);
+        
+
         args["data"] = formData;
 
 
@@ -293,12 +339,18 @@ $data1 = json_decode($data);
             $('#mensajeOrdenExitosa').modal('show');
             $('#titulo').text('Registro exitoso');
             
-            $('#mensaje').text( 'Tu solicitud está en revisión, un asesor la validará y pronto podrás continuar con tu proceso.' ); 
+            $('#mensaje').text(data.message);
             $('#btnEntendido').on('click', function(){
                 // redireccionar a ordenes externas
                 window.location.href = `/ordenes-externas`;
             });
+        } else if (data.code != 200) {
+            // mostrar modal de error
+            $('#mensajeOrdenExitosa').modal('show');
+            $('#titulo').text('Error');
+            $('#mensaje').text(data.message);
         }
+
         return data;
 
     }
@@ -340,12 +392,9 @@ $data1 = json_decode($data);
         }else{
             $('#botonSiguiente').prop('disabled', true);
         }
+
+        
     });
-
-
-
-
-
 
 
 
