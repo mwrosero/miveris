@@ -774,6 +774,83 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .text-danger-veris {
   color: var(--bg-vris-strong-red) !important;
 }
+/* .menu-link > svg > path{
+  fill: var(--bg-vris-white);
+}
+.menu-item.active .menu-link > svg > path {
+  fill: var(--bg-vris-white);
+} */
+
+.menu-item .svg-container {
+  width: 28px; /* Ajusta el ancho según tus necesidades */
+  height: 28px; /* Ajusta la altura según tus necesidades */
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px; /* Espaciado a la derecha del icono */
+  transition: background 0.3s ease-in-out; /* Transición de 0.3 segundos */
+}
+.menu-item .svg-container.svg-inicio {
+  background: url('../img/svg/menu/light/inicio_light.svg') no-repeat center center;
+}
+.menu-item.active .svg-container.svg-inicio {
+  background: url('../img/svg/menu/solid/inicio_solid.svg') no-repeat center center;
+}
+
+.menu-item .svg-container.svg-citas {
+  background: url('../img/svg/menu/light/citas_light.svg') no-repeat center center;
+}
+.menu-item.active .svg-container.svg-citas {
+  background: url('../img/svg/menu/solid/citas_solid.svg') no-repeat center center;
+}
+
+.menu-item .svg-container.svg-tratamientos {
+  background: url('../img/svg/menu/light/tratamientos_light.svg') no-repeat center center;
+}
+.menu-item.active .svg-container.svg-tratamientos {
+  background: url('../img/svg/menu/solid/tratamientos_solid.svg') no-repeat center center;
+}
+
+.menu-item .svg-container.svg-resultados {
+  background: url('../img/svg/menu/light/resultados_light.svg') no-repeat center center;
+}
+.menu-item.active .svg-container.svg-resultados {
+  background: url('../img/svg/menu/solid/resultados_solid.svg') no-repeat center center;
+}
+
+.menu-item .svg-container.svg-domicilio {
+  background: url('../img/svg/menu/light/domicilio_light.svg') no-repeat center center;
+}
+.menu-item.active .svg-container.svg-domicilio {
+  background: url('../img/svg/menu/solid/domicilio_solid.svg') no-repeat center center;
+}
+
+.menu-item .svg-container.svg-familia {
+  background: url('../img/svg/menu/light/familia_light.svg') no-repeat center center;
+}
+.menu-item.active .svg-container.svg-familia {
+  background: url('../img/svg/menu/solid/familia_solid.svg') no-repeat center center;
+}
+
+.menu-item .svg-container.svg-doctoresFavoritos {
+  background: url('../img/svg/menu/light/doctoresFavoritos_light.svg') no-repeat center center;
+}
+.menu-item.active .svg-container.svg-doctoresFavoritos {
+  background: url('../img/svg/menu/solid/doctoresFavoritos_solid.svg') no-repeat center center;
+}
+
+.menu-item .svg-container.svg-historiaClinica {
+  background: url('../img/svg/menu/light/historiaClinica_light.svg') no-repeat center center;
+}
+.menu-item.active .svg-container.svg-historiaClinica {
+  background: url('../img/svg/menu/solid/historiaClinica_solid.svg') no-repeat center center;
+}
+
+.menu-item .svg-container.svg-experiencia {
+  background: url('../img/svg/menu/light/experiencia_light.svg') no-repeat center center;
+}
+.menu-item.active .svg-container.svg-experiencia {
+  background: url('../img/svg/menu/solid/experiencia_solid.svg') no-repeat center center;
+}
 
 .text-lime-veris {
   color: var(--bg-vris-strong-cyan-lime-green) !important;
