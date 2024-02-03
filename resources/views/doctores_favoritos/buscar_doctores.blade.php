@@ -221,7 +221,7 @@ Mi Veris - Buscar doctor
                 html.empty();
                 let elemento = '';
                 data.data.forEach(element => {
-                    elemento += `<div class="col-12 col-md-6">
+                    elemento += `<div class="col-12 col-md-6 box-doctor-${element.codigoProfesional}">
                                         <div class="card">
                                             <div class="card-body p-3">
                                                 <div class="row gx-2 align-items-center">
@@ -279,8 +279,8 @@ Mi Veris - Buscar doctor
         console.log('data', data);
         if (data.code == 200) {
             console.log('doctor agregado');
+            $('.box-doctor-'+doctor.codigoProfesional).remove();
             $('#mensajeDoctorAgregadoModal').modal('show');
-
         }
 
     }

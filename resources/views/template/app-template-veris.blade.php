@@ -323,11 +323,10 @@
                 const texto = elemento.toLowerCase();
                 const palabras = texto.split(" ");
                 for (let i = 0; i < palabras.length; i++) {
+                    if (palabras[i].length === 0) continue;  // Continúa si la palabra está vacía
                     const palabra = palabras[i];
-                    if (palabra.length === 0) continue;  // Añadido para evitar errores con palabras vacías
-                    const primeraLetra = palabra[0];
-                    const primeraLetraMayuscula = primeraLetra.toUpperCase();
-                    palabras[i] = palabra.replace(primeraLetra, primeraLetraMayuscula);
+                    const primeraLetraMayuscula = palabra[0].toUpperCase();
+                    palabras[i] = primeraLetraMayuscula + palabra.substring(1);
                 }
                 const textoCapitalizado = palabras.join(" ");
                 return textoCapitalizado;
@@ -336,6 +335,7 @@
                 return elemento;
             }
         }
+
 
         // funcion quitar comillas a la url
         function quitarComillas(url){

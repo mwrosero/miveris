@@ -6,7 +6,47 @@ Mi Veris - Citas - Terapia física
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 @endpush
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+    // dd($tokenCita);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
+     <!-- Modal de error -->
+
+     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Veris</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal infomracion de la cita -->
+    <div class="modal fade" id="informacionCitaModal" tabindex="-1" aria-labelledby="informacionCitaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3"  id="tituloInformacionCita"
+                    >{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal" id = "mensajeInformacionCita"></p>
+                </div>
+                <div id= "footerInformacionCita">
+                    <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                        <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
     <!-- Filtro -->
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Terapia física') }}</h5>
@@ -148,6 +188,7 @@ Mi Veris - Citas - Terapia física
     // variables globales
     let datosLaboratorio = [];
     let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+    let datosConvenios = [];
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
@@ -178,7 +219,6 @@ Mi Veris - Citas - Terapia física
         let servicio = 'TERAPIA';
         if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
             args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-       
         } else {
             if (estado == 'PENDIENTE') {
                 args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
@@ -188,186 +228,191 @@ Mi Veris - Citas - Terapia física
         }
         args["method"] = "GET";
         args["showLoader"] = true;
-        console.log(args["endpoint"]);
         const data = await call(args);
-        console.log('datalabor', data);
-        console.log('estado', estado);
-        if(estado == 'PENDIENTE'){
-            console.log('entrando a pendiente');
-            if (data.code == 200) {
-                if(data.data.items.length == 0){
-                    console.log('entrando a pendiente vacio', admin);
-                    if (admin === 'S') {
-                        let html = $('#contenedorTratamientosImagenes');
-                        html.empty();
-                        $('#mensajeNoTienesImagenesProcedimientos').removeClass('d-none');
-                        $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
-                    } else if (admin === 'N') {
-                        let html = $('#contenedorTratamientosImagenes');
-                        html.empty();
-                        $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
-                        $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
-                    }
-                    
-                    
-                }else{
-                    if (admin === 'S') {
-                        datosLaboratorio = data.data.items;
-                        console.log('datosLaboratorio',datosLaboratorio);
-                        let html = $('#contenedorTratamientosImagenes');
-                        $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
-                        $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
-                        html.empty();
+        if (data.code == 200){
 
-                        let elementos = ''; // Definir la variable fuera del bucle
+            if(estado == 'PENDIENTE'){
+                if (data.code == 200) {
+                    if(data.data.items.length == 0){
+                        if (admin === 'S') {
+                            let html = $('#contenedorTratamientosImagenes');
+                            html.empty();
+                            $('#mensajeNoTienesImagenesProcedimientos').removeClass('d-none');
+                            $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
+                        } else if (admin === 'N') {
+                            let html = $('#contenedorTratamientosImagenes');
+                            html.empty();
+                            $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
+                            $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
+                        }
+                        
+                        
+                    }else{
 
-                        data.data.items.forEach((laboratorio) => {
-                            elementos += `<div class="col-12 mb-4">
-                                            <div class="card">
-                                                <div class="card-body py-2 px-3">
-                                                    <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                    <h6 class="text-primary-veris fw-medium fs--1 mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
-                                                    <p class="fs--2 fw-medium mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                    <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                        if (admin === 'S') {
+                            datosLaboratorio = data.data.items;
+                            console.log('datosLaboratorio',datosLaboratorio);
+                            let html = $('#contenedorTratamientosImagenes');
+                            $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
+                            $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
+                            html.empty();
+
+                            let elementos = ''; // Definir la variable fuera del bucle
+
+                            data.data.items.forEach((laboratorio) => {
+                                elementos += `<div class="col-12 mb-4">
+                                                <div class="card">
+                                                    <div class="card-body py-2 px-3">
+                                                        <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
+                                                        <h6 class="text-primary-veris fs--1 fw-medium mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
+                                                        <p class="fs--2 fw-medium mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
+                                                        <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
+                                                        <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="d-flex justify-content-center mb-3">
-                                            <div class="col-12 col-md-10">
-                                                <div class="row g-3" id="cardTratamientoLaboratorio">
-                                                    <!-- items -->
-                                                    `;
-                        
-                            laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                elementos += `<div class="col-12 col-md-6">
-                                                <div class="card h-100">
-                                                    <div class="card-body p-3 d-flex flex-column">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="text-primary-veris fw-medium fs--1 mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                            <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada , estado)}</span>
-                                                        </div>
-                                                        ${determinarFechasCaducadas(detalles, laboratorio)}
-                                                       <div class="d-flex justify-content-between align-items-center mt-auto">
-                                                            <div class="avatar me-2">
-                                                                <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <div class="col-12 col-md-10 col-lg-8">
+                                                    <div class="row g-3" id="cardTratamientoLaboratorio">
+                                                        <!-- items -->
+                                                        `;
+                            
+                                laboratorio.detallesTratamiento.forEach((detalles) =>{
+                                    elementos += `<div class="col-12 col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body p-2">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <h6 class="text-primary-veris fs--1 fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                                <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada , estado)}</span>
                                                             </div>
-                                                            <div class="d-flex justify-content-between">
-                                                                ${determinarCondicionesBotones(detalles, estado)}
+                                                            ${determinarFechasCaducadas(detalles, laboratorio)}
+                                                        <div class="d-flex justify-content-between align-items-center mt-2">
+                                                                <div class="avatar-sm me-2">
+                                                                    <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                </div>
+                                                                <div>
+                                                                    ${determinarCondicionesBotones(detalles, estado, laboratorio)}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>`;                        
+                                });
+                                elementos += `
+                                                </div>
+                                            </div>
+                                        </div>`;
+                            });
+                            html.append(elementos); // Agregar todos los elementos después del bucle
+
+                        } else if (admin === 'N') {
+                            let html = $('#contenedorTratamientosImagenes');
+                            html.empty();
+                            $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
+
+                        }
+                        return data;
+                    } 
+                }
+            }
+            else if(estado == 'REALIZADO'){
+                console.log('entrando a realizado');
+                
+                
+                if (data.code == 200) {
+                    if(data.data.items.length == 0){
+                        console.log('entrando a realizado vacio');
+                        if (admin === 'S') {
+                            let html = $('#contenedorTratamientosImagenesRealizados');
+                            html.empty();
+                            $('#mensajeNoTienesImagenesProcedimientosRealizados').removeClass('d-none');
+                            $('#mensajeNoTienesPermisosAdministradorRealizados').addClass('d-none');
+                        } else if (admin === 'N') {
+                            let html = $('#contenedorTratamientosImagenesRealizados');
+                            html.empty();
+                            $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
+                            $('#mensajeNoTienesImagenesProcedimientosRealizados').addClass('d-none');
+                        }
+                        
+                    }else{
+                        if (admin === 'S'){
+                            console.log('entrando a realizado lleno');
+                            datosLaboratorio = data.data.items;
+                            console.log('datosLaboratorio',datosLaboratorio);
+                            let html = $('#contenedorTratamientosImagenesRealizados');
+                            html.empty();
+                            console.log('datosLaboratorioR',datosLaboratorio);
+
+                            let elementos = ''; 
+
+                            datosLaboratorio.forEach((laboratorio) => {
+                                elementos += `<div class="col-12 mb-4">
+                                                <div class="card">
+                                                    <div class="card-body py-2 px-3">
+                                                        <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
+                                                        <h6 class="text-primary-veris fs--1 fw-medium mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
+                                                        <p class="fs--2 fw-medium mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
+                                                        <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
+                                                        <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-center mb-3">
+                                                <div class="col-12 col-md-10 col-lg-8">
+                                                    <div class="row g-3" id="cardTratamientoLaboratorio">
+                                                        <!-- items -->
+                                                        `;
+                            
+                                laboratorio.detallesTratamiento.forEach((detalles) =>{
+                                    elementos += `<div class="col-12 col-md-6">
+                                                    <div class="card">
+                                                        <div class="card-body p-2">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <h6 class="text-primary-veris fs--1 fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                                <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada, estado)}</span>
+                                                            </div>
+
+                                                            ${determinarFechasCaducadas(detalles, laboratorio)}
+                                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                                <div class="avatar-sm me-2">
+                                                                    <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                                </div>
+                                                                <div>
+                                                                    ${determinarCondicionesBotones(detalles, estado)} 
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                
-                                            </div>`;                        
-                            });
-                            elementos += `
+                                                    `;                        
+                                });
+                                elementos += `
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>`;
-                        });
-                        html.append(elementos); // Agregar todos los elementos después del bucle
+                                        </div>`;
+                            });
+                            html.append(elementos); // Agregar todos los elementos después del bucle
+                        } else if (admin === 'N') {
+                            let html = $('#contenedorTratamientosImagenesRealizados');
+                            html.empty();
+                            $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
 
-                    } else if (admin === 'N') {
-                        let html = $('#contenedorTratamientosImagenes');
-                        html.empty();
-                        $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
+                        }
 
-                    }
+                    } 
                     return data;
                 } 
             }
+
         }
-        else if(estado == 'REALIZADO'){
-            console.log('entrando a realizado');
-            
-            
-            if (data.code == 200) {
-                if(data.data.items.length == 0){
-                    console.log('entrando a realizado vacio');
-                    if (admin === 'S') {
-                        let html = $('#contenedorTratamientosImagenesRealizados');
-                        html.empty();
-                        $('#mensajeNoTienesImagenesProcedimientosRealizados').removeClass('d-none');
-                        $('#mensajeNoTienesPermisosAdministradorRealizados').addClass('d-none');
-                    } else if (admin === 'N') {
-                        let html = $('#contenedorTratamientosImagenesRealizados');
-                        html.empty();
-                        $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
-                        $('#mensajeNoTienesImagenesProcedimientosRealizados').addClass('d-none');
-                    }
-                    
-                }else{
-                    if (admin === 'S'){
-                        console.log('entrando a realizado lleno');
-                        datosLaboratorio = data.data.items;
-                        console.log('datosLaboratorio',datosLaboratorio);
-                        let html = $('#contenedorTratamientosImagenesRealizados');
-                        html.empty();
-                        console.log('datosLaboratorioR',datosLaboratorio);
+        if (data.code != 200) {
+            // mostrar mensaje de error
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+            $('#mensajeError').text(data.message);
 
-                        let elementos = ''; 
-
-                        datosLaboratorio.forEach((laboratorio) => {
-                            elementos += `<div class="col-12 mb-4">
-                                            <div class="card h-100">
-                                                <div class="card-body p-3">
-                                                    <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                    <h6 class="text-primary-veris fw-medium fs--1 mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
-                                                    <p class="fs--2 fw-medium mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                    <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-center mb-3">
-                                            <div class="col-12 col-md-10">
-                                                <div class="row g-3" id="cardTratamientoLaboratorio">
-                                                    <!-- items -->
-                                                    `;
-                        
-                            laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                elementos += `<div class="col-12 col-md-6">
-                                                <div class="card">
-                                                    <div class="card-body p-3">
-                                                        <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="text-primary-veris fw-medium fs--1 mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                            <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada, estado)}</span>
-
-                                                        </div>
-
-                                                        ${determinarFechasCaducadas(detalles, laboratorio)}
-                                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                                            <div class="avatar me-2">
-                                                                <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
-                                                            </div>
-                                                            <div class="d-flex justify-content-between">
-                                                                ${determinarCondicionesBotones(detalles, estado)} 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                                `;                        
-                            });
-                            elementos += `
-                                            </div>
-                                        </div>
-                                    </div>`;
-                        });
-                        html.append(elementos); // Agregar todos los elementos después del bucle
-                    } else if (admin === 'N') {
-                        let html = $('#contenedorTratamientosImagenesRealizados');
-                        html.empty();
-                        $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
-
-                    }
-
-                } 
-                return data;
-            } 
         }
     }
     // consultar grupo familiar
@@ -375,7 +420,7 @@ Mi Veris - Citas - Terapia física
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&&incluyeUsuarioSesion=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -386,6 +431,29 @@ Mi Veris - Citas - Terapia física
 
         }
         return data;
+    }
+
+    // consultar convenios
+    async function consultarConvenios(datosPaciente) { 
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
+        if (datosPaciente) {
+            tipoIdentificacion = datosPaciente.tipoIdentificacion;
+            numeroIdentificacion = datosPaciente.numeroIdentificacion;
+        }
+        
+        let codigoEmpresa = 1
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const dataConvenio = await call(args);
+        console.log('dataConvenio', dataConvenio);
+        if(dataConvenio.code == 200){
+            datosConvenios = dataConvenio.data;
+        }
+       
+        return dataConvenio;
     }
 
     // descargar documento pdf
@@ -420,8 +488,7 @@ Mi Veris - Citas - Terapia física
 
     // funciones js 
 
-    // determinar fechas caducadas
-    // determinar fechas caducadas
+   // determinar fechas caducadas
     function determinarFechasCaducadas(datos, datosTratamiento){ 
 
         let dataFechas = ``;
@@ -429,37 +496,39 @@ Mi Veris - Citas - Terapia física
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
 
             if (datos.estado == "PENDIENTE_AGENDAR") {
-                if (datos.esCaducado == "S") {
-                    dataFechas = `<p class="fw-medium fs--2 mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                } else {
-                    dataFechas = `` ;
-                }
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
                 
             }
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
-                dataFechas = `<h6 class="card-title fw-medium fs--2 mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
+
+                dataFechas = `<h6 class="card-title fw-medium fs--2 text-dark-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
                                 <p class="fw-normal fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
-                                <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
+                                <p class="fs--2 mb-0">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
             }
-
-        } else {
+        }
+        else{
             if (datos.estado == "PENDIENTE_AGENDAR") {
-                if (datos.esCaducado == "S") {
-                    dataFechas = `<p class="fw-medium fs--2 mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                } else {
-                    dataFechas = `` ;
-                }
-                
+                    if (datos.esCaducado == "S") {
+                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    } else {
+                        dataFechas = `` ;
+                    }
             }
         }
 
         return dataFechas;
-    }
 
+
+    }
 
     // determinar si es comprar o por comprar
     function determinarEstado(estado , estadoTratamiento){
+
         if (estadoTratamiento == 'REALIZADO') {
             return `<i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span>`;
         } else {
@@ -473,163 +542,202 @@ Mi Veris - Citas - Terapia física
     }
 
     
-
-    // determinar si es receta medica o no botones
-    function determinarbotonesRecetaMedica(detalles) {
-        let botonVer = `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver ${detalles.tipoServicio === "LABORATORIO" ? "orden" : "receta"}</a>`;
-        let botonSolicitar;
-
-        if(detalles.esPagada === "N"){
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1"><i class="bi  me-2"></i> Pagar</a>`;
-        } else  if (detalles.tipoServicio === "FARMACIA") {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1${detalles.aplicaSolicitud !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else if (detalles.tipoServicio === "LABORATORIO") {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"> Agendar</a>`;
-        }
-
-        return botonVer + botonSolicitar;
-    }
-
-
     // determinar condiciones de los botones 
 
-    function determinarCondicionesBotones(datosServicio, estado) {
+    function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
         let services = datosServicio;
-
         if (datosServicio.length == 0) {
             return `<div></div>`;
-        } else {
+        }
+        else{
+
             switch (datosServicio.tipoCard) {
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
-                    respuestaAgenda += ` <button  class="btn text-primary-veris fw-normal fs--1 me-2" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                    respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                    let datosCombinados = {
+                        servicio: datosServicio,
+                        tratamiento: datosTratamiento
+                    };
+
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
-                        if (datosServicio.habilitaBotonAgendar == 'S') {
-                            let modalidad;
-                            if (datosServicio.modalidad === 'online') {
-                                modalidad = 'S';
-                            } else if (datosServicio.modalidad === 'presencial') {
-                                modalidad = 'N';
-                            }
 
-                            let params = {};
-                            params.especialidad = {
-                                codigoEspecialidad: datosServicio.codigoEspecialidad
-                            };
-                            params.esOnline = modalidad;
-                            let urlParams = btoa(JSON.stringify(params));
-                            respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>`;
+
+                        if(datosServicio.esCaducado == 'S'){
+                            // mostrar boton de informacion que llama al modal de informacion
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1 btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Información</a>`;
+                            
                         } else {
-                            respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
-                                                    Agendar
-                                                </a>
-                                                `;
 
+                            if(datosServicio.permiteReserva == 'S'){
+                                if (datosServicio.habilitaBotonAgendar == 'S') {
+
+                                    if(datosServicio.modalidad == 'PRESENCIAL'){
+                                        
+                                        let ruta = '/citas-elegir-central-medica/';
+                                        let urlCompleta = ruta + "{{ $tokenCita }}"
+                                        respuestaAgenda += `<a href="${urlCompleta}
+                                        " class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
+                                        
+                                         
+                                    } else {
+                                        
+                                        let ruta = '/citas-elegir-fecha-doctor/';
+                                        let urlCompleta = ruta + "{{ $tokenCita }}"
+                                        // ir a fechas
+                                        respuestaAgenda += `<a href="${urlCompleta}
+                                        " class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
+                                        
+                                    }
+                                } else {
+                                    respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
+                                                            
+                                                            Agendar
+                                                        </a>`;
+
+                                }
+                            } 
+                            else{
+                                // abrir modal no permite reserva
+                                respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</div>`;
+                            }
+   
                         }
 
-                    } else if (datosServicio.estado == 'ATENDIDO'){
-                        respuestaAgenda = "";
+                    }else if (datosServicio.estado == 'ATENDIDO'){
+
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<button  class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button >`;
+                        respuestaAgenda = ``;
+                        respuestaAgenda += ` <div class="btn btn-sm btn-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal"> Ver orden</div>`;  
+                    
 
-                    } else if (datosServicio.estado == 'AGENDADO'){
+                    }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
-                        respuestaAgenda = "";
-                        if (estado == 'REALIZADO') {
-                            // clear respuesta
-                            respuestaAgenda = "";
-                            respuestaAgenda += `<button  class="btn btn-sm btn-primary-veris fw-normal fs--1 me-2 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button >`;
-                        }
-                        else{
-                            respuestaAgenda += `<button  class="btn btn-sm btn-primary-veris fw-normal fs--1 me-2" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button >`;
-                            
-                            if (datosServicio.permitePago == 'S'){
-                                // mostrar boton de pagar
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 me-2">Pagar</a>`;
-                            } 
-                            if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
-                                
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
-                            } 
-                            
-                            if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
-                                // mostrar boton de informacion
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
-                            } 
+                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
 
-                        }
-                        
+                        if (datosServicio.permitePago == 'S'){
+                            // mostrar boton de pagar
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
+                        }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                            
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                        } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                            // mostrar boton de informacion
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
+                        } 
                     }
+
+                    
                     return respuestaAgenda;
                     break;
+
                 case "LAB":
+                    console.log('estadossss', estado);
                     let respuesta = "";
-                    respuesta += ` <button  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                    if(estado == 'REALIZADO'){
-                        // clear respuesta
-                        respuesta = "";
+                    if (estado == 'PENDIENTE'){
                         
-                        respuesta += `<button class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                    } else {
+                        respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+
+
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2">Ver resultados</a>`;
+                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris m-2
+                            "> Ver resultados</a>`;
                         } else {
                             respuesta += ``;
                         }
 
                         //condición para 'aplicaSolicitud'
                         if (datosServicio.aplicaSolicitud == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                        } else if (datosServicio.permitePago == "S"){
-                            let params = {};
-                            params.idPaciente = datosServicio.pacPacNumero;
+                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                        } else
+                        if (datosServicio.permitePago == "S"){
+                            let params = {}
+                            params.idPaciente = idPaciente;
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
                             
-                            respuesta += `<a href="/citas-laboratorio/${ulrParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1">Pagar</a>`;
+                            respuesta += `<a href="/citas-laboratorio/{{$tokenCita}}/${ulrParams}" class="btn btn-sm btn-primary-veris shadow-none me-1">Pagar</a>`;
+                           
+                        }
+                    } 
+
+                    else if (estado == 'REALIZADO'){
+                        console.log('estadossss2', estado);
+                        respuesta = "";
+                        respuesta += ` <div class="btn btn-sm btn-primary-veris shadow-none" id="verOrdenCard"
+                        data-rel='${JSON.stringify(datosServicio)}'>Ver orden</div>`;
+                    
+                    }
+                    
+
+                    return respuesta;
+
+                    break;
+
+                case "RECETAS" :
+                    if (estado == 'REALIZADO') {
+                        return `<div class="btn btn-sm btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" 
+                        data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>
+                         Ver receta</div>`;
+                    } else {
+                        if(datosServicio.aplicaSolicitud == "S"){
+                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                         }
                     }
-                    return respuesta;
-                    break;
-                case "RECETAS" :
-                    let respuestaRecetas = "";
-                    respuestaRecetas += ` <button  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
-                    if(estado == 'REALIZADO'){
-                        respuestaRecetas = "";
-                        respuestaRecetas += `<button class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                    }
+                    
+                    
 
-                    if(datosServicio.aplicaSolicitud == "S"){
-                        return `<a href="/farmacia-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                    } else {
-                        // return boton ver receta
-                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Ver receta</a>`;
-                    }
+                   
+
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <button  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                    if (datosServicio.esAgendable == "N") {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled">Agendar</a>`;
+                    respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</div>`;
+                    
+                    // ABRIRE MODAL DE VIDEO CONSULTA
+                    respuestaOdontologia += `<div href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</div>`;
                       
-                    } else {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"> Agendar</a>`;
-                    }
+                    
+
                     return respuestaOdontologia;
+
                     break;
+
             }
+
         }
     }
 
-    
+    // boton informacion
+    $(document).on('click', '.btn-informacion', function(){
+        let datosRel = $(this).data('rel');
+        let datos = datosRel.servicio;
+        if (datos.esCaducado === "S" && datos.esAgendable === "S") {
+            // CAMBIAR TITUOLO MODAL
+
+            $('#tituloModalInformacionCita').text('Orden expirada');
+            $('#mensajeInformacionCita').text('El tiempo para agendar esta orden expiró, puedes agendar la cita sin cobertura.');
+            // limpiar footer
+            $('#footerInformacionCita').empty();
+            // agregar boton agendar y salir
+            $('#footerInformacionCita').append(`<div class="modal-footer border-0 ">
+                                                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal" data-rel='${JSON.stringify(datosRel)}' id="btnAgendarCitaModal"
+                                                    >{{ __('Agendar') }}</button>
+                                                </div>
+                                                <div class="modal-footer border-0 ">
+                                                    <button type="button" class="btn  w-100" data-bs-dismiss="modal">{{ __('Salir') }}</button>
+                                                </div>`);
+
+            
+        } else {
+            $('#mensajeInformacionCita').text(datos.mensaje);
+        }
 
 
-
+    });
 
 
     // mostrar lista de pacientes en el filtro
@@ -640,20 +748,14 @@ Mi Veris - Citas - Terapia física
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
-                                checked>
-                                <span class="text-veris fw-medium">
-                                    ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
-                                    <small class="fs--3 d-block fw-normal text-body-secondary">Yo</small>
-                                </span>
-                            </label>`;
-        divContenedor.append(elementoYo);
+        let isFirstElement = true; // Variable para identificar el primer elemento
 
-        console.log('sss',data);
         data.forEach((Pacientes) => {
+            let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
+            isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
+
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
                                 <span class="text-veris fw-medium">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
@@ -661,12 +763,11 @@ Mi Veris - Citas - Terapia física
                                 </span>
                             </label>`;
             divContenedor.append(elemento);
-
         });
     }
 
     // aplicar filtros
-    $('#aplicarFiltros').on('click', function() {
+    $('#aplicarFiltros').on('click', async function() {
         const contexto = $(this).data('context');
         aplicarFiltros(contexto);
 
@@ -674,6 +775,7 @@ Mi Veris - Citas - Terapia física
 
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+        await consultarConvenios(texto);
 
         identificacionSeleccionada = texto.numeroPaciente;
 
@@ -711,8 +813,8 @@ Mi Veris - Citas - Terapia física
     });
 
 
-    // boton ver orden
-    $(document).on('click', '.btn.text-primary-veris.fw-normal.fs--1', function(){
+    // boton ver ordenCard
+    $(document).on('click', '#verOrdenCard', function(){
         let datos = $(this).data('rel');
         descargarDocumentoPdf(datos);
     });
@@ -722,5 +824,86 @@ Mi Veris - Citas - Terapia física
         let datos = $(this).data('rel');
         descargarDocumentoPdf(datos);
     });
+
+    // boton agendar cita modal setear datos en localstorage
+    $(document).on('click', '#btnAgendarCitaModal', function(){
+        let datosRel = $(this).data('rel');
+        console.log('datosRel', datosRel);
+        let datos = datosRel.servicio;
+        let datosConvenio = datosRel.tratamiento;
+        console.log('datosConvenio', datos);
+        let online;
+        if (datos.modalidad == 'PRESENCIAL') {
+            online = 'N';
+        } else {
+            online = 'S';
+        }
+        // capturar el data-rel del filtro
+        let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+        
+
+        let params = {}
+        params.online = online;
+        params.paciente = dataPaciente;
+        params.especialidad = {
+            codigoEspecialidad : datos.codigoEspecialidad,
+            codigoPrestacion : datos.codigoPrestacion,
+            codigoServicio : datos.codigoServicio,
+            codigoTipoAtencion : datos.codigoTipoAtencion,
+            esOnline : online,
+            imagen : datos.urlImagenTipoServicio,
+            nombre : datos.nombreServicio,
+        }
+        params.convenio = datosConvenio;
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+        if (online == 'S') {
+            window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
+        } else {
+            // ir a central medica
+            window.location.href = '/citas-elegir-central-medica/{{ $tokenCita }}';
+        }
+        
+    });
+
+
+    // boton agendar cita modal setear datos en localstorage 
+    $(document).on('click', '.btn-agendar', function(){
+        let datosServicio = $(this).data('rel');
+        console.log('datosServicio', datosServicio);
+
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = 'S';
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = 'N';
+        }
+    
+        let dataCita = {}
+        dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+            origen: "Listatratamientos"
+        };
+        dataCita.origen = "Listatratamientos";
+        dataCita.convenio = datosConvenios;
+        dataCita.convenio.origen = "Listatratamientos";
+        dataCita.tratamiento = datosServicio;
+        dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
+        dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
+        dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+    });
+
+
 </script>
 @endpush

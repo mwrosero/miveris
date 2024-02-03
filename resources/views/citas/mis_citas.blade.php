@@ -192,7 +192,8 @@ Mi Veris - Citas - Mis citas
                                                     <p class="fw-normal fs--2 mb-0">${capitalizarElemento(historial.nombrePaciente)}</p>
                                                     <div class="d-flex justify-content-end align-items-center mt-3">
                                                         <div>
-                                                            <a href="#" class="btn btn-sm btn-outline-primary-veris shadow-none" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf"><i class="bi bi-file-earmark-pdf"></i> Ver PDF</a>
+                                                            <div class="btn btn-sm btn-outline-primary-veris shadow-none btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}
+                                                            ><i class="bi bi-file-earmark-pdf"></i> Ver PDF</div>
                                                             <a href=${quitarComillas(historial.urlEncuesta)} class="btn btn-sm btn-outline-primary-veris shadow-none">Calificar</a>
                                                             <a href="/citas" class="btn btn-sm btn-primary-veris shadow-none">Reagendar</a>
                                                         </div>
@@ -233,10 +234,14 @@ Mi Veris - Citas - Mis citas
         if (data.code == 200){
 
             if (data.data.length == 0) {
+                // clear div citasActuales
+
+                $('#citasActuales').empty();
                 $('#mensajeNoCita').removeClass('d-none');
             } else{
 
                 let citasActuales = $('#citasActuales');
+                $('#mensajeNoCita').addClass('d-none');
                 citasActuales.empty();
 
                 // forEach de data.data
@@ -245,24 +250,43 @@ Mi Veris - Citas - Mis citas
 
                     let element = `<div class="col-12 col-md-6">
                                         <div class="card">
+<<<<<<< HEAD
+                                            <div class="card-body p-2">`
+                                            if (cita.esVirtual == 'S') {
+                                                element += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                                                                <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
+                                                            </div>`;
+                                            }
+                        element += `<div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(cita.especialidad)}</h6>
+                                        ${determinarMensajeEstadoCita(cita.mensajeEstado)}
+=======
                                             <div class="card-body p--2">
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(cita.especialidad)}</h6>
                                                     ${determinarMensajeEstadoCita(cita.mensajeEstado)}
+>>>>>>> miguel
 
-                                                </div>
-                                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
-                                                <p class="fw-normal fs--2 mb-0"> <b class="hora-cita fw-normal text-primary-veris">${cita.dia}</b></p>
-                                                <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(cita.medico)}</p>
-                                                <p class="fw-normal fs--2 mb-0">${cita.nombrePaciente}</p>
+                                    </div>
+                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
+                                    <p class="fw-normal fs--2 mb-0">${cita.dia} <b class="hora-cita fw-normal text-primary-veris"> ${cita.horaInicio}
+                                        </b></p>
+                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(cita.medico)}</p>
+                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(cita.nombrePaciente)}</p>
 
-                                                <div class="d-flex justify-content-between align-items-center mt-3">
-                                                    ${determinarBotonCita(cita)}
-                                                </div>
+                                    <div class="d-flex justify-content-between align-items-center mt-3">
+                                        ${determinarBotonCita(cita)}
+                                        `;
 
-                                            </div>
-                                        </div>
+                        if (cita.esVirtual == "S") {
+                            element += `<a href="${cita.idTeleconsulta}" class="btn btn-sm btn-primary-veris m-3">Conectarme</a>
                                     </div>`;
+                        }
+
+                        element += `</div>
+                                </div>
+                            </div>
+                        </div>`;
                     citasActuales.append(element);
 
                 });
@@ -289,6 +313,81 @@ Mi Veris - Citas - Mis citas
 
         }
         return data;
+    }
+
+    // obtener lista de documentos 
+    async function obtenerListaDocumentos(datos) {
+        console.log('datossss', datos.secuenciaAtencion);    
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/documentos?secuenciaAtencion=${datos.secuenciaAtencion}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        if (data.code == 200) {
+            console.log('data', data);
+            let divContenedor = $('.verPdf');
+            divContenedor.empty(); // Limpia el contenido actual
+            data.data.forEach((documento) => {
+                let nuevosdatos = {}
+                nuevosdatos.datosCita = datos;
+                nuevosdatos.datosDocumento = documento;
+                let elemento = `<button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3 btnDescargarPdf" data-rel=${btoa(JSON.stringify(nuevosdatos))}>
+                                    <span class="text-veris fw-bold">
+                                        ${capitalizarElemento(documento.nombreDocumento)}
+                                    </span>
+                                    <i class="bi bi-download ms-auto"></i>
+                                </button>`;
+                divContenedor.append(elemento);
+            });
+        }
+
+
+
+        return data;
+    }
+
+    // descargar documento btnDescargarPdf
+    $(document).on('click', '.btnDescargarPdf', async function() {
+        let data = $(this).data('rel');
+        // decodificar data
+        data = JSON.parse(atob(data));
+        console.log('data', data);
+        await descargarDocumentoPdfPrincipal(data);
+    });
+
+    // descargar documento
+    async function descargarDocumentoPdfPrincipal(datos){
+
+        let args = [];
+        let canalOrigen = 'APP_CMV'
+        let secuenciaAtencion = datos.datosCita.secuenciaAtencion;
+        let tipoServicio = datos.datosDocumento.tipoServicio;
+        let numeroOrden = datos.datosDocumento.numeroOrden;
+
+        if (tipoServicio == 'RECETA') {
+            console.log('entro a receta');
+            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=&secuenciaReceta=${datos.datosDocumento.secuenciaReceta} `;
+        }
+        else {
+            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=${numeroOrden} `;
+        
+        }
+        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+        } catch (error) {
+            console.error('Error al obtener el PDF:', error);
+        }
     }
 
 
@@ -346,8 +445,13 @@ Mi Veris - Citas - Mis citas
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
+<<<<<<< HEAD
+        let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroIdentificacion }}" data-rel='YO'
+=======
         let elementoYo = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
+>>>>>>> miguel
                                 checked>
                                 <span class="text-veris fw-bold">
                                     ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
@@ -358,8 +462,13 @@ Mi Veris - Citas - Mis citas
 
         console.log('sss',data);
         data.forEach((Pacientes) => {
+<<<<<<< HEAD
+            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroIdentificacion}" esAdmin= ${Pacientes.esAdmin} unchecked>
+=======
             let elemento = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
+>>>>>>> miguel
                                 <span class="text-veris fw-bold">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
@@ -440,6 +549,16 @@ Mi Veris - Citas - Mis citas
 
         return horaFormateada;
     }
+
+
+    // ver pdf offcanvas
+    $(document).on('click', '.btnVerPdf', async function() {
+        let data = $(this).data('rel');
+        // decodificar data
+        data = JSON.parse(atob(data));
+        await obtenerListaDocumentos(data);
+    });
+
 
 
 

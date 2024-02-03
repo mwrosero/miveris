@@ -102,7 +102,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(data.code == 200){
             familiar = data.data;
             mostrarListaPacientes();
-
         }
         return data;
     }
@@ -117,6 +116,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let canalOrigen = _canalOrigen;
         let dataRel = $(event.currentTarget).data('rel');
         dataPaciente = dataRel;
+        console.log("--------------------------");
         console.log("dataRel", dataRel);
         let codigoUsuario;
         let tipoIdentificacion;
@@ -126,7 +126,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let telefono;
         let correo;
 
-
         if(dataRel != ""){
             codigoUsuario = dataRel.numeroIdentificacion;
             tipoIdentificacion = dataRel.tipoIdentificacion;
@@ -135,7 +134,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             direccion = dataRel.direccion;
             telefono = dataRel.telefono;
             correo = dataRel.correo;
-
         }
 
         args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
@@ -154,7 +152,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     params.online = online;
                     params.convenio = convenios;
                     params.paciente = dataRel;
-                    
 
                     let ruta = '';
                     if (ordenExterna == 'S') {
@@ -167,7 +164,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     else {
                         ruta = `/citas-elegir-especialidad/{{ $params }}`;
                     }
-                    let functionValidacion = ``;
+                    
                     if(convenios.permiteReserva == "N"){
                         ruta = `#`;
                     }
@@ -256,7 +253,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let listaPacientes = $('#listaPacientes');
         
         let elemento = '';
-        
 
         if(familiar != null){
             familiar.forEach((pacientes) => {

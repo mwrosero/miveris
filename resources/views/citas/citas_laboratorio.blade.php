@@ -44,7 +44,7 @@ Mi Veris - Citas - Citas Laboratorio
                         </div>
                         <div class="col-auto">
                             <div class="btn-master w-100">
-                                <a href="/citas-datos-facturacion/{{ $params }}" class="btn text-white shadow-none">{{ __('Pagar') }}</a>
+                                <a href="/citas-datos-facturacion/{{ $params }}" id="btnPagar" class="btn text-white shadow-none">{{ __('Pagar') }}</a>
                                 |
                                 <p class="btn text-white mb-0 shadow-none cursor-inherit" id="btntotal"></p>
                             </div>
@@ -66,10 +66,18 @@ Mi Veris - Citas - Citas Laboratorio
     let idPaciente = dataCita.paciente.numeroPaciente;
     let numeroOrden = dataCita.datosTratamiento.idOrden;
     let codigoEmpresa = dataCita.datosTratamiento.codigoEmpresa;
-
+    let items = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarDetallesOrdenLaboratorio();
+
+        $('body').on('change', '.input-prestacion', function(){
+            itemsSelected();
+        })
+
+        $('body').on('click', '#btnPagar', function () {
+            guardarPrestacionesStorage();
+        });
     });
 
     // funciones asincronas
@@ -101,14 +109,16 @@ Mi Veris - Citas - Citas Laboratorio
                     elementos += `
                     <div class="row g-0 justify-content-between">
                         <div class="col-9 d-flex align-items-center">
-                            <i class="bi bi-check-square-fill fs-5 text-primary me-2"></i>
-                            <p class="text-900 fw-semi-bold fs--2 mb-0">${elemento.nombrePrestacion}</p>
+                            <!--i class="bi bi-check-square-fill fs-5 text-primary me-2"></i-->
+                            <input class="form-check-input input-prestacion me-2" type="checkbox" value="${elemento.codigoPrestacion}" id="prestacion-${elemento.codigoPrestacion}" checked>
+                            <label class="form-check-label text-900 fw-semi-bold fs--2 mb-0" for="prestacion-${elemento.codigoPrestacion}">
+                                ${elemento.nombrePrestacion}
+                            </label>
+                            <!--p class="text-900 fw-semi-bold fs--2 mb-0">${elemento.nombrePrestacion}</p-->
                         </div>
                         <div class="col-3 d-flex justify-content-end align-items-center">
                             <p class="text-1100 fw-semi-bold fs--2 mb-0">$ ${elemento.total}</p>
-
                             ${permitePago(elemento.permitePago)}
-                            
                         </div>
                     </div>
                     `;
@@ -124,31 +134,40 @@ Mi Veris - Citas - Citas Laboratorio
 
             elementodetallesOrdenLaboratorio.append(elementos);
 
-            
-
-
-
-
-
         }
+        itemsSelected();
         return data;
     }
 
     // permite pago 
-
     function permitePago(data){
-
         if (data == 'S'){
             return `<i class="bi bi-check-square-fill fs-5 text-success ms-2"></i>`;
             // return `<i class="bi bi-dash-square-fill fs-5 text-warning-veris ms-2"></i>`;
         }else{
             // return amarillo
-
             return `<i class="bi bi-dash-square-fill fs-5 text-warning-veris ms-2"></i>`;
         }
     }
 
+    function itemsSelected(){
+        items = [];
+        let total = 0;
+        $.each(dataCita.datosTratamiento.detalleLaboratorio.listaOrdenesDetalle, function(key,value){
+            if($('#prestacion-'+value.codigoPrestacion).is(':checked')){
+                items.push(value);
+                total += value.total;
+            }
+        })
+        $('#Subtotal').html("$" + total.toFixed(2));
+    }
 
+    function guardarPrestacionesStorage() {
+        dataCita.listadoPrestaciones = items;
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+    }
+
+    itemsSelected()
 
 </script>
 @endpush

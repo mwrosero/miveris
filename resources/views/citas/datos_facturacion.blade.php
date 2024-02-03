@@ -37,6 +37,43 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </div>
         </div>
     </div>
+    <!-- Modal Desgloce -->
+    <div class="modal fade" id="modalDesglose" tabindex="-1" aria-labelledby="modalDesgloseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered mx-auto">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mx-auto title-section fw-bold">Desglose de valores</h5>
+                </div>
+                <div class="modal-body text-center p-3" id="contenidoDesglose">
+                    {{-- <div class="row">
+                        <div class="col-12 text-center fw-bold fs--1 mb-2">Michael Rosero Peralta</div>
+                        <div class="col-6 mb-2">
+                            <p class="text-start fs--2 mb-1">Hemograma completo</p>
+                            <div class="card bg-neutral shadow-none p-2">
+                                <table class="card-body w-100">
+                                    <tr class="border-bottom">
+                                        <th class="fw-bold fs--2">P.V.P.</th>
+                                        <th class="fw-bold fs--2">Crédito/convenio</th>
+                                        <th class="fw-bold fs--2">IVA</th>
+                                        <th class="fw-bold fs--2">TOTAL</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs--2">$9.80</td>
+                                        <td class="fs--2">$0.00</td>
+                                        <td class="fs--2">$0.00</td>
+                                        <td class="fs--2">$9.80</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div> --}}
+                </div>
+                <div class="modal-footer pb-3 pt-0 px-3">
+                    <button type="button" id="btn-confirmar-y-pagar" class="btn btn-primary-veris m-0 mx-auto" data-bs-dismiss="modal">Confirmar y pagar ahora</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">Datos de facturación</h5>
@@ -165,6 +202,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     |
                                     <p class="btn text-white mb-0 shadow-none cursor-inherit" id="totalLabel"></p>
                                 </div>
+                                <div id="btn-ver-examenes" class="btn-master w-lg-50 mx-auto mt-2 cursor-pointer d-none">
+                                    Ver exámenes a pagar
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -183,7 +223,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     document.addEventListener("DOMContentLoaded", async function () {
         //await reservarCita();
-        if(!dataCita.reserva){
+        if(!dataCita.reserva && !dataCita.datosTratamiento){
             window.history.back();
         }
 
@@ -209,6 +249,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         $('body').on('click', '#btn-next', async function(){
             //validar formulario datos factura
+            await validarDatosFactura();
+        })
+
+        $('body').on('click', '#btn-ver-examenes', async function(){
+            await mostrarDesglose();
+        })
+
+        $('body').on('click', '#btn-confirmar-y-pagar', async function(){
             await validarDatosFactura();
         })
 
@@ -296,19 +344,39 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
-        args["data"] = JSON.stringify({
+
+        let tipoServicio = "CITA";
+        let tipoSolicitud = null;
+        
+        if(dataCita.listadoPrestaciones && dataCita.listadoPrestaciones.length > 0){
+            tipoServicio = "ORDEN";
+            addPrestacionesToModal();
+            $("#btn-ver-examenes").removeClass('d-none');
+        }
+
+        let dataPT = {
             "idPaciente":{{ Session::get('userData')->numeroPaciente }},
             //"codigoPreTransaccion": dataCita.reserva.secuenciaTransaccion,
-            "tipoServicio": "CITA",
+            "tipoServicio": tipoServicio,
             "codigoConvenio": dataCita.convenio.codigoConvenio,
             "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
-            "tipoSolicitud": null,
-            "listaCitas": [{
-                "codigoReserva": dataCita.reserva.codigoReserva
-            }],
+            "tipoSolicitud": tipoSolicitud,
             "paquete": null,
             "listaOrdenes": null
-        });
+        }
+
+        if(dataCita.reserva){
+            dataPT.listaCitas = [{
+                "codigoReserva": dataCita.reserva.codigoReserva
+            }]
+        }
+
+        if(dataCita.listadoPrestaciones && dataCita.listadoPrestaciones.length > 0){
+            dataPT.listaOrdenes = dataCita.listadoPrestaciones;
+        }
+
+
+        args["data"] = JSON.stringify(dataPT);
         const data = await call(args);
         console.log(data);
 
@@ -470,6 +538,41 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }else{
             alert(data.message);
         }
+    }
+
+    function addPrestacionesToModal(){
+        $('#contenidoDesglose').empty();
+        let elem = `<div class="row">
+            <div class="col-12 text-center fw-bold fs--1 mb-2">${dataCita.datosTratamiento.nombrePaciente}</div>`
+        
+        $.each(dataCita.listadoPrestaciones, function(key, value){
+            elem += `<div class="col-12 col-md-6 mb-3">
+                <p class="text-start text-nowrap overflow-hidden text-truncate fs--2 mb-1">${value.nombrePrestacion}</p>
+                <div class="card bg-neutral shadow-none p-2">
+                    <table class="card-body w-100">
+                        <tr class="border-bottom">
+                            <th class="fw-bold fs--2">P.V.P.</th>
+                            <th class="fw-bold fs--2">Crédito/convenio</th>
+                            <th class="fw-bold fs--2">IVA</th>
+                            <th class="fw-bold fs--2">TOTAL</th>
+                        </tr>
+                        <tr>
+                            <td class="fs--2">$${value.subtotal.toFixed(2)}</td>
+                            <td class="fs--2">$${value.cubreEmpresa.toFixed(2)}</td>
+                            <td class="fs--2">$${value.montoIva.toFixed(2)}</td>
+                            <td class="fs--2">$${value.total.toFixed(2)}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>`;
+        });
+        elem += `</div>`;
+        $('#contenidoDesglose').append(elem);
+    }
+
+    function mostrarDesglose(){
+        var myModal = new bootstrap.Modal(document.getElementById('modalDesglose'));
+        myModal.show();
     }
 
     function guardarData(){

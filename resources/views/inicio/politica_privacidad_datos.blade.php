@@ -141,10 +141,10 @@ Mi Veris - Politica-privacidad-datos
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="correoElctronico" class="form-label fw-bold">Correo elctrónico</label>
+                            <label for="correoElctronico" class="form-label fw-bold">Correo electrónico</label>
                             <input type="email" class="form-control border-desaturated" name="correoElctronico" id="correoElctronico" required  readonly/>
                             <div class="invalid-feedback">
-                                Ingrese un correo elctrónico.
+                                Ingrese un correo electrónico.
                             </div>
                         </div>
                         <div class="col-md-6">
