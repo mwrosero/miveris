@@ -250,7 +250,6 @@ Mi Veris - Citas - Mis citas
 
                     let element = `<div class="col-12 col-md-6">
                                         <div class="card">
-<<<<<<< HEAD
                                             <div class="card-body p-2">`
                                             if (cita.esVirtual == 'S') {
                                                 element += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
@@ -260,12 +259,6 @@ Mi Veris - Citas - Mis citas
                         element += `<div class="d-flex justify-content-between align-items-center">
                                         <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(cita.especialidad)}</h6>
                                         ${determinarMensajeEstadoCita(cita.mensajeEstado)}
-=======
-                                            <div class="card-body p--2">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(cita.especialidad)}</h6>
-                                                    ${determinarMensajeEstadoCita(cita.mensajeEstado)}
->>>>>>> miguel
 
                                     </div>
                                     <p class="fw-bold fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
@@ -445,13 +438,8 @@ Mi Veris - Citas - Mis citas
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
-<<<<<<< HEAD
         let elementoYo = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroIdentificacion }}" data-rel='YO'
-=======
-        let elementoYo = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" value="{{ Session::get('userData')->numeroPaciente }}" data-rel='YO'
->>>>>>> miguel
                                 checked>
                                 <span class="text-veris fw-bold">
                                     ${capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }} {{ Session::get('userData')->segundoApellido }}")}
@@ -462,13 +450,8 @@ Mi Veris - Citas - Mis citas
 
         console.log('sss',data);
         data.forEach((Pacientes) => {
-<<<<<<< HEAD
             let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroIdentificacion}" esAdmin= ${Pacientes.esAdmin} unchecked>
-=======
-            let elemento = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
->>>>>>> miguel
                                 <span class="text-veris fw-bold">
                                     
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}

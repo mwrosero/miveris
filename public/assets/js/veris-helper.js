@@ -514,9 +514,7 @@ async function aplicarFiltrosResultados(contexto, tipoServicio) {
     let pacienteSeleccionado = datos.tipoIdentificacion;
     let tipoIdentificacion = datos.numeroIdentificacion;
     let esAdmin = datos.esAdmin;
-    if (datos.parentesco === 'YO') {
-        esAdmin = 'S';
-    }
+    
 
     console.log('paciente',datos.tipoIdentificacion);
     let fechaDesde = $('#fechaDesde').val() || '';
