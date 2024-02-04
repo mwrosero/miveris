@@ -281,6 +281,32 @@ Mi Veris - Resultados
          return data;
      }
 
+     // mostrar lista de pacientes en el filtro
+    function mostrarListaPacientesFiltro(){
+
+        let data = familiar;
+
+        let divContenedor = $('.listaPacientesFiltro');
+        divContenedor.empty(); // Limpia el contenido actual
+
+        let isFirstElement = true; // Variable para identificar el primer elemento
+
+        data.forEach((Pacientes) => {
+            let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
+            isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
+
+            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroIdentificacion}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
+                                <span class="text-veris fw-medium">
+                                    
+                                    ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
+                                    <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
+                                </span>
+                            </label>`;
+            divContenedor.append(elemento);
+        });
+    }
+
      
 
  
