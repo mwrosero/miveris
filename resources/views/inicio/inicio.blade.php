@@ -497,6 +497,11 @@ Mi Veris - Inicio
             }
 
             elemento += `   <a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a> `
+            if(citas.estaPagada == "N"){
+                elemento += `<a href="#
+                " class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'
+                >Pagar</a>`;
+            }
             if (citas.esVirtual == "S") {
                 elemento += `<a href="${citas.idTeleconsulta}
                 " class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
@@ -666,6 +671,27 @@ Mi Veris - Inicio
 
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
     });
+
+    // btn-pagar para redireccionar a la pagina de pago
+    $(document).on('click', '.btn-pagar', function(){
+        let data = $(this).data('rel');
+        console.log('dataPagar', data);
+    });
+
+    // consultar datos de facturacion
+    async function consultarDatosFacturacion(data){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?idPreTransaccion=5017811&codigoTipoIdentificacion=2&numeroIdentificacion=0940389299
+        `;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const dataFacturacion = await call(args);
+        console.log('dataFacturacion', dataFacturacion);
+        if(dataFacturacion.code == 200){
+            return dataFacturacion.data;
+        }
+        return [];
+    }
 
     
 

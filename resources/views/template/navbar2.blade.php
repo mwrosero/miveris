@@ -12,19 +12,9 @@
         </a>
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
-<<<<<<< HEAD
-            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1" id="dropdownNotifications">
-                <a class="nav-link dropdown-toggle hide-arrow" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
-                    <i class="fa-solid fa-bell"> 
-                        <span class="badge bg-danger rounded-pill d-none" id="numeroNotificaciones"></span>
-
-                    </i>
-                    
-=======
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-4 me-xl-1" id="dropdownNotifications">
                 <a class="nav-link dropdown-toggle hide-arrow fs-3" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
                     <i class="fa-solid fa-bell"></i>
->>>>>>> miguel
                 </a>
             </li>
             <!--/ Notification -->
