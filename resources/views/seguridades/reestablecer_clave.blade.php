@@ -3,6 +3,11 @@
     Veris - Recuperar Contraseña
 @endsection
 @section('back-button')
+@php
+$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+// dd(Session::get('userData'));
+// dd($data);
+@endphp
 <div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
     <a href="{{ route('login') }}" class="text-decoration-none">
         <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 16px;">
@@ -19,7 +24,7 @@
 <!-- Content Recuperar Clave -->
 <p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-medium">Recupera tu contraseña</p>
 <p class="fs--1 mb-2 text-center text-dark-veris fw-normal">Ingresa el código que enviamos a tu correo.</p>
-<p class="fs--2 text-center text-dark-veris fw-medium" id="mailUsuario"></p>    <!-- Resultado: 'm**************@gmail.com' -->
+<p class="fs--2 text-center text-dark-veris fw-medium email-masked"></p>
 <form id="formAuthentication" class="mb-3">
     <div class="mb-3">
         <label for="codigoAutorizacion" class="form-label bg-colortext fw-medium mt-3">Código de autorización *</label>
@@ -29,6 +34,8 @@
             onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
             id="codigoAutorizacion"
             name="codigoAutorizacion"
+            value=""
+            autocomplete="codigoAutorizacion"
             placeholder="Código de autorización"
             required />
     </div>
@@ -41,6 +48,7 @@
             id="password"
             class="form-control form-filter border-0"
             name="password"
+            autocomplete="new-password"
             placeholder="Ingresa tu contraseña"
             required />
             <span id="togglePassword" class="input-group-text cursor-pointer form-filter border-0"
@@ -56,6 +64,7 @@
             id="password2"
             class="form-control form-filter border-0"
             name="password2"
+            autocomplete="new-password2"
             placeholder="Confirma la contraseña"
             required />
             <span id="togglePassword2" class="input-group-text cursor-pointer form-filter border-0"
@@ -77,7 +86,7 @@
     const passwordInput2 = document.getElementById('password2');
     const togglePassword2 = document.getElementById('togglePassword2');
 
-    const codigoUsuario = atob("{{ $codigoUsuario }}");
+    const dataUser = JSON.parse(atob(@JSON($params)));
 
     togglePassword.addEventListener('click', function() {
         if (passwordInput.type === 'password') {
@@ -101,7 +110,7 @@
 
     document.addEventListener("DOMContentLoaded", async function () {
         const reestablecerButton = document.querySelector(".btn-recuperar");
-
+        await obtenerDatosUsuario();
         reestablecerButton.addEventListener("click", async function (e) {
             e.preventDefault();
             let errors = false;
@@ -163,32 +172,19 @@
         });
     });
 
-    function ocultarCorreoElectronico(correo) {
-        // Encuentra la posición del caracter '@'
-        const posicionArroba = correo.indexOf('@');
+    async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ dataUser.tipoIdentificacion }&numeroIdentificacion=${ dataUser.numeroIdentificacion }`;
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "GET";
+        args["showLoader"] = true;
         
-        // Si no se encuentra el caracter '@' o está al inicio, no hace nada
-        if (posicionArroba <= 1) {
-            return correo;
+        const data = await call(args);
+        console.log('datosUsuario',data);
+        if (data.code == 200) {
+            $('.email-masked').html(enmascararEmail(data.data.mail));
         }
-
-        // Obtiene la primera letra del correo
-        const primeraLetra = correo.charAt(0);
-
-        // Genera una cadena de asteriscos con la longitud correcta
-        const asteriscos = '*'.repeat(posicionArroba - 1);
-
-        // Concatena la primera letra con los asteriscos y el resto del correo
-        const correoOculto = primeraLetra + asteriscos + correo.slice(posicionArroba);
-
-        return correoOculto;
-    }
-
-    // Ejemplo de uso
-    const correoOriginal = 'micorreoestestweb@gmail.com';
-    const correoOculto = ocultarCorreoElectronico(correoOriginal);
-    let mailUsuario = document.getElementById('mailUsuario');
-    mailUsuario.innerText = correoOculto;
-    console.log(correoOculto);  // Resultado: 'e**************@gmail.com'
+        return;
+    } 
 </script>
 @endsection
