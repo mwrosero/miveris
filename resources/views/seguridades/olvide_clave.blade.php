@@ -20,7 +20,7 @@
 </div>
 <!-- /Logo -->
 <!-- Content Olvide Clave -->
-<p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-bold">Recupera tu contraseña</p>
+<p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-medium">Recupera tu contraseña</p>
 <p class="fs-12 mb-5 text-center bg-colortext">Recibirás un código a tu correo electrónico para recuperar tu contraseña.</p>
 
 <form id="formAuthentication" class="mb-3">
@@ -31,7 +31,7 @@
         </div>
     @endif
     <div class="mt-5 mb-2">
-        <label for="tipoIdentificacion" class="form-label fw-bold">Tipo de identificación *</label>
+        <label for="tipoIdentificacion" class="form-label fw-medium">Tipo de identificación *</label>
         <select class="form-select border-0"
             id="tipoIdentificacion"
             name="tipoIdentificacion"
@@ -41,7 +41,7 @@
         </select>
     </div>
     <div class="mb-3">
-        <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación *</label>
+        <label for="numeroIdentificacion" class="form-label fw-medium">Número de identificación *</label>
         <input type="number"
             class="form-control border-0"
             id="numeroIdentificacion"

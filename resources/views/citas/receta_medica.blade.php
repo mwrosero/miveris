@@ -19,7 +19,7 @@ Mi Veris - Citas - Receta médica
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
             <small class="d-none">Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
             <div>
-                <div class="list-group gap--2 mb-3 verPdf">
+                <div class="list-group gap-2 mb-3 verPdf">
                     <label class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
                         <div class="d-flex flex-column">
                             <small class="text-veris fw-medium denominacion">
@@ -40,7 +40,7 @@ Mi Veris - Citas - Receta médica
         
         <div class="offcanvas-footer px-4">
             <div class="col-md-12">
-                <button class="btn btn-primary-veris w-100 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+                <button class="btn btn-primary-veris w-100 py-3 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
@@ -454,7 +454,7 @@ Mi Veris - Citas - Receta médica
             html.empty();
             let elementos = '';
             data.data.forEach((receta) => {
-                elementos += `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
+                elementos += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
                                 <div class="d-flex flex-column">
                                     <small class="text-veris fw-medium denominacion">
                                         ${agregarEspacios(receta.denominacion)}

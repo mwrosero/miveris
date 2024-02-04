@@ -90,7 +90,10 @@ Mi Veris - Doctores favoritos
             </div>
         </div>
 
-        <div class="row justify-content-center"  id="doctoresFavoritos" >
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10">
+                <div class="row g-3" id="doctoresFavoritos"></div>
+            </div>
         </div>
         <!-- Doctor favorito dinamico -->
 
@@ -182,7 +185,7 @@ Mi Veris - Doctores favoritos
             // Ahora iterar sobre los resultados para construir el HTML
             resultados.forEach((disponibilidad, index) => {
                 let doctores = data.data[index];
-                elemento+= `<div class="col-12 col-md-6 col-lg-4 mb-3">
+                elemento+= `<div class="col-12 col-md-6">
                     <div class="card h-100">
                         <div class="card-body p-3">
                             <div class="row gx-2">

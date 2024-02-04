@@ -50,8 +50,9 @@ Mi Veris - Citas - Imágenes y procedimientos
     </div>
 
     <!-- Filtro -->
-    
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Imágenes y procedimientos') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Imágenes y procedimientos') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3" id="pills-tab" role="tablist">
