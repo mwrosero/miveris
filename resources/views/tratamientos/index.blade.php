@@ -315,8 +315,9 @@ Mi Veris - Citas - Mis tratamientos
                                                 <p class="fw-light fs--2 mb-0">Terminado el: <b class="text-primary-veris fw-light fs--2" id="fechaTratamiento">${tratamientosRealizados.fechaTratamiento}</b></p>
                                             </div>
                                             <div class="col-4 col-md-4 text-end">
-                                                <a href="/tratamiento/${ulrParams}"
-                                                 class="btn btn-sm btn-primary-veris">Ver todo</a>
+                                                <a href="/tratamiento/{{ $tokenCita }}" data-rel='${JSON.stringify(params)}' 
+                                                 class="btn btn-sm btn-primary-veris btn-tratamientoRealizado shadow-none">
+                                                    Ver todo</a>
                                             </div>
                                         </div>
                                     </div>
@@ -512,6 +513,21 @@ Mi Veris - Citas - Mis tratamientos
 
     // funcion para setear los valores del tratamiento en el localstorage
     $(document).on('click', '.btn-tratamiento', function(){
+
+        let dataTratamiento = $(this).data('rel');
+        
+        let paciente = $('input[name="listGroupRadios"]:checked').data('rel');
+        
+        let params = { }
+        params.paciente = paciente;
+        params.tratamiento = dataTratamiento;
+        
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+    });
+
+
+    // funcion para setear los valores del tratamiento realizado en el localstorage
+    $(document).on('click', '.btn-tratamientoRealizado', function(){
 
         let dataTratamiento = $(this).data('rel');
         
