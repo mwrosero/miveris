@@ -21,6 +21,20 @@ Mi Veris - Resultados
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Resultados') }}</h5>
     </div>
+    <!-- modal  ha ocurrido un error -->
+    <div class="modal fade" id="haOcurridoUnErrorModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body" id="modalBody">
+                    <div class="text-center">
+                        <h5 class="mt-3">Veris</h5>
+                        <p>Ha ocurrido un error inesperado</p>
+                        <button type="button" class="btn btn-primary-veris shadow-none" data-bs-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- filtro -->
     <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
@@ -139,17 +153,14 @@ Mi Veris - Resultados
  
      // Consultar resultados de laboratorio
  
-     async function consultarResultadosPorTipo(numeroIdentificacion, tipoIdentificacion, desde='', hasta = '', tipoServicio , esAdmin = 'S') {
-         let args = [];
-         let canalOrigen = _canalOrigen;
-         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
-         tipoServicio = "IMG,PROC";
-         numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
- 
-                 
-         args["endpoint"] = api_url + `/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
-         
+     async function consultarResultadosPorTipo(numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}", tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}", desde = '', hasta = '', esAdmin = 'S') {
+        
+        const tipoServicio = "IMG,PROC";
+        const canalOrigen = _canalOrigen;
+
+        const args = {
+            "endpoint": `${api_url}/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${numeroIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
+        };
          args["method"] = "GET";
          args["showLoader"] = true;
          console.log(7,args["endpoint"]);
@@ -158,22 +169,25 @@ Mi Veris - Resultados
  
          let html = $("#resultadosIP");
          html.empty();
-         if (data.code == 200){
+        if (data.code == 200){
+            let tienePermisos = data.data.tienePermisoAdmin;
+            if (numeroIdentificacion == "{{ Session::get('userData')->numeroIdentificacion }}"){
+                tienePermisos = true;
+            }
             if (data.data.items.length == 0){
-                 if (esAdmin == 'S'){
+                 if (tienePermisos == true){
                      $("#mensajeNoTienesResultadosRealizados").removeClass("d-none");
                     $("#mensajeNoTienesPermisosAdministradorRealizados").addClass("d-none");
 
-                 } else if (esAdmin == 'N'){
+                 } else if (tienePermisos == false){
                     $("#mensajeNoTienesPermisosAdministradorRealizados").removeClass("d-none");
-                    $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
-                     
+                    $("#mensajeNoTienesResultadosRealizados").addClass("d-none");        
                  }
             } 
             else {
                 
                 $("#mensajeNoTienesPermisosAdministradorRealizados").addClass("d-none");
-                if (esAdmin == 'S'){
+                if (tienePermisos == true){
                 
                     $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
                     
@@ -206,7 +220,7 @@ Mi Veris - Resultados
                     html.append(elemento);
                     
                 } 
-                else if (esAdmin == 'N'){
+                else if (tienePermisos == false){
                     // mostrar mensaje de no tienes permisos de administrador
                     $("#mensajeNoTienesPermisosAdministradorRealizados").removeClass("d-none");
                 }
@@ -307,6 +321,9 @@ Mi Veris - Resultados
 
         } catch (error) {
             console.error('Error al obtener el PDF:', error);
+            // mostrar mensaje de error
+            $('#haOcurridoUnErrorModal').modal('show');
+            
         }
 
     }
@@ -331,7 +348,31 @@ Mi Veris - Resultados
          return data;
      }
 
-     
+     // mostrar lista de pacientes en el filtro
+    function mostrarListaPacientesFiltro(){
+
+        let data = familiar;
+
+        let divContenedor = $('.listaPacientesFiltro');
+        divContenedor.empty(); // Limpia el contenido actual
+
+        let isFirstElement = true; // Variable para identificar el primer elemento
+
+        data.forEach((Pacientes) => {
+            let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
+            isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
+
+            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroIdentificacion}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
+                                <span class="text-veris fw-medium">
+                                    
+                                    ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
+                                    <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
+                                </span>
+                            </label>`;
+            divContenedor.append(elemento);
+        });
+    }
 
  
  

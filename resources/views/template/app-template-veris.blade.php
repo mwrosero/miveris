@@ -318,23 +318,31 @@
     <script>
         // capializar la primera letra de cada palabra
         function capitalizarElemento(elemento) {
-            try {
-                if (elemento == null) return "";
-                const texto = elemento.toLowerCase();
-                const palabras = texto.split(" ");
-                for (let i = 0; i < palabras.length; i++) {
-                    if (palabras[i].length === 0) continue;  // Continúa si la palabra está vacía
-                    const palabra = palabras[i];
-                    const primeraLetraMayuscula = palabra[0].toUpperCase();
-                    palabras[i] = primeraLetraMayuscula + palabra.substring(1);
-                }
-                const textoCapitalizado = palabras.join(" ");
-                return textoCapitalizado;
-            } catch (error) {
-                // Retornar el elemento original en caso de error
-                return elemento;
-            }
+    try {
+        console.log("Elemento original:", elemento); // Log de depuración
+        if (!elemento) return "";
+        const texto = elemento.trim().toLowerCase();
+        console.log("Texto procesado:", texto); // Log de depuración
+        const palabras = texto.split(/\s+/);
+
+        for (let i = 0; i < palabras.length; i++) {
+            console.log("Palabra antes de capitalizar:", palabras[i]); // Log de depuración
+            const palabra = palabras[i];
+            const primeraLetraMayuscula = palabra.charAt(0).toUpperCase();
+            palabras[i] = primeraLetraMayuscula + palabra.substring(1);
+            console.log("Palabra después de capitalizar:", palabras[i]); // Log de depuración
         }
+
+        const textoCapitalizado = palabras.join(" ");
+        console.log("Resultado final:", textoCapitalizado); // Log de depuración
+        return textoCapitalizado;
+    } catch (error) {
+        console.error("Error en capitalizarElemento:", error); // Log de errores
+        return elemento;
+    }
+}
+
+
 
 
         // funcion quitar comillas a la url

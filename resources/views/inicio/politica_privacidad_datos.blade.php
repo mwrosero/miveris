@@ -119,11 +119,11 @@ Mi Veris - Politica-privacidad-datos
                         </div>
                         <div class="col-md-3">
                             <label for="sexo" class="form-label fw-bold">Sexo</label>
-                            <select class="form-select border-desaturated custom-select-disabled" name="sexo" id="sexo" required disabled >
+                            <select class="form-select border-desaturated custom-select-disabled" name="sexo" id="sexo" required >
                                 <!-- Opciones del select aquí -->
                                 <option value="0">Elegir</option>
-                                <option value="f">Femenino</option>
-                                <option value="m">Masculino</option>
+                                <option value="F">Femenino</option>
+                                <option value="M">Masculino</option>
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -195,6 +195,7 @@ Mi Veris - Politica-privacidad-datos
     let datosUsuario = [];
     let provincias = [];
     let ciudades = [];
+    let sexo;
 
     // llamada al dom
     document.addEventListener('DOMContentLoaded', async function() {
@@ -212,6 +213,12 @@ Mi Veris - Politica-privacidad-datos
         provincias = await obtenerProvincias();
         ciudades = await obtenerCiudades(codeprovincia);
         llenarDatosUsuario(provincias, ciudades);
+
+        toggleFieldsBasedOnRectificationOption();
+
+        $('input[name="inlineRadioRectificacion"]').on('click', function () {
+            toggleFieldsBasedOnRectificationOption();
+        });
     });
 
     //obtener datos usuario
@@ -265,6 +272,11 @@ Mi Veris - Politica-privacidad-datos
 
         // llenar el select de pais con datos quemados
         $('#pais').append('<option value="1" selected>Ecuador</option>');
+
+        // llenar el select de sexo
+        
+        // setear el sexo del usuario con la variable sexo
+        $('#sexo').val(sexo);
 
     }
         
@@ -371,39 +383,25 @@ Mi Veris - Politica-privacidad-datos
         });
     });
 
-    $('input[name="inlineRadioRectificacion"]').click(function () {
-        if ($('#inlineRadioRectificacionNo').prop('checked')) {
-            $('#primerNombre').prop('readonly', false);
-            $('#segundoNombre').prop('readonly', false);
-            $('#prmerApellido').prop('readonly', false);
-            $('#segundoApellido').prop('readonly', false);
-            $('#fechaNacimiento').prop('readonly', false);
-            $('#telefono').prop('readonly', false);
-            $('#correoElctronico').prop('readonly', false);
-            $('#pais').prop('disabled', false);
-            $('#provincia').prop('disabled', false);
-            $('#ciudad').prop('disabled', false);
-            $('#dirección').prop('readonly', false);
+    function toggleFieldsBasedOnRectificationOption() {
+        const isRectificationYesChecked = $('#inlineRadioRectificacionSi').is(':checked');
 
-            // desabilitar el boton de guardar
-            $('#botonConfirmarPDP').prop('disabled', true);
-        } else {
-            $('#primerNombre').prop('readonly', true);
-            $('#segundoNombre').prop('readonly', true);
-            $('#prmerApellido').prop('readonly', true);
-            $('#segundoApellido').prop('readonly', true);
-            $('#fechaNacimiento').prop('readonly', true);
-            $('#telefono').prop('readonly', true);
-            $('#correoElctronico').prop('readonly', true);
-            $('#pais').prop('disabled', true);
-            $('#provincia').prop('disabled', true);
-            $('#ciudad').prop('disabled', true);
-            $('#dirección').prop('readonly', true);
+        // Campos a habilitar/deshabilitar
+        const fields = ['#primerNombre', '#segundoNombre', '#prmerApellido', '#segundoApellido', 
+                        '#fechaNacimiento', '#telefono', '#correoElctronico', '#pais', 
+                        '#provincia', '#ciudad', '#dirección', '#sexo'];
 
-            // habilitar el boton de guardar
-            $('#botonConfirmarPDP').prop('disabled', false);
-        }
-    });
+        // Habilitar/deshabilitar basado en la selección
+        fields.forEach(field => {
+            $(field).prop('readonly', !isRectificationYesChecked);
+        });
+
+        // Los selects requieren 'disabled' en lugar de 'readonly'
+        $('#pais, #provincia, #ciudad, #sexo').prop('disabled', !isRectificationYesChecked);
+
+        // Controlar el botón de guardar
+        $('#botonConfirmarPDP').prop('disabled', !isRectificationYesChecked);
+    }
 
     
 </script>

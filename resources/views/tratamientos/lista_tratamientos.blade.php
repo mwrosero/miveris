@@ -392,12 +392,14 @@ $data = json_decode(base64_decode($params));
         let args = [];
         let canalOrigen = 'APP_CMV'
         let secuenciaAtencion = datos.secuenciaAtenciones;
-        if(datosFiltrados.tipoCard == 'RECETAS'){
-            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=RECETA&numeroOrden=&secuenciaReceta=${datosFiltrados.secuenciaReceta}`;
-        }
-        else{
+        console.log('datossFiltrados', datosFiltrados.tipoCard);
+        if(datosFiltrados.tipoCard == 'AGENDA'){
             args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datosFiltrados.idOrden}`;
         }
+        else{
+            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=RECETA&numeroOrden=&secuenciaReceta=${datosFiltrados.secuenciaReceta}`;
+        }
+        
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);

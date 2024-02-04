@@ -84,7 +84,10 @@
                 reset.then((data) => {
                     console.log(data); // Aquí obtendrás el resultado de la promesa una vez que se resuelva.
                     if(data.code == 200){
-                        let codigoUsuario = btoa(getInput('numeroIdentificacion'));
+                        let param = {};
+                        param.tipoIdentificacion = getInput('tipoIdentificacion');
+                        param.numeroIdentificacion = getInput('numeroIdentificacion');
+                        let codigoUsuario = btoa(JSON.stringify(param));
                         location.href = '/reestablecer-clave/'+codigoUsuario;
                     }else{
                         title = 'Veris';

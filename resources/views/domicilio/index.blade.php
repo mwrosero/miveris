@@ -81,7 +81,7 @@ Mi Veris - Citas - Servicios a domicilio
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <input type="number" class="form-control bg-neutral"  name="telefono" id="telefono" value="" placeholder="Teléfono móvil" required />
+                                    <input type="text" class="form-control bg-neutral" name="telefono" id="telefono" value="" placeholder="Teléfono móvil" maxlength="10" required />
                                     <div class="invalid-feedback">
                                         Ingrese un numero de telefono
                                     </div>
@@ -93,7 +93,8 @@ Mi Veris - Citas - Servicios a domicilio
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-lg btn-primary-veris w-100" type="submit"><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
+                                    <button class="btn btn-lg btn-primary-veris w-100" type="submit" id="btnSolicitarLlamada" disabled><i class="bi bi-telephone-fill me-2" 
+                                        ></i> Solicitar llamada</button>
                                 </div>
                             </form>
                         </div>
@@ -118,6 +119,8 @@ Mi Veris - Citas - Servicios a domicilio
         await consultarCiudades();
         
     });
+
+    
 
     // funciones asincronas 
 
@@ -269,11 +272,32 @@ Mi Veris - Citas - Servicios a domicilio
         }
     });
 
-    
+    // deshabilitar el boton btnSolicitarLlamada si algun campo esta vacio
+    $("form").on('change', function() {
+        let tipoServicio = $('input[name="inlineRadioOptions"]:checked').val();
+        if (tipoServicio == 'option1') {
+            if (getInput('telefono') != '' && getInput('direccion') != '') {
+                $('#btnSolicitarLlamada').prop('disabled', false);
+            } else {
+                $('#btnSolicitarLlamada').prop('disabled', true);
+            }
+        } else {
+            if (getInput('telefono') != '' && getInput('direccion') != '') {
+                $('#btnSolicitarLlamada').prop('disabled', false);
+            } else {
+                $('#btnSolicitarLlamada').prop('disabled', true);
+            }
+        }
+    });
 
 
-
-
+    // limitar el input telefono a 10 caracteres y solo numeros
+    $('#telefono').on('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '');
+        if (this.value.length > 10) {
+            this.value = this.value.slice(0, 10);
+        }
+    });
 
 
 </script>

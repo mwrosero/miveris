@@ -148,17 +148,14 @@ Mi Veris - Resultados
  
      // Consultar resultados de laboratorio
  
-     async function consultarResultadosPorTipo(numeroIdentificacion, tipoIdentificacion, desde='', hasta = '', tipoServicio , esAdmin = 'S') {
-         let args = [];
-         let canalOrigen = _canalOrigen;
-         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
-         tipoServicio = "LAB";
-         numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
- 
-                 
-         args["endpoint"] = api_url + `/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
-         
+     async function consultarResultadosPorTipo(numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}", tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}", desde = '', hasta = '', esAdmin = 'S') {
+        
+        const tipoServicio = "LAB";
+        const canalOrigen = _canalOrigen;
+
+        const args = {
+            "endpoint": `${api_url}/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${numeroIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
+        };
          args["method"] = "GET";
          args["showLoader"] = true;
          console.log(7,args["endpoint"]);
@@ -168,12 +165,16 @@ Mi Veris - Resultados
          let html = $("#resultadosIP");
          html.empty();
          if (data.code == 200){
+            let tienePermisos = data.data.tienePermisoAdmin;
+            if (numeroIdentificacion == "{{ Session::get('userData')->numeroIdentificacion }}"){
+                tienePermisos = true;
+            }
             if (data.data.items.length == 0){
-                 if (esAdmin == 'S'){
+                 if (tienePermisos == true){
                      $("#mensajeNoTienesResultadosRealizados").removeClass("d-none");
                     $("#mensajeNoTienesPermisosAdministradorRealizados").addClass("d-none");
 
-                 } else if (esAdmin == 'N'){
+                 } else if (tienePermisos == false){
                     $("#mensajeNoTienesPermisosAdministradorRealizados").removeClass("d-none");
                     $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
                      
@@ -182,7 +183,7 @@ Mi Veris - Resultados
             else {
                 
                 $("#mensajeNoTienesPermisosAdministradorRealizados").addClass("d-none");
-                if (esAdmin == 'S'){
+                if (tienePermisos == true){
                 
                     $("#mensajeNoTienesResultadosRealizados").addClass("d-none");
                     
@@ -215,7 +216,7 @@ Mi Veris - Resultados
                     html.append(elemento);
                     
                 } 
-                else if (esAdmin == 'N'){
+                else if (tienePermisos == false){
                     // mostrar mensaje de no tienes permisos de administrador
                     $("#mensajeNoTienesPermisosAdministradorRealizados").removeClass("d-none");
                 }
@@ -240,26 +241,20 @@ Mi Veris - Resultados
         args["showLoader"] = true;
         try {
             const blob = await callInformes(args);
-            console.log('blob', blob);
+            const pdfUrl = URL.createObjectURL(blob);
 
-            if (blob.status == 200) {
-                const pdfUrl = URL.createObjectURL(blob.data);
+            window.open(pdfUrl, '_blank');
 
-                window.open(pdfUrl, '_blank');
-
-                setTimeout(() => {
-                    URL.revokeObjectURL(pdfUrl);
-                }, 100);
-            } else {
-                $('#haOcurridoUnErrorModal').modal('show');
-            }
-
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
 
         } catch (error) {
-            console.error('Error al obtener el PDF:', error);
-            
+            console.log('error', error);
+            $('#haOcurridoUnErrorModal').modal('show');
         }
-        }
+
+    }
   
     
  
@@ -280,6 +275,32 @@ Mi Veris - Resultados
          }
          return data;
      }
+
+     // mostrar lista de pacientes en el filtro
+    function mostrarListaPacientesFiltro(){
+
+        let data = familiar;
+
+        let divContenedor = $('.listaPacientesFiltro');
+        divContenedor.empty(); // Limpia el contenido actual
+
+        let isFirstElement = true; // Variable para identificar el primer elemento
+
+        data.forEach((Pacientes) => {
+            let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
+            isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
+
+            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
+                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroIdentificacion}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
+                                <span class="text-veris fw-medium">
+                                    
+                                    ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
+                                    <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
+                                </span>
+                            </label>`;
+            divContenedor.append(elemento);
+        });
+    }
 
      
 

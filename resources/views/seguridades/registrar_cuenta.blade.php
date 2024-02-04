@@ -173,6 +173,7 @@
 	            autofocus
 	            required>
 	            {{-- <option disabled selected hidden>Elegir</option> --}}
+				
 	        </select>
 	    </div>
 	    <div class="mb-2">
@@ -215,7 +216,8 @@
 	document.addEventListener("DOMContentLoaded", async function () {
         await obtenerIdentificacion();
         const dataProvincia = await obtenerProvincias();
-		
+		console.log(dataProvincia);
+		obtenerCiudades(dataProvincia[0].codigoProvincia);
 
         $('body').on('change', '#provincia', async function(){
         	await obtenerCiudades();
