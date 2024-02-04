@@ -268,7 +268,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
                                     </div>
                                 </div>
-                                <p class="text-veris fw-medium fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.segundoNombre)} ${capitalizarElemento(pacientes.primerApellido)}</p>
+                                <p class="text-veris fw-medium fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.primerApellido)} ${capitalizarElemento(pacientes.segundoApellido)}</p>
                                 <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
                             </div>
                         </div>

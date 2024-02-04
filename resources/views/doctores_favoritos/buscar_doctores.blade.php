@@ -53,7 +53,7 @@ Mi Veris - Buscar doctor
     </div>
     <section class="p-3 pt-0 mb-3">
         <form class="d-flex justify-content-center">
-            <div class="col-md-4 my-3">
+            <div class="col-12 col-md-4 my-3">
                 <div class="input-group search-box">
                     <span class="input-group-text bg-transparent border-0" id="search"><i class="bi bi-search"></i></span>
                     <input type="search" class="form-control bg-transparent border-0" name="search" id="searchDoctor" placeholder="Buscar" aria-describedby="search" />

@@ -36,7 +36,7 @@
     <section class="step step1">
     	<p class="text-left text-md-center title-section txt-alt mt-4 mt-md-2">Crear una cuenta</p>
 	    <div class="mb-2">
-	        <label for="tipoIdentificacion" class="form-label fw-bold">Tipo de identificación *</label>
+	        <label for="tipoIdentificacion" class="form-label fw-medium">Tipo de identificación *</label>
 	        <select class="form-select form-filter border-0"
 	            id="tipoIdentificacion"
 	            name="tipoIdentificacion"
@@ -47,7 +47,7 @@
 	        </select>
 	    </div>
 	    <div class="mb-2">
-	        <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación *</label>
+	        <label for="numeroIdentificacion" class="form-label fw-medium">Número de identificación *</label>
 	        <input type="text"
 	            class="form-control form-filter border-0"
 	            id="numeroIdentificacion"
@@ -59,7 +59,7 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="mail" class="form-label fw-bold">Correo electrónico *</label>
+	        <label for="mail" class="form-label fw-medium">Correo electrónico *</label>
 	        <input type="email"
 	            class="form-control form-filter border-0"
 	            id="mail"
@@ -68,7 +68,7 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="fechaNacimiento" class="form-label fw-bold">Fecha de Nacimiento *</label>
+	        <label for="fechaNacimiento" class="form-label fw-medium">Fecha de Nacimiento *</label>
 	        <input type="text"
 	            class="form-control form-filter border-0"
 	            id="fechaNacimiento"
@@ -78,7 +78,7 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="telefono" class="form-label fw-bold">Teléfono *</label>
+	        <label for="telefono" class="form-label fw-medium">Teléfono *</label>
 	        <input type="tel"
 	            class="form-control form-filter border-0"
 				onkeypress="return validarNumero(event)"
@@ -90,7 +90,7 @@
 	    </div>
 	    <div class="mb-2 form-password-toggle">
 	        <div class="d-flex justify-content-between">
-	            <label class="form-label fw-bold" for="password">Contraseña *</label>
+	            <label class="form-label fw-medium" for="password">Contraseña *</label>
 	        </div>
 	        <div class="input-group input-group-merge">
 	            <input type="password"
@@ -107,7 +107,7 @@
 	    </div>
 	    <div class="mb-2 form-password-toggle">
 	        <div class="d-flex justify-content-between">
-	            <label class="form-label fw-bold" for="password2">Repite tu contraseña *</label>
+	            <label class="form-label fw-medium" for="password2">Repite tu contraseña *</label>
 	        </div>
 	        <div class="input-group input-group-merge">
 	            <input type="password"
@@ -127,7 +127,7 @@
 	</section>
 	<section class="step step2 d-none">
 		<div class="mb-2">
-	        <label for="genero" class="form-label fw-bold">Género *</label>
+	        <label for="genero" class="form-label fw-medium">Género *</label>
 	        <select class="form-select form-filter border-0"
 	            id="genero"
 	            name="genero"
@@ -139,7 +139,7 @@
 	        </select>
 	    </div>
 	    <div class="mb-2">
-	        <label for="primerNombre" class="form-label fw-bold">Nombre *</label>
+	        <label for="primerNombre" class="form-label fw-medium">Nombre *</label>
 	        <input type="text"
 	            class="form-control"
 	            id="primerNombre"
@@ -148,7 +148,7 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="primerApellido" class="form-label fw-bold">Primer Apellido *</label>
+	        <label for="primerApellido" class="form-label fw-medium">Primer Apellido *</label>
 	        <input type="text"
 	            class="form-control"
 	            id="primerApellido"
@@ -157,7 +157,7 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="segundoApellido" class="form-label fw-bold">Segundo Apellido *</label>
+	        <label for="segundoApellido" class="form-label fw-medium">Segundo Apellido *</label>
 	        <input type="text"
 	            class="form-control"
 	            id="segundoApellido"
@@ -166,17 +166,18 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="provincia" class="form-label fw-bold">Provincia *</label>
+	        <label for="provincia" class="form-label fw-medium">Provincia *</label>
 	        <select class="form-select form-filter border-0"
 	            id="provincia"
 	            name="provincia"
 	            autofocus
 	            required>
 	            {{-- <option disabled selected hidden>Elegir</option> --}}
+				
 	        </select>
 	    </div>
 	    <div class="mb-2">
-	        <label for="ciudad" class="form-label fw-bold">Ciudad *</label>
+	        <label for="ciudad" class="form-label fw-medium">Ciudad *</label>
 	        <select class="form-select form-filter border-0"
 	            id="ciudad"
 	            name="ciudad"
@@ -195,10 +196,10 @@
 		<img class="d-block mx-auto mt-3 mb-3" src="../../assets/img/veris/locker.svg">
 		<div class="mb-4 text-center">
 	        <span>Ingresa el código que enviamos a tu correo</span>
-	        <p class="txt-alt fw-bold email-masked"></p>
+	        <p class="txt-alt fw-medium email-masked"></p>
 	    </div>
 	    <div class="mb-2">
-	        <label for="codigoActivacion" class="form-label fw-bold">Código de activación *</label>
+	        <label for="codigoActivacion" class="form-label fw-medium">Código de activación *</label>
 	        <input type="number"
 	            class="form-control"
 	            id="codigoActivacion"
@@ -215,7 +216,8 @@
 	document.addEventListener("DOMContentLoaded", async function () {
         await obtenerIdentificacion();
         const dataProvincia = await obtenerProvincias();
-		
+		console.log(dataProvincia);
+		obtenerCiudades(dataProvincia[0].codigoProvincia);
 
         $('body').on('change', '#provincia', async function(){
         	await obtenerCiudades();
