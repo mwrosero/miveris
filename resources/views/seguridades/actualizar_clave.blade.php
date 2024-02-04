@@ -4,7 +4,7 @@
 @endsection
 @section('content')
 <!-- Content Actualizar Clave -->
-<p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-bold">Recuperando Contraseña</p>
+<p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-medium">Recuperando Contraseña</p>
 <p class="fs-10 mb-3 text-center bg-colortext">Para actualizar la contraseña debes ingresar el código de validación enviado a tu correo electrónico registrado</p>
 
 <form id="formAuthentication" class="mb-3" method="post" action="/actualizar-clave" onsubmit="return validarClave()">
@@ -16,7 +16,7 @@
         </div>
     @endif
     <div class="mb-2">
-        <label for="codigo" class="form-label bg-colortext fw-bold mt-2">Código de validación</label>
+        <label for="codigo" class="form-label bg-colortext fw-medium mt-2">Código de validación</label>
         <input type="text"
             class="form-control"
             id="codigo"
@@ -26,7 +26,7 @@
             value="{{ $codigo }}" />
     </div>
     <div class="mb-2">
-        <label for="nuevaClave" class="form-label bg-colortext fw-bold mt-2">Nueva contraseña</label>
+        <label for="nuevaClave" class="form-label bg-colortext fw-medium mt-2">Nueva contraseña</label>
         <div class="input-group input-group-merge">
             <input type="password"
                 class="form-control"
@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="mb-3">
-        <label for="confirmarClave" class="form-label bg-colortext fw-bold mt-2">Confirmar nueva contraseña</label>
+        <label for="confirmarClave" class="form-label bg-colortext fw-medium mt-2">Confirmar nueva contraseña</label>
         <div class="input-group input-group-merge">
             <input type="password"
                 class="form-control"

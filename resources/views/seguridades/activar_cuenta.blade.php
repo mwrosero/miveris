@@ -27,10 +27,10 @@
 		<img class="d-block mx-auto mt-3 mb-3" src="../../assets/img/veris/locker.svg">
 		<div class="mb-4 text-center">
 	        <span>Ingresa el código que enviamos a tu correo</span>
-	        <p class="txt-alt fw-bold email-masked"></p>
+	        <p class="txt-alt fw-medium email-masked"></p>
 	    </div>
 	    <div class="mb-2">
-	        <label for="codigoActivacion" class="form-label fw-bold">Código de activación *</label>
+	        <label for="codigoActivacion" class="form-label fw-medium">Código de activación *</label>
 	        <input type="number"
 	            class="form-control"
 	            id="codigoActivacion"

@@ -42,7 +42,7 @@ $data = json_decode(base64_decode($params));
         </div>
         <div class="offcanvas-footer px-4">
             <div class="col-md-12">
-                <button class="btn btn-primary-veris w-100 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+                <button class="btn btn-primary-veris w-100 py-3 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
@@ -522,7 +522,7 @@ $data = json_decode(base64_decode($params));
                                         <div class="card-body fs--2 p-3">
                                             ${determinarEsOnline(tratamientos)}
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="text-primary-veris fw-medium fs--1 mb-0">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
+                                                <h6 class="text-primary-veris fw-medium fs--1 mb-0 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
                                                 <span class="text-warning-veris" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                             </div>
                                             ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
