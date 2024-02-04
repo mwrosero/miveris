@@ -169,10 +169,10 @@ html:not([dir="rtl"]) .border-start-veris {
   background: transparent;
 }
 
-.btn-primary-veris {
-  color: var(--bg-vris-white) !important;
-  background-color: var(--bg-vris-blue) !important;
-  border-color: var(--bg-vris-blue) !important;
+.btn.btn-primary-veris {
+  color: var(--bg-vris-white);
+  background-color: var(--bg-vris-blue);
+  border-color: var(--bg-vris-blue);
 }
 
 .btn-outline-primary-veris {
@@ -1045,11 +1045,28 @@ Due to the split circle of progress-left and progress right, we must use the ani
   background: #F3F4F5 !important;
   box-shadow: none !important;
 }
-
+.btn-primary-veris{
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #0071CE;
+  --bs-btn-border-color: #0071CE;
+  --bs-btn-hover-color: #CCEAFA;
+  --bs-btn-hover-bg: #0055AA;
+  --bs-btn-hover-border-color: #0055AA;
+  --bs-btn-focus-shadow-rgb: 49,132,253;
+  --bs-btn-active-color: #CCEAFA;
+  --bs-btn-active-bg: #003B83;
+  --bs-btn-active-border-color: #003B83;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #9EA7B3;
+  --bs-btn-disabled-bg: #E7E9EC;
+  --bs-btn-disabled-border-color: #E7E9EC;
+}
+a.btn.btn-primary-veris:not([href]):hover{
+  color: #CCEAFA;
+}
 .input-spin-none {
   border: 1px solid #f3f4f5 !important
 }
-
 
 /* X-Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {

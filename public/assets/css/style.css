@@ -1,4 +1,30 @@
 /*HTML*/
+:root {
+    --bg-vris-blue: #0071CE;
+    --bg-vris-white: #ffffff;
+    --bg-vris-dark-blue: #071A35;
+    --bg-vris-vivid: #FFC107;
+    --bg-vris-strong-red: #D84315;
+    --bg-vris-very-pale-red: #FFE0E4;
+    --bg-vris-very-pale-blue: #D6F3FF;
+    --bg-vris-very-dark-blue: #0A2240;
+    --bg-vris-desaturated: #3D4E66;
+    --bg-vris-light-grayish-green: #f1f8e2;
+    --bg-vris-strong-cyan-lime-green: #00C853;
+    --bg-vris-grayish-blue: #CCEAFA;
+    --bg-vris-light-grayish-blue: #eff3f8;
+    --bg-vris-light-grayish-blue-2: #DEDAF0;
+    --bg-vris-light-grayish-blue-3: #F3F4F5;
+    --bg-vris-light-grayish-blue-rgba: rgba(249, 250, 251, 1);
+    --bg-vris-light-grayish-blue-rgba-2: rgba(233, 239, 244, 1);
+    --bg-vris-light-grayish-blue-rgba-3: rgba(243, 244, 245, 1);
+    --bg-vris-very-dark-blue-rgba: rgba(61, 78, 102, 1);
+    --bg-vris-light-grayish-cyan: #E2F3F5;
+    --bg-vris-soft-blue: #66B4E9;
+    --bg-vris-strong-magenta: #C52BD2;
+    --Neutral-10: #E7E9EC;
+    --font: "Gotham Rounded", sans-serif;
+}
 @font-face {
     font-family: 'Gotham Rounded';
     src: url('fonts/GothamRnd-Medium.woff2') format('woff2'),
@@ -261,7 +287,27 @@ table td {
     padding-top: 15px;
     padding-bottom: 15px;
 }
-
+.btn.btn-primary-veris {
+    color: var(--bg-vris-white);
+    background-color: var(--bg-vris-blue);
+    border-color: var(--bg-vris-blue);
+}
+.btn-primary-veris{
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #0071CE;
+    --bs-btn-border-color: #0071CE;
+    --bs-btn-hover-color: #CCEAFA;
+    --bs-btn-hover-bg: #0055AA;
+    --bs-btn-hover-border-color: #0055AA;
+    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-active-color: #CCEAFA;
+    --bs-btn-active-bg: #003B83;
+    --bs-btn-active-border-color: #003B83;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #9EA7B3;
+    --bs-btn-disabled-bg: #E7E9EC;
+    --bs-btn-disabled-border-color: #E7E9EC;
+}
 .btn:active,
 .btn:active {
     /*    opacity: 0.8;*/
