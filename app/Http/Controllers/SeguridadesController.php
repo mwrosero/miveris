@@ -97,9 +97,9 @@ class SeguridadesController extends Controller
         return view('seguridades.reestablecer_clave');
     }*/
 
-    public function reestablecerClave($codigoUsuario){
+    public function reestablecerClave($params){
         return view('seguridades.reestablecer_clave')
-            ->with('codigoUsuario',$codigoUsuario);
+            ->with('params',$params);
     }
 
     /*Logout*/
