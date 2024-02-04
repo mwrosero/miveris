@@ -244,6 +244,7 @@ async function obtenerProvincias(){
         console.log('provincias', data);
         $('#provincia').empty();
         $.each(data.data, function(key, value){
+            
             $('#provincia').append(`<option value="${value.codigoProvincia}" codigoRegion-rel="${value.codigoRegion}">${value.nombreProvincia}</option>`);
         })
         
@@ -510,9 +511,9 @@ async function aplicarFiltrosResultados(contexto, tipoServicio) {
     // capturar los datos de data-rel del input radio
     let datos = $('input[name="listGroupRadios"]:checked').attr('data-rel');
     datos = JSON.parse(datos);
-    
-    let pacienteSeleccionado = datos.tipoIdentificacion;
-    let tipoIdentificacion = datos.numeroIdentificacion;
+    console.log('datosI8I',datos);
+    let pacienteSeleccionado = datos.numeroIdentificacion;
+    let tipoIdentificacion = datos.tipoIdentificacion;
     let esAdmin = datos.esAdmin;
     
 
