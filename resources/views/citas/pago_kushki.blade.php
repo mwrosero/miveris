@@ -27,10 +27,17 @@ Mi Veris - Citas - Información de pago
                         <!-- content-pago -->
                         <div class="card card-body">
                             <div class="row g-3">
-                            	<input type="hidden" class="form-control form-control-sm animated-input" name="data" id="data" form="kushki-pay-form"/>
-                            	<form class="kushki-pay-form col-12" id="kushki-pay-form" action="/citas-procesar-pago-kushki/" method="POST"></form>
+                                @if (session()->has('mensaje'))
+                                    <div class="alert alert-warning mb-3">
+                                        {{ session('mensaje') }}
+                                    </div>
+                                @endif
+                            	<form class="kushki-pay-form col-12" id="kushki-pay-form" action="/citas-procesar-pago-kushki/" method="POST">
+                                    @csrf
+                                </form>
+                                <input type="hidden" name="tokenCita" id="tokenCita" form="kushki-pay-form">
+                                <input type="hidden" name="dataCita" id="dataCita" form="kushki-pay-form">
                             </div>
-
                         </div>
                         {{-- <div class="my-3">
                             <p class="fs--3 mb-0">*Guardaremos tu tarjeta para futuras compras, podrás eliminarla después si lo deseas.</p>
@@ -63,17 +70,18 @@ Mi Veris - Citas - Información de pago
 
     document.addEventListener("DOMContentLoaded", async function () {
         $('#totalInfo').html(`$${dataCita.facturacion.totales.total}`);
+        $('#dataCita').val(btoa(JSON.stringify(dataCita)));
+        $('#tokenCita').val("{{ $params }}");
+        
 		kushki = new KushkiCheckout({
 	        form: "kushki-pay-form",
-	        merchant_id: {{ \App\Models\Veris::KUSHKI_MERCHANT_ID }},
+	        merchant_id: "{{ \App\Models\Veris::KUSHKI_MERCHANT_ID }}",
 	        amount: dataCita.facturacion.totales.total,//valoresPago.valorCanalVirtual , // Monto total
 	        currency: "USD", // Codigo de moneda, por defecto "USD"
 	        inTestEnvironment:Boolean({{ \App\Models\Veris::TEST_ENVIRONMENT_KUSHKI }}),
 	        isDeferred: true,
 	        is_subscription: false // true si se trata de una suscripcion (pago recurrente); false, si no.
 	    });
-	    let ulrParams = btoa(JSON.stringify(dataCita));
-	    $('#data').val(ulrParams);
     });
 </script>
 @endpush
