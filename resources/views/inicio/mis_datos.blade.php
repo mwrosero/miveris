@@ -48,21 +48,21 @@ Mi Veris - Mis Datos
                         <div class="col-md-6">
                             <div class="row g-2">
                                 <div class="col-md-12">
-                                    <label for="nombre" class="form-label fw-semibold">{{ __('Nombre') }}</label>
+                                    <label for="nombre" class="form-label fw-semibold">{{ __('Nombre') }}*</label>
                                     <input type="text" class="form-control" name="nombre" id="nombre" required />
                                     <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="primerApellido" class="form-label fw-semibold">{{ __('Primer apellido') }}</label>
+                                    <label for="primerApellido" class="form-label fw-semibold">{{ __('Primer apellido') }}*</label>
                                     <input type="text" class="form-control" name="primerApellido" id="primerApellido" required />
                                     <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="segundoApellido" class="form-label fw-semibold">{{ __('Segundo apellido') }}</label>
+                                    <label for="segundoApellido" class="form-label fw-semibold">{{ __('Segundo apellido') }}*</label>
                                     <input type="text" class="form-control" name="segundoApellido" id="segundoApellido" required />
                                     <div class="invalid-feedback">
                                         Looks good!
@@ -70,7 +70,7 @@ Mi Veris - Mis Datos
                                 </div>
                                 <div class="col-md-12">
                                     <label for="fechaNacimiento" class="form-label fw-semibold">{{ __('Fecha de nacimiento') }} *</label>
-                                    <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento"  required />
+                                    <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" required />
                                     <div class="invalid-feedback">
                                         Looks good!
                                     </div>
@@ -125,7 +125,7 @@ Mi Veris - Mis Datos
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="direccion" class="form-label fw-semibold">{{ __('Dirección') }}</label>
+                                    <label for="direccion" class="form-label fw-semibold">{{ __('Dirección') }}*</label>
                                     <input type="text" class="form-control" name="direccion" id="direccion" value="" required />
                                     <div class="valid-feedback">
                                         Looks good!
@@ -162,6 +162,19 @@ Mi Veris - Mis Datos
         provincias = await obtenerProvincias();
         ciudades = await obtenerCiudades(codeprovincia);
         llenarDatosUsuario(provincias, ciudades);
+        var fechaActual = new Date();
+        var dia = ('0' + fechaActual.getDate()).slice(-2); // Añade un cero delante si es necesario
+        var mes = ('0' + (fechaActual.getMonth() + 1)).slice(-2); // Los meses empiezan en 0
+        var ano = fechaActual.getFullYear();
+        document.getElementById('fechaNacimiento').setAttribute('max', `${ano}-${mes}-${dia}`);
+        $('input[required], select[required]').on('blur', function() {
+            // Validar el campo específico
+            let esValido = validarCampo($(this));
+            // deshabilitar el botón si hay campos inválidos
+            $('#btnActualizarDatosUsuario').prop('disabled', !esValido);
+            
+        });
+ 
     });
 
     // metodos jquery
@@ -175,6 +188,20 @@ Mi Veris - Mis Datos
         await actualizarDatosUsuario();
         $(this).prop('disabled', false); // Re-enable the button
     });
+
+    // validar que los campos del formulario no esten vacios y llenar mensaje n invalid-feedback 
+    function validarCampo(campo) {
+        campo.removeClass('is-invalid is-valid');
+        campo.next('.invalid-feedback').remove(); 
+        if (campo.val().trim() === '') {
+            campo.addClass('is-invalid');
+            campo.after('<div class="invalid-feedback">Este campo es obligatorio.</div>');
+        } 
+
+        return campo.hasClass('is-invalid') ? false : true;
+    }
+
+
 
     //funciones asyncronas
     //obtener datos usuario
@@ -281,6 +308,14 @@ Mi Veris - Mis Datos
             $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
         });
     });
+
+    
+
+
+    
+
+    
+
 
 
 </script>
