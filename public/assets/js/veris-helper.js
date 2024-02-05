@@ -476,6 +476,7 @@ async function aplicarFiltrosCitas(contexto) {
         estadoCitas = 'HISTORICO';
     }
 
+    console.log('estadoCitas', estadoCitas);    
     if (contexto === 'contextoAplicarFiltros') {
         if (estadoCitas === 'ACTUAL'){
             await obtenerCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);

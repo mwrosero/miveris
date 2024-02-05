@@ -179,7 +179,7 @@ Mi Veris - Inicio
         await obtenerCitas();
         await obtenerUrgenciasAmbulatorias();
         await consultarConvenios();
-        // await consultarDatosPaciente();
+        await consultarDatosPaciente();
         // initializeSwiper('.swipertratamientos');
         // initializeSwiper('.swiper-proximas-citas');
     });
@@ -417,6 +417,7 @@ Mi Veris - Inicio
 
                 // convertir objeto a base64
                 let paramsBase64 = btoa(JSON.stringify(params));
+                let ruta = '/tratamiento/' + "{{ $tokenCita }}"
 
                 elemento += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 p-2 my-auto">
                                 <div class="d-flex gap-2 align-items-center">
@@ -425,8 +426,9 @@ Mi Veris - Inicio
                                     </div>
                                     <p class="text-veris fw-medium fs--2 mb-0">${capitalizarElemento(detalle.nombreServicio)}</p>
                                 </div>
-                                <a href="/tratamiento/${paramsBase64}"
-                                class="btn btn-sm text-primary-veris fs--2 shadow-none">Ver <i class="fa-solid fa-chevron-right ms-1"></i></a>
+                                <a href=" ${ruta}
+                                " data-rel='${JSON.stringify(tratamientos)}'
+                                class="btn btn-sm text-primary-veris fs--2 shadow-none btn-VerTratamientoInicio">Ver <i class="fa-solid fa-chevron-right ms-1"></i></a>
                             </label>`;
             });
 
@@ -692,6 +694,18 @@ Mi Veris - Inicio
         }
         return [];
     }
+
+
+    // ver tratamiento Inicio
+    $(document).on('click', '.btn-VerTratamientoInicio', function(){
+        let data = $(this).data('rel');
+        console.log('dataTratamiento', data);
+        let params = { };
+        params.tratamiento = data;
+        params.paciente = datosPaciente;
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+    });
 
     
 
