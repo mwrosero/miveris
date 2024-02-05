@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Redirect;
+
+use App\Models\Veris;
 
 class CitasController extends Controller
 {
@@ -48,6 +53,41 @@ class CitasController extends Controller
     // Return view pago con kushki
     public function pagoKushki($params) {
         return view('citas.pago_kushki')->with('params',$params);
+    }
+
+    // Procesar pago con kushki
+    public function procesarKushki(Request $request) {
+        //Realizar cobro y validar para donde redireccionar
+        $data = $request->all();
+        $dataCita = json_decode(utf8_encode(base64_decode(urldecode($data['dataCita']))));
+        $tokenCita = $data['tokenCita'];
+
+        $codigoPreTransaccion = $dataCita->preTransaccion->codigoPreTransaccion;
+        $method = '/digitalestest/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$codigoPreTransaccion;
+
+        $response = Veris::call([
+            'endpoint' => Veris::BASE_URL.$method,
+            'data' => [
+                "tipoIdentificacion" => $dataCita->facturacion->datosFactura->codigoTipoIdentificacion,
+                "numeroIdentificacion" => $dataCita->facturacion->datosFactura->codigoTipoIdentificacion,
+                "codigoTransaccion" => $dataCita->transaccionVirtual->codigoTransaccion,
+                "cardToken" => $data['kushkiToken'],
+                "suscripcionToken" => null,
+                "nombreTarjetahabiente" => $dataCita->facturacion->datosFactura->primerNombre." ".$dataCita->facturacion->datosFactura->primerApellido,
+                "emailTarjetahabiente" => $dataCita->facturacion->datosFactura->email,
+                "codigoSuscripcionTarjeta" => null,
+                "codigoSeguridad" => null,
+                "canalOrigenDigital" => Veris::CANAL_ORIGEN
+            ],
+            'method'   => 'POST'
+        ]);
+
+        if($response->code == 200){
+            return redirect('/cita-agendada/'.$tokenCita);
+        }else{
+            session()->flash('alert', $response->message);
+            return redirect('/citas-pago-kushki/'.$tokenCita);
+        }
     }
 
     // return view seleccionar tarjeta
