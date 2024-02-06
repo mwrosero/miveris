@@ -216,7 +216,7 @@ $data1 = json_decode($data);
     }
     let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
     let numeroIdentificacion = dataCita.paciente.numeroIdentificacion;
-    let nombrePaciente = dataCita.paciente.primerNombre;
+    let nombrePaciente = dataCita.paciente.primerNombre + ' ' + dataCita.paciente.segundoNombre + ' ' + dataCita.paciente.primerApellido + ' ' + dataCita.paciente.segundoApellido;
     let convenio = dataCita?.convenio;
     let codigoConvenio = dataCita.convenio.codigoConvenio || '';
     let nombreConvenio = dataCita.convenio.nombreConvenio || '';

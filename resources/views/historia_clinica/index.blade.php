@@ -107,51 +107,38 @@ Mi Veris - Historia clínica
             let datas = {};
            
             if (!(data && data.data)) {
-                if(esAdmin == 'S'){
-                    $('#mensajeNoHayEspecialidades').removeClass('d-none');
-                    $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
-                }
-                else if(esAdmin == 'N'){
-                    $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
-                    $('#mensajeNoHayEspecialidades').addClass('d-none');
-                }
-
+                $('#mensajeNoHayEspecialidades').removeClass('d-none');
+                
             } else if (data.data.length > 0) {
 
-                if (esAdmin == 'S') {
-                    
+                $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
+                $('#mensajeNoHayEspecialidades').addClass('d-none');
+                
+                let element = '';
 
-                    $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
-                    $('#mensajeNoHayEspecialidades').addClass('d-none');
-                    
-                    let element = '';
+                data.data.forEach((especialidades) => {
+                    console.log('especialidades', especialidades);
+                    datas.codigoEspecialidad = especialidades.codigoEspecialidad;
+                    datas.tipoIdentificacion  = codigoTipoIdentificacion;
+                    datas.numeroIdentificacion = codigoUsuario;
+                    datas.esOnline = especialidades.esOnline;
 
-                    data.data.forEach((especialidades) => {
-                        console.log('especialidades', especialidades);
-                        datas.codigoEspecialidad = especialidades.codigoEspecialidad;
-                        datas.tipoIdentificacion  = codigoTipoIdentificacion;
-                        datas.numeroIdentificacion = codigoUsuario;
-                        datas.esOnline = especialidades.esOnline;
+                    let params = btoa(JSON.stringify(datas));
+                    console.log('params', params);
 
-                        let params = btoa(JSON.stringify(datas));
-                        console.log('params', params);
-
-                        element += `<a href="/lista-doctores/${params}
-                        " class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
-                                        <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0" onerror="this.src='{{ asset('assets/img/svg/doctor_light.svg') }}'">
-                                        <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
-                                            <div>
-                                                <h6 class="mb-0">${capitalizarElemento(especialidades.nombre)}</h6>
-                                            </div>
+                    element += `<a href="/lista-doctores/${params}
+                    " class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
+                                    <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0" onerror="this.src='{{ asset('assets/img/svg/doctor_light.svg') }}'">
+                                    <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-0">${capitalizarElemento(especialidades.nombre)}</h6>
                                         </div>
-                                    </a> `;
-                    });
-                    html.append(element);
+                                    </div>
+                                </a> `;
+                });
+                html.append(element);
 
-                } else if (esAdmin == 'N') {
-                    $('#mensajeNoHayEspecialidades').addClass('d-none');
-                    $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
-                }
+                
                 
             }
             

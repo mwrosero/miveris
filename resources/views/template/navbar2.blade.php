@@ -295,6 +295,15 @@
             case 'ORDEN_HC':
                 categoriaNotificacion = 'Revisa tus ordenes';
                 break;
+            case 'CITA_MEDICA':
+                categoriaNotificacion = 'Agenda tu cita';
+                break;
+            case 'REAGENDAR_CITA' :
+                categoriaNotificacion = 'Recordatorio';
+                break;
+            case 'PROXIMA_CITA' :
+                categoriaNotificacion = 'Agendaste una cita';
+                break;
         }
         return categoriaNotificacion;
     }
@@ -308,10 +317,16 @@
                 botonNotificacion = ``;
                 break;
             case 'CITA_MEDICA':
-                botonNotificacion = `<a href="/citas" class="btn btn-sm btn-outline-primary-veris">Agendar cita</a>`;
+                botonNotificacion = `<a href="/citas" class="fs--1 text-primary-veris">Agendar cita</a>`;
                 break;
             case 'ORDEN_HC':
-                botonNotificacion = `<a href="/mis-tratamientos" class="btn btn-sm btn-outline-primary-veris">Ver</a>`;
+                botonNotificacion = `<a href="/mis-tratamientos" class="fs--1 text-primary-veris">Ver</a>`;
+                break;
+            case 'REAGENDAR_CITA' :
+                botonNotificacion = `<a href="/mis-citas" class="fs--1 text-primary-veris">Reagendar</a>`;
+                break;
+            case 'PROXIMA_CITA' :
+                botonNotificacion = `<a href="/mis-citas" class="fs--1 text-primary-veris">Ver</a>`;
                 break;
         }
         return botonNotificacion;
@@ -395,5 +410,17 @@
         font-size: 12px; /* ajusta el tamaño del texto según sea necesario */
     }
 
+    .verisNotificacion {
+        
+        font-family: Gotham Rounded;
+        font-size: 14px;
+        font-weight: 350;
+        line-height: 16px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: #0071CE;
+
+
+    }
 
 </style>
