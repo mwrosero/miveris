@@ -121,14 +121,15 @@ Mi Veris - Órdenes externas
             let data = JSON.parse($(this).attr("data-rel"));
 
             const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
-            const datosFacturacion = await consultarDatosFacturacion(data);
+            //const datosFacturacion = await consultarDatosFacturacion(data);
 
             params.paciente = paciente.data
-            params.detalleFacturacion = datosFacturacion;
+            params.ordenExterna = data;
+            /*params.detalleFacturacion = datosFacturacion;
             params.preTransaccion = {
                 'codigoPreTransaccion': data.codigoPreTransaccion,
                 'codigoSolicitud': data.codigoSolicitud
-            }
+            }*/
             params.origen = 'ordenExterna';
 
 
@@ -255,13 +256,8 @@ Mi Veris - Órdenes externas
         }
         return [];
     }
-
-
-
-
-
     
-     // determinar estado de la orden
+    // determinar estado de la orden
     function determinarEstadoOrden(data){
         let elemento = '';
         if (data.codigoEstado == 'REV') {
