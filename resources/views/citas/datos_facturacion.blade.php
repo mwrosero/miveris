@@ -485,9 +485,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     async function crearTransaccionVirtual(){
+        //let tipoBoton = "KUSHKI";
         let tipoBoton = "NUVEI";
         if(dataCita.facturacion.datosFactura.permiteNuvei != "S"){
-            tipoBoton = "KUSHKI";
+            if(dataCita.facturacion.datosFactura.permiteKushki == "S"){
+                tipoBoton = "KUSHKI";
+            }else{
+                tipoBoton = "PTP";
+            }
         }
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/facturacion/crear_transaccion_virtual?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
@@ -523,17 +528,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if (data.code == 200){
             dataCita.transaccionVirtual = data.data;
             guardarData();
-            if(dataCita.facturacion.datosFactura.permiteNuvei == "S"){
+            if(tipoBoton == "NUVEI"){
                 var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
                 myModal.show();
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                console.log(ulrParams);
+                // let ulrParams = btoa(JSON.stringify(dataCita));
+                // console.log(ulrParams);
                 $('#btn-seleccionar-tarjeta').attr("href",`/citas-seleccionar-tarjeta/{{ $params }}`)
                 $('#btn-agregar-tarjeta').attr("href",`/citas-informacion-pago/{{ $params }}`)
             }else{
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-pago-kushki/{{ $params }}`;
-                window.location.href = ruta;
+                if(tipoBoton == "KUSHKI"){
+                    // let ulrParams = btoa(JSON.stringify(dataCita));
+                    // let ruta = `/citas-pago-kushki/{{ $params }}`;
+                    window.location.href = ruta;
+                }else{
+                    location.href = data.data.linkPagoPTP;
+                }
             }
         }else{
             alert(data.message);
