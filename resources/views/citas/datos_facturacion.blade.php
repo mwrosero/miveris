@@ -39,7 +39,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     </div>
     <!-- Modal Desgloce -->
     <div class="modal fade" id="modalDesglose" tabindex="-1" aria-labelledby="modalDesgloseModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered mx-auto">
+        <div class="modal-dialog modal-lg modalDesglose-size modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title mx-auto title-section fw-bold">Desglose de valores</h5>
@@ -223,11 +223,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     document.addEventListener("DOMContentLoaded", async function () {
         //await reservarCita();
-        if(!dataCita.reserva && !dataCita.datosTratamiento){
+        if(!dataCita.reserva && !dataCita.datosTratamiento && !dataCita.reservaEdit && !dataCita.ordenExterna){
             window.history.back();
         }
 
         await crearPreTransaccion();
+
+        /*if(!dataCita.preTransaccion){
+            await crearPreTransaccion();
+        }else{
+            await consultarDatosFactura();
+        }*/
 
         $('body').on('change', '#tipoIdentificacion', function(){
             if($(this).val() == '2'){
@@ -253,11 +259,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         })
 
         $('body').on('click', '#btn-ver-examenes', async function(){
+            if($('#checkTerminosCondicion').is(':checked')) {
+                $('#btn-confirmar-y-pagar').html("Confirmar y pagar ahora");
+            }else{
+                $('#btn-confirmar-y-pagar').html("Continuar");
+            }
             await mostrarDesglose();
         })
 
         $('body').on('click', '#btn-confirmar-y-pagar', async function(){
-            await validarDatosFactura();
+            if($('#checkTerminosCondicion').is(':checked')) {
+                await validarDatosFactura();
+            }else{
+                $('#modalDesglose').modal('hide');
+            }
         })
 
     });
@@ -345,8 +360,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["showLoader"] = true;
         args["bodyType"] = "json";
 
+        let idPaciente = {{ Session::get('userData')->numeroPaciente }};
         let tipoServicio = "CITA";
         let tipoSolicitud = null;
+
+        let codigoConvenio;
+        let secuenciaAfiliado;
         
         if(dataCita.listadoPrestaciones && dataCita.listadoPrestaciones.length > 0){
             tipoServicio = "ORDEN";
@@ -354,13 +373,35 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $("#btn-ver-examenes").removeClass('d-none');
         }
 
+        if(dataCita.ordenExterna){
+            addPrestacionesToModal();
+            $('.modalDesglose-size').removeClass('modal-lg');
+            $('.modalDesglose-size').addClass('modal-md');
+            $("#btn-ver-examenes").removeClass('d-none');
+            $('#modalDesglose .modal-header').hide();
+            idPaciente = dataCita.paciente.numeroPaciente;
+            codigoConvenio = dataCita.ordenExterna.pacientes[0].codigoConvenio;
+            if(dataCita.ordenExterna.aplicoDomicilio === 'N'){
+                tipoServicio = "ORDEN";
+                tipoSolicitud = "LAB";
+            }else{
+                obtenerPreparacionPrevia();
+                tipoServicio= "DOMICILIO";
+                tipoSolicitud= "LAB";
+            }
+        }else{
+            codigoConvenio = dataCita?.convenio.codigoConvenio;
+            secuenciaAfiliado = dataCita?.convenio.secuenciaAfiliado;
+        }
+
+        //Consultar si idPaciente es del que hizo login o del beneficiario de lo que se va a pagar
         let dataPT = {
-            "idPaciente":{{ Session::get('userData')->numeroPaciente }},
+            "idPaciente":idPaciente,
             //"codigoPreTransaccion": dataCita.reserva.secuenciaTransaccion,
             "tipoServicio": tipoServicio,
-            "codigoConvenio": dataCita.convenio.codigoConvenio,
-            "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
             "tipoSolicitud": tipoSolicitud,
+            "codigoConvenio": codigoConvenio,
+            "secuenciaAfiliado": secuenciaAfiliado,
             "paquete": null,
             "listaOrdenes": null
         }
@@ -371,10 +412,25 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }]
         }
 
+        if(dataCita.reservaEdit){
+            dataPT.listaCitas = [{
+                "codigoReserva": dataCita.reservaEdit.idCita
+            }]
+        }
+
         if(dataCita.listadoPrestaciones && dataCita.listadoPrestaciones.length > 0){
             dataPT.listaOrdenes = dataCita.listadoPrestaciones;
         }
 
+        if(dataCita.ordenExterna){
+            if(dataCita.ordenExterna.aplicoDomicilio === 'N'){
+                dataPT.listaOrdenes = dataCita.ordenExterna.pacientes[0].examenes;
+                console.log("------------------------------------");
+                console.log(dataCita.ordenExterna.pacientes[0].examenes)
+            }else{
+                dataPT.codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;
+            }
+        }
 
         args["data"] = JSON.stringify(dataPT);
         const data = await call(args);
@@ -485,9 +541,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     async function crearTransaccionVirtual(){
+        //let tipoBoton = "KUSHKI";
         let tipoBoton = "NUVEI";
         if(dataCita.facturacion.datosFactura.permiteNuvei != "S"){
-            tipoBoton = "KUSHKI";
+            if(dataCita.facturacion.datosFactura.permiteKushki == "S"){
+                tipoBoton = "KUSHKI";
+            }else{
+                tipoBoton = "PTP";
+            }
         }
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/facturacion/crear_transaccion_virtual?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
@@ -523,17 +584,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if (data.code == 200){
             dataCita.transaccionVirtual = data.data;
             guardarData();
-            if(dataCita.facturacion.datosFactura.permiteNuvei == "S"){
+            if(tipoBoton == "NUVEI"){
                 var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
                 myModal.show();
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                console.log(ulrParams);
+                // let ulrParams = btoa(JSON.stringify(dataCita));
+                // console.log(ulrParams);
                 $('#btn-seleccionar-tarjeta').attr("href",`/citas-seleccionar-tarjeta/{{ $params }}`)
                 $('#btn-agregar-tarjeta').attr("href",`/citas-informacion-pago/{{ $params }}`)
             }else{
-                let ulrParams = btoa(JSON.stringify(dataCita));
-                let ruta = `/citas-pago-kushki/{{ $params }}`;
-                window.location.href = ruta;
+                if(tipoBoton == "KUSHKI"){
+                    // let ulrParams = btoa(JSON.stringify(dataCita));
+                    // let ruta = `/citas-pago-kushki/{{ $params }}`;
+                    window.location.href = ruta;
+                }else{
+                    location.href = data.data.linkPagoPTP;
+                }
             }
         }else{
             alert(data.message);
@@ -542,37 +607,75 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     function addPrestacionesToModal(){
         $('#contenidoDesglose').empty();
-        let elem = `<div class="row">
-            <div class="col-12 text-center fw-bold fs--1 mb-2">${dataCita.datosTratamiento.nombrePaciente}</div>`
-        
-        $.each(dataCita.listadoPrestaciones, function(key, value){
-            elem += `<div class="col-12 col-md-6 mb-3">
-                <p class="text-start text-nowrap overflow-hidden text-truncate fs--2 mb-1">${value.nombrePrestacion}</p>
-                <div class="card bg-neutral shadow-none p-2">
-                    <table class="card-body w-100">
-                        <tr class="border-bottom">
-                            <th class="fw-bold fs--2">P.V.P.</th>
-                            <th class="fw-bold fs--2">Crédito/convenio</th>
-                            <th class="fw-bold fs--2">IVA</th>
-                            <th class="fw-bold fs--2">TOTAL</th>
-                        </tr>
-                        <tr>
-                            <td class="fs--2">$${value.subtotal.toFixed(2)}</td>
-                            <td class="fs--2">$${value.cubreEmpresa.toFixed(2)}</td>
-                            <td class="fs--2">$${value.montoIva.toFixed(2)}</td>
-                            <td class="fs--2">$${value.total.toFixed(2)}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>`;
-        });
-        elem += `</div>`;
+        let elem;
+        if(dataCita.datosTratamiento){
+            elem = `<div class="row">
+                <div class="col-12 text-center fw-bold fs--1 mb-2">${dataCita.datosTratamiento.nombrePaciente}</div>`
+            
+            $.each(dataCita.listadoPrestaciones, function(key, value){
+                elem += `<div class="col-12 col-md-6 mb-3">
+                    <p class="text-start text-nowrap overflow-hidden text-truncate fs--2 mb-1">${value.nombrePrestacion}</p>
+                    <div class="card bg-neutral shadow-none p-2">
+                        <table class="card-body w-100">
+                            <tr class="border-bottom">
+                                <th class="fw-bold fs--2">P.V.P.</th>
+                                <th class="fw-bold fs--2">Crédito/convenio</th>
+                                <th class="fw-bold fs--2">IVA</th>
+                                <th class="fw-bold fs--2">TOTAL</th>
+                            </tr>
+                            <tr>
+                                <td class="fs--2">$${value.subtotal.toFixed(2)}</td>
+                                <td class="fs--2">$${value.cubreEmpresa.toFixed(2)}</td>
+                                <td class="fs--2">$${value.montoIva.toFixed(2)}</td>
+                                <td class="fs--2">$${value.total.toFixed(2)}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>`;
+            });
+            elem += `</div>`;
+        }else{
+            elem = `<div class="row">
+                <div class="col-12 text-center fw-bold fs--1 mb-2">${dataCita.ordenExterna.pacientes[0].nombrePacienteOrden}</div>`
+            
+                elem += `<div class="col-12 mb-3">
+                    <div class="card bg-neutral shadow-none p-2">
+                        <table class="card-body w-100">
+                            <tr class="border-bottom">
+                                <th class="fw-bold fs--2 mb-2">Nro. Orden</th>
+                                <th class="fw-bold fs--2 mb-2">Detalle</th>
+                            </tr>`
+                $.each(dataCita.ordenExterna.pacientes[0].examenes, function(key, value){
+                    elem += `<tr>
+                                <td class="fs--2 pb-2">${value.numeroOrden}</td>
+                                <td class="fs--2 pb-2 text-nowrap overflow-hidden text-truncate">${value.nombreExamen}</td>
+                            </tr>`;
+                });
+                        `</table>
+                    </div>
+                </div>`;
+            elem += `</div>`;
+        }
         $('#contenidoDesglose').append(elem);
     }
 
     function mostrarDesglose(){
         var myModal = new bootstrap.Modal(document.getElementById('modalDesglose'));
         myModal.show();
+    }
+
+    async function obtenerPreparacionPrevia(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            dataCita.facturacion = data.data;
+            mostrarInfo();
+        }
     }
 
     function guardarData(){

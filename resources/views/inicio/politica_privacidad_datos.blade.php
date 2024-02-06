@@ -12,7 +12,9 @@ Mi Veris - Politica-privacidad-datos
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-bold m-0 mt-3">Datos actualizados</p>
+                    <p class="fs--1 fw-bold m-0 mt-3">Revisa tu correo</p>
+                    <p class="fs--1 m-0">Confirma la actualización de tus datos en el correo electrónico que te enviamos</p>
+
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
                     <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
@@ -168,7 +170,7 @@ Mi Veris - Politica-privacidad-datos
                         </div>
                         <div class="col-md-6">
                             <label for="dirección" class="form-label fw-bold">Dirección</label>
-                            <input type="text" class="form-control border-desaturated" name="dirección" id="dirección" required readonly/>
+                            <input type="text" class="form-control border-desaturated" name="direccion" id="direccion" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su dirección.
                             </div>
@@ -219,6 +221,11 @@ Mi Veris - Politica-privacidad-datos
         $('input[name="inlineRadioRectificacion"]').on('click', function () {
             toggleFieldsBasedOnRectificationOption();
         });
+
+        //  cancelacion/ oposicion
+        $('input[name="inlineRadioCancelacion"]').on('click', function () {
+            toggleFieldsBasedOnCancelationOption();
+        });
     });
 
     //obtener datos usuario
@@ -252,23 +259,35 @@ Mi Veris - Politica-privacidad-datos
         $('#telefono').val(datosUsuario.telefonoMovil);
         $('#correoElctronico').val(datosUsuario.mail);
         $('#dirección').val(datosUsuario.direccionDomicilio);
+
+        // capitalizar los campos
+        $('#primerNombre').val(capitalizarElemento($('#primerNombre').val()));
+        $('#segundoNombre').val(capitalizarElemento($('#segundoNombre').val()));
+        $('#prmerApellido').val(capitalizarElemento($('#prmerApellido').val()));
+        $('#segundoApellido').val(capitalizarElemento($('#segundoApellido').val()));
+        $('#direccion').val(capitalizarElemento($('#direccion').val()));
+        
     
         // llenar el select de provincia
         $.each(provincias, function (index, value) {
+            var nombreProvinciaCapitalizado = capitalizarElemento(value.nombreProvincia);
             if (value.codigoProvincia == datosUsuario.codigoProvincia) {
-                $('#provincia').append('<option value="' + value.codigoProvincia + '" selected>' + value.nombreProvincia + '</option>');
+                $('#provincia').append('<option value="' + value.codigoProvincia + '" selected>' + nombreProvinciaCapitalizado + '</option>');
             } else {
-                $('#provincia').append('<option value="' + value.codigoProvincia + '">' + value.nombreProvincia + '</option>');
+                $('#provincia').append('<option value="' + value.codigoProvincia + '">' + nombreProvinciaCapitalizado + '</option>');
             }
         });
+
         // llenar el select de ciudad
         $.each(ciudades, function (index, value) {
+            var nombreCiudadCapitalizado = capitalizarElemento(value.nombreCiudad);
             if (value.codigoCiudad == datosUsuario.codigoCiudad) {
-                $('#ciudad').append('<option value="' + value.codigoCiudad + '" selected>' + value.nombreCiudad + '</option>');
+                $('#ciudad').append('<option value="' + value.codigoCiudad + '" selected>' + nombreCiudadCapitalizado + '</option>');
             } else {
-                $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
+                $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + nombreCiudadCapitalizado + '</option>');
             }
         });
+
 
         // llenar el select de pais con datos quemados
         $('#pais').append('<option value="1" selected>Ecuador</option>');
@@ -291,6 +310,8 @@ Mi Veris - Politica-privacidad-datos
         $(this).prop('disabled', false); // Re-enable the button
 
         await actualizarDatosUsuario();
+        await enviarCorreoConfirmacion();
+        
     });
 
 
@@ -318,12 +339,7 @@ Mi Veris - Politica-privacidad-datos
 
         });
         const data = await call(args);
-        if(data.code == 200){
-            $('#mensajeActualizarPoliticas').modal('show');
-            setTimeout(function() {
-                $('#mensajeActualizarPoliticas').modal('hide');
-            }, 2000);
-        }
+        
         return data;
     }
     //obtener las politicas
@@ -358,19 +374,66 @@ Mi Veris - Politica-privacidad-datos
             "numeroIdentificacion": "{{ Session::get('userData')->numeroIdentificacion }}",
             "primerNombre": $('#primerNombre').val(),
             "primerApellido": $('#primerApellido').val(),
+            "segundoNombre": $('#segundoNombre').val(),
             "segundoApellido": $('#segundoApellido').val(),
             "mail": $('#correoElctronico').val(),
             "telefonoMovil": $('#telefono').val(),
             "codigoProvincia": $('#provincia').val(),
             "codigoCiudad": $('#ciudad').val(),
-            "direccionDomicilio": $('#direccion').val()
+            "direccion": $('#direccion').val(),
+            "sexo": $('#sexo').val(),
+            
         });
         const data = await call(args);
         console.log('actualizarDatosUsuario',data);
-        if (data.code == 200) {
-            $('#mensajeDatosActualizados').modal('show');
-        }
+        
 
+    }
+
+    // enviar correo de confirmacion post 
+    async function enviarCorreoConfirmacion() {
+        console.log('enviarCorreoConfirmacion');
+        let args = [];
+        args["endpoint"] = api_url + "/digitalestest/v1/politicas/enviaMailConfirmacionPolitica "
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+
+        args["data"] = JSON.stringify({
+            // enviar datos del formulario
+            "usuario": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "idPaciente": {{ Session::get('userData')->numeroPaciente }},
+            "aceptaPoliticas": true,
+            "primerNombre": $('#primerNombre').val(),
+            "segundoNombre": $('#segundoNombre').val(),
+            "primerApellido": $('#prmerApellido').val(),
+            "segundoApellido": $('#segundoApellido').val(),
+            "fechaNacimiento": "12/12/1990", // obtenerFechaNacimiento($('#fechaNacimiento').val()),
+            "telefono": $('#telefono').val(),
+            "mail": $('#correoElctronico').val(),
+            "direccion": $('#direccion').val(),
+            "codigoCiudad": datosUsuario.codigoPais + "-" + datosUsuario.codigoProvincia + "-" + $('#ciudad').val(),
+            "canalOrigenDigital": "APP_CMV"
+        });
+        const data = await call(args);
+        console.log('enviarCorreoConfirmacion',data);
+
+        if (data.code == 200) {
+            // revisa tu correo mostrar modal
+            $('#mensajeDatosActualizados').modal('show');
+
+        }
+        return data;
+    }
+
+
+    //obtener fecha de nacimiento en formato dd/mm/yyyy y devolver un string
+    function obtenerFechaNacimiento(fecha) {
+        let fechaNacimiento = new Date(fecha);
+        let dia = fechaNacimiento.getDate();
+        let mes = fechaNacimiento.getMonth() + 1;
+        let anio = fechaNacimiento.getFullYear();
+        return `${dia}/${mes}/${anio}`;
     }
 
     // actualizar el select de ciudades cuando selecciono provincia
@@ -389,7 +452,7 @@ Mi Veris - Politica-privacidad-datos
         // Campos a habilitar/deshabilitar
         const fields = ['#primerNombre', '#segundoNombre', '#prmerApellido', '#segundoApellido', 
                         '#fechaNacimiento', '#telefono', '#correoElctronico', '#pais', 
-                        '#provincia', '#ciudad', '#dirección', '#sexo'];
+                        '#provincia', '#ciudad', '#direccion', '#sexo'];
 
         // Habilitar/deshabilitar basado en la selección
         fields.forEach(field => {
@@ -399,9 +462,16 @@ Mi Veris - Politica-privacidad-datos
         // Los selects requieren 'disabled' en lugar de 'readonly'
         $('#pais, #provincia, #ciudad, #sexo').prop('disabled', !isRectificationYesChecked);
 
-        // Controlar el botón de guardar
-        $('#botonConfirmarPDP').prop('disabled', !isRectificationYesChecked);
+        
+
+
+
+
+
+
+        
     }
+
 
     
 </script>
