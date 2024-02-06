@@ -481,7 +481,7 @@ Mi Veris - Inicio
             }
                     elemento += `<div class="d-flex justify-content-between align-items-center">
                             <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
-                            <span class="fs--2 text-success fw-medium">${esPagada(citas.estaPagada)}</span>
+                            <span class="fs--2 text-success fw-medium">${esPagada(citas)}</span>
                         </div>
                         <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
                         <p class="fw-normal fs--2 mb-0">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
@@ -613,10 +613,11 @@ Mi Veris - Inicio
 
     // funcion esPagada para saber si la cita esta pagada
     function esPagada(pagada){
-        if(pagada == 'S'){
-            return `<span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>`;
+        if(pagada.estaPagada == 'S'){
+            return `<span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i> ${pagada.mensajeEstado}</span>`;
+               
         } else {
-            return `<span class="fs--2 text-danger-veris fw-medium"><i class="fa-solid fa-circle me-1"></i> Cita no pagada</span>`;
+            return `<span class="fs--2 text-danger-veris fw-medium"><i class="fa-solid fa-circle me-1"></i> ${pagada.mensajeEstado}</span>`;
         }
     }
 

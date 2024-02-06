@@ -116,6 +116,12 @@ class CitasController extends Controller
         // $params = str_replace('|', '/', $params);
         return view('citas.confirmar_pago')->with('params',$params);
     }
+
+    // confirmacion cita
+    public function confirmacionCita($params) {
+        // $params = str_replace('|', '/', $params);
+        return view('citas.confirmacionCita')->with('params',$params);
+    }
     // Return view mensaje cita agendada
     public function citaAgendada($params) {
         // $params = str_replace('|', '/', $params);

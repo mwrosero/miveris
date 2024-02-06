@@ -197,6 +197,7 @@ Mi Veris - Citas - Servicios a domicilio
             "mail": paciente.correo,
             "direccion": getInput('direccion'), 
             "telefono": getInput('telefono'),
+            "origenInvocacion": "WEB",
         });
 
         const data = await call(args);
@@ -241,6 +242,7 @@ Mi Veris - Citas - Servicios a domicilio
         formData.append("codigoCiudad", getInput('ciudad'));
         formData.append("direccion", getInput('direccion'));
         formData.append("telefono", getInput('telefono'));
+        formData.append("origenInvocacion", 'WEB'); 
 
         args["data"] = formData;
 
