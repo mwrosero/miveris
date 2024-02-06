@@ -17,7 +17,8 @@ Mi Veris - Historia clínica
                     <p>Solicitud creada exitosamente</p>
                 </div>
                 <div class="modal-footer flex-column align-items-stretch w-100 gap-2 p-3 pt-0">
-                    <button type="button" class="btn btn-primary-veris" data-bs-dismiss="modal">Aceptar</button>
+                    <button type="button" class="btn btn-primary-veris" data-bs-dismiss="modal" id='btnAceptarModal'
+                    >Aceptar</button>
                 </div>
             </div>
         </div>
@@ -205,21 +206,20 @@ Mi Veris - Historia clínica
         // validar campos
         // validar fechas vacias
 
-
-         
-
-
         if (!$("#fechaDesde").val() || !$("#fechaHasta").val() || !$("#motivo").val()) {
             // mostrar mensaje de error 
             
             return;
 
         }
-
-        
         // Solicitar historia clínica para un paciente.
         await solicitarHistoriaClinica();
         
+    });
+
+    // redireccionar a la pagina de inicio
+    $("#btnAceptarModal").click(function () {
+        window.location.href = "/";
     });
 
     
