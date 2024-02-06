@@ -126,5 +126,25 @@ Mi Veris - Citas - Promociones
 </div>
 @endsection
 @push('scripts')
-<script></script>
+<script>
+    let page = 1;
+    let perPage = 8;
+    document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerPaquetesPromocionales();
+    })
+    async function obtenerPaquetesPromocionales(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            console.log(data);
+        }else{
+            alert(data.message);
+        }
+    }
+</script>
 @endpush
