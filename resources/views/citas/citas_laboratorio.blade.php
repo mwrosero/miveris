@@ -14,9 +14,8 @@ Mi Veris - Citas - Citas Laboratorio
         <div class="row g-0 justify-content-center">
             <div class="d-flex justify-content-center">
                 <div class="text-start">
-                    <h5 class="mb-0" id="numeroOrden"
-                    ></h5>
-                    <p class="fw-light">Paciente: <b id="paciente"></b> </p>
+                    <h5 class="mb-0" id="ordenLabel"></h5>
+                    <p class="fw-light text-capitalize text-veris" id="pacienteLabel"></p>
                 </div>
             </div>
             <div class="col-auto">
@@ -24,7 +23,6 @@ Mi Veris - Citas - Citas Laboratorio
                     <div class="card-body">
                         <div class="overflow-auto" style="min-height:256px; max-height: 256px" id="detallesOrdenLaboratorio">
                             <!-- items -->
-                            
                         </div>
                         <div class="mb-2">
                             <div class="row g-0 justify-content-between">
@@ -58,9 +56,7 @@ Mi Veris - Citas - Citas Laboratorio
 @endsection
 @push('scripts')
 <script>
-
     // variables globales
-
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     let idPaciente = dataCita.paciente.numeroPaciente;
@@ -69,7 +65,11 @@ Mi Veris - Citas - Citas Laboratorio
     let items = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+        $('#pacienteLabel').html('Paciente: '+dataCita.paciente.primerNombre.toLowerCase() + " " + dataCita.paciente.primerApellido.toLowerCase() + " " +dataCita.paciente.segundoApellido.toLowerCase());
+        let labelOrden = dataCita.datosTratamiento.detalleLaboratorio.descripcionOrden;
+        $('#ordenLabel').html(labelOrden.charAt(0).toUpperCase() + labelOrden.slice(1).toLowerCase());
         await consultarDetallesOrdenLaboratorio();
+
 
         $('body').on('change', '.input-prestacion', function(){
             itemsSelected();

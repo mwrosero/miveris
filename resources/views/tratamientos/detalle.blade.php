@@ -106,7 +106,7 @@ $data = json_decode(base64_decode($params));
                             </div>
                         </div>
                         <div class="p-3">
-                            <a  class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprara</a>
+                            <a  class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprar</a>
                             <a href="#" class="btn w-100 mb-3">Ahora no</a>
                         </div>
                         

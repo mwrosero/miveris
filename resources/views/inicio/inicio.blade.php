@@ -641,12 +641,12 @@ Mi Veris - Inicio
             params.convenio = dataConvenio.data[0];
         } else {
             params.convenio = {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                };
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+                "secuenciaAfiliado" : null,
+            };
         }
         // params.paciente = {
         //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
@@ -678,6 +678,48 @@ Mi Veris - Inicio
     $(document).on('click', '.btn-pagar', function(){
         let data = $(this).data('rel');
         console.log('dataPagar', data);
+
+        let params = {}
+        params.online = data.esVirtual;
+        params.especialidad = {
+            codigoEspecialidad: data.idEspecialidad,
+            codigoPrestacion  : data.codigoPrestacion,
+            codigoServicio   : data.codigoServicio,
+            codigoTipoAtencion: data.codigoTipoAtencion,
+            esOnline : data.esVirtual,
+            nombre : data.especialidad,
+        }
+        if (datosConvenios.length > 0) {
+            params.convenio = dataConvenio.data[0];
+        } else {
+            params.convenio = {
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+                "secuenciaAfiliado" : null,
+            };
+        }
+
+        params.paciente = {
+            "numeroIdentificacion": data.numeroIdentificacion,
+            "tipoIdentificacion": data.tipoIdentificacion,
+            "nombrePaciente": data.nombrePaciente,
+            "numeroPaciente": data.numeroPaciente
+        }
+
+        params.reservaEdit = {
+            "estaPagada": data.estaPagada,
+            "numeroOrden": data.numeroOrden,
+            "lineaDetalleOrden": data.lineaDetalleOrden,
+            "codigoEmpresaOrden": data.codigoEmpresaOrden,
+            "idOrdenAgendable": data.idOrdenAgendable,
+            "idCita": data.idCita
+        }
+        params.origen = "inicios";
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+        location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
     });
 
     // consultar datos de facturacion

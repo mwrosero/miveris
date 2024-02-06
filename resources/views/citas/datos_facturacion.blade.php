@@ -223,11 +223,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     document.addEventListener("DOMContentLoaded", async function () {
         //await reservarCita();
-        if(!dataCita.reserva && !dataCita.datosTratamiento){
+        if(!dataCita.reserva && !dataCita.datosTratamiento && !dataCita.reservaEdit && !dataCita.preTransaccion){
             window.history.back();
         }
 
-        await crearPreTransaccion();
+        if(!dataCita.preTransaccion){
+            await crearPreTransaccion();
+        }else{
+            await consultarDatosFactura();
+        }
 
         $('body').on('change', '#tipoIdentificacion', function(){
             if($(this).val() == '2'){
@@ -253,11 +257,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         })
 
         $('body').on('click', '#btn-ver-examenes', async function(){
+            if($('#checkTerminosCondicion').is(':checked')) {
+                $('#btn-confirmar-y-pagar').html("Confirmar y pagar ahora");
+            }else{
+                $('#btn-confirmar-y-pagar').html("Continuar");
+            }
             await mostrarDesglose();
         })
 
         $('body').on('click', '#btn-confirmar-y-pagar', async function(){
-            await validarDatosFactura();
+            if($('#checkTerminosCondicion').is(':checked')) {
+                await validarDatosFactura();
+            }else{
+                $('#modalDesglose').modal('hide');
+            }
         })
 
     });
@@ -354,13 +367,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $("#btn-ver-examenes").removeClass('d-none');
         }
 
+        //Consultar si idPaciente es del que hizo login o del beneficiario de lo que se va a pagar
         let dataPT = {
             "idPaciente":{{ Session::get('userData')->numeroPaciente }},
             //"codigoPreTransaccion": dataCita.reserva.secuenciaTransaccion,
             "tipoServicio": tipoServicio,
+            "tipoSolicitud": tipoSolicitud,
             "codigoConvenio": dataCita.convenio.codigoConvenio,
             "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
-            "tipoSolicitud": tipoSolicitud,
             "paquete": null,
             "listaOrdenes": null
         }
@@ -371,10 +385,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }]
         }
 
+        if(dataCita.reservaEdit){
+            dataPT.listaCitas = [{
+                "codigoReserva": dataCita.reservaEdit.idCita
+            }]
+        }
+
         if(dataCita.listadoPrestaciones && dataCita.listadoPrestaciones.length > 0){
             dataPT.listaOrdenes = dataCita.listadoPrestaciones;
         }
-
 
         args["data"] = JSON.stringify(dataPT);
         const data = await call(args);
