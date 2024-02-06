@@ -29,7 +29,7 @@ Mi Veris - Citas
                                             </div>
                                         </div>
                                         <div class="col-5 col-md-4 cita-presencial">
-                                            <img src="{{ asset('assets/img/card/svg/consulta_presencial.svg') }}" class="img-fluid rounded-2" alt="{{ __('Cita presencial') }}">
+                                            <img src="{{ asset('assets/img/card/svg/consulta_presencial.svg') }}" class="card-img-top rounded-2" alt="{{ __('Cita presencial') }}">
                                         </div>
                                     </div>
                                 </a>
@@ -46,7 +46,7 @@ Mi Veris - Citas
                                             </div>
                                         </div>
                                         <div class="col-5 col-md-4">
-                                            <img src="{{ asset('assets/img/card/svg/consulta_virtual.svg') }}" class="img-fluid rounded-2" alt="{{ __('Cita virtual') }}">
+                                            <img src="{{ asset('assets/img/card/svg/consulta_virtual.svg') }}" class="card-img-top rounded-2" alt="{{ __('Cita virtual') }}">
                                         </div>
                                     </div>
                                 </a>
@@ -76,7 +76,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/estetoscopio.svg') }}" class="img-fluid rounded-2" alt="{{ __('Imágenes y procedimientos') }}">
+                                <img src="{{ asset('assets/img/card/svg/estetoscopio.svg') }}" class="card-img-top rounded-2" alt="{{ __('Imágenes y procedimientos') }}">
                             </div>
                         </div>
                     </a>
@@ -93,7 +93,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/microscopio.svg') }}" class="img-fluid rounded-2" alt="{{ __('Laboratorio') }}">
+                                <img src="{{ asset('assets/img/card/svg/microscopio.svg') }}" class="card-img-top rounded-2" alt="{{ __('Laboratorio') }}">
                             </div>
                         </div>
                     </a>
@@ -110,7 +110,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/imagen.svg') }}" class="img-fluid rounded-2" alt="{{ __('Imágenes y procedimientos') }}">
+                                <img src="{{ asset('assets/img/card/svg/imagen.svg') }}" class="card-img-top rounded-2" alt="{{ __('Imágenes y procedimientos') }}">
                             </div>
                         </div>
                     </a>
@@ -127,7 +127,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/muletas.svg') }}" class="img-fluid rounded-2" alt="{{ __('Terapia física') }}">
+                                <img src="{{ asset('assets/img/card/svg/muletas.svg') }}" class="card-img-top rounded-2" alt="{{ __('Terapia física') }}">
                             </div>
                         </div>
                     </a>
@@ -144,7 +144,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/recetas.svg') }}" class="img-fluid rounded-2" alt="{{ __('Recetas médicas') }}">
+                                <img src="{{ asset('assets/img/card/svg/recetas.svg') }}" class="card-img-top rounded-2" alt="{{ __('Recetas médicas') }}">
                             </div>
                         </div>
                     </a>
@@ -161,7 +161,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-3 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/orden_externa.svg') }}" class="img-fluid rounded-2" alt="{{ __('Orden externa') }}">
+                                <img src="{{ asset('assets/img/card/svg/orden_externa.svg') }}" class="card-img-top rounded-2" alt="{{ __('Orden externa') }}">
                             </div>
                         </div>
                     </a>
@@ -184,7 +184,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-4 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/calendario.svg') }}" class="img-fluid rounded-2" alt="{{ __('Próximas citas') }}">
+                                <img src="{{ asset('assets/img/card/svg/calendario.svg') }}" class="card-img-top rounded-2" alt="{{ __('Próximas citas') }}">
                             </div>
                         </div>
                     </a>
@@ -200,7 +200,7 @@ Mi Veris - Citas
                                 </div>
                             </div>
                             <div class="col-4 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/clock.svg') }}" class="img-fluid rounded-2" alt="{{ __('Historial de citas') }}">
+                                <img src="{{ asset('assets/img/card/svg/clock.svg') }}" class="card-img-top rounded-2" alt="{{ __('Historial de citas') }}">
                             </div>
                         </div>
                     </a>
