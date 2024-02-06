@@ -636,7 +636,11 @@ Mi Veris - Inicio
             nombre : data.especialidad,
         }
         if (datosConvenios.length > 0) {
-            params.convenio = dataConvenio.data[0];
+            console.log('datosConvenio', datosConvenios);
+            // datosconvenio posicion 0
+
+            params.convenio = datosConvenios[0];
+
         } else {
             params.convenio = {
                 "permitePago": "S",
