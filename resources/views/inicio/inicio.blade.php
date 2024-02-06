@@ -75,7 +75,7 @@ Mi Veris - Inicio
                                     </div>
                                 </div>
                                 <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="img-fluid" alt=""  >
+                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="card-img-top" alt=""  >
                                 </div>
                             </div>
                         </a>
@@ -91,7 +91,7 @@ Mi Veris - Inicio
                                     </div>
                                 </div>
                                 <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/comprar_1.svg') }}" class="img-fluid" alt=""  >
+                                    <img src="{{ asset('assets/img/card/svg/comprar_1.svg') }}" class="card-img-top" alt=""  >
                                 </div>
                             </div>
                         </a>
@@ -107,7 +107,7 @@ Mi Veris - Inicio
                                     </div>
                                 </div>
                                 <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/motociclista_1.svg') }}" class="img-fluid" alt=""  >
+                                    <img src="{{ asset('assets/img/card/svg/motociclista_1.svg') }}" class="card-img-top" alt=""  >
                                 </div>
                             </div>
                         </a>
@@ -489,7 +489,7 @@ Mi Veris - Inicio
                         <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
                         <div class="d-flex ${classElem} align-items-center mt-3">`
             if(citas.estaPagada == "N"){
-                elemento += `<button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>`;
+                elemento += `<button type="button" class="btn btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>`;
             }
             let ruta = '';
             if (citas.esVirtual == "S") {
@@ -498,15 +498,12 @@ Mi Veris - Inicio
                 ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
             }
 
-            elemento += `   <a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a> `
+            elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a> `
             if(citas.estaPagada == "N"){
-                elemento += `<a href="#
-                " class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'
-                >Pagar</a>`;
+                elemento += `<a href="#" class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a></div>`;
             }
             if (citas.esVirtual == "S") {
-                elemento += `<a href="${citas.idTeleconsulta}
-                " class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
+                elemento += `<a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
             }
             elemento += `
                             </div>
@@ -555,7 +552,7 @@ Mi Veris - Inicio
                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
                                     <p class="fw-normal fs--2 mb-0">${urgencias.paciente}</p>
                                     <div class="d-flex justify-content-between align-items-center m-0 ms-3">
-                                        <button type="submit" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>
+                                        <button type="submit" class="btn btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>
                                         <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
                                     </div>
                                 </div>
