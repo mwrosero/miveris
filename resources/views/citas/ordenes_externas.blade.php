@@ -125,6 +125,10 @@ Mi Veris - Órdenes externas
 
             params.paciente = paciente.data
             params.detalleFacturacion = datosFacturacion;
+            params.preTransaccion = {
+                'codigoPreTransaccion': data.codigoPreTransaccion,
+                'codigoSolicitud': data.codigoSolicitud
+            }
             params.origen = 'ordenExterna';
 
 

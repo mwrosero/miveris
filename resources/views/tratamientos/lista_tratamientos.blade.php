@@ -816,8 +816,7 @@ $data = json_decode(base64_decode($params));
                                         </a>`;
 
                                 }
-                            } 
-                            else{
+                            }else{
                                 // abrir modal no permite reserva
                                 respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</div>`;
                             }
@@ -835,7 +834,7 @@ $data = json_decode(base64_decode($params));
                         // mostrar boton de ver orden
                         //respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
 
-                        if (datosServicio.permitePago == 'S'){
+                        if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
                             respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
                         }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){

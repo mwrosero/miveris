@@ -19,13 +19,13 @@ Mi Veris - Citas - Detalle
                     <div class="row gx-2 justify-content-between align-items-center">
                         <!-- Opcion 1 -->
                         <div class="list-group list-group-checkable d-grid gap-2 border-0">
-                            <a href="{{ route('citas.datosFacturacion') }}" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
+                            <a href="#" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
                                 <p class="fs--2 mb-0">Fernanda Alarcon Tapia</p>
                             </a>
-                            <a href="{{ route('citas.datosFacturacion') }}" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
+                            <a href="#" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
                                 <p class="fs--2 mb-0">Julia Tapia Lopez</p>
                             </a>
-                            <a href="{{ route('citas.datosFacturacion') }}" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
+                            <a href="#" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
                                 <p class="fs--2 mb-0">Gabriela Alarcon Tapia</p>
                             </a>
                         </div>
