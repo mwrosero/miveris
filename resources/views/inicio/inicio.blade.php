@@ -480,14 +480,14 @@ Mi Veris - Inicio
                     </div>`;
             }
                     elemento += `<div class="d-flex justify-content-between align-items-center">
-                            <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
-                            <span class="fs--2 text-success fw-medium">${esPagada(citas)}</span>
-                        </div>
-                        <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
-                        <p class="fw-normal fs--2 mb-0">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
-                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                        <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
-                        <div class="d-flex ${classElem} align-items-center mt-3">`
+                                    <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
+                                    <span class="fs--2 text-success fw-medium">${esPagada(citas)}</span>
+                                </div>
+                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
+                                <p class="fw-normal fs--2 mb-0">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                                <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                                <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
+                                <div class="d-flex ${classElem} align-items-center mt-3">`
             if(citas.estaPagada == "N"){
                 elemento += `<button type="button" class="btn btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>`;
             }
@@ -498,7 +498,7 @@ Mi Veris - Inicio
                 ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
             }
 
-            elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a> `
+            elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a></div>`;
             if(citas.estaPagada == "N"){
                 elemento += `<a href="#" class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a></div>`;
             }
