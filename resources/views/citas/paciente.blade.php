@@ -47,19 +47,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elegir paciente') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Elegir paciente') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row g-3" id="listaPacientes">
             <div class="col-6 col-md-3">
                 <div class="card h-100">
-                    <div class="card-body text-center px-4">
-                        <a href="{{route('familia')}}">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center px-3 py-2">
+                        <a class="" href="{{route('familia')}}">
                             <div class="d-flex justify-content-center align-items-center mb-2">
-                                <div class="avatar me-2">
+                                <div class="avatar">
                                     <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
                                 </div>
                             </div>
-                            <p class="text-veris fw-medium fs--2">{{ __('Agregar nuevo paciente') }}</p>
+                            <p class="text-veris fw-medium fs--2 mb-0">{{ __('Agregar nuevo paciente') }}</p>
                         </a>
                     </div>
                 </div>
@@ -260,15 +262,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
                 elemento += `<div class="col-6 col-md-3">
                     <div class="card h-100 cursor-pointer">
-                        <div class="card-body text-center px-2">
+                        <div class="card-body text-center px-3 py-2">
                             
                             <div data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
-                               <div class="d-flex justify-content-center align-items-center mb-2">
-                                    <div class="avatar me-2">
+                               <div class="d-flex justify-content-center align-items-center mb-1">
+                                    <div class="avatar">
                                         <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>
                                     </div>
                                 </div>
-                                <p class="text-veris fw-medium fs--2 mb-0">${capitalizarElemento(pacientes.primerNombre)} ${capitalizarElemento(pacientes.primerApellido)} ${capitalizarElemento(pacientes.segundoApellido)}</p>
+                                <p class="text-veris fw-medium fs--2 mb-1">${capitalizarElemento(pacientes.primerNombre)} <br> ${capitalizarElemento(pacientes.primerApellido)} ${capitalizarElemento(pacientes.segundoApellido)}</p>
                                 <p class="text-veris fs--3 mb-0">${capitalizarElemento(pacientes.parentesco)}</p>
                             </div>
                         </div>
