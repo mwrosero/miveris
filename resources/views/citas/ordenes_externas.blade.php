@@ -101,7 +101,7 @@ Mi Veris - Órdenes externas
     // variables globales
     let dataConvenio = [];
     let idPaciente = '{{ Session::get('userData')->numeroPaciente }}';
-    let dataConvenios = [];
+    let datosConvenios = [];
     let datosPaciente = [];
 
 
@@ -144,6 +144,10 @@ Mi Veris - Órdenes externas
             const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
 
             params.paciente = paciente.data
+            params.convenio = datosConvenios;
+            params.dataOrdenExterna = data;
+            params.online = 'S';
+            params.origen = 'ordenExternaSolicitud';
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             location.href = $(this).attr("url-rel");
@@ -167,6 +171,28 @@ Mi Veris - Órdenes externas
         }
         return [];
     } 
+
+    // servicio para consultar convenios
+    async function consultarConvenios(datos) {
+        console.log('datosPaciente', datos);
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
+        let codigoEmpresa = 1
+        if (datos) {
+            tipoIdentificacion = datos.tipoIdentificacion;
+            numeroIdentificacion = datos.numeroIdentificacion;
+        }
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const dataConvenio = await call(args);
+        if(dataConvenio.code == 200){
+            datosConvenios = dataConvenio.data;
+        }
+       
+        return dataConvenio;
+    }
 
     // consultar ordenes externas de laboratorio
     async function consultarOrdenesExternasLaboratorio(_pacienteSeleccionado = '', tipoIdentificacion = '', _fechaDesde = '', _fechaHasta = '', _esAdmin = '') {
@@ -373,11 +399,8 @@ Mi Veris - Órdenes externas
         
         // colocar el nombre del filtro
         const elemento = document.getElementById('nombreFiltro');
-        if (texto == 'YO') {
-            elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-        } else{
-            elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
-        }
+        elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
+        
         
     });
     
@@ -440,7 +463,7 @@ Mi Veris - Órdenes externas
 
     // determinar botones pagar o solicitar
     function determinarBotonesPagarSolicitar(data){
-        console.log(data);
+        console.log(7,data);
         let params = {
             "idPaciente" : idPaciente,
             "numeroOrden" : data.numeroOrden,
@@ -448,6 +471,7 @@ Mi Veris - Órdenes externas
         }
         let ulrParams = btoa(JSON.stringify(params));
         let elemento = '';
+
         if (data.codigoEstado == 'REV') {
             // no mostrar botones
             elemento = '';

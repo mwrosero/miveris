@@ -28,7 +28,7 @@ class DashboardController extends Controller
         return view('inicio.promociones');
     }
 
-    public function promocionDetalle() {
-        return view('inicio.detalle_promocion');
+    public function promocionDetalle($params) {
+        return view('inicio.detalle_promocion')->with('params',$params);
     }
 }
