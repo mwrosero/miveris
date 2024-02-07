@@ -172,7 +172,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             $('#tratamiento-content').empty();
             
-            let elem = `<div class="progress-circle" data-percentage="${ roundToDraw(data.data.porcentajeAvanceTratamiento) }">
+            let elem = `<div class="progress-circle mx-auto" data-percentage="${ roundToDraw(data.data.porcentajeAvanceTratamiento) }">
                 <span class="progress-left">
                     <span class="progress-bar"></span>
                 </span>

@@ -6,7 +6,7 @@ Mi Veris - Citas - tratamiento
 @endpush
 @section('content')
 @php
-$data = json_decode(base64_decode($params));
+//$data = json_decode(base64_decode($params));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
@@ -107,7 +107,7 @@ $data = json_decode(base64_decode($params));
                         </div>
                         <div class="p-3">
                             <a  class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprar</a>
-                            <a href="#" class="btn w-100 mb-3">Ahora no</a>
+                            <a href="javascript:history.go(-1)" class="btn w-100 mb-3">Ahora no</a>
                         </div>
                         
                     </div>
@@ -130,14 +130,72 @@ $data = json_decode(base64_decode($params));
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
 
-    
-
     let codigoTratamiento = dataCita.datosTratamiento.codigoTratamiento;
     // llamada al dom
     
     document.addEventListener("DOMContentLoaded", async function () {
-
         await valorizacionServicios();
+
+        $('body').on('change','.input-group input', async function(){
+            let detalle = JSON.parse($(this).attr("data-rel"));
+            await actualizarValorizacionServicios(detalle);
+            await valorizacionServicios();
+        })
+
+        // boton info
+        $('#informacionModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget) // Button that triggered the modal
+            let recipient = button.data('rel') // Extract info from data-* attributes
+           
+            let modal = $(this);
+            modal.find('.modal-body').empty();
+            modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">${recipient.descripcionServicio}</h1>
+                                                <p class="fs--1 fw-bold text-primary">Servicios incluidos en la compra</p>
+                                                <ul id="listaServicios"></ul>`);
+            let listaServicios = modal.find('#listaServicios');
+            recipient.detallePrestaciones.forEach((resultados) => {
+                resultados.grupoDetalles.forEach((resultados2) => {
+                    listaServicios.append(`<li>${resultados2.nombrePrestacion}</li>`);
+                });
+            });
+
+        })
+
+        // boton info servicios no incluidos
+        $('#serviciosNoIncluidosModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget) // Button that triggered the modal
+            let recipient = button.data('rel') // Extract info from data-* attributes
+           
+            let modal = $(this);
+            modal.find('.modal-body').empty();
+            modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">Informacion</h1>
+                    <p class="fs--1 fw-bold text-primary">${recipient.detallePrestaciones[0].descripcionGrupoDetalle}</p>
+                    <ul id="listaServicios"></ul>`);
+            let listaServicios = modal.find('#listaServicios');
+            recipient.detallePrestaciones.forEach((resultados) => {
+                resultados.grupoDetalles.forEach((resultados2) => {
+                    listaServicios.append(`<li>${resultados2.nombrePrestacion}</li>`);
+                });
+            });
+
+        })
+
+        // boton comprar redireccionar a la pagina de pago
+        $('#btnComprar').on('click', function() {
+            // capturar los valores de los inputs
+            console.log('entro a comprar');
+            let inputs = $('.input-group input').toArray();
+            let cantidadServicios = [];
+            let ruta = '/citas-datos-facturacion/' + '{{ $params }}';
+            console.log('ruta', ruta);  
+            // window.location.href = "${ruta}";
+            window.location.href = ruta;
+        })
+        
+        // boton cancelar redireccionar a la pagina de citas
+        $('#btnCancelar').on('click', function() {
+            window.location.href = "/citas";
+        })
     });
 
     // llenar contenedor principal descuento
@@ -151,16 +209,8 @@ $data = json_decode(base64_decode($params));
         } else {
             contenedorPrincipalDescuento.append(`<p class="mb-0">Compra y gestiona </p>
                                                 <p class="mb-0">tu tratamiento en app</p>`);
-        }
-
-
-
-
-        
+        }    
     }
-
-
-    // funciones asyncronas
 
     // Obtener la valorizacion de los servicios del tratamiento
     async function valorizacionServicios() {
@@ -211,7 +261,7 @@ $data = json_decode(base64_decode($params));
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus" onclick="restarCantidad(${index})"
                                     >-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" min="0" max=${resultados.cantidadMaximaPermitida}
+                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel=${JSON.stringify(resultados)} min="0" max=${resultados.cantidadMaximaPermitida}
                                     value="1" id="cantidadServicio-${index}"
                                      />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus" onclick="sumarCantidad(${index})"
@@ -224,7 +274,6 @@ $data = json_decode(base64_decode($params));
             let serviciosNoIncluidos = $('#flush-collapseOne');
             serviciosNoIncluidos.empty();
             let elementoNoIncluido = '';
-
 
             data.data.serviciosNoIncluyeCompra.forEach((resultados) => {
                 console.log(resultados.colorInformacion);
@@ -270,9 +319,9 @@ $data = json_decode(base64_decode($params));
             return;
         }
 
-        $(`#listaServicios li:nth-child(${index + 1}) .input-group input`).val(cantidad);
+        $(`#listaServicios li:nth-child(${index + 1}) .input-group input`).val(cantidad).trigger('change');
 
-        let precioTotal = cantidad * valorPromocion;
+        /*let precioTotal = cantidad * valorPromocion;
         let precioTotalLista = cantidad * valorNormal;
         let precioBase = $(`#precioBase-${index}`);
         let precioTotalList = $(`#precioTotalList-${index}`);
@@ -294,7 +343,7 @@ $data = json_decode(base64_decode($params));
         precioBaseEnd.empty();
 
         precioTotalEnd.append(`$${precioTotalEndValor.toFixed(2)}`);
-        precioBaseEnd.append(`$${precioBaseEndValor.toFixed(2)}`);
+        precioBaseEnd.append(`$${precioBaseEndValor.toFixed(2)}`);*/
     }
 
 
@@ -309,9 +358,9 @@ $data = json_decode(base64_decode($params));
         if (cantidad < 0) {
             cantidad = 0;
         }
-        $(`#listaServicios li:nth-child(${index + 1}) .input-group input`).val(cantidad);
+        $(`#listaServicios li:nth-child(${index + 1}) .input-group input`).val(cantidad).trigger('change');
 
-        let precioTotal = cantidad * valorPromocion;
+        /*let precioTotal = cantidad * valorPromocion;
         let precioTotalLista = cantidad * valorNormal;
         precioBase.empty();
         precioBase.append(`$${precioTotalLista.toFixed(2)}`);
@@ -332,89 +381,27 @@ $data = json_decode(base64_decode($params));
 
         precioTotalEnd.append(`$${precioTotalEndValor}`);
 
-        precioBaseEnd.append(`$${precioBaseEndValor}`);
+        precioBaseEnd.append(`$${precioBaseEndValor}`);*/
     }
 
     // actualizar la valorizacion de los servicios del tratamiento con un put
 
-    function actualizarValorizacionServicios() {
+    function actualizarValorizacionServicios(detalle) {
         let args = {};
-        let idTratamiento = 2102945;
-        let canalOrigenDigital = 'APP_CMV';
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
+        //let canalOrigenDigital = 'APP_CMV';
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}/valorizacion_servicio`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
             "codigoPreTransaccion": null,
-            "canalOrigenDigital": canalOrigenDigital,
+            "canalOrigenDigital": _canalOrigen,
         });
 
         const data = call(args);
         console.log('dataservicio', data);
         return data;
     }
-
-    // funciones js
-
-    // boton info
-    $('#informacionModal').on('show.bs.modal', function (event) {
-        let button = $(event.relatedTarget) // Button that triggered the modal
-        let recipient = button.data('rel') // Extract info from data-* attributes
-       
-        let modal = $(this);
-        modal.find('.modal-body').empty();
-        modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">${recipient.descripcionServicio}</h1>
-                                            <p class="fs--1 fw-bold text-primary">Servicios incluidos en la compra</p>
-                                            <ul id="listaServicios"></ul>`);
-        let listaServicios = modal.find('#listaServicios');
-        recipient.detallePrestaciones.forEach((resultados) => {
-            resultados.grupoDetalles.forEach((resultados2) => {
-                listaServicios.append(`<li>${resultados2.nombrePrestacion}</li>`);
-            });
-        });
-
-    })
-
-    // boton info servicios no incluidos
-    $('#serviciosNoIncluidosModal').on('show.bs.modal', function (event) {
-        let button = $(event.relatedTarget) // Button that triggered the modal
-        let recipient = button.data('rel') // Extract info from data-* attributes
-       
-        let modal = $(this);
-        modal.find('.modal-body').empty();
-        modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">Informacion</h1>
-                                            <p class="fs--1 fw-bold text-primary">${recipient.detallePrestaciones[0].descripcionGrupoDetalle}</p>
-                                            <ul id="listaServicios"></ul>`);
-        let listaServicios = modal.find('#listaServicios');
-        recipient.detallePrestaciones.forEach((resultados) => {
-            resultados.grupoDetalles.forEach((resultados2) => {
-                listaServicios.append(`<li>${resultados2.nombrePrestacion}</li>`);
-            });
-        });
-
-    })
-
-
-    // boton comprar redireccionar a la pagina de pago
-    $('#btnComprar').on('click', function() {
-        // capturar los valores de los inputs
-        console.log('entro a comprar');
-        let inputs = $('.input-group input').toArray();
-        let cantidadServicios = [];
-        let ruta = '/citas-datos-facturacion/' + '{{ $params }}';
-        console.log('ruta', ruta);  
-        // window.location.href = "${ruta}";
-        window.location.href = ruta;
-    })
-    
-    // boton cancelar redireccionar a la pagina de citas
-    $('#btnCancelar').on('click', function() {
-        window.location.href = "/citas";
-    })
-
-
-
 
 </script>
 @endpush
