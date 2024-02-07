@@ -33,6 +33,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h5 class="text-primary-veris fw-medium m-1">{{ __('Precio') }} </h5>
                     </div>
                     <div class="card-body p--2 my-3">
+                        
                         <div class="row gx-0 justify-content-evenly align-items-center box-precio">
                         </div>
                     </div>
@@ -211,6 +212,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             var porcentajeDescuentoCopago = porcentajeDescuento;
             var subtotalCopago = valor;
             var valorTotalCopago = valorCanalVirtual;
+            var subtotalCopagoFloat = parseFloat(valor);
+            var valorTotalCopagoFloat = parseFloat(valorCanalVirtual);
             let params = {};
 
             let elem = ``;
@@ -220,14 +223,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
 
             if(codigoConvenio){
+                console.log('subTotal', subtotalCopagoFloat, 'valorTotal', valorTotalCopagoFloat);
                 elem += `<div class="col-5">
                     <div class="text-center">
                         <img src="${rutaImagenConvenio}" alt="" class="img-fluid" width="86" height="">
                     </div>
                 </div>
                 <div class="col-5 text-end">`;
-                if(porcentajeDescuentoCopago > 0){
-                    `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
+
+                if(subtotalCopagoFloat > valorTotalCopagoFloat){
+                elem +=   `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
                         <del id="precioBase">$${valor}</del>
                     </p>`;
                 }

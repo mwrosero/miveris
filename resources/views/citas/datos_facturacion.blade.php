@@ -189,7 +189,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="form-check d-flex justify-content-center">
                                     <input class="form-check-input terminos-input me-2" type="checkbox" value="" id="checkTerminosCondicion" required>
                                     <label class="form-check-label fs--1" for="checkTerminosCondicion">
-                                        Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank">Términos y condiciones</a>
+                                        Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank">Términos y condiciones</a> 
+                                        <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
                                     </label>
                                     <div class="invalid-feedback">
                                         Debes aceptar antes de enviar
