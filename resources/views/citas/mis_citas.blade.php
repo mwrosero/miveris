@@ -323,7 +323,7 @@ Mi Veris - Citas - Mis citas
                                             >Pagar</a>`;
                                         }
                                         if (cita.esVirtual == "S") {
-                                            element += `<a href="${citas.idTeleconsulta}
+                                            element += `<a href="${cita.idTeleconsulta}
                                             " class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
                                         }
                                         element += `
