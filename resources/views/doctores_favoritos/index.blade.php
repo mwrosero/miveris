@@ -28,7 +28,7 @@ Mi Veris - Doctores favoritos
                     </div>
                 </div>
                 <div class="modal-footer px-3 pb-3">
-                    <button type="button" class="btn fw-normal m-0" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn fw-normal m-0 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -44,7 +44,7 @@ Mi Veris - Doctores favoritos
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center p-2 pt-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light" data-bs-dismiss="modal">Aceptar</button>
+                    <button type="button" class="btn btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -59,7 +59,7 @@ Mi Veris - Doctores favoritos
                 </p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
@@ -73,8 +73,8 @@ Mi Veris - Doctores favoritos
                     <p class="mb-0">¿Estás seguro de eliminar este doctor de su lista de favoritos?</p>
                 </div>
                 <div class="modal-footer flex-nowrap justify-content-center pt-0 px-0">
-                    <button type="button" class="btn btn-link text-primary-veris shadow-none" data-bs-dismiss="modal">Cancelar</button>
-                    <a href="#!" class="btn btn-link text-primary-veris shadow-none" id="btnEliminarDoctor"
+                    <button type="button" class="btn btn-link text-primary-veris shadow-none px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="#!" class="btn btn-link text-primary-veris shadow-none px-4 py-3" id="btnEliminarDoctor"
                     >Eliminar</a>
                 </div>
             </div>
@@ -86,7 +86,7 @@ Mi Veris - Doctores favoritos
     <section class="p-3 pt-0">
         <div class="row justify-content-center" >
             <div class="col-12 col-md-6 col-lg-4 text-center my-4">
-                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-100 py-3">Buscar doctor</a>
+                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-100 px-4 py-3">Buscar doctor</a>
             </div>
         </div>
 
@@ -187,7 +187,7 @@ Mi Veris - Doctores favoritos
                 let doctores = data.data[index];
                 elemento+= `<div class="col-12 col-md-6">
                     <div class="card h-100">
-                        <div class="card-body p-3">
+                        <div class="card-body p--2">
                             <div class="row gx-2">
                                 <div class="col-3 d-flex justify-content-center align-items-center">
                                     <img src=${doctores.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
@@ -203,7 +203,7 @@ Mi Veris - Doctores favoritos
                             </div>
                         </div>
                         <div class="card-footer text-end p-3">
-                            <button type="button" class="btn btn-outline-primary-veris btn-sm me-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
+                            <button type="button" class="btn btn-outline-primary-veris btn-sm" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
                             <div class="btn btn-sm btn-primary-veris" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(doctores)}'>Reservar cita</div>
                         </div>
                     </div>
