@@ -43,6 +43,23 @@ Mi Veris - Citas - Mis citas
         </div>
     </div>
 
+     <!-- Modal de error -->
+
+    <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Veris</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Filtro -->
     <div class="d-flex justify-content-between align-items-center bg-white">
@@ -80,7 +97,7 @@ Mi Veris - Citas - Mis citas
                                 <div class="text-center">
                                     <img src="{{ asset('assets/img/svg/doctor_light.svg') }}" class="img-fluid mb-3" alt="">
                                     <h5 class="mb-0">No tienes citas disponibles aún</h5>
-                                    <p class="fs--1">Agende una nueva cita pulsando el botón de abajo</p>
+                                    <p class="fs--1">Agenda una nueva cita tocanco el botón.</p>
                                 </div>
                             </div>
                         </div>
@@ -302,8 +319,7 @@ Mi Veris - Citas - Mis citas
 
                                         element += `   <a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(cita)}'>${cita.nombreBotonCambiar}</a> `
                                         if(cita.estaPagada == "N"){
-                                            element += `<a href="#
-                                            " class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(cita)}'
+                                            element += `<a class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(cita)}'
                                             >Pagar</a>`;
                                         }
                                         if (cita.esVirtual == "S") {
@@ -332,7 +348,7 @@ Mi Veris - Citas - Mis citas
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -704,6 +720,63 @@ Mi Veris - Citas - Mis citas
        
         return dataConvenio;
     }
+
+    // btn-pagar para redireccionar a la pagina de pago
+    $(document).on('click', '.btn-pagar', function(){
+        let data = $(this).data('rel');
+        console.log('dataPagar', data);
+        if(datosConvenios[0].permitePago == "N"){
+            // Modal de error
+            // setear el mensaje de error en mensajeError
+            $('#mensajeError').text(data.mensajePagoReserva);
+            
+            $('#ModalError').modal('show');
+            return;
+
+        }
+
+        let params = {}
+        params.online = data.esVirtual;
+        params.especialidad = {
+            codigoEspecialidad: data.idEspecialidad,
+            codigoPrestacion  : data.codigoPrestacion,
+            codigoServicio   : data.codigoServicio,
+            codigoTipoAtencion: data.codigoTipoAtencion,
+            esOnline : data.esVirtual,
+            nombre : data.especialidad,
+        }
+        if (datosConvenios.length > 0) {
+            params.convenio = datosConvenios[0];
+        } else {
+            params.convenio = {
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+                "secuenciaAfiliado" : null,
+            };
+        }
+
+        params.paciente = {
+            "numeroIdentificacion": data.numeroIdentificacion,
+            "tipoIdentificacion": data.tipoIdentificacion,
+            "nombrePaciente": data.nombrePaciente,
+            "numeroPaciente": data.numeroPaciente
+        }
+
+        params.reservaEdit = {
+            "estaPagada": data.estaPagada,
+            "numeroOrden": data.numeroOrden,
+            "lineaDetalleOrden": data.lineaDetalleOrden,
+            "codigoEmpresaOrden": data.codigoEmpresaOrden,
+            "idOrdenAgendable": data.idOrdenAgendable,
+            "idCita": data.idCita
+        }
+        params.origen = "inicios";
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+        location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
+    });
 
 
 
