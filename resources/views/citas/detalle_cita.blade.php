@@ -33,6 +33,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h5 class="text-primary-veris fw-medium m-1">{{ __('Precio') }} </h5>
                     </div>
                     <div class="card-body p--2 my-3">
+                        
                         <div class="row gx-0 justify-content-evenly align-items-center box-precio">
                         </div>
                     </div>
@@ -68,7 +69,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <div class="row justify-content-center">
             <div class="col-12 col-md-4 text-center mt-5">
                 {{-- <a href="#" id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100">{{ __('Pagar') }}</a> --}}
-                <button id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100">{{ __('Pagar') }}</button>
+                <button id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100 px-4 py-3 fs-5">{{ __('Pagar') }}</button>
             </div>
         </div>
     </section>
@@ -211,6 +212,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             var porcentajeDescuentoCopago = porcentajeDescuento;
             var subtotalCopago = valor;
             var valorTotalCopago = valorCanalVirtual;
+            var subtotalCopagoFloat = parseFloat(valor);
+            var valorTotalCopagoFloat = parseFloat(valorCanalVirtual);
             let params = {};
 
             let elem = ``;
@@ -220,18 +223,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
 
             if(codigoConvenio){
+                console.log('subTotal', subtotalCopagoFloat, 'valorTotal', valorTotalCopagoFloat);
                 elem += `<div class="col-5">
                     <div class="text-center">
                         <img src="${rutaImagenConvenio}" alt="" class="img-fluid" width="86" height="">
                     </div>
                 </div>
                 <div class="col-5 text-end">`;
-                if(porcentajeDescuentoCopago > 0){
-                    `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
+
+                if(subtotalCopagoFloat > valorTotalCopagoFloat){
+                elem +=   `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
                         <del id="precioBase">$${valor}</del>
                     </p>`;
                 }
-                elem += `<h3 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago}</h3>
+                elem += `<h1 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago}</h1>
                 </div>
                 <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
             }else{
@@ -241,7 +246,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <del id="precioBase">$${valor}</del>
                     </p>`;
                 }
-                elem += `<h3 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago}</h3>
+                elem += `<h1 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago}</h1>
                 </div>
                 <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
             }
@@ -252,29 +257,29 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let elemMsg = ``;
 
             if(porcentajeDescuentos == 0 && permiteReserva == "S" && permitePago == "S" ){
-                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
-                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top p--2">
+                        <i class="fa-solid fa-circle-info text-primary-veris fs-3 mb-0 me-2"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
                     </div>`;
             }
             //Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.
             if(porcentajeDescuentos > 0 && permitePago == "S" ){
-                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
-                        <i class="bi bi-info-circle-fill h4 mb-0 mx-3 text-warning"></i>
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top p--2">
+                        <i class="fa-solid fa-circle-info h4 mb-0 me-2 text-warning"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage style="color: #0A2240;"data.data.mensajeAlerta}</p>
                     </div>`;
             }
             if(online == "S"){
                 if(dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") {
-                    elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
-                            <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
+                    elemMsg += `<div class="d-flex justify-content-start align-items-center border-top p--2">
+                            <i class="fa-solid fa-circle-info text-primary-veris fs-3 mb-0 me-2"></i>
                             <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
                         </div>`;
                 }
             }
             if(permitePago == "N"){
-                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top py-3">
-                        <i class="bi bi-info-circle-fill text-primary-veris h4 mb-0 mx-3"></i>
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top p--2">
+                        <i class="fa-solid fa-circle-info text-primary-veris fs-3 mb-0 me-2"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
                     </div>`;
             }

@@ -51,7 +51,10 @@ body {
   -webkit-mask: linear-gradient(#f8f7fa, #f8f7fa 18%, transparent 100%);
   mask: none !important;
 }
-
+.avatar-18{
+  width: 4.25rem !important;
+  height: 4.25rem !important;
+}
 .avatar-tratamiento {
   position: relative;
   width: 3rem;
@@ -401,7 +404,7 @@ h1,
   filter: none;
   opacity: .5;
 }
-
+.mb-8{margin-bottom: 2rem !important;}
 .modal {
   background-color: rgba(0, 0, 0, 0.5) !important;
 }
