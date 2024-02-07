@@ -105,5 +105,25 @@ Mi Veris - Citas - Detalle
 </div>
 @endsection
 @push('scripts')
-<script></script>
+<script>
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerDetallePaquetePromocional();
+    })
+
+    async function obtenerDetallePaquetePromocional(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=${dataCita.paquete.codigoEmpresaPaquete}&codigoPaquete=${dataCita.paquete.codigoPaquete}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        if (data.code == 200){
+
+        }else{
+            alert(data.message);
+        }
+    }
+</script>
 @endpush
