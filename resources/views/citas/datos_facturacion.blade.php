@@ -508,6 +508,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if (numeroIdentificacion.length !== 10) {
                 errors = true;
                 msg += `<li class="ms-0">El campo Número Documento debe tener 10 dígitos.</li>`;
+            }else if (!esValidaCedula(numeroIdentificacion)) {
+                errors = true;
+                msg += `<li class="ms-0">Número Documento inválido.</li>`;
             }
 
             // Validar nombres y apellidos
