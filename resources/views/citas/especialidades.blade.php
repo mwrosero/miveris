@@ -16,19 +16,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <h6 class="fw-medium mb-4">Tienes una <b class="text-primary-veris">{{ __('cita pendiente') }}</b> {{ __('de esta especialidad en tu tratamiento de') }}:</h6>
-                    <div class="border rounded-3 mb-3 p-3" id="tratamiento-content">
+                    <h5 class="fw-medium mb-8">Tienes una <b class="text-primary-veris">{{ __('cita pendiente') }}</b> {{ __('de esta especialidad en tu tratamiento de') }}:</h5>
+                    <div class="border rounded-3 mb-8 p--2" id="tratamiento-content">
                     </div>
-                    <p class="fw-medium">{{ __('¿Estas agendando por este motivo?') }}</p>
-                    <a href="#" type="button" id="btn-si-tratamiento" class="btn btn-primary-veris w-100 mb-3">{{ __('Agendar esta orden') }}</a>
-                    <a href="#" type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris w-100 mb-3">{{ __('No') }}</a>
+                    <p class="fw-medium mb-8">{{ __('¿Estas agendando por este motivo?') }}</p>
+                    <a href="#" type="button" id="btn-si-tratamiento" class="btn btn-primary-veris w-100  px-4 py-3 fs-5 mb-3">{{ __('Agendar esta orden') }}</a>
+                    <a href="#" type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris w-100 px-4 py-3 fs-5 ">{{ __('No') }}</a>
                     {{-- <button type="button" class="btn btn-outline-primary-veris w-100 mb-3" data-bs-dismiss="modal">{{ __('No') }}</button> --}}
                 </div>
             </div>
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Elige la especialidad') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Elige la especialidad') }}</h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="d-flex justify-content-center">
             <div class="col-12 col-md-4 mb-3">
@@ -115,9 +117,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     }
                     elemento += `<div class="col-6 col-md-3">
                                     <div class="card item-especialidad h-100" type="button" data-rel='${ JSON.stringify(especialidad) }'>
-                                        <div class="card-body px-2 text-center">
+                                        <div class="card-body px-3 py-2 text-center">
                                             <div class="w-100">
-                                                <div class="avatar avatar-lg mx-auto mb-3">
+                                                <div class="avatar avatar-18 mx-auto mb-2">
                                                     <div class="avatar-especialidad">
                                                         <img src="${especialidad.imagen}" alt="${especialidad.nombre}">
                                                     </div>

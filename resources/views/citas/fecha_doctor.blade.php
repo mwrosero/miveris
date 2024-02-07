@@ -9,7 +9,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 <div class="flex-grow-1 container-p-y pt-0">
 
     <!-- Modal de error -->
-
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -19,8 +18,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 </p>
                 </div>
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal" id="btnEntiendoError"
-                    >Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris px-4 py-3 w-100" data-bs-dismiss="modal" id="btnEntiendoError">Entiendo</button>
                 </div>
             </div>
         </div>
@@ -43,7 +41,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center border-0 py-1">
-                    <button type="button" class="btn btn-sm w-100 text-primary-veris fw-medium shadow-none" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-sm w-100 text-primary-veris fw-medium shadow-none px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -59,7 +57,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center p--2 pt-3">
-                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100">Aceptar</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Aceptar</a>
                 </div>
             </div>
         </div>
@@ -76,7 +74,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center p--2 pt-3">
-                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100">Aceptar</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Aceptar</a>
                 </div>
             </div>
         </div>
