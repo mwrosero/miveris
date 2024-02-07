@@ -361,8 +361,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["showLoader"] = true;
         args["bodyType"] = "json";
 
-        // let idPaciente = {{ Session::get('userData')->numeroPaciente }};
-        let idPaciente = dataCita.paciente.numeroPaciente;
+        let idPaciente = {{ Session::get('userData')->numeroPaciente }};
+        //let idPaciente = dataCita.paciente.numeroPaciente;
         let tipoServicio = "CITA";
         let tipoSolicitud = null;
 
@@ -381,7 +381,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $('.modalDesglose-size').addClass('modal-md');
             $("#btn-ver-examenes").removeClass('d-none');
             $('#modalDesglose .modal-header').hide();
-            idPaciente = dataCita.paciente.numeroPaciente;
+            // idPaciente = dataCita.paciente.numeroPaciente;
             codigoConvenio = dataCita.ordenExterna.pacientes[0].codigoConvenio;
             if(dataCita.ordenExterna.aplicoDomicilio === 'N'){
                 tipoServicio = "ORDEN";
@@ -412,6 +412,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "secuenciaAfiliado": secuenciaAfiliado,
         }
 
+        if(dataCita.dataOrdenExterna){
+            dataPT.codigoPreTransaccion = dataCita.dataOrdenExterna.codigoPreTransaccion
+        }
+
         if(dataCita.reserva){
             dataPT.listaCitas = [{
                 "codigoReserva": dataCita.reserva.codigoReserva
@@ -429,6 +433,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 "codigoReserva": dataCita.reservaEdit.idCita
             }]
         }
+
 
         if(dataCita.listadoPrestaciones && dataCita.listadoPrestaciones.length > 0){
             dataPT.listaOrdenes = dataCita.listadoPrestaciones;
@@ -458,7 +463,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function consultarDatosFactura(){
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${ dataCita.preTransaccion.codigoPreTransaccion }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}&numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
-        dataCita.paciente.numeroPaciente
+        //dataCita.paciente.numeroPaciente
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
