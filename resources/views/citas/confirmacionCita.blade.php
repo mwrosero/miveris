@@ -18,7 +18,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <p class="fs--1 fw-normal">Recuerda que para confirmarla debes
                         realizar el pago.
                 </div>
-                // btn pagar y cancelar
+                {{-- // btn pagar y cancelar --}}
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
                     <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Cancelar</button>
                     <a href="/citas-datos-facturacion/{{ $params }}" class="btn btn-primary-veris w-100">Pagar</a>
