@@ -223,7 +223,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     document.addEventListener("DOMContentLoaded", async function () {
         //await reservarCita();
-        if(!dataCita.reserva && !dataCita.datosTratamiento && !dataCita.reservaEdit && !dataCita.ordenExterna){
+        if(!dataCita.reserva && !dataCita.datosTratamiento && !dataCita.reservaEdit && !dataCita.ordenExterna && !dataCita.paquete){
             window.history.back();
         }
 
@@ -360,7 +360,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["showLoader"] = true;
         args["bodyType"] = "json";
 
-        let idPaciente = {{ Session::get('userData')->numeroPaciente }};
+        // let idPaciente = {{ Session::get('userData')->numeroPaciente }};
+        let idPaciente = dataCita.paciente.numeroPaciente;
         let tipoServicio = "CITA";
         let tipoSolicitud = null;
 
@@ -390,8 +391,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 tipoSolicitud= "LAB";
             }
         }else{
-            codigoConvenio = dataCita?.convenio.codigoConvenio;
-            secuenciaAfiliado = dataCita?.convenio.secuenciaAfiliado;
+            if(!dataCita.paquete){
+                codigoConvenio = dataCita?.convenio.codigoConvenio;
+                secuenciaAfiliado = dataCita?.convenio.secuenciaAfiliado;
+            }
+        }
+
+        if(dataCita.paquete){
+            tipoServicio= "PAQUETE";
         }
 
         //Consultar si idPaciente es del que hizo login o del beneficiario de lo que se va a pagar
@@ -402,14 +409,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "tipoSolicitud": tipoSolicitud,
             "codigoConvenio": codigoConvenio,
             "secuenciaAfiliado": secuenciaAfiliado,
-            "paquete": null,
-            "listaOrdenes": null
         }
 
         if(dataCita.reserva){
             dataPT.listaCitas = [{
                 "codigoReserva": dataCita.reserva.codigoReserva
             }]
+        }
+
+        if(dataCita.paquete){
+            dataPT.paquete = {
+                "codigoPaquete": dataCita.paquete.codigoPaquete
+            }
         }
 
         if(dataCita.reservaEdit){
@@ -425,8 +436,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.ordenExterna){
             if(dataCita.ordenExterna.aplicoDomicilio === 'N'){
                 dataPT.listaOrdenes = dataCita.ordenExterna.pacientes[0].examenes;
-                console.log("------------------------------------");
-                console.log(dataCita.ordenExterna.pacientes[0].examenes)
             }else{
                 dataPT.codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;
             }
@@ -444,9 +453,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     }
 
+    //Consultar datos de facturación si son del dueño de la cuenta o del beneficiario
     async function consultarDatosFactura(){
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${ dataCita.preTransaccion.codigoPreTransaccion }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}&numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
+        dataCita.paciente.numeroPaciente
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
