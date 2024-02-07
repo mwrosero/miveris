@@ -179,13 +179,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     if(dataOrigen == 'ordenExternaSolicitud'){
         console.log('No se puede seleccionar fecha y doctor para una cita de orden externa');
-        examenes = dataCita.dataOrdenExterna.pacientes[0].examenes;
-        pacienteExternaSolicitud = dataCita.dataOrdenExterna;
+        examenes = dataCita.ordenExterna.pacientes[0].examenes;
+        pacienteExternaSolicitud = dataCita.ordenExterna;
         online = dataCita.online;
-        codigoSolicitud = dataCita.dataOrdenExterna.codigoSolicitud;    
-        latitud = dataCita.dataOrdenExterna.latitud;
-        longitud = dataCita.dataOrdenExterna.longitud;
-        codigoZona = dataCita.dataOrdenExterna.codigoZona;
+        codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;    
+        latitud = dataCita.ordenExterna.latitud;
+        longitud = dataCita.ordenExterna.longitud;
+        codigoZona = dataCita.ordenExterna.codigoZona;
     } else {
         online = dataCita?.online;
         codigoEspecialidad = dataCita?.especialidad.codigoEspecialidad;
@@ -237,7 +237,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         // btnEntiendoError redirecciona a la página inicial
         $('#btnEntiendoError').click(function(){
-            if(!dataCita.dataOrdenExterna){
+            if(!dataCita.ordenExterna){
                 window.location.href = "{{ route('home') }}";
             }
         });

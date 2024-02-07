@@ -145,7 +145,7 @@ Mi Veris - Órdenes externas
 
             params.paciente = paciente.data
             params.convenio = datosConvenios;
-            params.dataOrdenExterna = data;
+            params.ordenExterna = data;
             params.online = 'S';
             params.origen = 'ordenExternaSolicitud';
 

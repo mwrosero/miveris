@@ -120,7 +120,7 @@ class CitasController extends Controller
     // confirmacion cita
     public function confirmacionCita($params) {
         // $params = str_replace('|', '/', $params);
-        return view('citas.confirmacionCita')->with('params',$params);
+        return view('citas.laboratorio_confirmacion_cita')->with('params',$params);
     }
     // Return view mensaje cita agendada
     public function citaAgendada($params) {
