@@ -12,11 +12,11 @@ Mi Veris - Inicio
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
-                <div class="modal-header">
+                <div class="modal-header ">
                     <button type="button" class="btn-close fw-medium bg-transparent me-2 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body px-3 pt-2">
-                    <h5 class="text-center mb-4">¿Qué quieres agendar?</h5>
+                <div class="modal-body p-3">
+                    <h5 class="text-center mb-3">¿Qué quieres agendar?</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
                             <div class="card mb-3">
@@ -56,7 +56,7 @@ Mi Veris - Inicio
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Inicio') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Inicio') }}</h5>
     </div>
     <!-- Accesos rápidos -->
     <section class="bg-light-grayish-blue p-3 mb-3">
@@ -476,7 +476,7 @@ Mi Veris - Inicio
                         <div class="w-100">`;
             if(citas.esVirtual == "S"){
                 elemento += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
-                        <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
+                        <h7 class="text-primary-veris fw-medium mb-0">Consulta online</h7>
                     </div>`;
             }
                     elemento += `<div class="d-flex justify-content-between align-items-center">
@@ -498,7 +498,7 @@ Mi Veris - Inicio
                 ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
             }
 
-            elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a></div>`;
+            elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>`;
             if(citas.estaPagada == "N"){
                 elemento += `<a href="#" class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a></div>`;
             }

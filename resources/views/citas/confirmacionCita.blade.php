@@ -13,39 +13,33 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="modalCitaAgendada" tabindex="-1" aria-labelledby="modalCitaAgendadaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Cita agendada</h1>
-                    <p class="fs--1 fw-normal">Recuerda que para confirmarla debes
-                        realizar el pago.
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Cita agendada</h1>
+                    <p class="fs--1 fw-normal">Recuerda que para confirmarla debes realizar el pago.</p>
                 </div>
-                // btn pagar y cancelar
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Cancelar</button>
-                    <a href="/citas-datos-facturacion/{{ $params }}" class="btn btn-primary-veris w-100">Pagar</a>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3 mt-0 mb-3 mx-0" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="/citas-datos-facturacion/{{ $params }}" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Pagar</a>
                 </div>
-
             </div>
         </div>
     </div>
-
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError" >
-                </p>
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError"></p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Confirmación de la cita') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Confirmación de la cita') }}</h5>
     </div>
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="container">

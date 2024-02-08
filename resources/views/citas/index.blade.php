@@ -15,12 +15,11 @@ Mi Veris - Citas
                 <div class="modal-header">
                     <button type="button" class="btn-close fw-medium bg-transparent me-2 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body px-3 pt-2">
-                    <h5 class="text-center mb-4">{{ __('Modalidad de la cita') }}</h5>
+                <div class="modal-body p-3">
+                    <h5 class="text-center mb-3">{{ __('Modalidad de la cita') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
                             <div class="card mb-3">
-                                
                                 <a class="cursor-pointer" id="cita-presencial" >
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-7 col-md-7">
@@ -58,7 +57,7 @@ Mi Veris - Citas
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Citas') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Citas') }}</h5>
     </div>
     <section class="p-3">
         <div class="d-flex justify-content-between align-items-center">

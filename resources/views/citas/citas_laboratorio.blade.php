@@ -9,7 +9,9 @@ Mi Veris - Citas - Citas Laboratorio
     $data = json_decode(base64_decode($params));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Citas / Laboratorio') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Citas / Laboratorio') }}</h5>
+    </div>
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0 justify-content-center">
             <div class="d-flex justify-content-center">
@@ -26,7 +28,7 @@ Mi Veris - Citas - Citas Laboratorio
                         </div>
                         <div class="mb-2">
                             <div class="row g-0 justify-content-between">
-                                <div class="col-9"><p class="fw-bold text-end text-opcaity mb-0">Subtotal</p></div>
+                                <div class="col-9"><p class="fw-medium text-end text-opcaity mb-0">Subtotal</p></div>
                                 <div class="col-3"><p class="fw-light text-end mb-0" id="Subtotal"></p></div>
                             </div>
                         </div>

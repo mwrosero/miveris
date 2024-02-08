@@ -11,7 +11,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Elige central médica') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Elige central médica') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <form class="d-flex justify-content-center">
@@ -30,7 +30,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="row gy-3" id="listaCentrales">
                     {{-- <div class="col-auto col-md-6">
                         <div class="card">
-                            <div class="card-body px-2 py-2">
+                            <div class="card-body p--2">
                                 <div class="row gx-2">
                                     <div class="col-3">
                                         <img src="{{ asset('assets/img/card/avatar_central_medica.png') }}" class="card-img-top" alt="centro medico">
@@ -41,7 +41,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer text-end pb-2">
+                            <div class="card-footer text-end p--2">
                                 <a href="/citas-elegir-fecha-doctor" class="btn btn-sm btn-primary-veris">{{ __('Ver Medicos') }}</a>
                             </div>
                         </div>
@@ -134,7 +134,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     console.log(99)
                     elemento += `<div class="col-12 col-md-6">
                                     <div class="card h-100 card-central-medica" data-central-medica='${ JSON.stringify(central) }'>
-                                        <div class="card-body px-2 py-2">
+                                        <div class="card-body p--2 pb-0">
                                             <div class="row gx-2">
                                                 <div class="col-3">
                                                     <img src="${path_central}" class="card-img-top" alt="${central.nombreTipoSucursal}">
@@ -145,7 +145,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer text-end pb-2">
+                                        <div class="card-footer text-end p--2">
                                             <a href="/citas-elegir-fecha-doctor/{{$params}}"
                                             class="btn btn-sm btn-primary-veris btn-ver-medicos">{{ __('Ver Médicos') }}</a>
                                         </div>

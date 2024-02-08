@@ -12,23 +12,22 @@ $data1 = json_decode($data);
 @endphp
 
 <div class="flex-grow-1 container-p-y pt-0">
-      <!-- Modal mensaje -->
-      <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
+    <!-- Modal mensaje -->
+    <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h5 class="fw-bold fs-24" id="titulo">Registro exitoso</h5>
-                    <p class="fs--1  m-0 mt-3" id="mensaje"></p>
+                    <h5 class="fw-bold fs-24 mb-0" id="titulo">Registro exitoso</h5>
+                    <p class="fs--1 m-0" id="mensaje"></p>
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Aceptar</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Aceptar</button>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Nueva orden externa') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Nueva orden externa') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">

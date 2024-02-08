@@ -66,8 +66,8 @@ function crearElementoTratamiento(laboratorio) {
                 <div class="card">
                     <div class="card-body py-2 px-3">
                         <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                        <h5 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
-                        <p class="fs--2 fw-bold mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                        <h5 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
+                        <p class="fs--2 fw-medium mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
                         <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
                         <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
                         <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
@@ -89,8 +89,8 @@ function crearDetalleTratamiento(detalles) {
     return `<div class="card">
                 <div class="card-body p--2">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                        <span class="fs--2 text-warning-veris fw-bold">${determinarEstado(detalles.esPagada)}</span>
+                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                        <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada)}</span>
                     </div>
                     <p class="fw-normal fs--2 mb-0">Orden válida hasta: <b class="fw-normal text-primary-veris">${detalles.fechaCaducidad}</b></p>
                     <div class="d-flex justify-content-between align-items-center mt-2">

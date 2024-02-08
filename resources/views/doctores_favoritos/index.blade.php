@@ -11,7 +11,6 @@ Mi Veris - Doctores favoritos
     // dd($tokenCita);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- Modal convenios-->
     <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -19,16 +18,15 @@ Mi Veris - Doctores favoritos
                 <div class="modal-header d-none">
                     <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-3 pt-4">
-                    <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
+                <div class="modal-body p-3">
+                    <h5 class="mb-3">{{ __('Elige tu convenio:') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
-                            
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer px-3 pb-3">
-                    <button type="button" class="btn fw-normal m-0 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -37,13 +35,13 @@ Mi Veris - Doctores favoritos
     <div class="modal fade" id="noPermiteReserva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noPermiteReservaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-2">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <h1 class="modal-title fs-5 mb-3" id="noPermiteReservaLabel">Veris</h1>
                         <p class="mb-0" id="noPermiteReservaMsg"></p>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-center p-2 pt-3">
+                <div class="modal-footer justify-content-center pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
@@ -53,13 +51,12 @@ Mi Veris - Doctores favoritos
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
+                <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError" >
-                </p>
+                    <p class="fs--1 fw-normal" id="mensajeError"></p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
@@ -68,20 +65,19 @@ Mi Veris - Doctores favoritos
     <div class="modal fade" id="eliminarDoctorModal" tabindex="-1" aria-labelledby="eliminarDoctorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center">
+                <div class="modal-body text-center p-3">
                     <h5 class="mb-0">Eliminar doctor</h5>
                     <p class="mb-0">¿Estás seguro de eliminar este doctor de su lista de favoritos?</p>
                 </div>
-                <div class="modal-footer flex-nowrap justify-content-center pt-0 px-0">
+                <div class="modal-footer flex-nowrap justify-content-center pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-link text-primary-veris shadow-none px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
-                    <a href="#!" class="btn btn-link text-primary-veris shadow-none px-4 py-3" id="btnEliminarDoctor"
-                    >Eliminar</a>
+                    <a href="#!" class="btn btn-link text-primary-veris shadow-none px-4 py-3" id="btnEliminarDoctor">Eliminar</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Doctores favoritos') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Doctores favoritos') }}</h5>
     </div>
     <section class="p-3 pt-0">
         <div class="row justify-content-center" >
@@ -89,7 +85,6 @@ Mi Veris - Doctores favoritos
                 <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-100 px-4 py-3">Buscar doctor</a>
             </div>
         </div>
-
         <div class="row justify-content-center">
             <div class="col-12 col-md-10">
                 <div class="row g-3" id="doctoresFavoritos"></div>

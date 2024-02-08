@@ -12,7 +12,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="autenticarPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="autenticarPagoLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <div class="avatar avatar-lg mx-auto mb-3">
                             <span class="avatar-initial rounded-circle bg-primary">
@@ -29,18 +29,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="invalid-feedback mb-3">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>Código inválido
                     </div>
-                    <button type="button" id="btn-autenticar-otp" class="btn btn-action-otp btn-lg btn-primary-veris w-100 mb-2">Autenticar</button>
-                    <button type="button" class="btn btn-lg btn-primary-veris w-100 mb-2 btn-close-modal d-none" data-bs-dismiss="modal">Entendido</button>
+                    <button type="button" id="btn-autenticar-otp" class="btn btn-action-otp btn-lg btn-primary-veris w-100 px-4 py-3 m-0 mb-3">Autenticar</button>
+                    <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 m-0 btn-close-modal d-none" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal confirmar Pago-->
     <div class="modal fade" id="confirmarPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmarPagoLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <div class="avatar avatar-lg mx-auto mb-3">
                             <span class="avatar-initial rounded-circle bg-primary">
@@ -57,18 +56,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="invalid-feedback mb-3">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>Código inválido
                     </div>
-                    <button type="button" id="btn-pagar-otp" class="btn btn-action-otp btn-lg btn-primary-veris w-100 mb-2">Confirmar pago</button>
-                    <button type="button" class="btn btn-lg btn-primary-veris w-100 mb-2 btn-close-modal d-none" data-bs-dismiss="modal">Entendido</button>
+                    <button type="button" id="btn-pagar-otp" class="btn btn-action-otp btn-lg btn-primary-veris w-100 px-4 py-3 m-0">Confirmar pago</button>
+                    <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 m-0 btn-close-modal d-none" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal informacion-->
     <div class="modal fade" id="informacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="informacionLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-body px-3 py-4">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <div class="avatar avatar-lg mx-auto mb-3">
                             <span class="avatar-initial rounded-circle bg-primary">
@@ -78,18 +76,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">Información</h1>
                         <p class="fs--1 mb-3" style="line-height: 16px;">Esta tarjeta ya está agregada</p>
                     </div>
-                    <a href="#" class="btn btn-lg btn-primary-veris w-100 mb-2">Ver tarjeta agregada</a>
-                    <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">Ingresar nueva tarjeta</button>
+                    <a href="#" class="btn btn-lg btn-primary-veris w-100 m-0 mb-3 px-4 py-3">Ver tarjeta agregada</a>
+                    <button type="button" class="btn btn-lg btn-outline-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Ingresar nueva tarjeta</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal tarjeta rechazada-->
     <div class="modal fade" id="tarjetaRechazada" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="tarjetaRechazadaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-body px-3">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <div class="avatar avatar-lg mx-auto">
                             <span class="avatar-initial rounded-circle bg-transparent">
@@ -98,13 +95,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         </div>
                         <h1 class="modal-title fs-5 mb-3" id="tarjetaRechazadaLabel">Tarjeta rechazada</h1>
                     </div>
-                    <button type="button" class="btn btn-lg btn-primary-veris w-100" data-bs-dismiss="modal">Entendido</button>
+                    <button type="button" class="btn btn-lg btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Información de pago') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Información de pago') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -132,13 +129,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <div class="my-3">
                             <p class="fs--3 mb-0">*Guardaremos tu tarjeta para futuras compras, podrás eliminarla después si lo deseas.</p>
                             <div class="d-flex justify-content-center align-items-center">
-                                <p class="fw-bold fs--2 mb-0 me-3">Transacción protegida por</p>
+                                <p class="fw-medium fs--2 mb-0 me-3">Transacción protegida por</p>
                                 <img src="{{asset('assets/img/card/pci.png')}}" class="img-fluid" alt="{{ __('pci') }}">
                             </div>
                         </div>
                         {{-- <div class="d-flex justify-content-between border-top p-2">
                             <div class="text-start mx-1">
-                                <p class="fs--2 mb-0 fw-bold">{{ __('¿Alguien más pagará esta cita?') }}</p>
+                                <p class="fs--2 mb-0 fw-medium">{{ __('¿Alguien más pagará esta cita?') }}</p>
                                 <p class="fs--2 mb-0">{{ __('Genera tu link de pago') }}</p>
                             </div>
                             <a href="#" class="btn btn-sm btn-label-primary-veris fs--1 mx-1">{{ __('Enviar link') }}</a>
