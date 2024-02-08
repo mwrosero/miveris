@@ -10,36 +10,32 @@ Mi Veris - Citas - Servicios a domicilio
     <div class="modal fade" id="mensajeSolicitudLlamadaModal" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud exitosa</h1>
-                    <p class="fs--1 fw-normal" id="mensaje" >
-                </p>
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-bold mb-3">Solicitud exitosa</h1>
+                    <p class="fs--1 fw-normal" id="mensaje"></p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud fallida</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError" >
-                </p>
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-bold mb-3">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError"></p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Servicios a domicilio') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Servicios a domicilio') }}</h5>
     </div>
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="container">
@@ -107,9 +103,7 @@ Mi Veris - Citas - Servicios a domicilio
 @endsection
 @push('scripts')
 <script>
-
     // variables globales
-
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {

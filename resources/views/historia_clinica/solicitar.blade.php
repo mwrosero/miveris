@@ -12,19 +12,18 @@ Mi Veris - Historia clínica
     <div class="modal fade" id="solictarHistoriaClinicaModal" tabindex="-1" aria-labelledby="solictarHistoriaClinicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center p-3 pb-0">
-                    <h5>Veris</h5>
-                    <p>Solicitud creada exitosamente</p>
+                <div class="modal-body text-center p-3">
+                    <h5 class="mb-3">Veris</h5>
+                    <p class="m-0">Solicitud creada exitosamente</p>
                 </div>
-                <div class="modal-footer flex-column align-items-stretch w-100 gap-2 p-3 pt-0">
-                    <button type="button" class="btn btn-primary-veris" data-bs-dismiss="modal" id='btnAceptarModal'
-                    >Aceptar</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3" data-bs-dismiss="modal" id='btnAceptarModal'>Aceptar</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Historia clínica') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Historia clínica') }}</h5>
     </div>
     <section class="mb-3">
         <div class="container">

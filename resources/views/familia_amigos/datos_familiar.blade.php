@@ -4,25 +4,24 @@ Mi Veris - Citas - Familia y amigos
 @endsection
 @section('content')
 
-<!-- Modal actualizacion exitosa -->
-
-<div class="modal fade" id="mensajeActualizacionExitosa" tabindex="-1" aria-labelledby="mensajeActualizacionExitosa" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
-        <div class="modal-content">
-            <div class="modal-body text-center p-3">
-                <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                <p class="fs--1 fw m-0 mt-3" id="mensajeActualizacionExitosa">Actualización exitosa</p>
-            </div>
-            <div class="modal-footer pb-3 pt-0 px-3">
-                <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Aceptar</button>
+<div class="flex-grow-1 container-p-y pt-0">
+    <!-- Modal actualizacion exitosa -->
+    <div class="modal fade" id="mensajeActualizacionExitosa" tabindex="-1" aria-labelledby="mensajeActualizacionExitosa" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
+                    <p class="fs--1 fw m-0 mt-3" id="mensajeActualizacionExitosa">Actualización exitosa</p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="flex-grow-1 container-p-y pt-0">
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white" id="nombreFamiliar"></h5>
-    
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24" id="nombreFamiliar"></h5>
+    </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-4">

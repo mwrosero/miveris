@@ -4,22 +4,21 @@ Mi Veris - Citas - Familia y amigos
 @endsection
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- Modal -->
     <div class="modal fade" id="eliminarFamiliarModal" tabindex="-1" aria-labelledby="eliminarFamiliarModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
-                        <div class="text-center">
-                            <i class="bi bi-exclamation-triangle-fill fs-2 text-danger"></i>
-                            <h5 class="mb-3">Eliminar familiar</h5>
-                            <p class="fs--2 mb-0">¿Deseas eliminar a <b class="fw-bold" id="nombreFamiliar">
-                                
-                            </b> de tu lista?</p>
-                            <input type="hidden" id="idRelacion">
-                        </div>
+                    <div class="text-center">
+                        <i class="bi bi-exclamation-triangle-fill fs-2 text-danger"></i>
+                        <h5 class="mb-3">Eliminar familiar</h5>
+                        <p class="fs--2 mb-0">¿Deseas eliminar a <b class="fw-bold" id="nombreFamiliar">
+                            
+                        </b> de tu lista?</p>
+                        <input type="hidden" id="idRelacion">
+                    </div>
                 </div>
-                <div class="modal-footer justify-content-center px-3 pt-0">
+                <div class="modal-footer justify-content-center pt-0 pb-3 px-3">
                     <button type="button" class="btn text-danger" id="eliminarFamiliar">Eliminar</button>
                     <button type="button" class="btn text-primary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
@@ -35,15 +34,15 @@ Mi Veris - Citas - Familia y amigos
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
                     <p class="fs--1 fw-bold m-0 mt-3">Persona eliminada de tu grupo</p>
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Entendido</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Familia y amigos') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Familia y amigos') }}</h5>
     </div>
     <section class="py-4 mb-3">
         <div class="container">

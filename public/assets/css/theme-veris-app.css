@@ -339,7 +339,9 @@ html:not([dir="rtl"]) .border-start-veris {
 .fs-18 {
   font-size: 1.125rem;
 }
-
+.fs-20{
+  font-size: 1.25rem;
+}
 .fs-24 {
   font-size: 1.5rem;
 }
@@ -1102,7 +1104,9 @@ a.btn.btn-primary-veris:not([href]):hover{
   .fs--lg-1{
     font-size: 0.874rem !important;
   }
-  
+  .fs-lg-24 {
+    font-size: 1.5rem !important;
+  }
 }
 
 @media (min-width: 768px) {
@@ -1112,6 +1116,9 @@ a.btn.btn-primary-veris:not([href]):hover{
   }
   .w-md-50 {
     width: 50% !important;
+  }
+  .fs-md-24 {
+    font-size: 1.5rem !important;
   }
 }
 

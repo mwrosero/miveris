@@ -11,32 +11,31 @@ Mi Veris - Resultados
     <div class="modal fade" id="resultadImagenesProcedimientosModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body" id="modalBody">
+                <div class="modal-body p-3" id="modalBody">
                     <!-- contenido dinamico -->
                 </div>
             </div>
         </div>
     </div>
-
     <!-- modal  ha ocurrido un error -->
     <div class="modal fade" id="haOcurridoUnErrorModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body" id="modalBody">
+                <div class="modal-body p-3" id="modalBody">
                     <div class="text-center">
                         <h5 class="mt-3">Veris</h5>
-                        <p>Ha ocurrido un error inesperado</p>
-                        <button type="button" class="btn btn-primary-veris shadow-none" data-bs-dismiss="modal">Aceptar</button>
+                        <p class="mb-3">Ha ocurrido un error inesperado</p>
+                        <button type="button" class="btn btn-primary-veris shadow-none w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- filtro -->
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Resultados') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Resultados') }}</h5>
     </div>
     <div class="tab-content bg-transparent px-0 px-lg-4">
+        <!-- filtro -->
         @include('components.barraFiltro')
         @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
     </div>
