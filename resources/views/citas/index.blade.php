@@ -176,7 +176,7 @@ Mi Veris - Citas
         <div class="row g-3 g-lg-4">
             <div class="col-6 col-lg-4">
                 <div class="card">
-                    <a href="{{route('citas.misCitas')}}">
+                    <a href="{{route('citas.misCitas')}}" id= btnMisCitas>
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-8 col-md-7">
                                 <div class="card-body p-0 ps-2">
@@ -192,7 +192,7 @@ Mi Veris - Citas
             </div>
             <div class="col-6 col-lg-4">
                 <div class="card">
-                    <a href="{{route('citas.misCitas')}}">
+                    <a href="{{route('citas.misCitas')}}" id= btnHistorialCitas>
                         <div class="row g-0 justify-content-between align-items-center">
                             <div class="col-8 col-md-7">
                                 <div class="card-body p-0 ps-2">
@@ -284,6 +284,17 @@ Mi Veris - Citas
 
         // redireccionar a la pagina de citas
         window.location.href = "/citas-elegir-paciente/" + "{{ $tokenCita }}";
+    });
+
+
+    // btn mis citas
+    $('#btnMisCitas').on('click', function(){
+        localStorage.setItem('miscitas', 'proximas');
+    });
+
+    // btn historial citas
+    $('#btnHistorialCitas').on('click', function(){
+        localStorage.setItem('miscitas', 'historial');
     });
 
 </script>
