@@ -140,8 +140,35 @@ Mi Veris - Citas - Mis citas
         await obtenerCitas();
         await consultarGrupoFamiliar();
         await consultarConvenios();
+
+        $('body').on('click', '.btn-eliminar-cita', function(){
+            $('#idCitaEliminar').val($(this).attr('codigoReserva-rel'));
+            var myModal = new bootstrap.Modal(document.getElementById('modalEliminarCita'));
+            myModal.show();
+        })
+
+        $('body').on('click', '.btn-confirmar-eliminar-cita', async function(){
+            await eliminarReserva()
+        })
         
     });
+
+    async function eliminarReserva(){
+        let args = [];
+        let canalOrigen = _canalOrigen
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
+        args["method"] = "PUT";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        //Menos para edictar reserva 
+        if(data.code == 200){
+            $('#modalEliminarCita').hide();
+            $('.modal-backdrop').remove();
+            await obtenerCitas();
+        }
+    }
 
     //funciones asincronas
 
@@ -296,7 +323,7 @@ Mi Veris - Citas - Mis citas
                                     <div class="d-flex justify-content-between align-items-center mt-3">`
 
                                     if(cita.estaPagada == "N"){
-                                    element += `<button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>`;
+                                    element += `<button type="button" codigoReserva-rel="${cita.idCita}" class="btn btn-sm btn-eliminar-cita text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>`;
                                         }
                                         let ruta = '';
                                         if (cita.esVirtual == "S") {
