@@ -10,80 +10,62 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     $data = json_decode(base64_decode($params));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-
-
-      <!-- Modal mensaje -->
-      <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
+    <!-- Modal mensaje -->
+    <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-bold m-0 mt-3" id="mensajeOrden">Orden generada exitosamente</p>
+                    <p class="fs--1 fw-medium m-0 mt-3" id="mensajeOrden">Orden generada exitosamente</p>
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                    <button type="button" class="btn btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Laboratorio a domicilio') }}</h5>
-    
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Laboratorio a domicilio') }}</h5>
+    </div>
     <div id="map" style="height: 400px;"></div>
-    <input id="searchBox" class="form-control mt-3 mb-3 w-50 mx-auto
-    "  type="text" placeholder="Buscar ubicación">
-
+    <input id="searchBox" class="form-control mt-3 mb-3 w-50 mx-auto" type="text" placeholder="Buscar ubicación">
 
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
-            
             <div class="col-auto col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body">
-                        
-
                         <form class="row g-3" enctype="multipart/form-data">
-                            
-
-
                             <div class="col-md-12">
-                                <label for="ciudad" class="form-label fw-bold">Selecciona tu Ciudad *</label>
+                                <label for="ciudad" class="form-label fw-medium">Selecciona tu Ciudad *</label>
                                 <select class="form-select" name="ciudad" id="ciudad" required>
-                                    
                                 </select>
                             </div>
-                            
 
                             <div class="col-md-12">
-                                <label for="direccion" class="form-label fw-bold">Dirección *</label>
+                                <label for="direccion" class="form-label fw-medium">Dirección *</label>
                                 <textarea class="form-control" name="direccion" id="direccion" rows="3" required style="resize: none;"></textarea>
                             </div>
 
                             <div class="col-md-12">
-                                <label for="numeroIdentificacion" class="form-label fw-bold">Cédula o pasaporte *</label>
+                                <label for="numeroIdentificacion" class="form-label fw-medium">Cédula o pasaporte *</label>
                                 <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion"  required />
                             </div>
 
-
                             <div class="col-md-12">
-                                <label for="email" class="form-label fw-bold">Email *</label>
+                                <label for="email" class="form-label fw-medium">Email *</label>
                                 <input type="email" class="form-control " name="email" id="email"  required />
                             </div>
 
-
                             <div class="col-md-12">
-                                <label for="telefono" class="form-label fw-bold">Teléfono *</label>
+                                <label for="telefono" class="form-label fw-medium">Teléfono *</label>
                                 <input type="number" class="form-control" name="telefono" id="telefono"  required />
                             </div>
 
-
                             <div class="col-md-12">
-                                <label for="referencias" class="form-label fw-bold">Referencias *</label>
-                                <textarea class="form-control" name="referencias" id="referencias" rows="3" required style="resize: none;"
-                                ></textarea>
+                                <label for="referencias" class="form-label fw-medium">Referencias *</label>
+                                <textarea class="form-control" name="referencias" id="referencias" rows="3" required style="resize: none;"></textarea>
                             </div>
-
 
                             <div class="col-12">
                                 <button class="btn btn-primary w-100" type="submit"  id="btnSiguiente" disabled

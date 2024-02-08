@@ -11,12 +11,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="metodoPago" aria-hidden="true" tabindex="-1" aria-labelledby="metodoPagoLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-body px-3 py-4">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <h1 class="modal-title fs-5 mb-3" id="metodoPagoLabel">Selecciona el método de pago</h1>
                     </div>
-                    <a href="#" id="btn-seleccionar-tarjeta" class="btn btn-lg btn-primary-veris w-100 mb-2">Seleccionar tarjeta</a>
-                    <a href="#" id="btn-agregar-tarjeta" class="btn btn-lg btn-outline-primary-veris w-100">Agregar otro método de pago</a>
+                    <a href="#" id="btn-seleccionar-tarjeta" class="btn btn-lg btn-primary-veris px-4 py-3 w-100 m-0 mb-3">Seleccionar tarjeta</a>
+                    <a href="#" id="btn-agregar-tarjeta" class="btn btn-lg btn-outline-primary-veris px-4 py-3 w-100 m-0">Agregar otro método de pago</a>
                 </div>
             </div>
         </div>
@@ -25,14 +25,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="modalRequeridos" tabindex="-1" aria-labelledby="modalRequeridosModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title mx-auto title-section fw-bold" id="modalAlertTitleRequeridos">Campos requeridos</h5>
+                <div class="modal-header pt-3 pb-0 px-3">
+                    <h5 class="modal-title mx-auto title-section fw-medium" id="modalAlertTitleRequeridos">Campos requeridos</h5>
                 </div>
                 <div class="modal-body text-center p-3" id="modalAlertMessageRequeridos">
                     {{-- <i class="bi bi-exclamation-triangle-fill text-primary-veris h2"></i> --}}
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Aceptar</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3 m-0" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -41,21 +41,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="modalDesglose" tabindex="-1" aria-labelledby="modalDesgloseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modalDesglose-size modal-dialog-centered mx-auto">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title mx-auto title-section fw-bold">Desglose de valores</h5>
+                <div class="modal-header pt-3 pb-0 px-3">
+                    <h5 class="modal-title mx-auto title-section fw-medium">Desglose de valores</h5>
                 </div>
                 <div class="modal-body text-center p-3" id="contenidoDesglose">
                     {{-- <div class="row">
-                        <div class="col-12 text-center fw-bold fs--1 mb-2">Michael Rosero Peralta</div>
+                        <div class="col-12 text-center fw-medium fs--1 mb-2">Michael Rosero Peralta</div>
                         <div class="col-6 mb-2">
                             <p class="text-start fs--2 mb-1">Hemograma completo</p>
                             <div class="card bg-neutral shadow-none p-2">
                                 <table class="card-body w-100">
                                     <tr class="border-bottom">
-                                        <th class="fw-bold fs--2">P.V.P.</th>
-                                        <th class="fw-bold fs--2">Crédito/convenio</th>
-                                        <th class="fw-bold fs--2">IVA</th>
-                                        <th class="fw-bold fs--2">TOTAL</th>
+                                        <th class="fw-medium fs--2">P.V.P.</th>
+                                        <th class="fw-medium fs--2">Crédito/convenio</th>
+                                        <th class="fw-medium fs--2">IVA</th>
+                                        <th class="fw-medium fs--2">TOTAL</th>
                                     </tr>
                                     <tr>
                                         <td class="fs--2">$9.80</td>
@@ -68,15 +68,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         </div>
                     </div> --}}
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" id="btn-confirmar-y-pagar" class="btn btn-primary-veris m-0 mx-auto" data-bs-dismiss="modal">Confirmar y pagar ahora</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" id="btn-confirmar-y-pagar" class="btn btn-primary-veris w-100 px-4 py-3 m-0" data-bs-dismiss="modal">Confirmar y pagar ahora</button>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">Datos de facturación</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">Datos de facturación</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -87,7 +86,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <div class="col-md-6">
                                 <div class="row g-3">
                                     <div class="col-md-12">
-                                        <label for="tipoIdentificacion" class="form-label fw-bold fs--2">Elige tu documento *</label>
+                                        <label for="tipoIdentificacion" class="form-label fw-medium fs--2">Elige tu documento *</label>
                                         <select class="form-select" name="tipoIdentificacion" id="tipoIdentificacion" required>
                                             <option value="2">CÉDULA</option>
                                             <option value="1">RUC</option>
@@ -97,35 +96,35 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="numeroIdentificacion" class="form-label fw-bold fs--2">Número de documento *</label>
+                                        <label for="numeroIdentificacion" class="form-label fw-medium fs--2">Número de documento *</label>
                                         <input type="number" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
                                         <div class="valid-feedback">
                                             Ingrese un numero de identificacion.
                                         </div>
                                     </div>
                                     <div class="col-md-12 d-none box-ruc">
-                                        <label for="razonSocial" class="form-label fw-bold fs--2">Razón Social *</label>
+                                        <label for="razonSocial" class="form-label fw-medium fs--2">Razón Social *</label>
                                         <input type="text" class="form-control" name="razonSocial" id="razonSocial" placeholder="" required />
                                         <div class="valid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
-                                        <label for="primerNombre" class="form-label fw-bold fs--2">Primer Nombre *</label>
+                                        <label for="primerNombre" class="form-label fw-medium fs--2">Primer Nombre *</label>
                                         <input type="text" class="form-control" name="primerNombre" id="primerNombre" placeholder="" required />
                                         <div class="valid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
-                                        <label for="primerApellido" class="form-label fw-bold fs--2">Primer Apellido *</label>
+                                        <label for="primerApellido" class="form-label fw-medium fs--2">Primer Apellido *</label>
                                         <input type="text" class="form-control" name="primerApellido" id="primerApellido" placeholder="" required />
                                         <div class="valid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
-                                        <label for="segundoApellido" class="form-label fw-bold fs--2">Segundo Apellido *</label>
+                                        <label for="segundoApellido" class="form-label fw-medium fs--2">Segundo Apellido *</label>
                                         <input type="text" class="form-control" name="segundoApellido" id="segundoApellido" placeholder="" required />
                                         <div class="valid-feedback">
                                             Ingrese su nombres y apellidos.
@@ -136,21 +135,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <div class="col-md-6">
                                 <div class="row g-3">
                                     <div class="col-md-12">
-                                        <label for="direccion" class="form-label fw-bold fs--2">Dirección *</label>
+                                        <label for="direccion" class="form-label fw-medium fs--2">Dirección *</label>
                                         <input type="text" class="form-control" name="direccion" id="direccion" placeholder="" required />
                                         <div class="invalid-feedback">
                                             Ingrese una direccion.
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="telefono" class="form-label fw-bold fs--2">Teléfono *</label>
+                                        <label for="telefono" class="form-label fw-medium fs--2">Teléfono *</label>
                                         <input type="number" class="form-control" name="telefono" id="telefono" placeholder="+593 999 999 9999" required />
                                         <div class="valid-feedback">
                                             Ingrese un telefono.
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="mail" class="form-label fw-bold fs--2">Email *</label>
+                                        <label for="mail" class="form-label fw-medium fs--2">Email *</label>
                                         <input type="email" class="form-control" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
                                         <div class="valid-feedback">
                                             Ingrese un correo electronico.
@@ -158,7 +157,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                     <div class="col-md-12">
                                         <ul class="list-group fs--1 bg-neutral rounded-3 pt-2 pb-2">
-                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-bold">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-medium">
                                                 Detalle de factura
                                             </li>
                                             <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0">
@@ -177,7 +176,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                                 IVA
                                                 <span class="badge text-dark fw-normal fs--1 p-0" id="iva"></span>
                                             </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-bold">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-medium">
                                                 Total
                                                 <span class="badge text-dark fw-normal fs--1 p-0" id="total"></span>
                                             </li>
@@ -630,7 +629,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let elem;
         if(dataCita.datosTratamiento){
             elem = `<div class="row">
-                <div class="col-12 text-center fw-bold fs--1 mb-2">${dataCita.datosTratamiento.nombrePaciente}</div>`
+                <div class="col-12 text-center fw-medium fs--1 mb-2">${dataCita.datosTratamiento.nombrePaciente}</div>`
             
             $.each(dataCita.listadoPrestaciones, function(key, value){
                 elem += `<div class="col-12 col-md-6 mb-3">
@@ -638,10 +637,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="card bg-neutral shadow-none p-2">
                         <table class="card-body w-100">
                             <tr class="border-bottom">
-                                <th class="fw-bold fs--2">P.V.P.</th>
-                                <th class="fw-bold fs--2">Crédito/convenio</th>
-                                <th class="fw-bold fs--2">IVA</th>
-                                <th class="fw-bold fs--2">TOTAL</th>
+                                <th class="fw-medium fs--2">P.V.P.</th>
+                                <th class="fw-medium fs--2">Crédito/convenio</th>
+                                <th class="fw-medium fs--2">IVA</th>
+                                <th class="fw-medium fs--2">TOTAL</th>
                             </tr>
                             <tr>
                                 <td class="fs--2">$${value.subtotal.toFixed(2)}</td>
@@ -656,14 +655,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             elem += `</div>`;
         }else{
             elem = `<div class="row">
-                <div class="col-12 text-center fw-bold fs--1 mb-2">${dataCita.ordenExterna.pacientes[0].nombrePacienteOrden}</div>`
+                <div class="col-12 text-center fw-medium fs--1 mb-2">${dataCita.ordenExterna.pacientes[0].nombrePacienteOrden}</div>`
             
                 elem += `<div class="col-12 mb-3">
                     <div class="card bg-neutral shadow-none p-2">
                         <table class="card-body w-100">
                             <tr class="border-bottom">
-                                <th class="fw-bold fs--2 mb-2">Nro. Orden</th>
-                                <th class="fw-bold fs--2 mb-2">Detalle</th>
+                                <th class="fw-medium fs--2 mb-2">Nro. Orden</th>
+                                <th class="fw-medium fs--2 mb-2">Detalle</th>
                             </tr>`
                 $.each(dataCita.ordenExterna.pacientes[0].examenes, function(key, value){
                     elem += `<tr>

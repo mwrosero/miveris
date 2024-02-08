@@ -11,7 +11,6 @@ Mi Veris - Citas - Mis citas
     // dd($tokenCita);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- offcanva ver pdf -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="verPdf" aria-labelledby="verPdfLabel">
         <div class="offcanvas-header py-2">
@@ -24,7 +23,7 @@ Mi Veris - Citas - Mis citas
             <div>
                 <div class="list-group gap--2 mb-3 verPdf">
                     <button class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
-                        <span class="text-veris fw-bold">
+                        <span class="text-veris fw-medium">
                             RECOMENDACIONES
                         </span>
                         <i class="bi bi-download ms-auto"></i>
@@ -32,7 +31,7 @@ Mi Veris - Citas - Mis citas
                 </div>
                 <div class="list-group gap--2 mb-3 verPdf">
                     <button class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
-                        <span class="text-veris fw-bold">
+                        <span class="text-veris fw-medium">
                             FACTURA
                         </span>
                         <i class="bi bi-download ms-auto"></i>
@@ -42,6 +41,8 @@ Mi Veris - Citas - Mis citas
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
 
      <!-- Modal de error -->
 
@@ -62,8 +63,9 @@ Mi Veris - Citas - Mis citas
 
 
     <!-- Filtro -->
+>>>>>>> developer
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Mis citas') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis citas') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -76,6 +78,7 @@ Mi Veris - Citas - Mis citas
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
+                <!-- Filtro -->
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade mt-3 show active" id="pills-actuales" role="tabpanel" aria-labelledby="pills-actuales-tab" tabindex="0">
@@ -220,10 +223,10 @@ Mi Veris - Citas - Mis citas
                                             <div class="card">
                                                 <div class="card-body p--2">
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(historial.nombreEspecialidad)}</h6>
+                                                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(historial.nombreEspecialidad)}</h6>
                                                         ${determinarMensajeEstadoCita(historial.mensajeEstado)}
                                                     </div>
-                                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(historial.nombreSucursal)}</p>
+                                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(historial.nombreSucursal)}</p>
                                                     <p class="fw-normal fs--2 mb-0"> ${historial.dia}<b class="hora-cita fw-normal text-primary-veris"> ${determinarAmPm(historial.horaInicio)}</b></p>
                                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(historial.nombreProfesional)}</p>
                                                     <p class="fw-normal fs--2 mb-0">${capitalizarElemento(historial.nombrePaciente)}</p>
@@ -291,15 +294,15 @@ Mi Veris - Citas - Mis citas
                                             <div class="card-body p-2">`
                                             if (cita.esVirtual == 'S') {
                                                 element += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
-                                                                <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
+                                                                <h7 class="text-primary-veris fw-medium mb-0">Consulta online</h7>
                                                             </div>`;
                                             }
                         element += `<div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(cita.especialidad)}</h6>
+                                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(cita.especialidad)}</h6>
                                         ${determinarMensajeEstadoCita(cita.mensajeEstado)}
 
                                     </div>
-                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
+                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
                                     <p class="fw-normal fs--2 mb-0">${cita.dia} <b class="hora-cita fw-normal text-primary-veris"> ${cita.horaInicio}
                                         </b></p>
                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(cita.medico)}</p>
@@ -380,7 +383,7 @@ Mi Veris - Citas - Mis citas
                 nuevosdatos.datosCita = datos;
                 nuevosdatos.datosDocumento = documento;
                 let elemento = `<button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3 btnDescargarPdf" data-rel=${btoa(JSON.stringify(nuevosdatos))}>
-                                    <span class="text-veris fw-bold">
+                                    <span class="text-veris fw-medium">
                                         ${capitalizarElemento(documento.nombreDocumento)}
                                     </span>
                                     <i class="bi bi-download ms-auto"></i>
@@ -472,11 +475,11 @@ Mi Veris - Citas - Mis citas
         let mensaje = '';
 
         if (mensajeEstado == 'Cita Pagada') {
-            mensaje += `<span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>`;
+            mensaje += `<span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>`;
         } else if (mensajeEstado == 'No Atendida') {
-            mensaje += `<span class="fs--2 text-warning-veris fw-bold"><i class="fa-solid fa-circle me-1"></i> No atendida</span>`;
+            mensaje += `<span class="fs--2 text-warning-veris fw-medium"><i class="fa-solid fa-circle me-1"></i> No atendida</span>`;
         } else if (mensajeEstado == 'Pago Pendiente') {
-            mensaje += `<span class="fs--2 text-danger-veris fw-bold"><i class="fa-solid fa-circle me-1"></i> Pago pendiente</span>`;
+            mensaje += `<span class="fs--2 text-danger-veris fw-medium"><i class="fa-solid fa-circle me-1"></i> Pago pendiente</span>`;
         }
 
         return mensaje;

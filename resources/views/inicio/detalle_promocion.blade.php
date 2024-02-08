@@ -14,7 +14,7 @@ Mi Veris - Citas - Detalle
                 <div class="modal-header d-none">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body p-3">
                     <h6>¿Quién va a utilizar el plan preventivo?</h6>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <!-- Opcion 1 -->
@@ -23,7 +23,6 @@ Mi Veris - Citas - Detalle
                                 <p class="fs--2 mb-0">Fernanda Alarcon Tapia</p>
                             </a> --}}
                         </div>
-
                         <!-- opcion 2 -->
                         {{-- <div class="list-group list-group-checkable d-grid gap-2 border-0 d-none">
                             <!-- items -->
@@ -41,8 +40,12 @@ Mi Veris - Citas - Detalle
                             <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios3">
                                 Gabriela Alarcon Tapia
                             </label>
+<<<<<<< HEAD
+                        </div>
+=======
                         </div> --}}
 
+>>>>>>> developer
                     </div>
                 </div>
             </div>
@@ -50,7 +53,7 @@ Mi Veris - Citas - Detalle
     </div>
 
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Detalle') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Detalle') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">

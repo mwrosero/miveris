@@ -44,23 +44,21 @@ Mi Veris - Citas - Receta médica
             </div>
         </div>
     </div>
-
     <!-- Modal Receta médica -->
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body p-3">
                     <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
-                    <a href="#" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
-                    <a href="#" class="btn btn w-100">No lo he hecho</a>
+                    <a href="#" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
+                    <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Filtro -->
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Receta médica') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Receta médica') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -73,6 +71,7 @@ Mi Veris - Citas - Receta médica
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
+                <!-- Filtro -->
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 

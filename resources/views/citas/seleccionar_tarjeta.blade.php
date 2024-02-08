@@ -12,7 +12,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
     <div class="modal fade" id="noExisteTarjeta" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noExisteTarjetaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-body px-3 py-4">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <div class="avatar avatar-lg mx-auto mb-3">
                             <span class="avatar-initial rounded-circle bg-primary">
@@ -22,14 +22,13 @@ Mi Veris - Citas - Selecciona tu tarjeta
                         <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">No existen tarjetas guardadas</h1>
                         <p class="fs--1 mb-3 mx-3" style="line-height: 16px;">Para realizar el pago debes ingresar una tarjeta</p>
                     </div>
-                    <a href="/citas-informacion-pago/{{ $params }}" class="btn btn-lg btn-primary-veris w-100 mb-2">Ingresar tarjeta</a>
+                    <a href="/citas-informacion-pago/{{ $params }}" class="btn btn-lg btn-primary-veris w-100 m-0 px-4 py-3">Ingresar tarjeta</a>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Selecciona tu tarjeta') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Selecciona tu tarjeta') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">

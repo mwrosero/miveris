@@ -15,21 +15,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="modal-header border-0 d-none">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center">
+                <div class="modal-body text-center p-3">
                     <h5 class="fw-medium mb-8">Tienes una <b class="text-primary-veris">{{ __('cita pendiente') }}</b> {{ __('de esta especialidad en tu tratamiento de') }}:</h5>
                     <div class="border rounded-3 mb-8 p--2" id="tratamiento-content">
                     </div>
                     <p class="fw-medium mb-8">{{ __('¿Estas agendando por este motivo?') }}</p>
-                    <a href="#" type="button" id="btn-si-tratamiento" class="btn btn-primary-veris w-100  px-4 py-3 fs-5 mb-3">{{ __('Agendar esta orden') }}</a>
-                    <a href="#" type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris w-100 px-4 py-3 fs-5 ">{{ __('No') }}</a>
+                    <a href="#" type="button" id="btn-si-tratamiento" class="btn btn-primary-veris w-100 px-4 py-3 fs-5 m-0 mb-3">{{ __('Agendar esta orden') }}</a>
+                    <a href="#" type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris w-100 px-4 py-3 fs-5 m-0">{{ __('No') }}</a>
                     {{-- <button type="button" class="btn btn-outline-primary-veris w-100 mb-3" data-bs-dismiss="modal">{{ __('No') }}</button> --}}
                 </div>
             </div>
         </div>
     </div>
-
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Elige la especialidad') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Elige la especialidad') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="d-flex justify-content-center">

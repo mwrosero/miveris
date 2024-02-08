@@ -15,8 +15,8 @@ Mi Veris - Buscar doctor
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
                     <p class="fs--1 fw-medium m-0 mt-3">Doctor agregado a tus favoritos</p>
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Entendido</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@ Mi Veris - Buscar doctor
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Buscar doctor') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Buscar doctor') }}</h5>
     </div>
     <section class="p-3 pt-0 mb-3">
         <form class="d-flex justify-content-center">
@@ -65,9 +65,7 @@ Mi Veris - Buscar doctor
                 <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroSearchDoctors" aria-controls="filtroSearchDoctors"><i class="bi bi-sliders me-1"></i> Filtros</button>
             </div>
             <div class="col-auto col-lg-10">
-                <div class="row gy-3" id="doctoresFavoritos">
-                    
-                </div>
+                <div class="row gy-3" id="doctoresFavoritos"></div>
                 <!-- Mensaje No hay doctores disponibles -->
                 <div class="col-12 d-flex justify-content-center d-none" id="noHayDoctores">
                     <div class="card bg-transparent shadow-none">
