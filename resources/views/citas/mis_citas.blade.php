@@ -718,8 +718,8 @@ Mi Veris - Citas - Mis citas
             elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}'
             class="convenio-item">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                                        <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
                                             ${convenios.nombreConvenio}
                                         </label> 
                                     </div>
@@ -728,7 +728,7 @@ Mi Veris - Citas - Mis citas
             elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
                             <div class="list-group
                             -item fs--2 rounded-3 p-2 border-0">
-                                <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                <label for="listGroupCheckableRadiosParticular" class="cursor-pointer">
                                     Ninguno
                                 </label>
                             </div>

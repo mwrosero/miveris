@@ -275,8 +275,8 @@ Mi Veris - Doctores favoritos
                     let ruta = url + "{{ $tokenCita }}";
                     /*elemento += `<a href="${ruta}" class="stretched-link">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                                        <label for="listGroupCheckableRadios2">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}">
                                             ${convenios.nombreConvenio}
                                         </label> 
                                     </div>
@@ -287,8 +287,8 @@ Mi Veris - Doctores favoritos
                     let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                                        <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
                                             ${convenios.nombreConvenio}
                                         </label> 
                                     </div>

@@ -263,7 +263,7 @@ Mi Veris - Inicio
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const dataConvenio = await call(args);
         if(dataConvenio.code == 200){
             datosConvenios = dataConvenio.data;
@@ -279,7 +279,7 @@ Mi Veris - Inicio
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const dataPaciente = await call(args);
         if(dataPaciente.code == 200){
             datosPaciente = dataPaciente.data;
@@ -797,22 +797,22 @@ Mi Veris - Inicio
             elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}'
             class="convenio-item">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                                        <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
                                             ${convenios.nombreConvenio}
                                         </label> 
                                     </div>
                                 </div>`;
-            // agregar convenio ninguno
-            elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
-                            <div class="list-group
-                            -item fs--2 rounded-3 p-2 border-0">
-                                <label for="listGroupCheckableRadios2" class="cursor-pointer">
-                                    Ninguno
-                                </label>
-                            </div>
-                        </div>`;
         });
+        // agregar convenio ninguno
+        elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
+                        <div class="list-group
+                        -item fs--2 rounded-3 p-2 border-0">
+                            <label for="listGroupCheckableRadiosninguno" class="cursor-pointer">
+                                Ninguno
+                            </label>
+                        </div>
+                    </div>`;
         divContenedor.append(elemento);
     }
 
