@@ -41,52 +41,6 @@ Mi Veris - Citas - Mis citas
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-=======
-
-     <!-- Modal de error -->
-
-    <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Veris</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError" >
-                </p>
-                </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
-            <form class="modal-content rounded-4">
-                <div class="modal-header d-none">
-                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body p-3 pt-4">
-                    <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
-                    <div class="row gx-2 justify-content-between align-items-center">
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer px-3 pb-3">
-                    <button type="button" class="btn fw-normal m-0" data-bs-dismiss="modal">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-
-    <!-- Filtro -->
->>>>>>> developer
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis citas') }}</h5>
     </div>
