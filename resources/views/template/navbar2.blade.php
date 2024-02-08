@@ -81,12 +81,12 @@
         <div class="modal-content">
             
             <div class="modal-body p-4 text-center">
-                <h1 class="modal-title fs-5 fw-bold mb-3"  id="tituloInformacionCita"
+                <h1 class="modal-title fs-3 fw-bold mb-3"  id="tituloInformacionCita"
                     >{{ __('Información') }}</h1>
-                <p class="mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="https://www.veris.com.ec/politicas/" id="politicasPPD" target="_blank">políticas de privacidad de datos</a> 
+                <p class="mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="https://www.veris.com.ec/politicas/" id="politicasPPD" target="_blank">políticas de privacidad de datos</a></p>
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
-                <button type="button" id="aceptarPDP"  class="btn btn-primary-veris btn-lg btn-outline-primary-veris w-100">Aceptar</button>
+                <button type="button" id="aceptarPDP"  class="btn btn-primary-veris btn-lg btn-primary-veris w-100">Aceptar</button>
             </div>
             <div class="">
                 <button type="button" class="btn  w-100" id="modalRecuerdame">Recuérdame más tarde </button>
