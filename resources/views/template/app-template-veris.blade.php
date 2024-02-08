@@ -119,6 +119,21 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modalError400" tabindex="-1" aria-labelledby="modalError400Label" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
+                    <p class="fs--1 fw-normal" id="mensaje_400"></p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <a href="/" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>

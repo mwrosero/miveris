@@ -237,7 +237,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
                 if(subtotalCopagoFloat > valorTotalCopagoFloat){
                 elem +=   `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
-                        <del id="precioBase">$${valor}</del>
+                        <del id="precioBase">$${valor.toFixed(2)}</del>
                     </p>`;
                 }
                 elem += `<h1 class="text-primary-veris fw-medium mb-0" id="precioTotal" style="white-space: nowrap;">$${valorTotalCopago.toFixed(2)}</h1>
