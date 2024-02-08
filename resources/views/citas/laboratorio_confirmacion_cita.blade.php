@@ -18,7 +18,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <p class="fs--1 fw-normal">Recuerda que para confirmarla debes
                         realizar el pago.
                 </div>
-                // btn pagar y cancelar
+                {{-- // btn pagar y cancelar --}}
                 <div class="modal-footer border-0 px-2 pt-0 pb-3">
                     <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Cancelar</button>
                     <a href="/citas-datos-facturacion/{{ $params }}" class="btn btn-primary-veris w-100">Pagar</a>
@@ -105,11 +105,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let dataCita = JSON.parse(local);
     let fechaAtencion = dataCita.fecha;
     let horarioLlegada = dataCita.horario.rangoAtencion;
-    let nombrePaciente = dataCita.dataOrdenExterna.nombrePaciente;
-    let telefono = dataCita.dataOrdenExterna.telefono;
-    let codigoSolicitud = dataCita.dataOrdenExterna.codigoSolicitud;
+    let nombrePaciente = dataCita.ordenExterna.nombrePaciente;
+    let telefono = dataCita.ordenExterna.telefono;
+    let codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;
     let codigoProfesional = dataCita.horario.codigoProfesional;
-    let codigoZona = dataCita.dataOrdenExterna.codigoZona;
+    let codigoZona = dataCita.ordenExterna.codigoZona;
     let codigoPlanificacion = dataCita.horario.codigoPlanificacion;
     let lineaDetalle = dataCita.horario.lineaDetalle;
     let fecha = dataCita.fecha;

@@ -89,7 +89,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="card card-fecha-foctor position-relative">
                     <div class="card-body p-0">
                         <div class="calendar-body position-relative">
-                            <div class="calendar-container w-auto" style="max-height: 135px;">
+                            <div class="calendar-container w-auto" style="max-height: 140px;">
                                 <div class="calendar-header">
                                     <button class="btn btn-sm px-0 shadow-none prev-btn"><i class="bi bi-chevron-left fs--1 text-white"></i></button>
                                     <h6 class="text-white fw-normal fs--1 mx-3 mb-0" id="month-year"></h6>
@@ -157,11 +157,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @push('scripts')
 <script>
-
-
     // Variables globales
-
-    
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     let dataOrigen = dataCita?.origen;  
@@ -181,16 +177,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let fechaOrdenExterna;
     let codigoZona;
 
-
     if(dataOrigen == 'ordenExternaSolicitud'){
         console.log('No se puede seleccionar fecha y doctor para una cita de orden externa');
-        examenes = dataCita.dataOrdenExterna.pacientes[0].examenes;
-        pacienteExternaSolicitud = dataCita.dataOrdenExterna;
+        examenes = dataCita.ordenExterna.pacientes[0].examenes;
+        pacienteExternaSolicitud = dataCita.ordenExterna;
         online = dataCita.online;
-        codigoSolicitud = dataCita.dataOrdenExterna.codigoSolicitud;    
-        latitud = dataCita.dataOrdenExterna.latitud;
-        longitud = dataCita.dataOrdenExterna.longitud;
-        codigoZona = dataCita.dataOrdenExterna.codigoZona;
+        codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;    
+        latitud = dataCita.ordenExterna.latitud;
+        longitud = dataCita.ordenExterna.longitud;
+        codigoZona = dataCita.ordenExterna.codigoZona;
     } else {
         online = dataCita?.online;
         codigoEspecialidad = dataCita?.especialidad.codigoEspecialidad;
@@ -208,9 +203,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         nombreEspecialidad = dataCita?.especialidad.nombre || ' ';
     }
     
-    
-
-
     let _fechaSeleccionada;
     const daysOfWeek = ["D", "L", "M", "M", "J", "V", "S"];
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -223,7 +215,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let currentDate = new Date();
     let fechasDisponibles = []; // Variable global para almacenar las fechas disponibles
 
-
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         if (dataCita.origen == 'ordenExternaSolicitud') {
@@ -232,7 +223,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             // setear titulo fecha doctor
             document.getElementById('tituloFechaDoctor').innerHTML = 'Exámenes';
         } else {
-            
             await consultarFechasDisponibles();
         }
         $('body').on('click','.btn-disponibilidad-medico', function(){
@@ -243,6 +233,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         $('body').on('click', '.card-horario', function () {
             let horario = $(this).data('horario');
             guardarHorarioEnDataCita(horario);
+        });
+
+        // btnEntiendoError redirecciona a la página inicial
+        $('#btnEntiendoError').click(function(){
+            if(!dataCita.ordenExterna){
+                window.location.href = "{{ route('home') }}";
+            }
         });
     });
 
@@ -314,8 +311,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     }
 
-
-
     prevBtn.addEventListener('click', () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
         renderCalendar();
@@ -339,8 +334,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             chevronIcon.className = 'bi bi-chevron-compact-down';
         }
     });
-
-    
 
     async function consultarFechasDisponibles(){
         let listaEspecialidades = $('#listaEspecialidades');
@@ -473,19 +466,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         return data;
     }
 
-
-
-
     function guardarHorarioEnDataCita(horario) {
         dataCita.horario = horario;
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
-
-
-    // btnEntiendoError redirecciona a la página inicial
-    $('#btnEntiendoError').click(function(){
-        window.location.href = "{{ route('home') }}";
-    });
 
     // calendario para consultas externas
     // funcion que muestra el calendario para consultas externas  de los 30 dias posteriores a la fecha actual
@@ -558,7 +542,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         ${examenesLimitados.map(examen => `
                             <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
                         `).join('')}
-                        ${mostrarVerTodo ? '<p class="fw-small fs--2 mb-0 ver-todo">Ver todo</p>' : ''}
+                        ${mostrarVerTodo ? '<p class="fw-small fs--2 mb-0 text-primary text-decoration-underline cursor-pointer ver-todo">Ver todo</p>' : ''}
                     </div>
                 </div>
             </div>
@@ -576,7 +560,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 const fullExamenesList = examenes.map(examen => `
                     <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
                 `).join('');
-                $(this).closest('.examenLista').find('.listaExamenes').html(fullExamenesList + '<p class="fw-small fs--2 mb-0 ver-todo expanded">Ver menos</p>');
+                $(this).closest('.examenLista').find('.listaExamenes').html(fullExamenesList + '<p class="fw-small fs--2 mb-0 text-primary text-decoration-underline cursor-pointer ver-todo expanded">Ver menos</p>');
             } else {
                 // Volver a mostrar solo los exámenes limitados
                 const limitedExamenesList = examenesLimitados.map(examen => `
@@ -619,11 +603,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     elemento += `</a>
                         </div>`;
                 })
+                // abrir modal de horarios
+                $('#elegirHorarioModal').modal('show');
             } else {
                 console.log("No hay fechas disponibles");
             }
             
             listaHorariosMedico.append(elemento);    
+        } else if (data.code != 200){
+            $('#mensajeError').text(data.message);
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
         }
         return data;
     }
@@ -631,10 +620,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // btnAgendarServicioOrdenExterna llama a la función consultarHorasMotorizados  
     $('#btnAgendarServicioOrdenExterna').click(async function(){
-        let data = await consultarHorasMotorizados();
-        // abrir modal de horarios
-        $('#elegirHorarioModal').modal('show');
-        
+        let data = await consultarHorasMotorizados();        
     });
 
     // btn-disponibilidad-motorizado setea el horario seleccionado en dataCita
