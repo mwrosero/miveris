@@ -51,11 +51,11 @@ $data = json_decode(base64_decode($params));
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body">
+                <div class="modal-body p-3">
                     <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
-                    <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris w-100">{{ __('Sí, lo hice') }}</a>
-                    <a href="#" class="btn btn w-100">No lo he hecho</a>
+                    <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
+                    <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
                 </div>
             </div>
         </div>
@@ -65,30 +65,27 @@ $data = json_decode(base64_decode($params));
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError" >
-                </p>
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError"></p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- <div class="flex-grow-1 container-p-y pt-0"> -->
-
     <!-- Modal Examenes presencial -->
     <div class="modal fade" id="mensajeLaboratorioPresencialModal" tabindex="-1" aria-labelledby="mensajeLaboratorioPresencialModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
+                <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal">{{ __('Para realizarte este examen acercate a una central médica') }}</p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                 </div>
             </div>
         </div>
@@ -98,13 +95,13 @@ $data = json_decode(base64_decode($params));
     <div class="modal fade" id="mensajeVideoConsultaModal" tabindex="-1" aria-labelledby="mensajeVideoConsultaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
+                <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal">{{ __('Para agendar esta videoconsulta llama al') }} <b>{{ __('6009600') }}</b></p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <a href="tel:+59346009600" class="btn btn-primary-veris w-100"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
-                    <button type="button" class="btn text-primary-veris w-100" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <a href="tel:+59346009600" class="btn btn-primary-veris m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                    <button type="button" class="btn text-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
                 </div>
             </div>
         </div>
@@ -114,13 +111,13 @@ $data = json_decode(base64_decode($params));
     <div class="modal fade" id="informacionModal" tabindex="-1" aria-labelledby="informacionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
+                <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal" id = "mensajeInformacion"></p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <a href="tel:+59346009600" class="btn btn-primary-veris w-100"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
-                    <button type="button" class="btn text-primary-veris w-100" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <a href="tel:+59346009600" class="btn btn-primary-veris m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                    <button type="button" class="btn text-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
                 </div>
             </div>
         </div>
@@ -130,13 +127,12 @@ $data = json_decode(base64_decode($params));
     <div class="modal fade" id="mensajeNoPermiteReservaModal" tabindex="-1" aria-labelledby="mensajeNoPermiteReservaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
+                <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Veris') }}</h1>
-                    <p class="fs--1 fw-normal" id = "mensajeNoPermiteReserva"
-                    >{{ __('Reserva no permitida por este canal') }}</p>
+                    <p class="fs--1 fw-normal" id="mensajeNoPermiteReserva">{{ __('Reserva no permitida por este canal') }}</p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                 </div>
             </div>
         </div>
@@ -146,19 +142,19 @@ $data = json_decode(base64_decode($params));
     <div class="modal fade" id="informacionCitaModal" tabindex="-1" aria-labelledby="informacionCitaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3">{{ __('Información') }}</h1>
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal" id = "mensajeInformacionCita"></p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Tratamiento') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Tratamiento') }}</h5>
     </div>
 
     <section class="pt-3 px-0 px-md-3 pb-0">
@@ -604,7 +600,7 @@ $data = json_decode(base64_decode($params));
     function determinarEsOnline(datos){
         if(datos.modalidad == 'ONLINE'){
             return `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
-                        <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
+                        <h7 class="text-primary-veris fw-medium mb-0">Consulta online</h7>
                     </div>`;
         }
         else{
@@ -678,7 +674,7 @@ $data = json_decode(base64_decode($params));
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
 
                 dataFechas = `<h6 class="card-title fs--1 text-veris mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
-                                <p class="fw-bold fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
+                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
                                 <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
                 

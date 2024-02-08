@@ -10,28 +10,28 @@ Mi Veris - Citas - Laboratorio a domicilio
     <div class="modal fade" id="mensajeSolicitudLlamadaModal" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Solicitud exitosa</h1>
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3">Solicitud exitosa</h1>
                     <p class="fs--1 fw-normal">Un asesor te contactará pronto</p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal" id="btnEntendido"
-                    >Entiendo</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Laboratorio a domicilio') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Laboratorio a domicilio') }}</h5>
+    </div>
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="text-center fw-bold mb-3">Laboratorio a domicilio</h6>
+                        <h6 class="text-center fw-medium mb-3">Laboratorio a domicilio</h6>
                         <form class="row g-3">
                             <div class="col-md-12">
-                                <label for="paciente" class="form-label fw-bold">Selecciona el paciente</label>
+                                <label for="paciente" class="form-label fw-medium">Selecciona el paciente</label>
                                 <select class="form-select bg-neutral" name="paciente" id="paciente" >
                                     <option selected disabled value="">Elegir...</option>
                                     <option value="">...</option>
@@ -42,7 +42,7 @@ Mi Veris - Citas - Laboratorio a domicilio
                                 </div>
                             </div>
                             <div class="col-md-12">
-                                <label for="paciente" class="form-label fw-bold">Selecciona la ciudad</label>
+                                <label for="paciente" class="form-label fw-medium">Selecciona la ciudad</label>
                                 <select class="form-select bg-neutral" name="ciudad" id="ciudad" required>
                                     <option selected disabled value="">Elegir...</option>
                                     <option value="">...</option>

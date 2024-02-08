@@ -12,7 +12,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="codeinvalid" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="codeinvalidLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-body px-3">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <div class="avatar avatar-lg mx-auto">
                             <span class="avatar-initial rounded-circle bg-transparent">
@@ -22,17 +22,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h1 class="modal-title fs-5 mb-3" id="conformarPagoLabel">Código inválido</h1>
                         <p class="fs--1 mb-3" style="line-height: 16px;">Código erróneo, inténtalo nuevamente</p>
                     </div>
-                    <button type="button" class="btn btn-lg btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-lg btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal intento fallido -->
     <div class="modal fade" id="intentoFallido" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="intentoFallidoLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-body px-3">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <div class="avatar avatar-lg mx-auto">
                             <span class="avatar-initial rounded-circle bg-transparent">
@@ -42,15 +41,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h1 class="modal-title fs-5 mb-3" id="conformarPagoLabel">No se permiten más intentos</h1>
                         <p class="fs--1 mx-3 mb-3" style="line-height: 16px;">Haz alcanzado el número máximo de intentos con este código</p>
                     </div>
-                    <a href="#" id="btn-intentos-fallidos" class="btn btn-lg btn-primary-veris w-100">Entiendo</a>
+                    <a href="#" id="btn-intentos-fallidos" class="btn btn-lg btn-primary-veris m-0 w-100 px-4 py-3">Entiendo</a>
                     {{-- javascript:history.back() --}}
                 </div>
             </div>
         </div>
     </div>
-
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Confirmar pago') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Confirmar pago') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">

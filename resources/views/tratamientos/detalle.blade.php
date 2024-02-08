@@ -13,16 +13,16 @@ Mi Veris - Citas - tratamiento
     <div class="modal fade" id="informacionModal" tabindex="-1" aria-labelledby="informacionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body">
-                    <h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">Informacion</h1>
-                    <p class="fs--1 fw-bold text-primary">Servicios incluidos en la compra</p>
+                <div class="modal-body p-3">
+                    <h1 class="modal-title fs-5 fw-medium text-center border-bottom mb-3 pb-2">Informacion</h1>
+                    <p class="fs--1 fw-medium text-primary">Servicios incluidos en la compra</p>
                     <ul>
                         <li>Opciones...</li>
                         <li>Opciones...</li>
                         <li>Opciones...</li>
                     </ul>
                 </div>
-                <div class="modal-footer border-0 pt-0">
+                <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
@@ -32,23 +32,25 @@ Mi Veris - Citas - tratamiento
     <div class="modal fade" id="serviciosNoIncluidosModal" tabindex="-1" aria-labelledby="serviciosNoIncluidosModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body">
-                    <h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">Informacion</h1>
-                    <p class="fs--1 fw-bold text-primary"id="descripcionServicio"></p>
+                <div class="modal-body p-3">
+                    <h1 class="modal-title fs-5 fw-medium text-center border-bottom mb-3 pb-2">Informacion</h1>
+                    <p class="fs--1 fw-medium text-primary"id="descripcionServicio"></p>
                     <ul>
                         <li>Opciones...</li>
                         <li>Opciones...</li>
                         <li>Opciones...</li>
                     </ul>
                 </div>
-                <div class="modal-footer border-0 pt-0">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">{{ __('Tú tratamiento') }}</h5>
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Tú tratamiento') }}</h5>
+    </div>
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0 justify-content-center mt-5">
             <div class="col-auto col-md-6 col-lg-5">
@@ -65,14 +67,14 @@ Mi Veris - Citas - tratamiento
                         <a href="#" class="d-flex align-items-center gap-2 bg-white py-2 px-3">
                             <img src="{{ asset('assets/img/svg/especialidades/alergologia.svg') }}" alt="especialidad" />
                             <div class="ms-2">
-                                <h6 class="fw-bold mb-0">Traumatología</h6>
+                                <h6 class="fw-medium mb-0">Traumatología</h6>
                                 <p class="fw-normal fs--1 mb-0">Ver tratamiento en PDF <i class="bi bi-chevron-right ms-2"></i></p>
                             </div>
                         </a>
-                        <h6 class="fw-bold py-2 px-3 mb-0" style="background: #E9EFF4;">Selecciona tus servicios</h6>
+                        <h6 class="fw-medium py-2 px-3 mb-0" style="background: #E9EFF4;">Selecciona tus servicios</h6>
                         <div class="d-flex justify-content-between align-items-center px-3 py-1 bg-labe-grayish">
-                            <span class="fw-bold fs--2">Servicio</span>
-                            <span class="fw-bold fs--2">Cantidad</span>
+                            <span class="fw-medium fs--2">Servicio</span>
+                            <span class="fw-medium fs--2">Cantidad</span>
                         </div>
                         <ul class="list-group gap-2 bg-white rounded-0" id="listaServicios">
                             <!-- items -->
@@ -101,8 +103,8 @@ Mi Veris - Citas - tratamiento
                                 <img src="{{ asset('assets/img/svg/regalo_abierto.svg') }}" alt="" />
                             </div>
                             <div class="ms-4">
-                                <p class="text-danger fw-normal fs--2 mb-0" id="content-precioBase">Precio normal <del class="fw-bold" id="precioBaseEnd"></del></p>
-                                <h2 class="text-primary fw-bold mb-0" id="precioTotalEnd"></h2>
+                                <p class="text-danger fw-normal fs--2 mb-0" id="content-precioBase">Precio normal <del class="fw-medium" id="precioBaseEnd"></del></p>
+                                <h2 class="text-primary fw-medium mb-0" id="precioTotalEnd"></h2>
                             </div>
                         </div>
                         <div class="p-3">
@@ -150,8 +152,8 @@ Mi Veris - Citas - tratamiento
            
             let modal = $(this);
             modal.find('.modal-body').empty();
-            modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">${recipient.descripcionServicio}</h1>
-                                                <p class="fs--1 fw-bold text-primary">Servicios incluidos en la compra</p>
+            modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-medium text-center border-bottom mb-3 pb-2">${recipient.descripcionServicio}</h1>
+                                                <p class="fs--1 fw-medium text-primary">Servicios incluidos en la compra</p>
                                                 <ul id="listaServicios"></ul>`);
             let listaServicios = modal.find('#listaServicios');
             recipient.detallePrestaciones.forEach((resultados) => {
@@ -169,8 +171,8 @@ Mi Veris - Citas - tratamiento
            
             let modal = $(this);
             modal.find('.modal-body').empty();
-            modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-bold text-center border-bottom mb-3 pb-2">Informacion</h1>
-                    <p class="fs--1 fw-bold text-primary">${recipient.detallePrestaciones[0].descripcionGrupoDetalle}</p>
+            modal.find('.modal-body').append(`<h1 class="modal-title fs-5 fw-medium text-center border-bottom mb-3 pb-2">Informacion</h1>
+                    <p class="fs--1 fw-medium text-primary">${recipient.detallePrestaciones[0].descripcionGrupoDetalle}</p>
                     <ul id="listaServicios"></ul>`);
             let listaServicios = modal.find('#listaServicios');
             recipient.detallePrestaciones.forEach((resultados) => {
@@ -247,10 +249,10 @@ Mi Veris - Citas - tratamiento
                                 <div class="w-auto">
                                     <p class="text-veris mb-0">${resultados.descripcionServicio}</p>
                                     <div class="d-flex align-items-center">
-                                        <p class="text-primary fw-bold fs--2 mb-0" id="precioTotal">
+                                        <p class="text-primary fw-medium fs--2 mb-0" id="precioTotal">
                                             
                                             <del class="text-danger fw-normal" id="precioBase-${index}">$$${resultados.valorNormal}</del> 
-                                            <span class="fw-bold" id="precioTotalList-${index}">
+                                            <span class="fw-medium" id="precioTotalList-${index}">
                                             $${resultados.valorPromocion}
                                             </span>
                                             <input type="hidden" id="valorPromocionHidden-${index}" value="${resultados.valorPromocion}">

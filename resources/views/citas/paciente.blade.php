@@ -15,40 +15,37 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="modal-header d-none">
                     <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-3 pt-4">
-                    <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
+                <div class="modal-body p-3">
+                    <h5 class="mb-3">{{ __('Elige tu convenio:') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
-                            
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer px-3 pb-3">
-                    <button type="button" class="btn fw-normal m-0" data-bs-dismiss="modal">Cancelar</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn fw-normal m-0 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
-
     <!-- Modal noPermiteReserva-->
     <div class="modal fade" id="noPermiteReserva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noPermiteReservaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-2">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <h1 class="modal-title fs-5 mb-3" id="noPermiteReservaLabel">Veris</h1>
                         <p class="mb-0" id="noPermiteReservaMsg"></p>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-center p-2 pt-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light" data-bs-dismiss="modal">Aceptar</button>
+                <div class="modal-footer justify-content-center pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Elegir paciente') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Elegir paciente') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row g-3" id="listaPacientes">
@@ -61,7 +58,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
                                 </div>
                             </div>
-                            <p class="text-veris fw-medium fs--2 mb-0">{{ __('Agregar nuevo paciente') }}</p>
+                            <p class="text-veris fw-medium fs--2 text-center mb-0">{{ __('Agregar nuevo paciente') }}</p>
                         </a>
                     </div>
                 </div>

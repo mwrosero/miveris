@@ -4,9 +4,7 @@ Mi Veris - Politica-privacidad-datos
 @endsection
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- modal datos actualizados -->
-
     <div class="modal fade" id="mensajeDatosActualizados" tabindex="-1" aria-labelledby="mensajeDatosActualizadosLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
@@ -14,15 +12,13 @@ Mi Veris - Politica-privacidad-datos
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
                     <p class="fs--1 fw-bold m-0 mt-3">Revisa tu correo</p>
                     <p class="fs--1 m-0">Confirma la actualización de tus datos en el correo electrónico que te enviamos</p>
-
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal mensaje -->
     <div class="modal fade" id="mensajeActualizarPoliticas" tabindex="-1" aria-labelledby="mensajeActualizarPoliticasLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -31,15 +27,14 @@ Mi Veris - Politica-privacidad-datos
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
                     <p class="fs--1 fw-bold m-0 mt-3">Datos actualizados correctamente</p>
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Entendido</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Política de privacidad de datos') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Política de privacidad de datos') }}</h5>
     </div>
     <div class="row g-0 justify-content-center align-items-center">
         <div class="col-md-8">

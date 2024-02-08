@@ -23,7 +23,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Revisa tus datos') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Revisa tus datos') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row g-3 justify-content-center">

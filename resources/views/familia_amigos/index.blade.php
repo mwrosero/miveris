@@ -9,7 +9,7 @@ Mi Veris - Citas - Familia y amigos
     <div class="modal fade" id="parentescoFamiliarModal" tabindex="-1" aria-labelledby="parentescoFamiliarModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-header justify-content-center align-items-center pt-3 px-3">
+                <div class="modal-header justify-content-center align-items-center pt-3 pb-0 px-3">
                     <h1 class="modal-title fs-6" id="parentescoFamiliarModalLabel">Tipo de relación</h1>
                 </div>
                 <div class="modal-body p-3">
@@ -18,13 +18,12 @@ Mi Veris - Citas - Familia y amigos
                         <!-- La lista se llenará dinámicamente aquí -->
                     </div>
                 </div>
-                <div class="modal-footer p-3">
-                    <button type="button" class="btn w-100 text-primary-veris m-0" data-bs-dismiss="modal">Cancelar</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn text-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
     </div>
-    
     <!-- Modal mensaje -->
     <div class="modal fade" id="mensajePersonaAgregadaModal" tabindex="-1" aria-labelledby="mensajePersonaAgregadaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -33,13 +32,12 @@ Mi Veris - Citas - Familia y amigos
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
                     <p class="fs--1 fw-medium m-0 mt-3">Persona agregada exitosamente</p>
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal mensaje para errores fuera de 200 -->    
     <div class="modal fade" id="mensajeErrorModal" tabindex="-1" aria-labelledby="mensajeErrorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -48,8 +46,8 @@ Mi Veris - Citas - Familia y amigos
                     <i class="bi bi-exclamation-triangle-fill  text-primary-veris h2"></i>
                     <p class="fs--1 fw-medium m-0 mt-3" id="mensajeErrorModalLabel"></p>
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
                 </div>
             </div>
         </div>
@@ -62,15 +60,15 @@ Mi Veris - Citas - Familia y amigos
                     <i class="bi bi-exclamation-triangle-fill text-primary-veris h2"></i>
                     <p class="fs--1 fw m-0 mt-3" id="mensajePersonaYaExisteModalLabel"></p>
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal">Aceptar</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Familia y amigos') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Familia y amigos') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="container">

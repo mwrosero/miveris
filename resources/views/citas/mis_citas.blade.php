@@ -11,7 +11,6 @@ Mi Veris - Citas - Mis citas
     // dd($tokenCita);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- offcanva ver pdf -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="verPdf" aria-labelledby="verPdfLabel">
         <div class="offcanvas-header py-2">
@@ -24,7 +23,7 @@ Mi Veris - Citas - Mis citas
             <div>
                 <div class="list-group gap--2 mb-3 verPdf">
                     <button class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
-                        <span class="text-veris fw-bold">
+                        <span class="text-veris fw-medium">
                             RECOMENDACIONES
                         </span>
                         <i class="bi bi-download ms-auto"></i>
@@ -32,7 +31,7 @@ Mi Veris - Citas - Mis citas
                 </div>
                 <div class="list-group gap--2 mb-3 verPdf">
                     <button class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
-                        <span class="text-veris fw-bold">
+                        <span class="text-veris fw-medium">
                             FACTURA
                         </span>
                         <i class="bi bi-download ms-auto"></i>
@@ -42,6 +41,8 @@ Mi Veris - Citas - Mis citas
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+=======
 
      <!-- Modal de error -->
 
@@ -60,10 +61,34 @@ Mi Veris - Citas - Mis citas
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <form class="modal-content rounded-4">
+                <div class="modal-header d-none">
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3 pt-4">
+                    <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
+                    <div class="row gx-2 justify-content-between align-items-center">
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer px-3 pb-3">
+                    <button type="button" class="btn fw-normal m-0" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 
     <!-- Filtro -->
+>>>>>>> developer
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Mis citas') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis citas') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -76,6 +101,7 @@ Mi Veris - Citas - Mis citas
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
+                <!-- Filtro -->
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade mt-3 show active" id="pills-actuales" role="tabpanel" aria-labelledby="pills-actuales-tab" tabindex="0">
@@ -143,16 +169,24 @@ Mi Veris - Citas - Mis citas
     // variables globales
 
     let datosConvenios = [];
+    let misCitasEleccion = localStorage.getItem('miscitas');
+    console.log('misCitasEleccion', misCitasEleccion);
 
     // llamada al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
+        if (misCitasEleccion == 'historial') {
+            $('#pills-historial-tab').click();
+        } else {
+            $('#pills-actuales-tab').click();
+        }
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         await obtenerHistorialCitas();
         await obtenerCitas();
         await consultarGrupoFamiliar();
         await consultarConvenios();
+        
     });
 
     //funciones asincronas
@@ -220,10 +254,10 @@ Mi Veris - Citas - Mis citas
                                             <div class="card">
                                                 <div class="card-body p--2">
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(historial.nombreEspecialidad)}</h6>
+                                                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(historial.nombreEspecialidad)}</h6>
                                                         ${determinarMensajeEstadoCita(historial.mensajeEstado)}
                                                     </div>
-                                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(historial.nombreSucursal)}</p>
+                                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(historial.nombreSucursal)}</p>
                                                     <p class="fw-normal fs--2 mb-0"> ${historial.dia}<b class="hora-cita fw-normal text-primary-veris"> ${determinarAmPm(historial.horaInicio)}</b></p>
                                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(historial.nombreProfesional)}</p>
                                                     <p class="fw-normal fs--2 mb-0">${capitalizarElemento(historial.nombrePaciente)}</p>
@@ -291,15 +325,15 @@ Mi Veris - Citas - Mis citas
                                             <div class="card-body p-2">`
                                             if (cita.esVirtual == 'S') {
                                                 element += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
-                                                                <h7 class="text-primary-veris fw-bold mb-0">Consulta online</h7>
+                                                                <h7 class="text-primary-veris fw-medium mb-0">Consulta online</h7>
                                                             </div>`;
                                             }
                         element += `<div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-primary-veris fw-bold mb-0">${capitalizarElemento(cita.especialidad)}</h6>
+                                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(cita.especialidad)}</h6>
                                         ${determinarMensajeEstadoCita(cita.mensajeEstado)}
 
                                     </div>
-                                    <p class="fw-bold fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
+                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
                                     <p class="fw-normal fs--2 mb-0">${cita.dia} <b class="hora-cita fw-normal text-primary-veris"> ${cita.horaInicio}
                                         </b></p>
                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(cita.medico)}</p>
@@ -317,7 +351,7 @@ Mi Veris - Citas - Mis citas
                                             ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
                                         }
 
-                                        element += `   <a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(cita)}'>${cita.nombreBotonCambiar}</a> `
+                                        element += `   <a url-rel="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(cita)}'>${cita.nombreBotonCambiar}</a> `
                                         if(cita.estaPagada == "N"){
                                             element += `<a class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(cita)}'
                                             >Pagar</a>`;
@@ -380,7 +414,7 @@ Mi Veris - Citas - Mis citas
                 nuevosdatos.datosCita = datos;
                 nuevosdatos.datosDocumento = documento;
                 let elemento = `<button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3 btnDescargarPdf" data-rel=${btoa(JSON.stringify(nuevosdatos))}>
-                                    <span class="text-veris fw-bold">
+                                    <span class="text-veris fw-medium">
                                         ${capitalizarElemento(documento.nombreDocumento)}
                                     </span>
                                     <i class="bi bi-download ms-auto"></i>
@@ -472,11 +506,11 @@ Mi Veris - Citas - Mis citas
         let mensaje = '';
 
         if (mensajeEstado == 'Cita Pagada') {
-            mensaje += `<span class="fs--2 text-success fw-bold"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>`;
+            mensaje += `<span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i> Cita pagada</span>`;
         } else if (mensajeEstado == 'No Atendida') {
-            mensaje += `<span class="fs--2 text-warning-veris fw-bold"><i class="fa-solid fa-circle me-1"></i> No atendida</span>`;
+            mensaje += `<span class="fs--2 text-warning-veris fw-medium"><i class="fa-solid fa-circle me-1"></i> No atendida</span>`;
         } else if (mensajeEstado == 'Pago Pendiente') {
-            mensaje += `<span class="fs--2 text-danger-veris fw-bold"><i class="fa-solid fa-circle me-1"></i> Pago pendiente</span>`;
+            mensaje += `<span class="fs--2 text-danger-veris fw-medium"><i class="fa-solid fa-circle me-1"></i> Pago pendiente</span>`;
         }
 
         return mensaje;
@@ -593,55 +627,168 @@ Mi Veris - Citas - Mis citas
     $(document).on('click', '.btn-CambiarFechaCita', function(){
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
+        let url = $(this).attr('url-rel');
+
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
+        if (data.estaPagada == "N"){
+            let params = {}
+            params.online = data.esVirtual;
+            params.especialidad = {
+                codigoEspecialidad: data.idEspecialidad,
+                codigoPrestacion  : data.codigoPrestacion,
+                codigoServicio   : data.codigoServicio,
+                codigoTipoAtencion: data.codigoTipoAtencion,
+                esOnline : data.esVirtual,
+                nombre : data.especialidad,
+            }
+            params.paciente = {
+                "numeroIdentificacion": data.numeroIdentificacion,
+                "tipoIdentificacion": data.tipoIdentificacion,
+                "nombrePaciente": data.nombrePaciente,
+                "numeroPaciente": data.numeroPaciente
+            }
+
+            params.reservaEdit = {
+                "estaPagada": data.estaPagada,
+                "numeroOrden": data.numeroOrden,
+                "lineaDetalleOrden": data.lineaDetalleOrden,
+                "codigoEmpresaOrden": data.codigoEmpresaOrden,
+                "idOrdenAgendable": data.idOrdenAgendable,
+                "idCita": data.idCita
+            }
+            params.origen = "inicios";
+            
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+            llenarModalConvenios(datosConvenios, url);
+
+            $('#convenioModal').modal('show');
+        } 
+
+        else{
+
         
-        let params = {}
-        params.online = data.esVirtual;
-        params.especialidad = {
-            codigoEspecialidad: data.idEspecialidad,
-            codigoPrestacion  : data.codigoPrestacion,
-            codigoServicio   : data.codigoServicio,
-            codigoTipoAtencion: data.codigoTipoAtencion,
-            esOnline : data.esVirtual,
-            nombre : data.especialidad,
-        }
-        if (datosConvenios.length > 0) {
-            params.convenio = dataConvenio.data[0];
-        } else {
-            params.convenio = {
+
+        
+            let params = {}
+            params.online = data.esVirtual;
+            params.especialidad = {
+                codigoEspecialidad: data.idEspecialidad,
+                codigoPrestacion  : data.codigoPrestacion,
+                codigoServicio   : data.codigoServicio,
+                codigoTipoAtencion: data.codigoTipoAtencion,
+                esOnline : data.esVirtual,
+                nombre : data.especialidad,
+            }
+
+            if (datosConvenios.length > 0) {
+                console.log('datosConvenio', datosConvenios);
+                // datosconvenio posicion 0
+
+                params.convenio = datosConvenios[0];
+
+            } else {
+                params.convenio = {
                     "permitePago": "S",
                     "permiteReserva": "S",
                     "idCliente": null,
                     "codigoConvenio": null,
                     "secuenciaAfiliado" : null,
                 };
-        }
-        // params.paciente = {
-        //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
-        //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
-        //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
-        //     "numeroPaciente": datosPaciente.numeroPaciente
-        // }
-        params.paciente = {
-            "numeroIdentificacion": data.numeroIdentificacion,
-            "tipoIdentificacion": data.tipoIdentificacion,
-            "nombrePaciente": data.nombrePaciente,
-            "numeroPaciente": data.numeroPaciente
-        }
+            }
+            // params.paciente = {
+            //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
+            //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
+            //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
+            //     "numeroPaciente": datosPaciente.numeroPaciente
+            // }
+            params.paciente = {
+                "numeroIdentificacion": data.numeroIdentificacion,
+                "tipoIdentificacion": data.tipoIdentificacion,
+                "nombrePaciente": data.nombrePaciente,
+                "numeroPaciente": data.numeroPaciente
+            }
 
-        params.reservaEdit = {
-            "estaPagada": data.estaPagada,
-            "numeroOrden": data.numeroOrden,
-            "lineaDetalleOrden": data.lineaDetalleOrden,
-            "codigoEmpresaOrden": data.codigoEmpresaOrden,
-            "idOrdenAgendable": data.idOrdenAgendable,
-            "idCita": data.idCita
-        }
-        params.origen = "inicios";
+            params.reservaEdit = {
+                "estaPagada": data.estaPagada,
+                "numeroOrden": data.numeroOrden,
+                "lineaDetalleOrden": data.lineaDetalleOrden,
+                "codigoEmpresaOrden": data.codigoEmpresaOrden,
+                "idOrdenAgendable": data.idOrdenAgendable,
+                "idCita": data.idCita
+            }
+            params.origen = "inicios";
 
-        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            
+            location = url;
+        }
     });
+
+
+    // consultar convenios y llenar el modal de convenios
+    function llenarModalConvenios(data, url){
+        let divContenedor = $('#listaConvenios');
+        divContenedor.empty(); // Limpia el contenido actual
+        let elemento = '';
+        data.forEach((convenios) => {
+            console.log('convenioss', convenios);
+            elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}'
+            class="convenio-item">
+                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
+                                        <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                            ${convenios.nombreConvenio}
+                                        </label> 
+                                    </div>
+                                </div>`;
+            // agregar convenio ninguno
+            elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
+                            <div class="list-group
+                            -item fs--2 rounded-3 p-2 border-0">
+                                <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                    Ninguno
+                                </label>
+                            </div>
+                        </div>`;
+        });
+        divContenedor.append(elemento);
+    }
+
+
+    // seleccionar convenio convenio-item
+    $(document).on('click', '.convenio-item', function(){
+        let data = $(this).data('rel');
+        console.log('dataConvenio', data);
+        let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
+        params.convenio = data;
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+        $('#convenioModal').modal('hide');
+        location = $(this).attr('url-rel');
+    });
+
+    // seleccionar convenio convenio-Ninguno
+    $(document).on('click', '.convenio-Ninguno', function(){
+        let data = $(this).data('rel');
+        console.log('dataConvenio', data);
+        let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
+        params.convenio = {
+            "permitePago": "S",
+            "permiteReserva": "S",
+            "idCliente": null,
+            "codigoConvenio": null,
+            "secuenciaAfiliado" : null,
+        };
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+        $('#convenioModal').modal('hide');
+        location = $(this).attr('url-rel');
+    });
+
+
+
+
+
 
     // setear los valores de la cita historial en localstorage
     // setear los valores de la cita en localstorage
@@ -662,7 +809,7 @@ Mi Veris - Citas - Mis citas
             nombre : data.especialidad,
         }
         if (datosConvenios.length > 0) {
-            params.convenio = dataConvenio.data[0];
+            params.convenio = datosConvenios[0];
         } else {
             params.convenio = {
                     "permitePago": "S",

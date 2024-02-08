@@ -11,25 +11,21 @@ Mi Veris - Resultados
     <div class="modal fade" id="resultadImagenesProcedimientosModal" tabindex="-1" aria-labelledby="resultadImagenesProcedimientosModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body" id="modalBody">
+                <div class="modal-body px-3" id="modalBody">
                     <!-- contenido dinamico -->
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Resultados') }}</h5>
-    </div>
     <!-- modal  ha ocurrido un error -->
     <div class="modal fade" id="haOcurridoUnErrorModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body" id="modalBody">
+                <div class="modal-body p-3" id="modalBody">
                     <div class="text-center">
-                        <h5 class="mt-3">Veris</h5>
-                        <p>Ha ocurrido un error inesperado</p>
-                        <button type="button" class="btn btn-primary-veris shadow-none" data-bs-dismiss="modal">Aceptar</button>
+                        <h5 class="mb-3">Veris</h5>
+                        <p class="mb-3">Ha ocurrido un error inesperado</p>
+                        <button type="button" class="btn btn-primary-veris shadow-none w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                     </div>
                 </div>
             </div>
@@ -42,6 +38,9 @@ Mi Veris - Resultados
         @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
     </div>
     
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Resultados') }}</h5>
+    </div>
     <section class="p-3 pt-0 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-lg-10">
@@ -200,9 +199,9 @@ Mi Veris - Resultados
                         elemento += `<div class="col-12 col-md-6">
                                         <div class="card h-100">
                                             <div class="card-body p-3">
-                                                <h6 class="text-primary-veris fw-bold fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
-                                                <p class="fw-bold fs--2 mb-1" id="nombreResultadoLab" style="color: #0055AA !important">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
-                                                <p class="fw-bold fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
+                                                <h6 class="text-primary-veris fw-medium fs--1 mb-1">${capitalizarElemento(resultados.nombreServicio)}</h6>
+                                                <p class="fw-medium fs--2 mb-1" id="nombreResultadoLab" style="color: #0055AA !important">${capitalizarElemento(resultados.nombreOrigenResultado)}</p>
+                                                <p class="fw-medium fs--2 mb-1" id="ubicacion">${capitalizarElemento(resultados.nombreSucursal)}</p>
                                                 <p class="fw-normal fs--2 mb-1">Realizado: <b class="fw-normal" id="fecha">${resultados.dia}</b></p>
                                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                                     <div class="avatar me-2">
@@ -257,7 +256,7 @@ Mi Veris - Resultados
                  html.empty();
                  
                  let elemento = "";
-                 elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
+                 elemento += `<h1 class="text-center fw-medium fs-5">Resultados</h1>`;
                  elemento += `<div class="my-3">
                                  <p class="text-center fs-normal my-3">${capitalizarElemento(data.message)}</p>
                              </div>`;
@@ -271,7 +270,7 @@ Mi Veris - Resultados
                  
                  let elemento = "";
      
-                 elemento += `<h1 class="text-center fw-bold fs-5">Resultados</h1>`;
+                 elemento += `<h1 class="text-center fw-medium fs-5">Resultados</h1>`;
      
                  items.forEach((resultados, index) => {
                     console.log('resultados', resultados);

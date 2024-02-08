@@ -11,47 +11,40 @@ Mi Veris - Citas - Imágenes y procedimientos
     // dd($tokenCita);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- Modal de error -->
-
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Veris</h1>
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
                     <p class="fs--1 fw-normal" id="mensajeError" >
                 </p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal infomracion de la cita -->
     <div class="modal fade" id="informacionCitaModal" tabindex="-1" aria-labelledby="informacionCitaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3"  id="tituloInformacionCita"
-                    >{{ __('Información') }}</h1>
-                    <p class="fs--1 fw-normal" id = "mensajeInformacionCita"></p>
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3" id="tituloInformacionCita">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal" id="mensajeInformacionCita"></p>
                 </div>
-                <div id= "footerInformacionCita">
-                    <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                        <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                <div id="footerInformacionCita">
+                    <div class="modal-footer pt-0 pb-3 px-3">
+                        <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                     </div>
-
                 </div>
                 
             </div>
         </div>
     </div>
-
-    <!-- Filtro -->
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-24">{{ __('Imágenes y procedimientos') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Imágenes y procedimientos') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -64,6 +57,7 @@ Mi Veris - Citas - Imágenes y procedimientos
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
+                <!-- Filtro -->
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
@@ -716,28 +710,21 @@ Mi Veris - Citas - Imágenes y procedimientos
         let datos = datosRel.servicio;
         if (datos.esCaducado === "S" && datos.esAgendable === "S") {
             // CAMBIAR TITUOLO MODAL
-
             $('#tituloModalInformacionCita').text('Orden expirada');
             $('#mensajeInformacionCita').text('El tiempo para agendar esta orden expiró, puedes agendar la cita sin cobertura.');
             // limpiar footer
             $('#footerInformacionCita').empty();
             // agregar boton agendar y salir
-            $('#footerInformacionCita').append(`<div class="modal-footer border-0 ">
-                                                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal" data-rel='${JSON.stringify(datosRel)}' id="btnAgendarCitaModal"
-                                                    >{{ __('Agendar') }}</button>
+            $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
+                                                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal" data-rel='${JSON.stringify(datosRel)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
                                                 </div>
-                                                <div class="modal-footer border-0 ">
-                                                    <button type="button" class="btn  w-100" data-bs-dismiss="modal">{{ __('Salir') }}</button>
+                                                <div class="modal-footer pt-0 pb-3 px-3">
+                                                    <button type="button" class="btn  m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
                                                 </div>`);
-
-            
         } else {
             $('#mensajeInformacionCita').text(datos.mensaje);
         }
-
-
     });
-
 
     // mostrar lista de pacientes en el filtro
     function mostrarListaPacientesFiltro(){
@@ -756,7 +743,6 @@ Mi Veris - Citas - Imágenes y procedimientos
             let elemento = `<label class="list-group-item d-flex align-items-center gap--2 border rounded-3">
                                 <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
                                 <span class="text-veris fw-medium">
-                                    
                                     ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
                                     <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
                                 </span>

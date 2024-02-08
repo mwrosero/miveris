@@ -4,9 +4,7 @@ Mi Veris - Mis Datos
 @endsection
 @section('content')
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- modal datos actualizados -->
-
     <div class="modal fade" id="mensajeDatosActualizados" tabindex="-1" aria-labelledby="mensajeDatosActualizadosLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
@@ -14,27 +12,23 @@ Mi Veris - Mis Datos
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
                     <p class="fs--1 fw-bold m-0 mt-3">Datos actualizados</p>
                 </div>
-                <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
                 </div>
             </div>
         </div>
     </div>
-
-    <h5 class="ps-4 pt-3 mb-1 pb-2 bg-white">Mis Datos</h5>
-
+    <div class="d-flex justify-content-between align-items-center bg-white">
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis Datos') }}</h5>
+    </div>
     {{-- @foreach (Session::get('userData') as $key => $value)
     <p class="ps-4 mb-1 pb-2 bg-white">{{ $key }}: {{ $value }}</p>
-    
- 
     @endforeach --}}
 
-    
     <div class="row g-0 justify-content-center align-items-center">
         <div class="col-md-8">
             <div class="card bg-transparent shadow-none">
                 <div class="card-body">
-                    
                     <form class="row g-3">
                         @csrf
                         <div class="col-12 justify-content-center align-items-center">
@@ -78,7 +72,6 @@ Mi Veris - Mis Datos
                                 <div class="col-md-12">
                                     <label for="sexo" class="form-label fw-semibold">{{ __('Sexo') }} *</label>
                                     <select class="form-select" name="sexo" id="sexo" required>
-                                        <option selected disabled value="">Selecciona uno</option>
                                         <option value="M" {{ (Session::get('userData')->sexo == 'M') ? 'selected' : '' }}>Masculino</option>
                                         <option value="F" {{ (Session::get('userData')->sexo == 'F') ? 'selected' : '' }}>Femenino</option>
                                     </select>
@@ -145,7 +138,6 @@ Mi Veris - Mis Datos
 @endsection
 @push('scripts')
     
-
 <script>
 
     //variables globales
