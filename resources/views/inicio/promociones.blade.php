@@ -18,7 +18,7 @@ Mi Veris - Citas - Promociones
             <div class="col-md-4 mb-3">
                 <div class="input-group search-box">
                     <span class="input-group-text bg-transparent border-0" id="search"><i class="bi bi-search"></i></span>
-                    <input type="search" class="form-control bg-transparent border-0" name="search" id="search" placeholder="Buscar plan preventivo" aria-describedby="search" />
+                    <input type="search" class="form-control bg-transparent border-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Buscar plan preventivo" aria-describedby="search" />
                 </div>
             </div>
         </form>
@@ -80,17 +80,56 @@ Mi Veris - Citas - Promociones
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
         })
+
+        var typingTimer; // Timer identifier
+        var doneTypingInterval = 500; // Tiempo de pausa en milisegundos (0.5 segundos)
+
+        // Evento de escritura en el input
+        $('#buscarPorPromocion').on('keyup', function() {
+            clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se escribe
+
+            var searchText = $(this).val();
+            if (searchText.length >= 3) { // Solo realizar la búsqueda si hay al menos 3 caracteres
+                typingTimer = setTimeout(function() {
+                    page = 1;
+                    $('#listado-paquetes').empty();
+                    cargandoContenido = false;
+                    obtenerPaquetesPromocionales(); // Llamar a la función de búsqueda después de la pausa
+                }, doneTypingInterval);
+            }else if(searchText.length == 0){
+                page = 1;
+                $('#listado-paquetes').empty();
+                cargandoContenido = false;
+                obtenerPaquetesPromocionales();
+            }
+        });
+
+        $('#buscarPorPromocion').on('search', function() {
+            if ($(this).val().length === 0) {
+                page = 1;
+                $('#listado-paquetes').empty();
+                cargandoContenido = false;
+                obtenerPaquetesPromocionales();
+            }
+        });
+
+
     })
 
     async function obtenerPaquetesPromocionales(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&verDetalle=false`;
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&verDetalle=false&buscarPorPromocion=${ encodeURIComponent(getInput('buscarPorPromocion')) }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
 
         if (data.code == 200){
             let elem = ``;
+            if(data.data.items.length == 0){
+                cargandoContenido = true;
+            }else{
+                cargandoContenido = false;  
+            }
             $.each(data.data.items, function(key, paquete){
                 elem += `<div class="col-md-6">
                     <div class="card w-100">
@@ -120,7 +159,6 @@ Mi Veris - Citas - Promociones
             })
             page++;
             $('#listado-paquetes').append(elem);
-            cargandoContenido = false;
         }else{
             alert(data.message);
         }

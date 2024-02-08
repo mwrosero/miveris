@@ -8,6 +8,23 @@ Mi Veris - Inicio
     // dd($tokenCita);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
+
+    <!-- Modal de error -->
+
+    <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Veris</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError" >
+                </p>
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Modal -->
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -492,6 +509,7 @@ Mi Veris - Inicio
                 elemento += `<button type="button" class="btn btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>`;
             }
             let ruta = '';
+            
             if (citas.esVirtual == "S") {
                 ruta = "/citas-elegir-fecha-doctor/" + "{{ $tokenCita }}" 
             } else {
@@ -500,7 +518,7 @@ Mi Veris - Inicio
 
             elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>`;
             if(citas.estaPagada == "N"){
-                elemento += `<a href="#" class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a></div>`;
+                elemento += `<a  class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a></div>`;
             }
             if (citas.esVirtual == "S") {
                 elemento += `<a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
@@ -680,6 +698,15 @@ Mi Veris - Inicio
     $(document).on('click', '.btn-pagar', function(){
         let data = $(this).data('rel');
         console.log('dataPagar', data);
+        if(datosConvenios[0].permitePago == "N"){
+            // Modal de error
+            // setear el mensaje de error en mensajeError
+            $('#mensajeError').text(data.mensajePagoReserva);
+            
+            $('#ModalError').modal('show');
+            return;
+
+        }
 
         let params = {}
         params.online = data.esVirtual;
@@ -692,7 +719,7 @@ Mi Veris - Inicio
             nombre : data.especialidad,
         }
         if (datosConvenios.length > 0) {
-            params.convenio = dataConvenio.data[0];
+            params.convenio = datosConvenios[0];
         } else {
             params.convenio = {
                 "permitePago": "S",

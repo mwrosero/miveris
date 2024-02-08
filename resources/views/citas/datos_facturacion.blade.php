@@ -8,7 +8,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal Metodo de pago -->
-    <div class="modal fade" id="metodoPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="metodoPagoLabel" aria-hidden="true">
+    <div class="modal fade" id="metodoPago" aria-hidden="true" tabindex="-1" aria-labelledby="metodoPagoLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
@@ -188,7 +188,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="form-check d-flex justify-content-center">
                                     <input class="form-check-input terminos-input me-2" type="checkbox" value="" id="checkTerminosCondicion" required>
                                     <label class="form-check-label fs--1" for="checkTerminosCondicion">
-                                        Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank">Términos y condiciones</a>
+                                        Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank">Términos y condiciones</a> 
+                                        <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
                                     </label>
                                     <div class="invalid-feedback">
                                         Debes aceptar antes de enviar
@@ -222,7 +223,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     document.addEventListener("DOMContentLoaded", async function () {
         //await reservarCita();
-        if(!dataCita.reserva && !dataCita.datosTratamiento && !dataCita.reservaEdit && !dataCita.ordenExterna){
+        if(!dataCita.reserva && !dataCita.datosTratamiento && !dataCita.reservaEdit && !dataCita.ordenExterna && !dataCita.paquete){
             window.history.back();
         }
 
@@ -360,6 +361,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["bodyType"] = "json";
 
         let idPaciente = {{ Session::get('userData')->numeroPaciente }};
+        //let idPaciente = dataCita.paciente.numeroPaciente;
         let tipoServicio = "CITA";
         let tipoSolicitud = null;
 
@@ -378,7 +380,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $('.modalDesglose-size').addClass('modal-md');
             $("#btn-ver-examenes").removeClass('d-none');
             $('#modalDesglose .modal-header').hide();
-            idPaciente = dataCita.paciente.numeroPaciente;
+            // idPaciente = dataCita.paciente.numeroPaciente;
             codigoConvenio = dataCita.ordenExterna.pacientes[0].codigoConvenio;
             if(dataCita.ordenExterna.aplicoDomicilio === 'N'){
                 tipoServicio = "ORDEN";
@@ -389,8 +391,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 tipoSolicitud= "LAB";
             }
         }else{
-            codigoConvenio = dataCita?.convenio.codigoConvenio;
-            secuenciaAfiliado = dataCita?.convenio.secuenciaAfiliado;
+            if(!dataCita.paquete){
+                codigoConvenio = dataCita?.convenio.codigoConvenio;
+                secuenciaAfiliado = dataCita?.convenio.secuenciaAfiliado;
+            }
+        }
+
+        if(dataCita.paquete){
+            tipoServicio= "PAQUETE";
         }
 
         //Consultar si idPaciente es del que hizo login o del beneficiario de lo que se va a pagar
@@ -401,8 +409,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "tipoSolicitud": tipoSolicitud,
             "codigoConvenio": codigoConvenio,
             "secuenciaAfiliado": secuenciaAfiliado,
-            "paquete": null,
-            "listaOrdenes": null
+        }
+
+        if(dataCita.dataOrdenExterna){
+            dataPT.codigoPreTransaccion = dataCita.dataOrdenExterna.codigoPreTransaccion
         }
 
         if(dataCita.reserva){
@@ -411,11 +421,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }]
         }
 
+        if(dataCita.paquete){
+            dataPT.paquete = {
+                "codigoPaquete": dataCita.paquete.codigoPaquete
+            }
+        }
+
         if(dataCita.reservaEdit){
             dataPT.listaCitas = [{
                 "codigoReserva": dataCita.reservaEdit.idCita
             }]
         }
+
 
         if(dataCita.listadoPrestaciones && dataCita.listadoPrestaciones.length > 0){
             dataPT.listaOrdenes = dataCita.listadoPrestaciones;
@@ -424,8 +441,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.ordenExterna){
             if(dataCita.ordenExterna.aplicoDomicilio === 'N'){
                 dataPT.listaOrdenes = dataCita.ordenExterna.pacientes[0].examenes;
-                console.log("------------------------------------");
-                console.log(dataCita.ordenExterna.pacientes[0].examenes)
             }else{
                 dataPT.codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;
             }
@@ -443,9 +458,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     }
 
+    //Consultar datos de facturación si son del dueño de la cuenta o del beneficiario
     async function consultarDatosFactura(){
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${ dataCita.preTransaccion.codigoPreTransaccion }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}&numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
+        //dataCita.paciente.numeroPaciente
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

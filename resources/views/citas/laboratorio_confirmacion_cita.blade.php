@@ -17,9 +17,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Cita agendada</h1>
                     <p class="fs--1 fw-normal">Recuerda que para confirmarla debes realizar el pago.</p>
                 </div>
+<<<<<<< HEAD:resources/views/citas/confirmacionCita.blade.php
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris w-100 px-4 py-3 mt-0 mb-3 mx-0" data-bs-dismiss="modal">Cancelar</button>
                     <a href="/citas-datos-facturacion/{{ $params }}" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Pagar</a>
+=======
+                {{-- // btn pagar y cancelar --}}
+                <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="/citas-datos-facturacion/{{ $params }}" class="btn btn-primary-veris w-100">Pagar</a>
+>>>>>>> developer:resources/views/citas/laboratorio_confirmacion_cita.blade.php
                 </div>
             </div>
         </div>
@@ -99,11 +106,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let dataCita = JSON.parse(local);
     let fechaAtencion = dataCita.fecha;
     let horarioLlegada = dataCita.horario.rangoAtencion;
-    let nombrePaciente = dataCita.dataOrdenExterna.nombrePaciente;
-    let telefono = dataCita.dataOrdenExterna.telefono;
-    let codigoSolicitud = dataCita.dataOrdenExterna.codigoSolicitud;
+    let nombrePaciente = dataCita.ordenExterna.nombrePaciente;
+    let telefono = dataCita.ordenExterna.telefono;
+    let codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;
     let codigoProfesional = dataCita.horario.codigoProfesional;
-    let codigoZona = dataCita.dataOrdenExterna.codigoZona;
+    let codigoZona = dataCita.ordenExterna.codigoZona;
     let codigoPlanificacion = dataCita.horario.codigoPlanificacion;
     let lineaDetalle = dataCita.horario.lineaDetalle;
     let fecha = dataCita.fecha;

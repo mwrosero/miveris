@@ -18,19 +18,13 @@ Mi Veris - Citas - Detalle
                     <h6>¿Quién va a utilizar el plan preventivo?</h6>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <!-- Opcion 1 -->
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0">
-                            <a href="#" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaGrupoFamiliar">
+                            {{-- <a href="#" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
                                 <p class="fs--2 mb-0">Fernanda Alarcon Tapia</p>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
-                                <p class="fs--2 mb-0">Julia Tapia Lopez</p>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
-                                <p class="fs--2 mb-0">Gabriela Alarcon Tapia</p>
-                            </a>
+                            </a> --}}
                         </div>
                         <!-- opcion 2 -->
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0 d-none">
+                        {{-- <div class="list-group list-group-checkable d-grid gap-2 border-0 d-none">
                             <!-- items -->
                             <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1" value="" checked>
                             <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios1">
@@ -46,7 +40,12 @@ Mi Veris - Citas - Detalle
                             <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios3">
                                 Gabriela Alarcon Tapia
                             </label>
+<<<<<<< HEAD
                         </div>
+=======
+                        </div> --}}
+
+>>>>>>> developer
                     </div>
                 </div>
             </div>
@@ -66,25 +65,20 @@ Mi Veris - Citas - Detalle
                             <h4 class="">{{ __('Plan preventivo') }}</h4>
                         </div>
                         <div class="d-flex justify-content-between mb-4">
-                            <p class="fs--1 fw-normal">Vitamina C X2</p>
+                            <p class="fs--1 fw-normal pe-2" id="nombrePaquete"></p>
                             <div class="col-auto text-end lh-1">
-                                <h5 class="text-primary-veris mb-0">$ 54.19</h5>
-                                <p class="text-veris fs--1 fw-semibold mb-0">-30% OFF</p>
-                                <p class="fs--1 mb-0" style="color: #6E7A8C !important;"><del>$ 54.19</del></p>
+                                <h5 class="text-primary-veris mb-0" id="valorTotalPaquete"></h5>
+                                <p class="text-veris fs--1 fw-semibold mb-0 d-none" id="porcentajeDescuento"></p>
+                                <p class="fs--1 mb-0 d-none" style="color: #6E7A8C !important;"><del id="valorAnteriorPaquete"></del></p>
                             </div>
                         </div>
 
                         <div class="card mb-4">
                             <div class="card-body">
-                                <p class="fs--2">
-                                    Mantente sano y protegido con la aplicación de 2 dosis de vitamina C.
-                                    Importante: El paciente deberá presentar la orden médica que prescriba la aplicación de esta prestación.
-                                    *Aplica para mayores de 18 años
-                                </p>
+                                <p class="fs--2" id="descripcionPaquete"></p>
                                 <h6 class="text-start">DETALLES DE PAQUETE</h6>
-                                <ul class="fs--2">
-                                    <li class="mb-2">2 Biomolec Vitamina C,</li>
-                                    <li class="mb-2">2 infusión intravenosa para tratamiento/diagnóstico, administrado por el médico, o bajo sus directa supervisión, hasta una hora.</li>
+                                <ul class="fs--2" id="detallePaquete">
+                                    {{-- <li class="mb-2"></li> --}}
                                 </ul>
                             </div>
                         </div>
@@ -107,7 +101,23 @@ Mi Veris - Citas - Detalle
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
+        $('#nombrePaquete').html(dataCita.paquete.nombrePaquete);
+        $('#descripcionPaquete').html(dataCita.paquete.descripcionPaquete);
+        $('#valorTotalPaquete').html(`$${dataCita.paquete.valorTotalPaquete.toFixed(2)}`);
+        if(dataCita.paquete.porcentajeDescuento > 0){
+            $('#porcentajeDescuento').html(`-${dataCita.paquete.porcentajeDescuento} OFF`).removeClass('d-none');
+            $('#valorAnteriorPaquete').html(`$${dataCita.paquete.valorAnteriorPaquete.toFixed(2)}`);
+            $('#valorAnteriorPaquete').parent().removeClass('d-none');
+        }
+        consultarGrupoFamiliar();
         await obtenerDetallePaquetePromocional();
+
+        $('body').on('click', '.btn-asignar', function(){
+            let url = '/citas-datos-facturacion/';
+            dataCita.paciente = JSON.parse($(this).attr('data-rel'));
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            location.href = url + "{{ $params }}";
+        })
     })
 
     async function obtenerDetallePaquetePromocional(){
@@ -118,10 +128,40 @@ Mi Veris - Citas - Detalle
         const data = await call(args);
 
         if (data.code == 200){
-
+            $('#detallePaquete').empty();
+            dataCita.detallePaquete = data.data;
+            let elem = ``;
+            $.each(data.data.detallePromocion, function(key, value){
+                $.each(value.detalles, function(k,v){
+                    elem += `<li class="mb-2" title="${value.nombreServicio}">${v.nombreComercial}</li>`;
+                })
+            })
+            $('#detallePaquete').append(elem);
         }else{
             alert(data.message);
         }
+    }
+
+    async function consultarGrupoFamiliar() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log('dataFa', data);
+        if(data.code == 200){
+            $('#listaGrupoFamiliar').empty();
+            let elem = ``;
+            $.each(data.data, function(key,value){
+                elem += `<div data-rel='${ JSON.stringify(value) }' class="list-group-item list-group-item-action border rounded-3 py-2 btn-asignar" aria-current="true">
+                    <p class="fs--2 mb-0">${value.primerNombre} ${value.primerApellido} ${value.segundoApellido}</p>
+                </div>`;
+            })
+            $('#listaGrupoFamiliar').append(elem);
+        }
+        return data;
     }
 </script>
 @endpush
