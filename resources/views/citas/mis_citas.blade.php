@@ -10,6 +10,42 @@ Mi Veris - Citas - Mis citas
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
+<!-- Modal Convenios -->
+    <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <form class="modal-content rounded-4">
+                <div class="modal-header d-none">
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3 pt-4">
+                    <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
+                    <div class="row gx-2 justify-content-between align-items-center">
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer px-3 pb-3">
+                    <button type="button" class="btn fw-normal m-0" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<!-- Modal de error -->
+<div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body text-center px-2 pt-3 pb-0">
+                <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Veris</h1>
+                <p class="fs--1 fw-normal" id="mensajeError" >
+            </p>
+            </div>
+            <div class="modal-footer border-0 px-2 pt-0 pb-3">
+                <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- offcanva ver pdf -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="verPdf" aria-labelledby="verPdfLabel">
@@ -149,6 +185,11 @@ Mi Veris - Citas - Mis citas
 
         $('body').on('click', '.btn-confirmar-eliminar-cita', async function(){
             await eliminarReserva()
+        })
+
+        $('body').on('click', '.btn-cita-informacion', async function(){
+            let msg = $(this).attr('data-mensajeInformacion');
+            $('#mensajeNoPermiteCambiar').html(msg)
         })
         
     });
@@ -293,70 +334,75 @@ Mi Veris - Citas - Mis citas
                 $('#mensajeNoCita').removeClass('d-none');
             } else{
 
-                let citasActuales = $('#citasActuales');
+                // let citasActuales = $('#citasActuales');
+                // citasActuales.empty();
                 $('#mensajeNoCita').addClass('d-none');
-                citasActuales.empty();
 
-                // forEach de data.data
+                const divContenedor = $('#citasActuales');
+                divContenedor.empty();
+                let elemento = '';
+                const tokenCita = "{{ $tokenCita }}";
+                data.data.forEach((citas) => {
+                    console.log("-------------------------------")
+                    console.log(citas)
+                    const classElem = citas.estaPagada === "S" ? 'justify-content-end' : 'justify-content-between';
+                    const esConsultaOnline = citas.esVirtual === "S";
+                    const esPagada = citas.estaPagada === "S" ? 'Pagada' : 'No pagada';
+                    let ruta = "/citas-elegir-fecha-doctor/" + tokenCita;
 
-                data.data.forEach((cita) => {
+                    if (citas.esVirtual !== "S") {
+                        ruta = "/citas-elegir-central-medica/" + tokenCita;
+                    }
 
-                    let element = `<div class="col-12 col-md-6">
-                                        <div class="card">
-                                            <div class="card-body p-2">`
-                                            if (cita.esVirtual == 'S') {
-                                                element += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
-                                                                <h7 class="text-primary-veris fw-medium mb-0">Consulta online</h7>
-                                                            </div>`;
-                                            }
-                        element += `<div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(cita.especialidad)}</h6>
-                                        ${determinarMensajeEstadoCita(cita.mensajeEstado)}
+                    /*
+                    permiteCambiar
+                    mensajeInformacion
+                    */
 
+                    elemento += `
+                        <div class="col-12 col-md-6">
+                            <div class="card">
+                                <div class="card-body p--2">
+                                    ${esConsultaOnline ? `
+                                        <span class="badge bg-label-primary text-primary-veris fs--1 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
+                                    ` : ''}
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>
+                                        <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
                                     </div>
-                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(cita.sucursal)}</p>
-                                    <p class="fw-normal fs--2 mb-0">${cita.dia} <b class="hora-cita fw-normal text-primary-veris"> ${cita.horaInicio}
-                                        </b></p>
-                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(cita.medico)}</p>
-                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(cita.nombrePaciente)}</p>
-
-                                    <div class="d-flex justify-content-between align-items-center mt-3">`
-
-                                    if(cita.estaPagada == "N"){
-                                    element += `<button type="button" codigoReserva-rel="${cita.idCita}" class="btn btn-sm btn-eliminar-cita text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>`;
+                                    <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
+                                </div>
+                                <div class="card-footer pt-0 pb-3 px-3 d-flex ${classElem} align-items-center">
+                                    ${citas.estaPagada === "N" ? `
+                                        <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
+                                    ` : ''}
+                                    <div class="mt-auto">
+                                        ${citas.permiteCambiar == "S" ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
+                                        ` : `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
+                                                <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
+                                            </div>`
                                         }
-                                        let ruta = '';
-                                        if (cita.esVirtual == "S") {
-                                            ruta = "/citas-elegir-fecha-doctor/" + "{{ $tokenCita }}" 
-                                        } else {
-                                            ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
-                                        }
+                                        ${citas.estaPagada === "N" ? `
+                                        <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                        ` : ''}
+                                    </div>
+                                    ${esConsultaOnline && citas.estaPagada == "S" ? `
+                                        <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>`;
+                });
+                divContenedor.append(elemento);
 
-                                        element += `   <a url-rel="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(cita)}'>${cita.nombreBotonCambiar}</a> `
-                                        if(cita.estaPagada == "N"){
-                                            element += `<a class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(cita)}'
-                                            >Pagar</a>`;
-                                        }
-                                        if (cita.esVirtual == "S") {
-                                            element += `<a href="${cita.idTeleconsulta}
-                                            " class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
-                                        }
-                                        element += `
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>`;                   
-                                            
-                                        citasActuales.append(element);
+            }
 
-                                    });
+        }
 
-                                }
-
-                            }
-
-                        }
+    }
 
     // consultar grupo familiar
     async function consultarGrupoFamiliar() {
@@ -606,7 +652,7 @@ Mi Veris - Citas - Mis citas
 
     // setear los valores de la cita en localstorage
     $(document).on('click', '.btn-CambiarFechaCita', function(){
-        console.log('click entro a cambiar fecha');
+        console.log('click entro a cambiar fecha 1');
         let data = $(this).data('rel');
         let url = $(this).attr('url-rel');
 
@@ -645,13 +691,7 @@ Mi Veris - Citas - Mis citas
             llenarModalConvenios(datosConvenios, url);
 
             $('#convenioModal').modal('show');
-        } 
-
-        else{
-
-        
-
-        
+        }else{        
             let params = {}
             params.online = data.esVirtual;
             params.especialidad = {
@@ -666,7 +706,6 @@ Mi Veris - Citas - Mis citas
             if (datosConvenios.length > 0) {
                 console.log('datosConvenio', datosConvenios);
                 // datosconvenio posicion 0
-
                 params.convenio = datosConvenios[0];
 
             } else {
@@ -703,7 +742,13 @@ Mi Veris - Citas - Mis citas
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             
-            location = url;
+            if(data.permitePagoReserva == "S"){
+                location = url;
+            }else{
+                //data.mensajePagoReserva
+                llenarModalConvenios(datosConvenios, url);
+                $('#convenioModal').modal('show');
+            }
         }
     });
 
@@ -726,10 +771,9 @@ Mi Veris - Citas - Mis citas
                                 </div>`;
             // agregar convenio ninguno
             elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
-                            <div class="list-group
-                            -item fs--2 rounded-3 p-2 border-0">
+                            <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                                 <label for="listGroupCheckableRadiosParticular" class="cursor-pointer">
-                                    Ninguno
+                                    NINGUNO
                                 </label>
                             </div>
                         </div>`;
@@ -824,6 +868,14 @@ Mi Veris - Citas - Mis citas
         params.origen = "inicios";
 
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+        if(data.permitePagoReserva == "S"){
+            location = url;
+        }else{
+            //data.mensajePagoReserva
+            llenarModalConvenios(datosConvenios, url);
+            $('#convenioModal').modal('show');
+        }
     });
 
 
@@ -853,7 +905,7 @@ Mi Veris - Citas - Mis citas
     $(document).on('click', '.btn-pagar', function(){
         let data = $(this).data('rel');
         console.log('dataPagar', data);
-        if(datosConvenios[0].permitePago == "N"){
+        if(datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
             // Modal de error
             // setear el mensaje de error en mensajeError
             $('#mensajeError').text(data.mensajePagoReserva);
