@@ -14,7 +14,7 @@ Mi Veris - Inicio
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-bold mb-3 pb-2">Veris</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Veris</h1>
                     <p class="fs--1 fw-normal" id="mensajeError" >
                 </p>
                 </div>
@@ -178,7 +178,7 @@ Mi Veris - Inicio
             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
         </div>
         <div class="swiper swiper-proximas-citas position-relative py-3">
-            <div class="swiper-wrapper" id=contenedorCitas>
+            <div class="swiper-wrapper mb-3 mb-md-0" id=contenedorCitas>
             </div>
             <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
             <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
@@ -450,14 +450,14 @@ Mi Veris - Inicio
             let elemento = `<div class="swiper-slide">
                                 <div class="card h-100">
                                     <div class="card-body p-3">
-                                        <div class="row gx-0 justify-content-between align-items-center mb-3">
+                                        <div class="row gx-0 justify-content-between align-items-center mb-2">
                                             <div class="col-9">
-                                                <h6 class="card-title text-primary-veris mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
-                                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
-                                                <p class="card-text fs--2">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
+                                                <h6 class="card-title text-primary-veris fs--16 line-height-20 mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
+                                                <p class="fw-medium line-height-16 fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
+                                                <p class="card-text line-height-16 fs--2 text-one-line">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                             </div>
                                             <div class="col-3">
-                                                <div class="progress-circle ms-auto" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
+                                                <div class="progress-circle my-auto ms-auto" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
                                                     <span class="progress-left">
                                                         <span class="progress-bar"></span>
                                                     </span>
@@ -486,16 +486,15 @@ Mi Veris - Inicio
                 let paramsBase64 = btoa(JSON.stringify(params));
                 let ruta = '/tratamiento/' + "{{ $tokenCita }}"
 
-                elemento += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 p-2 my-auto">
+                elemento += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-2 px-3 my-auto" style="border: 1px solid #F3F4F5 !important;box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);">
                                 <div class="d-flex gap-2 align-items-center">
                                     <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
                                         <img class="rounded-circle" src=${quitarComillas(detalle.urlImagenTipoServicio)}  width="26" alt="icono">
                                     </div>
                                     <p class="text-veris fw-medium fs--2 mb-0">${capitalizarElemento(detalle.nombreServicio)}</p>
                                 </div>
-                                <a href=" ${ruta}
-                                " data-rel='${JSON.stringify(tratamientos)}'
-                                class="btn btn-sm text-primary-veris fs--2 shadow-none btn-VerTratamientoInicio">Ver <i class="fa-solid fa-chevron-right ms-1"></i></a>
+                                <a href="${ruta}" data-rel='${JSON.stringify(tratamientos)}'
+                                class="btn btn-sm text-primary-veris fw-normal fs--2 shadow-none py-2 px-0 btn-VerTratamientoInicio">Ver <i class="fa-solid fa-chevron-right fs--2 ms-1"></i></a>
                             </label>`;
             });
 
@@ -537,50 +536,44 @@ Mi Veris - Inicio
             if(citas.estaPagada == "S"){
                 classElem = 'justify-content-end';
             }
-            elemento +=`<div class="swiper-slide">
+            elemento +=`<div class="swiper-slide frank">
                 <div class="card h-100">
-                    <div class="card-body d-flex align-items-center p-3">
-                        <div class="w-100">`;
+                    <div class="card-body p--2">`;
             if(citas.esVirtual == "S"){
                 elemento += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
-                        <h7 class="text-primary-veris fw-medium mb-0">Consulta online</h7>
-                    </div>`;
+                                <h6 class="text-primary-veris fs--1 fw-medium mb-1">Consulta online</h6>
+                            </div>`;
             }
                     elemento += `<div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
-                                    <span class="fs--2 text-success fw-medium">${esPagada(citas)}</span>
+                                    <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>
+                                    <span class="fs--2 text-success fw-medium line-height-16 mb-1">${esPagada(citas)}</span>
                                 </div>
-                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
-                                <p class="fw-normal fs--2 mb-0">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
-                                <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                                <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
+                                <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
+                                <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                                <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
                                 <div class="d-flex ${classElem} align-items-center mt-3">`
             if(citas.estaPagada == "N"){
-                elemento += `<button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>`;
+                elemento += `<button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>`;
             }
+
             let ruta = '';
-            
             if (citas.esVirtual == "S") {
                 ruta = "/citas-elegir-fecha-doctor/" + "{{ $tokenCita }}" 
             } else {
                 ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
             }
-
-<<<<<<< HEAD
-            elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>`;
+                elemento += `<div>
+                                <a href="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal  line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>`;
             
-=======
-            elemento += `<div><a url-rel="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a></div>`;
->>>>>>> developer
             if(citas.estaPagada == "N"){
-                elemento += `<a  class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a></div>`;
+                elemento += `   <a  class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0  line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                            </div>`;
             }
             if (citas.esVirtual == "S") {
-                elemento += `<a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
+                elemento += `<a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>`;
             }
             elemento += `
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>`;
@@ -617,16 +610,16 @@ Mi Veris - Inicio
                             <div class="card">
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(urgencias.modulo)}</h6>
+                                        <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(urgencias.modulo)}</h6>
                                         <span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i>Reservado</span>
                                     </div>
-                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(urgencias.nombreSucursal)}</p>
-                                    <p class="fw-normal fs--2 mb-0">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
-                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
-                                    <p class="fw-normal fs--2 mb-0">${urgencias.paciente}</p>
-                                    <div class="d-flex justify-content-between align-items-center m-0 ms-3">
-                                        <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>
-                                        <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
+                                    <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.nombreSucursal)}</p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.paciente)}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
+                                        <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris fs--1 line-height-16">Nueva fecha</a>
                                     </div>
                                 </div>
                             </div>
