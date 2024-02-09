@@ -217,6 +217,7 @@ Mi Veris - Inicio
         await obtenerTratamientos();
         await obtenerCitas();
         await obtenerUrgenciasAmbulatorias();
+        // chartProgres('#chart-progress');
         await consultarConvenios();
         await consultarDatosPaciente();
         // initializeSwiper('.swipertratamientos');
