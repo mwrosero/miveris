@@ -108,7 +108,7 @@ Mi Veris - Citas - tratamiento
                             </div>
                         </div>
                         <div class="p-3">
-                            <a  class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprar</a>
+                            <div class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprar</div>
                             <a href="javascript:history.go(-1)" class="btn w-100 mb-3">Ahora no</a>
                         </div>
                         
@@ -123,11 +123,6 @@ Mi Veris - Citas - tratamiento
 
 <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
 <script>
-
-
-
-    // variables globales
-    let datosValorizacion = [];
     let esIncremento = null;
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
@@ -137,12 +132,13 @@ Mi Veris - Citas - tratamiento
     
     document.addEventListener("DOMContentLoaded", async function () {
         await valorizacionServicios();
-
+        console.log(dataCita.promocion)
         $('body').on('change','.input-group input', async function(){
             let detalle = JSON.parse($(this).attr("data-rel"));
-            console.log(detalle)
             await actualizarValorizacionServicios(detalle, $(this).val());
-            await valorizacionServicios();
+            console.log(dataCita.promocion);
+            drawNuevosValores();
+            //await drawServicios();
         })
 
         // boton info
@@ -186,12 +182,16 @@ Mi Veris - Citas - tratamiento
         // boton comprar redireccionar a la pagina de pago
         $('#btnComprar').on('click', function() {
             // capturar los valores de los inputs
-            console.log('entro a comprar');
+            // console.log('entro a comprar');
             let inputs = $('.input-group input').toArray();
             let cantidadServicios = [];
+            dataCita.preTransaccion = {
+                "codigoPreTransaccion": dataCita.promocion.codigoPreTransaccion
+            }
             let ruta = '/citas-datos-facturacion/' + '{{ $params }}';
-            console.log('ruta', ruta);  
+            // console.log('ruta', ruta);  
             // window.location.href = "${ruta}";
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
             window.location.href = ruta;
         })
         
@@ -230,81 +230,11 @@ Mi Veris - Citas - tratamiento
         });
 
         const data = await call(args);
-        console.log('dataservicio', data);
+        //console.log('dataservicio', data);
 
         if(data.code == 200){
-            datosValorizacion = data.data;
             dataCita.promocion = data.data;
-            let contentDescuento = $('#content-descuento');
-            contentDescuento.empty();
-            contentDescuento.append(`${data.data.porcentajeDescuentoPromocion}% de descuento`);
-
-            let html = $('#listaServicios');
-            html.empty();
-            let precioTotal = 0;
-            let elemento = '';
-
-            data.data.serviciosIncluyeCompra.forEach((resultados, index) => {
-                elemento += `<li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
-                                <div class="w-auto">
-                                    <p class="text-veris mb-0">${resultados.descripcionServicio}</p>
-                                    <div class="d-flex align-items-center">
-                                        <p class="text-primary fw-medium fs--2 mb-0" id="precioTotal">
-                                            
-                                            <del class="text-danger fw-normal" id="precioBase-${index}">$$${resultados.valorNormal}</del> 
-                                            <span class="fw-medium" id="precioTotalList-${index}">
-                                            $${resultados.valorPromocion}
-                                            </span>
-                                            <input type="hidden" id="valorPromocionHidden-${index}" value="${resultados.valorPromocion}">
-                                            <input type="hidden" id="valorNormalHidden-${index}" value="${resultados.valorNormal}">
-        
-                                        </p>
-                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal" data-rel='${JSON.stringify(resultados)}' ><i class="bi bi-info-circle"></i> </button> 
-                                    </div>
-                                </div>
-                                <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
-                                    <button class="btn btn-sm btn-minus px-2" data-type="minus" onclick="restarCantidad(${index})"
-                                    >-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
-                                    value="1" id="cantidadServicio-${index}"
-                                     />
-                                    <button class="btn btn-sm btn-plus px-2" data-type="plus" onclick="sumarCantidad(${index})"
-                                    >+</button>
-                                </div>
-                            </li>`;
-            });
-            html.append(elemento);
-
-            let serviciosNoIncluidos = $('#flush-collapseOne');
-            serviciosNoIncluidos.empty();
-            let elementoNoIncluido = '';
-
-            data.data.serviciosNoIncluyeCompra.forEach((resultados) => {
-                console.log(resultados.colorInformacion);
-                elementoNoIncluido += `<div class="d-flex align-items-center justify-content-between">
-                                            <div class="accordion-body" style="flex-grow: 1;">${resultados.descripcionServicio}</div>
-                                            <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" ;"
-                                                data-bs-toggle="modal" data-bs-target="#serviciosNoIncluidosModal" data-rel='${JSON.stringify(resultados)}'>
-                                                <i class="bi bi-info-circle" style="color: ${resultados.colorInformacion};"
-                                                ></i>
-                                            </button>
-                                        </div>`;
-            });
-            
-            serviciosNoIncluidos.append(elementoNoIncluido);
-
-            // eventos de los precios
-
-            let precioBaseEnd = $('#precioBaseEnd');
-            let precioTotalEnd = $('#precioTotalEnd');
-            
-            precioBaseEnd.empty();
-            precioTotalEnd.empty();
-
-            precioBaseEnd.append(`$${data.data.valorNormal}`);
-            precioTotalEnd.append(`$${data.data.valorPromocion}`);
-
-            return data;
+            return await drawServicios()            
         }
     }
 
@@ -394,7 +324,7 @@ Mi Veris - Citas - tratamiento
     // actualizar la valorizacion de los servicios del tratamiento con un put
 
     async function actualizarValorizacionServicios(detalle, qty) {
-        console.log('-------------'+dataCita.promocion.codigoPreTransaccion)
+        //console.log('-------------'+dataCita.promocion.codigoPreTransaccion)
         let args = {};
         //let canalOrigenDigital = 'APP_CMV';
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}/actualizar_servicio`;
@@ -411,9 +341,87 @@ Mi Veris - Citas - tratamiento
         });
 
         const data = await call(args);
-        console.log('dataservicio', data);
+        dataCita.promocion = data.data
+        // console.log('dataservicio', data);
         return data;
     }
 
+    async function drawServicios(){
+        let contentDescuento = $('#content-descuento');
+        contentDescuento.empty();
+        contentDescuento.append(`${dataCita.promocion.porcentajeDescuentoPromocion}% de descuento`);
+
+        let html = $('#listaServicios');
+        html.empty();
+        let precioTotal = 0;
+        let elemento = '';
+
+        dataCita.promocion.serviciosIncluyeCompra.forEach((resultados, index) => {
+            elemento += `<li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
+                            <div class="w-auto">
+                                <p class="text-veris mb-0">${resultados.descripcionServicio}</p>
+                                <div class="d-flex align-items-center">
+                                    <p class="text-primary fw-medium fs--2 mb-0" id="precioTotal">
+                                        
+                                        <del class="text-danger fw-normal" id="precioBase-${index}">$$${resultados.valorNormal}</del> 
+                                        <span class="fw-medium" id="precioTotalList-${index}">
+                                        $${resultados.valorPromocion}
+                                        </span>
+                                        <input type="hidden" id="valorPromocionHidden-${index}" value="${resultados.valorPromocion}">
+                                        <input type="hidden" id="valorNormalHidden-${index}" value="${resultados.valorNormal}">
+    
+                                    </p>
+                                    <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal" data-rel='${JSON.stringify(resultados)}' ><i class="bi bi-info-circle"></i> </button> 
+                                </div>
+                            </div>
+                            <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
+                                <button class="btn btn-sm btn-minus px-2" data-type="minus" onclick="restarCantidad(${index})"
+                                >-</button>
+                                <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
+                                value="1" id="cantidadServicio-${index}"
+                                 />
+                                <button class="btn btn-sm btn-plus px-2" data-type="plus" onclick="sumarCantidad(${index})"
+                                >+</button>
+                            </div>
+                        </li>`;
+        });
+        html.append(elemento);
+
+        let serviciosNoIncluidos = $('#flush-collapseOne');
+        serviciosNoIncluidos.empty();
+        let elementoNoIncluido = '';
+
+        dataCita.promocion.serviciosNoIncluyeCompra.forEach((resultados) => {
+            //console.log(resultados.colorInformacion);
+            elementoNoIncluido += `<div class="d-flex align-items-center justify-content-between">
+                                        <div class="accordion-body" style="flex-grow: 1;">${resultados.descripcionServicio}</div>
+                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" ;"
+                                            data-bs-toggle="modal" data-bs-target="#serviciosNoIncluidosModal" data-rel='${JSON.stringify(resultados)}'>
+                                            <i class="bi bi-info-circle" style="color: ${resultados.colorInformacion};"
+                                            ></i>
+                                        </button>
+                                    </div>`;
+        });
+        
+        serviciosNoIncluidos.append(elementoNoIncluido);
+
+        // eventos de los precios
+
+        let precioBaseEnd = $('#precioBaseEnd');
+        let precioTotalEnd = $('#precioTotalEnd');
+        
+        precioBaseEnd.empty();
+        precioTotalEnd.empty();
+
+        precioBaseEnd.append(`$${dataCita.promocion.valorNormal}`);
+        precioTotalEnd.append(`$${dataCita.promocion.valorPromocion}`);
+
+        return;
+    }
+
+    function drawNuevosValores(){
+        $('#precioBaseEnd').html(`$${dataCita.promocion.valorNormal.toFixed(2)}`);
+        $('#precioTotalEnd').html(`$${dataCita.promocion.valorPromocion.toFixed(2)}`);
+    }
 </script>
 @endpush
