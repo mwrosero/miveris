@@ -566,7 +566,12 @@ Mi Veris - Inicio
                 ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
             }
 
+<<<<<<< HEAD
+            elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>`;
+            
+=======
             elemento += `<div><a url-rel="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a></div>`;
+>>>>>>> developer
             if(citas.estaPagada == "N"){
                 elemento += `<a  class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a></div>`;
             }
