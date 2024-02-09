@@ -102,6 +102,38 @@
     </div>
     <!-- / Layout wrapper -->
 
+    <!-- Modal eliminar cita -->
+    <div class="modal fade" id="modalEliminarCita" tabindex="-1" aria-labelledby="modalEliminarCitaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center px-2 pt-3 pb-0">
+                    <h1 class="modal-title fs-5 fw-bold mb-2 pb-2">Eliminar cita</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError">¿Estás seguro(a) de eliminar esta cita?</p>
+                    <input type="hidden" id="idCitaEliminar">
+                </div>
+                <div class="modal-footer border-0 px-2 pt-0 pb-3 d-flex justify-content-around align-items-center">
+                    <div class="text-primary-veris fs--1 fw-medium cursor-pointer text-center" data-bs-dismiss="modal">Cancelar</div>
+                    <div class="text-primary-veris fs--1 fw-medium cursor-pointer text-center btn-confirmar-eliminar-cita">Eliminar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalError400" tabindex="-1" aria-labelledby="modalError400Label" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
+                    <p class="fs--1 fw-normal" id="mensaje_400"></p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <a href="/" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Aceptar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
@@ -136,6 +168,7 @@
 
     <script>
         // Inicializa Swiper.js
+        var swiperProximasCitas,swiperUrgenciasAmbulatorias;
         function chartProgres(elemento){
             console.log('elemento',elemento);
 
@@ -195,7 +228,7 @@
                 },
             });
 
-            var swiperProximasCitas = new Swiper('.swiper-proximas-citas', {
+            swiperProximasCitas = new Swiper('.swiper-proximas-citas', {
                 // slidesPerView: 1,
                 spaceBetween: 8,
                 navigation: {
@@ -223,7 +256,7 @@
                 },
             });
 
-            var swiperUrgenciasAmbulatorias = new Swiper('.swiper-urgencias-ambulatorias', {
+            swiperUrgenciasAmbulatorias = new Swiper('.swiper-urgencias-ambulatorias', {
                 // slidesPerView: 1,
                 spaceBetween: 8,
                 navigation: {

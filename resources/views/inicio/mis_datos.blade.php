@@ -72,7 +72,6 @@ Mi Veris - Mis Datos
                                 <div class="col-md-12">
                                     <label for="sexo" class="form-label fw-semibold">{{ __('Sexo') }} *</label>
                                     <select class="form-select" name="sexo" id="sexo" required>
-                                        <option selected disabled value="">Selecciona uno</option>
                                         <option value="M" {{ (Session::get('userData')->sexo == 'M') ? 'selected' : '' }}>Masculino</option>
                                         <option value="F" {{ (Session::get('userData')->sexo == 'F') ? 'selected' : '' }}>Femenino</option>
                                     </select>

@@ -10,7 +10,6 @@ Mi Veris - Inicio
 <div class="flex-grow-1 container-p-y pt-0">
 
     <!-- Modal de error -->
-
     <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -25,7 +24,30 @@ Mi Veris - Inicio
             </div>
         </div>
     </div>
-    <!-- Modal -->
+
+    <!-- Modal Convenios -->
+    <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <form class="modal-content rounded-4">
+                <div class="modal-header d-none">
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3 pt-4">
+                    <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
+                    <div class="row gx-2 justify-content-between align-items-center">
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer px-3 pb-3">
+                    <button type="button" class="btn fw-normal m-0" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Agendar Cita -->
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
@@ -199,11 +221,39 @@ Mi Veris - Inicio
         await consultarDatosPaciente();
         // initializeSwiper('.swipertratamientos');
         // initializeSwiper('.swiper-proximas-citas');
+
+        $('body').on('click', '.btn-eliminar-cita', function(){
+            $('#idCitaEliminar').val($(this).attr('codigoReserva-rel'));
+            var myModal = new bootstrap.Modal(document.getElementById('modalEliminarCita'));
+            myModal.show();
+        })
+
+        $('body').on('click', '.btn-confirmar-eliminar-cita', async function(){
+            await eliminarReserva()
+        })
+
     });
 
-    //  ---Funciones asyncronas
+    async function eliminarReserva(){
+        let args = [];
+        let canalOrigen = _canalOrigen
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
+        args["method"] = "PUT";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        const data = await call(args);
 
-    
+        //Menos para edictar reserva 
+        if(data.code == 200){
+            $('#modalEliminarCita').hide();
+            $('.modal-backdrop').remove();
+            await obtenerCitas();
+            swiperProximasCitas.update();
+            swiperProximasCitas.slideTo(0);
+            swiperUrgenciasAmbulatorias.update();
+            swiperUrgenciasAmbulatorias.slideTo(0);
+        }
+    }
 
     // servicio para consultar convenios
     async function consultarConvenios(){
@@ -329,7 +379,7 @@ Mi Veris - Inicio
 
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
         console.log('citas',data);
@@ -506,7 +556,7 @@ Mi Veris - Inicio
                                 <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
                                 <div class="d-flex ${classElem} align-items-center mt-3">`
             if(citas.estaPagada == "N"){
-                elemento += `<button type="button" class="btn btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>`;
+                elemento += `<button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>`;
             }
             let ruta = '';
             
@@ -516,8 +566,12 @@ Mi Veris - Inicio
                 ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
             }
 
+<<<<<<< HEAD
             elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>`;
             
+=======
+            elemento += `<div><a url-rel="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a></div>`;
+>>>>>>> developer
             if(citas.estaPagada == "N"){
                 elemento += `<a  class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a></div>`;
             }
@@ -571,7 +625,7 @@ Mi Veris - Inicio
                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
                                     <p class="fw-normal fs--2 mb-0">${urgencias.paciente}</p>
                                     <div class="d-flex justify-content-between align-items-center m-0 ms-3">
-                                        <button type="submit" class="btn btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>
+                                        <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>
                                         <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
                                     </div>
                                 </div>
@@ -641,59 +695,161 @@ Mi Veris - Inicio
     $(document).on('click', '.btn-CambiarFechaCita', function(){
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
+        let url = $(this).attr('url-rel');
+
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
+        if (data.estaPagada == "N"){
+            let params = {}
+            params.online = data.esVirtual;
+            params.especialidad = {
+                codigoEspecialidad: data.idEspecialidad,
+                codigoPrestacion  : data.codigoPrestacion,
+                codigoServicio   : data.codigoServicio,
+                codigoTipoAtencion: data.codigoTipoAtencion,
+                esOnline : data.esVirtual,
+                nombre : data.especialidad,
+            }
+            params.paciente = {
+                "numeroIdentificacion": data.numeroIdentificacion,
+                "tipoIdentificacion": data.tipoIdentificacion,
+                "nombrePaciente": data.nombrePaciente,
+                "numeroPaciente": data.numeroPaciente
+            }
+
+            params.reservaEdit = {
+                "estaPagada": data.estaPagada,
+                "numeroOrden": data.numeroOrden,
+                "lineaDetalleOrden": data.lineaDetalleOrden,
+                "codigoEmpresaOrden": data.codigoEmpresaOrden,
+                "idOrdenAgendable": data.idOrdenAgendable,
+                "idCita": data.idCita
+            }
+            params.origen = "inicios";
+            
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+            llenarModalConvenios(datosConvenios, url);
+
+            $('#convenioModal').modal('show');
+        } 
+
+        else{    
         
-        let params = {}
-        params.online = data.esVirtual;
-        params.especialidad = {
-            codigoEspecialidad: data.idEspecialidad,
-            codigoPrestacion  : data.codigoPrestacion,
-            codigoServicio   : data.codigoServicio,
-            codigoTipoAtencion: data.codigoTipoAtencion,
-            esOnline : data.esVirtual,
-            nombre : data.especialidad,
-        }
-        if (datosConvenios.length > 0) {
-            console.log('datosConvenio', datosConvenios);
-            // datosconvenio posicion 0
+            let params = {}
+            params.online = data.esVirtual;
+            params.especialidad = {
+                codigoEspecialidad: data.idEspecialidad,
+                codigoPrestacion  : data.codigoPrestacion,
+                codigoServicio   : data.codigoServicio,
+                codigoTipoAtencion: data.codigoTipoAtencion,
+                esOnline : data.esVirtual,
+                nombre : data.especialidad,
+            }
 
-            params.convenio = datosConvenios[0];
+            if (datosConvenios.length > 0) {
+                console.log('datosConvenio', datosConvenios);
+                // datosconvenio posicion 0
 
-        } else {
-            params.convenio = {
-                "permitePago": "S",
-                "permiteReserva": "S",
-                "idCliente": null,
-                "codigoConvenio": null,
-                "secuenciaAfiliado" : null,
-            };
-        }
-        // params.paciente = {
-        //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
-        //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
-        //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
-        //     "numeroPaciente": datosPaciente.numeroPaciente
-        // }
-        params.paciente = {
-            "numeroIdentificacion": data.numeroIdentificacion,
-            "tipoIdentificacion": data.tipoIdentificacion,
-            "nombrePaciente": data.nombrePaciente,
-            "numeroPaciente": data.numeroPaciente
-        }
+                params.convenio = datosConvenios[0];
 
-        params.reservaEdit = {
-            "estaPagada": data.estaPagada,
-            "numeroOrden": data.numeroOrden,
-            "lineaDetalleOrden": data.lineaDetalleOrden,
-            "codigoEmpresaOrden": data.codigoEmpresaOrden,
-            "idOrdenAgendable": data.idOrdenAgendable,
-            "idCita": data.idCita
-        }
-        params.origen = "inicios";
+            } else {
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+            }
+            // params.paciente = {
+            //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
+            //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
+            //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
+            //     "numeroPaciente": datosPaciente.numeroPaciente
+            // }
+            params.paciente = {
+                "numeroIdentificacion": data.numeroIdentificacion,
+                "tipoIdentificacion": data.tipoIdentificacion,
+                "nombrePaciente": data.nombrePaciente,
+                "numeroPaciente": data.numeroPaciente
+            }
 
-        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            params.reservaEdit = {
+                "estaPagada": data.estaPagada,
+                "numeroOrden": data.numeroOrden,
+                "lineaDetalleOrden": data.lineaDetalleOrden,
+                "codigoEmpresaOrden": data.codigoEmpresaOrden,
+                "idOrdenAgendable": data.idOrdenAgendable,
+                "idCita": data.idCita
+            }
+            params.origen = "inicios";
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            
+            location = url;
+        }
     });
+
+
+    // consultar convenios y llenar el modal de convenios
+    function llenarModalConvenios(data, url){
+        let divContenedor = $('#listaConvenios');
+        divContenedor.empty(); // Limpia el contenido actual
+        let elemento = '';
+        data.forEach((convenios) => {
+            console.log('convenioss', convenios);
+            elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}'
+            class="convenio-item">
+                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
+                                            ${convenios.nombreConvenio}
+                                        </label> 
+                                    </div>
+                                </div>`;
+        });
+        // agregar convenio ninguno
+        elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
+                        <div class="list-group
+                        -item fs--2 rounded-3 p-2 border-0">
+                            <label for="listGroupCheckableRadiosninguno" class="cursor-pointer">
+                                Ninguno
+                            </label>
+                        </div>
+                    </div>`;
+        divContenedor.append(elemento);
+    }
+
+    // seleccionar convenio convenio-item
+    $(document).on('click', '.convenio-item', function(){
+        let data = $(this).data('rel');
+        console.log('dataConvenio', data);
+        let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
+        params.convenio = data;
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+        $('#convenioModal').modal('hide');
+        location = $(this).attr('url-rel');
+    });
+
+    // seleccionar convenio convenio-Ninguno
+    $(document).on('click', '.convenio-Ninguno', function(){
+        let data = $(this).data('rel');
+        console.log('dataConvenio', data);
+        let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
+        params.convenio = {
+            "permitePago": "S",
+            "permiteReserva": "S",
+            "idCliente": null,
+            "codigoConvenio": null,
+            "secuenciaAfiliado" : null,
+        };
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+        $('#convenioModal').modal('hide');
+        location = $(this).attr('url-rel');
+    });
+
+
 
     // btn-pagar para redireccionar a la pagina de pago
     $(document).on('click', '.btn-pagar', function(){
@@ -778,8 +934,6 @@ Mi Veris - Inicio
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
 
     });
-
-    
 
 </script>
 <style>

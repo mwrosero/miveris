@@ -81,12 +81,12 @@
         <div class="modal-content">
             
             <div class="modal-body p-4 text-center">
-                <h1 class="modal-title fs-5 fw-bold mb-3"  id="tituloInformacionCita"
+                <h1 class="modal-title fs-3 fw-bold mb-3"  id="tituloInformacionCita"
                     >{{ __('Información') }}</h1>
-                <p class="mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="https://www.veris.com.ec/politicas/" id="politicasPPD" target="_blank">políticas de privacidad de datos</a> 
+                <p class="mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="https://www.veris.com.ec/politicas/" id="politicasPPD" target="_blank">políticas de privacidad de datos</a></p>
             </div>
             <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
-                <button type="button" id="aceptarPDP"  class="btn btn-primary-veris btn-lg btn-outline-primary-veris w-100">Aceptar</button>
+                <button type="button" id="aceptarPDP"  class="btn btn-primary-veris btn-lg btn-primary-veris w-100">Aceptar</button>
             </div>
             <div class="">
                 <button type="button" class="btn  w-100" id="modalRecuerdame">Recuérdame más tarde </button>
@@ -250,13 +250,13 @@
         let canalOrigen = _canalOrigen;
         let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
 
-        console.log(codigoUsuario);
+        // console.log(codigoUsuario);
         args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
         args["method"] = "GET";
         args["showLoader"] = false;
-        console.log('no',args["endpoint"] );
+        // console.log('no',args["endpoint"] );
         const data = await call(args);
-        console.log('numero notificaciones',data);
+        // console.log('numero notificaciones',data);
         if (data.code == 200 ){
             if (data.data.cantidadNotificaciones > 0){
                 $('#numeroNotificaciones').removeClass('d-none');
@@ -264,7 +264,7 @@
                 // agregar clase danger
                 $('#numeroNotificaciones').addClass('badge-danger');
             } else {
-                console.log('no hay notificaciones dsd');
+                // console.log('no hay notificaciones dsd');
                 $('#numeroNotificaciones').addClass('d-none');
                 // clear numero notificaciones
                 $('#numeroNotificaciones').html('');
@@ -310,7 +310,7 @@
 
     //determinar boton notificacion
     function determinarBotonNotificacion(categoria){
-        console.log(2,categoria)
+        // console.log(2,categoria)
         let botonNotificacion = '';
         switch (categoria) {
             case 'PENDIENTE_PAGO':
@@ -345,7 +345,7 @@
 
     $('#dropdownNotifications').click(function(){
         // enviar el id de la notificacion de las notificaciones que estan en la pagina actual
-        console.log('activar notificacion ');
+        // console.log('activar notificacion ');
         activarNotificacion();
         $('#numeroNotificaciones').addClass('d-none');
         // clear numero notificaciones
@@ -359,7 +359,7 @@
 
     function activarNotificacion(){
         let notificacionesPaginaActual = todasNotificaciones.slice((paginaActual - 1) * notificacionesPorPagina, paginaActual * notificacionesPorPagina);
-        console.log('notificaciones pagina actual', notificacionesPaginaActual);
+        // console.log('notificaciones pagina actual', notificacionesPaginaActual);
         notificacionesPaginaActual.forEach(notificacion => {
             if (notificacion.estado !== "LEIDO") {
                 cambiarEstadoNotificacion(notificacion.codigoNotificacion);
@@ -380,10 +380,10 @@
         
         args["method"] = "PUT";
         args["showLoader"] = true;
-        console.log(2,args["endpoint"]);
+        // console.log(2,args["endpoint"]);
         
         const data = await call(args);
-        console.log('cambiar estado notificacion', data);
+        // console.log('cambiar estado notificacion', data);
         if (data.code == 200) {
             cantidadNotificaciones();
         }

@@ -235,6 +235,22 @@ $data = json_decode(base64_decode($params));
         await obtenerTratamientos();
         llenarPorcentajeBarra();
 
+        var $enlace = $('.btn-agendar');
+
+        // Maneja el evento de clic en el enlace
+        $enlace.on('click', function(event) {
+            // Previene el comportamiento predeterminado del enlace
+            event.preventDefault();
+
+            // Establece un retraso de 2 segundos antes de redirigir
+            setTimeout(function() {
+                // Obtiene la URL del enlace
+                var url = $enlace.attr('href');
+                // Redirige a la URL después del retraso
+                window.location.href = url;
+            }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
+        });
+
     });
 
     // llenar el porcentaje de la barra con los datos del tratamiento
@@ -730,7 +746,7 @@ $data = json_decode(base64_decode($params));
         } else if (tipoServicio == "FARMACIA" && (aplicaSolicitud == 'N' || aplicaSolicitud == null)) {
             // Código para RECETA MÉDICA
             return `<a href="#" class="btn text-primary-veris">Ver receta</a>
-                    <a href="/farmacia-domicilio/${codigoTratamiento}"  class="btn btn-sm btn-primary-veris disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                    <a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else if (tipoServicio == "LABORATORIO" && esAgendable == 'N') {
             // Código para LABORATORIO
             return `<a href="#" class="btn text-primary-veris">Ver receta</a>
@@ -854,7 +870,7 @@ $data = json_decode(base64_decode($params));
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
                         
-                        respuesta += ` <a  class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                        respuesta += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
 
 
                         // condición para 'verResultados'
@@ -911,7 +927,7 @@ $data = json_decode(base64_decode($params));
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</div>`;
+                    respuestaOdontologia += ` <div class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</div>`;
                     
                     // ABRIRE MODAL DE VIDEO CONSULTA
                     respuestaOdontologia += `<div href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</div>`;

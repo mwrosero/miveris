@@ -47,6 +47,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <a href="/" class="btn btn-primary-veris w-50">Volver al inicio</a>
                             </div>
                         </div>
+                        <!-- Promoción tratamiento comprado -->
+                        <div class="content-tratamiento d-none">
+                            <i class="bi bi-check-circle-fill h1 text-primary-veris"></i>
+                            <h3 class="fw-medium mb-4">Tratamiento comprado</h3>
+                            <p class="mb-5" id="infoAgendar"></p>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="{{ asset('assets/img/svg/cita_agendada_online.svg') }}"  alt="cita agendada">
+                            </div>
+                            <div class="mt-5">
+                                <a href="/" class="btn btn-primary-veris w-50">Volver al inicio</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,15 +72,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let dataCita = JSON.parse(local);
 
     document.addEventListener("DOMContentLoaded", async function () {
-        if(!dataCita.paquete){
+        if(!dataCita.paquete && !dataCita.promocion){
             if(dataCita.online == "S"){
                 $('.content-online').removeClass('d-none');
             }else{
                 $('.content-presencial').removeClass('d-none');
             }
         }else{
-            $('#infoAgendar').html(`Para agendarla comunícate con nosotros al <b>${dataCita.detallePaquete.numeroContactCenter}</b>.`)
-            $('.content-paquete').removeClass('d-none');
+            if(dataCita.paquete){
+                $('#infoAgendar').html(`Para agendarla comunícate con nosotros al <b>${dataCita.detallePaquete.numeroContactCenter}</b>.`)
+                $('.content-paquete').removeClass('d-none');
+            }else if(dataCita.promocion){
+                $('.content-tratamiento').removeClass('d-none');
+            }
         }
     });
 </script>

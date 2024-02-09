@@ -400,7 +400,7 @@
 			}
 			if(campoEstaVacio(getInput('segundoApellido'))){
 			    errors = true;
-			    msg += `<li class="ms-0">Campo primer apellido es requerido</li>`;
+			    msg += `<li class="ms-0">Campo segundo apellido es requerido</li>`;
 			}
 			if (campoEstaVacio(document.getElementById('ciudad').value)) {
 				errors = true;

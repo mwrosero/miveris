@@ -227,13 +227,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             window.history.back();
         }
 
-        await crearPreTransaccion();
-
-        /*if(!dataCita.preTransaccion){
+        if(!dataCita.promocion){
             await crearPreTransaccion();
         }else{
             await consultarDatosFactura();
-        }*/
+        }
 
         $('body').on('change', '#tipoIdentificacion', function(){
             if($(this).val() == '2'){
@@ -360,8 +358,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["showLoader"] = true;
         args["bodyType"] = "json";
 
-        let idPaciente = {{ Session::get('userData')->numeroPaciente }};
-        //let idPaciente = dataCita.paciente.numeroPaciente;
+        // let idPaciente = {{ Session::get('userData')->numeroPaciente }};
+        let idPaciente = dataCita.paciente.numeroPaciente;
         let tipoServicio = "CITA";
         let tipoSolicitud = null;
 
