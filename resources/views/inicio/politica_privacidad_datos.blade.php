@@ -306,6 +306,7 @@ Mi Veris - Politica-privacidad-datos
 
         await actualizarDatosUsuario();
         await enviarCorreoConfirmacion();
+        await obtenerPPD();
         
     });
 

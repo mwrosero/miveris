@@ -149,27 +149,54 @@ Mi Veris - Mis Datos
     let ciudades = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
+        // Carga inicial de datos y configuraciones
         console.log(_canalOrigen);
         await obtenerDatosUsuario();
         provincias = await obtenerProvincias();
         ciudades = await obtenerCiudades(codeprovincia);
         llenarDatosUsuario(provincias, ciudades);
         var fechaActual = new Date();
-        var dia = ('0' + fechaActual.getDate()).slice(-2); // Añade un cero delante si es necesario
-        var mes = ('0' + (fechaActual.getMonth() + 1)).slice(-2); // Los meses empiezan en 0
+        var dia = ('0' + fechaActual.getDate()).slice(-2);
+        var mes = ('0' + (fechaActual.getMonth() + 1)).slice(-2);
         var ano = fechaActual.getFullYear();
         document.getElementById('fechaNacimiento').setAttribute('max', `${ano}-${mes}-${dia}`);
-        $('input[required], select[required]').on('blur', function() {
-            // Validar el campo específico
-            let esValido = validarCampo($(this));
-            // deshabilitar el botón si hay campos inválidos
-            $('#btnActualizarDatosUsuario').prop('disabled', !esValido);
-            
+
+        // Evento para validar el formulario completo en cada cambio
+        $('input[required], select[required]').on('blur change input', function() {
+            validarFormulario(); // Llama a validarFormulario en cada cambio
         });
- 
+
+        validarFormulario(); // Validación inicial después de cargar los datos
     });
 
-    // metodos jquery
+    // Validar el formulario completo
+    function validarFormulario() {
+        let esValido = true;
+        $('input[required], select[required]').each(function() {
+            // Usar validarCampo para cada input/select y actualizar esValido según sea necesario
+            if (!validarCampo($(this))) {
+                esValido = false;
+            }
+        });
+        $('#btnActualizarDatosUsuario').prop('disabled', !esValido);
+    }
+
+    // Validar campo individual y mostrar mensaje de error si es necesario
+    function validarCampo(campo) {
+        campo.removeClass('is-invalid is-valid');
+        campo.next('.invalid-feedback').remove();
+        if (campo.val().trim() === '') {
+            campo.addClass('is-invalid');
+            campo.after('<div class="invalid-feedback">Este campo es obligatorio.</div>');
+            return false;
+        }
+        return true;
+    }
+
+
+
+
+
     // boton actualizar datos usuario
     $('#btnActualizarDatosUsuario').click(async function (e) {
 
@@ -181,17 +208,6 @@ Mi Veris - Mis Datos
         $(this).prop('disabled', false); // Re-enable the button
     });
 
-    // validar que los campos del formulario no esten vacios y llenar mensaje n invalid-feedback 
-    function validarCampo(campo) {
-        campo.removeClass('is-invalid is-valid');
-        campo.next('.invalid-feedback').remove(); 
-        if (campo.val().trim() === '') {
-            campo.addClass('is-invalid');
-            campo.after('<div class="invalid-feedback">Este campo es obligatorio.</div>');
-        } 
-
-        return campo.hasClass('is-invalid') ? false : true;
-    }
 
 
 
@@ -247,6 +263,12 @@ Mi Veris - Mis Datos
 
     //actualizar datos del usuario
     async function actualizarDatosUsuario() {
+        // convertir fecha de nacimiento a formato dd/mm/yyyy
+        let fechaNacimiento = $('#fechaNacimiento').val();
+        let partesFecha = fechaNacimiento.split('-');
+        let fecha = partesFecha[2] + '/' + partesFecha[1] + '/' + partesFecha[0];
+       
+
         console.log($('#direccion').val());
         let args = [];
         args["endpoint"] = api_url + "/digitalestest/v1/perfil"
@@ -266,7 +288,8 @@ Mi Veris - Mis Datos
             "telefonoMovil": $('#telefono').val(),
             "codigoProvincia": $('#provincia').val(),
             "codigoCiudad": $('#ciudad').val(),
-            "direccionDomicilio": $('#direccion').val()
+            "direccionDomicilio": $('#direccion').val(),    
+            "fechaNacimiento": fecha
         });
 
         console.log('args', args["data"]);

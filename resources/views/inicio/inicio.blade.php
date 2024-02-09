@@ -298,11 +298,12 @@ Mi Veris - Inicio
         _ppd = data.data;
         if(data.code == 200){
             console.log(data.data)
+            localStorage.setItem('estadoPoliticas', data.data.estadoPoliticas);
 
             if(localStorage.getItem('politicasAbiertas') == null){
                 console.log('emtro');
                 let politicas = JSON.parse(localStorage.getItem('politicas'));
-                if((data.data.estadoPoliticas == "N" || data.data.estadoPoliticas == "R") && (data.data.isPoliticasAceptadas == null || data.data.isPoliticasAceptadas == false)){
+                if((data.data.estadoPoliticas == "N") && (data.data.isPoliticasAceptadas == null || data.data.isPoliticasAceptadas == false)){
                     localStorage.setItem('politicasAbiertas', true);
                     $('#modalPPD').modal('show');
                     // $('#politicasPPD').attr('href',politicas.linkPoliticaPrivacidad);
@@ -526,67 +527,58 @@ Mi Veris - Inicio
 
     // llenar el div de citas
     function mostrarCitasenDiv() {
-        let data = datosCitas;
-
-        let divContenedor = $('#contenedorCitas');
+        const data = datosCitas;
+        const divContenedor = $('#contenedorCitas');
         divContenedor.empty(); // Limpia el contenido actual
         let elemento = '';
-
+        const tokenCita = "{{ $tokenCita }}";
         data.forEach((citas) => {
-            let classElem = 'justify-content-between';
-            if(citas.estaPagada == "S"){
-                classElem = 'justify-content-end';
-            }
-            elemento +=`<div class="swiper-slide">
-                <div class="card h-100">
-                    <div class="card-body d-flex align-items-center p-3">
-                        <div class="w-100">`;
-            if(citas.esVirtual == "S"){
-                elemento += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
-                        <h7 class="text-primary-veris fw-medium mb-0">Consulta online</h7>
-                    </div>`;
-            }
-                    elemento += `<div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(citas.especialidad)}</h6>
-                                    <span class="fs--2 text-success fw-medium">${esPagada(citas)}</span>
-                                </div>
-                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(citas.sucursal)}</p>
-                                <p class="fw-normal fs--2 mb-0">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
-                                <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                                <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
-                                <div class="d-flex ${classElem} align-items-center mt-3">`
-            if(citas.estaPagada == "N"){
-                elemento += `<button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>`;
-            }
-            let ruta = '';
-            
-            if (citas.esVirtual == "S") {
-                ruta = "/citas-elegir-fecha-doctor/" + "{{ $tokenCita }}" 
-            } else {
-                ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
+            const classElem = citas.estaPagada === "S" ? 'justify-content-end' : 'justify-content-between';
+            const esConsultaOnline = citas.esVirtual === "S";
+            const esPagada = citas.estaPagada === "S" ? 'Pagada' : 'No pagada';
+            let ruta = "/citas-elegir-fecha-doctor/" + tokenCita;
+
+            if (citas.esVirtual !== "S") {
+                ruta = "/citas-elegir-central-medica/" + tokenCita;
             }
 
-<<<<<<< HEAD
-            elemento += `<div><a href="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>`;
-            
-=======
-            elemento += `<div><a url-rel="${ruta}" class="btn btn-sm text-primary-veris border-none shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a></div>`;
->>>>>>> developer
-            if(citas.estaPagada == "N"){
-                elemento += `<a  class="btn btn-sm btn-primary-veris m-0 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a></div>`;
-            }
-            if (citas.esVirtual == "S") {
-                elemento += `<a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris ms-3 m-0">Conectarme</a>`;
-            }
             elemento += `
+                <div class="swiper-slide frank">
+                    <div class="card h-100">
+                        <div class="card-body p--2">
+                            ${esConsultaOnline ? `
+                                <div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
+                                    <h6 class="text-primary-veris fs--1 fw-medium mb-1">Consulta online</h6>
+                                </div>
+                            ` : ''}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>
+                                <span class="fs--2 text-success fw-medium line-height-16 mb-1">${esPagada}</span>
+                            </div>
+                            <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
+                            <div class="d-flex ${classElem} align-items-center mt-3">
+                                ${citas.estaPagada === "N" ? `
+                                    <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
+                                ` : ''}
+                                <div>
+                                    <a href="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>
+                                    ${citas.estaPagada === "N" ? `
+                                        <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                    ` : ''}
+                                </div>
+                                ${esConsultaOnline ? `
+                                    <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
+                                ` : ''}
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>`;
+                </div>`;
         });
         divContenedor.append(elemento);
-    } 
+    }
 
     // mostrar mensaje de no hay citas
     function mostrarNoExistenCitas() {
