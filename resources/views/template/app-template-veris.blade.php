@@ -187,10 +187,14 @@
                 breakpoints: {
                     300: {
                         slidesPerView: 2,
+                        // centeredSlides: true,
+                        // loop: true,
                         // spaceBetween: 8,
                     },
                     768: {
                         slidesPerView: 2,
+                        // centeredSlides: true,
+                        // loop: true,
                         // spaceBetween: 8,
                     },
                     1024: {
@@ -208,6 +212,7 @@
                     prevEl: '.btn-prev',
                 },
                 autoplay: false,
+                // watchOverflow: true,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
@@ -236,6 +241,7 @@
                     prevEl: '.btn-prev',
                 },
                 autoplay: false,
+                // watchOverflow: true,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
@@ -253,7 +259,15 @@
                         slidesPerView: 3,
                         // spaceBetween: 8,
                     },
-                },
+                }/*,on: {
+                    init: function() {
+                        updateNavigation();
+                    },
+                    resize: function() {
+                        updateNavigation();
+                    },
+                }*/
+
             });
 
             swiperUrgenciasAmbulatorias = new Swiper('.swiper-urgencias-ambulatorias', {
@@ -352,30 +366,38 @@
     <script>
         // capializar la primera letra de cada palabra
         function capitalizarElemento(elemento) {
-    try {
-        
-        if (!elemento) return "";
-        const texto = elemento.trim().toLowerCase();
-        
-        const palabras = texto.split(/\s+/);
+            try {
+                
+                if (!elemento) return "";
+                const texto = elemento.trim().toLowerCase();
+                
+                const palabras = texto.split(/\s+/);
 
-        for (let i = 0; i < palabras.length; i++) {
-            const palabra = palabras[i];
-            const primeraLetraMayuscula = palabra.charAt(0).toUpperCase();
-            palabras[i] = primeraLetraMayuscula + palabra.substring(1);
-            
+                for (let i = 0; i < palabras.length; i++) {
+                    const palabra = palabras[i];
+                    const primeraLetraMayuscula = palabra.charAt(0).toUpperCase();
+                    palabras[i] = primeraLetraMayuscula + palabra.substring(1);
+                    
+                }
+
+                const textoCapitalizado = palabras.join(" ");
+                return textoCapitalizado;
+            } catch (error) {
+                console.error("Error en capitalizarElemento:", error); // Log de errores
+                return elemento;
+            }
         }
 
-        const textoCapitalizado = palabras.join(" ");
-        return textoCapitalizado;
-    } catch (error) {
-        console.error("Error en capitalizarElemento:", error); // Log de errores
-        return elemento;
-    }
-}
-
-
-
+        function updateNavigation() {
+            var totalSlides = swiperProximasCitas.slides.length - 2 * swiperProximasCitas.params.slidesPerView; // Eliminar duplicados en el bucle infinito
+            if (totalSlides <= swiperProximasCitas.params.slidesPerView) {
+                $('.swiper-button-prev').hide();
+                $('.swiper-button-next').hide();
+            } else {
+                $('.swiper-button-prev').show();
+                $('.swiper-button-next').show();
+            }
+        }
 
         // funcion quitar comillas a la url
         function quitarComillas(url){
