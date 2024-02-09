@@ -220,9 +220,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     // variables globales
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    let estadoPoliticas;
+    let ultimaVersionPoliticas;
 
     document.addEventListener("DOMContentLoaded", async function () {
         //await reservarCita();
+        await obtenerPPD();
+        
         if(!dataCita.reserva && !dataCita.datosTratamiento && !dataCita.reservaEdit && !dataCita.ordenExterna && !dataCita.paquete){
             window.history.back();
         }
@@ -244,6 +248,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         })
 
         $('body').on('change', '#checkTerminosCondicion', function(){
+            
             if($('#checkTerminosCondicion').is(':checked')) {
                 $('#btn-next').removeClass('disabled');
             } else {
@@ -252,6 +257,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         });
 
         $('body').on('click', '#btn-next', async function(){
+
+            
             //validar formulario datos factura
             await validarDatosFactura();
         })
@@ -474,6 +481,52 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     }
 
+    //obtener las politicas
+    async function obtenerPPD(){
+        let args = [];
+        args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
+        args["method"] = "GET";
+        args["showLoader"] = true;
+
+        const data = await call(args);
+        console.log('data',data.code);
+        if(data.code == 200){
+            ultimaVersionPoliticas = data.data.ultimaVersionPoliticas;
+            estadoPoliticas = data.data.estadoPoliticas;
+            if(estadoPoliticas == "N"){
+                $('#politicas').removeClass('d-none');
+            }
+        }
+        return data;
+    }
+
+    //aceptar politicas
+    async function aceptarPoliticas(){
+        
+        let args = [];
+        args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}";
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+
+        args["data"] = JSON.stringify({
+            
+            "aceptaPoliticas": true,
+            "versionPoliticas": ultimaVersionPoliticas,
+            "codigoEmpresa": 1,
+            "plataforma": "WEB",
+            "versionPlataforma": "7.0.1",
+            "identificacion": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "tipoIdentificacion": {{ Session::get('userData')->codigoTipoIdentificacion }},
+            "tipoEvento": "CR",
+            "canalOrigen": _canalOrigen
+
+        });
+        const data = await call(args);
+        
+        return data;
+    }
+
     function mostrarInfo(){
         /*Datos de Facturación*/
         $('#tipoIdentificacion').val(dataCita.facturacion.datosFactura.codigoTipoIdentificacion).trigger('change');
@@ -600,6 +653,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if (data.code == 200){
             dataCita.transaccionVirtual = data.data;
+            if (estadoPoliticas == "N"){
+                await aceptarPoliticas();
+            }   
             guardarData();
             if(tipoBoton == "NUVEI"){
                 var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
