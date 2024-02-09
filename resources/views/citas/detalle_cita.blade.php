@@ -269,7 +269,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             //Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.
             if(porcentajeDescuentos > 0 && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top p--2">
-                        <i class="fa-solid fa-circle-info h4 mb-0 me-2 text-warning"></i>
+                        <i class="fa-solid fa-circle-info mb-0 me-2 text-warning"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage style="color: #0A2240;">${data.data.mensajeAlerta}</p>
                     </div>`;
             }
