@@ -532,50 +532,6 @@ Mi Veris - Inicio
         let elemento = '';
         const tokenCita = "{{ $tokenCita }}";
         data.forEach((citas) => {
-<<<<<<< HEAD
-            let classElem = 'justify-content-between';
-            if(citas.estaPagada == "S"){
-                classElem = 'justify-content-end';
-            }
-            elemento +=`<div class="swiper-slide frank">
-                <div class="card h-100">
-                    <div class="card-body p--2">`;
-            if(citas.esVirtual == "S"){
-                elemento += `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
-                                <h6 class="text-primary-veris fs--1 fw-medium mb-1">Consulta online</h6>
-                            </div>`;
-            }
-                    elemento += `<div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>
-                                    <span class="fs--2 text-success fw-medium line-height-16 mb-1">${esPagada(citas)}</span>
-                                </div>
-                                <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
-                                <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
-                                <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
-                                <div class="d-flex ${classElem} align-items-center mt-3">`
-            if(citas.estaPagada == "N"){
-                elemento += `<button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>`;
-            }
-
-            let ruta = '';
-            if (citas.esVirtual == "S") {
-                ruta = "/citas-elegir-fecha-doctor/" + "{{ $tokenCita }}" 
-            } else {
-                ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
-            }
-                elemento += `<div>
-                                <a href="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal  line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>`;
-            
-            if(citas.estaPagada == "N"){
-                elemento += `   <a  class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0  line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
-                            </div>`;
-            }
-            if (citas.esVirtual == "S") {
-                elemento += `<a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>`;
-            }
-            elemento += `
-=======
             const classElem = citas.estaPagada === "S" ? 'justify-content-end' : 'justify-content-between';
             const esConsultaOnline = citas.esVirtual === "S";
             const esPagada = citas.estaPagada === "S" ? 'Pagada' : 'No pagada';
@@ -590,34 +546,31 @@ Mi Veris - Inicio
                     <div class="card h-100">
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `
-                                <div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
-                                    <h6 class="text-primary-veris fs--1 fw-medium mb-1">Consulta online</h6>
-                                </div>
+                                <span class="badge bg-label-primary text-primary-veris fs--1 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
                             ` : ''}
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>
-                                <span class="fs--2 text-success fw-medium line-height-16 mb-1">${esPagada}</span>
+                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
                             </div>
                             <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
-                            <div class="d-flex ${classElem} align-items-center mt-3">
+                        </div>
+                        <div class="card-footer pt-0 pb-3 px-3 d-flex ${classElem} align-items-center">
+                            ${citas.estaPagada === "N" ? `
+                                <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
+                            ` : ''}
+                            <div class="mt-auto">
+                                <a href="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>
                                 ${citas.estaPagada === "N" ? `
-                                    <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
-                                ` : ''}
-                                <div>
-                                    <a href="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>
-                                    ${citas.estaPagada === "N" ? `
-                                        <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
-                                    ` : ''}
-                                </div>
-                                ${esConsultaOnline ? `
-                                    <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
+                                <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                 ` : ''}
                             </div>
+                            ${esConsultaOnline ? `
+                                <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
+                            ` : ''}
                         </div>
->>>>>>> developer
                     </div>
                 </div>`;
         });
