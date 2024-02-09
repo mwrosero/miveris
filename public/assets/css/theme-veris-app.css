@@ -886,11 +886,21 @@ Due to the split circle of progress-left and progress right, we must use the ani
 }
 
 .fs--1 {
-  font-size: 0.874rem !important;
+  font-size: 0.875rem !important;
 }
-
+.fs--16{
+  font-size: 1rem !important;
+}
 .h-90 {
   height: 90% !important;
+}
+
+.line-height-16{
+  line-height: 16px !important;
+}
+
+.line-height-20{
+  line-height: 20px !important;
 }
 
 .p-8{padding: 2rem !important;}
