@@ -360,8 +360,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["showLoader"] = true;
         args["bodyType"] = "json";
 
-        let idPaciente = {{ Session::get('userData')->numeroPaciente }};
-        //let idPaciente = dataCita.paciente.numeroPaciente;
+        // let idPaciente = {{ Session::get('userData')->numeroPaciente }};
+        let idPaciente = dataCita.paciente.numeroPaciente;
         let tipoServicio = "CITA";
         let tipoSolicitud = null;
 

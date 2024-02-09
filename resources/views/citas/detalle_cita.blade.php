@@ -84,7 +84,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let dataCita = JSON.parse(local);
     let online = dataCita?.online;
     let nombreEspecialidad = capitalizarCadaPalabra(dataCita.especialidad.nombre);
-    let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
+    var tipoIdentificacion = parseInt(dataCita.paciente.tipoIdentificacion);
+    if (isNaN(tipoIdentificacion)) {
+        tipoIdentificacion = parseInt(dataCita.paciente.codigoTipoIdentificacion);
+    }
+    // let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
     let numeroIdentificacion = dataCita.paciente.numeroIdentificacion;
     let codigoEspecialidad = dataCita.especialidad.codigoEspecialidad;
     let secuenciaAfiliado = dataCita.convenio.secuenciaAfiliado || '' ;
@@ -233,20 +237,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
                 if(subtotalCopagoFloat > valorTotalCopagoFloat){
                 elem +=   `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
-                        <del id="precioBase">$${valor}</del>
+                        <del id="precioBase">$${valor.toFixed(2)}</del>
                     </p>`;
                 }
-                elem += `<h1 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago}</h1>
+                elem += `<h1 class="text-primary-veris fw-medium mb-0" id="precioTotal" style="white-space: nowrap;">$${valorTotalCopago.toFixed(2)}</h1>
                 </div>
                 <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
             }else{
                 elem += `<div class="col-12 text-center">`
                 if(porcentajeDescuentoCopago > 0){
                     elem += `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
-                        <del id="precioBase">$${valor}</del>
+                        <del id="precioBase">$${valor.toFixed(2)}</del>
                     </p>`;
                 }
-                elem += `<h1 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago}</h1>
+                elem += `<h1 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago.toFixed(2)}</h1>
                 </div>
                 <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
             }
@@ -312,7 +316,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         let datosReserva = {
             "numeroIdentificacion": dataCita.paciente.numeroIdentificacion,
-            "tipoIdentificacion": dataCita.paciente.tipoIdentificacion,
+            "tipoIdentificacion": tipoIdentificacion,
             "idIntervalos": dataCita.horario.idIntervalo,
             "codigoEmpresa": 1,
             "codigoEspecialidad": dataCita.especialidad.codigoEspecialidad,

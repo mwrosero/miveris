@@ -140,8 +140,35 @@ Mi Veris - Citas - Mis citas
         await obtenerCitas();
         await consultarGrupoFamiliar();
         await consultarConvenios();
+
+        $('body').on('click', '.btn-eliminar-cita', function(){
+            $('#idCitaEliminar').val($(this).attr('codigoReserva-rel'));
+            var myModal = new bootstrap.Modal(document.getElementById('modalEliminarCita'));
+            myModal.show();
+        })
+
+        $('body').on('click', '.btn-confirmar-eliminar-cita', async function(){
+            await eliminarReserva()
+        })
         
     });
+
+    async function eliminarReserva(){
+        let args = [];
+        let canalOrigen = _canalOrigen
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
+        args["method"] = "PUT";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        //Menos para edictar reserva 
+        if(data.code == 200){
+            $('#modalEliminarCita').hide();
+            $('.modal-backdrop').remove();
+            await obtenerCitas();
+        }
+    }
 
     //funciones asincronas
 
@@ -296,7 +323,7 @@ Mi Veris - Citas - Mis citas
                                     <div class="d-flex justify-content-between align-items-center mt-3">`
 
                                     if(cita.estaPagada == "N"){
-                                    element += `<button type="button" class="btn btn-sm text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>`;
+                                    element += `<button type="button" codigoReserva-rel="${cita.idCita}" class="btn btn-sm btn-eliminar-cita text-danger-veris shadow-none"><i class="fa-regular fa-trash-can"></i></button>`;
                                         }
                                         let ruta = '';
                                         if (cita.esVirtual == "S") {
@@ -691,8 +718,8 @@ Mi Veris - Citas - Mis citas
             elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}'
             class="convenio-item">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                                        <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
                                             ${convenios.nombreConvenio}
                                         </label> 
                                     </div>
@@ -701,7 +728,7 @@ Mi Veris - Citas - Mis citas
             elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
                             <div class="list-group
                             -item fs--2 rounded-3 p-2 border-0">
-                                <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                <label for="listGroupCheckableRadiosParticular" class="cursor-pointer">
                                     Ninguno
                                 </label>
                             </div>

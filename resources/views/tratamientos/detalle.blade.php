@@ -128,7 +128,7 @@ Mi Veris - Citas - tratamiento
 
     // variables globales
     let datosValorizacion = [];
-
+    let esIncremento = null;
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
 
@@ -140,7 +140,8 @@ Mi Veris - Citas - tratamiento
 
         $('body').on('change','.input-group input', async function(){
             let detalle = JSON.parse($(this).attr("data-rel"));
-            await actualizarValorizacionServicios(detalle);
+            console.log(detalle)
+            await actualizarValorizacionServicios(detalle, $(this).val());
             await valorizacionServicios();
         })
 
@@ -233,6 +234,7 @@ Mi Veris - Citas - tratamiento
 
         if(data.code == 200){
             datosValorizacion = data.data;
+            dataCita.promocion = data.data;
             let contentDescuento = $('#content-descuento');
             contentDescuento.empty();
             contentDescuento.append(`${data.data.porcentajeDescuentoPromocion}% de descuento`);
@@ -263,7 +265,7 @@ Mi Veris - Citas - tratamiento
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus" onclick="restarCantidad(${index})"
                                     >-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel=${JSON.stringify(resultados)} min="0" max=${resultados.cantidadMaximaPermitida}
+                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
                                     value="1" id="cantidadServicio-${index}"
                                      />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus" onclick="sumarCantidad(${index})"
@@ -321,6 +323,7 @@ Mi Veris - Citas - tratamiento
             return;
         }
 
+        esIncremento = true;
         $(`#listaServicios li:nth-child(${index + 1}) .input-group input`).val(cantidad).trigger('change');
 
         /*let precioTotal = cantidad * valorPromocion;
@@ -360,6 +363,8 @@ Mi Veris - Citas - tratamiento
         if (cantidad < 0) {
             cantidad = 0;
         }
+
+        esIncremento = false;
         $(`#listaServicios li:nth-child(${index + 1}) .input-group input`).val(cantidad).trigger('change');
 
         /*let precioTotal = cantidad * valorPromocion;
@@ -388,19 +393,24 @@ Mi Veris - Citas - tratamiento
 
     // actualizar la valorizacion de los servicios del tratamiento con un put
 
-    function actualizarValorizacionServicios(detalle) {
+    async function actualizarValorizacionServicios(detalle, qty) {
+        console.log('-------------'+dataCita.promocion.codigoPreTransaccion)
         let args = {};
         //let canalOrigenDigital = 'APP_CMV';
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}/valorizacion_servicio`;
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}/actualizar_servicio`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
-            "codigoPreTransaccion": null,
+            "codigoPreTransaccion": dataCita.promocion.codigoPreTransaccion,
             "canalOrigenDigital": _canalOrigen,
+            "esIncremento": esIncremento,
+            "aplicaControlCantidad": detalle.aplicaControlCantidad,
+            "cantidadModificada": parseInt(qty),
+            "detalleAgrupacionPreTran": detalle.detalleAgrupacionPreTran
         });
 
-        const data = call(args);
+        const data = await call(args);
         console.log('dataservicio', data);
         return data;
     }

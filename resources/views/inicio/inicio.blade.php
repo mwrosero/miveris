@@ -10,7 +10,6 @@ Mi Veris - Inicio
 <div class="flex-grow-1 container-p-y pt-0">
 
     <!-- Modal de error -->
-
     <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -26,7 +25,7 @@ Mi Veris - Inicio
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Convenios -->
     <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
@@ -48,7 +47,7 @@ Mi Veris - Inicio
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal Agendar Cita -->
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
@@ -222,11 +221,39 @@ Mi Veris - Inicio
         await consultarDatosPaciente();
         // initializeSwiper('.swipertratamientos');
         // initializeSwiper('.swiper-proximas-citas');
+
+        $('body').on('click', '.btn-eliminar-cita', function(){
+            $('#idCitaEliminar').val($(this).attr('codigoReserva-rel'));
+            var myModal = new bootstrap.Modal(document.getElementById('modalEliminarCita'));
+            myModal.show();
+        })
+
+        $('body').on('click', '.btn-confirmar-eliminar-cita', async function(){
+            await eliminarReserva()
+        })
+
     });
 
-    //  ---Funciones asyncronas
+    async function eliminarReserva(){
+        let args = [];
+        let canalOrigen = _canalOrigen
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
+        args["method"] = "PUT";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        const data = await call(args);
 
-    
+        //Menos para edictar reserva 
+        if(data.code == 200){
+            $('#modalEliminarCita').hide();
+            $('.modal-backdrop').remove();
+            await obtenerCitas();
+            swiperProximasCitas.update();
+            swiperProximasCitas.slideTo(0);
+            swiperUrgenciasAmbulatorias.update();
+            swiperUrgenciasAmbulatorias.slideTo(0);
+        }
+    }
 
     // servicio para consultar convenios
     async function consultarConvenios(){
@@ -352,7 +379,7 @@ Mi Veris - Inicio
 
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
         console.log('citas',data);
@@ -529,7 +556,7 @@ Mi Veris - Inicio
                                 <p class="fw-normal fs--2 mb-0">${citas.nombrePaciente}</p>
                                 <div class="d-flex ${classElem} align-items-center mt-3">`
             if(citas.estaPagada == "N"){
-                elemento += `<button type="button" class="btn btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>`;
+                elemento += `<button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>`;
             }
             let ruta = '';
             
@@ -593,7 +620,7 @@ Mi Veris - Inicio
                                     <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
                                     <p class="fw-normal fs--2 mb-0">${urgencias.paciente}</p>
                                     <div class="d-flex justify-content-between align-items-center m-0 ms-3">
-                                        <button type="submit" class="btn btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>
+                                        <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none px-0"><i class="fa-regular fa-trash-can"></i></button>
                                         <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris">Nueva fecha</a>
                                     </div>
                                 </div>
@@ -702,10 +729,7 @@ Mi Veris - Inicio
             $('#convenioModal').modal('show');
         } 
 
-        else{
-
-        
-
+        else{    
         
             let params = {}
             params.online = data.esVirtual;
@@ -773,25 +797,24 @@ Mi Veris - Inicio
             elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}'
             class="convenio-item">
                                     <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-                                        <label for="listGroupCheckableRadios2" class="cursor-pointer">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
                                             ${convenios.nombreConvenio}
                                         </label> 
                                     </div>
                                 </div>`;
-            // agregar convenio ninguno
-            elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
-                            <div class="list-group
-                            -item fs--2 rounded-3 p-2 border-0">
-                                <label for="listGroupCheckableRadios2" class="cursor-pointer">
-                                    Ninguno
-                                </label>
-                            </div>
-                        </div>`;
         });
+        // agregar convenio ninguno
+        elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
+                        <div class="list-group
+                        -item fs--2 rounded-3 p-2 border-0">
+                            <label for="listGroupCheckableRadiosninguno" class="cursor-pointer">
+                                Ninguno
+                            </label>
+                        </div>
+                    </div>`;
         divContenedor.append(elemento);
     }
-
 
     // seleccionar convenio convenio-item
     $(document).on('click', '.convenio-item', function(){
@@ -906,8 +929,6 @@ Mi Veris - Inicio
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
 
     });
-
-    
 
 </script>
 <style>

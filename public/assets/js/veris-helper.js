@@ -13,10 +13,12 @@ async function call(args){
     };
     
     let myHeaders = new Headers();
+    myHeaders.append("Accept-Language", "es");
     if(args.bodyType == "json"){
         myHeaders.append("Content-Type", "application/json");
-        requestOptions.headers = myHeaders;
+        //requestOptions.headers = myHeaders;
     }
+    requestOptions.headers = myHeaders;
         
     // myHeaders.append("Application", _application);
     // myHeaders.append("IdOrganizacion", _idOrganizacion);
@@ -34,6 +36,13 @@ async function call(args){
         }).then((data) => {
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
+            }
+            if(!args.dismissAlert && data.code== 400){
+                modalError400
+                $('#mensaje_400').html(data.message);
+                var myModal = new bootstrap.Modal(document.getElementById('modalError400'));
+                myModal.show();
+                return;
             }
             return data;
         }).catch(function(error) {
