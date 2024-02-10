@@ -397,8 +397,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer text-end p--2">
-                            <button type="button" class="btn btn-sm btn-primary-veris btn-disponibilidad-medico" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
+                        <div class="card-footer text-end pt-0 pb--2 px--2">
+                            <button type="button" class="btn btn-sm btn-primary-veris btn-disponibilidad-medico fs--1 fw-medium m-0" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
                                 Elegir Cita
                             </button>
                         </div>

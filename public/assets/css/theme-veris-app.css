@@ -310,7 +310,10 @@ html:not([dir="rtl"]) .border-start-veris {
   border-radius: 24px !important;
   background: #003B83 !important;
 }
-
+.card-border{
+  border: 1px solid #E7E9EC !important;
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10) !important;
+}
 .calendar-body {
   background: #003B83;
   border-top-left-radius: 24px !important;
@@ -336,15 +339,7 @@ html:not([dir="rtl"]) .border-start-veris {
   color: var(--bg-vris-white) !important;
 }
 
-.fs-18 {
-  font-size: 1.125rem;
-}
-.fs-20{
-  font-size: 1.25rem;
-}
-.fs-24 {
-  font-size: 1.5rem;
-}
+
 .fw-medium{
   font-weight: 500 !important;
 }
@@ -407,6 +402,8 @@ h1,
   opacity: .5;
 }
 .mb-8{margin-bottom: 2rem !important;}
+.mb--20{margin-bottom: 20px;}
+.mb--32{margin-bottom: 32px;}
 .modal {
   background-color: rgba(0, 0, 0, 0.5) !important;
 }
@@ -424,6 +421,9 @@ h1,
   position: relative;
 }
 .p--2{padding: 0.75rem !important;}
+.px--2{padding-left: 0.75rem !important; padding-right: 0.75rem !important;}
+.pb--2{padding-bottom: 0.75rem !important;}
+.pb--40{padding-bottom: 2.5rem !important;}
 .progress-circle:after {
   content: "";
   width: 100%;
@@ -877,31 +877,22 @@ Due to the split circle of progress-left and progress right, we must use the ani
   color: var(--bg-vris-strong-cyan-lime-green) !important;
 }
 
-.fs--3 {
-  font-size: 0.625rem !important;
-}
+.fs--3{font-size: 0.625rem !important;}
+.fs--2{font-size: 0.75rem !important;}
+.fs--1{font-size: 0.875rem !important;}
+.fs--16{font-size: 1rem !important;}
+.fs--18{font-size: 1.125rem !important;}
+.fs--20{font-size: 1.25rem !important;}
+.fs-18{font-size: 1.125rem;}
+.fs-20{font-size: 1.25rem;}
+.fs-24{font-size: 1.5rem;}
 
-.fs--2 {
-  font-size: 0.75rem !important;
-}
+.h-90 {height: 90% !important;}
 
-.fs--1 {
-  font-size: 0.875rem !important;
-}
-.fs--16{
-  font-size: 1rem !important;
-}
-.h-90 {
-  height: 90% !important;
-}
-
-.line-height-16{
-  line-height: 16px !important;
-}
-
-.line-height-20{
-  line-height: 20px !important;
-}
+.line-height-16{line-height: 16px !important;}
+.line-height-20{line-height: 20px !important;}
+.line-height-24{line-height: 24px !important;}
+.line-height-28{line-height: 28px !important;}
 
 .p-8{padding: 2rem !important;}
 .px-8{
