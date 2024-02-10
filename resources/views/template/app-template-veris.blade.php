@@ -134,6 +134,21 @@
         </div>
     </div>
 
+    <!-- Modal Permite Cambio -->
+    <div class="modal fade" id="modalPermiteCambiar" tabindex="-1" aria-labelledby="modalPermiteCambiarLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
+                    <p class="fs--2 fw-normal" id="mensajeNoPermiteCambiar"></p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
@@ -187,10 +202,14 @@
                 breakpoints: {
                     300: {
                         slidesPerView: 2,
+                        // centeredSlides: true,
+                        // loop: true,
                         // spaceBetween: 8,
                     },
                     768: {
                         slidesPerView: 2,
+                        // centeredSlides: true,
+                        // loop: true,
                         // spaceBetween: 8,
                     },
                     1024: {
@@ -208,6 +227,7 @@
                     prevEl: '.btn-prev',
                 },
                 autoplay: false,
+                // watchOverflow: true,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
@@ -236,6 +256,7 @@
                     prevEl: '.btn-prev',
                 },
                 autoplay: false,
+                // watchOverflow: true,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
@@ -253,7 +274,15 @@
                         slidesPerView: 3,
                         // spaceBetween: 8,
                     },
-                },
+                }/*,on: {
+                    init: function() {
+                        updateNavigation();
+                    },
+                    resize: function() {
+                        updateNavigation();
+                    },
+                }*/
+
             });
 
             swiperUrgenciasAmbulatorias = new Swiper('.swiper-urgencias-ambulatorias', {
@@ -352,30 +381,38 @@
     <script>
         // capializar la primera letra de cada palabra
         function capitalizarElemento(elemento) {
-    try {
-        
-        if (!elemento) return "";
-        const texto = elemento.trim().toLowerCase();
-        
-        const palabras = texto.split(/\s+/);
+            try {
+                
+                if (!elemento) return "";
+                const texto = elemento.trim().toLowerCase();
+                
+                const palabras = texto.split(/\s+/);
 
-        for (let i = 0; i < palabras.length; i++) {
-            const palabra = palabras[i];
-            const primeraLetraMayuscula = palabra.charAt(0).toUpperCase();
-            palabras[i] = primeraLetraMayuscula + palabra.substring(1);
-            
+                for (let i = 0; i < palabras.length; i++) {
+                    const palabra = palabras[i];
+                    const primeraLetraMayuscula = palabra.charAt(0).toUpperCase();
+                    palabras[i] = primeraLetraMayuscula + palabra.substring(1);
+                    
+                }
+
+                const textoCapitalizado = palabras.join(" ");
+                return textoCapitalizado;
+            } catch (error) {
+                console.error("Error en capitalizarElemento:", error); // Log de errores
+                return elemento;
+            }
         }
 
-        const textoCapitalizado = palabras.join(" ");
-        return textoCapitalizado;
-    } catch (error) {
-        console.error("Error en capitalizarElemento:", error); // Log de errores
-        return elemento;
-    }
-}
-
-
-
+        function updateNavigation() {
+            var totalSlides = swiperProximasCitas.slides.length - 2 * swiperProximasCitas.params.slidesPerView; // Eliminar duplicados en el bucle infinito
+            if (totalSlides <= swiperProximasCitas.params.slidesPerView) {
+                $('.swiper-button-prev').hide();
+                $('.swiper-button-next').hide();
+            } else {
+                $('.swiper-button-prev').show();
+                $('.swiper-button-next').show();
+            }
+        }
 
         // funcion quitar comillas a la url
         function quitarComillas(url){

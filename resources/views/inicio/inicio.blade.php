@@ -215,6 +215,7 @@ Mi Veris - Inicio
         await obtenerTratamientos();
         await obtenerCitas();
         await obtenerUrgenciasAmbulatorias();
+        // chartProgres('#chart-progress');
         await consultarConvenios();
         await consultarDatosPaciente();
         // initializeSwiper('.swipertratamientos');
@@ -229,6 +230,115 @@ Mi Veris - Inicio
         $('body').on('click', '.btn-confirmar-eliminar-cita', async function(){
             await eliminarReserva()
         })
+
+        $('body').on('click', '.btn-cita-informacion', async function(){
+            let msg = $(this).attr('data-mensajeInformacion');
+            $('#mensajeNoPermiteCambiar').html(msg)
+        })
+
+        // seleccionar convenio convenio-item
+        $(document).on('click', '.convenio-item', function(){
+            let data = $(this).data('rel');
+            console.log('dataConvenio', data);
+            let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
+            params.convenio = data;
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            $('#convenioModal').modal('hide');
+            location = $(this).attr('url-rel');
+        });
+
+        // seleccionar convenio convenio-Ninguno
+        $(document).on('click', '.convenio-Ninguno', function(){
+            let data = $(this).data('rel');
+            console.log('dataConvenio', data);
+            let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
+            params.convenio = {
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+                "secuenciaAfiliado" : null,
+            };
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            $('#convenioModal').modal('hide');
+            location = $(this).attr('url-rel');
+        });
+
+
+
+        // btn-pagar para redireccionar a la pagina de pago
+        $(document).on('click', '.btn-pagar', function(){
+            let data = $(this).data('rel');
+            console.log('dataPagar', data);
+            if(datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
+                // Modal de error
+                // setear el mensaje de error en mensajeError
+                $('#mensajeError').text(data.mensajePagoReserva);
+                
+                $('#ModalError').modal('show');
+                return;
+            }
+
+            let params = {}
+            params.online = data.esVirtual;
+            params.especialidad = {
+                codigoEspecialidad: data.idEspecialidad,
+                codigoPrestacion  : data.codigoPrestacion,
+                codigoServicio   : data.codigoServicio,
+                codigoTipoAtencion: data.codigoTipoAtencion,
+                esOnline : data.esVirtual,
+                nombre : data.especialidad,
+            }
+            if (datosConvenios.length > 0) {
+                params.convenio = datosConvenios[0];
+            } else {
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+            }
+
+            params.paciente = {
+                "numeroIdentificacion": data.numeroIdentificacion,
+                "tipoIdentificacion": data.tipoIdentificacion,
+                "nombrePaciente": data.nombrePaciente,
+                "numeroPaciente": data.numeroPaciente
+            }
+
+            params.reservaEdit = {
+                "estaPagada": data.estaPagada,
+                "numeroOrden": data.numeroOrden,
+                "lineaDetalleOrden": data.lineaDetalleOrden,
+                "codigoEmpresaOrden": data.codigoEmpresaOrden,
+                "idOrdenAgendable": data.idOrdenAgendable,
+                "idCita": data.idCita
+            }
+            params.origen = "inicios";
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
+        });
+
+        //cerrar el modal de politicas reuerdame
+        $(document).on('click', '#modalRecuerdame', function(){
+            console.log('click');
+            localStorage.setItem('politicaspoliticasAbiertas', true);
+            $('#modalPPD').modal('hide');
+        });
+
+        // ver tratamiento Inicio
+        $(document).on('click', '.btn-VerTratamientoInicio', function(){
+            let data = $(this).data('rel');
+            console.log('dataTratamiento', data);
+            let params = { };
+            params.tratamiento = data;
+            params.paciente = datosPaciente;
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+        });
 
     });
 
@@ -427,13 +537,6 @@ Mi Veris - Inicio
         }
     });
 
-    //cerrar el modal de politicas reuerdame
-    $(document).on('click', '#modalRecuerdame', function(){
-        console.log('click');
-        localStorage.setItem('politicaspoliticasAbiertas', true);
-        $('#modalPPD').modal('hide');
-    });
-
     function cerrarModal(){
         $('#modalPPD').modal('hide');
     }
@@ -539,6 +642,11 @@ Mi Veris - Inicio
                 ruta = "/citas-elegir-central-medica/" + tokenCita;
             }
 
+            /*
+            permiteCambiar
+            mensajeInformacion
+            */
+
             elemento += `
                 <div class="swiper-slide frank">
                     <div class="card h-100">
@@ -560,12 +668,16 @@ Mi Veris - Inicio
                                 <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
                             ` : ''}
                             <div class="mt-auto">
-                                <a href="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</a>
+                                ${citas.permiteCambiar == "S" ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
+                                ` : `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
+                                        <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
+                                    </div>`
+                                }
                                 ${citas.estaPagada === "N" ? `
                                 <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                 ` : ''}
                             </div>
-                            ${esConsultaOnline ? `
+                            ${esConsultaOnline && citas.estaPagada == "S" ? `
                                 <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
                             ` : ''}
                         </div>
@@ -683,7 +795,6 @@ Mi Veris - Inicio
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
         let url = $(this).attr('url-rel');
-
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
         if (data.estaPagada == "N"){
@@ -719,10 +830,7 @@ Mi Veris - Inicio
             llenarModalConvenios(datosConvenios, url);
 
             $('#convenioModal').modal('show');
-        } 
-
-        else{    
-        
+        }else{    
             let params = {}
             params.online = data.esVirtual;
             params.especialidad = {
@@ -737,7 +845,6 @@ Mi Veris - Inicio
             if (datosConvenios.length > 0) {
                 console.log('datosConvenio', datosConvenios);
                 // datosconvenio posicion 0
-
                 params.convenio = datosConvenios[0];
 
             } else {
@@ -771,10 +878,15 @@ Mi Veris - Inicio
                 "idCita": data.idCita
             }
             params.origen = "inicios";
-
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             
-            location = url;
+            if(data.permitePagoReserva == "S"){
+                location = url;
+            }else{
+                //data.mensajePagoReserva
+                llenarModalConvenios(datosConvenios, url);
+                $('#convenioModal').modal('show');
+            }
         }
     });
 
@@ -798,102 +910,14 @@ Mi Veris - Inicio
         });
         // agregar convenio ninguno
         elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
-                        <div class="list-group
-                        -item fs--2 rounded-3 p-2 border-0">
+                        <div class="list-group-item fs--2 rounded-3 p-2 border-0">
                             <label for="listGroupCheckableRadiosninguno" class="cursor-pointer">
-                                Ninguno
+                                NINGUNO
                             </label>
                         </div>
                     </div>`;
         divContenedor.append(elemento);
     }
-
-    // seleccionar convenio convenio-item
-    $(document).on('click', '.convenio-item', function(){
-        let data = $(this).data('rel');
-        console.log('dataConvenio', data);
-        let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
-        params.convenio = data;
-        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-        $('#convenioModal').modal('hide');
-        location = $(this).attr('url-rel');
-    });
-
-    // seleccionar convenio convenio-Ninguno
-    $(document).on('click', '.convenio-Ninguno', function(){
-        let data = $(this).data('rel');
-        console.log('dataConvenio', data);
-        let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
-        params.convenio = {
-            "permitePago": "S",
-            "permiteReserva": "S",
-            "idCliente": null,
-            "codigoConvenio": null,
-            "secuenciaAfiliado" : null,
-        };
-        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-        $('#convenioModal').modal('hide');
-        location = $(this).attr('url-rel');
-    });
-
-
-
-    // btn-pagar para redireccionar a la pagina de pago
-    $(document).on('click', '.btn-pagar', function(){
-        let data = $(this).data('rel');
-        console.log('dataPagar', data);
-        if(datosConvenios[0].permitePago == "N"){
-            // Modal de error
-            // setear el mensaje de error en mensajeError
-            $('#mensajeError').text(data.mensajePagoReserva);
-            
-            $('#ModalError').modal('show');
-            return;
-
-        }
-
-        let params = {}
-        params.online = data.esVirtual;
-        params.especialidad = {
-            codigoEspecialidad: data.idEspecialidad,
-            codigoPrestacion  : data.codigoPrestacion,
-            codigoServicio   : data.codigoServicio,
-            codigoTipoAtencion: data.codigoTipoAtencion,
-            esOnline : data.esVirtual,
-            nombre : data.especialidad,
-        }
-        if (datosConvenios.length > 0) {
-            params.convenio = datosConvenios[0];
-        } else {
-            params.convenio = {
-                "permitePago": "S",
-                "permiteReserva": "S",
-                "idCliente": null,
-                "codigoConvenio": null,
-                "secuenciaAfiliado" : null,
-            };
-        }
-
-        params.paciente = {
-            "numeroIdentificacion": data.numeroIdentificacion,
-            "tipoIdentificacion": data.tipoIdentificacion,
-            "nombrePaciente": data.nombrePaciente,
-            "numeroPaciente": data.numeroPaciente
-        }
-
-        params.reservaEdit = {
-            "estaPagada": data.estaPagada,
-            "numeroOrden": data.numeroOrden,
-            "lineaDetalleOrden": data.lineaDetalleOrden,
-            "codigoEmpresaOrden": data.codigoEmpresaOrden,
-            "idOrdenAgendable": data.idOrdenAgendable,
-            "idCita": data.idCita
-        }
-        params.origen = "inicios";
-
-        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-        location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
-    });
 
     // consultar datos de facturacion
     async function consultarDatosFacturacion(data){
@@ -909,18 +933,6 @@ Mi Veris - Inicio
         }
         return [];
     }
-
-
-    // ver tratamiento Inicio
-    $(document).on('click', '.btn-VerTratamientoInicio', function(){
-        let data = $(this).data('rel');
-        console.log('dataTratamiento', data);
-        let params = { };
-        params.tratamiento = data;
-        params.paciente = datosPaciente;
-        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-
-    });
 
 </script>
 <style>
