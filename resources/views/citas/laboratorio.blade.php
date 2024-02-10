@@ -479,11 +479,7 @@ Mi Veris - Citas - Laboratorio
         }
     }
 
-
-
-
     // funciones js 
-
     // determinar fechas caducadas
     function determinarFechasCaducadas(datos, datosTratamiento){ 
 
@@ -513,10 +509,7 @@ Mi Veris - Citas - Laboratorio
                     }
             }
         }
-
         return dataFechas;
-
-
     }
 
     // determinar fecha de caducidad encabezado
@@ -532,11 +525,8 @@ Mi Veris - Citas - Laboratorio
                     dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-success me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
                 }
             }
-
         }
-        
         return dataFechas;
-
     }
 
 
@@ -563,14 +553,14 @@ Mi Veris - Citas - Laboratorio
         let botonSolicitar;
 
         if(detalles.esPagada === "N"){
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1"><i class="bi  me-2"></i> Pagar</a>`;
+            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1 m-0 line-height-16">Pagar</a>`;
             
         }else  if (detalles.tipoServicio === "FARMACIA") {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1${detalles.aplicaSolicitud !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1 m-0 line-height-16 ${detalles.aplicaSolicitud !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else if (detalles.tipoServicio === "LABORATORIO") {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1 m-0 line-height-16 ${detalles.esAgendable !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else {
-            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1${detalles.esAgendable !== 'S' ? ' disabled' : ''}"> Agendar</a>`;
+            botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1 m-0 line-height-16 ${detalles.esAgendable !== 'S' ? ' disabled' : ''}"> Agendar</a>`;
         }
 
         return botonVer + botonSolicitar;
@@ -591,7 +581,7 @@ Mi Veris - Citas - Laboratorio
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
-                    respuestaAgenda += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuestaAgenda += ` <button type="button" class="btn text-primary-veris fw-normal fs--1 line-height-16 m-0" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
 
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                         if (datosServicio.habilitaBotonAgendar == 'S') {
@@ -608,25 +598,19 @@ Mi Veris - Citas - Laboratorio
                             };
                             params.esOnline = modalidad;
                             let urlParams = btoa(JSON.stringify(params));
-                            respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                            respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">Agendar</a>`;
                         } else {
-                            respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
-                                                    <i class="bi me-2"></i>
+                            respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 line-height-16 m-0 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
                                                     Agendar
                                                 </a>
                                                 `;
-
-                           
 
                         }
 
                     }else if (datosServicio.estado == 'ATENDIDO'){
                         respuestaAgenda = "";
-
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 m-2 btnVerOrden
-                        " data-rel='${JSON.stringify(datosServicio)}'
-                        ><i class="bi me-2"></i> Ver orden</div>`;
+                        respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden " data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
@@ -634,142 +618,108 @@ Mi Veris - Citas - Laboratorio
                         if (estado == 'REALIZADO') {
                             // clear respuesta
                             respuestaAgenda = "";
-                            
-                            respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2" 
-                                ></i> Ver orden</div>`;
+                            respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         }
                         else{
-                            respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 m-3" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                            respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
 
-                            
                             if (datosServicio.permitePago == 'S'){
                                 // mostrar boton de pagar
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Pagar</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">Pagar</a>`;
                             } 
                             if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                                 
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> ${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             } 
                             
                             if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                                 // mostrar boton de informacion
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})"></i> Información</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
                             } 
 
                         }
-                        
-                        
                     }
 
-                    
                     return respuestaAgenda;
                     break;
 
                 case "LAB":
                     let respuesta = "";
-                    respuesta += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
-
-
+                    respuesta += ` <button type="button" class="btn text-primary-veris fw-normal fs--1 line-height-16 m-0" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     if(estado == 'REALIZADO'){
                         // clear respuesta
                         respuesta = "";
-                        
-                        respuesta += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2" 
-                            ></i> Ver orden</div>`;
+                        respuesta += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     } 
                     else{
 
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 m-2
-                            "><i class="bi me-2"></i> Ver resultados</a>`;
+                            respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 line-height-16 m-0">Ver resultados</a>`;
                         } else {
                             respuesta += ``;
                         }
                         if (datosServicio.esPagada == "S") {
                             //ver informacion
-                            respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 btnInformacionLaboratorio" data-rel='${JSON.stringify(datosServicio)}'
-                            ><i class="bi me-2"></i> Información</a>`;
-                        } else{
-
-                        
-
+                            respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnInformacionLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
+                        } else {
                             //condición para 'aplicaSolicitud'
                             if (datosServicio.aplicaSolicitud == "S") {
-                                respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                            } 
-                            else if (datosServicio.permitePago == "S"){
+                                respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0"><i class="bi bi-telephone-fill me-2"></i>Solicitar</a>`;
+                            } else if (datosServicio.permitePago == "S"){
                                 let params = {};
                                 params.idPaciente = datosServicio.pacPacNumero;
                                 params.numeroOrden = datosServicio.idOrden;
                                 params.codigoEmpresa = datosServicio.codigoEmpresa;
                                 let ulrParams = btoa(JSON.stringify(params));
-                                
                                 let ruta = `/citas-laboratorio/` + "{{$tokenCita}}";
-                                
-                                respuesta += `<a href=" ${ruta}
-                                " class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                                respuesta += `<a href="${ruta}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
                             }
                         }
                     }
                     
                     return respuesta;
-
                     break;
 
                 case "RECETAS" :
 
                     let respuestaRecetas = "";
-                    
-                    respuestaRecetas += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver receta</div>`;
-
+                    respuestaRecetas += ` <button type="button" class="btn text-primary-veris fw-normal fs--1 line-height-16 m-0" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
                     if(estado == 'REALIZADO'){
                         respuestaRecetas = "";
-                        respuestaRecetas += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2" 
-                            ></i> Ver orden</div>`;
+                        respuestaRecetas += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     }
                     if(datosServicio.aplicaSolicitud == "S"){
-                        return `<a href="/farmacia-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                        return `<a href="/farmacia-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0"><i class="bi bi-telephone-fill me-2"></i>Solicitar</a>`;
                     }
                     else{
                         // return boton ver receta
-                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Ver receta</a>`;
+                        return `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">Ver receta</a>`;
                     }
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <div  class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'><i class="bi me-2"></i> Ver orden</div>`;
+                    respuestaOdontologia += ` <button type="button" class="btn text-primary-veris fw-normal fs--1 line-height-16 m-0" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     if (datosServicio.esAgendable == "N") {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 disabled"><i class="bi me-2"></i> Agendar</a>`;
-                      
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 disabled">Agendar</a>`;
                     } else {
-                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1"><i class="bi me-2"></i> Agendar</a>`;
+                        respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">Agendar</a>`;
                     }
 
                     return respuestaOdontologia;
-
                     break;
-
             }
 
         }
     }
 
-
     // mostrar informacion btnInformacionLaboratorio
-
     $(document).on('click', '.btnInformacionLaboratorio', function(){
         let datos = $(this).data('rel');
         console.log('datos', datos);
         $('#modalInformacion').modal('show');
         $('#mensajeInformacion').text(datos.mensaje);
     });
-
-    
-
-
-
-
 
     // mostrar lista de pacientes en el filtro
     function mostrarListaPacientesFiltro(){

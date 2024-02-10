@@ -40,12 +40,8 @@ Mi Veris - Citas - Detalle
                             <label class="list-group-item fs--2 rounded-3 p-2" for="listGroupCheckableRadios3">
                                 Gabriela Alarcon Tapia
                             </label>
-<<<<<<< HEAD
-                        </div>
-=======
                         </div> --}}
 
->>>>>>> developer
                     </div>
                 </div>
             </div>

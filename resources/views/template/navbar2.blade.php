@@ -63,13 +63,13 @@
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
         <div class="modal-content">
-            <div class="modal-body p-4 text-center">
-                <h4 class="mb-0">Cerrar sesión</h4>
-                <p class="mb-0">¿Estás seguro que deseas cerrar sesión?.</p>
-            </div>
-            <div class="modal-footer flex-nowrap p-0 align-items-center justify-content-center">
-                <button type="button" class="btn btn-lg btn-outline-primary-veris w-100" data-bs-dismiss="modal">No</button>
-                <a class="btn btn-lg btn-primary-veris w-100" id="logout">Si, cerrar</a>
+            <div class="modal-body p-3 text-center">
+                <h5 class="fs-24 line-height-28 my-3">Cerrar sesión</h5>
+                <p class="fs--16 line-height-20 mb-0">¿Estás seguro que deseas cerrar sesión?.</p>
+                <div class="d-flex">
+                    <button type="button" class="btn btn-lg btn-outline-primary-veris col me-1 mt-3 m-0 px-4 py-3" data-bs-dismiss="modal">No</button>
+                    <a class="btn btn-lg btn-primary-veris col ms-1 mt-3 m-0 px-4 py-3" id="logout">Si, cerrar</a>
+                </div>
             </div>
         </div>
     </div>
@@ -80,12 +80,12 @@
     <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
         <div class="modal-content">
             <div class="modal-body p-3 text-center">
-                <h1 class="modal-title fs-3 fw-medium mb-3"  id="tituloInformacionCita">{{ __('Información') }}</h1>
-                <p class="mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="https://www.veris.com.ec/politicas/" id="politicasPPD" target="_blank">políticas de privacidad de datos</a></p>
-            </div>
-            <div class="modal-footer pt-0 pb-3 px-3">
-                <button type="button" id="aceptarPDP"  class="btn btn-lg btn-primary-veris btn-primary-veris m-0 mb-3 w-100 px-4 py-3">Aceptar</button>
-                <button type="button" class="btn btn-lg m-0 w-100 shadow-none px-4 py-3" id="modalRecuerdame">Recuérdame más tarde </button>
+                <h5 class="fs-24 line-height-28 my-3"  id="tituloInformacionCita">{{ __('Información') }}</h5>
+                <p class="fs--1 line-height-16 mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="https://www.veris.com.ec/politicas/" id="politicasPPD" target="_blank">políticas de privacidad de datos</a></p>
+                <div class="d-flex flex-column">
+                    <button type="button" id="aceptarPDP" class="btn btn-lg btn-primary-veris fw-medium col fs--18 mt-3 m-0 px-4 py-3">Aceptar</button>
+                    <button type="button" class="btn btn-lg shadow-none text-primary-veris fw-medium col fs--18 mt-3 m-0 px-4 py-3" id="modalRecuerdame">Recuérdame más tarde </button>
+                </div>
             </div>
         </div>
     </div>

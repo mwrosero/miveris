@@ -134,7 +134,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     console.log(99)
                     elemento += `<div class="col-12 col-md-6">
                                     <div class="card h-100 card-central-medica" data-central-medica='${ JSON.stringify(central) }'>
-                                        <div class="card-body p--2 pb-0">
+                                        <div class="card-body p--2">
                                             <div class="row gx-2">
                                                 <div class="col-3">
                                                     <img src="${path_central}" class="card-img-top" alt="${central.nombreTipoSucursal}">
@@ -145,11 +145,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer text-end p--2">
-                                            <a href="/citas-elegir-fecha-doctor/{{$params}}"
-                                            class="btn btn-sm btn-primary-veris btn-ver-medicos">{{ __('Ver Médicos') }}</a>
+                                        <div class="card-footer text-end pt-0 pb--2 px--2">
+                                            <a href="/citas-elegir-fecha-doctor/{{$params}}" class="btn btn-sm btn-primary-veris fs--1 btn-ver-medicos">{{ __('Ver Médicos') }}</a>
                                         </div>
-
                                     </div>
                                 </div>`
                 };
