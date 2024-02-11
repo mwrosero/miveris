@@ -112,7 +112,7 @@ Mi Veris - Inicio
                                     </div>
                                 </div>
                                 <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="card-img-top" alt=""  >
+                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="card-img-top" alt="">
                                 </div>
                             </div>
                         </a>

@@ -11,12 +11,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Veris</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError" ></p>
+                <div class="modal-body text-center p-3 pb-2">
+                    <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3">Veris</h1>
+                    <p class="fs--16 fw-normal mb-3" id="mensajeError" ></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 px-4 py-3 w-100" data-bs-dismiss="modal" id="btnEntiendoError">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100" data-bs-dismiss="modal" id="btnEntiendoError">Entiendo</button>
                 </div>
             </div>
         </div>
@@ -47,14 +47,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="sinFechaDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinFechaDisponiblesLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-3">
+                <div class="modal-body p-3 pb-2">
                     <div class="text-center">
-                        <h1 class="modal-title fs-5 mb-3" id="sinFechaDisponiblesLabel">Veris</h1>
-                        <p class="mb-0">No tiene fechas disponibles.</p>
+                        <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3" id="sinFechaDisponiblesLabel">Veris</h1>
+                        <p class="fs--16 fw-normal mb-3">No tiene fechas disponibles.</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Aceptar</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</a>
                 </div>
             </div>
         </div>
@@ -63,14 +63,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" i|d="sinMedicosDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinMedicosDisponiblesLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-3">
+                <div class="modal-body p-3 pb-2">
                     <div class="text-center">
-                        <h1 class="modal-title fs-5 mb-3" id="sinMedicosDisponiblesLabel">Veris</h1>
-                        <p class="mb-0">No tiene médicos disponibles.</p>
+                        <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3" id="sinMedicosDisponiblesLabel">Veris</h1>
+                        <p class="fs--16 fw-normal mb-3">No tiene médicos disponibles.</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Aceptar</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</a>
                 </div>
             </div>
         </div>

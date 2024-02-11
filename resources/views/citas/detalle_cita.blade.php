@@ -26,29 +26,29 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Revisa tus datos') }}</h5>
     </div>
     <section class="p-3 mb-3">
-        <div class="row g-3 justify-content-center">
+        <div class="row g-4 justify-content-center">
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header bg-grayish-blue p--2">
-                        <h5 class="text-primary-veris fw-medium m-1">{{ __('Precio') }} </h5>
+                        <h5 class="text-veris-many fw-medium line-height-16 m-0">{{ __('Precio') }} </h5>
                     </div>
-                    <div class="card-body p--2 my-3">
+                    <div class="card-body py-2 px-0">
                         <div class="row gx-0 justify-content-center align-items-center box-precio">
                         </div>
                     </div>
                     {{-- <div class="card-footer d-flex justify-content-between border-top p--2" id="contentLinkPago">
                         <div class="mx-1">
-                            <p class="fs--2 mb-0 fw-medium">{{ __('¿Alguien más pagará esta cita?') }}</p>
-                            <p class="fs--2 mb-0">{{ __('Genera tu link de pago') }}</p>
+                            <p class="fs--2 line-height-16 mb-0 fw-medium">{{ __('¿Alguien más pagará esta cita?') }}</p>
+                            <p class="fs--2 line-height-16 mb-0">{{ __('Genera tu link de pago') }}</p>
                         </div>
-                        <a href="#" class="btn btn-sm btn-label-primary-veris fs--1 mx-1">{{ __('Enviar link') }}</a>
+                        <a href="#" class="btn btn-sm btn-label-primary-veris fs--1 line-height-16 ms-3 px-3 py-2">{{ __('Enviar link') }}</a>
                     </div> --}}
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header bg-grayish-blue p--2">
-                        <h5 class="text-primary-veris fw-medium m-1">{{ __('Detalles de la cita') }}</h5>
+                        <h5 class="text-veris-many fw-medium line-height-16 m-0">{{ __('Detalles de la cita') }}</h5>
                     </div>
                     <div class="card-body p--2">
                         <div class="" id="contentDetalleCita">
@@ -66,7 +66,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-12 col-md-4 text-center mt-5">
+            <div class="col-12 col-md-6 text-center mt-5">
                 {{-- <a href="#" id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100">{{ __('Pagar') }}</a> --}}
                 <button id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100 px-4 py-3 fs-5">{{ __('Pagar') }}</button>
             </div>
@@ -221,37 +221,37 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             let elem = ``;
             let descuentoLabel = ``;
+            let classNone = 'd-none';
             if(porcentajeDescuentoCopago > 0){
+                classNone = '';
                 descuentoLabel = `*Se aplicó un ${porcentajeDescuentoCopago}% ${data.data.mensajeDescuento}`;
             }
 
             if(codigoConvenio){
                 console.log('subTotal', subtotalCopagoFloat, 'valorTotal', valorTotalCopagoFloat);
-                elem += `<div class="col">
-                    <div class="text-center">
-                        <img src="${rutaImagenConvenio}" alt="" class="img-fluid" width="86" height="">
-                    </div>
-                </div>
-                <div class="col text-center">`;
+                elem += `<div class="col-3 text-center">
+                            <img src="${rutaImagenConvenio}" alt="" class="img-fluid" width="86" height="">
+                        </div>
+                        <div class="col-5 text-center">`;
 
                 if(subtotalCopagoFloat > valorTotalCopagoFloat){
-                elem +=   `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
-                        <del id="precioBase">$${valor.toFixed(2)}</del>
-                    </p>`;
+                elem +=     `<p class="text-danger fs--3 line-height-16 mb-0" id="content-precioBase">Precio normal 
+                                <del class="fs--2 line-height-16" id="precioBase">$${valor.toFixed(2)}</del>
+                            </p>`;
                 }
-                elem += `<h1 class="text-primary-veris fw-medium mb-0" id="precioTotal" style="white-space: nowrap;">$${valorTotalCopago.toFixed(2)}</h1>
-                </div>
-                <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
+                        elem += `<h1 class="text-primary-veris fw-medium fs--36 line-height-44 mb-0" id="precioTotal" style="white-space: nowrap;">$${valorTotalCopago.toFixed(2)}</h1>
+                        </div>
+                        <p class="text-center text-primary-veris fw-medium fs--2 my-2 px-3 ${classNone}" id="infoDescuento">${descuentoLabel}</p>`;
             }else{
                 elem += `<div class="col-12 text-center">`
                 if(porcentajeDescuentoCopago > 0){
-                    elem += `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
-                        <del id="precioBase">$${valor.toFixed(2)}</del>
+                    elem += `<p class="text-danger fs--3 line-height-16 mb-0" id="content-precioBase">Precio normal 
+                        <del class="fs--2 line-height-16" id="precioBase">$${valor.toFixed(2)}</del>
                     </p>`;
                 }
-                elem += `<h1 class="text-primary-veris fw-medium mb-0" id="precioTotal">$${valorTotalCopago.toFixed(2)}</h1>
+                elem += `<h1 class="text-primary-veris fw-medium fs--36 line-height-44 mb-0" id="precioTotal">$${valorTotalCopago.toFixed(2)}</h1>
                 </div>
-                <p class="text-center text-primary-veris fs--3 mb-0" id="infoDescuento">${descuentoLabel}</p>`;
+                <p class="text-center text-primary-veris fw-medium fs--2 my-2 px-3 ${classNone}" id="infoDescuento">${descuentoLabel}</p>`;
             }
 
 
@@ -261,29 +261,29 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             if(porcentajeDescuentos == 0 && permiteReserva == "S" && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
-                        <i class="fa-solid fa-circle-info text-primary-veris fs-3 mb-0 me-2"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
+                        <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
+                        <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
                     </div>`;
             }
             //Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.
             if(porcentajeDescuentos > 0 && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
-                        <i class="fa-solid fa-circle-info mb-0 me-2 text-warning"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage style="color: #0A2240;">${data.data.mensajeAlerta}</p>
+                        <i class="fa-solid fa-circle-info text-warning fs-2 p-2 me-2"></i>
+                        <p class="fs--1 line-height-16 mb-0" id="infoMessage style="color: #0A2240;">${data.data.mensajeAlerta}</p>
                     </div>`;
             }
             if(online == "S"){
                 if(dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") {
                     elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
-                            <i class="fa-solid fa-circle-info text-primary-veris fs-3 mb-0 me-2"></i>
-                            <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
+                            <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
+                            <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
                         </div>`;
                 }
             }
             if(permitePago == "N"){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
-                        <i class="fa-solid fa-circle-info text-primary-veris fs-3 mb-0 me-2"></i>
-                        <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
+                        <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
+                        <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
                     </div>`;
             }
             $('#msg-cita').append(elemMsg)
