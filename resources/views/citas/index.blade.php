@@ -15,37 +15,36 @@ Mi Veris - Citas
                 <div class="modal-header">
                     <button type="button" class="btn-close fw-medium bg-transparent me-2 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-3">
-                    <h5 class="text-center mb-3">{{ __('Modalidad de la cita') }}</h5>
+                <div class="modal-body pt-3 px-3 pb--40">
+                    <h5 class="text-center fs--20 line-height-24 mb--32">{{ __('Modalidad de la cita') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
-                            <div class="card mb-3">
-                                <a class="cursor-pointer" id="cita-presencial" >
+                            <div class="card card-border">
+                                <a class="cursor-pointer" id="cita-presencial">
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-7 col-md-7">
+                                        <div class="col-7 col-md-6">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Cita') }} <br> {{ __('presencial') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-5 col-md-4 cita-presencial">
-                                            <img src="{{ asset('assets/img/card/svg/consulta_presencial.svg') }}" class="card-img-top rounded-2" alt="{{ __('Cita presencial') }}">
+                                        <div class="col-5 col-md-auto cita-presencial">
+                                            <img src="{{ asset('assets/img/card/svg/consulta_presencial.svg') }}" class="card-img-top" alt="{{ __('Cita presencial') }}">
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         </div>
-
                         <div class="col-6 col-lg-6">
-                            <div class="card mb-3">
+                            <div class="card card-border">
                                 <a class="cursor-pointer" id="cita-virtual">
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-7 col-md-7">
+                                        <div class="col-7 col-md-6">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Cita virtual') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-5 col-md-4">
-                                            <img src="{{ asset('assets/img/card/svg/consulta_virtual.svg') }}" class="card-img-top rounded-2" alt="{{ __('Cita virtual') }}">
+                                        <div class="col-5 col-md-auto">
+                                            <img src="{{ asset('assets/img/card/svg/consulta_virtual.svg') }}" class="card-img-top" alt="{{ __('Cita virtual') }}">
                                         </div>
                                     </div>
                                 </a>

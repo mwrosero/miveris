@@ -16,12 +16,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center p-3">
-                    <h5 class="fw-medium mb-8">Tienes una <b class="text-primary-veris">{{ __('cita pendiente') }}</b> {{ __('de esta especialidad en tu tratamiento de') }}:</h5>
+                    <h5 class="fw-medium line-height-24 mb-8">Tienes una <b class="fw-medium text-primary-veris">{{ __('cita pendiente') }}</b> {{ __('de esta especialidad en tu tratamiento de') }}:</h5>
                     <div class="border rounded-3 mb-8 p--2" id="tratamiento-content">
                     </div>
-                    <p class="fw-medium mb-8">{{ __('¿Estas agendando por este motivo?') }}</p>
-                    <a href="#" type="button" id="btn-si-tratamiento" class="btn btn-primary-veris w-100 px-4 py-3 fs-5 m-0 mb-3">{{ __('Agendar esta orden') }}</a>
-                    <a href="#" type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris w-100 px-4 py-3 fs-5 m-0">{{ __('No') }}</a>
+                    <p class="fs--16 line-height-20 fw-medium mb-8">{{ __('¿Estas agendando por este motivo?') }}</p>
+                    <a href="#" type="button" id="btn-si-tratamiento" class="btn btn-primary-veris fs--18 w-100 px-4 py-3 m-0 mb-3">{{ __('Agendar esta orden') }}</a>
+                    <a href="#" type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris fs--18 w-100 px-4 py-3 m-0">{{ __('No') }}</a>
                     {{-- <button type="button" class="btn btn-outline-primary-veris w-100 mb-3" data-bs-dismiss="modal">{{ __('No') }}</button> --}}
                 </div>
             </div>
@@ -32,10 +32,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     </div>
     <section class="p-3 mb-3">
         <div class="d-flex justify-content-center">
-            <div class="col-12 col-md-4 mb-3">
+            <div class="col-12 col-md-6 mb--24">
                 <div class="input-group search-box">
-                    <span class="input-group-text bg-transparent border-0" id="search"><i class="bi bi-search"></i></span>
-                    <input type="search" class="form-control bg-transparent border-0" name="buscar" id="buscar" placeholder="Buscar especialidad" aria-describedby="buscar" />
+                    <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-especialidad"></span>
+                    <input type="search" class="form-control bg-transparent fs--16 border-0 p-3 ps-0" name="buscar" id="buscar" placeholder="Buscar especialidad" aria-describedby="buscar" />
                 </div>
             </div>
         </div>

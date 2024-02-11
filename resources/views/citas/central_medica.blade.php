@@ -15,8 +15,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     </div>
     <section class="p-3 mb-3">
         <form class="d-flex justify-content-center">
-            <div class="col-12 col-md-4 mb-4">
-                <select class="form-select form-filter border-0" name="ciudad" id="ciudad">
+            <div class="col-12 col-md-6 mb--24">
+                <select class="form-select form-filter border-0 p-3 fs--1" name="ciudad" id="ciudad">
                     {{-- <option selected disabled value="">Elegir ciudad</option>
                     <option value="">{{ __('Guayaquil') }}</option>
                     <option value="">{{ __('Quito') }}</option>
@@ -26,8 +26,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </div>
         </form>
         <div class="row gy-3 justify-content-center">
-            <div class="col-auto col-lg-10">
-                <div class="row gy-3" id="listaCentrales">
+            <div class="col-12 col-md-10">
+                <div class="row g-4" id="listaCentrales">
                     {{-- <div class="col-auto col-md-6">
                         <div class="card">
                             <div class="card-body p--2">
@@ -134,19 +134,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     console.log(99)
                     elemento += `<div class="col-12 col-md-6">
                                     <div class="card h-100 card-central-medica" data-central-medica='${ JSON.stringify(central) }'>
-                                        <div class="card-body p--2">
-                                            <div class="row gx-2">
-                                                <div class="col-3">
+                                        <div class="card-body p--2 pb-0">
+                                            <div class="d-flex mb-2">
+                                                <div class="avatar avatar-88 me-2">
                                                     <img src="${path_central}" class="card-img-top" alt="${central.nombreTipoSucursal}">
                                                 </div>
-                                                <div class="col-9">
-                                                    <h6 class="fw-medium mb-1">${central.nombreSucursal}</h6>
-                                                    <p class="fs--2">${central.direccion}</p>
+                                                <div class="col">
+                                                    <h6 class="fs--16 line-height-20 fw-medium mb-1">${central.nombreSucursal}</h6>
+                                                    <p class="fs--1 line-height-16 mb-0">${central.direccion}</p>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-footer text-end pt-0 pb--2 px--2">
-                                            <a href="/citas-elegir-fecha-doctor/{{$params}}" class="btn btn-sm btn-primary-veris fs--1 btn-ver-medicos">{{ __('Ver Médicos') }}</a>
+                                        <div class="card-footer text-end pt--20 pb--2 px--2">
+                                            <a href="/citas-elegir-fecha-doctor/{{$params}}" class="btn btn-sm btn-primary-veris border-0 px-3 py-2 fs--1 btn-ver-medicos">{{ __('Ver Médicos') }}</a>
                                         </div>
                                     </div>
                                 </div>`
