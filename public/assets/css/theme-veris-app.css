@@ -299,11 +299,11 @@ html:not([dir="rtl"]) .border-start-veris {
 
 .btn-master {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   color: #ffffff;
   background: #0071CE;
-  padding: 8px 16px;
+  padding: 16px 32px;
   border-radius: 8px;
 }
 .swiper-slide .card{
@@ -780,7 +780,9 @@ Due to the split circle of progress-left and progress right, we must use the ani
   border-top-right-radius: 50em !important;
   border-bottom-right-radius: 50em !important;
 }
-
+.text-veris-many{
+  color: #003B83 !important;
+}
 .text-opcaity {
   color: var(--bg-vris-very-dark-blue-rgba);
 }
@@ -904,6 +906,8 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .fs--16{font-size: 1rem !important;}
 .fs--18{font-size: 1.125rem !important;}
 .fs--20{font-size: 1.25rem !important;}
+.fs--28{font-size: 1.75rem !important;}
+.fs--36{font-size: 2.25rem !important;}
 .fs-18{font-size: 1.125rem;}
 .fs-20{font-size: 1.25rem;}
 .fs-24{font-size: 1.5rem;}
@@ -914,7 +918,8 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .line-height-20{line-height: 20px !important;}
 .line-height-24{line-height: 24px !important;}
 .line-height-28{line-height: 28px !important;}
-
+.line-height-36{line-height: 36px !important;}
+.line-height-44{line-height: 44px !important;}
 .p-8{padding: 2rem !important;}
 .px-8{
   padding-left: 2rem !important;
@@ -933,7 +938,9 @@ Due to the split circle of progress-left and progress right, we must use the ani
   border-top-left-radius: 24px !important;
   border-top-right-radius: 24px !important;
 }
-
+.form-factura input.border-fiord{
+  border: 1px solid #3D4E66;
+}
 .calendar-container {
   width: 300px;
   /* max-height: 135px; */
