@@ -33,8 +33,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h5 class="text-primary-veris fw-medium m-1">{{ __('Precio') }} </h5>
                     </div>
                     <div class="card-body p--2 my-3">
-                        
-                        <div class="row gx-0 justify-content-evenly align-items-center box-precio">
+                        <div class="row gx-0 justify-content-center align-items-center box-precio">
                         </div>
                     </div>
                     {{-- <div class="card-footer d-flex justify-content-between border-top p--2" id="contentLinkPago">
@@ -51,8 +50,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="card-header bg-grayish-blue p--2">
                         <h5 class="text-primary-veris fw-medium m-1">{{ __('Detalles de la cita') }}</h5>
                     </div>
-                    <div class="card-body px-2">
-                        <div class="mx-1 mt-3" id="contentDetalleCita">
+                    <div class="card-body p--2">
+                        <div class="" id="contentDetalleCita">
                             {{-- <p class="text-primary-veris fw-medium mb-0" id="nombreEspecialidad"></p>
                             <p class="fw-medium fs--1 mb-0">{{ isset($data->central) ? $data->central->nombreSucursal : 'VIRTUAL' }}</p>
                             <p class="fs--2 mb-0">{{ $data->horario->dia2 }} <b class="text-normal text-primary-veris fw-normal">{{ $data->horario->horaInicio }} {{ $meridiano }}</b></p>
@@ -61,7 +60,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <p class="fs--2 mb-0">{{ isset($data->convenio->nombreConvenio) ? $data->convenio->nombreConvenio : '' }}</p> --}}
                         </div>
                     </div>
-                    <div class="card-footer px-2 pb-2" id="msg-cita">
+                    <div class="card-footer pt-0 p--2" id="msg-cita">
                     </div>
                 </div>
             </div>
@@ -136,9 +135,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // llenar los datos en contentDetalleCita con los datos de dataCita
     function llenarDataDetallesCitas(){
-        let elem = `<p class="text-primary-veris fw-medium mb-0"  id="nombreEspecialidad">${capitalizarCadaPalabra(nombreEspecialidad)}</p>`;
+        let elem = `<p class="text-primary-veris fs--16 line-height-20 fw-medium mb-1"  id="nombreEspecialidad">${capitalizarCadaPalabra(nombreEspecialidad)}</p>`;
         if(dataCita.online == "N"){    
-            elem += `<p class="fw-medium fs--1 mb-0">${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}</p>`;
+            elem += `<p class="fw-medium fs--1 line-height-16 mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}</p>`;
         }
         let nombrePaciente;
         if(dataCita.paciente.nombrePaciente){
@@ -146,11 +145,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }else{
             nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
         }
-        elem += `<p class="fs--2 mb-0">${dataCita.horario.dia} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} - ${dataCita.horario.horaFin} ${determinarMeridiano(horaInicio)}</b></p>
-            <p class="fs--2 mb-0 text-capitalize">Dr(a) ${dataCita.horario.nombreMedico.toLowerCase()}</p>
-            <p class="fs--2 mb-0 text-capitalize">${nombrePaciente.toLowerCase()}</p>`;
+        elem += `<p class="fs--2 line-height-16 mb-1">${dataCita.horario.dia} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} - ${dataCita.horario.horaFin} ${determinarMeridiano(horaInicio)}</b></p>
+            <p class="fs--2 line-height-16 mb-1 text-capitalize">Dr(a) ${dataCita.horario.nombreMedico.toLowerCase()}</p>
+            <p class="fs--2 line-height-16 mb-1 text-capitalize">${nombrePaciente.toLowerCase()}</p>`;
         if(dataCita.convenio.codigoConvenio){
-            elem += `<p class="fs--2 mb-0 text-capitalize">${dataCita.convenio.nombreConvenio.toLowerCase()}</p>`
+            elem += `<p class="fs--2 line-height-16 mb-1 text-capitalize">${dataCita.convenio.nombreConvenio.toLowerCase()}</p>`
         }
         $('#contentDetalleCita').html(elem);
 
@@ -228,12 +227,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             if(codigoConvenio){
                 console.log('subTotal', subtotalCopagoFloat, 'valorTotal', valorTotalCopagoFloat);
-                elem += `<div class="col-5">
+                elem += `<div class="col">
                     <div class="text-center">
                         <img src="${rutaImagenConvenio}" alt="" class="img-fluid" width="86" height="">
                     </div>
                 </div>
-                <div class="col-5 text-end">`;
+                <div class="col text-center">`;
 
                 if(subtotalCopagoFloat > valorTotalCopagoFloat){
                 elem +=   `<p class="text-danger fs--3 mb-0" id="content-precioBase">Precio normal 
@@ -261,28 +260,28 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let elemMsg = ``;
 
             if(porcentajeDescuentos == 0 && permiteReserva == "S" && permitePago == "S" ){
-                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top p--2">
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                         <i class="fa-solid fa-circle-info text-primary-veris fs-3 mb-0 me-2"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
                     </div>`;
             }
             //Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.
             if(porcentajeDescuentos > 0 && permitePago == "S" ){
-                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top p--2">
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                         <i class="fa-solid fa-circle-info mb-0 me-2 text-warning"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage style="color: #0A2240;">${data.data.mensajeAlerta}</p>
                     </div>`;
             }
             if(online == "S"){
                 if(dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") {
-                    elemMsg += `<div class="d-flex justify-content-start align-items-center border-top p--2">
+                    elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                             <i class="fa-solid fa-circle-info text-primary-veris fs-3 mb-0 me-2"></i>
                             <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
                         </div>`;
                 }
             }
             if(permitePago == "N"){
-                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top p--2">
+                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                         <i class="fa-solid fa-circle-info text-primary-veris fs-3 mb-0 me-2"></i>
                         <p class="fs--1 lh-1 mb-0" id="infoMessage" style="color: #0A2240;"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
                     </div>`;

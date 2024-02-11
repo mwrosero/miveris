@@ -33,7 +33,7 @@ Mi Veris - Inicio
                 <div class="modal-body p-3">
                     <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu convenio:') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
                         </div>
                     </div>
                 </div>
