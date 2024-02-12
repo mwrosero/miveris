@@ -418,6 +418,54 @@ h1,
   filter: none;
   opacity: .5;
 }
+
+.listaPacientesFiltro .form-check-input {
+  z-index: 2;
+  margin-top: -.7em;
+}
+.listaPacientesFiltro .form-check-input{
+  border: none;
+}
+.listaPacientesFiltro .form-check-input:checked + .list-group-item {
+  border-radius: 8px;
+  border: 1px solid var(--Primario-1-Tint-20, #3394DD);
+  background: var(--Neutral-Blanco-00, #FFF);
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);
+}
+
+.listaPacientesFiltro .option-input:checked::before {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  content: '\f00c';
+  color: #0071CE;
+  font-size: 20px;
+  font-weight: bold;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Font Awesome 5 Free';
+}
+
+.listaPacientesFiltro .option-input:checked::after {
+  -webkit-animation: click-wave 0.65s;
+  -moz-animation: click-wave 0.65s;
+  animation: click-wave 0.65s;
+  background-color: transparent;
+  content: '';
+  display: block;
+  position: relative;
+}
+.listaPacientesFiltro .form-check-input:checked[type="radio"]{
+  background-image: none;
+}
+.listaPacientesFiltro .form-check-input:checked, .form-check-input[type="checkbox"]:indeterminate{
+  background-color: transparent;
+  border-color: transparent;
+}
+.listaPacientesFiltro .form-check-input:focus{
+  box-shadow: none;
+}
 .mb-8{margin-bottom: 2rem !important;}
 .mb--20{margin-bottom: 20px;}
 .mb--24{margin-bottom: 24px;}
@@ -430,8 +478,8 @@ h1,
   background: var(--bg-vris-light-grayish-blue-rgba) !important;
 }
 .progress-circle {
-  width: 64px;
-  height: 64px;
+  width: 68px;
+  height: 68px;
   /* line-height: 100%; */
   background: none;
   /* margin: 0 auto; */

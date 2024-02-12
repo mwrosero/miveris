@@ -15,8 +15,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="text-center">
                         <h1 class="modal-title fs-5 mb-3" id="metodoPagoLabel">Selecciona el método de pago</h1>
                     </div>
-                    <a href="#" id="btn-seleccionar-tarjeta" class="btn btn-lg btn-primary-veris fs--18 line-height-24 px-4 py-3 w-100 m-0 mb-3">Seleccionar tarjeta</a>
-                    <a href="#" id="btn-agregar-tarjeta" class="btn btn-lg btn-outline-primary-veris fs--18 line-height-24 px-4 py-3 w-100 m-0">Agregar otro método de pago</a>
+                    <a href="#" id="btn-seleccionar-tarjeta" class="btn btn-lg btn-primary-veris fs--18 line-height-24 py-3 w-100 m-0 mb-3">Seleccionar tarjeta</a>
+                    <a href="#" id="btn-agregar-tarjeta" class="btn btn-lg btn-outline-primary-veris fs--18 line-height-24 py-3 w-100 m-0">Agregar otro método de pago</a>
                 </div>
             </div>
         </div>
@@ -81,7 +81,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8">
                 <div class="card bg-transparent shadow-none">
-                    <div class="card-body">
+                    <div class="card-body p-0 p-md-3">
                         <form class="row g-3 form-factura needs-validation" novalidate>
                             <div class="col-md-6">
                                 <div class="row g-3">
