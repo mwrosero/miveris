@@ -29,21 +29,20 @@ Mi Veris - Buscar doctor
         </div>
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
             <form action="">
-                <h6 class="fw-light">Selecciona la especialidad</h6>
-                
-                <div class="list-group gap-2 mb-3" id="listaEspecialidades">
+                <h6 class="fs--16 line-height-20 fw-light">Selecciona la especialidad</h6>
+                <div class="list-group gap-3 mb-3 listaPacientesFiltro" id="listaEspecialidades">
                     <!-- especialidades dinamicas -->
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="fechaDesde" class="form-label">{{ __('Elige el rango de fechas') }} *</label>
-                    <input type="text" class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
+                    <label for="fechaDesde" class="fw-light fs--16 line-height-20 mb-3">{{ __('Elige el rango de fechas') }}</label>
+                    <input type="text" class="form-control fs--1 p-3 bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
                 </div>
                 <div class="col-md-12 mb-5">
-                    <input type="text" class="form-control bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
+                    <input type="text" class="form-control fs--1 p-3 bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
                 </div>
                 <div class="col-md-12 mb-3">
-                    <button class="btn btn-primary-veris w-100 mt-5 mb-3 mx-0 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>
-                    <button class="btn text-primary w-100 mb-3 mx-0" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><i class="bi bi-trash me-2" ></i> Limpiar filtros</button>
+                    <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>
+                    <button class="btn text-primary w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><i class="bi bi-trash me-2" ></i> Limpiar filtros</button>
                 </div>
             </form>
         </div>
@@ -53,10 +52,10 @@ Mi Veris - Buscar doctor
     </div>
     <section class="p-3 pt-0 mb-3">
         <form class="d-flex justify-content-center">
-            <div class="col-12 col-md-4 my-3">
+            <div class="col-12 col-md-6 my-3">
                 <div class="input-group search-box">
-                    <span class="input-group-text bg-transparent border-0" id="search"><i class="bi bi-search"></i></span>
-                    <input type="search" class="form-control bg-transparent border-0" name="search" id="searchDoctor" placeholder="Buscar" aria-describedby="search" />
+                    <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-especialidad"></span>
+                    <input type="search" class="form-control bg-transparent fs--16 border-0 p-3 ps-0" name="search" id="searchDoctor" placeholder="Buscar" aria-describedby="search" />
                 </div>
             </div>
         </form>
@@ -143,27 +142,28 @@ Mi Veris - Buscar doctor
         console.log(endpoint);
         const data = await call({ endpoint, method: "GET", showLoader: false });
         dataEspecialidades = data.data;
-        
-        if (data.code == 200){
-
-            if (data.data.length == 0){
+        if (data.code == 200) {
+            if (data.data.length == 0) {
                 $('#noHayDoctores').removeClass('d-none');
             }
             console.log('especialidades', data.data);
             let html = $('#listaEspecialidades');
             html.empty();
-            let firstItem = true;
+            let idUnico = 1; // Inicializar el contador de IDs únicos
+            let isFirstElement = true; // Variable para identificar el primer elemento
             let elemento = '';
             dataEspecialidades.forEach(element => {
-                elemento += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                    <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" value="${element.nombreEspecialidad}" ${firstItem ? 'checked' : ''} data-rel='${ JSON.stringify(element) }'>
-                                    <span class="text-veris fw-medium">
-                                        ${capitalizarElemento(element.nombreEspecialidad)}
-                                        <small class="fs--2 d-block fw-normal text-body-secondary">${capitalizarElemento(element.nombreSucursal)}</small>
-                                    </span>
-                                </label>`;
-                
-                firstItem = false;
+                let checkedAttribute = isFirstElement ? 'checked' : ''; // Establecer 'checked' para el primer elemento
+                isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
+
+                let idElemento = `listGroupRadios-${idUnico++}`; // Generar el ID único para este elemento
+                elemento += `<div class="position-relative">
+                                <input class="form-check-input option-input position-absolute top-50 start-0 ms-3" type="radio" name="listGroupRadios" id="${idElemento}" data-rel='${JSON.stringify(element)}' value="${element.nombreEspecialidad}" ${checkedAttribute} />
+                                <label class="list-group-item p-3 ps-5 bg-white rounded-3" for="${idElemento}">
+                                    <p class="text-veris fs--16 line-height-20 fw-medium mb-0">${capitalizarElemento(element.nombreEspecialidad)}</p>
+                                    <span class="fs--1 line-height-16 d-block fw-normal text-body-secondary">${capitalizarElemento(element.nombreSucursal)}</span>
+                                </label>
+                            </div>`;
             });
             html.append(elemento);
         }
