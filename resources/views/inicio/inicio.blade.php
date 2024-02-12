@@ -248,7 +248,7 @@ Mi Veris - Inicio
         });
 
         // seleccionar convenio convenio-Ninguno
-        $(document).on('click', '.convenio-Ninguno', function(){
+        $(document).on('click', '.convenio-ninguno', function(){
             let data = $(this).data('rel');
             console.log('dataConvenio', data);
             let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
@@ -898,21 +898,20 @@ Mi Veris - Inicio
         let elemento = '';
         data.forEach((convenios) => {
             console.log('convenioss', convenios);
-            elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}'
-            class="convenio-item">
-                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+            elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}' class="convenio-item mb-2">
+                                    <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
-                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
-                                            ${convenios.nombreConvenio}
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16">
+                                            ${capitalizarCadaPalabra(convenios.nombreConvenio)}
                                         </label> 
                                     </div>
                                 </div>`;
         });
         // agregar convenio ninguno
-        elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
-                        <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                            <label for="listGroupCheckableRadiosninguno" class="cursor-pointer">
-                                NINGUNO
+        elemento += `<div data-rel='ninguno' class="convenio-ninguno" url-rel='${url}' >
+                        <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                            <label for="listGroupCheckableRadiosninguno" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                Ninguno
                             </label>
                         </div>
                     </div>`;

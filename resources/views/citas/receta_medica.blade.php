@@ -259,7 +259,7 @@ Mi Veris - Citas - Receta médica
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-center mb-3">
-                                            <div class="col-12 col-md-10 col-lg-8">
+                                            <div class="col-12 col-md-10 col-lg-9">
                                                 <div class="row g-3" id="cardTratamientoLaboratorio">
                                                     <!-- items -->
                                                     `;
@@ -347,7 +347,7 @@ Mi Veris - Citas - Receta médica
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-center mb-3">
-                                            <div class="col-12 col-md-10 col-lg-8">
+                                            <div class="col-12 col-md-10 col-lg-9">
                                                 <div class="row g-3" id="cardTratamientoLaboratorio">
                                                     <!-- items -->
                                                     <div class="col-12 col-md-6">`;
