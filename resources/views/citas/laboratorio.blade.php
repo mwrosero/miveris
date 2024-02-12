@@ -168,7 +168,6 @@ Mi Veris - Citas - Laboratorio
 </script>
 
 <script>
-    
     // variables globales
     let datosLaboratorio = [];
     let identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
@@ -216,8 +215,6 @@ Mi Veris - Citas - Laboratorio
 
         if (data.code == 200){
 
-        
-
             if(estado == 'PENDIENTE'){
                 console.log('entrando a pendiente');
                 if (data.code == 200) {
@@ -236,7 +233,7 @@ Mi Veris - Citas - Laboratorio
                         }
                         
                         
-                    }else{
+                    } else {
                         if (admin === 'S') {
                             datosLaboratorio = data.data.items;
                             console.log('datosLaboratorio',datosLaboratorio);
@@ -279,12 +276,11 @@ Mi Veris - Citas - Laboratorio
                                                             ${determinarFechaCaducidadEncabezado(detalles, laboratorio)}
                                                         </div>
 
-                                                       <div class="d-flex justify-content-between align-items-center mt-2">
+                                                        <div class="d-flex justify-content-between align-items-center mt-2">
                                                             <div class="avatar me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                             </div>
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
-                                                                
                                                             <div>
                                                                 ${determinarCondicionesBotones(detalles, estado)}
                                                             </div>
@@ -310,11 +306,8 @@ Mi Veris - Citas - Laboratorio
                         return data;
                     } 
                 }
-            }
-            else if(estado == 'REALIZADO'){
+            } else if(estado == 'REALIZADO'){
                 console.log('entrando a realizado');
-                
-                
                 if (data.code == 200) {
                     if(data.data.items.length == 0){
                         console.log('entrando a realizado vacio');
@@ -329,8 +322,7 @@ Mi Veris - Citas - Laboratorio
                             $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
                             $('#mensajeNoTienesImagenesProcedimientosRealizados').addClass('d-none');
                         }
-                        
-                    }else{
+                    } else {
                         if (admin === 'S'){
                             console.log('entrando a realizado lleno');
                             datosLaboratorio = data.data.items;
@@ -394,14 +386,11 @@ Mi Veris - Citas - Laboratorio
                             let html = $('#contenedorTratamientosImagenesRealizados');
                             html.empty();
                             $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
-
                         }
-
                     } 
                     return data;
                 } 
             }
-            
         }
 
         if (data.code != 200) {
@@ -482,31 +471,25 @@ Mi Veris - Citas - Laboratorio
     // funciones js 
     // determinar fechas caducadas
     function determinarFechasCaducadas(datos, datosTratamiento){ 
-
         let dataFechas = ``;
-
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
-
-            
             if (datos.estado == "PENDIENTE_AGENDAR") {
                     
                 
             }
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
-
                 dataFechas = `<h6 class="card-title fw-medium fs--2 text-dark-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
                                 <p class="fw-normal fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
                                 <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
                                 <p class="fs--2 mb-0">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
             }
-        }
-        else{
+        } else {
             if (datos.estado == "PENDIENTE_AGENDAR") {
-                    if (datos.esCaducado == "S") {
-                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                    } else {
-                        dataFechas = `` ;
-                    }
+                if (datos.esCaducado == "S") {
+                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                } else {
+                    dataFechas = `` ;
+                }
             }
         }
         return dataFechas;
@@ -532,7 +515,6 @@ Mi Veris - Citas - Laboratorio
 
     // determinar si es comprar o por comprar
     function determinarEstado(estado , estadoTratamiento){
-
         if (estadoTratamiento == 'REALIZADO') {
             return `<i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span>`;
         } else {
@@ -542,10 +524,7 @@ Mi Veris - Citas - Laboratorio
                 return `<i class="fa-solid fa-circle me-2"></i>Por comprar`;
             }
         }
-        
     }
-
-    
 
     // determinar si es receta medica o no botones
     function determinarbotonesRecetaMedica(detalles) {
@@ -723,26 +702,22 @@ Mi Veris - Citas - Laboratorio
 
     // mostrar lista de pacientes en el filtro
     function mostrarListaPacientesFiltro(){
-
         let data = familiar;
-
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
         let isFirstElement = true; // Variable para identificar el primer elemento
-
         data.forEach((Pacientes) => {
-            let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
+            let checkedAttribute = isFirstElement ? 'checked' : ''; // Establecer 'checked' para el primer elemento
             isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
 
-            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
-                                <span class="text-veris fw-medium">
-                                    
-                                    ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
-                                    <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
-                                </span>
-                            </label>`;
+            let elemento = `<div class="position-relative">
+                                <input class="form-check-input option-input position-absolute top-50 start-0 ms-3" type="radio" name="listGroupRadios" id="listGroupRadios-${Pacientes.numeroPaciente}" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
+                                <label class="list-group-item p-3 ps-5 bg-white rounded-3" for="listGroupRadios-${Pacientes.numeroPaciente}">
+                                    <p class="text-veris fs--16 line-height-20 fw-medium mb-0">${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}</p>
+                                    <span class="fs--1 line-height-16 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</span>
+                                </label>
+                            </div>`;
             divContenedor.append(elemento);
         });
     }
@@ -751,8 +726,6 @@ Mi Veris - Citas - Laboratorio
     $('#aplicarFiltros').on('click', async function() {
         const contexto = $(this).data('context');
         aplicarFiltros(contexto);
-
-
 
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
@@ -764,7 +737,7 @@ Mi Veris - Citas - Laboratorio
         const elemento = document.getElementById('nombreFiltro');
         if (texto == 'YO') {
             elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-        } else{
+        } else {
             elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
         }
 
@@ -792,7 +765,6 @@ Mi Veris - Citas - Laboratorio
         const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
         await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
     });
-
 
     // boton ver orden
     $(document).on('click', '.btn.text-primary-veris.fw-normal.fs--1', function(){
