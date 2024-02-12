@@ -16,11 +16,11 @@ Mi Veris - Citas - Laboratorio
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError"></p>
+                    <h1 class="modal-title fs-24 fw-medium my-3">{{ __('Veris') }}</h1>
+                    <p class="fs--1 fw-normal line-height-16" id="mensajeError"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                 </div>
             </div>
         </div>
@@ -30,12 +30,11 @@ Mi Veris - Citas - Laboratorio
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3">Información</h1>
-                    <p class="fs--1 fw-normal" id="mensajeInformacion" >
-                </p>
+                    <h1 class="modal-title fs-24 fw-medium my-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal line-height-16" id="mensajeInformacion"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                 </div>
             </div>
         </div>
@@ -248,18 +247,18 @@ Mi Veris - Citas - Laboratorio
                                 elementos += `<div class="col-12 mb-4">
                                                 <div class="card">
                                                     <div class="card-body py-2 px-3">
-                                                        <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                        <h5 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
-                                                        <p class="fs--2 fw-medium mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                        <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                        <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                                                        <p class="fs--3 line-height-12 text-primary-veris mb-1">Tratamiento</p>
+                                                        <h5 class="text-primary-veris fs--18 line-height-24 fw-medium mb-1">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
+                                                        <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
+                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
+                                                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-center mb-3">
-                                            <div class="col-12 col-md-10 col-lg-8">
+                                            <div class="col-12 col-md-10 col-lg-9">
                                                 <div class="row g-0 g-md-3" id="cardTratamientoLaboratorio">
                                                     <!-- items -->
                                                     `;
@@ -269,15 +268,15 @@ Mi Veris - Citas - Laboratorio
                                                 <div class="card">
                                                     <div class="card-body p--2">
                                                         <div class="d-flex justify-content-between align-items-center">
-                                                            <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                            <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada , estado)}</span>
+                                                            <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                            <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada , estado)}</span>
                                                         </div>
                                                         <div class="d-flex justify-content-between align-items-center">
                                                             ${determinarFechaCaducidadEncabezado(detalles, laboratorio)}
                                                         </div>
 
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
-                                                            <div class="avatar me-2">
+                                                            <div class="avatar avatar-sm me-2">
                                                                 <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                             </div>
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
@@ -337,17 +336,17 @@ Mi Veris - Citas - Laboratorio
                                 elementos += `<div class="col-12 mb-4">
                                                 <div class="card">
                                                     <div class="card-body py-2 px-3">
-                                                        <p class="fs--3 text-primary-veris mb-0">Tratamiento</p>
-                                                        <h5 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
-                                                        <p class="fs--2 fw-medium mb-0">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                        <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                        <p class="fw-normal fs--2 mb-0">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                        <p class="fw-normal fs--2 mb-0">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                                                        <p class="fs--3 line-height-12 text-primary-veris mb-1">Tratamiento</p>
+                                                        <h6 class="text-primary-veris fs--18 line-height-24 fw-medium mb-1">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
+                                                        <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
+                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
+                                                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="d-flex justify-content-center mb-3">
-                                                <div class="col-12 col-md-10 col-lg-8">
+                                                <div class="col-12 col-md-10 col-lg-9">
                                                     <div class="row g-3" id="cardTratamientoLaboratorio">
                                                         <!-- items -->
                                                         `;
@@ -357,14 +356,12 @@ Mi Veris - Citas - Laboratorio
                                                     <div class="card">
                                                         <div class="card-body p--2">
                                                             <div class="d-flex justify-content-between align-items-center">
-                                                                <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                                <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada, estado)}</span>
-
+                                                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                                <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada, estado)}</span>
                                                             </div>
-
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
                                                             <div class="d-flex justify-content-between align-items-center mt-2">
-                                                                <div class="avatar me-2">
+                                                                <div class="avatar avatar-sm me-2">
                                                                     <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                                 </div>
                                                                 <div>
@@ -400,6 +397,7 @@ Mi Veris - Citas - Laboratorio
 
         }
     }
+
     // consultar grupo familiar
     async function consultarGrupoFamiliar() {
         let args = [];
@@ -442,7 +440,6 @@ Mi Veris - Citas - Laboratorio
     }
 
     // descargar documento pdf
-     
     async function descargarDocumentoPdf(datos){
         console.log('datosPdf', datos);
         console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
@@ -479,9 +476,9 @@ Mi Veris - Citas - Laboratorio
             }
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
                 dataFechas = `<h6 class="card-title fw-medium fs--2 text-dark-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
-                                <p class="fw-normal fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
-                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
-                                <p class="fs--2 mb-0">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
+                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.fechaOrden)}</p>
+                                <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
+                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
             }
         } else {
             if (datos.estado == "PENDIENTE_AGENDAR") {
@@ -520,7 +517,7 @@ Mi Veris - Citas - Laboratorio
         } else {
             if(estado == "S"){
                 return `<i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success">Comprada</span>`;
-            }else{
+            } else {
                 return `<i class="fa-solid fa-circle me-2"></i>Por comprar`;
             }
         }
@@ -530,10 +527,8 @@ Mi Veris - Citas - Laboratorio
     function determinarbotonesRecetaMedica(detalles) {
         let botonVer = `<a href="#" class="btn text-primary-veris fw-normal fs--1">Ver ${detalles.tipoServicio === "LABORATORIO" ? "orden" : "receta"}</a>`;
         let botonSolicitar;
-
         if(detalles.esPagada === "N"){
             botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1 m-0 line-height-16">Pagar</a>`;
-            
         }else  if (detalles.tipoServicio === "FARMACIA") {
             botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1 m-0 line-height-16 ${detalles.aplicaSolicitud !== 'S' ? ' disabled' : ''}"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
         } else if (detalles.tipoServicio === "LABORATORIO") {
@@ -541,20 +536,16 @@ Mi Veris - Citas - Laboratorio
         } else {
             botonSolicitar = `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1 m-0 line-height-16 ${detalles.esAgendable !== 'S' ? ' disabled' : ''}"> Agendar</a>`;
         }
-
         return botonVer + botonSolicitar;
     }
 
 
     // determinar condiciones de los botones 
-
     function determinarCondicionesBotones(datosServicio, estado) {
         let services = datosServicio;
-
         if (datosServicio.length == 0) {
             return `<div></div>`;
-        }
-        else{
+        } else {
 
             switch (datosServicio.tipoCard) {
                 case "AGENDA" :
@@ -579,17 +570,14 @@ Mi Veris - Citas - Laboratorio
                             let urlParams = btoa(JSON.stringify(params));
                             respuestaAgenda += `<a href="/citas-elegir-central-medica/${urlParams}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">Agendar</a>`;
                         } else {
-                            respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 line-height-16 m-0 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
-                                                    Agendar
-                                                </a>
-                                                `;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 line-height-16 m-0 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">Agendar</a>`;
 
                         }
 
                     }else if (datosServicio.estado == 'ATENDIDO'){
                         respuestaAgenda = "";
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden " data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
 
                     }else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
@@ -607,7 +595,6 @@ Mi Veris - Citas - Laboratorio
                                 respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">Pagar</a>`;
                             } 
                             if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
-                                
                                 respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             } 
                             
@@ -615,7 +602,6 @@ Mi Veris - Citas - Laboratorio
                                 // mostrar boton de informacion
                                 respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
                             } 
-
                         }
                     }
 
@@ -629,9 +615,7 @@ Mi Veris - Citas - Laboratorio
                         // clear respuesta
                         respuesta = "";
                         respuesta += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                    } 
-                    else{
-
+                    } else {
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
                             respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 line-height-16 m-0">Ver resultados</a>`;
@@ -656,12 +640,9 @@ Mi Veris - Citas - Laboratorio
                             }
                         }
                     }
-                    
                     return respuesta;
                     break;
-
                 case "RECETAS" :
-
                     let respuestaRecetas = "";
                     respuestaRecetas += ` <button type="button" class="btn text-primary-veris fw-normal fs--1 line-height-16 m-0" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
                     if(estado == 'REALIZADO'){
@@ -684,7 +665,6 @@ Mi Veris - Citas - Laboratorio
                     } else {
                         respuestaOdontologia += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">Agendar</a>`;
                     }
-
                     return respuestaOdontologia;
                     break;
             }
