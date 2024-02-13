@@ -42,7 +42,7 @@ $data = json_decode(base64_decode($params));
         </div>
         <div class="offcanvas-footer px-4">
             <div class="col-md-12">
-                <button class="btn btn-primary-veris w-100 py-3 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+                <button class="btn btn-primary-veris w-100 fs--18 line-height-24 py-3 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
