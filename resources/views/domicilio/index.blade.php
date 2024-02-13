@@ -11,7 +11,7 @@ Mi Veris - Citas - Servicios a domicilio
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-bold mb-3">Solicitud exitosa</h1>
+                    <h1 class="modal-title fs-5 fw-bold my-3">Solicitud exitosa</h1>
                     <p class="fs--1 fw-normal" id="mensaje"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -25,7 +25,7 @@ Mi Veris - Citas - Servicios a domicilio
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-bold mb-3">Solicitud fallida</h1>
+                    <h1 class="modal-title fs-5 fw-bold my-3">Solicitud fallida</h1>
                     <p class="fs--1 fw-normal" id="mensajeError"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -37,64 +37,65 @@ Mi Veris - Citas - Servicios a domicilio
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Servicios a domicilio') }}</h5>
     </div>
-    <section class="pt-3 px-0 px-md-3 pb-0">
+    <section class="pt-5 px-0 px-md-3 pb-0">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-5">
-                    <div class="card">
-                        <div class="card-body">
-                            <form class="row g-3">
-                                <div class="d-flex justify-content-between">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
-                                        <label class="form-check-label cursor-pointer fw-bold" for="inlineRadio1">Laboratorio</label>
+                <div class="col-12 col-md-8 col-lg-5">
+                    <form class="">
+                        <div class="card card-border">
+                            <div class="card-body p-3">
+                                <div class="row g-3 px-2">
+                                    <div class="d-flex justify-content-between pt-3">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+                                            <label class="form-check-label cursor-pointer fw-medium fs--16" for="inlineRadio1">Laboratorio</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                            <label class="form-check-label cursor-pointer fw-medium fs--16" for="inlineRadio2">Farmacia</label>
+                                        </div>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                        <label class="form-check-label cursor-pointer fw-bold" for="inlineRadio2">Farmacia</label>
+                                    <div class="col-md-12">
+                                        <label for="paciente" class="form-label fs--1 fw-medium">Selecciona el paciente</label>
+                                        <select class="form-select fs--1 p-3 bg-neutral" name="paciente" id="paciente" >
+                                            <option selected disabled value="">Elegir...</option>
+                                            <option value="">...</option>
+                                            <option value="">...</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Elegir un paciente
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="paciente" class="form-label fs--1 fw-medium">Selecciona la ciudad</label>
+                                        <select class="form-select fs--1 p-3 bg-neutral" name="ciudad" id="ciudad" required>
+                                            <option selected disabled value="">Elegir...</option>
+                                            <option value="">...</option>
+                                            <option value="">...</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Elegir una ciudad
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control fs--1 p-3 bg-neutral" name="telefono" id="telefono" value="" placeholder="Teléfono móvil" maxlength="10" required />
+                                        <div class="invalid-feedback">
+                                            Ingrese un numero de telefono
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="text" class="form-control fs--1 p-3 bg-neutral"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
+                                        <div class="invalid-feedback">
+                                            Ingrese una direccion
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <label for="paciente" class="form-label fw-bold">Selecciona el paciente</label>
-                                    <select class="form-select bg-neutral" name="paciente" id="paciente" >
-                                        <option selected disabled value="">Elegir...</option>
-                                        <option value="">...</option>
-                                        <option value="">...</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Elegir un paciente
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="paciente" class="form-label fw-bold">Selecciona la ciudad</label>
-                                    <select class="form-select bg-neutral" name="ciudad" id="ciudad" required>
-                                        <option selected disabled value="">Elegir...</option>
-                                        <option value="">...</option>
-                                        <option value="">...</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Elegir una ciudad
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control bg-neutral" name="telefono" id="telefono" value="" placeholder="Teléfono móvil" maxlength="10" required />
-                                    <div class="invalid-feedback">
-                                        Ingrese un numero de telefono
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <input type="text" class="form-control bg-neutral"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
-                                    <div class="invalid-feedback">
-                                        Ingrese una direccion
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-lg btn-primary-veris w-100" type="submit" id="btnSolicitarLlamada" disabled><i class="bi bi-telephone-fill me-2" 
-                                        ></i> Solicitar llamada</button>
-                                </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                        <div class="col-12 mt-5">
+                            <button class="btn btn-lg btn-primary-veris w-100 px-4 py-3" type="submit" id="btnSolicitarLlamada" disabled><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -104,20 +105,15 @@ Mi Veris - Citas - Servicios a domicilio
 @push('scripts')
 <script>
     // variables globales
-
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         // consultar grupo familiar
         await consultarGrupoFamiliar();
         // consultar ciudades
         await consultarCiudades();
-        
     });
 
-    
-
     // funciones asincronas 
-
     // consultar grupo familiar
     async function consultarGrupoFamiliar() {
         let args = [];
@@ -140,7 +136,6 @@ Mi Veris - Citas - Servicios a domicilio
     }
 
     // consultar ciudades
-
     async function consultarCiudades() {
         let args = [];
         canalOrigen = _canalOrigen
@@ -206,9 +201,7 @@ Mi Veris - Citas - Servicios a domicilio
             document.getElementById("mensajeError").innerHTML = data.message;
         }
         return data;
-
     }
-
 
     //Crea una nueva solicitud de orden de laboratorio a domicilio.
     async function crearSolicitudLaboratorioDomicilio() {
@@ -250,12 +243,9 @@ Mi Veris - Citas - Servicios a domicilio
             document.getElementById("mensajeError").innerHTML = data.message;
         }
         return data;
-
     }
 
-
     // funciones JS
-
     $("form").on('submit', async function(e) {
         e.preventDefault(); // Evita el comportamiento predeterminado de envío del formulario
         // recibir los valores del checkbox

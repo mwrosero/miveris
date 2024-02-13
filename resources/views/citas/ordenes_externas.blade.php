@@ -15,13 +15,13 @@ Mi Veris - Órdenes externas
     <div class="modal fade" id="nuevaOrdenExternaModal" tabindex="-1" aria-labelledby="nuevaOrdenExternaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <p class="fw-medium">María</p>
-                    <p class="fs--1 mb-0">{{ __('¿Deseas el servicio a domicilio?') }}</p>
+                <div class="modal-body text-center p-3 pb-0">
+                    <h5 class="fs-24 fw-medium line-height-28 my-3">María</h5>
+                    <p class="fs--1 line-height-16 mb-3">{{ __('¿Deseas el servicio a domicilio?') }}</p>
                 </div>
                 <div class="modal-footer justify-content-center pt-0 pb-3 px-3">
-                    <a  class="btn btn-primary-veris" id="btnNo">{{ __('No') }}</a>
-                    <a  class="btn btn-primary-veris" id="btnSi">{{ __('Si') }}</a>
+                    <a  class="btn btn-primary-veris col-4 fs--18 line-height-24 mx-2 px-4 py-3" id="btnNo">{{ __('No') }}</a>
+                    <a  class="btn btn-primary-veris col-4 fs--18 line-height-24 mx-2 px-4 py-3" id="btnSi">{{ __('Si') }}</a>
                 </div>
             </div>
         </div>
@@ -30,25 +30,28 @@ Mi Veris - Órdenes externas
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3">Solicitud fallida</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError"></p>
+                <div class="modal-body text-center p-3 pb-0">
+                    <h5 class="fs-24 fw-medium line-height-28 my-3">Solicitud fallida</h5>
+                    <p class="fs--1 line-height-16 mb-3" id="mensajeError"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Órdenes externas') }}</h5>
     </div>
     <section class="p-3 pt-0 mb-3">
         <div class="row justify-content-center">
-            <div class="text-center my-3">
-                <button type="button" class="btn btn-primary-veris px-lg-4" data-bs-toggle="modal" data-bs-target="#nuevaOrdenExternaModal">
-                    {{ __('Nueva orden externa') }}
-                </button>
+            <div class="col-12 col-md-4">
+                <div class="text-center my-3">
+                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3 fs--18 fw-medium" data-bs-toggle="modal" data-bs-target="#nuevaOrdenExternaModal">
+                        {{ __('Nueva orden externa') }}
+                    </button>
+                </div>
             </div>
             <div class="mx-n4 px-2 mx-lg-n6 px-lg-6 bg-white mb-3">
                 <!-- filtro -->
@@ -56,7 +59,7 @@ Mi Veris - Órdenes externas
                 @include('components.offCanvaHC', ['context' => 'contextoLimpiarFiltros'])
             </div>
             <div class="row gy-3 justify-content-center">
-                <div class="col-12 col-md-10 col-lg-8">
+                <div class="col-12 col-md-10 col-lg-9">
                     <div class="row g-3" id="ordenesExternas">
                         <!-- items dinamicos -->
                     </div>
@@ -150,7 +153,6 @@ Mi Veris - Órdenes externas
     });
 
     // funciones asyncronas
-
     async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
@@ -184,7 +186,6 @@ Mi Veris - Órdenes externas
         if(dataConvenio.code == 200){
             datosConvenios = dataConvenio.data;
         }
-       
         return dataConvenio;
     }
 
@@ -201,9 +202,7 @@ Mi Veris - Órdenes externas
             tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
         }
 
-
         args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/listaSolicitudes?canalOrigen=APP_CMV&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${codigoUsuario}&tipoIdentificacion=${tipoIdentificacion}&esExterna=S`;
-        
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -221,14 +220,14 @@ Mi Veris - Órdenes externas
                 console.log(data.data);
 
                 data.data.forEach((ordenes) => {
-
-                    elemento += `<div class="col-12 col-md-6">
+                    elemento += `
+                    <div class="col-12 col-md-6">
                         <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
-                            <div class="card-body">
-                                <h6 class="fw-medium mb-0">Orden externa laboratorio ${ordenes.codigoSolicitud}</h6>
-                                <p class="fs--1 mb-0"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>
-                                <p class="text-dark fw-medium fs--1 mb-2">${convertirFecha(ordenes.dia)} <span style="color: #80BC00">${ordenes.hora}</span></p>
-                                <div class="d-flex justify-content-between align-items-center mt-2">
+                            <div class="card-body p--2">
+                                <h6 class="fs--16 line-height-20 fw-medium mb-1">Orden externa laboratorio ${ordenes.codigoSolicitud}</h6>
+                                <p class="fs--1 line-height-16 fw-normal mb-1"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>
+                                <p class="fs--1 line-height-16 text-dark fw-medium mb-1">${convertirFecha(ordenes.dia)} <span style="color: #80BC00">${ordenes.hora}</span></p>
+                                <div class="d-flex justify-content-between align-items-center pt-3">
                                     ${determinarEstadoOrden(ordenes)}                                    
                                     ${determinarBotonesPagarSolicitar(ordenes)}
                                 </div>
@@ -282,15 +281,14 @@ Mi Veris - Órdenes externas
         let elemento = '';
         if (data.codigoEstado == 'REV') {
             // color amariilo
-            elemento = `<span class="text-warning fw-medium fs--1"><i class="fa-solid fa-circle me-2"></i>${data.estadoSolicitud}</span>`;
-        } else{
-            elemento = `<span class="text-lime-veris fs--1"><i class="fa-solid fa-circle me-2"></i>${data.estadoSolicitud}</span>`;
+            elemento = `<span class="text-warning fw-normal fs--1 px-3 py-2"><i class="fa-solid fa-circle me-2"></i>${data.estadoSolicitud}</span>`;
+        } else {
+            elemento = `<span class="text-lime-veris fw-normal fs--1 px-3 py-2"><i class="fa-solid fa-circle me-2"></i>${data.estadoSolicitud}</span>`;
         }
-            
         return elemento;
     }
 
-     function convertirFecha(fechaOriginal) {
+    function convertirFecha(fechaOriginal) {
         try {
             const meses = {
                 '01': 'ENE', '02': 'FEB', '03': 'MAR', '04': 'ABR',
@@ -352,8 +350,8 @@ Mi Veris - Órdenes externas
     }
 
 
-     // mostrar lista de pacientes en el filtro
-     function mostrarListaPacientesFiltro(){
+    // mostrar lista de pacientes en el filtro
+    function mostrarListaPacientesFiltro(){
 
         let data = familiar;
 
@@ -381,9 +379,6 @@ Mi Veris - Órdenes externas
     $('#aplicarFiltros').on('click', async function(){
         const contexto = $(this).data('context');
         aplicarFiltrosOrdenesExternas(contexto);
-
-       
-        
         // Obtener el texto completo de la opción seleccionada data-rel
         let texto = $('input[name="listGroupRadios"]:checked').data('rel');
         console.log('texto', texto);
@@ -393,8 +388,6 @@ Mi Veris - Órdenes externas
         // colocar el nombre del filtro
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
-        
-        
     });
     
     // limpiar filtros
@@ -472,15 +465,14 @@ Mi Veris - Órdenes externas
             if(data.permitePago == 'S'){
                 if(data.aplicoDomicilio == "N"){
                     ruta = `/citas-datos-facturacion/` + "{{ $tokenCita }}";
-                    elemento = `<div url-rel="${ruta}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-pagar btn-primary-veris fs--1">Pagar</div>`;
+                    elemento = `<button type="button" url-rel="${ruta}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-pagar btn-primary-veris fs--1 line-height-16 fw-medium px-3 py-2">Pagar</button>`;
                 }
                 
             }
             if(data.aplicoDomicilio == "S"){
-                elemento = `<div url-rel="/citas-elegir-fecha-doctor/{{ $tokenCita }}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-solicitar btn-primary-veris fs--1">Solicitar</div>`;
+                elemento = `<button type="button" url-rel="/citas-elegir-fecha-doctor/{{ $tokenCita }}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-solicitar btn-primary-veris fs--1 line-height-16 fw-medium px-3 py-2">Solicitar</button>`;
             }
         }
-        
         return elemento;
     }
 

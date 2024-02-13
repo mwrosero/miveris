@@ -1,6 +1,6 @@
 <!--off canva filtro-->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroTratamientos" aria-labelledby="filtroTratamientosLabel">
-    <div class="offcanvas-header py-2">
+    <div class="offcanvas-header py-3 px-4">
         <h5 class="offcanvas-title fs--20 line-height-24" id="filtroTratamientosLabel">Filtros</h5>
         <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atrás</b></button>
     </div>

@@ -69,8 +69,8 @@ Mi Veris - Citas - Terapia física
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes órdenes de terapia</h5>
-                                    <p>En esta sección podrás revisar tus órdenes de terapia física</p>
+                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes órdenes de terapia</h5>
+                                    <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus órdenes de terapia física</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-blue">
                                             <img src="{{ asset('assets/img/svg/muletas.svg') }}" alt="muletas" class="rounded-circle">
@@ -87,8 +87,8 @@ Mi Veris - Citas - Terapia física
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes permisos de administrador</h5>
-                                    <p>Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
+                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes permisos de administrador</h5>
+                                    <p class="fs--16 line-height-20 mb-4">Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
                                     <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
                                 </div>
                             </div>
@@ -106,8 +106,8 @@ Mi Veris - Citas - Terapia física
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes órdenes de terapia realizadas</h5>
-                                    <p>En esta sección podrás revisar tus órdenes de terapia física realizadas</p>
+                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes órdenes de terapia realizadas</h5>
+                                    <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus órdenes de terapia física realizadas</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-blue">
                                             <img src="{{ asset('assets/img/svg/muletas.svg') }}" alt="muletas" class="rounded-circle">
@@ -124,8 +124,8 @@ Mi Veris - Citas - Terapia física
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes permisos de administrador</h5>
-                                    <p>Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
+                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes permisos de administrador</h5>
+                                    <p class="fs--16 line-height-20 mb-4">Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
                                     <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
                                 </div>
                             </div>
@@ -271,8 +271,8 @@ Mi Veris - Citas - Terapia física
                                                     <div class="card">
                                                         <div class="card-body p--2">
                                                             <div class="d-flex justify-content-between align-items-center">
-                                                                <h6 class="text-primary-veris fs--1 fw-medium mb-0">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                                <span class="fs--2 text-warning-veris fw-medium">${determinarEstado(detalles.esPagada , estado)}</span>
+                                                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                                <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada , estado)}</span>
                                                             </div>
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
                                                             <div class="d-flex justify-content-between align-items-center mt-2">
