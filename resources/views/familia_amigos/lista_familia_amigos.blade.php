@@ -8,19 +8,19 @@ Mi Veris - Citas - Familia y amigos
     <div class="modal fade" id="eliminarFamiliarModal" tabindex="-1" aria-labelledby="eliminarFamiliarModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-body p-3">
+                <div class="modal-body p-3 pb-0">
+                    <div class="avatar avatar-md mx-auto mb-3">
+                        <img src="{{asset('assets/img/svg/ifon-tria.svg')}}" alt="">
+                    </div>
                     <div class="text-center">
-                        <i class="bi bi-exclamation-triangle-fill fs-2 text-danger"></i>
-                        <h5 class="mb-3">Eliminar familiar</h5>
-                        <p class="fs--2 mb-0">¿Deseas eliminar a <b class="fw-bold" id="nombreFamiliar">
-                            
-                        </b> de tu lista?</p>
+                        <h5 class="fw-medium line-height-24 mb-3">Eliminar familiar</h5>
+                        <p class="fs--1 mb-3">¿Deseas eliminar a <b class="fw-medium" id="nombreFamiliar"></b> de tu lista?</p>
                         <input type="hidden" id="idRelacion">
                     </div>
                 </div>
-                <div class="modal-footer justify-content-center pt-0 pb-3 px-3">
-                    <button type="button" class="btn text-danger" id="eliminarFamiliar">Eliminar</button>
-                    <button type="button" class="btn text-primary" data-bs-dismiss="modal">Cancelar</button>
+                <div class="modal-footer justify-content-center pt-0 p-3">
+                    <button type="button" class="btn text-danger fs--18 line-height-24 m-0 px-4 py-3" id="eliminarFamiliar">Eliminar</button>
+                    <button type="button" class="btn text-primary fs--18 line-height-24 m-0 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@ Mi Veris - Citas - Familia y amigos
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-bold m-0 mt-3">Persona eliminada de tu grupo</p>
+                    <p class="fs--1 fw-medium m-0 mt-3">Persona eliminada de tu grupo</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
@@ -52,19 +52,17 @@ Mi Veris - Citas - Familia y amigos
                         <div class="card-body p-0">
                             <div class="text-center d-none" id="noPeopleAdded">
                                 <i class="bi bi-person" style="font-size: 128px;"></i>
-                                <p class="fw-bold">Aún no tiene personas agregadas</p>
+                                <p class="fw-medium">Aún no tiene personas agregadas</p>
                             </div>
                             <div class="card-footer p-0 mb-3">
-                                <a href="{{route('familia')}}" class="btn btn-primary-veris m-0 w-100 py-3">Agregar</a>
+                                <a href="{{route('familia')}}" class="btn btn-primary-veris fs--18 line-height-24 rounded-3 m-0 w-100 px-4 py-3">Agregar</a>
                             </div>
                             <div class="d-flex flex-column flex-md-row gap-4 align-items-center justify-content-center">
-                                <div class="list-group list-group-radio d-grid gap-2 border-0 w-100" id="familia-lista">
+                                <div class="list-group list-group-radio d-grid gap-3 border-0 w-100" id="familia-lista">
                                     <!-- Puedes agregar familias dinámicamente aquí desde JavaScript -->
                                 </div>
                             </div>
-                            
                         </div>
-                       
                     </div>
                 </div>
             </div>
@@ -128,7 +126,6 @@ Mi Veris - Citas - Familia y amigos
         args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo/${idRelacion}`
         args["method"] = "DELETE";
         args["showLoader"] = true;
-
         console.log('endpoint', args["endpoint"]);
         const data = await call(args);
         console.log('data', data);
@@ -140,27 +137,24 @@ Mi Veris - Citas - Familia y amigos
         return data;
     }
 
-
     // funciones jquery
     function mostrarDatosEnDiv() {
         const data = familiar;
         const divContenedor = document.getElementById('familia-lista');
-
         // Limpiar el contenido actual
         divContenedor.innerHTML = '';
-
         // Iterar sobre los datos y crear elementos para cada familiar
         data.forEach(familiar => {
-            let elem = `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 bg-white px-2">
+            let elem = `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
                             <div class="col-auto">
-                                <p class="fs--2 fw-bold mb-0" id="nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
-                                <p class="fs--3 mb-0" id="parentezco">${capitalizarElemento(familiar.parentesco)}</p>
+                                <p class="text-veris fs--2 fw-medium line-height-16 mb-1" id="nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
+                                <p class="fs--3 line-height-12 mb-1" id="parentezco">${capitalizarElemento(familiar.parentesco)}</p>
                             </div>
                             <div class="d-flex">
                                 <div class="btn px-1 text-danger shadow-none eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}" nombre-familiar="${familiar.primerNombre} ${familiar.primerApellido}">
-                                    <i class="bi bi-trash"></i>
+                                    <img src="{{asset('assets/img/svg/trash.svg')}}" class="p-1" width="24" alt="eliminar familiar medico">
                                 </div>
-                                <a href='{{ route("familia.datosFamiliar") }}'; class="btn px-1 text-primary" id="enlaceDetalles" 
+                                <a href='{{ route("familia.datosFamiliar") }}'; class="btn p-1 text-primary" id="enlaceDetalles" 
                                 onclick="localStorage.setItem('primerNombreFamiliar', '${familiar.primerNombre}');
                                 localStorage.setItem('primerApellidoFamiliar', '${familiar.primerApellido}');
                                 localStorage.setItem('codigoParentesco', '${familiar.codigoParentesco}');
