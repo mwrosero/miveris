@@ -154,7 +154,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
-        $('#totalInfo').html(`$${dataCita.facturacion.totales.total}`);
+        if(dataCita.reserva){
+            if (dataCita.reserva.aplicaProntoPago == "N") {
+                window.addEventListener("beforeunload", beforeUnloadHandler);
+            }
+        }
+        $('#totalInfo').html(`$${dataCita.facturacion.totales.total.toFixed(2)}`);
         //https://api-phantomx.veris.com.ec/digitalestest/v1/seguridad/parametrosNuvei?codigoAplicacion=MI_VERIS_WEB
         let credenciales = await obtenerCredenciales();
         console.log(credenciales)
@@ -352,6 +357,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     function guardarData(){
+        window.removeEventListener("beforeunload", beforeUnloadHandler);
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>

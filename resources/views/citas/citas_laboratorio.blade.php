@@ -127,11 +127,9 @@ Mi Veris - Citas - Citas Laboratorio
                 });
 
                 let elementototal = $('#Subtotal');
-                elementototal.text("$" +
-                    element.subtotal);
+                elementototal.text("$" + element.subtotal);
                 let elementototal2 = $('#btntotal');
-                elementototal2.text( "$" +
-                    element.total);
+                elementototal2.text( "$" + element.total);
             });
 
             elementodetallesOrdenLaboratorio.append(elementos);
@@ -162,6 +160,7 @@ Mi Veris - Citas - Citas Laboratorio
             }
         })
         $('#Subtotal').html("$" + total.toFixed(2));
+        $('#btntotal').html("$" + total.toFixed(2));
     }
 
     function guardarPrestacionesStorage() {

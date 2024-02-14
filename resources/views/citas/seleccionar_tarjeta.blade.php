@@ -73,7 +73,12 @@ Mi Veris - Citas - Selecciona tu tarjeta
     let dataCita = JSON.parse(local);
 
     document.addEventListener("DOMContentLoaded", async function () {
-        $('#total').html(`$${dataCita.facturacion.totales.total}`);
+        if(dataCita.reserva){
+            if (dataCita.reserva.aplicaProntoPago == "N") {
+                window.addEventListener("beforeunload", beforeUnloadHandler);
+            }
+        }
+        $('#total').html(`$${dataCita.facturacion.totales.total.toFixed(2)}`);
         await cargarListaTarjetas();
 
         $('body').on('change', 'input[name="cardWallet"]', function() {
@@ -134,6 +139,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
 
         if (data.code == 200){
             console.log(data.data);
+            window.removeEventListener("beforeunload", beforeUnloadHandler);
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
                 guardarData();
