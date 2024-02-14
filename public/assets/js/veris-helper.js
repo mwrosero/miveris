@@ -37,8 +37,7 @@ async function call(args){
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
             }
-            if(!args.dismissAlert && data.code== 400){
-                modalError400
+            if(!args.dismissAlert && data.code == 400){
                 $('#mensaje_400').html(data.message);
                 var myModal = new bootstrap.Modal(document.getElementById('modalError400'));
                 myModal.show();
@@ -709,3 +708,11 @@ function capitalizarPalabrasUnidasPorGuion(cadena) {
 function agregarEspacios(cadena) {
     return cadena.replace(/\//g, ' / ');
 }
+
+function beforeUnloadHandler(event){
+    // const beforeUnloadHandler = (event) => {
+    // Recommended
+    event.preventDefault();
+    // Included for legacy support, e.g. Chrome/Edge < 119
+    event.returnValue = true;
+};
