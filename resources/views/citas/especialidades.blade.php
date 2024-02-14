@@ -87,6 +87,27 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 }
             });
         });
+
+        $('body').on('click', '#btn-si-tratamiento', async function(){
+            dataCita.tratamiento = JSON.parse($(this).attr("data-rel"));
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+        })
+
+        var $enlace = $('#btn-si-tratamiento');
+
+        // Maneja el evento de clic en el enlace
+        $enlace.on('click', function(event) {
+            // Previene el comportamiento predeterminado del enlace
+            event.preventDefault();
+
+            // Establece un retraso de 2 segundos antes de redirigir
+            setTimeout(function() {
+                // Obtiene la URL del enlace
+                var url = $enlace.attr('href');
+                // Redirige a la URL después del retraso
+                window.location.href = url;
+            }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
+        });
     });
 
     async function consultarEspecialidades(){
@@ -165,10 +186,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         
         if (data.code == 200 && data.data != null){
-            let urlParamsNo = encodeURIComponent(btoa(JSON.stringify(params)));
             $("#btn-no-tratamiento").attr("href",path_url+"/"+ "{{ $params }}" );
             params.tratamiento = data.data;
-            let urlParamsSi = encodeURIComponent(btoa(JSON.stringify(params)));
+            let urlParamsSi = JSON.stringify(data.data);
+            $("#btn-si-tratamiento").attr("data-rel", urlParamsSi);
             $("#btn-si-tratamiento").attr("href",path_url+"/"+ "{{ $params }}" );
 
             $('#tratamiento-content').empty();
