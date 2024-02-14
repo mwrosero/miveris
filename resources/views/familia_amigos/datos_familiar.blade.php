@@ -25,7 +25,7 @@ Mi Veris - Citas - Familia y amigos
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-4">
-                <ul class="list-group">
+                <ul class="list-group mb-3">
                     <li class="list-group-item border-0 d-flex justify-content-between align-items-center p-2">
                         <div class="mx-auto">
                             <p class="fs--2 mb-0">¿Deseas asignar a esta persona como administrador de tu cuenta?</p>
@@ -36,15 +36,13 @@ Mi Veris - Citas - Familia y amigos
                     </li>
                 </ul>
                 <div class="card mb-4">
-                    <div class="card-body py-3">
-                        
+                    <div class="card-body p-3">
                         <div class="col-md-12">
-                            <p class="fs--1 mb-0">Cédula: <b class="fw-normal" id="numeroIdentificacion"></b></p>
+                            <p class="fs--1 my-3">Cédula: <b class="fw-normal" id="numeroIdentificacion"></b></p>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12 my-3">
                             <label for="tipoParentesco" class="form-label">{{ __('Selecciona el tipo de relación que tienes con esta persona') }} *</label>
-                            <select class="form-select form-filter" id="tipoParentesco" required>
-                                
+                            <select class="form-select form-filter fs--1 line-height-16 p-3" id="tipoParentesco" required>
                             </select>
                             <div class="invalid-feedback">
                                 Elegir el tipo de parentesco.
@@ -53,7 +51,7 @@ Mi Veris - Citas - Familia y amigos
                     </div>
                 </div>
                 <div class="mx-auto mx-lg-3">
-                    <button class="btn btn-primary-veris w-100 py-3" type="button" id="btnGuardar">Guardar</button>
+                    <button class="btn btn-primary-veris w-100 fs--18 line-height-24 rounded-3 py-3" type="button" id="btnGuardar">Guardar</button>
                 </div>
             </div>
         </div>

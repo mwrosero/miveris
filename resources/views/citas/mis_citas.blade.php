@@ -10,70 +10,54 @@ Mi Veris - Citas - Mis citas
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
-<!-- Modal Convenios -->
+<div class="flex-grow-1 container-p-y pt-0">
+    <!-- Modal Convenios -->
     <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
                 <div class="modal-header d-none">
                     <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-3 pt-4">
-                    <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
-                    <div class="row gx-2 justify-content-between align-items-center">
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
-                            
+                <div class="modal-body p-3">
+                    <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu convenio:') }}</h5>
+                    <div class="row g-3 justify-content-between align-items-center">
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer px-3 pb-3">
-                    <button type="button" class="btn fw-normal m-0" data-bs-dismiss="modal">Cancelar</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn fw-normal fs--16 line-height-20 m-0 px-3 py-2" data-bs-dismiss="modal" style="color: #6A7D8E;">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
-<!-- Modal de error -->
-<div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-body text-center px-2 pt-3 pb-0">
-                <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Veris</h1>
-                <p class="fs--1 fw-normal" id="mensajeError" >
-            </p>
-            </div>
-            <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+    
+    <!-- Modal de error -->
+    <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
+                    <p class="fs--2 fw-normal" id="mensajeError"></p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="flex-grow-1 container-p-y pt-0">
+
     <!-- offcanva ver pdf -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="verPdf" aria-labelledby="verPdfLabel">
-        <div class="offcanvas-header py-2">
-            <h5 class="offcanvas-title" id="verPdfLabel">Mis documentos</h5>
+        <div class="offcanvas-header py-3 px-4">
+            <h5 class="offcanvas-title fs--20 line-height-24" id="verPdfLabel">Mis documentos</h5>
             <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atrás</b></button>
         </div>
         <br>
-        <br>
-        <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
+        <div class="offcanvas-body px-3 pt--2" style="background: rgba(249, 250, 251, 1);">
             <div>
-                <div class="list-group gap--2 mb-3 verPdf">
-                    <button class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
-                        <span class="text-veris fw-medium">
-                            RECOMENDACIONES
-                        </span>
-                        <i class="bi bi-download ms-auto"></i>
-                    </button>
+                <div class="list-group gap-3 mb-3 verPdf">
                 </div>
-                <div class="list-group gap--2 mb-3 verPdf">
-                    <button class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
-                        <span class="text-veris fw-medium">
-                            FACTURA
-                        </span>
-                        <i class="bi bi-download ms-auto"></i>
-                    </button>
-                </div>
-                
             </div>
         </div>
     </div>
@@ -96,8 +80,10 @@ Mi Veris - Citas - Mis citas
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade mt-3 show active" id="pills-actuales" role="tabpanel" aria-labelledby="pills-actuales-tab" tabindex="0">
                     <!-- botn de agendar -->
-                    <div class="text-center">
-                        <a href="/citas" class="btn btn-primary-veris px-lg-5 mb-4 px-5 p-3">Agendar cita</a>
+                    <div class="d-flex justify-content-center align-items-center my-4 px-2">
+                        <div class="col-12 col-md-4">
+                            <a href="/citas" class="btn btn-primary-veris w-100 fs--18 line-height-24 px-4 py-3">Agendar cita</a>
+                        </div>
                     </div>
                     <div class="d-flex justify-content-center mb-4 px-2">
                         <div class="col-12 col-md-10 col-lg-8">
@@ -212,9 +198,7 @@ Mi Veris - Citas - Mis citas
     }
 
     //funciones asincronas
-
     // obtener historial de citas
-
     async function obtenerHistorialCitas(fechaDesde, fechaHasta, pacienteSeleccionado , esAdmin, estadoCitas) {
         console.log(fechaDesde, fechaHasta);
         let args = [];
@@ -223,8 +207,6 @@ Mi Veris - Citas - Mis citas
         let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
         if (!Date.parse(fechaDesde) || !Date.parse(fechaHasta)) {
             console.log('Fechas inválidas');
-            
-            
             args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion} `; 
         } else {
             console.log('si hay fechas');
@@ -233,7 +215,6 @@ Mi Veris - Citas - Mis citas
             args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&desde=${fechaDesde}&hasta=${fechaHasta}`;
         }
         
-
         // args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
         console.log('argsss', args["endpoint"]);
@@ -243,28 +224,19 @@ Mi Veris - Citas - Mis citas
         console.log('respuesta', data);
 
         if (data.code == 200){
-            
-
             if (data.data == null || data.data.length == 0) {
                 console.log('no hay citass');    
                 // clear div historialCitas
                 $('#historialCitas').empty();
                 $('#mensajeNoHistorialCitas').removeClass('d-none');
-
-
-
-            } else{
+            } else {
                 $('#mensajeNoCita').addClass('d-none');
                 // llenar div historialCitas
-
-
                 let historialCitas = $('#historialCitas');
                 historialCitas.empty();
 
                 // forEach de data.data
-
                 data.data.forEach((historial) => {
-
                     let ruta = '';
                         if (historial.esVirtual == "S") {
                             ruta = "/citas-elegir-fecha-doctor/" + "{{ $tokenCita }}" 
@@ -276,20 +248,18 @@ Mi Veris - Citas - Mis citas
                                             <div class="card">
                                                 <div class="card-body p--2">
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <h6 class="text-primary-veris fw-medium mb-0">${capitalizarElemento(historial.nombreEspecialidad)}</h6>
+                                                        <h6 class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarElemento(historial.nombreEspecialidad)}</h6>
                                                         ${determinarMensajeEstadoCita(historial.mensajeEstado)}
                                                     </div>
-                                                    <p class="fw-medium fs--2 mb-0">${capitalizarElemento(historial.nombreSucursal)}</p>
-                                                    <p class="fw-normal fs--2 mb-0"> ${historial.dia}<b class="hora-cita fw-normal text-primary-veris"> ${determinarAmPm(historial.horaInicio)}</b></p>
-                                                    <p class="fw-normal fs--2 mb-0">Dr(a) ${capitalizarElemento(historial.nombreProfesional)}</p>
-                                                    <p class="fw-normal fs--2 mb-0">${capitalizarElemento(historial.nombrePaciente)}</p>
+                                                    <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(historial.nombreSucursal)}</p>
+                                                    <p class="fw-normal fs--2 line-height-16 mb-1"> ${historial.dia}<b class="hora-cita fw-normal text-primary-veris"> ${determinarAmPm(historial.horaInicio)}</b></p>
+                                                    <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(historial.nombreProfesional)}</p>
+                                                    <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(historial.nombrePaciente)}</p>
                                                     <div class="d-flex justify-content-end align-items-center mt-3">
                                                         <div>
-                                                            <div class="btn btn-sm btn-outline-primary-veris shadow-none btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}
-                                                            ><i class="bi bi-file-earmark-pdf"></i> Ver PDF</div>
+                                                            <button type="button" class="btn btn-sm btn-outline-primary-veris shadow-none btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>
                                                             <a href=${quitarComillas(historial.urlEncuesta)} class="btn btn-sm btn-outline-primary-veris shadow-none">Calificar</a>
-                                                            <a href="${ruta}" class="btn btn-sm btn-primary-veris shadow-none btn-CambiarFechaCitaHistorial" data-rel='${JSON.stringify(historial)}'
-                                                            >Reagendar</a>
+                                                            <a href="${ruta}" class="btn btn-sm btn-primary-veris shadow-none btn-CambiarFechaCitaHistorial" data-rel='${JSON.stringify(historial)}'>Reagendar</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -297,14 +267,9 @@ Mi Veris - Citas - Mis citas
                                         </div>`;
 
                     historialCitas.append(element);
-
                 });
             }
-            
-            
-
         }
-
     }
 
     async function obtenerCitas(fechaDesde, fechaHasta, pacienteSeleccionado , esAdmin, estadoCitas) {
@@ -326,18 +291,14 @@ Mi Veris - Citas - Mis citas
         console.log('citas',data);
 
         if (data.code == 200){
-
             if (data.data.length == 0) {
                 // clear div citasActuales
-
                 $('#citasActuales').empty();
                 $('#mensajeNoCita').removeClass('d-none');
-            } else{
-
+            } else {
                 // let citasActuales = $('#citasActuales');
                 // citasActuales.empty();
                 $('#mensajeNoCita').addClass('d-none');
-
                 const divContenedor = $('#citasActuales');
                 divContenedor.empty();
                 let elemento = '';
@@ -375,7 +336,7 @@ Mi Veris - Citas - Mis citas
                                     <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
                                     <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
                                 </div>
-                                <div class="card-footer pt-0 pb-3 px-3 d-flex ${classElem} align-items-center">
+                                <div class="card-footer pt-0 p--2 d-flex ${classElem} align-items-center">
                                     ${citas.estaPagada === "N" ? `
                                         <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
                                     ` : ''}
@@ -397,11 +358,8 @@ Mi Veris - Citas - Mis citas
                         </div>`;
                 });
                 divContenedor.append(elemento);
-
             }
-
         }
-
     }
 
     // consultar grupo familiar
@@ -449,9 +407,6 @@ Mi Veris - Citas - Mis citas
                 divContenedor.append(elemento);
             });
         }
-
-
-
         return data;
     }
 
@@ -497,15 +452,10 @@ Mi Veris - Citas - Mis citas
         }
     }
 
-
-
     // funciones js
-
     // determinar boton de cita
-
     function determinarBotonCita(cita) {
         let boton = '';
-
         if (cita.permiteCambiar == 'N') {
             boton += ``;
         } else if (cita.permiteCambiar == 'S') {
@@ -517,15 +467,11 @@ Mi Veris - Citas - Mis citas
         } else if (cita.pagado == 'N') {
             boton += ``;
         }
-
         return boton;
-
     }
 
     // determinar mensaje estado cita
-
     function determinarMensajeEstadoCita(mensajeEstado) {
-
         // caso null
         if (mensajeEstado == null) {
             return '';
@@ -543,33 +489,28 @@ Mi Veris - Citas - Mis citas
         return mensaje;
     }
 
-
-     // mostrar lista de pacientes en el filtro
+    // mostrar lista de pacientes en el filtro
     function mostrarListaPacientesFiltro(){
-
         let data = familiar;
-
         let divContenedor = $('.listaPacientesFiltro');
         divContenedor.empty(); // Limpia el contenido actual
 
         let isFirstElement = true; // Variable para identificar el primer elemento
 
         data.forEach((Pacientes) => {
-            let checkedAttribute = isFirstElement ? 'checked' : 'unchecked'; // Establecer 'checked' para el primer elemento
+            let checkedAttribute = isFirstElement ? 'checked' : ''; // Establecer 'checked' para el primer elemento
             isFirstElement = false; // Asegurar que solo el primer elemento sea 'checked'
 
-            let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                                <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroIdentificacion}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
-                                <span class="text-veris fw-medium">
-                                    
-                                    ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
-                                    <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
-                                </span>
-                            </label>`;
+            let elemento = `<div class="position-relative">
+                                <input class="form-check-input option-input position-absolute top-50 start-0 ms-3" type="radio" name="listGroupRadios" id="listGroupRadios-${Pacientes.numeroPaciente}" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroIdentificacion}" esAdmin= ${Pacientes.esAdmin} ${checkedAttribute}>
+                                <label class="list-group-item p-3 ps-5 bg-white rounded-3" for="listGroupRadios-${Pacientes.numeroPaciente}">
+                                    <p class="text-veris fs--16 line-height-20 fw-medium mb-0">${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}</p>
+                                    <span class="fs--1 line-height-16 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</span>
+                                </label>
+                            </div>`;
             divContenedor.append(elemento);
         });
     }
-
 
     // aplicar filtros
     $('#aplicarFiltros').on('click', async function(){
@@ -588,21 +529,17 @@ Mi Veris - Citas - Mis citas
 
     });
 
-
-
-
     // limpiar filtros
     $('#btnLimpiarFiltros').on('click', async function(){
-    let contexto = $(this).data('context');
-    if (contexto === 'contextoLimpiarFiltros') {
-        console.log('exitoss');
-        $('input[name="listGroupRadiosI"]').prop('checked', false);
-        $('input[name="listGroupRadiosI"]').first().prop('checked', true);
-        $('#fechaDesde').val('');
-        $('#fechaHasta').val('');
-        // await obtenerTratamientos();
-    }
-
+        let contexto = $(this).data('context');
+        if (contexto === 'contextoLimpiarFiltros') {
+            console.log('exitoss');
+            $('input[name="listGroupRadiosI"]').prop('checked', false);
+            $('input[name="listGroupRadiosI"]').first().prop('checked', true);
+            $('#fechaDesde').val('');
+            $('#fechaHasta').val('');
+            // await obtenerTratamientos();
+        }
     });
 
     // formatear fecha
@@ -639,7 +576,6 @@ Mi Veris - Citas - Mis citas
         return horaFormateada;
     }
 
-
     // ver pdf offcanvas
     $(document).on('click', '.btnVerPdf', async function() {
         let data = $(this).data('rel');
@@ -647,8 +583,6 @@ Mi Veris - Citas - Mis citas
         data = JSON.parse(atob(data));
         await obtenerListaDocumentos(data);
     });
-
-
 
     // setear los valores de la cita en localstorage
     $(document).on('click', '.btn-CambiarFechaCita', function(){
@@ -752,7 +686,6 @@ Mi Veris - Citas - Mis citas
         }
     });
 
-
     // consultar convenios y llenar el modal de convenios
     function llenarModalConvenios(data, url){
         let divContenedor = $('#listaConvenios');
@@ -760,27 +693,28 @@ Mi Veris - Citas - Mis citas
         let elemento = '';
         data.forEach((convenios) => {
             console.log('convenioss', convenios);
-            elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}'
-            class="convenio-item">
-                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
-                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
-                                            ${convenios.nombreConvenio}
-                                        </label> 
-                                    </div>
-                                </div>`;
-            // agregar convenio ninguno
-            elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
+            elemento += `
+                        <div data-rel='${JSON.stringify(convenios)}' url-rel='${url}' class="convenio-item">
                             <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                                <label for="listGroupCheckableRadiosParticular" class="cursor-pointer">
-                                    NINGUNO
-                                </label>
+                                <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
+                                    ${convenios.nombreConvenio}
+                                </label> 
                             </div>
                         </div>`;
+                                
+            // agregar convenio ninguno
+            elemento += `
+                        <a href="${url}" class="d-block convenio-ninguno" data-rel='ninguno' id="convenioNinguno">
+                            <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                                <label class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                    Ninguno
+                                </label> 
+                            </div>
+                        </a>`;
         });
         divContenedor.append(elemento);
     }
-
 
     // seleccionar convenio convenio-item
     $(document).on('click', '.convenio-item', function(){
@@ -794,7 +728,7 @@ Mi Veris - Citas - Mis citas
     });
 
     // seleccionar convenio convenio-Ninguno
-    $(document).on('click', '.convenio-Ninguno', function(){
+    $(document).on('click', '.convenio-ninguno', function(){
         let data = $(this).data('rel');
         console.log('dataConvenio', data);
         let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
@@ -809,11 +743,6 @@ Mi Veris - Citas - Mis citas
         $('#convenioModal').modal('hide');
         location = $(this).attr('url-rel');
     });
-
-
-
-
-
 
     // setear los valores de la cita historial en localstorage
     // setear los valores de la cita en localstorage
@@ -877,7 +806,6 @@ Mi Veris - Citas - Mis citas
             $('#convenioModal').modal('show');
         }
     });
-
 
     // servicio para consultar convenios
     async function consultarConvenios(datos) {
@@ -957,13 +885,6 @@ Mi Veris - Citas - Mis citas
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
         location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
     });
-
-
-
-
-
-
-
 
 </script>
 @endpush

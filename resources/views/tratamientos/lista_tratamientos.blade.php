@@ -42,7 +42,7 @@ $data = json_decode(base64_decode($params));
         </div>
         <div class="offcanvas-footer px-4">
             <div class="col-md-12">
-                <button class="btn btn-primary-veris w-100 py-3 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+                <button class="btn btn-primary-veris w-100 fs--18 line-height-24 py-3 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
@@ -197,18 +197,23 @@ $data = json_decode(base64_decode($params));
     </section>
     <section class="p-0 px-md-3">
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue" id="tituloTratamientoPendiente" style="display: none;">{{ __('Pendientes') }}</h5>
-        <div class="row g-0 justify-content-center">
-            <div class="col-12 col-md-6 col-lg-5">
-                <div class="px-2" id="contenedorTratamientoPendiente">
-                    <!-- items -->
+        <div class="container mb-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-5">
+                    <div class="row g-3 justify-content-center" id="contenedorTratamientoPendiente">
+                        <!-- items -->
+                    </div>
                 </div>
             </div>
         </div>
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue" id="tituloTratamientoRealizado" style="display: none;">{{ __('Realizados') }}</h5>
-        <div class="row g-0 justify-content-center">
-            <div class="col-12 col-md-6 col-lg-5">
-                <div class="px-2" id="contenedorTratamientoRealizado">
-                    <!-- items -->
+        <div class="container mb-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-5">
+                    <div class="row g-3 justify-content-center" id="contenedorTratamientoRealizado">
+                        <!-- items -->
+                        
+                    </div>
                 </div>
             </div>
         </div>
@@ -250,7 +255,6 @@ $data = json_decode(base64_decode($params));
                 window.location.href = url;
             }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
         });
-
     });
 
     // llenar el porcentaje de la barra con los datos del tratamiento
@@ -264,8 +268,6 @@ $data = json_decode(base64_decode($params));
         $('#totalTratamientoRealizados').empty();
         $('#totalTratamientoEnviados').append(datosTratamiento.totalTratamientoEnviados);
         $('#totalTratamientoRealizados').append(datosTratamiento.totalTratamientoRealizados);
-
-
     }
     
     // funciones asyncronas
@@ -287,11 +289,11 @@ $data = json_decode(base64_decode($params));
                 
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
-            let elemento = `<h5 class="card-title card-g text-primary-veris mb-0">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
-                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
-                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
-                                <p class="fs--2 mb-0">Tratamiento enviado: <b class="fw-light text-primary-veris" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
-                                <p class="fs--2 mb-0">${data.data.datosConvenio.nombreConvenio}</p> `;
+            let elemento = `<h5 class="card-title card-g text-primary-veris line-height-24 mb-1">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
+                                <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
+                                <p class="fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
+                                <p class="fs--2 line-height-16 mb-1">Tratamiento enviado: <b class="fw-light text-primary-veris" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
+                                <p class="fs--2 line-height-16 mb-1">${capitalizarElemento(data.data.datosConvenio.nombreConvenio)}</p> `;
             datosTratamientoCard.append(elemento);
             // mostrar el porcentaje
             document.getElementById("progress-circle").setAttribute("data-percentage", porcentaje);
@@ -305,16 +307,13 @@ $data = json_decode(base64_decode($params));
             else {
                 document.getElementById("cardPromocion").style.display = "none";
             }
-        }
-        else if (data.code != 200) {
+        } else if (data.code != 200) {
             console.log('errorza');
             // mostrar modal de error
             $('#mensajeError').text(data.message);
             $('#mensajeSolicitudLlamadaModalError').modal('show');
-
         }
         return data;
-
     }
 
     // cambiar el estado del tratamiento a realizada
@@ -364,10 +363,7 @@ $data = json_decode(base64_decode($params));
             // mostrar modal de error
             $('#mensajeError').text(data.message);
             $('#mensajeSolicitudLlamadaModalError').modal('show');
-
         }
-        
-
     }
 
     // recibir fechas y horas actuales
@@ -385,18 +381,13 @@ $data = json_decode(base64_decode($params));
         return `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
     }
 
-    
-
     // descargar documento pdf
-     
     async function descargarDocumentoPdfPrincipal(datos){
-
         console.log('datosrr', datos.realizados);
         let datosFiltrados;
         if(datos.pendientes.length > 0){
             datosFiltrados = datos.pendientes[datos.pendientes.length - 1];
-        }
-        else{
+        } else{
             console.log('datosrr2', datos.realizados[datos.realizados.length - 1]);
             datosFiltrados = datos.realizados[datos.realizados.length - 1];
         }
@@ -407,8 +398,7 @@ $data = json_decode(base64_decode($params));
         console.log('datossFiltrados', datosFiltrados.tipoCard);
         if(datosFiltrados.tipoCard == 'AGENDA'){
             args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datosFiltrados.idOrden}`;
-        }
-        else{
+        } else {
             args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=RECETA&numeroOrden=&secuenciaReceta=${datosFiltrados.secuenciaReceta}`;
         }
         
@@ -426,7 +416,6 @@ $data = json_decode(base64_decode($params));
             console.error('Error al obtener el PDF:', error);
         }
     }
-
 
     // descargar documento pdf
     async function descargarDocumentoPdf(datos){
@@ -519,25 +508,23 @@ $data = json_decode(base64_decode($params));
         return data;
     }
     
-    
     // funciones js
     // mostrar el tratamientos pendientes
     function mostrarTratamientoenDiv() {
         let data = datosTratamiento.pendientes;
         let estado = 'PENDIENTE'
-
         let divContenedor = $('#contenedorTratamientoPendiente');
         divContenedor.empty(); // Limpia el contenido actual
         if(data.length > 0){
             idPaciente = datosTratamiento.idPaciente;
             data.forEach((tratamientos) => {
-                
-                    let elemento = `<div class="card mb-3">
-                                        <div class="card-body fs--2 p-3">
+                let elemento = `<div class="col-12">
+                                    <div class="card h-100">
+                                        <div class="card-body p--2">
                                             ${determinarEsOnline(tratamientos)}
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="text-primary-veris fw-medium fs--1 mb-0 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
-                                                <span class="text-warning-veris" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
+                                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
+                                                <span class="text-warning-veris fs--2 line-height-16 mb-1" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                             </div>
                                             ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
                                             <div id="recetaMedicaMensaje">
@@ -545,29 +532,27 @@ $data = json_decode(base64_decode($params));
                                             </div> 
                                             
                                             <div class="d-flex justify-content-between align-items-center mt-2">
-                                                <div class="avatar border rounded-circle bg-very-pale-red">
-                                                    <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" width="26" alt="receta medica">
+                                                <div class="avatar avatar-sm border rounded-circle bg-very-pale-red">
+                                                    <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">
                                                 </div>
                                                 <div class="d-flex">
                                                     ${determinarCondicionesBotones(tratamientos, estado)}
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>`;
+                                    </div>
+                                </div>`;
 
-                    divContenedor.append(elemento);
-                
+                divContenedor.append(elemento);
             });
             // mostrar el titulo de pendientes
             document.getElementById("tituloTratamientoPendiente").style.display = "block";
             chartProgres("#progress-circle");
         }
-        
     }
 
     // mostrar el tratamientos realizados
     function mostrarTratamientoenDivRealizados(){
-
         let estado = 'REALIZADO'
         let data = datosTratamiento.realizados;
         console.log('tratamientos realizados: ', data);
@@ -576,40 +561,34 @@ $data = json_decode(base64_decode($params));
         divContenedorRealizados.empty(); // Limpia el contenido actual
         if(data.length > 0){
             data.forEach((tratamientos) =>{
-
-                
-
-                let elemento = `<div class="card mb-3">
-                                    <div class="card-body fs--2 p-3">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="text-primary-veris fw-medium fs--1 mb-0">${capitalizarCadaPalabra(tratamientos.nombreServicio)}</h6>
-                                            <span id="estado"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span></span>
-                                        </div>
-                                        <div>
-
-                                        ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
-                                            
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                            <div class="avatar border rounded-circle bg-very-pale-red">
-                                                <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" width="26" alt="receta medica">
+                let elemento = `<div class="col-12">
+                                    <div class="card h-100">
+                                        <div class="card-body p--2">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)}</h6>
+                                                <span id="estado" class="fs--1 line-height-16 mb-1"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span></span>
                                             </div>
-                                            <div class="d-flex">
-                                                ${determinarCondicionesBotones(tratamientos, estado)}
+                                            <div>
+                                                ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                                <div class="avatar avatar-sm border rounded-circle bg-very-pale-red">
+                                                    <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">
+                                                </div>
+                                                <div class="d-flex">
+                                                    ${determinarCondicionesBotones(tratamientos, estado)}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>`;
 
                 divContenedorRealizados.append(elemento);
-                
             });
              // mostrar el titulo de realizados
             document.getElementById("tituloTratamientoRealizado").style.display = "block";
             // chartProgres("#progress-circle");
         }
-       
-
     }
 
     // determinar si es online o presencial
@@ -618,8 +597,7 @@ $data = json_decode(base64_decode($params));
             return `<div style="display: inline-flex; justify-content: space-between; align-items: center; background-color: #CEEEFA; border-radius: 5px; padding: 5px; margin-bottom: 5px;">
                         <h7 class="text-primary-veris fw-medium mb-0">Consulta online</h7>
                     </div>`;
-        }
-        else{
+        } else {
             return ``;
         }
     }
@@ -653,7 +631,6 @@ $data = json_decode(base64_decode($params));
                                 </div>
                             </div>`;
         } else {
-
             elemento = `<div class="card rounded-0 border-0">
                                 <div class="card-body p-3 position-relative px-lg-5"
                                     style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
@@ -674,44 +651,31 @@ $data = json_decode(base64_decode($params));
 
     // determinar fechas caducadas
     function determinarFechasCaducadas(datos, datosTratamiento){ 
-
         let dataFechas = ``;
-        
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
-
             if (datos.estado == "PENDIENTE_AGENDAR") {
-                    if (datos.esCaducado == "S") {
-                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                    } else {
-                        dataFechas = `` ;
-                    }
-                
+                if (datos.esCaducado == "S") {
+                    dataFechas = `<p class="fw-light fs--2 line-height-16 mb-1">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                } else {
+                    dataFechas = `` ;
+                }
             }
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
-
-                dataFechas = `<h6 class="card-title fs--1 text-veris mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
-                                <p class="fw-medium fs--2 mb-0">${capitalizarElemento(datos.fechaOrden)}</p>
-                                <p class="fs--2 mb-0">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
-                                <p class="fs--2 mb-0">${datos.nombrePaciente}</p> `;
-                
+                dataFechas = `<h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(datos.nombreSucursal)}</h6>
+                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.fechaOrden)}</p>
+                                <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
+                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.nombrePaciente)}</p> `;
             }
-
-
-        }
-        else{
+        } else {
             if (datos.estado == "PENDIENTE_AGENDAR") {
-                    if (datos.esCaducado == "S") {
-                        dataFechas = `<p class="fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                    } else {
-                        dataFechas = `` ;
-                    }
-                
+                if (datos.esCaducado == "S") {
+                    dataFechas = `<p class="fw-light fs--2 line-height-16 mb-1">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                } else {
+                    dataFechas = `` ;
+                }
             }
         }
-
         return dataFechas;
-
-        
     }
 
     // determinar si es comprar o por comprar
@@ -725,12 +689,10 @@ $data = json_decode(base64_decode($params));
 
     // determinar si es receta medica o no mensaje 
     function determinarMensajeRecetaMedica(servicio){
-         
         if(servicio.nombreServicio == "RECETA MÉDICA"){
             let servicioStr = JSON.stringify(servicio);
             return `<a href="" class="fs--2 btn-compraste-receta" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal" data-rel='${servicioStr}'>¿Ya compraste esta receta?</a>`;
-        }
-        else{
+        } else {
             return ``;
         }
     }
@@ -762,7 +724,7 @@ $data = json_decode(base64_decode($params));
                 botonAgendarDisabled = " disabled";
             }
 
-            return `<a href="#" class="btn text-primary-veris">Ver orden</a>
+            return `<a href="#" class="btn text-primary-veris fw-normal fs--1 px-3 py-2">Ver orden</a>
                     <a href="#" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
         }
     }
@@ -771,180 +733,125 @@ $data = json_decode(base64_decode($params));
     // determinar si es receta medica o no botones realizados
     function determinarbotonesRecetaMedicaRealizados(servicio){
         if(servicio == "FARMACIA"){
-            return `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver receta</a> `;
-                                            
-        }
-        else{
-            
-            return `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a> `;
+            return `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1 px-3 py-2">Ver receta</a> `;
+        } else{
+            return `<a href="#" class="btn btn-sm btn-primary-veris shadow-none fw-normal fs--1 px-3 py-2">Ver orden</a> `;
         }
     }
 
 
     // determinar condiciones de los botones 
-
     function determinarCondicionesBotones(datosServicio, estado){
         let services = datosServicio;
         if (datosServicio.length == 0) {
             return `<div></div>`;
-        }
-        else{
-
+        } else{
             switch (datosServicio.tipoCard) {
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
                     //respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
-                    
-
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
-                        respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                        respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
                         if(datosServicio.esCaducado == 'S'){
                             // mostrar boton de informacion que llama al modal de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none me-1 btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
-                            
+                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none me-1 btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
                         } else {
-
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
-
                                     if(datosServicio.modalidad == 'PRESENCIAL'){
-                                        
                                         let ruta = '/citas-elegir-central-medica/';
                                         let urlCompleta = ruta + "{{ $params }}"
-                                        respuestaAgenda += `<a href="${urlCompleta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
-                                        
+                                        respuestaAgenda += `<a href="${urlCompleta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
                                     } else {
-                                        
                                         let ruta = '/citas-elegir-fecha-doctor/';
                                         let urlCompleta = ruta + "{{ $params }}"
                                         // ir a fechas
-                                        respuestaAgenda += `<a href="${urlCompleta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
-                                        
+                                        respuestaAgenda += `<a href="${urlCompleta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
                                     }
                                 } else {
-                                    respuestaAgenda += `<a href="#" class="btn btn-sm  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">
-                                            Agendar
-                                        </a>`;
-
+                                    respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">Agendar </a>`;
                                 }
-                            }else{
+                            } else {
                                 // abrir modal no permite reserva
-                                respuestaAgenda += `<div href="#" class="btn btn-sm btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</div>`;
+                                respuestaAgenda += `<button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</button>`;
                             }
-   
                         }
-
-                    }else if (datosServicio.estado == 'ATENDIDO'){
-
+                    } else if (datosServicio.estado == 'ATENDIDO'){
                         // mostrar boton de ver orden
                         respuestaAgenda = ``;
-                        respuestaAgenda += ` <div class="btn btn-sm btn-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal"> Ver orden</div>`;  
-                    
-
-                    }else if (datosServicio.estado == 'AGENDADO'){
+                        respuestaAgenda += ` <button type="button" class="btn btn-sm fw-normal fs--18 px-3 py-2 btn-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;  
+                    } else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
                         //respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
-
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Pagar</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none">Pagar</a>`;
                         }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
-                            
-                            respuestaAgenda += `<a href="#" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm ms-2 text-primary-veris border-none shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            respuestaAgenda += `<a href="#" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             if(datosServicio.modalidad == "ONLINE"){
-                                respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
+                                respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
                             }
                         } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                             // mostrar boton de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
                         } 
                     }
-
-                    
                     return respuestaAgenda;
                     break;
-
                 case "LAB":
                     console.log('estadossss', estado);
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
-                        
-                        respuesta += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
-
-
+                        respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris m-2
-                            "> Ver resultados</a>`;
+                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris">Ver resultados</a>`;
                         } else {
                             respuesta += ``;
                         }
-
                         //condición para 'aplicaSolicitud'
                         if (datosServicio.aplicaSolicitud == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                        } else
-                        if (datosServicio.permitePago == "S"){
+                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                        } else if (datosServicio.permitePago == "S"){
                             let params = {}
                             params.idPaciente = idPaciente;
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
-                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
-                       
-                             }
-                    } 
-
-                    else if (estado == 'REALIZADO'){
+                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                        }
+                    } else if (estado == 'REALIZADO'){
                         console.log('estadossss2', estado);
                         respuesta = "";
-                        respuesta += ` <div class="btn btn-sm btn-primary-veris shadow-none" id="verOrdenCard"
-                        data-rel='${JSON.stringify(datosServicio)}'>Ver orden</div>`;
+                        respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" id="verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     
                     }
-                    
-
                     return respuesta;
-
                     break;
 
                 case "RECETAS" :
                     if (estado == 'REALIZADO') {
-                        return `<div class="btn btn-sm btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" 
-                        data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>
-                         Ver receta</div>`;
+                        return `<button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
                     } else {
                         if(datosServicio.aplicaSolicitud == "S"){
-                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                         }
                     }
-                    
-                    
-
-                   
-
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <div class="btn text-primary-veris fw-normal fs--1" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</div>`;
-                    
+                    respuestaOdontologia += ` <button class="btn text-primary-veris fw-normal fs--1 px-3 py-2" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     // ABRIRE MODAL DE VIDEO CONSULTA
-                    respuestaOdontologia += `<div href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</div>`;
-                      
-                    
-
+                    respuestaOdontologia += `<button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</button>`;
                     return respuestaOdontologia;
-
                     break;
 
             }
-
         }
     }
 
     // agendar cita odontologia
-
     function agendarCitaOdontologia(){
         //abrir modal video consulta
         $('#mensajeVideoConsultaModal').modal('show');
@@ -952,7 +859,6 @@ $data = json_decode(base64_decode($params));
 
     // mostrar informacion
     function mostrarInformacion(mensaje){
-
         if (mensaje == null) {
             //abrir modal informacion
             $('#informacionModal').modal('show');
@@ -962,7 +868,6 @@ $data = json_decode(base64_decode($params));
             $('#informacionModal').modal('show');
             document.getElementById("mensajeInformacion").innerHTML = mensaje;
         }
-
     }
 
     // determinar valores null 

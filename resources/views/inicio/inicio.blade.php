@@ -8,18 +8,16 @@ Mi Veris - Inicio
     // dd($tokenCita);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-
     <!-- Modal de error -->
     <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center px-2 pt-3 pb-0">
-                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Veris</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError" >
-                </p>
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
+                    <p class="fs--1 fw-normal" id="mensajeError"></p>
                 </div>
-                <div class="modal-footer border-0 px-2 pt-0 pb-3">
-                    <button type="button" class="btn btn-primary-veris w-100" data-bs-dismiss="modal">Entiendo</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris fw-medium fs--18 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
@@ -32,16 +30,15 @@ Mi Veris - Inicio
                 <div class="modal-header d-none">
                     <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-3 pt-4">
-                    <h5 class="mb-4">{{ __('Elige tu convenio:') }}</h5>
+                <div class="modal-body p-3">
+                    <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu convenio:') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
-                            
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer px-3 pb-3">
-                    <button type="button" class="btn fw-normal m-0" data-bs-dismiss="modal">Cancelar</button>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn fw-normal fs--16 line-height-20 m-0 px-3 py-2" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -51,39 +48,39 @@ Mi Veris - Inicio
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
-                <div class="modal-header ">
+                <div class="modal-header py-3">
                     <button type="button" class="btn-close fw-medium bg-transparent me-2 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-3">
-                    <h5 class="text-center mb-3">¿Qué quieres agendar?</h5>
+                <div class="modal-body pt-3 px-3 pb--40">
+                    <h5 class="text-center fs--20 line-height-24 mb--32">¿Qué quieres agendar?</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
-                            <div class="card mb-3">
+                            <div class="card card-border">
                                 <a href="/mis-tratamientos">
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-7 col-md-7">
+                                        <div class="col-7 col-md-6">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Lo que envió') }} <br> {{ __('mi doctor') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-5 col-md-4">
-                                            <img src="{{ asset('assets/img/card/svg/paste.svg') }}" class="img-fluid" alt="paste">
+                                        <div class="col-5 col-md-auto">
+                                            <img src="{{ asset('assets/img/card/svg/paste.svg') }}" class="card-img-top" alt="paste">
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         </div>
                         <div class="col-6 col-lg-6">
-                            <div class="card mb-3">
+                            <div class="card card-border">
                                 <a href="/citas">
                                     <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-7 col-md-7">
+                                        <div class="col-7 col-md-6">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Una nueva') }} <br> {{ __('cita médica') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-5 col-md-4">
-                                            <img src="{{ asset('assets/img/card/svg/doctor.svg') }}" class="img-fluid" alt="doctor">
+                                        <div class="col-5 col-md-auto">
+                                            <img src="{{ asset('assets/img/card/svg/doctor.svg') }}" class="card-img-top" alt="doctor">
                                         </div>
                                     </div>
                                 </a>
@@ -94,6 +91,7 @@ Mi Veris - Inicio
             </form>
         </div>
     </div>
+
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Inicio') }}</h5>
     </div>
@@ -114,7 +112,7 @@ Mi Veris - Inicio
                                     </div>
                                 </div>
                                 <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="card-img-top" alt=""  >
+                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="card-img-top" alt="">
                                 </div>
                             </div>
                         </a>
@@ -250,7 +248,7 @@ Mi Veris - Inicio
         });
 
         // seleccionar convenio convenio-Ninguno
-        $(document).on('click', '.convenio-Ninguno', function(){
+        $(document).on('click', '.convenio-ninguno', function(){
             let data = $(this).data('rel');
             console.log('dataConvenio', data);
             let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
@@ -665,7 +663,7 @@ Mi Veris - Inicio
                             <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
                         </div>
-                        <div class="card-footer pt-0 pb-3 px-3 d-flex ${classElem} align-items-center">
+                        <div class="card-footer pt-0 pb--2 px--2 d-flex ${classElem} align-items-center">
                             ${citas.estaPagada === "N" ? `
                                 <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
                             ` : ''}
@@ -900,21 +898,20 @@ Mi Veris - Inicio
         let elemento = '';
         data.forEach((convenios) => {
             console.log('convenioss', convenios);
-            elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}'
-            class="convenio-item">
-                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+            elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}' class="convenio-item mb-2">
+                                    <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
-                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
-                                            ${convenios.nombreConvenio}
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16">
+                                            ${capitalizarCadaPalabra(convenios.nombreConvenio)}
                                         </label> 
                                     </div>
                                 </div>`;
         });
         // agregar convenio ninguno
-        elemento += `<div data-rel='ninguno' class="convenio-Ninguno" url-rel='${url}'>
-                        <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                            <label for="listGroupCheckableRadiosninguno" class="cursor-pointer">
-                                NINGUNO
+        elemento += `<div data-rel='ninguno' class="convenio-ninguno" url-rel='${url}' >
+                        <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                            <label for="listGroupCheckableRadiosninguno" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                Ninguno
                             </label>
                         </div>
                     </div>`;

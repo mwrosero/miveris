@@ -11,22 +11,22 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Veris</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError" ></p>
+                <div class="modal-body text-center p-3 pb-2">
+                    <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3">Veris</h1>
+                    <p class="fs--16 fw-normal mb-3" id="mensajeError" ></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 px-4 py-3 w-100" data-bs-dismiss="modal" id="btnEntiendoError">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100" data-bs-dismiss="modal" id="btnEntiendoError">Entiendo</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- modal position-absolute -->
+    <!-- modal elegir horario -->
     <div class="modal bg-transparent fade" id="elegirHorarioModal" tabindex="-1" aria-labelledby="elegirHorarioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-body p-3">
-                    <h6 class="text-center fw-medium mb-3">{{ __('Horarios') }}:</h6>
+                <div class="modal-body p-3 pb-2">
+                    <h6 class="text-center fs--16 line-height-20 fw-medium mb-2">{{ __('Horarios') }}:</h6>
                     <div id="listaHorariosMedico">
                         {{-- <div class="card card-body rounded-3 position-relative py-2 mb-2">
                             <a href="{{route('citas.detalleCita')}}">
@@ -38,7 +38,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-sm text-primary-veris fw-medium shadow-none m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-sm text-primary-veris fs--18 line-height-24 fw-medium shadow-none m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -47,14 +47,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" id="sinFechaDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinFechaDisponiblesLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-3">
+                <div class="modal-body p-3 pb-2">
                     <div class="text-center">
-                        <h1 class="modal-title fs-5 mb-3" id="sinFechaDisponiblesLabel">Veris</h1>
-                        <p class="mb-0">No tiene fechas disponibles.</p>
+                        <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3" id="sinFechaDisponiblesLabel">Veris</h1>
+                        <p class="fs--16 fw-normal mb-3">No tiene fechas disponibles.</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Aceptar</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</a>
                 </div>
             </div>
         </div>
@@ -63,14 +63,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="modal fade" i|d="sinMedicosDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinMedicosDisponiblesLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-3">
+                <div class="modal-body p-3 pb-2">
                     <div class="text-center">
-                        <h1 class="modal-title fs-5 mb-3" id="sinMedicosDisponiblesLabel">Veris</h1>
-                        <p class="mb-0">No tiene médicos disponibles.</p>
+                        <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3" id="sinMedicosDisponiblesLabel">Veris</h1>
+                        <p class="fs--16 fw-normal mb-3">No tiene médicos disponibles.</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris m-0 w-100 px-4 py-3">Aceptar</a>
+                    <a href="{{ url()->previous() }}" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</a>
                 </div>
             </div>
         </div>
@@ -389,16 +389,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     <img src="{{ asset('assets/img/svg/avatar_doctor.svg') }}" class="img-fluid mt-4" alt="doctor" width="48">
                                 </div>
                                 <div class="col-9">
-                                    <h6 class="fw-medium mb-0">Dr(a) ${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
-                                    <p class="text-primary-veris fw-medium fs--2 mb-0">${nombreSucursal}</p>
-                                    <p class="fs--2 mb-0">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
-                                    <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">${medico.disponibilidad}</b></p>
-                                    <p class="fs--2 mb-0">Horarios: <b class="fw-normal text-primary-veris" id="horarios">${medico.horario}</b></p>
+                                    <h6 class="fs--16 line-height-20 fw-medium mb-1">Dr(a) ${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
+                                    <p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${nombreSucursal}</p>
+                                    <p class="fs--1 line-height-16 fw-normal mb-1" style="color: 33D4E66;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
+                                    <div class="d-flex mb-1">
+                                        <p class="fs--1 line-height-16 fw-normal mb-0 me-1" style="color: #9EA7B3;">Disponibilidad:</p>
+                                        <p class="fs--1 line-height-16 fw-normal mb-0" style="color: #0055AA;" id="disponibilidad">${medico.disponibilidad}</p>
+                                    </div>
+                                    <p class="fs--1 line-height-16 fw-normal mb-1" style="color: #9EA7B3;">Horarios: <b class="fw-normal" style="color: #0055AA;" id="horarios">${medico.horario}</b></p>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer text-end p--2">
-                            <button type="button" class="btn btn-sm btn-primary-veris btn-disponibilidad-medico" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
+                        <div class="card-footer text-end pt-0 pb--2 px--2">
+                            <button type="button" class="btn btn-sm btn-primary-veris btn-disponibilidad-medico fs--1 line-height-16 fw-medium border-0 m-0 px-3 py-2" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
                                 Elegir Cita
                             </button>
                         </div>
@@ -439,15 +442,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     dataCita.horario = horario;
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
-                    elemento += `<div class="card card-horario card-body rounded-3 position-relative py-2 mb-2 btn-disponibilidad-medico
+                    elemento += `<div class="card card-horario card-body rounded-3 position-relative py-3 mb-2 btn-disponibilidad-medico
                     " data-horario='${JSON.stringify(horario)}'>
                     <a href="${ruta}">`;
                     if(horario.porcentajeDescuento > 0){
-                        elemento += `<div class="badge-discount-top fs--3 fw-medium"><span>-${horario.porcentajeDescuento}%</span></div>`
+                        elemento += `<div class="badge-discount-top fs--2 line-height-16 fw-medium"><span>-${horario.porcentajeDescuento}%</span></div>`
                     }
-                    elemento += `<p class="fs--2 text-primary-veris text-center my-1">${horario.horaInicio} - ${horario.horaFin}</p>`;
+                    elemento += `<p class="fs--16 line-height-20 text-primary-veris text-center mb-0">${horario.horaInicio} - ${horario.horaFin}</p>`;
                     if(horario.porcentajeDescuento > 0){
-                        elemento += `<div class="badge-discount-bottom fs--3 fw-medium"><span>{{ __('descuento') }}</span></div>`;
+                        elemento += `<div class="badge-discount-bottom fs--2 line-height-16 fw-medium"><span>{{ __('descuento') }}</span></div>`;
                     }
                     elemento += `</a>
                         </div>`;
