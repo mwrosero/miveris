@@ -826,6 +826,10 @@ Mi Veris - Inicio
             params.origen = "inicios";
             
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            if(datosConvenios.length == 0){
+                location = url;
+                return;
+            }
 
             llenarModalConvenios(datosConvenios, url);
 
@@ -880,7 +884,7 @@ Mi Veris - Inicio
             params.origen = "inicios";
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             
-            if(data.permitePagoReserva == "S"){
+            if(data.permitePagoReserva == "S" || datosConvenios.length == 0){
                 location = url;
             }else{
                 //data.mensajePagoReserva
