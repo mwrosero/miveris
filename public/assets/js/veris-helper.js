@@ -620,14 +620,13 @@ function mostrarListaPacientesFiltro(){
     let divContenedor = $('.listaPacientesFiltro');
     divContenedor.empty();
     data.forEach((Pacientes) => {
-        let elemento = `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3">
-                            <input class="form-check-input flex-shrink-0" type="radio" name="listGroupRadios" id="listGroupRadios1" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} unchecked>
-                            <span class="text-veris fw-bold">
-                                
-                                ${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}
-                                <small class="fs--3 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</small>
-                            </span>
-                        </label>`;
+        let elemento = `<div class="position-relative">
+                            <input class="form-check-input option-input position-absolute top-50 start-0 ms-3" type="radio" name="listGroupRadios" id="listGroupRadios-${Pacientes.numeroPaciente}" data-rel='${JSON.stringify(Pacientes)}' value="${Pacientes.numeroPaciente}" esAdmin= ${Pacientes.esAdmin} >
+                            <label class="list-group-item p-3 ps-5 bg-white rounded-3" for="listGroupRadios-${Pacientes.numeroPaciente}">
+                                <p class="text-veris fs--16 line-height-20 fw-medium mb-0">${capitalizarElemento(Pacientes.primerNombre)} ${capitalizarElemento(Pacientes.primerApellido)} ${capitalizarElemento(Pacientes.segundoApellido)}</p>
+                                <span class="fs--1 line-height-16 d-block fw-normal text-body-secondary">${capitalizarElemento(Pacientes.parentesco)}</span>
+                            </label>
+                        </div>`;
         divContenedor.append(elemento);
     });
 }
@@ -635,17 +634,14 @@ function mostrarListaPacientesFiltro(){
 async function verificarImagen(urlImagen) {
     return new Promise((resolve) => {
         const img = new Image();
-
         img.onload = function() {
             // La imagen se cargó exitosamente
             resolve(true);
         };
-
         img.onerror = function() {
             // Hubo un error al cargar la imagen
             resolve(false);
         };
-
         img.src = urlImagen;
     });
 }

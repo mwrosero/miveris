@@ -21,12 +21,12 @@ Mi Veris - Doctores favoritos
                 <div class="modal-body p-3">
                     <h5 class="mb-3">{{ __('Elige tu convenio:') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id= "listaConvenios">
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn fw-normal fs--16 line-height-20 m-0 px-3 py-2" data-bs-dismiss="modal" style="color: #6A7D8E;">Cancelar</button>
                 </div>
             </form>
         </div>
@@ -285,11 +285,11 @@ Mi Veris - Doctores favoritos
                         ruta = `#`;
                     }
                     let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item">
-                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item mb-2">
+                                    <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
-                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
-                                            ${convenios.nombreConvenio}
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                            ${capitalizarCadaPalabra(convenios.nombreConvenio)}
                                         </label> 
                                     </div>
                                 </div>`;
@@ -334,11 +334,13 @@ Mi Veris - Doctores favoritos
                 let url = `/citas-elegir-fecha-doctor/`;
                 let ruta = url + "{{ $tokenCita }}";
                 let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                elemento += `<a href="${ruta}" class="d-block" data-rel='${ulrParams}' id="convenioNinguno">
-                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
-                        NINGUNO
-                    </div>
-                </a>`;
+                elemento += `<a href="${ruta}" class="d-block convenio-ninguno" data-rel='${ulrParams}' id="convenioNinguno">
+                                <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                                    <label class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                        Ninguno
+                                    </label> 
+                                </div>
+                            </a>`;
 
                 listaConvenios.append(elemento);
 
@@ -415,17 +417,13 @@ Mi Veris - Doctores favoritos
             return 'Disponible';
         }
         return data;
-
     }
 
     // eliminar doctor favorito
-
     async function eliminarDoctorFavorito(secuenciaDoctor) {
         console.log('secuencia', secuenciaDoctor);
         let args = [];
         let codigoUsuario ='{{Session::get('userData')->numeroIdentificacion}}';
-      
-
         args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores/favoritos/eliminar?codigoUsuario=${codigoUsuario}&secuenciaDoctor=${secuenciaDoctor}`;
         args["method"] = "DELETE";
         args["showLoader"] = true;
@@ -439,16 +437,10 @@ Mi Veris - Doctores favoritos
             $('#mensajeError').text(data.message);
             $('#mensajeSolicitudLlamadaModalError').modal('show');
         }
-
-
         return data;
-
     }
 
-
-
     // funciones js 
-
     // setear los valores de data-rel en el modal
     $('#eliminarDoctorModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget); // Botón que activó el modal
@@ -456,13 +448,7 @@ Mi Veris - Doctores favoritos
         let data = button.data('rel');
         // setea el valor de data rel en el boton eliminar
         $('#btnEliminarDoctor').attr('data-rel', data);
-
-
-
     });
-
-
-
 
     // eliminar doctor favorito
     $('body').on('click', '#btnEliminarDoctor', async function () {
@@ -470,8 +456,6 @@ Mi Veris - Doctores favoritos
         console.log('Secuencia Doctor:', secuenciaDoctor);
         await eliminarDoctorFavorito(secuenciaDoctor);
     });
-
-    
 
 </script>
 @endpush

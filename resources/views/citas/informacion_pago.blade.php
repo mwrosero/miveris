@@ -109,18 +109,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body text-center">
                         <img src="{{ asset('assets/img/card/tarjeta_pago.png') }}" class="img-fluid mb-3" alt="{{ __('tarjeta de pago') }}">
-                        <ul class="list-group bg-white mb-3">
-                            <li class="list-group-item border-0 text-primary-veris d-flex justify-content-between align-items-center">
+                        <ul class="list-group bg-white mb-3" style="border-radius: 16px;background: var(--Neutral-Blanco-00, #FFF);box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
+                            <li class="list-group-item border-0 text-primary-veris fs--1 fw-medium line-height-16 d-flex justify-content-between align-items-center">
                                 Total a pagar:
-                                <span class="badge text-primary-veris" id="totalInfo"></span>
+                                <span class="badge text-primary-veris fs--1 fw-medium line-height-16" id="totalInfo"></span>
                             </li>
                         </ul>
                         <!-- content-pago -->
-                        <div class="card card-body">
-                            <form id="add-card-form" class="row g-3 d-none">
+                        <div class="card card-body p-3" style="border-radius: 16px !important;background: #FFF;box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
+                            <form id="add-card-form" class="row g-0 d-none">
                                 <div class="col-12">
-                                    <div class="payment-form" id="my-card" data-capture-name="true"></div>
-                                    <button id="btn-pagar" class="btn btn-primary-veris w-100 m-0 waves-effect waves-light">Pagar</button>
+                                    <div class="payment-form mb-3" id="my-card" data-capture-name="true"></div>
+                                    <button id="btn-pagar" class="btn btn-primary-veris fs--18 fw-medium line-height-24 w-100 m-0 px-4 py-3">Pagar</button>
                                     <br/>
                                     <div id="messages"></div>
                                 </div>

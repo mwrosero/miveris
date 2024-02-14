@@ -50,7 +50,6 @@ Mi Veris - Historia clínica
                     </div>
                 </div>
                 <!-- Mensaje END -->
-
             </div>
         </div>
     </section>
@@ -66,11 +65,8 @@ Mi Veris - Historia clínica
         // maxDate: "today"
     });
 </script>
-
 <script>
-
     // variables globales
-
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         await hcEspecialidadesAtendidas();
@@ -80,9 +76,7 @@ Mi Veris - Historia clínica
     });
 
     // funciones asincronas
-
     // Consulta las especialidades atendidas de un paciente.
-
     async function hcEspecialidadesAtendidas(numeroIdentificacion = '', codigoTipoIdentificacion = '', esAdmin = 'S') {
         console.log('si entra', numeroIdentificacion, codigoTipoIdentificacion, esAdmin);
         let args = [];
@@ -126,8 +120,7 @@ Mi Veris - Historia clínica
                     let params = btoa(JSON.stringify(datas));
                     console.log('params', params);
 
-                    element += `<a href="/lista-doctores/${params}
-                    " class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
+                    element += `<a href="/lista-doctores/${params}" class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
                                     <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0" onerror="this.src='{{ asset('assets/img/svg/doctor_light.svg') }}'">
                                     <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
                                         <div>
@@ -137,39 +130,31 @@ Mi Veris - Historia clínica
                                 </a> `;
                 });
                 html.append(element);
-
-                
-                
             }
-            
-            
         }
     }
 
     // consultar grupo familiar
     async function consultarGrupoFamiliar() {
-         let args = [];
-         canalOrigen = _canalOrigen
-         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-         args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
-         args["method"] = "GET";
-         args["showLoader"] = true;
-         const data = await call(args);
-         if(data.code == 200){
-             familiar = data.data;
-             console.log('si hay grupo familiar');
-             mostrarListaPacientesFiltro();
- 
-         }
-         return data;
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        if(data.code == 200){
+            familiar = data.data;
+            console.log('si hay grupo familiar');
+            mostrarListaPacientesFiltro();
+        }
+        return data;
      }
 
 
     // funciones js
-
     // aplicar filtros
     $('#aplicarFiltros').on('click', function() {
-
         console.log('aplciar filtros');
         const contexto = $(this).data('context');
         console.log('contexto', contexto);
@@ -179,12 +164,9 @@ Mi Veris - Historia clínica
         identificacionSeleccionada = texto.numeroPaciente;
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
-
-
     });
 
     async function aplicarFiltro(contexto) {
-    
         console.log('si entra');
         // capturar los datos de data-rel del input radio
         let datos = $('input[name="listGroupRadios"]:checked').attr('data-rel');
@@ -211,14 +193,12 @@ Mi Veris - Historia clínica
     }
 
     // limpiar filtros
-    
     $('#btnLimpiarFiltros').on('click', function() {
         const contexto = $(this).data('context');
         limpiarFiltrosResultados(contexto, tipoServicio = 'LAB');
         identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-
     });
 
 
@@ -232,15 +212,8 @@ Mi Veris - Historia clínica
             let  tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
             await hcEspecialidadesAtendidas(pacienteSeleccionado, tipoIdentificacion, 'S');
             $('#filtroTratamientos').offcanvas('hide');
-
         }
     }
-
-
-
-
-
-
 
 </script>
 @endpush

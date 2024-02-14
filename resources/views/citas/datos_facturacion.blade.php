@@ -15,8 +15,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="text-center">
                         <h1 class="modal-title fs-5 mb-3" id="metodoPagoLabel">Selecciona el método de pago</h1>
                     </div>
-                    <a href="#" id="btn-seleccionar-tarjeta" class="btn btn-lg btn-primary-veris px-4 py-3 w-100 m-0 mb-3">Seleccionar tarjeta</a>
-                    <a href="#" id="btn-agregar-tarjeta" class="btn btn-lg btn-outline-primary-veris px-4 py-3 w-100 m-0">Agregar otro método de pago</a>
+                    <a href="#" id="btn-seleccionar-tarjeta" class="btn btn-lg btn-primary-veris fs--18 line-height-24 py-3 w-100 m-0 mb-3">Seleccionar tarjeta</a>
+                    <a href="#" id="btn-agregar-tarjeta" class="btn btn-lg btn-outline-primary-veris fs--18 line-height-24 py-3 w-100 m-0">Agregar otro método de pago</a>
                 </div>
             </div>
         </div>
@@ -32,7 +32,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     {{-- <i class="bi bi-exclamation-triangle-fill text-primary-veris h2"></i> --}}
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3 m-0" data-bs-dismiss="modal">Aceptar</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 m-0" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div> --}}
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" id="btn-confirmar-y-pagar" class="btn btn-primary-veris w-100 px-4 py-3 m-0" data-bs-dismiss="modal">Confirmar y pagar ahora</button>
+                    <button type="button" id="btn-confirmar-y-pagar" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 m-0" data-bs-dismiss="modal">Confirmar y pagar ahora</button>
                 </div>
             </div>
         </div>
@@ -81,13 +81,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <div class="row justify-content-center">
             <div class="col-md-10 col-lg-8">
                 <div class="card bg-transparent shadow-none">
-                    <div class="card-body">
-                        <form class="row g-3">
+                    <div class="card-body p-0 p-md-3">
+                        <form class="row g-3 form-factura needs-validation" novalidate>
                             <div class="col-md-6">
                                 <div class="row g-3">
                                     <div class="col-md-12">
-                                        <label for="tipoIdentificacion" class="form-label fw-medium fs--2">Elige tu documento *</label>
-                                        <select class="form-select" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                                        <label for="tipoIdentificacion" class="form-label fw-medium fs--1">Elige tu documento *</label>
+                                        <select class="form-select form-filter border-0 fs--1 p-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
                                             <option value="2">CÉDULA</option>
                                             <option value="1">RUC</option>
                                         </select>
@@ -96,37 +96,37 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="numeroIdentificacion" class="form-label fw-medium fs--2">Número de documento *</label>
-                                        <input type="number" class="form-control" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
-                                        <div class="valid-feedback">
+                                        <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de documento *</label>
+                                        <input type="number" class="form-control form-filter border-0 fs--1 p-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
+                                        <div class="invalid-feedback">
                                             Ingrese un numero de identificacion.
                                         </div>
                                     </div>
                                     <div class="col-md-12 d-none box-ruc">
-                                        <label for="razonSocial" class="form-label fw-medium fs--2">Razón Social *</label>
-                                        <input type="text" class="form-control" name="razonSocial" id="razonSocial" placeholder="" required />
-                                        <div class="valid-feedback">
+                                        <label for="razonSocial" class="form-label fw-medium fs--1">Razón Social *</label>
+                                        <input type="text" class="form-control border-fiord fs--1 p-3" name="razonSocial" id="razonSocial" placeholder="" required />
+                                        <div class="invalid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
-                                        <label for="primerNombre" class="form-label fw-medium fs--2">Primer Nombre *</label>
-                                        <input type="text" class="form-control" name="primerNombre" id="primerNombre" placeholder="" required />
-                                        <div class="valid-feedback">
+                                        <label for="primerNombre" class="form-label fw-medium fs--1">Primer Nombre *</label>
+                                        <input type="text" class="form-control border-fiord fs--1 p-3" name="primerNombre" id="primerNombre" placeholder="" required />
+                                        <div class="invalid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
-                                        <label for="primerApellido" class="form-label fw-medium fs--2">Primer Apellido *</label>
-                                        <input type="text" class="form-control" name="primerApellido" id="primerApellido" placeholder="" required />
-                                        <div class="valid-feedback">
+                                        <label for="primerApellido" class="form-label fw-medium fs--1">Primer Apellido *</label>
+                                        <input type="text" class="form-control border-fiord fs--1 p-3" name="primerApellido" id="primerApellido" placeholder="" required />
+                                        <div class="invalid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
-                                        <label for="segundoApellido" class="form-label fw-medium fs--2">Segundo Apellido *</label>
-                                        <input type="text" class="form-control" name="segundoApellido" id="segundoApellido" placeholder="" required />
-                                        <div class="valid-feedback">
+                                        <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo Apellido *</label>
+                                        <input type="text" class="form-control border-fiord fs--1 p-3" name="segundoApellido" id="segundoApellido" placeholder="" required />
+                                        <div class="invalid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
@@ -135,22 +135,22 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <div class="col-md-6">
                                 <div class="row g-3">
                                     <div class="col-md-12">
-                                        <label for="direccion" class="form-label fw-medium fs--2">Dirección *</label>
-                                        <input type="text" class="form-control" name="direccion" id="direccion" placeholder="" required />
+                                        <label for="direccion" class="form-label fw-medium fs--1">Dirección *</label>
+                                        <input type="text" class="form-control form-filter border-0 fs--1 p-3" name="direccion" id="direccion" placeholder="" required />
                                         <div class="invalid-feedback">
                                             Ingrese una direccion.
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="telefono" class="form-label fw-medium fs--2">Teléfono *</label>
-                                        <input type="number" class="form-control" name="telefono" id="telefono" placeholder="+593 999 999 9999" required />
-                                        <div class="valid-feedback">
+                                        <label for="telefono" class="form-label fw-medium fs--1">Teléfono *</label>
+                                        <input type="number" class="form-control border-fiord fs--1 p-3" name="telefono" id="telefono" placeholder="+593 999 999 9999" required />
+                                        <div class="invalid-feedback">
                                             Ingrese un telefono.
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <label for="mail" class="form-label fw-medium fs--2">Email *</label>
-                                        <input type="email" class="form-control" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
+                                        <label for="mail" class="form-label fw-medium fs--1">Email *</label>
+                                        <input type="email" class="form-control border-fiord fs--1 p-3" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
                                         <div class="valid-feedback">
                                             Ingrese un correo electronico.
                                         </div>
@@ -185,10 +185,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </div>
                             </div>
                             <div class="col-12 text-center mt-4">
-                                <div class="form-check d-flex justify-content-center">
-                                    <input class="form-check-input terminos-input me-2" type="checkbox" value="" id="checkTerminosCondicion" required>
-                                    <label class="form-check-label fs--1" for="checkTerminosCondicion">
-                                        Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank">Términos y condiciones</a> 
+                                <div class="form-check d-flex justify-content-center align-items-center">
+                                    <input class="form-check-input terminos-input me-2 mb-1" type="checkbox" value="" id="checkTerminosCondicion" required>
+                                    <label class="form-check-label fs--1 fw-medium line-height-16" for="checkTerminosCondicion">
+                                        Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank" class="">Términos y condiciones</a> 
                                         <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
                                     </label>
                                     <div class="invalid-feedback">
@@ -197,13 +197,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="btn-master w-lg-50 mx-auto">
-                                    <a href="#" id="btn-next" class="btn disabled text-white shadow-none">Continuar</a>
-                                    |
-                                    <p class="btn text-white mb-0 shadow-none cursor-inherit" id="totalLabel"></p>
-                                </div>
-                                <div id="btn-ver-examenes" class="btn-master w-lg-50 mx-auto mt-2 cursor-pointer d-none">
-                                    Ver exámenes a pagar
+                                <div class="row justify-content-center align-items-center">
+                                    <div class="col-12 col-md-8">
+                                        <div class="btn-master w-100 mx-auto">
+                                            <button type="button" id="btn-next" class="col-5 btn disabled text-white shadow-none">Continuar</button>
+                                            |
+                                            <p class="col-5 btn text-white mb-0 shadow-none cursor-inherit" id="totalLabel"></p>
+                                        </div>
+                                        <div id="btn-ver-examenes" class="btn-master w-lg-50 mx-auto mt-2 cursor-pointer d-none">
+                                            Ver exámenes a pagar
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -257,8 +261,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         });
 
         $('body').on('click', '#btn-next', async function(){
-
-            
             //validar formulario datos factura
             await validarDatosFactura();
         })
