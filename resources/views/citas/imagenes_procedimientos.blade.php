@@ -219,6 +219,9 @@ Mi Veris - Citas - Imágenes y procedimientos
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
+        if (!pacienteSeleccionado) {
+            data.data.tienePermisoAdmin = true;
+        }
         if (data.code == 200){
 
             if(estado == 'PENDIENTE'){
