@@ -185,9 +185,11 @@ Mi Veris - Citas - Receta médica
         let args = [];
         let canalOrigen = 'APP_CMV';
                 
-        let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
-        if (pacienteSeleccionado) {
+        let numeroPaciente = '';
+        if (pacienteSeleccionado && numeroPaciente != {{ Session::get('userData')->numeroPaciente }}) {
             numeroPaciente = pacienteSeleccionado;
+        } else if (pacienteSeleccionado == '' || pacienteSeleccionado == null || pacienteSeleccionado == undefined) {
+            numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
         }
         let admin = esAdmin;
         if (admin == undefined || admin == null) {

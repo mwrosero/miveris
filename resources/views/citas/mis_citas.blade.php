@@ -676,7 +676,7 @@ Mi Veris - Citas - Mis citas
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             
-            if(data.permitePagoReserva == "S"){
+            if(data.permitePagoReserva == "S" || datosConvenios.length == 0){
                 location = url;
             }else{
                 //data.mensajePagoReserva
@@ -756,11 +756,11 @@ Mi Veris - Citas - Mis citas
         params.online = data.esVirtual;
         params.especialidad = {
             codigoEspecialidad: data.codigoEspecialidad,
-            codigoPrestacion  : data.codigoPrestacion,
-            codigoServicio   : data.codigoServicio,
+            codigoPrestacion  : data.prestaciones[0].codigoPrestacion,
+            codigoServicio   : data.prestaciones[0].codigoServicio,
             codigoTipoAtencion: data.codigoTipoAtencion,
             esOnline : data.esVirtual,
-            nombre : data.especialidad,
+            nombre : data.nombreEspecialidad,
         }
         if (datosConvenios.length > 0) {
             params.convenio = datosConvenios[0];
