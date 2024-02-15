@@ -187,6 +187,23 @@ Mi Veris - Citas - Imágenes y procedimientos
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         await obtenerTratamientosId();
         await consultarGrupoFamiliar();
+
+        var $enlace = $('.btn-agendar');
+
+        // Maneja el evento de clic en el enlace
+        $enlace.on('click', function(event) {
+            // Previene el comportamiento predeterminado del enlace
+            event.preventDefault();
+
+            // Establece un retraso de 2 segundos antes de redirigir
+            setTimeout(function() {
+                // Obtiene la URL del enlace
+                var url = $enlace.attr('href');
+                // Redirige a la URL después del retraso
+                window.location.href = url;
+            }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
+        });
+        
     });
 
     // funciones asyncronas
@@ -636,11 +653,11 @@ Mi Veris - Citas - Imágenes y procedimientos
             $('#footerInformacionCita').empty();
             // agregar boton agendar y salir
             $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
-                                                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" data-rel='${JSON.stringify(datosRel)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
-                                                </div>
-                                                <div class="modal-footer pt-0 pb-3 px-3">
-                                                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
-                                                </div>`);
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" data-rel='${JSON.stringify(datosRel)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
+                </div>`);
         } else {
             $('#mensajeInformacionCita').text(datos.mensaje);
         }
@@ -772,6 +789,9 @@ Mi Veris - Citas - Imágenes y procedimientos
     
         let dataCita = {}
         dataCita.online = modalidad;
+
+        let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+        dataCita.paciente = dataPaciente;
 
         dataCita.especialidad = {
             codigoEspecialidad: datosServicio.codigoEspecialidad,
