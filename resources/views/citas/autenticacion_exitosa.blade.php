@@ -45,6 +45,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $('#btn-pagar-otp').addClass('disabled');
             pagarCita();
         });
+
+        if(dataCita.reserva){
+            if (dataCita.reserva.aplicaProntoPago == "N") {
+                window.addEventListener("beforeunload", beforeUnloadHandler);
+            }
+        }
     });
 
     async function pagarCita(){
@@ -65,6 +71,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if (data.code == 200){
             console.log(data.data);
+            window.removeEventListener("beforeunload", beforeUnloadHandler);
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
                 guardarData()

@@ -95,6 +95,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             autenticarOTP(codeOTP);
         });
 
+        if(dataCita.reserva){
+            if (dataCita.reserva.aplicaProntoPago == "N") {
+                window.addEventListener("beforeunload", beforeUnloadHandler);
+            }
+        }
+
     });
     async function autenticarOTP(codeOTP){
         let args = [];
@@ -113,6 +119,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         
         if(data.code == 200){
             if(data.data.estado == "APPROVED"){
+                window.removeEventListener("beforeunload", beforeUnloadHandler);
                 let ruta = `/citas-autenticacion-exitosa/{{ $params }}`;
                 window.location.href = ruta;
             }else if(data.data.estado == "PENDING"){

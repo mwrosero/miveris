@@ -184,10 +184,11 @@ Mi Veris - Citas - Laboratorio
     async function obtenerTratamientosId(pacienteSeleccionado='', fechaDesde='', fechaHasta='', estado='PENDIENTE', esAdmin='S') {
         
         let args = [];
-        let canalOrigen = 'APP_CMV';
+        let canalOrigen = _canalOrigen;//'APP_CMV';
                 
-        let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
-        if (pacienteSeleccionado) {
+        //let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
+        let numeroPaciente = '';
+        if (pacienteSeleccionado && numeroPaciente != {{ Session::get('userData')->numeroPaciente }}) {
             numeroPaciente = pacienteSeleccionado;
         }
         let admin = esAdmin;
@@ -198,19 +199,23 @@ Mi Veris - Citas - Laboratorio
         let version = _version;
         let servicio = 'LABORATORIO';
         if (isNaN(fechaDesde) || isNaN(fechaHasta)) {
-            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
        
         } else {
             if (estado == 'PENDIENTE') {
-                args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+                args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
             } else if (estado == 'REALIZADO') {
-                args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=S&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+                args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=S&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
             }
         }
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
+
+        if (!pacienteSeleccionado) {
+            data.data.tienePermisoAdmin = true;
+        }
 
         if (data.code == 200){
 
@@ -219,19 +224,19 @@ Mi Veris - Citas - Laboratorio
                 if (data.code == 200) {
                     if(data.data.items.length == 0){
                         console.log('entrando a pendiente vacio', admin);
-                        if (admin === 'S') {
+                        if (data.data.tienePermisoAdmin) {
                             let html = $('#contenedorTratamientosImagenes');
                             html.empty();
                             $('#mensajeNoTienesImagenesProcedimientos').removeClass('d-none');
                             $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
-                        } else if (admin === 'N') {
+                        } else if (!data.data.tienePermisoAdmin) {
                             let html = $('#contenedorTratamientosImagenes');
                             html.empty();
                             $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
                             $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
                         }
                     } else {
-                        if (admin === 'S') {
+                        if (data.data.tienePermisoAdmin) {
                             datosLaboratorio = data.data.items;
                             console.log('datosLaboratorio',datosLaboratorio);
                             let html = $('#contenedorTratamientosImagenes');
@@ -294,7 +299,7 @@ Mi Veris - Citas - Laboratorio
                             });
                             html.append(elementos); // Agregar todos los elementos después del bucle
 
-                        } else if (admin === 'N') {
+                        } else if (!data.data.tienePermisoAdmin) {
                             let html = $('#contenedorTratamientosImagenes');
                             html.empty();
                             $('#mensajeNoTienesPermisosAdministrador').removeClass('d-none');
@@ -308,19 +313,19 @@ Mi Veris - Citas - Laboratorio
                 if (data.code == 200) {
                     if(data.data.items.length == 0){
                         console.log('entrando a realizado vacio');
-                        if (admin === 'S') {
+                        if (data.data.tienePermisoAdmin) {
                             let html = $('#contenedorTratamientosImagenesRealizados');
                             html.empty();
                             $('#mensajeNoTienesImagenesProcedimientosRealizados').removeClass('d-none');
                             $('#mensajeNoTienesPermisosAdministradorRealizados').addClass('d-none');
-                        } else if (admin === 'N') {
+                        } else if (!data.data.tienePermisoAdmin) {
                             let html = $('#contenedorTratamientosImagenesRealizados');
                             html.empty();
                             $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');
                             $('#mensajeNoTienesImagenesProcedimientosRealizados').addClass('d-none');
                         }
                     } else {
-                        if (admin === 'S'){
+                        if (data.data.tienePermisoAdmin){
                             console.log('entrando a realizado lleno');
                             datosLaboratorio = data.data.items;
                             console.log('datosLaboratorio',datosLaboratorio);
@@ -377,7 +382,7 @@ Mi Veris - Citas - Laboratorio
                                         </div>`;
                             });
                             html.append(elementos); // Agregar todos los elementos después del bucle
-                        } else if (admin === 'N') {
+                        } else if (!!data.data.tienePermisoAdmin) {
                             let html = $('#contenedorTratamientosImagenesRealizados');
                             html.empty();
                             $('#mensajeNoTienesPermisosAdministradorRealizados').removeClass('d-none');

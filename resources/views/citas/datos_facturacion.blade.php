@@ -69,7 +69,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div> --}}
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" id="btn-confirmar-y-pagar" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 m-0" data-bs-dismiss="modal">Confirmar y pagar ahora</button>
+                    <button type="button" id="btn-confirmar-y-pagar" class="btn btn-primary-veris fs--18 line-height-24 w-50 px-4 py-3 m-0 mx-auto" data-bs-dismiss="modal">Confirmar y pagar ahora</button>
                 </div>
             </div>
         </div>
@@ -204,8 +204,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                             |
                                             <p class="col-5 btn text-white mb-0 shadow-none cursor-inherit" id="totalLabel"></p>
                                         </div>
-                                        <div id="btn-ver-examenes" class="btn-master w-lg-50 mx-auto mt-2 cursor-pointer d-none">
-                                            Ver exámenes a pagar
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <div id="btn-ver-examenes" class="btn-master w-lg-50 mx-auto mt-2 cursor-pointer justify-content-center align-items-center d-none">
+                                            <div class="text-center">
+                                                Ver exámenes a pagar
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -229,6 +233,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     document.addEventListener("DOMContentLoaded", async function () {
         //await reservarCita();
+        if(dataCita.reserva){
+            if (dataCita.reserva.aplicaProntoPago == "N") {
+                window.addEventListener("beforeunload", beforeUnloadHandler);
+            }
+        }
         await obtenerPPD();
         
         if(!dataCita.reserva && !dataCita.datosTratamiento && !dataCita.reservaEdit && !dataCita.ordenExterna && !dataCita.paquete){
@@ -549,7 +558,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $('.box-ruc').removeClass('d-none');
         }
 
-
         /*Detalle de factura*/
         $('#subtotal').html(`$${dataCita.facturacion.totales.subtotal}`)
         $('#creditoConvenio').html(`$${dataCita.facturacion.totales.creditoConvenio}`)
@@ -653,6 +661,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         const data = await call(args);
         console.log(data);
 
+        window.removeEventListener("beforeunload", beforeUnloadHandler);
+
         if (data.code == 200){
             dataCita.transaccionVirtual = data.data;
             if (estadoPoliticas == "N"){
@@ -660,6 +670,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }   
             guardarData();
             if(tipoBoton == "NUVEI"){
+                let tieneTarjetas = await cargarListaTarjetas()
+                if(tieneTarjetas == 0){
+                    window.location.href = `/citas-informacion-pago/{{ $params }}`;
+                    return;
+                }
                 var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));
                 myModal.show();
                 // let ulrParams = btoa(JSON.stringify(dataCita));
@@ -709,6 +724,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 </div>`;
             });
             elem += `</div>`;
+            if(dataCita.listadoPrestaciones.length < 2){
+                $('.modalDesglose-size').removeClass('modal-lg');
+                $('.modalDesglose-size').addClass('modal-md');
+            }
         }else{
             elem = `<div class="row">
                 <div class="col-12 text-center fw-medium fs--1 mb-2">${dataCita.ordenExterna.pacientes[0].nombrePacienteOrden}</div>`
@@ -730,6 +749,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>
                 </div>`;
             elem += `</div>`;
+            if(dataCita.ordenExterna.pacientes[0].examenes.length < 2){
+                $('.modalDesglose-size').removeClass('modal-lg');
+                $('.modalDesglose-size').addClass('modal-md');
+            }
         }
         $('#contenidoDesglose').append(elem);
     }
@@ -750,6 +773,26 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if (data.code == 200){
             dataCita.facturacion = data.data;
             mostrarInfo();
+        }
+    }
+
+    async function cargarListaTarjetas(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu={{ Session::get('userData')->numeroIdentificacion }}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        if (data.code == 200){
+            let count = 0;
+            for (const value of data.data) {
+                if(value.tipoBoton == "NUV"){
+                    count++;
+                }
+            }
+            return count;
+        }else{
+            return 0;
         }
     }
 

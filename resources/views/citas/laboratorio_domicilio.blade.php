@@ -33,9 +33,6 @@ Mi Veris - Citas - Laboratorio a domicilio
                             <div class="col-md-12">
                                 <label for="paciente" class="form-label fw-medium">Selecciona el paciente</label>
                                 <select class="form-select bg-neutral" name="paciente" id="paciente" >
-                                    <option selected disabled value="">Elegir...</option>
-                                    <option value="">...</option>
-                                    <option value="">...</option>
                                 </select>
                                 <div class="invalid-feedback">
                                     Elegir un paciente
@@ -97,14 +94,14 @@ Mi Veris - Citas - Laboratorio a domicilio
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
             let html = '';
-            
+            //html += `<option value="">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
             data.data.forEach(element => {
                 html += `<option data-rel='${ JSON.stringify(element) }'>${element.primerNombre} ${element.primerApellido} (${element.parentesco})</option>`;
             });
