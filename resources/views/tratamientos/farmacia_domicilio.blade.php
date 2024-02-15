@@ -11,11 +11,11 @@ Mi Veris - Citas - Farmacia a domicilio
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-bold mb-3">Solicitud exitosa</h1>
+                    <h1 class="modal-title fs-5 fw-medium mb-3">Solicitud exitosa</h1>
                     <p class="fs--1 fw-normal" id="mensaje"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3"id="btnGuardarSolicitudLlamada" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3"id="btnGuardarSolicitudLlamada" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
@@ -23,49 +23,51 @@ Mi Veris - Citas - Farmacia a domicilio
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Farmacia a domicilio') }}</h5>
     </div>
-    <section class="pt-3 px-0 px-md-3 pb-0">
-        <div class="row justify-content-center">
-            <div class="col-12 col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h6 class="text-center fw-bold mb-3">Farmacia a domicilio</h6>
-                        <form class="row g-3">
-                            <div class="col-md-12">
-                                <label for="paciente" class="form-label fw-bold">Selecciona el paciente</label>
-                                <select class="form-select bg-neutral" name="paciente" id="paciente" required>
-                                   
-                                </select>
-                                <div class="invalid-feedback">
-                                    Elegir un paciente
+    <section class="pt-5 px-0 px-md-3 pb-0">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-5">
+                    <div class="card card-border">
+                        <div class="card-body p-3">
+                            <h6 class="text-center fs--16 line-height-20 fw-medium my-3">Farmacia a domicilio</h6>
+                            <form class="row g-3 px-2 needs-validation" novalidate>
+                                <div class="col-md-12">
+                                    <label for="paciente" class="form-label fs--1 line-height-16 fw-medium">Selecciona el paciente</label>
+                                    <select class="form-select fs--1 p-3 bg-neutral rounded-3" name="paciente" id="paciente" required>
+                                       
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Elegir un paciente
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <label for="paciente" class="form-label fw-bold">Selecciona la ciudad</label>
-                                <select class="form-select bg-neutral" name="ciudad" id="ciudad" required>
-                                    <option selected disabled value="">Elegir...</option>
-                                    
-                                </select>
-                                <div class="invalid-feedback">
-                                    Elegir una ciudad
+                                <div class="col-md-12">
+                                    <label for="paciente" class="form-label fs--1 line-height-16 fw-medium">Selecciona la ciudad</label>
+                                    <select class="form-select fs--1 p-3 bg-neutral rounded-3" name="ciudad" id="ciudad" required>
+                                        <option selected disabled value="">Elegir...</option>
+                                        
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Elegir una ciudad
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <input type="number" class="form-control bg-neutral"  name="telefono" id="telefono" value="" placeholder="Teléfono móvil" required />
-                                <div class="invalid-feedback">
-                                    Ingrese un numero de telefono
+                                <div class="col-md-12">
+                                    <input type="number" class="form-control fs--1 p-3 bg-neutral rounded-3"  name="telefono" id="telefono" value="" placeholder="Teléfono móvil" required />
+                                    <div class="invalid-feedback">
+                                        Ingrese un numero de telefono
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <input type="text" class="form-control bg-neutral"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
-                                <div class="invalid-feedback">
-                                    Ingrese una direcciovisun
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control fs--1 p-3 bg-neutral rounded-3"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
+                                    <div class="invalid-feedback">
+                                        Ingrese una direcciovisun
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-12">
-                                <button class="btn btn-lg btn-primary-veris w-100" type="button" id="btnGuardar"
-                                ><i class="bi bi-telephone-fill me-2" id="btnGuardarSolicitudLlamada"></i> Solicitar llamada</button>
-                            </div>
-                        </form>
+                                <div class="col-12">
+                                    <button class="btn btn-lg btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 rounded-3" type="button" id="btnGuardar"
+                                    ><i class="bi bi-telephone-fill me-2" id="btnGuardarSolicitudLlamada"></i> Solicitar llamada</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
