@@ -122,14 +122,22 @@ Mi Veris - Citas - Laboratorio a domicilio
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+<<<<<<< HEAD
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
+=======
         args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
+>>>>>>> developer
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
         console.log('dataFa', data);
         if(data.code == 200){
             let html = '';
+<<<<<<< HEAD
+
+=======
             //html += `<option value="">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }} (Yo)</option>`;
+>>>>>>> developer
             data.data.forEach(element => {
                 html += `<option data-rel='${ JSON.stringify(element) }'>${element.primerNombre} ${element.primerApellido} (${element.parentesco})</option>`;
             });
