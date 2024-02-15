@@ -234,7 +234,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     document.addEventListener("DOMContentLoaded", async function () {
         //await reservarCita();
         if(dataCita.reserva){
-            if (dataCita.reserva.aplicaProntoPago == "N") {
+            if (dataCita.reserva.aplicaProntoPago == "S") {
                 window.addEventListener("beforeunload", beforeUnloadHandler);
             }
         }

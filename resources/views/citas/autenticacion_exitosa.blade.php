@@ -47,7 +47,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         });
 
         if(dataCita.reserva){
-            if (dataCita.reserva.aplicaProntoPago == "N") {
+            if (dataCita.reserva.aplicaProntoPago == "S") {
                 window.addEventListener("beforeunload", beforeUnloadHandler);
             }
         }

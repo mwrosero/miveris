@@ -81,6 +81,20 @@ $data = json_decode(base64_decode($params));
             </div>
         </div>
     </div>
+
+    <!-- Modal Receta médica -->
+    <div class="modal fade" id="interconsultaMedicaModal" tabindex="-1" aria-labelledby="interconsultaMedicaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body p-3">
+                    <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
+                    <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
+                    <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
+                    <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
@@ -550,10 +564,9 @@ $data = json_decode(base64_decode($params));
                                                 <span class="text-warning-veris fs--2 line-height-16 mb-1" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                             </div>
                                             ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
-                                            <div id="recetaMedicaMensaje">
+                                            <div class="recetaMedicaMensaje">
                                                 ${determinarMensajeRecetaMedica(tratamientos)}
-                                            </div> 
-                                            
+                                            </div>                                            
                                             <div class="d-flex justify-content-between align-items-center mt-2">
                                                 <div class="avatar avatar-sm border rounded-circle bg-very-pale-red">
                                                     <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">
@@ -712,9 +725,15 @@ $data = json_decode(base64_decode($params));
 
     // determinar si es receta medica o no mensaje 
     function determinarMensajeRecetaMedica(servicio){
-        if(servicio.nombreServicio == "RECETA MÉDICA"){
+        if(servicio.nombreServicio == "RECETA MÉDICA" || servicio.esExterna == "S"){
             let servicioStr = JSON.stringify(servicio);
-            return `<a href="" class="fs--2 btn-compraste-receta" data-bs-toggle="modal" data-bs-target="#recetaMedicaModal" data-rel='${servicioStr}'>¿Ya compraste esta receta?</a>`;
+            let msg_pregunta = "¿Ya compraste esta receta?";
+            let tipoModal = "recetaMedicaModal";
+            if(servicio.esExterna == "S"){
+                msg_pregunta = "¿Ya realizaste esta interconsulta?"
+                tipoModal = "interconsultaMedicaModal";
+            }
+            return `<a href="" class="fs--2 btn-compraste-receta" data-bs-toggle="modal" data-bs-target="#${tipoModal}" data-rel='${servicioStr}'>${msg_pregunta}</a>`;
         } else {
             return ``;
         }
@@ -775,13 +794,17 @@ $data = json_decode(base64_decode($params));
                     // Agregar ver orden 
                     //respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
-                        respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                        if(datosServicio.esExterna == "N"){
+                            respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                        }else{
+                            respuestaAgenda += ` <a class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                        }
                         if(datosServicio.esCaducado == 'S'){
                             // mostrar boton de informacion que llama al modal de informacion
                             respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none me-1 btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
-                                if (datosServicio.habilitaBotonAgendar == 'S') {
+                                if (datosServicio.habilitaBotonAgendar == 'S' && datosServicio.esExterna == "N") {
                                     if(datosServicio.modalidad == 'PRESENCIAL'){
                                         let ruta = '/citas-elegir-central-medica/';
                                         let urlCompleta = ruta + "{{ $params }}"
@@ -793,7 +816,9 @@ $data = json_decode(base64_decode($params));
                                         respuestaAgenda += `<a href="${urlCompleta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
                                     }
                                 } else {
-                                    respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">Agendar </a>`;
+                                    if(datosServicio.esExterna == "N"){
+                                        respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">Agendar </a>`;
+                                    }
                                 }
                             } else {
                                 // abrir modal no permite reserva
