@@ -225,8 +225,6 @@ Mi Veris - Citas - Terapia física
             data.data.tienePermisoAdmin = true;
         }
 
-
-
         if (data.code == 200){
             if(estado == 'PENDIENTE'){
                 if (data.code == 200) {
