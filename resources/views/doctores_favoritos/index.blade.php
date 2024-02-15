@@ -82,7 +82,7 @@ Mi Veris - Doctores favoritos
     <section class="p-3 pt-0">
         <div class="row justify-content-center" >
             <div class="col-12 col-md-6 col-lg-4 text-center my-4">
-                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris w-100 px-4 py-3">Buscar doctor</a>
+                <a href="{{route('doctoresFavoritos.buscarDoctor')}}" class="btn btn-primary-veris fs--18 line-height-24 fw-medium w-100 px-4 py-3">Buscar doctor</a>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -197,9 +197,9 @@ Mi Veris - Doctores favoritos
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer text-end p-3">
-                            <button type="button" class="btn btn-outline-primary-veris btn-sm" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
-                            <div class="btn btn-sm btn-primary-veris" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(doctores)}'>Reservar cita</div>
+                        <div class="card-footer text-end pt-0 p--2">
+                            <button type="button" class="btn btn-sm btn-outline-primary-veris fs--1 line-height-16 px-3 py-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
+                            <div class="btn btn-sm btn-primary-veris fs--1 line-height-16 px-3 py-2" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(doctores)}'>Reservar cita</div>
                         </div>
                     </div>
                 </div>`;
