@@ -32,15 +32,27 @@ Mi Veris - Citas - Laboratorio a domicilio
                             <h6 class="text-center fs--16 line-height-20 fw-medium my-3">Laboratorio a domicilio</h6>
                             <form class="row g-3 px-2 needs-validation" novalidate>
                                 <div class="col-md-12">
+<<<<<<< HEAD
                                     <label for="paciente" class="form-label fs--1 line-height-16 fw-medium">Selecciona el paciente</label>
                                     <select class="form-select fs--1 p-3 bg-neutral rounded-3" name="paciente" id="paciente" required>
+=======
+                                    <label for="paciente" class="form-label fs--1 line-height-16 fw-medium rounded-3">Selecciona el paciente</label>
+                                    <select class="form-select fs--1 p-3 bg-neutral rounded-3" name="paciente" id="paciente" >
+                                        <option selected disabled value="">Elegir...</option>
+                                        <option value="">...</option>
+                                        <option value="">...</option>
+>>>>>>> miguel
                                     </select>
                                     <div class="invalid-feedback">
                                         Elegir un paciente
                                     </div>
                                 </div>
                                 <div class="col-md-12">
+<<<<<<< HEAD
                                     <label for="paciente" class="form-label fs--1 line-height-16 fw-medium">Selecciona la ciudad</label>
+=======
+                                    <label for="paciente" class="form-label fs--1 line-height-16 fw-medium rounded-3">Selecciona la ciudad</label>
+>>>>>>> miguel
                                     <select class="form-select fs--1 p-3 bg-neutral rounded-3" name="ciudad" id="ciudad" required>
                                         <option selected disabled value="">Elegir...</option>
                                         <option value="">...</option>
@@ -51,19 +63,34 @@ Mi Veris - Citas - Laboratorio a domicilio
                                     </div>
                                 </div>
                                 <div class="col-md-12">
+<<<<<<< HEAD
                                     <input type="number" class="form-control fs--1 p-3 bg-neutral rounded-3"  name="telefono" id="telefono" value="" placeholder="Teléfono móvil" required />
                                     <div class="invalid-feedback">
                                         Ingrese un número de teléfono
+=======
+                                    <input type="number" class="form-control fs--1 p-3 bg-neutral rounded-3" name="telefono" id="telefono" value="" placeholder="Teléfono móvil" required />
+                                    <div class="invalid-feedback">
+                                        Ingrese un numero de telefono
+>>>>>>> miguel
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <input type="text" class="form-control fs--1 p-3 bg-neutral rounded-3"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
                                     <div class="invalid-feedback">
+<<<<<<< HEAD
                                         Ingrese una dirección
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <button class="btn btn-lg btn-primary-veris fs--18 line-height-24 fw-medium rounded-3 w-100 px-4 py-3" type="submit" id="btnGuardar"><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
+=======
+                                        Ingrese una direccion
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-lg btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 rounded-3" type="submit" id="btnGuardar"
+                                    ><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
+>>>>>>> miguel
                                 </div>
                             </form>
                         </div>

@@ -24,8 +24,13 @@ Mi Veris - Citas - Farmacia a domicilio
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Farmacia a domicilio') }}</h5>
     </div>
     <section class="pt-5 px-0 px-md-3 pb-0">
+<<<<<<< HEAD
         <div class="row justify-content-center">
             <div class="container">
+=======
+        <div class="container">
+            <div class="row justify-content-center">
+>>>>>>> miguel
                 <div class="col-12 col-md-8 col-lg-5">
                     <div class="card card-border">
                         <div class="card-body p-3">
@@ -34,6 +39,10 @@ Mi Veris - Citas - Farmacia a domicilio
                                 <div class="col-md-12">
                                     <label for="paciente" class="form-label fs--1 line-height-16 fw-medium">Selecciona el paciente</label>
                                     <select class="form-select fs--1 p-3 bg-neutral rounded-3" name="paciente" id="paciente" required>
+<<<<<<< HEAD
+=======
+                                       
+>>>>>>> miguel
                                     </select>
                                     <div class="invalid-feedback">
                                         Elegir un paciente
@@ -43,6 +52,10 @@ Mi Veris - Citas - Farmacia a domicilio
                                     <label for="paciente" class="form-label fs--1 line-height-16 fw-medium">Selecciona la ciudad</label>
                                     <select class="form-select fs--1 p-3 bg-neutral rounded-3" name="ciudad" id="ciudad" required>
                                         <option selected disabled value="">Elegir...</option>
+<<<<<<< HEAD
+=======
+                                        
+>>>>>>> miguel
                                     </select>
                                     <div class="invalid-feedback">
                                         Elegir una ciudad
@@ -61,7 +74,12 @@ Mi Veris - Citas - Farmacia a domicilio
                                     </div>
                                 </div>
                                 <div class="col-12">
+<<<<<<< HEAD
                                     <button class="btn btn-lg btn-primary-veris fs--18 line-height-24 w-100 fw-medium rounded-3 w-100 px-4 py-3" type="button" id="btnGuardar"><i class="bi bi-telephone-fill me-2" id="btnGuardarSolicitudLlamada"></i> Solicitar llamada</button>
+=======
+                                    <button class="btn btn-lg btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 rounded-3" type="button" id="btnGuardar"
+                                    ><i class="bi bi-telephone-fill me-2" id="btnGuardarSolicitudLlamada"></i> Solicitar llamada</button>
+>>>>>>> miguel
                                 </div>
                             </form>
                         </div>
