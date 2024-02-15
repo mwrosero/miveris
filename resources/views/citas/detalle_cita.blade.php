@@ -95,12 +95,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let idIntervalo = dataCita.horario.idIntervalo;
     let porcentajeDescuentos = dataCita.horario.porcentajeDescuento;
     let medPayPlan = dataCita.convenio.informacionExternaPlan;
-    let permitePago = dataCita.convenio.permitePago;
+    
     let permiteReserva = dataCita.convenio.permiteReserva;
     let dia2 = dataCita.horario.dia2;
     let idCliente = dataCita.convenio.idCliente;
     let rutaImagenConvenio = dataCita.convenio.rutaImagenConvenio;
     let horaInicio = dataCita.horario.horaInicio;
+
+    let permitePago = "S";
+    if(dataCita.convenio.permitePago){
+        permitePago = dataCita.convenio.permitePago;
+    }
 
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerPrecio();
@@ -195,9 +200,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden;
             lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden;
         }
+        if(dataCita.tratamiento){
+            numeroOrden = dataCita.tratamiento.numeroOrden;
+            codigoEmpOrden = dataCita.tratamiento.codigoEmpOrden;
+            lineaDetalle = dataCita.tratamiento.lineaDetalle;
+        }
+
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
 
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${dataCita.convenio.permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;

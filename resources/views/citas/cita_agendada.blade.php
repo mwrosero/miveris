@@ -67,6 +67,34 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>
+                        <!-- Laboratorio presencial comprado -->
+                        <div class="content-lab-presencial d-none">
+                            <div class="avatar avatar-lg mx-auto mb-4">
+                                <img src="{{asset('assets/img/svg/visto.svg')}}" alt="cita agendada">
+                            </div>
+                            <h3 class="fs--28 line-height-36 fw-medium mb-4">Laboratorio pagado</h3>
+                            <p class="fs--16 line-height-20 mb-5" id="infoAgendar">Acércate a cualquier central Veris.<br><b>¡Nos vemos pronto!</b></p>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="{{ asset('assets/img/svg/lab_presencial.svg') }}"  alt="cita agendada">
+                            </div>
+                            <div class="mt-5">
+                                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
+                            </div>
+                        </div>
+                        <!-- Laboratorio presencial comprado -->
+                        <div class="content-lab-domicilio d-none">
+                            <div class="avatar avatar-lg mx-auto mb-4">
+                                <img src="{{asset('assets/img/svg/visto.svg')}}" alt="cita agendada">
+                            </div>
+                            <h3 class="fs--28 line-height-36 fw-medium mb-4">Laboratorio pagado</h3>
+                            <p class="fs--16 line-height-20 mb-5" id="infoAgendar">Tu laboratorio a domicilio ha sido  agendado.<br><b>¡Nos vemos pronto!</b></p>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <img src="{{ asset('assets/img/svg/lab_domicilio.svg') }}"  alt="cita agendada">
+                            </div>
+                            <div class="mt-5">
+                                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,7 +108,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let dataCita = JSON.parse(local);
 
     document.addEventListener("DOMContentLoaded", async function () {
-        if(!dataCita.paquete && !dataCita.promocion){
+        if(!dataCita.paquete && !dataCita.promocion && !dataCita.datosTratamiento && !dataCita.ordenExterna){
             if(dataCita.online == "S"){
                 $('.content-online').removeClass('d-none');
             }else{
@@ -92,6 +120,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 $('.content-paquete').removeClass('d-none');
             }else if(dataCita.promocion){
                 $('.content-tratamiento').removeClass('d-none');
+            }else if(dataCita.datosTratamiento){
+                $('.content-lab-presencial').removeClass('d-none');
+            }else if(dataCita.ordenExterna){
+                $('.content-lab-domicilio').removeClass('d-none');
             }
         }
     });

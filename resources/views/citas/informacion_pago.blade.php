@@ -24,7 +24,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <p class="fs--1 mb-3" style="line-height: 16px;"><b class="text-primary">Para autenticar tu tarjeta</b> ingresa el <b>código de seguridad</b> enviado a tu teléfono y/o correo electrónico.</p>
                     <div class="input-group input-group-merge mb-3">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                        <input type="text" class="form-control code-otp" name="codeAutenticar" id="codeAutenticar" placeholder="Código de seguridad (OTP)" required />
+                        <input type="number" class="form-control code-otp" name="codeAutenticar" id="codeAutenticar" placeholder="Código de seguridad (OTP)" required />
                     </div>
                     <div class="invalid-feedback mb-3">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>Código inválido
@@ -51,7 +51,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <p class="fs--1 mb-3" style="line-height: 16px;"><b class="text-primary">Para continuar con la transacción</b> ingresa el <b>código de seguridad</b> enviado a tu teléfono y/o correo electrónico.</p>
                     <div class="input-group input-group-merge mb-3">
                         <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                        <input type="text" class="form-control code-otp" name="codePagar" id="codePagar" placeholder="Código de seguridad (OTP)" required />
+                        <input type="number" class="form-control code-otp" name="codePagar" id="codePagar" placeholder="Código de seguridad (OTP)" required />
                     </div>
                     <div class="invalid-feedback mb-3">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>Código inválido
@@ -155,7 +155,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
         if(dataCita.reserva){
-            if (dataCita.reserva.aplicaProntoPago == "N") {
+            if (dataCita.reserva.aplicaProntoPago == "S") {
                 window.addEventListener("beforeunload", beforeUnloadHandler);
             }
         }
