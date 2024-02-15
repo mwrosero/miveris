@@ -147,6 +147,8 @@ Mi Veris - Citas - Familia y amigos
     document.addEventListener("DOMContentLoaded", async function () {
         await tiposIdentificacion();
         llenarSelect();
+        
+        
     });
 
     
@@ -184,8 +186,8 @@ Mi Veris - Citas - Familia y amigos
         const data = await call(args);
         console.log('consultqar persona', data);
         if (data.code == 200) {
-            if(data.data.length == 0){
-                $("#mensajePersonaYaExisteModalLabel").html("No se encontró ninguna persona con el número de identificación ingresado");
+            if(data.data == null){
+                $("#mensajePersonaYaExisteModalLabel").html(data.message);
                 $("#mensajePersonaYaExisteModal").modal("show");
                 return;
             } else {
@@ -294,14 +296,8 @@ Mi Veris - Citas - Familia y amigos
 
     // Función para llenar el select
     function llenarSelect() {
-        // Verifica si datostiposIdentificacion está definida
         if (datostiposIdentificacion) {
-            // Itera sobre los datos para llenar el select
             datostiposIdentificacion.forEach(function(tipoIdentificacion) {
-                // Aquí puedes agregar lógica para llenar el select con los datos
-                // ...
-
-                // Ejemplo de cómo se puede agregar una opción al select
                 $("#tipoIdentificacion").append('<option value="' + tipoIdentificacion.codigoTipoIdentificacion + '">' + tipoIdentificacion.nombreTipoIdentificacion + '</option>');
             });
         }

@@ -371,7 +371,7 @@ Mi Veris - Inicio
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
         const dataConvenio = await call(args);
         if(dataConvenio.code == 200){
             datosConvenios = dataConvenio.data;
@@ -387,7 +387,7 @@ Mi Veris - Inicio
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
         const dataPaciente = await call(args);
         if(dataPaciente.code == 200){
             datosPaciente = dataPaciente.data;
@@ -826,6 +826,10 @@ Mi Veris - Inicio
             params.origen = "inicios";
             
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            if(datosConvenios.length == 0){
+                location = url;
+                return;
+            }
 
             llenarModalConvenios(datosConvenios, url);
 
@@ -880,7 +884,7 @@ Mi Veris - Inicio
             params.origen = "inicios";
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             
-            if(data.permitePagoReserva == "S"){
+            if(data.permitePagoReserva == "S" || datosConvenios.length == 0){
                 location = url;
             }else{
                 //data.mensajePagoReserva

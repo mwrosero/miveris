@@ -94,6 +94,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let codeOTP = $('#codePagar').val();
             autenticarOTP(codeOTP,'pago');
         });
+
+        if(dataCita.reserva){
+            if (dataCita.reserva.aplicaProntoPago == "N") {
+                window.addEventListener("beforeunload", beforeUnloadHandler);
+            }
+        }
     });
 
     async function autenticarOTP(codeOTP,type){
@@ -168,6 +174,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     function guardarData(){
+        window.removeEventListener("beforeunload", beforeUnloadHandler);
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>

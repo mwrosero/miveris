@@ -408,9 +408,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>`;
                 })
             }else{
-                $('#sinMedicosDisponibles').modal('show');
+
                 /* Mostrar la modal cuando No hay médicos disponibles. */
-                console.log("No hay médicos disponibles");
+                console.log("No hay médicosS disponibles");
+                let nohayHorarios = $('#listaMedicos');
+                let elementoHorarios = '';
+                elementoHorarios += `<div class="card bg-transparent shadow-none">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <img src="{{ asset('assets/img/svg/doctor_light.svg') }}" class="img-fluid mb-3" alt="">
+                                                
+                                                <p class="fs--1">No hay disponibilidad para el dia ${fechaSeleccionada}, intenta buscar con otra fecha.</p>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                nohayHorarios.append(elementoHorarios);
                 
             }
 
