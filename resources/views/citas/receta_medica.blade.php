@@ -208,10 +208,10 @@ Mi Veris - Citas - Receta médica
         args["showLoader"] = true;
         console.log(args["endpoint"]);
         const data = await call(args);
-        console.log('datalabor', data);
-        console.log('estado', estado);
+        if (!pacienteSeleccionado) {
+            data.data.tienePermisoAdmin = true;
+        }
         if(estado == 'PENDIENTE'){
-            console.log('entrando a pendiente');
             if (data.code == 200) {
                 esAdmin = data.data.tienePermisoAdmin;   
                 if (numeroPaciente == "{{ Session::get('userData')->numeroPaciente }}") {
