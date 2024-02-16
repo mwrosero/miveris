@@ -133,22 +133,22 @@ Mi Veris - Citas - Promociones
             $.each(data.data.items, function(key, paquete){
                 elem += `<div class="col-md-6">
                     <div class="card w-100" style="border: 1px solid #E7E9EC;box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);">
-                        <div class="row g-0 justify-content-between align-items-center cursor-pointer btn-comprar" data-rel='${ JSON.stringify(paquete) }'>
-                            <div class="col-5 col-md-auto">
-                                <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="card-img-top" alt="{{ __('promoción') }}">
+                        <div class="row g-0 justify-content-between aling-items-center cursor-pointer btn-comprar" data-rel='${ JSON.stringify(paquete) }'>
+                            <div class="col-4 col-md-auto">
+                                <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
                             </div>
-                            <div class="col-7 col-md-7">
-                                <div class="card-body p--2">
-                                    <h6 class="text-end fs--1 line-height-16 fw-medium text-one-line">${capitalizarElemento(paquete.nombrePaquete)}</h6>
+                            <div class="col-8 col-md-8">
+                                <div class="card-body h-100 p--2 pb-2 d-flex flex-column justify-content-center">
+                                    <h6 class="text-end fs--1 line-height-16 fw-medium mb-2">${truncateText(capitalizarElemento(paquete.nombrePaquete), 40)}</h6>
                                     <div class="d-flex justify-content-end">`;
-                                if(paquete.porcentajeDescuento > 0){
-                                    elem += `<span class="badge bg-primary d-flex align-items-center fs--2 line-height-16 px--2 py-2 mx-3">-${paquete.porcentajeDescuento}%</span>`;
-                                }
-                                    elem += `<div class="content-precio text-end">`;
-                                if(paquete.porcentajeDescuento > 0){
-                                    elem += `<p class="fs--3 line-height-16 mb-0" style="color: #6E7A8C;">Antes <del>$${paquete.valorAnteriorPaquete.toFixed(2)}</del></p>`
-                                }
-                                    elem += `<h4 class="fs-24 line-height-28 fw-medium mb-0" style="color: #0071CE !important;">$${paquete.valorTotalPaquete.toFixed(2)}</h4>
+                                        if(paquete.porcentajeDescuento > 0){
+                                            elem += `<span class="badge bg-primary d-flex align-items-center fs--2 line-height-16 rounded-1 px--2 py-2 mx-3">-${paquete.porcentajeDescuento}%</span>`;
+                                        }
+                                            elem += `<div class="content-precio text-end">`;
+                                        if(paquete.porcentajeDescuento > 0){
+                                            elem += `<p class="fs--3 line-height-16 mb-0" style="color: #6E7A8C;">Antes <del>$${paquete.valorAnteriorPaquete.toFixed(2)}</del></p>`
+                                        }
+                                            elem += `<h4 class="fs-24 line-height-28 fw-medium mb-0" style="color: #0071CE !important;">$${paquete.valorTotalPaquete.toFixed(2)}</h4>
                                         </div>
                                     </div>
                                 </div>

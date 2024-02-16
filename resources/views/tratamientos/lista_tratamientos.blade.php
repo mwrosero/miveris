@@ -82,14 +82,17 @@ $data = json_decode(base64_decode($params));
         </div>
     </div>
 
+
     <!-- Modal Interconsulta médica -->
     <div class="modal fade" id="interconsultaMedicaModal" tabindex="-1" aria-labelledby="interconsultaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body p-3">
-                    <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
-                    <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
-                    <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
+                    <h5 class="fw-medium text-center">{{ __('Interconsulta - Medicina General') }}</h5>
+                    <p class="text-center lh-1 fs--1 my-3">{{ __('No contamos con esta especialidad') }}</p>
+                    
+                    <p class="text-center fw-medium lh-1 fs--1 my-3">{{ __('¿Ya realizaste esta cita médica?') }}</p>
+                    <a href="#" id="btnInterconsultaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
                 </div>
             </div>
@@ -395,6 +398,49 @@ $data = json_decode(base64_decode($params));
             // actualizar la lista de tratamientos
             await obtenerTratamientos();
 
+        } else if (data.code != 200) {
+            console.log('errorza');
+            // mostrar modal de error
+            $('#mensajeError').text(data.message);
+            $('#mensajeSolicitudLlamadaModalError').modal('show');
+        }
+    }
+
+    // cambiar el estado del interconsulta a realizada
+    async function detalleInterconsultaRealizado(datos){
+        console.log('datosInterconsulta', datos);
+        
+        let args = [];
+        let canalOrigen = 'APP_CMV'
+        
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
+        args["method"] = "PUT";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify(
+            {
+                "codigoTratamiento": datos.codigoTratamiento,
+                "lineaDetalleTratamiento": datos.lineaDetalleTratamiento,
+                "ordenes": [
+                    {
+                        "codigoEmpresa": datos.codigoEmpresa,
+                        "numeroOrden": datos.idOrden,
+                        "lineaDetalle": datos.lineaDetalleOrden,
+                        "fechaRealizado": obtenerFechaActual()
+                    }
+                ],
+                "generarSolicitud": false,
+                "fechaRealizado": obtenerFechaActual()
+            }
+        );
+
+        const data = await call(args);
+        if (data.code == 200) {
+            console.log('datos', data.data);
+            // cerrar modal
+            $('#interconsultaMedicaModal').modal('hide');
+            // actualizar la lista de tratamientos
+            await obtenerTratamientos();
         } else if (data.code != 200) {
             console.log('errorza');
             // mostrar modal de error
@@ -965,6 +1011,19 @@ $data = json_decode(base64_decode($params));
         await detalleTratamientoRealizado(datos);
     });
 
+    // asignacion de datos al modal interconsulta medica
+    $('#interconsultaMedicaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); 
+        var datos = JSON.parse(button.attr('data-rel'));
+        $('#btnInterconsultaMedicaSi').data('rel', datos);
+    });
+
+    // boton interconsulta medica si lo hice
+    $('#btnInterconsultaMedicaSi').click(async function(){
+        let datos = $(this).data('rel');
+        await detalleInterconsultaRealizado(datos);
+    });
+
     // boton ver orden
     $(document).on('click', '.verOrdenCard', function(){
         let datos = $(this).data('rel');
@@ -996,7 +1055,6 @@ $data = json_decode(base64_decode($params));
     // boton ver pdf receta
     $(document).on('click', '.verPdfReceta', function(){
         let datos = $('#detalleRecetaMedica').attr('data-rel');
-        console.log('datocdcds', datos);
         datos = JSON.parse(datos);
 
         obtenerRecetaPdf(datos);
@@ -1101,13 +1159,16 @@ $data = json_decode(base64_decode($params));
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
         let url = $(this).attr('url-rel');
+
+        console.log('dataCa', data);
+        console.log('urlCa', url);
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
         if (data.estaPagada == "N"){
             let params = {}
             params.online = data.esVirtual;
             params.especialidad = {
-                codigoEspecialidad: data.idEspecialidad,
+                codigoEspecialidad: data.codigoEspecialidad,
                 codigoPrestacion  : data.codigoPrestacion,
                 codigoServicio   : data.codigoServicio,
                 codigoTipoAtencion: data.codigoTipoAtencion,
@@ -1145,7 +1206,7 @@ $data = json_decode(base64_decode($params));
             let params = {}
             params.online = data.esVirtual;
             params.especialidad = {
-                codigoEspecialidad: data.idEspecialidad,
+                codigoEspecialidad: data.codigoEspecialidad,
                 codigoPrestacion  : data.codigoPrestacion,
                 codigoServicio   : data.codigoServicio,
                 codigoTipoAtencion: data.codigoTipoAtencion,

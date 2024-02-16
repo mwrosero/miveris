@@ -218,17 +218,7 @@ Mi Veris - Resultados
             let items = data.data;
             console.log('items', items);
             if (items == null){
-                console.log('entro1');
-                let html = $("#modalBody");
-                html.empty();
-                
-                let elemento = "";
-                elemento += `<h1 class="text-center fw-medium fs--20 line-height-24 my-3">Resultados</h1>`;
-                elemento += `<div class="my-3">
-                                <p class="text-center fs-normal my-3">${capitalizarElemento(data.message)}</p>
-                            </div>`;
-            
-                html.append(elemento);  
+                verInforme(codigoApoyo, 'IMG');
             } else {
                 console.log('entro2');
                 let html = $("#modalBody");
@@ -265,8 +255,21 @@ Mi Veris - Resultados
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
+        
         try {
             const blob = await callInformes(args);
+            if (blob == null){
+                let html = $("#modalBody");
+                html.empty();
+                
+                let elemento = "";
+                elemento += `<h1 class="text-center fw-medium fs--20 line-height-24 my-3">Resultados</h1>`;
+                elemento += `<div class="my-3">
+                                <p class="text-center fs-normal my-3">${capitalizarElemento(data.message)}</p>
+                            </div>`;
+            
+                html.append(elemento);  
+            }
             const pdfUrl = URL.createObjectURL(blob);
 
             window.open(pdfUrl, '_blank');

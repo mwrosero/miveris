@@ -110,16 +110,16 @@ Mi Veris - Citas - Citas Laboratorio
                 element.listaOrdenesDetalle.forEach(elemento => {
                     elementos += `
                     <div class="row g-0 justify-content-between">
-                        <div class="col-9 d-flex align-items-center">
+                        <div class="col-8 d-flex align-items-center">
                             <!--i class="bi bi-check-square-fill fs-5 text-primary me-2"></i-->
                             <input class="form-check-input input-prestacion me-2" type="checkbox" value="${elemento.codigoPrestacion}" id="prestacion-${elemento.codigoPrestacion}" checked>
                             <label class="form-check-label text-900 fw-semi-bold fs--2 mb-0" for="prestacion-${elemento.codigoPrestacion}">
-                                ${elemento.nombrePrestacion}
+                                ${capitalizarElemento(elemento.nombrePrestacion)}
                             </label>
                             <!--p class="text-900 fw-semi-bold fs--2 mb-0">${elemento.nombrePrestacion}</p-->
                         </div>
-                        <div class="col-3 d-flex justify-content-end align-items-center">
-                            <p class="text-1100 fw-semi-bold fs--2 mb-0">$ ${elemento.total}</p>
+                        <div class="col-4 d-flex justify-content-end align-items-center">
+                            <p class="text-1100 fw-semi-bold fs--2 mb-0">$ ${formatearNumero(elemento.total)}</p>
                             ${permitePago(elemento.permitePago)}
                         </div>
                     </div>
