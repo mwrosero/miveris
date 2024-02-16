@@ -51,12 +51,15 @@ Mi Veris - Citas - Receta médica
                 <div class="modal-body p-3">
                     <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
-                    <a href="#" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
+                    <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
                 </div>
             </div>
         </div>
     </div>
+
+
+
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Receta médica') }}</h5>
     </div>
@@ -272,6 +275,9 @@ Mi Veris - Citas - Receta médica
                                                                     <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada)}</span>
                                                                 </div>
                                                                 ${determinarFechasCaducadas(detalles, laboratorio)}
+                                                                <div class="recetaMedicaMensaje">
+                                                                    ${determinarMensajeRecetaMedica(detalles)}
+                                                                </div>  
                                                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                                                     <div class="avatar avatar-sm me-2">
                                                                         <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
@@ -530,7 +536,7 @@ Mi Veris - Citas - Receta médica
             // cerrar modal
             $('#recetaMedicaModal').modal('hide');
             // actualizar la lista de tratamientos
-            await obtenerTratamientos();
+            await obtenerTratamientosId();
 
         } else if (data.code != 200) {
             console.log('errorza');
@@ -726,6 +732,54 @@ Mi Veris - Citas - Receta médica
             }
         }
     }
+
+    // determinar si es receta medica o no mensaje 
+    function determinarMensajeRecetaMedica(servicio){
+        if(servicio.nombreServicio == "RECETA MÉDICA" || servicio.esExterna == "S"){
+            let servicioStr = JSON.stringify(servicio);
+            let msg_pregunta = "¿Ya compraste esta receta?";
+            let tipoModal = "recetaMedicaModal";
+            if(servicio.esExterna == "S"){
+                msg_pregunta = "¿Ya realizaste esta interconsulta?"
+                tipoModal = "interconsultaMedicaModal";
+            }
+            return `<a href="" class="fs--2 btn-compraste-receta" data-bs-toggle="modal" data-bs-target="#${tipoModal}" data-rel='${servicioStr}'>${msg_pregunta}</a>`;
+        } else {
+            return ``;
+        }
+    }
+
+    // asignacion de datos al modal receta medica
+    $('#recetaMedicaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); 
+        var datos = JSON.parse(button.attr('data-rel'));
+        $('#btnRecetaMedicaSi').data('rel', datos);
+    });
+
+    // boton receta medica si lo hice
+    $('#btnRecetaMedicaSi').click(async function(){
+        let datos = $(this).data('rel');
+        await detalleTratamientoRealizado(datos);
+    });
+
+
+    // recibir fechas y horas actuales
+    function obtenerFechaActual(){
+        let fechaActual = new Date();
+
+        let dia = String(fechaActual.getDate()).padStart(2, '0');
+        let mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Enero es 0
+        let anio = fechaActual.getFullYear();
+
+        let horas = String(fechaActual.getHours()).padStart(2, '0');
+        let minutos = String(fechaActual.getMinutes()).padStart(2, '0');
+        let segundos = String(fechaActual.getSeconds()).padStart(2, '0');
+
+        return `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`;
+    }
+
+
+
 
     // mostrar lista de pacientes en el filtro
     function mostrarListaPacientesFiltro(){
