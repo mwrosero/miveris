@@ -719,4 +719,8 @@ function beforeUnloadHandler(event){
 
 function formatearNumero(numero) {
     return numero.toFixed(2);
-  }
+}
+
+function truncateText(text, maxLength) {
+    return text.length > maxLength ? text.slice(0, maxLength - 3) + '...' : text;
+}
