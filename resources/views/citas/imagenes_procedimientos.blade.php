@@ -253,22 +253,13 @@ Mi Veris - Citas - Imágenes y procedimientos
                     numeroPaciente: data.numeroPaciente
                 }
 
-                params.especialidad = {
-                    codigoEspecialidad: data.idEspecialidad,
-                    codigoPrestacion  : data.codigoPrestacion,
-                    codigoServicio   : data.codigoServicio,
-                    codigoTipoAtencion: data.codigoTipoAtencion,
-                    esOnline : data.esVirtual,
-                    nombre : data.especialidad,
-                }
-
                 params.reservaEdit = {
-                    "estaPagada": data.esPagada,
-                    "numeroOrden": data.idOrden,
-                    "lineaDetalleOrden": data.lineaDetalleOrden,
-                    "codigoEmpresaOrden": data.codigoEmpresa,
-                    "idOrdenAgendable": data.idOrdenAgendable,
-                    "idCita": data.idCita
+                    estaPagada: data.esPagada,
+                    numeroOrden: data.idOrden,
+                    lineaDetalleOrden: data.lineaDetalleOrden,
+                    codigoEmpresaOrden: data.codigoEmpresa,
+                    idOrdenAgendable: data.idOrdenAgendable,
+                    idCita: data.detalleReserva.codigoReserva
                 }
                 params.origen = "inicios";
                 
@@ -327,12 +318,12 @@ Mi Veris - Citas - Imágenes y procedimientos
                 }
 
                 params.reservaEdit = {
-                    "estaPagada": data.estaPagada,
-                    "numeroOrden": data.numeroOrden,
-                    "lineaDetalleOrden": data.lineaDetalleOrden,
-                    "codigoEmpresaOrden": data.codigoEmpresaOrden,
-                    "idOrdenAgendable": data.idOrdenAgendable,
-                    "idCita": data.idCita
+                    estaPagada: data.esPagada,
+                    numeroOrden: data.idOrden,
+                    lineaDetalleOrden: data.lineaDetalleOrden,
+                    codigoEmpresaOrden: data.codigoEmpresa,
+                    idOrdenAgendable: data.idOrdenAgendable,
+                    idCita: data.detalleReserva.codigoReserva
                 }
                 params.origen = "inicios";
                 localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));

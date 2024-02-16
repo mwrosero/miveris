@@ -883,14 +883,15 @@ Mi Veris - Inicio
             }
             params.origen = "inicios";
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location = url;
             
-            if(data.permitePagoReserva == "S" || datosConvenios.length == 0){
+            /*if(data.permitePagoReserva == "N" || datosConvenios.length == 0){
                 location = url;
             }else{
                 //data.mensajePagoReserva
                 llenarModalConvenios(datosConvenios, url);
                 $('#convenioModal').modal('show');
-            }
+            }*/
         }
     });
 
