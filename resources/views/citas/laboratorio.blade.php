@@ -507,7 +507,8 @@ Mi Veris - Citas - Laboratorio
                     dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
                 } else {
                     // orden valida
-                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-success me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    dataFechas = '';
+                    // dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-success me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
                 }
             }
         }
