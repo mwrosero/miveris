@@ -716,3 +716,7 @@ function beforeUnloadHandler(event){
     // Included for legacy support, e.g. Chrome/Edge < 119
     event.returnValue = true;
 };
+
+function formatearNumero(numero) {
+    return numero.toFixed(2);
+  }

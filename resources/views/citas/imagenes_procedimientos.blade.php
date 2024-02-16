@@ -466,6 +466,7 @@ Mi Veris - Citas - Imágenes y procedimientos
                                                                 <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                                 <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada , estado)}</span>
                                                             </div>
+                                                            ${determinarFechaCaducidadEncabezado(detalles, laboratorio)}
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
                                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                                                 <div class="avatar-sm me-2">
@@ -662,25 +663,42 @@ Mi Veris - Citas - Imágenes y procedimientos
     function determinarFechasCaducadas(datos, datosTratamiento){ 
         let dataFechas = ``;
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
-            if (datos.estado == "PENDIENTE_AGENDAR") {
-                if (datos.esCaducado == "S") {
-                    dataFechas = `<p class="fw-light fs--2 line-height-16 mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                } else {
-                    dataFechas = `` ;
-                }
-            }
+            
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
                 dataFechas = `<h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(datos.nombreSucursal)}</h6>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.detalleReserva.fechaReserva)} <b class="hora-cita fw-normal text-primary-veris">${datos.detalleReserva.horaReserva}</b></p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
             }
-        } else {
-            if (datos.estado == "PENDIENTE_AGENDAR") {
+        }
+        return dataFechas;
+    }
+
+    // determinar fecha de caducidad encabezado
+    const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
+        let dataFechas;
+        
+        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
+            if (datos.estado == "PENDIENTE_AGENDAR" ||datos.estado == "AGENDADO" || datos.estado == null){
                 if (datos.esCaducado == "S") {
-                    dataFechas = `<p class="fw-light fs--2 line-height-16 mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    if(datos.fechaCaducidad == null){
+                        dataFechas = ``;
+                    
+                       
+                    } else {
+                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    
+                    }
                 } else {
-                    dataFechas = `` ;
+                    // orden valida
+                    if(datos.fechaCaducidad == null){
+                        
+                        dataFechas = ``;
+                        
+                    } else {
+                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary-veris me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                
+                    }
                 }
             }
         }
@@ -829,21 +847,8 @@ Mi Veris - Citas - Imágenes y procedimientos
         }
     }
 
-    const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
-        let dataFechas;
-        
-        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
-            if (datos.estado == "PENDIENTE_AGENDAR" || datos.estado == null){
-                if (datos.esCaducado == "S") {
-                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                } else {
-                    // orden valida
-                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-success me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                }
-            }
-        }
-        return dataFechas;
-    }
+    
+
 
     // boton informacion
     $(document).on('click', '.btn-informacion', function(){
