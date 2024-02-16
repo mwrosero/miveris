@@ -270,7 +270,7 @@ Mi Veris - Inicio
         $(document).on('click', '.btn-pagar', function(){
             let data = $(this).data('rel');
             console.log('dataPagar', data);
-            if(datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
+            if(datosConvenios.length > 0 && datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
                 // Modal de error
                 // setear el mensaje de error en mensajeError
                 $('#mensajeError').text(data.mensajePagoReserva);

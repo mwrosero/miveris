@@ -74,7 +74,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
 
     document.addEventListener("DOMContentLoaded", async function () {
         if(dataCita.reserva){
-            if (dataCita.reserva.aplicaProntoPago == "N") {
+            if (dataCita.reserva.aplicaProntoPago == "S") {
                 window.addEventListener("beforeunload", beforeUnloadHandler);
             }
         }
