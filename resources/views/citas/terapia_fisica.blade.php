@@ -188,6 +188,145 @@ Mi Veris - Citas - Terapia física
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         await obtenerTratamientosId();
         await consultarGrupoFamiliar();
+
+        var $enlace = $('.btn-agendar');
+
+        // Maneja el evento de clic en el enlace
+        $enlace.on('click', function(event) {
+            // Previene el comportamiento predeterminado del enlace
+            event.preventDefault();
+
+            // Establece un retraso de 2 segundos antes de redirigir
+            setTimeout(function() {
+                // Obtiene la URL del enlace
+                var url = $enlace.attr('href');
+                // Redirige a la URL después del retraso
+                window.location.href = url;
+            }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
+        });
+
+        $(document).on('click', '.btn-CambiarFechaCita', function(){
+            console.log('click entro a cambiar fecha');
+            let data = $(this).data('rel');
+            let url = $(this).attr('url-rel');
+            // const dataConvenio = await consultarConvenios(data);
+            // const dataPaciente = await consultarDatosPaciente(data);
+            if (data.estaPagada == "N"){
+                let params = {}
+                let esVirtual = "N";
+                if(data.modalidad != "PRESENCIAL"){
+                    esVirtual = "S";
+                }
+                params.online = esVirtual;
+                params.especialidad = {
+                    codigoEspecialidad: data.codigoEspecialidad,
+                    codigoPrestacion  : data.codigoPrestacion,
+                    codigoServicio   : data.codigoServicio,
+                    codigoTipoAtencion: data.codigoTipoAtencion,
+                    esOnline : esVirtual,
+                    nombre : data.nombreEspecialidad,
+                }
+                params.paciente = {
+                    numeroIdentificacion: data.numeroIdentificacion,
+                    tipoIdentificacion: data.tipoIdentificacion,
+                    nombrePaciente: data.nombrePaciente,
+                    numeroPaciente: data.numeroPaciente
+                }
+
+                params.especialidad = {
+                    codigoEspecialidad: data.idEspecialidad,
+                    codigoPrestacion  : data.codigoPrestacion,
+                    codigoServicio   : data.codigoServicio,
+                    codigoTipoAtencion: data.codigoTipoAtencion,
+                    esOnline : data.esVirtual,
+                    nombre : data.especialidad,
+                }
+
+                params.reservaEdit = {
+                    "estaPagada": data.esPagada,
+                    "numeroOrden": data.idOrden,
+                    "lineaDetalleOrden": data.lineaDetalleOrden,
+                    "codigoEmpresaOrden": data.codigoEmpresa,
+                    "idOrdenAgendable": data.idOrdenAgendable,
+                    "idCita": data.idCita
+                }
+                params.origen = "inicios";
+                
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+                if(datosConvenios.length == 0){
+                    location = url;
+                    return;
+                }
+
+                llenarModalConvenios(datosConvenios, url);
+
+                $('#convenioModal').modal('show');
+            }else{    
+                let params = {}
+                params.online = data.esVirtual;
+                let esVirtual = "N";
+                if(data.modalidad != "PRESENCIAL"){
+                    esVirtual = "S";
+                }
+                params.online = esVirtual;
+                params.especialidad = {
+                    codigoEspecialidad: data.codigoEspecialidad,
+                    codigoPrestacion  : data.codigoPrestacion,
+                    codigoServicio   : data.codigoServicio,
+                    codigoTipoAtencion: data.codigoTipoAtencion,
+                    esOnline : esVirtual,
+                    nombre : data.nombreEspecialidad,
+                }
+
+                if (datosConvenios.length > 0) {
+                    console.log('datosConvenio', datosConvenios);
+                    // datosconvenio posicion 0
+                    params.convenio = datosConvenios[0];
+
+                } else {
+                    params.convenio = {
+                        "permitePago": "S",
+                        "permiteReserva": "S",
+                        "idCliente": null,
+                        "codigoConvenio": null,
+                        "secuenciaAfiliado" : null,
+                    };
+                }
+                // params.paciente = {
+                //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
+                //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
+                //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
+                //     "numeroPaciente": datosPaciente.numeroPaciente
+                // }
+                params.paciente = {
+                    "numeroIdentificacion": data.numeroIdentificacion,
+                    "tipoIdentificacion": data.tipoIdentificacion,
+                    "nombrePaciente": data.nombrePaciente,
+                    "numeroPaciente": data.numeroPaciente
+                }
+
+                params.reservaEdit = {
+                    "estaPagada": data.estaPagada,
+                    "numeroOrden": data.numeroOrden,
+                    "lineaDetalleOrden": data.lineaDetalleOrden,
+                    "codigoEmpresaOrden": data.codigoEmpresaOrden,
+                    "idOrdenAgendable": data.idOrdenAgendable,
+                    "idCita": data.idCita
+                }
+                params.origen = "inicios";
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+                
+                if(data.permitePagoReserva == "S" || datosConvenios.length == 0){
+                    // alert("Corrigiendo")
+                    location = url;
+                }else{
+                    //data.mensajePagoReserva
+                    llenarModalConvenios(datosConvenios, url);
+                    $('#convenioModal').modal('show');
+                }
+            }
+        });
     });
 
     // funciones asyncronas
@@ -198,9 +337,11 @@ Mi Veris - Citas - Terapia física
         let args = [];
         let canalOrigen = 'APP_CMV';
                 
-        let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
-        if (pacienteSeleccionado) {
+        let numeroPaciente = '';
+        if (pacienteSeleccionado && numeroPaciente != {{ Session::get('userData')->numeroPaciente }}) {
             numeroPaciente = pacienteSeleccionado;
+        } else if (pacienteSeleccionado == '' || pacienteSeleccionado == null || pacienteSeleccionado == undefined) {
+            numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
         }
         let admin = esAdmin;
         if (admin == undefined || admin == null) {
@@ -279,6 +420,7 @@ Mi Veris - Citas - Terapia física
                                                                 <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                                                 <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada , estado)}</span>
                                                             </div>
+                                                            ${determinarFechaCaducidadEncabezado(detalles, laboratorio)}
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
                                                             <div class="d-flex justify-content-between align-items-center mt-2">
                                                                 <div class="avatar avatar-sm me-2">
@@ -470,25 +612,43 @@ Mi Veris - Citas - Terapia física
     function determinarFechasCaducadas(datos, datosTratamiento){ 
         let dataFechas = ``;
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
-            if (datos.estado == "PENDIENTE_AGENDAR") {
-                if (datos.esCaducado == "S") {
-                    dataFechas = `<p class="fw-light fs--2 line-height-16 mb-1">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                } else {
-                    dataFechas = `` ;
-                }
-            }
+            
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
-                dataFechas = `<h6 class="card-title fw-medium fs--2 text-dark-primary mb-0">${capitalizarElemento(datos.nombreSucursal)}</h6>
-                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.fechaOrden)}</p>
-                                <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
-                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
+                dataFechas = `<h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(datos.nombreSucursal)}</h6>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.detalleReserva.fechaReserva)} <b class="hora-cita fw-normal text-primary-veris">${datos.detalleReserva.horaReserva}</b></p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
             }
-        } else {
-            if (datos.estado == "PENDIENTE_AGENDAR") {
+        }
+        return dataFechas;
+    }
+
+
+    // determinar fecha de caducidad encabezado
+    const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
+        let dataFechas;
+        
+        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
+            if (datos.estado == "PENDIENTE_AGENDAR" ||datos.estado == "AGENDADO" || datos.estado == null){
                 if (datos.esCaducado == "S") {
-                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    if(datos.fechaCaducidad == null){
+                        dataFechas = ``;
+                    
+                       
+                    } else {
+                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                    
+                    }
                 } else {
-                    dataFechas = `` ;
+                    // orden valida
+                    if(datos.fechaCaducidad == null){
+                        
+                        dataFechas = ``;
+                        
+                    } else {
+                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary-veris me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                
+                    }
                 }
             }
         }
@@ -518,53 +678,68 @@ Mi Veris - Citas - Terapia física
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
-                    respuestaAgenda += ` <button type="button" class="btn btn-sm text-primary-veris fs--1 fw-normal px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
+                    respuestaAgenda += ` <button type="button" class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
                     let datosCombinados = {
                         servicio: datosServicio,
                         tratamiento: datosTratamiento
                     };
-
+                    let convenio = {
+                        "permitePago": "S",
+                        "permiteReserva": "S",
+                        "idCliente": null,
+                        "codigoConvenio": null,
+                    };
+                    if(Object.keys(datosTratamiento.datosConvenio).length > 0){
+                        convenio = datosTratamiento.datosConvenio
+                    }
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                         if(datosServicio.esCaducado == 'S'){
                             // mostrar boton de informacion que llama al modal de informacion
-                            respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Información</button>`;
+                            respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Información</button>`;
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
                                     if(datosServicio.modalidad == 'PRESENCIAL'){
                                         let ruta = '/citas-elegir-central-medica/';
                                         let urlCompleta = ruta + "{{ $tokenCita }}"
-                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
+                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-agendar" convenio-rel='${JSON.stringify(convenio)}' data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
                                     } else {
                                         let ruta = '/citas-elegir-fecha-doctor/';
                                         let urlCompleta = ruta + "{{ $tokenCita }}"
                                         // ir a fechas
-                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
+                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-agendar" convenio-rel='${JSON.stringify(convenio)}' data-rel='${datosServicio}'>Agendar</a>`;
                                     }
                                 } else {
-                                    respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 fw-normal px-3 py-2 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">Agendar</a>`;
+                                    respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 disabled">Agendar</a>`;
                                 }
                             } else {
                                 // abrir modal no permite reserva
-                                respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</button>`;
+                                respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</button>`;
                             }
                         }
-
                     } else if (datosServicio.estado == 'ATENDIDO'){
                         // mostrar boton de ver orden
                         respuestaAgenda = ``;
-                        respuestaAgenda += ` <button type="button" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal"> Ver orden</button>`;  
+                        respuestaAgenda += ` <button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal"> Ver orden</button>`;  
                     } else if (datosServicio.estado == 'AGENDADO'){
+                        let ruta = "/citas-elegir-fecha-doctor/{{ $tokenCita }}";
+                        if (datosServicio.modalidad == "PRESENCIAL") {
+                            ruta = "/citas-elegir-central-medica/{{ $tokenCita }}";
+                        }
                         // mostrar boton de ver orden
-                        respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fs--1 fw-normal px-3 py-2 shadow-none">Ver orden</a>`;
-                        if (datosServicio.permitePago == 'S'){
+                        if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none">Pagar</a>`;
-                        }  else if(datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">Pagar</a>`;
+                        }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                            
+                            // respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            if(datosServicio.modalidad == "ONLINE"){
+                                respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
+                            }
                         } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                             // mostrar boton de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
                         } 
                     }
                     return respuestaAgenda;
@@ -573,48 +748,47 @@ Mi Veris - Citas - Terapia física
                     console.log('estadossss', estado);
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
-                        respuesta += ` <button type="button" class="btn btn-sm text-primary-veris fs--1 fw-normal px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
+                        respuesta += ` <button type="button" class="btn btn-sm text-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris fs--1 fw-medium px-3 py-2">Ver resultados</a>`;
+                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-veris fw-medium fs--1 line-height-16 px-3 py-2">Ver resultados</a>`;
                         } else {
                             respuesta += ``;
                         }
-
                         //condición para 'aplicaSolicitud'
                         if (datosServicio.aplicaSolicitud == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-                        } else
-                        if (datosServicio.permitePago == "S"){
+                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                        } else if (datosServicio.permitePago == "S"){
                             let params = {}
                             params.idPaciente = idPaciente;
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
-                            respuesta += `<a href="/citas-laboratorio/{{$tokenCita}}/${ulrParams}" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none">Pagar</a>`;
+                            respuesta += `<a href="/citas-laboratorio/{{$tokenCita}}/${ulrParams}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">Pagar</a>`;
                         }
                     } else if (estado == 'REALIZADO'){
                         console.log('estadossss2', estado);
                         respuesta = "";
-                        respuesta += `<button type="button" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none" id="verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        respuesta += ` <button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" id="verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     }
                     return respuesta;
                     break;
-
                 case "RECETAS" :
                     if (estado == 'REALIZADO') {
-                        return `<button type="button"class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
+                        return `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 btnVerOrden" data-bs-toggle="offcanvas" 
+                        data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>
+                         Ver receta</button>`;
                     } else {
                         if(datosServicio.aplicaSolicitud == "S"){
-                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2 shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i>Solicitar</a>`;
                         }
                     }
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <button type="button" class="btn text-primary-veris fs--1 fw-normal px-3 py-2" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                    respuestaOdontologia += ` <button type="button" class="btn text-primary-veris fw-medium fs--1 line-height-16 px-3 py-2" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     // ABRIRE MODAL DE VIDEO CONSULTA
-                    respuestaOdontologia += `<button type="button" class="btn btn-sm btn-primary-veris fs--1 fw-medium px-3 py-2" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal">Agendar</button>`;
+                    respuestaOdontologia += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</button>`;
                     return respuestaOdontologia;
                     break;
             }
@@ -622,9 +796,12 @@ Mi Veris - Citas - Terapia física
         }
     }
 
+
     // boton informacion
-    $(document).on('clic.btn-informacion', function(){
+    $(document).on('click', '.btn-informacion', function(){
         let datosRel = $(this).data('rel');
+        console.log('datosRel', datosRel);
+        
         let datos = datosRel.servicio;
         if (datos.esCaducado === "S" && datos.esAgendable === "S") {
             // CAMBIAR TITUOLO MODAL

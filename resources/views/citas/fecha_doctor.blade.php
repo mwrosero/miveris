@@ -436,9 +436,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let listaHorariosMedico = $('#listaHorariosMedico');
         listaHorariosMedico.empty();
+        let bloques = '';
+        if(dataCita.tratamiento && dataCita.tratamiento.cantidadIntervalosReserva){
+            bloques = dataCita.tratamiento.cantidadIntervalosReserva
+        }
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&bloques=${bloques}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -468,7 +472,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         </div>`;
                 })
             } else {
-                console.log("No hay fechas disponibles");
+                elemento += `<div class="card card-horario card-body rounded-3 position-relative py-3 mb-2>
+                    <p class="fs--16 line-height-20 text-primary-veris text-center mb-0">${data.message}</p>
+                </div>`;
             }
             
             listaHorariosMedico.append(elemento);    
