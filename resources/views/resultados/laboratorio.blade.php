@@ -180,7 +180,7 @@ Mi Veris - Resultados
                                                         <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
                                                     </div>
                                                     <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}', '${resultados.tipo}')"
-                                                    type="button" class="btn btn-primary-veris shadow-none fs--1 line-height-16 border-0 verResultados px-3 py-2">
+                                                    type="button" class="btn btn-primary-veris shadow-none fs--1 line-height-16 border-0 rounded-1 verResultados px-3 py-2">
                                                         Ver resultados
                                                     </button>
                                                 </div>
