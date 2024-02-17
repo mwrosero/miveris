@@ -10,6 +10,40 @@ Mi Veris - Citas - Terapia física
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
+<!-- Modal no permite reserva -->
+<div class="modal fade" id="mensajeNoPermiteReservaModal" tabindex="-1" aria-labelledby="mensajeNoPermiteReservaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Veris') }}</h1>
+                <p class="fs--1 fw-normal" id="mensajeNoPermiteReserva">{{ __('Reserva no permitida por este canal') }}</p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Convenios -->
+<div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <form class="modal-content rounded-4">
+            <div class="modal-header d-none">
+                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3">
+                <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu convenio:') }}</h5>
+                <div class="row gx-2 justify-content-between align-items-center">
+                    <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn fw-normal fs--16 line-height-20 m-0 px-3 py-2" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">

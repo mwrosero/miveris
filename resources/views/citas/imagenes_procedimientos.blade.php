@@ -10,6 +10,20 @@ Mi Veris - Citas - Imágenes y procedimientos
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
+<!-- Modal no permite reserva -->
+<div class="modal fade" id="mensajeNoPermiteReservaModal" tabindex="-1" aria-labelledby="mensajeNoPermiteReservaModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Veris') }}</h1>
+                <p class="fs--1 fw-normal" id="mensajeNoPermiteReserva">{{ __('Reserva no permitida por este canal') }}</p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal Convenios -->
 <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -253,22 +267,13 @@ Mi Veris - Citas - Imágenes y procedimientos
                     numeroPaciente: data.numeroPaciente
                 }
 
-                params.especialidad = {
-                    codigoEspecialidad: data.idEspecialidad,
-                    codigoPrestacion  : data.codigoPrestacion,
-                    codigoServicio   : data.codigoServicio,
-                    codigoTipoAtencion: data.codigoTipoAtencion,
-                    esOnline : data.esVirtual,
-                    nombre : data.especialidad,
-                }
-
                 params.reservaEdit = {
-                    "estaPagada": data.esPagada,
-                    "numeroOrden": data.idOrden,
-                    "lineaDetalleOrden": data.lineaDetalleOrden,
-                    "codigoEmpresaOrden": data.codigoEmpresa,
-                    "idOrdenAgendable": data.idOrdenAgendable,
-                    "idCita": data.idCita
+                    estaPagada: data.esPagada,
+                    numeroOrden: data.idOrden,
+                    lineaDetalleOrden: data.lineaDetalleOrden,
+                    codigoEmpresaOrden: data.codigoEmpresa,
+                    idOrdenAgendable: data.idOrdenAgendable,
+                    idCita: data.detalleReserva.codigoReserva
                 }
                 params.origen = "inicios";
                 
@@ -327,12 +332,12 @@ Mi Veris - Citas - Imágenes y procedimientos
                 }
 
                 params.reservaEdit = {
-                    "estaPagada": data.estaPagada,
-                    "numeroOrden": data.numeroOrden,
-                    "lineaDetalleOrden": data.lineaDetalleOrden,
-                    "codigoEmpresaOrden": data.codigoEmpresaOrden,
-                    "idOrdenAgendable": data.idOrdenAgendable,
-                    "idCita": data.idCita
+                    estaPagada: data.esPagada,
+                    numeroOrden: data.idOrden,
+                    lineaDetalleOrden: data.lineaDetalleOrden,
+                    codigoEmpresaOrden: data.codigoEmpresa,
+                    idOrdenAgendable: data.idOrdenAgendable,
+                    idCita: data.detalleReserva.codigoReserva
                 }
                 params.origen = "inicios";
                 localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
