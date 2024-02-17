@@ -851,16 +851,11 @@ $data = json_decode(base64_decode($params));
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S' && datosServicio.esExterna == "N") {
-                                    if(datosServicio.modalidad == 'PRESENCIAL'){
-                                        let ruta = '/citas-elegir-central-medica/';
-                                        let urlCompleta = ruta + "{{ $params }}"
-                                        respuestaAgenda += `<a href="${urlCompleta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar" data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
-                                    } else {
-                                        let ruta = '/citas-elegir-fecha-doctor/';
-                                        let urlCompleta = ruta + "{{ $params }}"
-                                        // ir a fechas
-                                        respuestaAgenda += `<a href="${urlCompleta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar" data-rel='${datosServicio}'>Agendar</a>`;
+                                    let ruta = "/citas-elegir-fecha-doctor/{{ $params }}";
+                                    if (datosServicio.modalidad == "PRESENCIAL") {
+                                        ruta = "/citas-elegir-central-medica/{{ $params }}";
                                     }
+                                    respuestaAgenda += `<a url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar">Agendar</a>`;
                                 } else {
                                     if(datosServicio.esExterna == "N"){
                                         respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">Agendar </a>`;
@@ -1064,6 +1059,8 @@ $data = json_decode(base64_decode($params));
 
     $(document).on('click', '.btn-agendar', function(){
         let datosServicio = $(this).data('rel');
+        let url = $(this).attr('url-rel');
+
         console.log('datosServicio', datosServicio);
 
         let modalidad;
@@ -1095,6 +1092,7 @@ $data = json_decode(base64_decode($params));
         dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+        location = url;
     });
 
     // boton btn-Pagar

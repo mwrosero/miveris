@@ -201,9 +201,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden;
         }
         if(dataCita.tratamiento){
-            numeroOrden = dataCita.tratamiento.numeroOrden;
-            codigoEmpOrden = dataCita.tratamiento.codigoEmpOrden;
-            lineaDetalle = dataCita.tratamiento.lineaDetalle;
+            if(dataCita.origen && dataCita.origen == "Listatratamientos"){
+                numeroOrden = dataCita.tratamiento.numeroOrden;
+                codigoEmpOrden = dataCita.tratamiento.codigoEmpOrden;
+                lineaDetalle = dataCita.tratamiento.lineaDetalle;
+            }else{
+                numeroOrden = dataCita.tratamiento.numeroOrden;
+                codigoEmpOrden = dataCita.tratamiento.codigoEmpresaOrden;
+                lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
+            }
+            
         }
 
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
@@ -375,10 +382,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         if(dataCita.tratamiento){
-            /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
-            datosReserva.numeroOrden = dataCita.tratamiento.numeroOrden;
-            datosReserva.codigoEmpOrden = dataCita.tratamiento.codigoEmpresaOrden;
-            datosReserva.lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
+            if(dataCita.origen && dataCita.origen == "Listatratamientos"){
+                datosReserva.numeroOrden = dataCita.tratamiento.numeroOrden;
+                datosReserva.codigoEmpOrden = dataCita.tratamiento.codigoEmpOrden;
+                datosReserva.lineaDetalle = dataCita.tratamiento.lineaDetalle;
+            }else{
+                datosReserva.numeroOrden = dataCita.tratamiento.numeroOrden;
+                datosReserva.codigoEmpOrden = dataCita.tratamiento.codigoEmpresaOrden;
+                datosReserva.lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
+            }
         }
 
         if(dataCita.reservaEdit){
