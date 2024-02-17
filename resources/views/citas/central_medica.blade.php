@@ -170,9 +170,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     function guardarCentralEnLocalStorage(centralMedica) {
         // Aquí guardamos la central médica seleccionada en dataCita y luego en localStorage
         dataCita.central = centralMedica;
-        dataCita.origen = 'central';
+        // dataCita.origen = 'central';
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-
         window.location.href = "/citas-elegir-fecha-doctor/{{$params}}";
     }
 
