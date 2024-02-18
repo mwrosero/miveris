@@ -29,8 +29,12 @@ Mi Veris - Citas - Familia y amigos
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-medium line-height-20 m-0 mt-3">Persona agregada exitosamente</p>
+                    <div class="avatar avatar-md mx-auto my-3">
+                        <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
+                    </div>
+                    <div class="text-center">
+                        <p class="fs--16 line-height-20 fw-medium mb-0">Persona agregada exitosamente</p>
+                    </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
@@ -70,17 +74,21 @@ Mi Veris - Citas - Familia y amigos
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Familia y amigos') }}</h5>
     </div>
     <section class="pt-4 p-3 mb-3">
-        <div class="container px-0">
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <ul class="list-group bg-white">
-                        <li class="list-group-item border-0 rounded-3 d-flex justify-content-between align-items-center px-3 py-2">
-                            <div class="mx-auto">
-                                <h6 class="fw-medium fs--16 line-height-20 mb-1">Hola <b class="fw-medium user-auth">{{ Session::get('userData')->nombre }}</b></h6>
-                                <p class="fs--2 line-height-16 mb-0">Agrega personas a tu lista de familiares y amigos</p>
-                            </div>
-                        </li>
-                    </ul>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4 px-0">
+                <ul class="list-group bg-white rounded-0 w-100">
+                    <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
+                        <div class="mx-0">
+                            <h6 class="fw-medium fs--16 line-height-20 mb-1">Hola <b class="fw-medium user-auth">{{ Session::get('userData')->nombre }}</b></h6>
+                            <p class="fs--2 line-height-16 mb-0">Agrega personas a tu lista de familiares y amigos</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12">
                     <div class="card bg-transparent shadow-none mb-4">
                         <div class="card-body py-3 px-0">
                             <form class="row g-3">
@@ -131,6 +139,8 @@ Mi Veris - Citas - Familia y amigos
                     
                 </div>
             </div>
+        </div>
+        <div class="container px-0">
         </div>
     </section>
 </div>

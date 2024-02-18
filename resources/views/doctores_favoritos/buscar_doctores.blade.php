@@ -12,11 +12,15 @@ Mi Veris - Buscar doctor
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-medium m-0 mt-3">Doctor agregado a tus favoritos</p>
+                    <div class="avatar avatar-md mx-auto my-3">
+                        <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
+                    </div>
+                    <div class="text-center">
+                        <p class="fs--16 line-height-20 fw-medium mb-0">Doctor agregado a tus favoritos</p>
+                    </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 linr-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
@@ -44,7 +48,7 @@ Mi Veris - Buscar doctor
                 </div>
                 <div class="col-md-12 mb-3">
                     <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>
-                    <button class="btn text-primary w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><i class="bi bi-trash me-2" ></i> Limpiar filtros</button>
+                    <button class="btn text-primary w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><img src="{{asset('assets/img/svg/delete-blue.svg')}}" class="me-2" alt="linmpiar filtro"> Limpiar filtros</button>
                 </div>
             </form>
         </div>
@@ -65,8 +69,8 @@ Mi Veris - Buscar doctor
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white py-2 mb-3">
                 <button class="btn btn-sm btn-outline-primary-veris fw-normal" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroSearchDoctors" aria-controls="filtroSearchDoctors"><i class="bi bi-sliders me-1"></i> Filtros</button>
             </div>
-            <div class="col-auto col-lg-10">
-                <div class="row gy-3" id="doctoresFavoritos"></div>
+            <div class="col-12 col-lg-9">
+                <div class="row g-4" id="doctoresFavoritos"></div>
                 <!-- Mensaje No hay doctores disponibles -->
                 <div class="col-12 d-flex justify-content-center d-none" id="noHayDoctores">
                     <div class="card bg-transparent shadow-none">
@@ -222,20 +226,21 @@ Mi Veris - Buscar doctor
                 let elemento = '';
                 data.data.forEach(element => {
                     elemento += `<div class="col-12 col-md-6 box-doctor-${element.codigoProfesional}">
-                                        <div class="card">
-                                            <div class="card-body p-3">
-                                                <div class="row gx-2 align-items-center">
-                                                    <div class="col-3">
-                                                        <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
+                                        <div class="card card-border">
+                                            <div class="card-body p--2">
+                                                <div class="row g-0 align-items-center">
+                                                    <div class="col-auto">
+                                                        <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='78px'; this.style.width='64px';">
                                                     </div>
-                                                    <div class="col-7">
-                                                        <h6 class="fw-medium mb-0">Dr(a) ${capitalizarElemento(element.primerNombre)} ${capitalizarElemento(element.segundoNombre)} ${capitalizarElemento(element.primerApellido)} ${capitalizarElemento(element.segundoApellido)}</h6>
-                                                        <p class="text-primary-veris fw-medium fs--2 mb-0">${capitalizarElemento(element.nombreSucursal)}</p>
-                                                        <p class="fs--2 mb-0">${capitalizarElemento(element.nombreEspecialidad)}</p>
+                                                    <div class="col-8">
+                                                        <div class="mx-2">
+                                                            <h6 class="fs--16 line-height-20 fw-medium mb-1 truncate-text-two">Dr(a) ${capitalizarElemento(element.primerNombre)} ${capitalizarElemento(element.segundoNombre)} ${capitalizarElemento(element.primerApellido)} ${capitalizarElemento(element.segundoApellido)}</h6>
+                                                            <p class="text-primary-veris fw-medium fs--1 line-height-16 mb-1">${capitalizarElemento(element.nombreSucursal)}</p>
+                                                            <p class="fs--1 line-height-16 mb-0">${capitalizarElemento(element.nombreEspecialidad)}</p>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-2 text-center">
-                                                        <div class="btn rounded-pill btn-icon btn-primary-veris" data-rel='${ JSON.stringify(element) }'
-                                                        ><i class="bi bi-plus-lg"></i></div>
+                                                    <div class="col-1 text-center">
+                                                        <button type="button" class="btn btn-icon shadow-none p-0" data-rel='${ JSON.stringify(element)}'><img src="{{asset('assets/img/svg/plus-blue.svg')}}" alt="plus"></button>
                                                     </div>
                                                 </div>
                                             </div>
