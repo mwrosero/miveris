@@ -1,8 +1,10 @@
 <!--off canva filtro-->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroTratamientos" aria-labelledby="filtroTratamientosLabel">
-    <div class="offcanvas-header py-3 px-4">
-        <h5 class="offcanvas-title fs--20 line-height-24" id="filtroTratamientosLabel">Filtros</h5>
-        <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atrás</b></button>
+    <div class="offcanvas-header flex-column align-items-start p-0">
+        <div class="w-100 px-4 py-2 d-lg-none d-block" style="background: #F3F4F5;">
+            <button type="button" class="btn p-0 d-flex align-items-center" data-bs-dismiss="offcanvas" aria-label="Close"><img src="{{asset('assets/img/svg/arrow-left-filtro-body.svg')}}" class="me-1" alt="atras"><b class="fw-medium fs-- text-veris">Atrás</b></button>
+        </div>
+        <h5 class="offcanvas-title fs--20 line-height-24 w-100 px-4 py-3" id="filtroTratamientosLabel">Filtros</h5>
     </div>
     <div class="offcanvas-body px-3 pt--2" style="background: rgba(249, 250, 251, 1);">
         <div>

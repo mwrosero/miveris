@@ -221,6 +221,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let errorHandler = function (err) {
             console.log(err.error);
             $('#messages').html(err.error.type);
+            $('#btn-pagar').removeClass('disabled');
             submitButton.removeAttr("disabled");
             submitButton.text(submitInitialText);
         };
