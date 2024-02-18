@@ -10,8 +10,12 @@ Mi Veris - Citas - Familia y amigos
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw m-0 mt-3" id="mensajeActualizacionExitosa">Actualización exitosa</p>
+                    <div class="avatar avatar-md mx-auto my-3">
+                        <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
+                    </div>
+                    <div class="text-center">
+                        <p class="fs--16 line-height-20 fw-medium mb-0" id="mensajeActualizacionExitosa">Actualización exitosa</p>
+                    </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>

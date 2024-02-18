@@ -937,6 +937,13 @@ Due to the split circle of progress-left and progress right, we must use the ani
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.truncate-text-two{
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* número de líneas a mostrar */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .top-25 {
   top: 25% !important;
 }
