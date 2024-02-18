@@ -23,9 +23,11 @@ Mi Veris - Buscar doctor
     </div>
     <!-- filtro -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroSearchDoctors" aria-labelledby="filtroSearchDoctorsLabel">
-        <div class="offcanvas-header py-2">
-            <h5 class="offcanvas-title" id="filtroSearchDoctorsLabel">Filtros</h5>
-            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atrás</b></button>
+        <div class="offcanvas-header flex-column align-items-start p-0">
+            <div class="w-100 px-4 py-2 d-lg-none d-block" style="background: #F3F4F5;">
+                <button type="button" class="btn p-0 d-flex align-items-center" data-bs-dismiss="offcanvas" aria-label="Close"><img src="{{asset('assets/img/svg/arrow-left-filtro-body.svg')}}" class="me-1" alt="atras"><b class="fw-medium fs-- text-veris">Atrás</b></button>
+            </div>
+            <h5 class="offcanvas-title fs--20 line-height-24 w-100 px-4 py-3" id="filtroTratamientosLabel">Filtros</h5>
         </div>
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
             <form action="">
@@ -61,7 +63,7 @@ Mi Veris - Buscar doctor
         </form>
         <div class="row justify-content-center">
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white py-2 mb-3">
-                <button class="btn btn-sm btn-outline-primary-veris" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroSearchDoctors" aria-controls="filtroSearchDoctors"><i class="bi bi-sliders me-1"></i> Filtros</button>
+                <button class="btn btn-sm btn-outline-primary-veris fw-normal" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroSearchDoctors" aria-controls="filtroSearchDoctors"><i class="bi bi-sliders me-1"></i> Filtros</button>
             </div>
             <div class="col-auto col-lg-10">
                 <div class="row gy-3" id="doctoresFavoritos"></div>

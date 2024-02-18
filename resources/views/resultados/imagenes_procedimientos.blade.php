@@ -178,7 +178,7 @@ Mi Veris - Resultados
                                                         <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
                                                     </div>
                                                     <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}')"
-                                                    type="button" class="btn btn-primary-veris shadow-none fs--1 line-height-16 border-0 verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
+                                                    type="button" class="btn btn-primary-veris shadow-none fs--1 line-height-16 border-0 rounded-1 verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
                                                         Ver resultados
                                                     </button>
                                                 </div>
