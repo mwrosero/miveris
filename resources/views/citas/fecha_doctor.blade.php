@@ -251,7 +251,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         // Agregar los días de la semana en el encabezado
         for (let i = 0; i < daysOfWeek.length; i++) {
             const dayOfWeekElement = document.createElement('div');
-            dayOfWeekElement.classList.add('calendar-day', 'day-of-week');
+            dayOfWeekElement.classList.add('calendar-day', 'day-of-week', 'header');
             dayOfWeekElement.textContent = daysOfWeek[i];
             calendarGrid.appendChild(dayOfWeekElement);
         }
