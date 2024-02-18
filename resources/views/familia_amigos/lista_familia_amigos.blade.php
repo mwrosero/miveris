@@ -9,7 +9,7 @@ Mi Veris - Citas - Familia y amigos
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3 pb-0">
-                    <div class="avatar avatar-md mx-auto mb-3">
+                    <div class="avatar avatar-md mx-auto my-3">
                         <img src="{{asset('assets/img/svg/ifon-tria.svg')}}" alt="">
                     </div>
                     <div class="text-center">
@@ -30,12 +30,16 @@ Mi Veris - Citas - Familia y amigos
     <div class="modal fade" id="mensajePersonaEliminadaModal" tabindex="-1" aria-labelledby="mensajePersonaEliminadaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-medium m-0 mt-3">Persona eliminada de tu grupo</p>
+                <div class="modal-body p-3">
+                    <div class="avatar avatar-md mx-auto my-3">
+                        <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
+                    </div>
+                    <div class="text-center">
+                        <p class="fs--16 line-height-20 fw-medium mb-0">Persona eliminada de tu grupo</p>
+                    </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
@@ -47,7 +51,7 @@ Mi Veris - Citas - Familia y amigos
     <section class="py-4 mb-3">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-4">
                     <div class="card bg-transparent shadow-none mb-4">
                         <div class="card-body p-0">
                             <div class="text-center d-none" id="noPeopleAdded">
@@ -147,7 +151,7 @@ Mi Veris - Citas - Familia y amigos
         data.forEach(familiar => {
             let elem = `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
                             <div class="col-auto">
-                                <p class="text-veris fs--2 fw-medium line-height-16 mb-1" id="nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
+                                <p class="text-veris fs--1 fw-medium line-height-16 mb-1" id="nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
                                 <p class="fs--3 line-height-12 mb-1" id="parentezco">${capitalizarElemento(familiar.parentesco)}</p>
                             </div>
                             <div class="d-flex">

@@ -65,13 +65,13 @@ Mi Veris - Doctores favoritos
     <div class="modal fade" id="eliminarDoctorModal" tabindex="-1" aria-labelledby="eliminarDoctorModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <h5 class="mb-0">Eliminar doctor</h5>
-                    <p class="mb-0">¿Estás seguro de eliminar este doctor de su lista de favoritos?</p>
+                <div class="modal-body text-center p-3 pb-0">
+                    <h5 class="fs-20 fw-medium line-height-24 my-3">Eliminar doctor</h5>
+                    <p class="fs-1-6 fw-normal line-height-16 mb-3">¿Estás seguro de eliminar este doctor de su lista de favoritos?</p>
                 </div>
                 <div class="modal-footer flex-nowrap justify-content-center pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-link text-primary-veris shadow-none px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
-                    <a href="#!" class="btn btn-link text-primary-veris shadow-none px-4 py-3" id="btnEliminarDoctor">Eliminar</a>
+                    <button type="button" class="btn btn-link text-primary-veris shadow-none fs--1 line-height-16 my-0 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="#!" class="btn btn-link text-primary-veris shadow-none fs--1 line-height-16 my-0 px-4 py-3" id="btnEliminarDoctor">Eliminar</a>
                 </div>
             </div>
         </div>
@@ -86,8 +86,8 @@ Mi Veris - Doctores favoritos
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-12 col-md-10">
-                <div class="row g-3" id="doctoresFavoritos"></div>
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="row g-4" id="doctoresFavoritos"></div>
             </div>
         </div>
         <!-- Doctor favorito dinamico -->
@@ -181,25 +181,28 @@ Mi Veris - Doctores favoritos
             resultados.forEach((disponibilidad, index) => {
                 let doctores = data.data[index];
                 elemento+= `<div class="col-12 col-md-6">
-                    <div class="card h-100">
+                    <div class="card card-border h-100">
                         <div class="card-body p--2">
-                            <div class="row gx-2">
+                            <div class="row g-0">
                                 <div class="col-3 d-flex justify-content-center align-items-center">
                                     <img src=${doctores.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='50px'; this.style.width='50px';">
                                 </div>
-
                                 <div class="col-9">
-                                    <h6 class="fw-medium mb-0">Dr(a) ${capitalizarPrimeraLetra(doctores.primerNombre)} ${capitalizarPrimeraLetra(doctores.segundoNombre)} ${capitalizarPrimeraLetra(doctores.primerApellido)} ${capitalizarPrimeraLetra(doctores.segundoApellido)}</h6>
-                                    <p class="text-primary-veris fw-medium fs--2 mb-0">${capitalizarCadaPalabra(doctores.nombreSucursal)}</p>
-                                    <p class="fs--2 mb-0">${capitalizarPrimeraLetra(doctores.nombreEspecialidad)}</p>
-                                    <p class="fs--2 mb-0">Disponibilidad: <b class="fw-normal text-primary-veris" id="disponibilidad">  ${determinarValorNull(doctores.dia)}
-                                        </b></p>
+                                    <div class="ms-2">
+                                        <h6 class="fs--16 line-height-20 fw-medium mb-1">Dr(a) ${capitalizarPrimeraLetra(doctores.primerNombre)} ${capitalizarPrimeraLetra(doctores.segundoNombre)} ${capitalizarPrimeraLetra(doctores.primerApellido)} ${capitalizarPrimeraLetra(doctores.segundoApellido)}</h6>
+                                        <p class="text-primary-veris fw-medium fs--1 line-height-16 mb-1">${capitalizarCadaPalabra(doctores.nombreSucursal)}</p>
+                                        <p class="fs--1 line-height-16 mb-1">${capitalizarPrimeraLetra(doctores.nombreEspecialidad)}</p>
+                                        <div class="d-flex mb-1">
+                                            <p class="fs--1 line-height-16 mb-1" style="color: #3D4E66;">Disponibilidad:</p>
+                                            <p class="fs--1 line-height-16 fw-normal mb-0" style="color: #0055AA;" id="disponibilidad">${determinarValorNull(doctores.dia)}</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer text-end pt-0 p--2">
-                            <button type="button" class="btn btn-sm btn-outline-primary-veris fs--1 line-height-16 px-3 py-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
-                            <div class="btn btn-sm btn-primary-veris fs--1 line-height-16 px-3 py-2" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(doctores)}'>Reservar cita</div>
+                            <button type="button" class="btn btn-sm btn-outline-primary-veris fs--1 line-height-16 fw-normal px-3 py-2" data-bs-toggle="modal" data-bs-target="#eliminarDoctorModal" data-rel='${doctores.secuencia}'>Descartar</button>
+                            <div class="btn btn-sm btn-primary-veris fs--1 line-height-16 fw-medium px-3 py-2" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(doctores)}'>Reservar cita</div>
                         </div>
                     </div>
                 </div>`;
