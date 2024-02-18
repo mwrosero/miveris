@@ -40,7 +40,7 @@ Mi Veris - Politica-privacidad-datos
         <div class="col-md-8">
             <div class="card bg-transparent shadow-none">
                 <div class="card-body pt-5">
-                    <form class="row g-3">
+                    <form class="row g-3"  >
                         @csrf
                         <div class="col-12 justify-content-center align-items-center">
                             <h5 class="text-center fw-bold mb-2">{{ __('Confirmación de política de privacidad de datos personales') }}</h5>
@@ -80,7 +80,7 @@ Mi Veris - Politica-privacidad-datos
                         <h5 class="text-center mt-4 pt-2">Datos</h5>
                         <div class="col-md-3">
                             <label for="primerNombre" class="form-label fw-bold">Primer nombre</label>
-                            <input type="text" class="form-control border-desaturated" name="primerNombre" id="primerNombre" required readonly />
+                            <input type="text" class="form-control border-desaturated" name="primerNombre" id="primerNombre" autocomplete="do-not-autofill" required readonly />
 
                             <div class="invalid-feedback">
                                 Ingrese su primer nombre.
@@ -88,21 +88,21 @@ Mi Veris - Politica-privacidad-datos
                         </div>
                         <div class="col-md-3">
                             <label for="segundoNombre" class="form-label fw-bold">Segundo nombre</label>
-                            <input type="text" class="form-control border-desaturated" name="segundoNombre" id="segundoNombre" required readonly/>
+                            <input type="text" class="form-control border-desaturated" name="segundoNombre" id="segundoNombre" autocomplete="do-not-autofill" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su segundo nombre.
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label for="prmerApellido" class="form-label fw-bold">Primer apellido</label>
-                            <input type="text" class="form-control border-desaturated" name="prmerApellido" id="prmerApellido" required readonly/>
+                            <input type="text" class="form-control border-desaturated" name="prmerApellido" id="prmerApellido" autocomplete="do-not-autofill" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su primer apellido.
                             </div>
                         </div>
                         <div class="col-md-3">
                             <label for="segundoApellido" class="form-label fw-bold">Segundo apellido</label>
-                            <input type="text" class="form-control border-desaturated" name="segundoApellido" id="segundoApellido" required readonly/>
+                            <input type="text" class="form-control border-desaturated" name="segundoApellido" id="segundoApellido" autocomplete="do-not-autofill" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su segundo apellido.
                             </div>
@@ -125,21 +125,21 @@ Mi Veris - Politica-privacidad-datos
                         </div>
                         <div class="col-md-6">
                             <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación</label>
-                            <input type="text" class="form-control border-desaturated" name="numeroIdentificacion" id="numeroIdentificacion" required readonly/>
+                            <input type="text" class="form-control border-desaturated bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su número de identificación.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="telefono" class="form-label fw-bold">Número de teléfono</label>
-                            <input type="number" class="form-control border-desaturated" name="telefono" id="telefono" required readonly/>
+                            <input type="number" class="form-control border-desaturated" name="telefono" id="telefono" autocomplete="do-not-autofill" required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese un número de teléfono.
                             </div>
                         </div>
                         <div class="col-md-6">
                             <label for="correoElctronico" class="form-label fw-bold">Correo electrónico</label>
-                            <input type="email" class="form-control border-desaturated" name="correoElctronico" id="correoElctronico" required  readonly/>
+                            <input type="email" class="form-control border-desaturated" name="correoElctronico" id="correoElctronico" autocomplete="do-not-autofill" required  readonly/>
                             <div class="invalid-feedback">
                                 Ingrese un correo electrónico.
                             </div>
@@ -159,13 +159,13 @@ Mi Veris - Politica-privacidad-datos
                         
                         <div class="col-md-6">
                             <label for="ciudad" class="form-label fw-bold">Ciudad</label>
-                            <select class="form-select border-desaturated custom-select-disabled" name="ciudad" id="ciudad" required disabled >
+                            <select class="form-select border-desaturated custom-select-disabled" name="ciudad" id="ciudad"  required disabled >
                                 
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label for="dirección" class="form-label fw-bold">Dirección</label>
-                            <input type="text" class="form-control border-desaturated" name="direccion" id="direccion" required readonly/>
+                            <input type="text" class="form-control border-desaturated" name="direccion" id="direccion" autocomplete="do-not-autofill"  required readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su dirección.
                             </div>
@@ -221,6 +221,15 @@ Mi Veris - Politica-privacidad-datos
         $('input[name="inlineRadioCancelacion"]').on('click', function () {
             toggleFieldsBasedOnCancelationOption();
         });
+
+        // verificar el estado inicial de los campos y cuando cambie el valor si esta vacio deshabilitar el boton, aplicar lo mismo para los select
+        $('input, select').on('change', function () {
+            if ($('#primerNombre').val() == '' || $('#segundoNombre').val() == '' || $('#prmerApellido').val() == '' || $('#segundoApellido').val() == '' || $('#fechaNacimiento').val() == '' || $('#telefono').val() == '' || $('#correoElctronico').val() == '' || $('#direccion').val() == '' || $('#provincia').val() == '' || $('#ciudad').val() == '' || $('#sexo').val() == '') {
+                $('#botonConfirmarPDP').prop('disabled', true);
+            } else {
+                $('#botonConfirmarPDP').prop('disabled', false);
+            }
+        });
     });
 
     //obtener datos usuario
@@ -253,7 +262,7 @@ Mi Veris - Politica-privacidad-datos
         $('#numeroIdentificacion').val(datosUsuario.numeroIdentificacion);
         $('#telefono').val(datosUsuario.telefonoMovil);
         $('#correoElctronico').val(datosUsuario.mail);
-        $('#dirección').val(datosUsuario.direccionDomicilio);
+        $('#direccion').val(datosUsuario.direccionDomicilio);
 
         // capitalizar los campos
         $('#primerNombre').val(capitalizarElemento($('#primerNombre').val()));
@@ -299,6 +308,8 @@ Mi Veris - Politica-privacidad-datos
     // boton confirmar politicas
     $('#botonConfirmarPDP').click(async function (e) {
         e.preventDefault();
+        
+
         console.log('click');
         $(this).prop('disabled', true); // Disable the button
         await aceptarPoliticas();
@@ -376,7 +387,7 @@ Mi Veris - Politica-privacidad-datos
             "telefonoMovil": $('#telefono').val(),
             "codigoProvincia": $('#provincia').val(),
             "codigoCiudad": $('#ciudad').val(),
-            "direccion": $('#direccion').val(),
+            "direccionDomicilio": $('#direccion').val(),
             "sexo": $('#sexo').val(),
             
         });
@@ -458,6 +469,14 @@ Mi Veris - Politica-privacidad-datos
         // Los selects requieren 'disabled' en lugar de 'readonly'
         $('#pais, #provincia, #ciudad, #sexo').prop('disabled', !isRectificationYesChecked);
 
+        // agregar la clase para oscurecer los campos deshabilitados de select y input
+        if (isRectificationYesChecked) {
+            $('#pais, #provincia, #ciudad, #sexo').removeClass('custom-select-disabled');
+            $('#primerNombre, #segundoNombre, #prmerApellido,  #segundoApellido, #fechaNacimiento, #telefono, #correoElctronico, #direccion').removeClass('bg-neutral');
+        } else {
+            $('#pais, #provincia, #ciudad, #sexo').addClass('custom-select-disabled');
+            $('#primerNombre, #segundoNombre, #prmerApellido, #segundoApellido, #fechaNacimiento, #telefono, #correoElctronico, #direccion').addClass('bg-neutral');
+        }
         
 
 
@@ -475,7 +494,7 @@ Mi Veris - Politica-privacidad-datos
 </script>
 <style>
     .custom-select-disabled {
-        background-color: white !important; 
+        background-color: rgba(231, 233, 236, 1) !important;
         color: black !important; 
     }
     
