@@ -478,6 +478,16 @@
 
     </script>
 
+
+
+    
+
+
+
+
+
+    
+
     
     @stack('scripts')
 </body>
