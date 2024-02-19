@@ -54,7 +54,7 @@ Mi Veris - Citas - tratamiento
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0 justify-content-center mt-5">
             <div class="col-auto col-md-6 col-lg-5">
-                <div class="card bg-transparent shadow-none rounded-0">
+                <div class="card bg-transparent shadow-none rounded-0 d-none" id="box-detalle-promocion">
                     <div class="card-header rounded-0 position-relative" style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
                         <div class="content-text text-white lh-1" id="contenedorPrincipal-descuento">
                             
@@ -347,74 +347,93 @@ Mi Veris - Citas - tratamiento
     }
 
     async function drawServicios(){
-        let contentDescuento = $('#content-descuento');
-        contentDescuento.empty();
-        contentDescuento.append(`${dataCita.promocion.porcentajeDescuentoPromocion}% de descuento`);
-
-        let html = $('#listaServicios');
-        html.empty();
-        let precioTotal = 0;
-        let elemento = '';
-
-        dataCita.promocion.serviciosIncluyeCompra.forEach((resultados, index) => {
-            elemento += `<li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
-                            <div class="w-auto">
-                                <p class="text-veris mb-0">${resultados.descripcionServicio}</p>
-                                <div class="d-flex align-items-center">
-                                    <p class="text-primary fw-medium fs--2 mb-0" id="precioTotal">
-                                        
-                                        <del class="text-danger fw-normal" id="precioBase-${index}">$$${resultados.valorNormal}</del> 
-                                        <span class="fw-medium" id="precioTotalList-${index}">
-                                        $${resultados.valorPromocion}
-                                        </span>
-                                        <input type="hidden" id="valorPromocionHidden-${index}" value="${resultados.valorPromocion}">
-                                        <input type="hidden" id="valorNormalHidden-${index}" value="${resultados.valorNormal}">
-    
-                                    </p>
-                                    <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal" data-rel='${JSON.stringify(resultados)}' ><i class="bi bi-info-circle"></i> </button> 
+        $('#box-detalle-promocion').removeClass('d-none');
+        if(dataCita.promocion.serviciosIncluyeCompra.length == 0){
+            $('#box-detalle-promocion').empty();
+            let elem = `<div class="card-body">
+                            <div class="text-center">
+                                <div class="avatar avatar-lg mx-auto mb-3">
+                                    <span class="avatar-initial rounded-circle bg-primary">
+                                        <i class="fa-solid fa-info fs-2"></i>
+                                    </span>
                                 </div>
+                                <h3 class="fs--28 line-height-36 fw-medium mb-2">Información</h3>
+                                <p class="fs--16 line-height-20 mb-5">Esta promoción ya no está disponible</p>
+                                <img src="{{ asset('assets/img/svg/promocionNoDisponible.svg') }}" class="img-fluid mt-3 mb-3 w-50" alt="">
+                                <a href="/" class="btn btn-lg btn-primary-veris m-0 w-100 px-4 py-3">Volver al inicio</a>
                             </div>
-                            <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
-                                <button class="btn btn-sm btn-minus px-2" data-type="minus" onclick="restarCantidad(${index})"
-                                >-</button>
-                                <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
-                                value="1" id="cantidadServicio-${index}"
-                                 />
-                                <button class="btn btn-sm btn-plus px-2" data-type="plus" onclick="sumarCantidad(${index})"
-                                >+</button>
-                            </div>
-                        </li>`;
-        });
-        html.append(elemento);
+                        </div>`;
+            $('#box-detalle-promocion').append(elem);
+        }else{
+            let contentDescuento = $('#content-descuento');
+            contentDescuento.empty();
+            contentDescuento.append(`${dataCita.promocion.porcentajeDescuentoPromocion}% de descuento`);
 
-        let serviciosNoIncluidos = $('#flush-collapseOne');
-        serviciosNoIncluidos.empty();
-        let elementoNoIncluido = '';
+            let html = $('#listaServicios');
+            html.empty();
+            let precioTotal = 0;
+            let elemento = '';
 
-        dataCita.promocion.serviciosNoIncluyeCompra.forEach((resultados) => {
-            //console.log(resultados.colorInformacion);
-            elementoNoIncluido += `<div class="d-flex align-items-center justify-content-between">
-                                        <div class="accordion-body" style="flex-grow: 1;">${resultados.descripcionServicio}</div>
-                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" ;"
-                                            data-bs-toggle="modal" data-bs-target="#serviciosNoIncluidosModal" data-rel='${JSON.stringify(resultados)}'>
-                                            <i class="bi bi-info-circle" style="color: ${resultados.colorInformacion};"
-                                            ></i>
-                                        </button>
-                                    </div>`;
-        });
+            dataCita.promocion.serviciosIncluyeCompra.forEach((resultados, index) => {
+                elemento += `<li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
+                                <div class="w-auto">
+                                    <p class="text-veris mb-0">${resultados.descripcionServicio}</p>
+                                    <div class="d-flex align-items-center">
+                                        <p class="text-primary fw-medium fs--2 mb-0" id="precioTotal">
+                                            
+                                            <del class="text-danger fw-normal" id="precioBase-${index}">$$${resultados.valorNormal}</del> 
+                                            <span class="fw-medium" id="precioTotalList-${index}">
+                                            $${resultados.valorPromocion}
+                                            </span>
+                                            <input type="hidden" id="valorPromocionHidden-${index}" value="${resultados.valorPromocion}">
+                                            <input type="hidden" id="valorNormalHidden-${index}" value="${resultados.valorNormal}">
         
-        serviciosNoIncluidos.append(elementoNoIncluido);
+                                        </p>
+                                        <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" data-bs-toggle="modal" data-bs-target="#informacionModal" data-rel='${JSON.stringify(resultados)}' ><i class="bi bi-info-circle"></i> </button> 
+                                    </div>
+                                </div>
+                                <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
+                                    <button class="btn btn-sm btn-minus px-2" data-type="minus" onclick="restarCantidad(${index})"
+                                    >-</button>
+                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
+                                    value="1" id="cantidadServicio-${index}"
+                                     />
+                                    <button class="btn btn-sm btn-plus px-2" data-type="plus" onclick="sumarCantidad(${index})"
+                                    >+</button>
+                                </div>
+                            </li>`;
+            });
+            html.append(elemento);
 
-        // eventos de los precios
+            let serviciosNoIncluidos = $('#flush-collapseOne');
+            serviciosNoIncluidos.empty();
+            let elementoNoIncluido = '';
 
-        let precioBaseEnd = $('#precioBaseEnd');
-        let precioTotalEnd = $('#precioTotalEnd');
-        
-        precioBaseEnd.empty();
-        precioTotalEnd.empty();
+            dataCita.promocion.serviciosNoIncluyeCompra.forEach((resultados) => {
+                //console.log(resultados.colorInformacion);
+                elementoNoIncluido += `<div class="d-flex align-items-center justify-content-between">
+                                            <div class="accordion-body" style="flex-grow: 1;">${resultados.descripcionServicio}</div>
+                                            <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" ;"
+                                                data-bs-toggle="modal" data-bs-target="#serviciosNoIncluidosModal" data-rel='${JSON.stringify(resultados)}'>
+                                                <i class="bi bi-info-circle" style="color: ${resultados.colorInformacion};"
+                                                ></i>
+                                            </button>
+                                        </div>`;
+            });
+            
+            serviciosNoIncluidos.append(elementoNoIncluido);
 
-        precioBaseEnd.append(`$${dataCita.promocion.valorNormal}`);
-        precioTotalEnd.append(`$${dataCita.promocion.valorPromocion}`);
+            // eventos de los precios
+
+            let precioBaseEnd = $('#precioBaseEnd');
+            let precioTotalEnd = $('#precioTotalEnd');
+            
+            precioBaseEnd.empty();
+            precioTotalEnd.empty();
+
+            precioBaseEnd.append(`$${dataCita.promocion.valorNormal}`);
+            precioTotalEnd.append(`$${dataCita.promocion.valorPromocion}`);
+        }
 
         return;
     }
