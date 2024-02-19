@@ -63,7 +63,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         </div>
     </div>
     <!-- Modal informacion-->
-    <div class="modal fade" id="informacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="informacionLabel" aria-hidden="true">
+    <div class="modal fade" id="informacion" tabindex="-1" aria-labelledby="informacionLabel">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
@@ -76,7 +76,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h1 class="modal-title fs-5 mb-3" id="confirmarPagoLabel">Información</h1>
                         <p class="fs--1 mb-3" style="line-height: 16px;">Esta tarjeta ya está agregada</p>
                     </div>
-                    <a href="#" class="btn btn-lg btn-primary-veris w-100 m-0 mb-3 px-4 py-3">Ver tarjeta agregada</a>
+                    <a href="/citas-seleccionar-tarjeta/{{ $params }}" class="btn btn-lg btn-primary-veris w-100 m-0 mb-3 px-4 py-3">Ver tarjeta agregada</a>
                     <button type="button" class="btn btn-lg btn-outline-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Ingresar nueva tarjeta</button>
                 </div>
             </div>
@@ -219,8 +219,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         };
 
         let errorHandler = function (err) {
+            window.removeEventListener("beforeunload", beforeUnloadHandler);
             console.log(err.error);
-            $('#messages').html(err.error.type);
+            // $('#messages').html(err.error.type);
+            if(err.error.help == "If you want to update the card, first delete it"){
+                $('#informacion').modal('show');
+            }else{
+                $('#messages').html(err.error.type);
+            }
             $('#btn-pagar').removeClass('disabled');
             submitButton.removeAttr("disabled");
             submitButton.text(submitInitialText);
