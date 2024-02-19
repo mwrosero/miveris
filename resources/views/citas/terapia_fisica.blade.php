@@ -227,7 +227,7 @@ Mi Veris - Citas - Terapia física
                 // Obtiene la URL del enlace
                 var url = $enlace.attr('href');
                 // Redirige a la URL después del retraso
-                window.location.href = url;
+                //window.location.href = url;
             }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
         });
 
@@ -267,6 +267,9 @@ Mi Veris - Citas - Terapia física
                     esOnline : data.esVirtual,
                     nombre : data.especialidad,
                 }
+                let convenio = JSON.parse($(this).attr('convenio-rel'));
+                params.convenio = convenio;
+                console.log(convenio)
 
                 params.reservaEdit = {
                     "estaPagada": data.esPagada,
@@ -304,10 +307,11 @@ Mi Veris - Citas - Terapia física
                     esOnline : esVirtual,
                     nombre : data.nombreEspecialidad,
                 }
-
-                if (datosConvenios.length > 0) {
+                let convenio = JSON.parse($(this).attr('convenio-rel'));
+                params.convenio = convenio;
+                console.log(convenio);
+                /*if (datosConvenios.length > 0) {
                     console.log('datosConvenio', datosConvenios);
-                    // datosconvenio posicion 0
                     params.convenio = datosConvenios[0];
 
                 } else {
@@ -318,7 +322,7 @@ Mi Veris - Citas - Terapia física
                         "codigoConvenio": null,
                         "secuenciaAfiliado" : null,
                     };
-                }
+                }*/
                 // params.paciente = {
                 //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
                 //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
@@ -700,6 +704,15 @@ Mi Veris - Citas - Terapia física
         if (datosServicio.length == 0) {
             return `<div></div>`;
         } else {
+            var convenio = {
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+            };
+            if(Object.keys(datosTratamiento.datosConvenio).length > 0){
+                convenio = datosTratamiento.datosConvenio
+            }
             switch (datosServicio.tipoCard) {
                 case "AGENDA" :
                     let respuestaAgenda = "";
@@ -709,15 +722,7 @@ Mi Veris - Citas - Terapia física
                         servicio: datosServicio,
                         tratamiento: datosTratamiento
                     };
-                    let convenio = {
-                        "permitePago": "S",
-                        "permiteReserva": "S",
-                        "idCliente": null,
-                        "codigoConvenio": null,
-                    };
-                    if(Object.keys(datosTratamiento.datosConvenio).length > 0){
-                        convenio = datosTratamiento.datosConvenio
-                    }
+                    
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                         if(datosServicio.esCaducado == 'S'){
                             // mostrar boton de informacion que llama al modal de informacion
@@ -759,7 +764,7 @@ Mi Veris - Citas - Terapia física
                         }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             
                             // respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
-                            respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(convenio)}' class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             if(datosServicio.modalidad == "ONLINE"){
                                 respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
                             }
@@ -941,7 +946,7 @@ Mi Veris - Citas - Terapia física
         }
         // capturar el data-rel del filtro
         let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
-        
+        dataCita.paciente = dataPaciente;
 
         let params = {}
         params.online = online;
@@ -969,6 +974,7 @@ Mi Veris - Citas - Terapia física
     // boton agendar cita modal setear datos en localstorage 
     $(document).on('click', '.btn-agendar', function(){
         let datosServicio = $(this).data('rel');
+        let convenio = JSON.parse($(this).attr('convenio-rel'));
         console.log('datosServicio', datosServicio);
 
         let modalidad;
@@ -980,6 +986,9 @@ Mi Veris - Citas - Terapia física
     
         let dataCita = {}
         dataCita.online = modalidad;
+
+        let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+        dataCita.paciente = dataPaciente;
 
         dataCita.especialidad = {
             codigoEspecialidad: datosServicio.codigoEspecialidad,
@@ -993,7 +1002,7 @@ Mi Veris - Citas - Terapia física
             origen: "Listatratamientos"
         };
         dataCita.origen = "Listatratamientos";
-        dataCita.convenio = datosConvenios;
+        dataCita.convenio = convenio;
         dataCita.convenio.origen = "Listatratamientos";
         dataCita.tratamiento = datosServicio;
         dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
