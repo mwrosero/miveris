@@ -18,8 +18,9 @@ Mi Veris - Historia clínica
             <div class="col-auto col-lg-10 d-none">
             </div>
             <div class="row gx-2 gy-3 justify-content-center">
-                <div class="col-12 col-lg-5">
-                    <div class="d-flex flex-column flex-md-row gap-4 py-md-5 align-items-center justify-content-center">
+                <div class="col-12 col-lg-6">
+                    <p class="fs--1 line-height-16 mb-3" style="color: #3D4E66;">Seleccione especialidad</p>
+                    <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
                         <div class="list-group gap-2 w-100" id='especialidadesAtendidas'>
                             <!-- Items de especialidades atendidas -->
                         </div>
@@ -120,11 +121,11 @@ Mi Veris - Historia clínica
                     let params = btoa(JSON.stringify(datas));
                     console.log('params', params);
 
-                    element += `<a href="/lista-doctores/${params}" class="list-group-item list-group-item-action d-flex gap-3 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
+                    element += `<a href="/lista-doctores/${params}" class="list-group-item list-group-item-action d-flex gap-2 p-3 border-0 rounded bg-white shadow-sm" aria-current="true">
                                     <img src="${quitarComillas(especialidades.imagen)}" alt="especialidad" width="40" height="40" class="rounded-circle flex-shrink-0" onerror="this.src='{{ asset('assets/img/svg/doctor_light.svg') }}'">
                                     <div class="d-flex gap-2 w-100 justify-content-between align-items-center">
                                         <div>
-                                            <h6 class="mb-0">${capitalizarElemento(especialidades.nombre)}</h6>
+                                            <h6 class="fs--16 line-height-20 mb-0">${capitalizarElemento(especialidades.nombre)}</h6>
                                         </div>
                                     </div>
                                 </a> `;
