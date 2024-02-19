@@ -103,7 +103,7 @@
 
     <!-- Modal eliminar cita -->
     <div class="modal fade" id="modalEliminarCita" tabindex="-1" aria-labelledby="modalEliminarCitaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-0">
                     <h1 class="modal-title fs--20 line-height-24 my-3">Eliminar cita</h1>
@@ -120,14 +120,14 @@
 
     <!-- Modal -->
     <div class="modal fade" id="modalError400" tabindex="-1" aria-labelledby="modalError400Label" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
                     <p class="fs--1 fw-normal mb-0" id="mensaje_400"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <a href="/" class="btn btn-primary-veris fw-medium fs--18 m-0 w-100 px-4 py-3">Aceptar</a>
+                    <a href="/" class="btn btn-primary-veris fw-medium fs--18 m-0 mb-3 w-100 px-4 py-3">Aceptar</a>
                 </div>
             </div>
         </div>
@@ -135,14 +135,14 @@
 
     <!-- Modal Permite Cambio -->
     <div class="modal fade" id="modalPermiteCambiar" tabindex="-1" aria-labelledby="modalPermiteCambiarLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
                     <p class="fs--2 fw-normal" id="mensajeNoPermiteCambiar"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+                    <button type="button" class="btn btn-primary-veris m-0 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>

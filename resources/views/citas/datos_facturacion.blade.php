@@ -631,11 +631,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/crear_transaccion_virtual?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
-        args["method"] = "POST";
-        args["showLoader"] = true;
-        args["bodyType"] = "json";
-        args["data"] = JSON.stringify({            
+        //args["endpoint"] = api_url + `/digitalestest/v1/facturacion/crear_transaccion_virtual?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["endpoint"] = api_url +
+        `/digitalestest/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["method"] = "POST"; args["showLoader"] = true; args
+        ["bodyType"] = "json"; args["data"] = JSON.stringify({            
             "codigoUsuario": "{{ Session::get('userData')->numeroIdentificacion }}",
             "codigoTipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
             "numeroIdentificacion": getInput('numeroIdentificacion'),
@@ -656,7 +656,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "idNavegador": "",
             "idiomaNavegador": "",
             "navegadorUA": "",
-            "canalOrigenDigital": _canalOrigen
+            "canalOrigenDigital": "VER_CMV"//_canalOrigen
         });
         const data = await call(args);
         console.log(data);

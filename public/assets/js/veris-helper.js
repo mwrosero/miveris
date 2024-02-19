@@ -724,3 +724,13 @@ function formatearNumero(numero) {
 function truncateText(text, maxLength) {
     return text.length > maxLength ? text.slice(0, maxLength - 3) + '...' : text;
 }
+
+function determinarMeridiano(horaInicio){
+    let partesHora = horaInicio.split(':');
+    let hora = parseInt(partesHora[0]);
+    let meridiano = "AM";
+    if (hora >= 12) {
+        meridiano = "PM";
+    }
+    return meridiano;
+}

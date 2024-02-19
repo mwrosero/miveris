@@ -332,7 +332,7 @@ Mi Veris - Citas - Mis citas
                                         <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
                                     </div>
                                     <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">${citas.dia} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio} ${determinarMeridiano(citas.horaInicio)}</b></p>
                                     <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
                                     <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
                                 </div>
