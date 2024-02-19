@@ -154,11 +154,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 
             } else {
                 listaCentrales.empty();
-                elemento += `<div class="col-12">
-                                <div class=" fs--2 rounded-3 p-2">
-                                    {{ __('No existe data que mostrar') }}
-                                </div>
-                            </div> `;
+                elemento += `<div class="col-12 col-md-8 offset-md-2">
+                    <div class="card bg-transparent shadow-none">
+                        <div class="card-body">
+                            <div class="text-center">
+                                <img src="{{ asset('assets/img/svg/user-doctor.svg') }}" class="img-fluid mb-3" alt="">
+                                <h5>Lo sentimos en este momento no existen citas disponibles.</h5>
+                                <p>Trabajamos continuamente para ayudarte con nuestros servicios. Llámanos al 6009600.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
             }
             
             listaCentrales.append(elemento);    
