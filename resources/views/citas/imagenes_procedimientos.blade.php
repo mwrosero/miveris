@@ -669,40 +669,7 @@ Mi Veris - Citas - Imágenes y procedimientos
         return dataFechas;
     }
 
-    // determinar fecha de caducidad encabezado
-    const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
-        let dataFechas;
-        
-        if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
-            if (datos.estado == "PENDIENTE_AGENDAR"){
-                
-                if (datos.esCaducado == "S") {
-                    if(datos.fechaCaducidad == null){
-                        dataFechas = ``;
-                    } else {
-                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                    }
-                } else {
-                    // orden valida
-                    if(datos.fechaCaducidad == null){
-                        
-                        dataFechas = ``;
-                        
-                    } else {
-                        dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary-veris me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                
-                    }
-                }
-            }
-            else {
-                dataFechas = ``;
-            }
-        } else {
-            dataFechas = ``;
-        }
-        
-        return dataFechas;
-    }
+    
 
     // determinar si es comprar o por comprar
     function determinarEstado(estado , estadoTratamiento){
