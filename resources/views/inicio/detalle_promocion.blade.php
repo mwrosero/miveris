@@ -9,7 +9,7 @@ Mi Veris - Citas - Detalle
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="plaPreventivoModal" tabindex="-1" aria-labelledby="plaPreventivoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-header d-none">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
