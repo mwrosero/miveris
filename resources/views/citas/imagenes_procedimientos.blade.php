@@ -237,12 +237,13 @@ Mi Veris - Citas - Imágenes y procedimientos
             let url = $(this).attr('url-rel');
             // const dataConvenio = await consultarConvenios(data);
             // const dataPaciente = await consultarDatosPaciente(data);
+            let esVirtual = "N";
+            if(data.modalidad != "PRESENCIAL"){
+                esVirtual = "S";
+            }
             if (data.estaPagada == "N"){
                 let params = {}
-                let esVirtual = "N";
-                if(data.modalidad != "PRESENCIAL"){
-                    esVirtual = "S";
-                }
+                
                 params.online = esVirtual;
                 params.especialidad = {
                     codigoEspecialidad: data.codigoEspecialidad,
@@ -282,10 +283,7 @@ Mi Veris - Citas - Imágenes y procedimientos
             }else{    
                 let params = {}
                 params.online = data.esVirtual;
-                let esVirtual = "N";
-                if(data.modalidad != "PRESENCIAL"){
-                    esVirtual = "S";
-                }
+                
                 params.online = esVirtual;
                 params.especialidad = {
                     codigoEspecialidad: data.codigoEspecialidad,
@@ -680,11 +678,8 @@ Mi Veris - Citas - Imágenes y procedimientos
                 if (datos.esCaducado == "S") {
                     if(datos.fechaCaducidad == null){
                         dataFechas = ``;
-                    
-                       
                     } else {
                         dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                    
                     }
                 } else {
                     // orden valida
