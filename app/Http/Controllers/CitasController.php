@@ -145,12 +145,12 @@ class CitasController extends Controller
 
     // Return view imagenes / procedimientos
     public function imagenesProcedimientos() {
-        return view('citas.imagenes_procedimientos')->with('tipoServicio','IMAGENES,PROCEDIMIENTOS');
+        return view('citas.terapiaImagenesProcedimientos')->with('tipoServicio','IMAGENES,PROCEDIMIENTOS');
     }
 
     // Return view terapia fisica
     public function terapiaFisica() {
-        return view('citas.terapia_fisica')->with('tipoServicio','TERAPIA');
+        return view('citas.terapiaImagenesProcedimientos')->with('tipoServicio','TERAPIA');
     }
 
     // Return view Receta médica
