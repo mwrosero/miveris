@@ -406,6 +406,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if (data.code == 200){
             dataCita.reserva = data.data;
+            if(dataCita.tratamiento && dataCita.tratamiento.esPagada == "S"){
+                guardarData();
+                location.href = '/cita-agendada/{{ $params }}';
+                return;
+            }
             if(data.data.permitePago == "S"){
                 guardarData();
                 location.href = '/citas-datos-facturacion/{{ $params }}';
