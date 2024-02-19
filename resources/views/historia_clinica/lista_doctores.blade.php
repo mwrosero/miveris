@@ -21,7 +21,7 @@ Mi Veris - Historia clínica
                 <div class="d-flex jusntify-content-start">
                     <div class="form-check form-check-reverse">
                         <input class="form-check-input cursor-pointer" type="checkbox" id="selectAll" />
-                        <label class="form-check-label cursor-pointer" for="selectAll"> Seleccionar todos</label>
+                        <label class="form-check-label cursor-pointer fs--16 line-height-20" style="color: #3D4E66;" for="selectAll"> Seleccionar todos</label>
                     </div>
                 </div>
             </div>
@@ -31,7 +31,7 @@ Mi Veris - Historia clínica
                 </div>
             </div>
             <div class="col-12 col-lg-3 text-center mt-5" id="btnContinuar" >
-                <a  class="btn btn-primary-veris w-100 py-3" >Continuar</a>
+                <a class="btn btn-primary-veris w-100 fs--18 fw-medium line-leight-24 px-4 py-3" >Continuar</a>
             </div>
         </div>
     </section>
@@ -39,10 +39,7 @@ Mi Veris - Historia clínica
 @endsection
 @push('scripts')
 <!-- script -->
-
-
 <script>
-
     // variables 
     let codigoEspecialidad =  {{ $data->codigoEspecialidad }};
     let tipoIdentificacion = {{ $data->tipoIdentificacion }};
@@ -51,17 +48,12 @@ Mi Veris - Historia clínica
     let esOnline =  "{{ $data->esOnline }}";
     let informacionDoctor = [];
     let dataDoctor = [];
-
-
     // llamada al dom
-
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarDoctores();
     });
 
-
     // funciones asincronas
-
     // Consultar los doctores según la especialedad seleccionada por el paciente
     async function consultarDoctores() {
         console.log('Consultando doctores...');
@@ -115,13 +107,17 @@ Mi Veris - Historia clínica
                                     <label class="form-check-label cursor-pointer w-100" for="flexCheckDefault-${index}">
                                         <div class="card">
                                             <div class="card-body p--2 pe-3">
-                                                <div class="row gx-2 align-items-center">
-                                                    <div class="col-3">
-                                                        <img src='${quitarComillas(element.imagen)}' onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'" class="card-img-top" width="62" alt="centro medico">
+                                                <div class="row g-0 justify-content-between align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="avatar avatar-lg">
+                                                            <img src='${quitarComillas(element.imagen)}' onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'" class="card-img-top" alt="doctor">
+                                                        </div>
                                                     </div>
-                                                    <div class="col-8">
-                                                        <h6 class="fs--1 fw-medium mb-0">Dr(a) ${capitalizarCadaPalabra(element.nombreMedico)}</h6>
-                                                        <p class="fs--2 mb-0">${capitalizarCadaPalabra(element.nombreEspecialidad)}</p>
+                                                    <div class="col-7">
+                                                        <div class="mx-2">
+                                                            <h6 class="fs--16 line-height-20 fw-medium mb-1 truncate-text-two">Dr(a) ${capitalizarCadaPalabra(element.nombreMedico)}</h6>
+                                                            <p class="fs--1 text-one-line mb-0">${capitalizarCadaPalabra(element.nombreEspecialidad)}</p>
+                                                        </div>
                                                     </div>
                                                     <div class="col-1 text-center">
                                                         <div class="form-check">

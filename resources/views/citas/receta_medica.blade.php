@@ -80,7 +80,7 @@ Mi Veris - Citas - Receta médica
                 
                 <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenes" class="px-2 px-lg-0">
+                    <div id="contenedorTratamientosImagenes" class="px-0">
                     </div>
                     <!-- Mensaje No tienes ordenes de terapia -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientos">
@@ -98,8 +98,6 @@ Mi Veris - Citas - Receta médica
                             </div>
                         </div>
                     </div>
-                    <!-- Mensaje END -->
-
                     <!-- Mensaje No tienes permisos de administrador -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesPermisosAdministrador">
                         <div class="card bg-transparent shadow-none">
@@ -115,11 +113,9 @@ Mi Veris - Citas - Receta médica
                     <!-- Mensaje END -->
                 </div>
                 <div class="tab-pane fade mt-3" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
-                    
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenesRealizados" class="px-2 px-lg-0">
+                    <div id="contenedorTratamientosImagenesRealizados" class="px-0">
                     </div>
-
                     <!-- Mensaje No tienes ordenes de terapia realizadas -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">
                         <div class="card bg-transparent shadow-none">
@@ -136,8 +132,6 @@ Mi Veris - Citas - Receta médica
                             </div>
                         </div>
                     </div>
-                    <!-- Mensaje END -->
-
                     <!-- Mensaje No tienes permisos de administrador -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesPermisosAdministradorRealizados">
                         <div class="card bg-transparent shadow-none">
@@ -250,7 +244,7 @@ Mi Veris - Citas - Receta médica
                         data.data.items.forEach((laboratorio) => {
                             elementos += `
                                         <div class="col-12 mb-4">
-                                            <div class="card">
+                                            <div class="card rounded-0">
                                                 <div class="card-body py-2 px-3">
                                                     <p class="fs--3 line-height-12 text-primary-veris mb-1">Tratamiento</p>
                                                     <h5 class="text-primary-veris fs--18 line-height-24 fw-medium mb-1">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
@@ -261,7 +255,7 @@ Mi Veris - Citas - Receta médica
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-center mb-3">
+                                        <div class="d-flex justify-content-center mb-3 px-3">
                                             <div class="col-12 col-md-10 col-lg-9">
                                                 <div class="row g-3" id="cardTratamientoLaboratorio">`;
                             laboratorio.detallesTratamiento.forEach((detalles) =>{
@@ -335,7 +329,7 @@ Mi Veris - Citas - Receta médica
                         datosLaboratorio.forEach((laboratorio) => {
                             elementos += `
                                         <div class="col-12 mb-4">
-                                            <div class="card">
+                                            <div class="card rounded-0">
                                                 <div class="card-body py-2 px-3">
                                                     <p class="fs--3 line-height-12 text-primary-veris mb-1">Tratamiento</p>
                                                     <h5 class="text-primary-veris fs--18 line-height-24 fw-medium mb-1">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h5>
@@ -346,7 +340,7 @@ Mi Veris - Citas - Receta médica
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="d-flex justify-content-center mb-3">
+                                        <div class="d-flex justify-content-center mb-3 px-3">
                                             <div class="col-12 col-md-10 col-lg-9">
                                                 <div class="row g-3" id="cardTratamientoLaboratorio">`;
                         
