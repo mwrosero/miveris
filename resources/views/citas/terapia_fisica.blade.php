@@ -1,5 +1,4 @@
 @extends('template.app-template-veris')
-@extends('components.terapiaImagenes')
 @section('title')
 Mi Veris - Citas - Terapia física
 @endsection
