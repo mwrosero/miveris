@@ -674,7 +674,8 @@ Mi Veris - Citas - Imágenes y procedimientos
         let dataFechas;
         
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
-            if (datos.estado == "PENDIENTE_AGENDAR" ||datos.estado == "AGENDADO" || datos.estado == null){
+            if (datos.estado == "PENDIENTE_AGENDAR"){
+                
                 if (datos.esCaducado == "S") {
                     if(datos.fechaCaducidad == null){
                         dataFechas = ``;
@@ -693,7 +694,13 @@ Mi Veris - Citas - Imágenes y procedimientos
                     }
                 }
             }
+            else {
+                dataFechas = ``;
+            }
+        } else {
+            dataFechas = ``;
         }
+        
         return dataFechas;
     }
 
