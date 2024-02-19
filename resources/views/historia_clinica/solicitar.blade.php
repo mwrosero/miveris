@@ -13,11 +13,11 @@ Mi Veris - Historia clínica
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h5 class="mb-3">Veris</h5>
-                    <p class="m-0">Solicitud creada exitosamente</p>
+                    <h5 class="fs--20 fw-medium line-height-24 my-3">Veris</h5>
+                    <p class="fs--16 line-height-20 mb-0">Solicitud creada exitosamente</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3" data-bs-dismiss="modal" id='btnAceptarModal'>Aceptar</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 fw-medium line-height-24 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal" id='btnAceptarModal'>Aceptar</button>
                 </div>
             </div>
         </div>
@@ -29,23 +29,20 @@ Mi Veris - Historia clínica
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-7 col-lg-5 py-4">
-                    <div class="card">
+                    <div class="card bg-transparent shadow-none">
                         <div class="card-body">
-                            <form class="row g-3">
+                            <form class="row g-3 needs-validation" id="solicitudHistorial" novalidate>
                                 <div class="col-md-12">
-                                    <label for="fechaDesde" class="form-label fw-bold">{{ __('Desde la fecha') }}</label>
-                                    <input  
-                                    class="form-control bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
+                                    <label for="fechaDesde" class="form-label fs--1 line-height-16 fw-medium">{{ __('Desde la fecha') }}</label>
+                                    <input class="form-control fs--1 line-height-16 p-3 bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required/>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="fechaHasta" class="form-label fw-bold">{{ __('Hasta la fecha') }}</label>
-                                    <input    
-                                    class="form-control bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
+                                    <label for="fechaHasta" class="form-label fs--1 line-height-16 fw-medium">{{ __('Hasta la fecha') }}</label>
+                                    <input class="form-control fs--1 line-height-16 p-3 bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="motivo" class="form-label fw-bold">{{ __('Motivo de su consulta') }}</label>
-                                    <textarea class="form-control" name="motivo" id="motivo" rows="4" maxlength="400" required
-                                    ></textarea>
+                                    <label for="motivo" class="form-label fs--1 line-height-16 fw-medium">{{ __('Motivo de su consulta') }}</label>
+                                    <textarea class="form-control fs--1 line-height-16 p-3" name="motivo" id="motivo" rows="4" maxlength="400" required></textarea>
                                     <div class="text-end fs--3" id="contadorCaracteres">0 / 400</div>
                                 </div>
                                 <div class="col-12">
@@ -56,13 +53,14 @@ Mi Veris - Historia clínica
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary-veris w-100" type="submit" disabled
-                                    >Solicitar</button>
-                                </div>
                             </form>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-7 col-lg-5">
+                    <button class="btn btn-primary-veris w-100 fs--18 fw-medium line-height-24 px-4 py-3" form="solicitudHistorial" type="submit" disabled>Solicitar</button>
                 </div>
             </div>
         </div>
@@ -97,19 +95,28 @@ Mi Veris - Historia clínica
 
     document.getElementById('fechaHasta').disabled = true;
     // quitar el readonly
-
     $("#fechaDesde").removeAttr("readonly");
     $("#fechaHasta").removeAttr("readonly");
     // no permitir autocomplete
     $("#fechaDesde").attr("autocomplete", "off");
     $("#fechaHasta").attr("autocomplete", "off");
 
+    // Obtener referencia al textarea y al elemento de conteo de caracteres
+    var textareaMotivo = document.getElementById('motivo');
+    var contadorCaracteres = document.getElementById('contadorCaracteres');
 
+    // Agregar evento de input al textarea
+    textareaMotivo.addEventListener('input', function () {
+        // Obtener la cantidad de caracteres ingresados
+        var cantidadCaracteres = textareaMotivo.value.length;
 
+        // Actualizar el contador de caracteres
+        contadorCaracteres.textContent = cantidadCaracteres + ' / 400';
+    });
+    
 </script>
 
 <script>
-
     // Obtener la URL actual
     var url = window.location.href;
 
@@ -129,16 +136,11 @@ Mi Veris - Historia clínica
     }
 
     // llamada al dom
-
     document.addEventListener("DOMContentLoaded", async function () {
         console.log('sss',doctores);
     });
 
-
-
-
     // funciones asyncronas
-
     // Solicitar historia clínica para un paciente.
     async function solicitarHistoriaClinica() {
 
@@ -180,13 +182,10 @@ Mi Veris - Historia clínica
             // Mostrar el mensaje de error
             mostrarMensajeError(data.message);
         }
-        
-
     }
 
 
     // funciones js
-
     $("#terminoCondicionCheck").change(function () {
         if ($(this).is(":checked")) {
             $("button[type=submit]").prop("disabled", false);
@@ -196,7 +195,7 @@ Mi Veris - Historia clínica
     });
 
     // Enviar el formulario
-    $("form").on('submit', async function(e) {
+    $("#solicitudHistorial").on('submit', async function(e) {
         e.preventDefault(); // Evita el comportamiento predeterminado de envío del formulario
         // validar campos
         if (!$("#terminoCondicionCheck").is(":checked")) {
@@ -204,27 +203,18 @@ Mi Veris - Historia clínica
         }
         // validar campos
         // validar fechas vacias
-
         if (!$("#fechaDesde").val() || !$("#fechaHasta").val() || !$("#motivo").val()) {
             // mostrar mensaje de error 
-            
             return;
-
         }
         // Solicitar historia clínica para un paciente.
         await solicitarHistoriaClinica();
-        
     });
 
     // redireccionar a la pagina de inicio
     $("#btnAceptarModal").click(function () {
         window.location.href = "/";
     });
-
-    
-
-
-    
     
 </script>
 @endpush

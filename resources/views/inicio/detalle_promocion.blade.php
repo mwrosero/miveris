@@ -9,16 +9,16 @@ Mi Veris - Citas - Detalle
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="plaPreventivoModal" tabindex="-1" aria-labelledby="plaPreventivoModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-header d-none">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-3">
-                    <h6>¿Quién va a utilizar el plan preventivo?</h6>
+                    <h6 class="fs--16 line-height-20 fw-medium mt-3 mb-4">¿Quién va a utilizar el plan preventivo?</h6>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <!-- Opcion 1 -->
-                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaGrupoFamiliar">
+                        <div class="list-group list-group-checkable d-grid gap-3 mb-3 border-0" id="listaGrupoFamiliar">
                             {{-- <a href="#" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
                                 <p class="fs--2 mb-0">Fernanda Alarcon Tapia</p>
                             </a> --}}
@@ -55,33 +55,30 @@ Mi Veris - Citas - Detalle
         <div class="row justify-content-center">
             <div class="col-auto col-md-5">
                 <div class="card bg-transparent shadow-none">
-                    <div class="card-body">
-                        <div class="text-center mb-5">
-                            <img src="{{ asset('assets/img/veris/veris-v.svg') }}" class="img-fluid mb-3" alt="{{ __('veris') }}">
-                            <h4 class="">{{ __('Plan preventivo') }}</h4>
+                    <div class="card-body p-0">
+                        <div class="text-center mb-40">
+                            <img src="{{ asset('assets/img/svg/veris-v60.svg') }}" class="img-fluid mb-3" alt="{{ __('veris') }}">
+                            <h4 class="fs-24">{{ __('Plan preventivo') }}</h4>
                         </div>
-                        <div class="d-flex justify-content-between mb-4">
+                        <div class="d-flex justify-content-between mx-lg-4 mb-4">
                             <p class="fs--1 fw-normal pe-2" id="nombrePaquete"></p>
                             <div class="col-auto text-end lh-1">
-                                <h5 class="text-primary-veris mb-0" id="valorTotalPaquete"></h5>
-                                <p class="text-veris fs--1 fw-semibold mb-0 d-none" id="porcentajeDescuento"></p>
-                                <p class="fs--1 mb-0 d-none" style="color: #6E7A8C !important;"><del id="valorAnteriorPaquete"></del></p>
+                                <h5 class="text-primary-veris fs--20 fw-bold mb-0" id="valorTotalPaquete"></h5>
+                                <p class="text-veris fs--1 fw-bold mb-0 d-none" id="porcentajeDescuento"></p>
+                                <p class="fs--1 fw-normal mb-0 d-none" style="color: #6E7A8C !important;"><del id="valorAnteriorPaquete"></del></p>
                             </div>
                         </div>
-
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                <p class="fs--2" id="descripcionPaquete"></p>
-                                <h6 class="text-start">DETALLES DE PAQUETE</h6>
-                                <ul class="fs--2" id="detallePaquete">
-                                    {{-- <li class="mb-2"></li> --}}
+                        <div class="card card-border mb-4">
+                            <div class="card-body p-3">
+                                <p class="fs--2 mt-3 mb-4" id="descripcionPaquete"></p>
+                                <h6 class="text-start fs--1 fw-medium mb-4">DETALLES DE PAQUETE</h6>
+                                <ul class="fs--2 mb-3" id="detallePaquete">
                                 </ul>
                             </div>
                         </div>
-
                         <!-- Button trigger modal -->
                         <div class="text-center">
-                            <button type="button" class="btn btn-primary-veris w-100 py-3" data-bs-toggle="modal" data-bs-target="#plaPreventivoModal">
+                            <button type="button" class="btn btn-primary-veris w-100 fs--18 line-height-24 fw-medium px-4 py-3" data-bs-toggle="modal" data-bs-target="#plaPreventivoModal">
                                 Continuar
                             </button>
                         </div>
@@ -97,7 +94,7 @@ Mi Veris - Citas - Detalle
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
-        $('#nombrePaquete').html(dataCita.paquete.nombrePaquete);
+        $('#nombrePaquete').html(capitalizarElemento(dataCita.paquete.nombrePaquete));
         $('#descripcionPaquete').html(dataCita.paquete.descripcionPaquete);
         $('#valorTotalPaquete').html(`$${dataCita.paquete.valorTotalPaquete.toFixed(2)}`);
         if(dataCita.paquete.porcentajeDescuento > 0){
@@ -129,7 +126,7 @@ Mi Veris - Citas - Detalle
             let elem = ``;
             $.each(data.data.detallePromocion, function(key, value){
                 $.each(value.detalles, function(k,v){
-                    elem += `<li class="mb-2" title="${value.nombreServicio}">${v.nombreComercial}</li>`;
+                    elem += `<li class="mb-0" title="${value.nombreServicio}">${v.nombreComercial}</li>`;
                 })
             })
             $('#detallePaquete').append(elem);
@@ -152,7 +149,7 @@ Mi Veris - Citas - Detalle
             let elem = ``;
             $.each(data.data, function(key,value){
                 elem += `<div data-rel='${ JSON.stringify(value) }' class="list-group-item list-group-item-action border rounded-3 py-2 btn-asignar" aria-current="true">
-                    <p class="fs--2 mb-0">${value.primerNombre} ${value.primerApellido} ${value.segundoApellido}</p>
+                    <p class="fs--1 line-height-16 mb-0">${capitalizarElemento(value.primerNombre)} ${capitalizarElemento(value.primerApellido)} ${capitalizarElemento(value.segundoApellido)}</p>
                 </div>`;
             })
             $('#listaGrupoFamiliar').append(elem);

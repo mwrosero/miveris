@@ -10,42 +10,42 @@ Mi Veris - Citas - Imágenes y procedimientos
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
-<!-- Modal no permite reserva -->
-<div class="modal fade" id="mensajeNoPermiteReservaModal" tabindex="-1" aria-labelledby="mensajeNoPermiteReservaModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-body text-center p-3">
-                <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Veris') }}</h1>
-                <p class="fs--1 fw-normal" id="mensajeNoPermiteReserva">{{ __('Reserva no permitida por este canal') }}</p>
-            </div>
-            <div class="modal-footer pt-0 pb-3 px-3">
-                <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+
+<div class="flex-grow-1 container-p-y pt-0">
+    <!-- Modal no permite reserva -->
+    <div class="modal fade" id="mensajeNoPermiteReservaModal" tabindex="-1" aria-labelledby="mensajeNoPermiteReservaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Veris') }}</h1>
+                    <p class="fs--1 fw-normal" id="mensajeNoPermiteReserva">{{ __('Reserva no permitida por este canal') }}</p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Modal Convenios -->
-<div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
-        <form class="modal-content rounded-4">
-            <div class="modal-header d-none">
-                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-3">
-                <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu convenio:') }}</h5>
-                <div class="row gx-2 justify-content-between align-items-center">
-                    <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
+    <!-- Modal Convenios -->
+    <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <form class="modal-content rounded-4">
+                <div class="modal-header d-none">
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu convenio:') }}</h5>
+                    <div class="row gx-2 justify-content-between align-items-center">
+                        <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer pt-0 pb-3 px-3">
-                <button type="button" class="btn fw-normal fs--16 line-height-20 m-0 px-3 py-2" data-bs-dismiss="modal">Cancelar</button>
-            </div>
-        </form>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn fw-normal fs--16 line-height-20 m-0 px-3 py-2" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-
-<div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -73,7 +73,6 @@ Mi Veris - Citas - Imágenes y procedimientos
                         <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
@@ -96,7 +95,7 @@ Mi Veris - Citas - Imágenes y procedimientos
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenes" class="px-2 px-md-0">
+                    <div id="contenedorTratamientosImagenes" class="px-0">
                     </div>
                     <!-- Mensaje No tienes imágenes o procedimientos -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientos">
@@ -114,8 +113,6 @@ Mi Veris - Citas - Imágenes y procedimientos
                             </div>
                         </div>
                     </div>
-                    <!-- Mensaje END -->
-
                     <!-- Mensaje No tienes permisos de administrador -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesPermisosAdministrador">
                         <div class="card bg-transparent shadow-none">
@@ -128,13 +125,11 @@ Mi Veris - Citas - Imágenes y procedimientos
                             </div>
                         </div>
                     </div>
-                    <!-- Mensaje END -->
                 </div>
                 <div class="tab-pane fade mt-3" id="pills-realizados" role="tabpanel" aria-labelledby="pills-realizados-tab" tabindex="0">
                     <!-- Card header items -->
-                    <div id="contenedorTratamientosImagenesRealizados" class="px-2 px-md-0">
+                    <div id="contenedorTratamientosImagenesRealizados" class="px-0">
                     </div>
-                    
                     <!-- Mensaje No tienes imágenes o procedimientos realizadas -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesImagenesProcedimientosRealizados">
                         <div class="card bg-transparent shadow-none">
@@ -151,8 +146,6 @@ Mi Veris - Citas - Imágenes y procedimientos
                             </div>
                         </div>
                     </div>
-                    <!-- Mensaje END -->
-
                     <!-- Mensaje No tienes permisos de administrador -->
                     <div class="col-12 d-flex justify-content-center d-none" id="mensajeNoTienesPermisosAdministradorRealizados">
                         <div class="card bg-transparent shadow-none">
@@ -165,7 +158,6 @@ Mi Veris - Citas - Imágenes y procedimientos
                             </div>
                         </div>
                     </div>
-                    <!-- Mensaje END -->
                 </div>
             </div>
         </div>
@@ -444,7 +436,7 @@ Mi Veris - Citas - Imágenes y procedimientos
 
                             data.data.items.forEach((laboratorio) => {
                                 elementos += `<div class="col-12 mb-4">
-                                                <div class="card">
+                                                <div class="card rounded-0">
                                                     <div class="card-body py-2 px-3">
                                                         <p class="fs--3 line-height-12 text-primary-veris mb-1">Tratamiento</p>
                                                         <h6 class="text-primary-veris fs--18 line-height-24 fw-medium mb-1">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
@@ -455,7 +447,7 @@ Mi Veris - Citas - Imágenes y procedimientos
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-center mb-3">
+                                            <div class="d-flex justify-content-center mb-3 px-3">
                                                 <div class="col-12 col-md-10 col-lg-9">
                                                     <div class="row g-3 cardTratamientoLaboratorio">
                                                         <!-- items -->
@@ -529,7 +521,7 @@ Mi Veris - Citas - Imágenes y procedimientos
 
                             datosLaboratorio.forEach((laboratorio) => {
                                 elementos += `<div class="col-12 mb-4">
-                                                <div class="card">
+                                                <div class="card rounded-0">
                                                     <div class="card-body py-2 px-3">
                                                         <p class="fs--3 line-height-12 text-primary-veris mb-1">Tratamiento</p>
                                                         <h6 class="text-primary-veris fs--18 line-height-24 fw-medium mb-1">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
@@ -540,7 +532,7 @@ Mi Veris - Citas - Imágenes y procedimientos
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex justify-content-center mb-3">
+                                            <div class="d-flex justify-content-center mb-3 px-3">
                                                 <div class="col-12 col-md-10 col-lg-9">
                                                     <div class="row g-3 cardTratamientoLaboratorio">
                                                         <!-- items -->
