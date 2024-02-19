@@ -28,6 +28,159 @@
             }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
         });
 
+        // boton informacion
+        $(document).on('click', '.btn-informacion', function(){
+            let datosRel = $(this).data('rel');
+            let datos = datosRel.servicio;
+            if (datos.esCaducado === "S" && datos.esAgendable === "S") {
+                // CAMBIAR TITUOLO MODAL
+                $('#tituloModalInformacionCita').text('Orden expirada');
+                $('#mensajeInformacionCita').text('El tiempo para agendar esta orden expiró, puedes agendar la cita sin cobertura.');
+                // limpiar footer
+                $('#footerInformacionCita').empty();
+                // agregar boton agendar y salir
+                $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
+                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" data-rel='${JSON.stringify(datosRel)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
+                    </div>
+                    <div class="modal-footer pt-0 pb-3 px-3">
+                        <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
+                    </div>`);
+            } else {
+                $('#mensajeInformacionCita').text(datos.mensaje);
+            }
+        });
+
+        // aplicar filtros
+        $('#aplicarFiltros').on('click', async function() {
+            const contexto = $(this).data('context');
+            aplicarFiltros(contexto);
+            // Obtener el texto completo de la opción seleccionada data-rel
+            let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+            await consultarConvenios(texto);
+            identificacionSeleccionada = texto.numeroPaciente;
+            // colocar el nombre del filtro
+            const elemento = document.getElementById('nombreFiltro');
+            if (texto == 'YO') {
+                elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+            } else{
+                elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
+            }
+        });
+
+        // limpiar filtros
+        $('#btnLimpiarFiltros').on('click', function() {
+            const contexto = $(this).data('context');
+            limpiarFiltros(contexto);
+            identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+            const elemento = document.getElementById('nombreFiltro');
+            elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+        });
+
+        // boton tratamiento realizado
+        $('#pills-realizados-tab').on('click', async function(){
+            const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
+            await obtenerTratamientosId(identificacionSeleccionada, '', '', 'REALIZADO', esAdmin);
+        });
+
+        // boton tratamiento pendientes
+        $('#pills-pendientes-tab').on('click', async function(){
+            console.log('pendientes');
+            const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
+            await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
+        });
+
+        // boton ver ordenCard
+        $(document).on('click', '#verOrdenCard', function(){
+            let datos = $(this).data('rel');
+            descargarDocumentoPdf(datos);
+        });
+
+        // boton ver orden  realizado
+        $(document).on('click', '.btnVerOrden', function(){
+            let datos = $(this).data('rel');
+            descargarDocumentoPdf(datos);
+        });
+
+        // boton agendar cita modal setear datos en localstorage
+        $(document).on('click', '#btnAgendarCitaModal', function(){
+            let datosRel = $(this).data('rel');
+            console.log('datosRel', datosRel);
+            let datos = datosRel.servicio;
+            let datosConvenio = datosRel.tratamiento;
+            console.log('datosConvenio', datos);
+            let online;
+            if (datos.modalidad == 'PRESENCIAL') {
+                online = 'N';
+            } else {
+                online = 'S';
+            }
+            // capturar el data-rel del filtro
+            let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+            let params = {}
+            params.online = online;
+            params.paciente = dataPaciente;
+            params.especialidad = {
+                codigoEspecialidad : datos.codigoEspecialidad,
+                codigoPrestacion : datos.codigoPrestacion,
+                codigoServicio : datos.codigoServicio,
+                codigoTipoAtencion : datos.codigoTipoAtencion,
+                esOnline : online,
+                imagen : datos.urlImagenTipoServicio,
+                nombre : datos.nombreServicio,
+            }
+            params.convenio = datosConvenio;
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            if (online == 'S') {
+                window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
+            } else {
+                // ir a central medica
+                window.location.href = '/citas-elegir-central-medica/{{ $tokenCita }}';
+            }
+            
+        });
+
+        // boton agendar cita modal setear datos en localstorage 
+        $(document).on('click', '.btn-agendar', function(){
+            let datosServicio = $(this).data('rel');
+            let convenio = JSON.parse($(this).attr('convenio-rel'));
+            console.log('datosServicio', datosServicio);
+
+            let modalidad;
+            if (datosServicio.modalidad === 'ONLINE') {
+                modalidad = 'S';
+            } else if (datosServicio.modalidad === 'PRESENCIAL') {
+                modalidad = 'N';
+            }
+        
+            let dataCita = {}
+            dataCita.online = modalidad;
+
+            let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+            dataCita.paciente = dataPaciente;
+
+            dataCita.especialidad = {
+                codigoEspecialidad: datosServicio.codigoEspecialidad,
+                nombre : datosServicio.nombreServicio,
+                imagen : datosServicio.urlImagenTipoServicio,
+                esOnline : modalidad,
+                codigoServicio : datosServicio.codigoServicio,
+                codigoPrestacion : datosServicio.codigoPrestacion,
+                codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+                codigoSucursal : datosServicio.codigoSucursal,
+                origen: "Listatratamientos"
+            };
+            dataCita.origen = "Listatratamientos";
+            dataCita.convenio = convenio;
+            dataCita.convenio.origen = "Listatratamientos";
+            dataCita.tratamiento = datosServicio;
+            dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
+            dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
+            dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+        });
+
         $(document).on('click', '.btn-CambiarFechaCita', function(){
             console.log('click entro a cambiar fecha');
             let data = $(this).data('rel');
@@ -393,7 +546,7 @@
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&&incluyeUsuarioSesion=S`;
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -401,7 +554,6 @@
         if(data.code == 200){
             familiar = data.data;
             mostrarListaPacientesFiltro();
-
         }
         return data;
     }
@@ -614,31 +766,6 @@
         }
     }
 
-    
-
-
-    // boton informacion
-    $(document).on('click', '.btn-informacion', function(){
-        let datosRel = $(this).data('rel');
-        let datos = datosRel.servicio;
-        if (datos.esCaducado === "S" && datos.esAgendable === "S") {
-            // CAMBIAR TITUOLO MODAL
-            $('#tituloModalInformacionCita').text('Orden expirada');
-            $('#mensajeInformacionCita').text('El tiempo para agendar esta orden expiró, puedes agendar la cita sin cobertura.');
-            // limpiar footer
-            $('#footerInformacionCita').empty();
-            // agregar boton agendar y salir
-            $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" data-rel='${JSON.stringify(datosRel)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
-                </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
-                </div>`);
-        } else {
-            $('#mensajeInformacionCita').text(datos.mensaje);
-        }
-    });
-
     // mostrar lista de pacientes en el filtro
     function mostrarListaPacientesFiltro(){
         let data = familiar;
@@ -660,136 +787,5 @@
             divContenedor.append(elemento);
         });
     }
-
-    // aplicar filtros
-    $('#aplicarFiltros').on('click', async function() {
-        const contexto = $(this).data('context');
-        aplicarFiltros(contexto);
-        // Obtener el texto completo de la opción seleccionada data-rel
-        let texto = $('input[name="listGroupRadios"]:checked').data('rel');
-        await consultarConvenios(texto);
-        identificacionSeleccionada = texto.numeroPaciente;
-        // colocar el nombre del filtro
-        const elemento = document.getElementById('nombreFiltro');
-        if (texto == 'YO') {
-            elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-        } else{
-            elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
-        }
-    });
-
-    // limpiar filtros
-    $('#btnLimpiarFiltros').on('click', function() {
-        const contexto = $(this).data('context');
-        limpiarFiltros(contexto);
-        identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
-        const elemento = document.getElementById('nombreFiltro');
-        elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-    });
-
-    // boton tratamiento realizado
-    $('#pills-realizados-tab').on('click', async function(){
-        const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
-        await obtenerTratamientosId(identificacionSeleccionada, '', '', 'REALIZADO', esAdmin);
-    });
-
-    // boton tratamiento pendientes
-    $('#pills-pendientes-tab').on('click', async function(){
-        console.log('pendientes');
-        const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
-        await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
-    });
-
-    // boton ver ordenCard
-    $(document).on('click', '#verOrdenCard', function(){
-        let datos = $(this).data('rel');
-        descargarDocumentoPdf(datos);
-    });
-
-    // boton ver orden  realizado
-    $(document).on('click', '.btnVerOrden', function(){
-        let datos = $(this).data('rel');
-        descargarDocumentoPdf(datos);
-    });
-
-    // boton agendar cita modal setear datos en localstorage
-    $(document).on('click', '#btnAgendarCitaModal', function(){
-        let datosRel = $(this).data('rel');
-        console.log('datosRel', datosRel);
-        let datos = datosRel.servicio;
-        let datosConvenio = datosRel.tratamiento;
-        console.log('datosConvenio', datos);
-        let online;
-        if (datos.modalidad == 'PRESENCIAL') {
-            online = 'N';
-        } else {
-            online = 'S';
-        }
-        // capturar el data-rel del filtro
-        let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
-        let params = {}
-        params.online = online;
-        params.paciente = dataPaciente;
-        params.especialidad = {
-            codigoEspecialidad : datos.codigoEspecialidad,
-            codigoPrestacion : datos.codigoPrestacion,
-            codigoServicio : datos.codigoServicio,
-            codigoTipoAtencion : datos.codigoTipoAtencion,
-            esOnline : online,
-            imagen : datos.urlImagenTipoServicio,
-            nombre : datos.nombreServicio,
-        }
-        params.convenio = datosConvenio;
-
-        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-        if (online == 'S') {
-            window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
-        } else {
-            // ir a central medica
-            window.location.href = '/citas-elegir-central-medica/{{ $tokenCita }}';
-        }
-        
-    });
-
-    // boton agendar cita modal setear datos en localstorage 
-    $(document).on('click', '.btn-agendar', function(){
-        let datosServicio = $(this).data('rel');
-        let convenio = JSON.parse($(this).attr('convenio-rel'));
-        console.log('datosServicio', datosServicio);
-
-        let modalidad;
-        if (datosServicio.modalidad === 'ONLINE') {
-            modalidad = 'S';
-        } else if (datosServicio.modalidad === 'PRESENCIAL') {
-            modalidad = 'N';
-        }
-    
-        let dataCita = {}
-        dataCita.online = modalidad;
-
-        let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
-        dataCita.paciente = dataPaciente;
-
-        dataCita.especialidad = {
-            codigoEspecialidad: datosServicio.codigoEspecialidad,
-            nombre : datosServicio.nombreServicio,
-            imagen : datosServicio.urlImagenTipoServicio,
-            esOnline : modalidad,
-            codigoServicio : datosServicio.codigoServicio,
-            codigoPrestacion : datosServicio.codigoPrestacion,
-            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
-            codigoSucursal : datosServicio.codigoSucursal,
-            origen: "Listatratamientos"
-        };
-        dataCita.origen = "Listatratamientos";
-        dataCita.convenio = convenio;
-        dataCita.convenio.origen = "Listatratamientos";
-        dataCita.tratamiento = datosServicio;
-        dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
-        dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
-        dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
-
-        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
-    });
 
 </script>
