@@ -937,6 +937,13 @@ Due to the split circle of progress-left and progress right, we must use the ani
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.truncate-text-two{
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* número de líneas a mostrar */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .top-25 {
   top: 25% !important;
 }
@@ -1037,12 +1044,16 @@ Due to the split circle of progress-left and progress right, we must use the ani
   /* background-color: #f2f2f2; */
 }
 
-.calendar-day:hover {
+.calendar-day.current-month-day:hover {
   background-color: var(--bg-vris-white);
   color: var(--bg-vris-very-dark-blue);
   border-radius: 50rem;
 }
-
+.day-of-week.header{
+  cursor: not-allowed;
+  pointer-events: none;
+  user-select: none;
+}
 .selected-day {
   background-color: var(--bg-vris-white);
   color: var(--bg-vris-very-dark-blue);
