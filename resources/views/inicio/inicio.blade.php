@@ -797,6 +797,11 @@ Mi Veris - Inicio
         let url = $(this).attr('url-rel');
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
+        if(data.permiteReserva == "N"){
+            $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }
         if (data.estaPagada == "N"){
             let params = {}
             params.online = data.esVirtual;

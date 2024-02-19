@@ -399,6 +399,11 @@ Mi Veris - Citas - Terapia física
             console.log('click entro a cambiar fecha');
             let data = $(this).data('rel');
             let url = $(this).attr('url-rel');
+            if(data.permiteReserva == "N"){
+                $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
             // const dataConvenio = await consultarConvenios(data);
             // const dataPaciente = await consultarDatosPaciente(data);
             let esVirtual = "N";

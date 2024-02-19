@@ -589,6 +589,11 @@ Mi Veris - Citas - Mis citas
         console.log('click entro a cambiar fecha 1');
         let data = $(this).data('rel');
         let url = $(this).attr('url-rel');
+        if(data.permiteReserva == "N"){
+            $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }
 
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);

@@ -1148,6 +1148,12 @@ $tokenMods = base64_encode(uniqid());
         let data = $(this).data('rel');
         let url = $(this).attr('url-rel');
 
+        if(data.permiteReserva == "N"){
+            $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }
+
         console.log('dataCa', data);
         console.log('urlCa', url);
         // const dataConvenio = await consultarConvenios(data);
