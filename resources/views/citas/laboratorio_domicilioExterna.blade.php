@@ -8,6 +8,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 @section('content')
 @php
     $data = json_decode(base64_decode($params));
+    // dd(Session::get('userData'));
 @endphp
 <!-- Modal Permite Cambio -->
 <div class="modal fade" id="modalCobertura" tabindex="-1" aria-labelledby="modalCoberturaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -95,7 +96,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 @endsection
 @push('scripts')
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_tHt53kdevXWEWJii_qfBOsjf7fjI510&libraries=places">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_tHt53kdevXWEWJii_qfBOsjf7fjI510&libraries=places&callback=initMap" async defer>
 </script>
 
 <script>
@@ -192,10 +193,38 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
             $('#searchBox').removeClass('d-none');
         },1500)
 
+        // Solicitar ubicación actual al usuario
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                // Actualizar mapa y marcador con la ubicación actual
+                map.setCenter(pos);
+                marker.setPosition(pos);
+            }, function () {
+                handleLocationError(true, marker, map.getCenter());
+            });
+        } else {
+            // El navegador no soporta geolocalización
+            handleLocationError(false, marker, map.getCenter());
+        }
+
         /*var input = document.getElementById('searchTextField');
         new google.maps.places.Autocomplete(input);*/
 
     }
+
+    // Manejar errores de geolocalización
+    function handleLocationError(browserHasGeolocation, marker, pos) {
+        marker.setPosition(pos);
+        marker.setTitle(browserHasGeolocation ?
+            'Error: La geolocalización ha fallado.' :
+            'Error: Tu navegador no soporta geolocalización.');
+    }
+
 
     async function obtenerLatitudYLongitudDelMarcador() {
         var position = marker.getPosition();
@@ -214,7 +243,6 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        initMap();
         await consultarCiudadesEspecialidad();
         llenarDatos();
 
