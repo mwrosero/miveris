@@ -871,7 +871,7 @@ $tokenMods = base64_encode(uniqid());
                         }
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
-                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none">Pagar</a>`;
+                            respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' >Pagar</div>`;
                         }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             if(datosServicio.esPagada == "S" && datosServicio.modalidad == "ONLINE"){
                                 respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
@@ -908,7 +908,7 @@ $tokenMods = base64_encode(uniqid());
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
-                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                            respuesta += `<a href="/citas-laboratorio/{{$tokenMods}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagasr</a>`;
                         }
                     } else if (estado == 'REALIZADO'){
                         console.log('estadossss2', estado);
@@ -1049,6 +1049,51 @@ $tokenMods = base64_encode(uniqid());
         }
     });
 
+    // boton agendar cita modal setear datos en localstorage
+    $(document).on('click', '#btnAgendarCitaModal', function(){
+            
+            let datosServicio = $(this).data('rel');
+            let datos = datosRel.servicio;
+            let url = $(this).attr('url-rel');
+            if(datos.permiteReserva == "N"){// && datos.esPagada == "N"
+                $('#mensajeNoPermiteCambiar').html(datos.mensajeBloqueoReserva);
+            $('#modalPermiteCambiar').modal('show');
+                return;
+            }
+
+            let modalidad;
+            let online;
+            if (datos.modalidad == 'PRESENCIAL') {
+                online = 'N';
+            } else {
+                online = 'S';
+            }
+            // capturar el data-rel del filtro
+            let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+            let params = {}
+            params.online = online;
+            params.paciente = dataPaciente;
+            params.especialidad = {
+                codigoEspecialidad : datos.codigoEspecialidad,
+                codigoPrestacion : datos.codigoPrestacion,
+                codigoServicio : datos.codigoServicio,
+                codigoTipoAtencion : datos.codigoTipoAtencion,
+                esOnline : online,
+                imagen : datos.urlImagenTipoServicio,
+                nombre : datos.nombreServicio,
+            }
+            params.convenio = datosRel.tratamiento.datosConvenio;
+
+            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
+            if (online == 'S') {
+                //window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenMods }}';
+            } else {
+                // ir a central medica
+                //window.location.href = '/citas-elegir-central-medica/{{ $tokenMods }}';
+            }
+            
+        });
+
     
     // boton ver pdf receta
     $(document).on('click', '.verPdfReceta', function(){
@@ -1123,7 +1168,17 @@ $tokenMods = base64_encode(uniqid());
             codigoSucursal : datosServicio.codigoSucursal,
             origen: "Listatratamientos"
         };
-        dataCita.convenio = ultimoTratamiento.datosConvenio;
+        if (ultimoTratamiento.datosConvenio.length > 0) {
+            dataCita.convenio = ultimoTratamiento.datosConvenio;
+        } else {
+            dataCita.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+        }
         dataCita.convenio.origen = "Listatratamientos";
         dataCita.datosTratamiento = datosServicio;
         dataCita.datosTratamiento.origen = "Listatratamientos";
