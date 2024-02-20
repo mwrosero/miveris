@@ -65,7 +65,7 @@
         <div class="modal-content">
             <div class="modal-body p-3 text-center">
                 <h5 class="fs-24 line-height-28 my-3">Cerrar sesión</h5>
-                <p class="fs--16 line-height-20 mb-0">¿Estás seguro que deseas cerrar sesión?.</p>
+                <p class="fs--16 line-height-20 text-veris mb-0">¿Estás seguro que deseas cerrar sesión?.</p>
                 <div class="d-flex">
                     <button type="button" class="btn btn-lg btn-outline-primary-veris fs--18 col me-1 mt-3 m-0 px-4 py-3" data-bs-dismiss="modal">No</button>
                     <a class="btn btn-lg btn-primary-veris fs--18 col ms-1 mt-3 m-0 px-4 py-3" id="logout">Si, cerrar</a>

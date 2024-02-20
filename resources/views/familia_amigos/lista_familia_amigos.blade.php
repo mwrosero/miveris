@@ -14,12 +14,12 @@ Mi Veris - Citas - Familia y amigos
                     </div>
                     <div class="text-center">
                         <h5 class="fw-medium line-height-24 mb-3">Eliminar familiar</h5>
-                        <p class="fs--1 mb-3">¿Deseas eliminar a <b class="fw-medium" id="nombreFamiliar"></b> de tu lista?</p>
+                        <p class="fs--1 text-veris mb-3">¿Deseas eliminar a <b class="fw-medium text-veris" id="nombreFamiliar"></b> de tu lista?</p>
                         <input type="hidden" id="idRelacion">
                     </div>
                 </div>
                 <div class="modal-footer justify-content-center pt-0 p-3">
-                    <button type="button" class="btn text-danger fs--18 line-height-24 m-0 px-4 py-3" id="eliminarFamiliar">Eliminar</button>
+                    <button type="button" class="btn text-danger fs--18 line-height-24 m-0 px-4 py-3" style="color: #D84315;" id="eliminarFamiliar">Eliminar</button>
                     <button type="button" class="btn text-primary fs--18 line-height-24 m-0 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </div>
@@ -35,7 +35,7 @@ Mi Veris - Citas - Familia y amigos
                         <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
                     </div>
                     <div class="text-center">
-                        <p class="fs--16 line-height-20 fw-medium mb-0">Persona eliminada de tu grupo</p>
+                        <p class="fs--16 line-height-20 fw-medium text-veris mb-0">Persona eliminada de tu grupo</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -155,17 +155,17 @@ Mi Veris - Citas - Familia y amigos
                                 <p class="fs--3 line-height-12 mb-1" id="parentezco">${capitalizarElemento(familiar.parentesco)}</p>
                             </div>
                             <div class="d-flex">
-                                <div class="btn px-1 text-danger shadow-none eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}" nombre-familiar="${familiar.primerNombre} ${familiar.primerApellido}">
-                                    <img src="{{asset('assets/img/svg/trash.svg')}}" class="p-1" width="24" alt="eliminar familiar medico">
-                                </div>
-                                <a href='{{ route("familia.datosFamiliar") }}'; class="btn p-1 text-primary" id="enlaceDetalles" 
+                                <button type="button" class="btn p-0 text-danger shadow-none me-2 eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}" nombre-familiar="${familiar.primerNombre} ${familiar.primerApellido}">
+                                    <img src="{{asset('assets/img/svg/trash.svg')}}" class="p-1" width="32" alt="eliminar familiar medico">
+                                </button>
+                                <a href='{{ route("familia.datosFamiliar") }}'; class="btn p-0 text-primary" id="enlaceDetalles" 
                                 onclick="localStorage.setItem('primerNombreFamiliar', '${familiar.primerNombre}');
                                 localStorage.setItem('primerApellidoFamiliar', '${familiar.primerApellido}');
                                 localStorage.setItem('codigoParentesco', '${familiar.codigoParentesco}');
                                 localStorage.setItem('administrador', '${familiar.esAdmin}');
                                 localStorage.setItem('numeroIdentificacion', '${familiar.numeroIdentificacion}');
                                 localStorage.setItem('idRelacion', '${familiar.idRelacion}');">
-                                    <i class="bi bi-chevron-right"></i>
+                                    <img src="{{asset('assets/img/svg/chevron-right-veris.svg')}}" class="p-1" width="32" alt="eliminar familiar medico">
                                 </a>
                                 <input type="hidden" value="${familiar.idRelacion}" id="idRelacion">
                             </div>

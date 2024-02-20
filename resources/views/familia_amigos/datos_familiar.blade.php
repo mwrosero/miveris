@@ -14,11 +14,11 @@ Mi Veris - Citas - Familia y amigos
                         <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
                     </div>
                     <div class="text-center">
-                        <p class="fs--16 line-height-20 fw-medium mb-0" id="mensajeActualizacionExitosa">Actualización exitosa</p>
+                        <p class="fs--16 line-height-20 fw-medium text-veris mb-0" id="mensajeActualizacionExitosa">Actualización exitosa</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>

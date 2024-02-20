@@ -40,7 +40,7 @@ Mi Veris - Citas - Receta médica
         
         <div class="offcanvas-footer px-4">
             <div class="col-md-12">
-                <button class="btn btn-primary-veris w-100 py-3 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+                <button class="btn btn-primary-veris w-100 py-3 my-3 verPdfReceta" type="button"  data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
@@ -75,7 +75,7 @@ Mi Veris - Citas - Receta médica
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
                 <!-- Filtro -->
-                @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
+                @include('components.barraFiltro')
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
                 
                 <div class="tab-pane fade mt-3 show active" id="pills-pendientes" role="tabpanel" aria-labelledby="pills-pendientes-tab" tabindex="0">
@@ -798,7 +798,7 @@ Mi Veris - Citas - Receta médica
     }
 
     // aplicar filtros
-    $('#aplicarFiltros').on('click', function() {
+    $('#aplicarFiltros').on('click', async function() {
         const contexto = $(this).data('context');
         aplicarFiltros(contexto);
 
