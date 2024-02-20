@@ -38,6 +38,7 @@ async function call(args){
                 hideLoader();
             }
             if(!args.dismissAlert && data.code == 400){
+                window.removeEventListener("beforeunload", beforeUnloadHandler);
                 $('#mensaje_400').html(data.message);
                 var myModal = new bootstrap.Modal(document.getElementById('modalError400'));
                 myModal.show();

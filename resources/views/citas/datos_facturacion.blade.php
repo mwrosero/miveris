@@ -684,7 +684,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }else{
                 if(tipoBoton == "KUSHKI"){
                     // let ulrParams = btoa(JSON.stringify(dataCita));
-                    // let ruta = `/citas-pago-kushki/{{ $params }}`;
+                    let ruta = `/citas-pago-kushki/{{ $params }}`;
                     window.location.href = ruta;
                 }else{
                     location.href = data.data.linkPagoPTP;

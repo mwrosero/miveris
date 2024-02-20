@@ -181,6 +181,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let myCard = $('#my-card');
             $('#messages').text("");
             let cardToSave = myCard.PaymentForm('card');
+            //console.log(cardToSave);
             if (cardToSave == null) {
                 $('#messages').text("Invalid Card Data");
             }else{
