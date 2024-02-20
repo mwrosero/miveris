@@ -8,7 +8,22 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 @section('content')
 @php
     $data = json_decode(base64_decode($params));
+    // dd(Session::get('userData'));
 @endphp
+<!-- Modal Permite Cambio -->
+<div class="modal fade" id="modalCobertura" tabindex="-1" aria-labelledby="modalCoberturaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
+                <p class="fs--1 fw-normal" id="mensajeNoCobertura"></p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris m-0 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal mensaje -->
     <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
@@ -28,7 +43,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Laboratorio a domicilio') }}</h5>
     </div>
     <div id="map" style="height: 400px;"></div>
-    <input id="searchBox" class="form-control mt-3 mb-3 w-50 mx-auto" type="text" placeholder="Buscar ubicación">
+    <input id="searchBox" class="form-control w-75 ms-2 mt-3 mb-3 w-50 mx-auto d-none" type="text" placeholder="Buscar ubicación">
 
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -68,7 +83,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
                             </div>
 
                             <div class="col-12">
-                                <button class="btn btn-primary w-100" type="submit"  id="btnSiguiente" disabled
+                                <button class="btn btn-primary-veris w-100 fs--18 fw-medium line-leight-24 px-4 py-3 waves-effect waves-light" type="submit"  id="btnSiguiente" disabled
                                 >Siguiente</button>
                             </div>
                         </form>
@@ -80,43 +95,50 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 </div>
 @endsection
 @push('scripts')
-<!-- imagen -->
-
-
-<script>
- 
-    
-</script>
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_tHt53kdevXWEWJii_qfBOsjf7fjI510&callback=initMap&libraries=places">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_tHt53kdevXWEWJii_qfBOsjf7fjI510&libraries=places&callback=initMap" async defer>
 </script>
 
 <script>
-    let longitud;
-    let latitud;
+    var map = null;
+    var marker = null;
+    var markers = [];
+    var lat_tmp = -2.177526;
+    var long_tmp = -79.898608;
     function initMap() {
-        // Opciones por defecto del mapa
-        var mapOptions = {
-            center: {lat: -34.397, lng: 150.644}, // Coordenadas por defecto
-            zoom: 8
+        var myOptions = {
+            center: { lat: parseFloat(lat_tmp), lng: parseFloat(long_tmp)},
+            zoom: 16,
+            mapTypeId: google.maps.MapTypeId.ROADMAP, // Configuración inicial del tipo de mapa
+            mapTypeControl: false,
+            clickableIcons: false,
+            streetViewControl: false,
+            fullscreenControl: true
         };
 
-        // Crear mapa
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+        var image = {
+            url: "https://www.veris.com.ec/wp-content/themes/xstore/images/marker.png",
+            scaledSize : new google.maps.Size(70, 56),
+        };
+        marker = new google.maps.Marker({
+            draggable: true,
+            position: new google.maps.LatLng(lat_tmp,long_tmp),
+            map: map,
+            title: "Domicilio Toma de muestra"
+            //icon: image
+        });
 
-        // Agregar Autocompletado
+        marker.setMap(map);
+
         var input = document.getElementById('searchBox');
         var searchBox = new google.maps.places.SearchBox(input);
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-        // Sesgar los resultados del SearchBox hacia la vista actual del mapa.
         map.addListener('bounds_changed', function() {
             searchBox.setBounds(map.getBounds());
         });
 
-        var markers = [];
-        // Escuchar el evento cuando un usuario selecciona una predicción y recupera
-        // más detalles para ese lugar.
         searchBox.addListener('places_changed', function() {
             var places = searchBox.getPlaces();
 
@@ -124,85 +146,93 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
                 return;
             }
 
+            var location = places[0].geometry.location;
+            var lat = location.lat();
+            var lng = location.lng();
+
+            window.setTimeout(function() {
+                const center = new google.maps.LatLng(location.lat(), location.lng());
+                marker.setPosition(center);
+                // using global variable:
+                window.map.panTo(center);
+            }, 100);
+
             // Eliminar los marcadores existentes
             markers.forEach(function(marker) {
                 marker.setMap(null);
             });
             markers = [];
-
-            // Para cada lugar, obtener el icono, nombre y ubicación.
-            var bounds = new google.maps.LatLngBounds();
-            places.forEach(function(place) {
-                if (!place.geometry) {
-                    console.log("El lugar devuelto no contiene geometría");
-                    return;
-                }
-                var icon = {
-                    url: place.icon,
-                    size: new google.maps.Size(71, 71),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(17, 34),
-                    scaledSize: new google.maps.Size(25, 25)
-                };
-
-                // Crear un marcador para cada lugar.
-                markers.push(new google.maps.Marker({
-                    map: map,
-                    icon: icon,
-                    title: place.name,
-                    position: place.geometry.location
-                }));
-
-                if (place.geometry.viewport) {
-                    // Solo geocodifica si el lugar tiene una geometría.
-                    bounds.union(place.geometry.viewport);
-                } else {
-                    bounds.extend(place.geometry.location);
-                }
-            });
-            map.fitBounds(bounds);
         });
 
-        // Intentar geolocalizar al usuario
+        google.maps.event.addListener(marker, 'dragend', function(event) {
+            console.log("Latitud: "+event.latLng.lat());
+            console.log("Longitud: "+event.latLng.lng());
+            lat_tmp = event.latLng.lat();
+            long_tmp = event.latLng.lng();
+            window.setTimeout(function() {
+                const center = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+                // using global variable:
+                window.map.panTo(center);
+            }, 100);
+        });
+
+        google.maps.event.addListener(map, 'click', function(event) {
+            console.log("Latitud: "+event.latLng.lat());
+            console.log("Longitud: "+event.latLng.lng());
+            lat_tmp = event.latLng.lat();
+            long_tmp = event.latLng.lng();
+            marker.setPosition(event.latLng);
+            window.setTimeout(function() {
+                const center = new google.maps.LatLng(event.latLng.lat(), event.latLng.lng());
+                // using global variable:
+                window.map.panTo(center);
+            }, 100);
+        });
+
+        setTimeout(function(){
+            $('#searchBox').removeClass('d-none');
+        },1500)
+
+        // Solicitar ubicación actual al usuario
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var userLocation = {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var pos = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 };
-                
-                // setear longitud y latitud
-                longitud = position.coords.longitude;
-                latitud = position.coords.latitude;
 
-                // Centrar el mapa en la ubicación del usuario
-                map.setCenter(userLocation);
-                map.setZoom(14); // Ajustar el zoom para acercar al usuario
-
-                // Opcional: Colocar un marcador en la ubicación del usuario
-                var marker = new google.maps.Marker({
-                    position: userLocation,
-                    map: map,
-                    title: 'Tu ubicación'
-                });
-            }, function() {
-                handleLocationError(true, map.getCenter());
+                // Actualizar mapa y marcador con la ubicación actual
+                map.setCenter(pos);
+                marker.setPosition(pos);
+            }, function () {
+                handleLocationError(true, marker, map.getCenter());
             });
         } else {
-            // El navegador no soporta Geolocalización
-            handleLocationError(false, map.getCenter());
+            // El navegador no soporta geolocalización
+            handleLocationError(false, marker, map.getCenter());
         }
+
+        /*var input = document.getElementById('searchTextField');
+        new google.maps.places.Autocomplete(input);*/
+
     }
 
-    // Función para manejar errores de geolocalización
-    function handleLocationError(browserHasGeolocation, pos) {
-        console.log(browserHasGeolocation ?
-                    'Error: El servicio de Geolocalización falló.' :
-                    'Error: Tu navegador no soporta geolocalización.');
+    // Manejar errores de geolocalización
+    function handleLocationError(browserHasGeolocation, marker, pos) {
+        marker.setPosition(pos);
+        marker.setTitle(browserHasGeolocation ?
+            'Error: La geolocalización ha fallado.' :
+            'Error: Tu navegador no soporta geolocalización.');
     }
 
-</script>
-<script>
+
+    async function obtenerLatitudYLongitudDelMarcador() {
+        var position = marker.getPosition();
+        var latitud = position.lat();
+        var longitud = position.lng();
+        
+        return { latitud: latitud, longitud: longitud };
+    }
 
     // variables globales
 
@@ -216,8 +246,69 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
         await consultarCiudadesEspecialidad();
         llenarDatos();
 
+        // disable button si hay campos vacios
+        $("form input, form textarea").on('keyup', function(){
+            let disabled = false;
+            $("form input, form textarea").each(function(){
+                if($(this).val() == ""){
+                    disabled = true;
+                }
+            });
+
+            if(disabled){
+                $('#btnSiguiente').attr('disabled', true);
+            }else{
+                $('#btnSiguiente').attr('disabled', false);
+            }
+        });
+
+        $("form").on('submit', async function(e) {
+            e.preventDefault();
+            let lnglat = await obtenerLatitudYLongitudDelMarcador();
+            let validarCobertura = await consultarCobertura(lnglat.latitud, lnglat.longitud);
+            if(validarCobertura.code == 400 || !validarCobertura.data.tieneCobertura || validarCobertura.data.tieneCobertura == "N"){
+                let msg = "";
+                if(validarCobertura.code == 400){
+                    msg = validarCobertura.message;
+                }else{
+                    msg = validarCobertura.data.mensaje;
+                }
+                $('#mensajeNoCobertura').html(msg);
+                $('#modalCobertura').modal('show');
+                return;
+            }
+
+            // setear datos en localstorage
+            dataCita.paciente.direccion = $('#direccion').val();
+            dataCita.paciente.numeroIdentificacion = $('#numeroIdentificacion').val();
+            dataCita.paciente.correo = $('#email').val();
+            dataCita.paciente.telefono = $('#telefono').val();
+            dataCita.paciente.referencias = $('#referencias').val();
+            dataCita.paciente.codigoCiudad = $('#ciudad').val();
+            dataCita.paciente.nombreCiudad = $('#ciudad option:selected').text();
+            // longitud y latitud
+            dataCita.paciente.latitud = lnglat.latitud;
+            dataCita.paciente.longitud = lnglat.longitud;
+            dataCita.esDomicilio = true;
+            dataCita.origen = "ordenExternaDomicilio";
+
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
+            window.location.href = `/registrar-orden-externa/{{ $params }}`;
+        });
         
     });
+
+    async function consultarCobertura(latitud, longitud) {
+        let args = [];
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/coberturaServicio?canalOrigen=${_canalOrigen}&latitud=${latitud }&longitud=${longitud}`;
+        args["method"] = "GET";
+        args["dismissAlert"] = true;
+        args["showLoader"] = false;
+        const data = await call(args);
+        return data;
+    }
 
     async function consultarCiudadesEspecialidad() {
         let args = [];
@@ -242,48 +333,6 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 
         return data;
     }
-
-    // disable button si hay campos vacios
-    $("form input, form textarea").on('keyup', function(){
-        let disabled = false;
-        $("form input, form textarea").each(function(){
-            if($(this).val() == ""){
-                disabled = true;
-            }
-        });
-
-        if(disabled){
-            $('#btnSiguiente').attr('disabled', true);
-        }else{
-            $('#btnSiguiente').attr('disabled', false);
-        }
-    });
-
-    $("form").on('submit', async function(e) {
-        e.preventDefault(); 
-
-        // setear datos en localstorage
-        
-        dataCita.paciente.direccion = $('#direccion').val();
-        dataCita.paciente.numeroIdentificacion = $('#numeroIdentificacion').val();
-        dataCita.paciente.correo = $('#email').val();
-        dataCita.paciente.telefono = $('#telefono').val();
-        dataCita.paciente.referencias = $('#referencias').val();
-        dataCita.paciente.codigoCiudad = $('#ciudad').val();
-        dataCita.paciente.nombreCiudad = $('#ciudad option:selected').text();
-        // longitud y latitud
-        dataCita.paciente.longitud = longitud;
-        dataCita.paciente.latitud = latitud;
-        dataCita.esDomicilio = true;
-        dataCita.origen = "ordenExternaDomicilio";
-
-        
-
-        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-
-        window.location.href = `/registrar-orden-externa/{{ $params }}`;
-    });
-
 
     // llenar datos con localstorage
     function llenarDatos(){

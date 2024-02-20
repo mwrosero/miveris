@@ -110,6 +110,11 @@ Mi Veris - Citas - Mis tratamientos
             id = {{ Session::get('userData')->numeroPaciente }};
         }
 
+        fechaDesde = $('#fechaDesde').val() || '';
+        fechaHasta = $('#fechaHasta').val() || '';
+        fechaDesde = formatearFecha(fechaDesde);
+        fechaHasta = formatearFecha(fechaHasta);
+
         let numeroPaciente = id;
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
         args["method"] = "GET";

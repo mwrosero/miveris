@@ -318,10 +318,13 @@ Mi Veris - Citas - Terapia física
         // boton agendar cita modal setear datos en localstorage
         $(document).on('click', '#btnAgendarCitaModal', function(){
             let datosRel = $(this).data('rel');
-            console.log('datosRel', datosRel);
             let datos = datosRel.servicio;
             let datosConvenio = datosRel.tratamiento;
-            console.log('datosConvenio', datos);
+            if(datos.permiteReserva == "N"){// && datos.esPagada == "N"
+                $('#mensajeNoPermiteCambiar').html(datos.mensajeBloqueoReserva);
+            $('#modalPermiteCambiar').modal('show');
+                return;
+            }
             let online;
             if (datos.modalidad == 'PRESENCIAL') {
                 online = 'N';
@@ -342,14 +345,14 @@ Mi Veris - Citas - Terapia física
                 imagen : datos.urlImagenTipoServicio,
                 nombre : datos.nombreServicio,
             }
-            params.convenio = datosConvenio;
+            params.convenio = datosRel.tratamiento.datosConvenio;
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             if (online == 'S') {
-                window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
+                //window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
             } else {
                 // ir a central medica
-                window.location.href = '/citas-elegir-central-medica/{{ $tokenCita }}';
+                //window.location.href = '/citas-elegir-central-medica/{{ $tokenCita }}';
             }
             
         });
@@ -399,6 +402,11 @@ Mi Veris - Citas - Terapia física
             console.log('click entro a cambiar fecha');
             let data = $(this).data('rel');
             let url = $(this).attr('url-rel');
+            if(data.permiteReserva == "N"){
+                $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
             // const dataConvenio = await consultarConvenios(data);
             // const dataPaciente = await consultarDatosPaciente(data);
             let esVirtual = "N";
@@ -510,6 +518,63 @@ Mi Veris - Citas - Terapia física
                 }
             }
         });
+
+        $(document).on('click', '.btn-pagar', function(){
+            let data = $(this).data('rel');
+            let convenio = $(this).attr('convenio-rel');
+            console.log('dataPagar', data);
+            if(convenio.permitePago == "N" || data.permitePagoReserva == "N"){
+                // Modal de error
+                // setear el mensaje de error en mensajeError
+                $('#mensajeError').text(data.mensajePagoReserva);
+                
+                $('#ModalError').modal('show');
+                return;
+
+            }
+
+            let params = {}
+            params.online = data.esVirtual;
+            params.especialidad = {
+                codigoEspecialidad: data.idEspecialidad,
+                codigoPrestacion  : data.codigoPrestacion,
+                codigoServicio   : data.codigoServicio,
+                codigoTipoAtencion: data.codigoTipoAtencion,
+                esOnline : data.esVirtual,
+                nombre : data.especialidad,
+            }
+            if (datosConvenios.length > 0) {
+                params.convenio = convenio;
+            } else {
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+            }
+
+            params.paciente = {
+                "numeroIdentificacion": data.numeroIdentificacion,
+                "tipoIdentificacion": data.tipoIdentificacion,
+                "nombrePaciente": data.nombrePaciente,
+                "numeroPaciente": data.numeroPaciente
+            }
+
+            params.reservaEdit = {
+                estaPagada: data.esPagada,
+                numeroOrden: data.idOrden,
+                lineaDetalleOrden: data.lineaDetalleOrden,
+                codigoEmpresaOrden: data.codigoEmpresa,
+                idOrdenAgendable: data.idOrdenAgendable,
+                idCita: data.detalleReserva.codigoReserva
+            }
+            params.origen = "inicios";
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
+        });
         
     });
 
@@ -561,9 +626,11 @@ Mi Veris - Citas - Terapia física
         let plataforma = _plataforma;
         let version = _version;
         let servicio = servicioVariable;
-        if (fechaDesde != '' && fechaHasta == '') {
-            fechaHasta = fechaDesde;
-        }
+        fechaDesde = $('#fechaDesde').val() || '';
+        fechaHasta = $('#fechaHasta').val() || '';
+        fechaDesde = formatearFecha(fechaDesde);
+        fechaHasta = formatearFecha(fechaHasta);
+
         if (estado == 'PENDIENTE') {
             args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
         } else if (estado == 'REALIZADO') {
@@ -913,7 +980,7 @@ Mi Veris - Citas - Terapia física
                         // mostrar boton de ver orden
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">Pagar</a>`;
+                            respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(convenio)}'>Pagar</div>`;
                         }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             
                             // respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
