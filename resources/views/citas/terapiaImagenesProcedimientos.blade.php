@@ -103,6 +103,7 @@ Mi Veris - Citas - Terapia física
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
+                                    @if($tipoServicio == "TERAPIA")
                                     <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes órdenes de terapia</h5>
                                     <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus órdenes de terapia física</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
@@ -110,6 +111,15 @@ Mi Veris - Citas - Terapia física
                                             <img src="{{ asset('assets/img/svg/muletas.svg') }}" alt="muletas" class="rounded-circle">
                                         </span>
                                     </div>
+                                    @else
+                                    <h5>No tienes imágenes o procedimientos</h5>
+                                    <p>En esta sección podrás revisar tus imágenes o procedimientos</p>
+                                    <div class="avatar avatar-xxl-10 mx-auto">
+                                        <span class="avatar-initial rounded-circle bg-light-grayish-blue">
+                                            <img src="{{ asset('assets/img/svg/imagen.svg') }}" alt="imagen" class="rounded-circle">
+                                        </span>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
