@@ -279,7 +279,14 @@ Mi Veris - Citas - Terapia física
                     <div class="modal-footer pt-0 pb-3 px-3">
                         <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
                     </div>`);
-            } else {
+            } else if(datos.esAgendable === "N") {
+                $('#tituloModalInformacionCita').text('Información');
+                $('#mensajeInformacionCita').text(datos.mensaje);
+                $('#footerInformacionCita').empty();
+                $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
+                        <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                    </div>`)
+            }else{
                 $('#mensajeInformacionCita').text(datos.mensaje);
             }
         });
@@ -956,7 +963,7 @@ Mi Veris - Citas - Terapia física
                     };
                     let convenio = datosTratamiento.datosConvenio;
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
-                        if(datosServicio.esCaducado == 'S'){
+                        if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
                             respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Información</button>`;
                         } else {
