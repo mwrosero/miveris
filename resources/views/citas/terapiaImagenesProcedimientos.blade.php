@@ -146,13 +146,23 @@ Mi Veris - Citas - Terapia física
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes órdenes de terapia realizadas</h5>
+                                    @if($tipoServicio == "TERAPIA")
+                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes órdenes de terapia</h5>
                                     <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus órdenes de terapia física realizadas</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-blue">
                                             <img src="{{ asset('assets/img/svg/muletas.svg') }}" alt="muletas" class="rounded-circle">
                                         </span>
                                     </div>
+                                    @else
+                                    <h5>No tienes imágenes o procedimientos</h5>
+                                    <p>En esta sección podrás revisar tus imágenes o procedimientos realizados</p>
+                                    <div class="avatar avatar-xxl-10 mx-auto">
+                                        <span class="avatar-initial rounded-circle bg-light-grayish-blue">
+                                            <img src="{{ asset('assets/img/svg/imagen.svg') }}" alt="imagen" class="rounded-circle">
+                                        </span>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -795,7 +805,7 @@ Mi Veris - Citas - Terapia física
                                                                     <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                                 </div>
                                                                 <div>
-                                                                    ${determinarCondicionesBotones(detalles, estado)} 
+                                                                    ${determinarCondicionesBotones(detalles, estado, laboratorio)} 
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -944,15 +954,7 @@ Mi Veris - Citas - Terapia física
                         servicio: datosServicio,
                         tratamiento: datosTratamiento
                     };
-                    let convenio = {
-                        "permitePago": "S",
-                        "permiteReserva": "S",
-                        "idCliente": null,
-                        "codigoConvenio": null,
-                    };
-                    if(Object.keys(datosTratamiento.datosConvenio).length > 0){
-                        convenio = datosTratamiento.datosConvenio
-                    }
+                    let convenio = datosTratamiento.datosConvenio;
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                         if(datosServicio.esCaducado == 'S'){
                             // mostrar boton de informacion que llama al modal de informacion
