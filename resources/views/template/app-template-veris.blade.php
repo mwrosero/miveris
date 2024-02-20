@@ -107,7 +107,7 @@
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-0">
                     <h1 class="modal-title fs--20 line-height-24 my-3">Eliminar cita</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError">¿Estás seguro(a) de eliminar esta cita?</p>
+                    <p class="fs--1 fw-normal text-veris" id="mensajeError">¿Estás seguro(a) de eliminar esta cita?</p>
                     <input type="hidden" id="idCitaEliminar">
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3 d-flex justify-content-around align-items-center">
@@ -124,7 +124,7 @@
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
-                    <p class="fs--1 fw-normal mb-0" id="mensaje_400"></p>
+                    <p class="fs--1 fw-normal mb-0 text-veris" id="mensaje_400"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <a href="/" class="btn btn-primary-veris fw-medium fs--18 m-0 mb-3 w-100 px-4 py-3">Aceptar</a>
@@ -139,7 +139,7 @@
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
-                    <p class="fs--2 fw-normal" id="mensajeNoPermiteCambiar"></p>
+                    <p class="fs--2 fw-normal text-veris" id="mensajeNoPermiteCambiar"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris m-0 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>

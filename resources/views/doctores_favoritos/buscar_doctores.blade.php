@@ -16,7 +16,7 @@ Mi Veris - Buscar doctor
                         <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
                     </div>
                     <div class="text-center">
-                        <p class="fs--16 line-height-20 fw-medium mb-0">Doctor agregado a tus favoritos</p>
+                        <p class="fs--16 line-height-20 fw-medium text-veris mb-0">Doctor agregado a tus favoritos</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">

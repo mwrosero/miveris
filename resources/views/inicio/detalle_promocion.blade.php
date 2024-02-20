@@ -18,7 +18,7 @@ Mi Veris - Citas - Detalle
                     <h6 class="fs--16 line-height-20 fw-medium mt-3 mb-4">¿Quién va a utilizar el plan preventivo?</h6>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <!-- Opcion 1 -->
-                        <div class="list-group list-group-checkable d-grid gap-3 mb-3 border-0" id="listaGrupoFamiliar">
+                        <div class="list-group list-group-checkable d-grid gap-3 mb-3 border-0 grupoFamiliar-item" id="listaGrupoFamiliar">
                             {{-- <a href="#" class="list-group-item list-group-item-action border rounded-3 py-2" aria-current="true">
                                 <p class="fs--2 mb-0">Fernanda Alarcon Tapia</p>
                             </a> --}}
@@ -148,8 +148,11 @@ Mi Veris - Citas - Detalle
             $('#listaGrupoFamiliar').empty();
             let elem = ``;
             $.each(data.data, function(key,value){
-                elem += `<div data-rel='${ JSON.stringify(value) }' class="list-group-item list-group-item-action border rounded-3 py-2 btn-asignar" aria-current="true">
-                    <p class="fs--1 line-height-16 mb-0">${capitalizarElemento(value.primerNombre)} ${capitalizarElemento(value.primerApellido)} ${capitalizarElemento(value.segundoApellido)}</p>
+                elem += `<div data-rel='${ JSON.stringify(value) }' class="list-group-item rounded-3 py-2 px-3 border-0 btn-asignar" aria-current="true">
+                    <input class="list-group-item-check pe-none" type="radio" name="listGrupoFamiliar" id="listGrupoFamiliar${value.numeroPaciente}" value="">
+                    <label for="listGrupoFamiliar${value.numeroPaciente}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                        ${capitalizarElemento(value.primerNombre)} ${capitalizarElemento(value.primerApellido)} ${capitalizarElemento(value.segundoApellido)}
+                    </label>
                 </div>`;
             })
             $('#listaGrupoFamiliar').append(elem);

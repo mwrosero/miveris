@@ -8,7 +8,7 @@
     </div>
     <div class="offcanvas-body px-3 pt--2" style="background: rgba(249, 250, 251, 1);">
         <div>
-            <h6 class="fs--16 line-height-20 fw-light">Selecciona el paciente</h6>
+            <h6 class="fs--16 line-height-20 fw-light" style="color: #3D4E66 !important;">Selecciona el paciente</h6>
             <div class="list-group gap-3 mb-3 listaPacientesFiltro">
                 <!-- Puedes agregar lista de pacientes dinámicamente aquí desde JavaScript -->
             </div>
