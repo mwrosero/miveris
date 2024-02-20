@@ -278,7 +278,7 @@ $tokenMods = base64_encode(uniqid());
     let datosPaciente = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        
+        console.log(9)
         await obtenerTratamientos();
         llenarPorcentajeBarra();
 
@@ -835,7 +835,7 @@ $tokenMods = base64_encode(uniqid());
                         if(datosServicio.esExterna == "N"){
                             respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
                         }else{
-                            respuestaAgenda += ` <a class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                            respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
                         }
                         if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion

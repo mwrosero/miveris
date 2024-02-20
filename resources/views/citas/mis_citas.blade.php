@@ -792,14 +792,14 @@ Mi Veris - Citas - Mis citas
             "numeroPaciente": data.numeroPaciente
         }
 
-        params.reservaEdit = {
+        /*params.reservaEdit = {
             "estaPagada": data.estaPagada,
             "numeroOrden": data.numeroOrden,
             "lineaDetalleOrden": data.lineaDetalleOrden,
             "codigoEmpresaOrden": data.codigoEmpresaOrden,
             "idOrdenAgendable": data.idOrdenAgendable,
             "idCita": data.idCita
-        }
+        }*/
         params.origen = "inicios";
 
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
