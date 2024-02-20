@@ -10,11 +10,11 @@ Mi Veris - Historia clínica
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="solictarHistoriaClinicaModal" tabindex="-1" aria-labelledby="solictarHistoriaClinicaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h5 class="fs--20 fw-medium line-height-24 my-3">Veris</h5>
-                    <p class="fs--16 line-height-20 mb-0">Solicitud creada exitosamente</p>
+                    <p class="fs--16 line-height-20 text-veris mb-0">Solicitud creada exitosamente</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 fw-medium line-height-24 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal" id='btnAceptarModal'>Aceptar</button>

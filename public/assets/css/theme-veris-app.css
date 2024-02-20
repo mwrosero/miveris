@@ -382,12 +382,14 @@ h1,
   line-height: normal !important;
 }
 .convenio-item .list-group-item:hover,
-.convenio-ninguno .list-group-item:hover{
+.convenio-ninguno .list-group-item:hover,
+.grupoFamiliar-item .list-group-item:hover{
   border-radius: 4px !important;
   background: #CCEAFA;
 }
 .convenio-item .list-group-item:active,
-.convenio-ninguno .list-group-item:active{
+.convenio-ninguno .list-group-item:active,
+.grupoFamiliar-item .list-group-item:active{
   background: #99D1F3;
   color: #003B83;
 }
@@ -929,7 +931,12 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .menu-item.active .svg-container.svg-experiencia {
   background: url('../img/svg/menu/solid/experiencia_solid.svg') no-repeat center center;
 }
-
+.listaPacientesFiltro > label span{
+  color: #3D4E66 !important;
+}
+.listaPacientesFiltro .list-group-item{
+  box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);
+}
 .text-lime-veris {
   color: var(--bg-vris-strong-cyan-lime-green) !important;
 }
@@ -937,6 +944,9 @@ Due to the split circle of progress-left and progress right, we must use the ani
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.text-body-secondary{
+  color: #3D4E66 !important;
 }
 .truncate-text-two{
   display: -webkit-box;
