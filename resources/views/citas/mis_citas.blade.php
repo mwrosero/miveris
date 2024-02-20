@@ -182,7 +182,6 @@ Mi Veris - Citas - Mis citas
 
     async function eliminarReserva(){
         let args = [];
-        let canalOrigen = _canalOrigen
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
         args["method"] = "PUT";
         args["bodyType"] = "json";
@@ -203,19 +202,18 @@ Mi Veris - Citas - Mis citas
         console.log(fechaDesde, fechaHasta);
         let args = [];
         let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
-        let canalOrigen = _canalOrigen;
         let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
         if (!Date.parse(fechaDesde) || !Date.parse(fechaHasta)) {
             console.log('Fechas inválidas');
-            args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion} `; 
+            args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion} `; 
         } else {
             console.log('si hay fechas');
             fechaDesde = formatearFecha(fechaDesde);
             fechaHasta = formatearFecha(fechaHasta);
-            args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&desde=${fechaDesde}&hasta=${fechaHasta}`;
+            args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&desde=${fechaDesde}&hasta=${fechaHasta}`;
         }
         
-        // args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
+        // args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
         console.log('argsss', args["endpoint"]);
         args["showLoader"] = true;
@@ -256,10 +254,12 @@ Mi Veris - Citas - Mis citas
                                                     <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(historial.nombreProfesional)}</p>
                                                     <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(historial.nombrePaciente)}</p>
                                                     <div class="d-flex justify-content-end align-items-center mt-3">
-                                                        <div>
-                                                            <button type="button" class="btn btn-sm btn-outline-primary-veris shadow-none btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>
-                                                            <a href=${quitarComillas(historial.urlEncuesta)} class="btn btn-sm btn-outline-primary-veris shadow-none">Calificar</a>
-                                                            <a href="${ruta}" class="btn btn-sm btn-primary-veris shadow-none btn-CambiarFechaCitaHistorial" data-rel='${JSON.stringify(historial)}'>Reagendar</a>
+                                                        <div>`
+                                                    if(historial.secuenciaAtencion !== null){
+                                                        element += `<button type="button" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2 me-1 btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>`;
+                                                    }
+                                                        element += `<a href=${quitarComillas(historial.urlEncuesta)} class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>
+                                                            <a href="${ruta}" class="btn btn-sm btn-primary-veris shadow-none mb-2 btn-CambiarFechaCitaHistorial" data-rel='${JSON.stringify(historial)}'>Reagendar</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -275,7 +275,6 @@ Mi Veris - Citas - Mis citas
     async function obtenerCitas(fechaDesde, fechaHasta, pacienteSeleccionado , esAdmin, estadoCitas) {
         console.log("pacienteSeleccionado", pacienteSeleccionado);
         let args = [];
-        let canalOrigen = _canalOrigen;
         let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
 
         let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
@@ -283,7 +282,7 @@ Mi Veris - Citas - Mis citas
             numeroPaciente = pacienteSeleccionado;
         }
 
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('citasxd',args["endpoint"]);
@@ -365,9 +364,8 @@ Mi Veris - Citas - Mis citas
     // consultar grupo familiar
     async function consultarGrupoFamiliar() {
         let args = [];
-        canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
+        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${_canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -384,21 +382,19 @@ Mi Veris - Citas - Mis citas
     async function obtenerListaDocumentos(datos) {
         console.log('datossss', datos.secuenciaAtencion);    
         let args = [];
-        let canalOrigen = _canalOrigen;
         args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/documentos?secuenciaAtencion=${datos.secuenciaAtencion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
 
         if (data.code == 200) {
-            console.log('data', data);
             let divContenedor = $('.verPdf');
             divContenedor.empty(); // Limpia el contenido actual
             data.data.forEach((documento) => {
                 let nuevosdatos = {}
                 nuevosdatos.datosCita = datos;
                 nuevosdatos.datosDocumento = documento;
-                let elemento = `<button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3 btnDescargarPdf" data-rel=${btoa(JSON.stringify(nuevosdatos))}>
+                let elemento = `<button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3 btnDescargarPdf text-start" data-rel=${btoa(JSON.stringify(nuevosdatos))}>
                                     <span class="text-veris fw-medium">
                                         ${capitalizarElemento(documento.nombreDocumento)}
                                     </span>
@@ -415,7 +411,9 @@ Mi Veris - Citas - Mis citas
         let data = $(this).data('rel');
         // decodificar data
         data = JSON.parse(atob(data));
-        console.log('data', data);
+        console.log("------------------------------");
+        console.log(data);
+        console.log("------------------------------");
         await descargarDocumentoPdfPrincipal(data);
     });
 
@@ -427,6 +425,9 @@ Mi Veris - Citas - Mis citas
         let secuenciaAtencion = datos.datosCita.secuenciaAtencion;
         let tipoServicio = datos.datosDocumento.tipoServicio;
         let numeroOrden = datos.datosDocumento.numeroOrden;
+        if(numeroOrden == null){
+            numeroOrden = datos.datosCita.numeroOrden;
+        }
 
         if (tipoServicio == 'RECETA') {
             console.log('entro a receta');
@@ -434,7 +435,6 @@ Mi Veris - Citas - Mis citas
         }
         else {
             args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=${numeroOrden} `;
-        
         }
         
         args["method"] = "GET";
@@ -581,6 +581,7 @@ Mi Veris - Citas - Mis citas
         let data = $(this).data('rel');
         // decodificar data
         data = JSON.parse(atob(data));
+        // console.log(data)
         await obtenerListaDocumentos(data);
     });
 
@@ -823,7 +824,7 @@ Mi Veris - Citas - Mis citas
             numeroIdentificacion = datos.numeroIdentificacion;
         }
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);
