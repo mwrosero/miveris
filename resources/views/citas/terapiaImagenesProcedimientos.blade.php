@@ -103,6 +103,7 @@ Mi Veris - Citas - Terapia física
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
+                                    @if($tipoServicio == "TERAPIA")
                                     <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes órdenes de terapia</h5>
                                     <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus órdenes de terapia física</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
@@ -110,6 +111,15 @@ Mi Veris - Citas - Terapia física
                                             <img src="{{ asset('assets/img/svg/muletas.svg') }}" alt="muletas" class="rounded-circle">
                                         </span>
                                     </div>
+                                    @else
+                                    <h5>No tienes imágenes o procedimientos</h5>
+                                    <p>En esta sección podrás revisar tus imágenes o procedimientos</p>
+                                    <div class="avatar avatar-xxl-10 mx-auto">
+                                        <span class="avatar-initial rounded-circle bg-light-grayish-blue">
+                                            <img src="{{ asset('assets/img/svg/imagen.svg') }}" alt="imagen" class="rounded-circle">
+                                        </span>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -298,7 +308,7 @@ Mi Veris - Citas - Terapia física
 
         // boton tratamiento pendientes
         $('#pills-pendientes-tab').on('click', async function(){
-            console.log('pendientes');
+            // console.log('pendientes');
             const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
             await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
         });
@@ -361,7 +371,7 @@ Mi Veris - Citas - Terapia física
         $(document).on('click', '.btn-agendar', function(){
             let datosServicio = $(this).data('rel');
             let convenio = JSON.parse($(this).attr('convenio-rel'));
-            console.log('datosServicio', datosServicio);
+            // console.log('datosServicio', datosServicio);
 
             let modalidad;
             if (datosServicio.modalidad === 'ONLINE') {
@@ -399,7 +409,7 @@ Mi Veris - Citas - Terapia física
         });
 
         $(document).on('click', '.btn-CambiarFechaCita', function(){
-            console.log('click entro a cambiar fecha');
+            // console.log('click entro a cambiar fecha');
             let data = $(this).data('rel');
             let url = $(this).attr('url-rel');
             if(data.permiteReserva == "N"){
@@ -471,7 +481,7 @@ Mi Veris - Citas - Terapia física
                 }
 
                 if (datosConvenios.length > 0) {
-                    console.log('datosConvenio', datosConvenios);
+                    // console.log('datosConvenio', datosConvenios);
                     // datosconvenio posicion 0
                     params.convenio = datosConvenios[0];
 
@@ -522,7 +532,7 @@ Mi Veris - Citas - Terapia física
         $(document).on('click', '.btn-pagar', function(){
             let data = $(this).data('rel');
             let convenio = $(this).attr('convenio-rel');
-            console.log('dataPagar', data);
+            // console.log('dataPagar', data);
             if(convenio.permitePago == "N" || data.permitePagoReserva == "N"){
                 // Modal de error
                 // setear el mensaje de error en mensajeError
@@ -585,7 +595,7 @@ Mi Veris - Citas - Terapia física
         divContenedor.empty(); // Limpia el contenido actual
         let elemento = '';
         data.forEach((convenios) => {
-            console.log('convenioss', convenios);
+            // console.log('convenioss', convenios);
             elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}' class="convenio-item mb-2">
                                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
@@ -668,7 +678,6 @@ Mi Veris - Citas - Terapia física
                             html.empty();
 
                             let elementos = ''; // Definir la variable fuera del bucle
-
                             data.data.items.forEach((laboratorio) => {
                                 elementos += `<div class="col-12 mb-4">
                                                 <div class="card rounded-0">
@@ -750,7 +759,6 @@ Mi Veris - Citas - Terapia física
                             console.log('datosLaboratorio',datosLaboratorio);
                             let html = $('#contenedorTratamientosImagenesRealizados');
                             html.empty();
-                            console.log('datosLaboratorioR',datosLaboratorio);
 
                             let elementos = ''; 
 
@@ -921,6 +929,8 @@ Mi Veris - Citas - Terapia física
 
     // determinar condiciones de los botones 
     function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
+        console.log(datosServicio)
+        console.log(datosTratamiento)
         let services = datosServicio;
         if (datosServicio.length == 0) {
             return `<div></div>`;
@@ -996,7 +1006,7 @@ Mi Veris - Citas - Terapia física
                     return respuestaAgenda;
                     break;
                 case "LAB":
-                    console.log('estadossss', estado);
+                    // console.log('estadossss', estado);
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
                         respuesta += ` <button type="button" class="btn btn-sm text-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
@@ -1018,7 +1028,7 @@ Mi Veris - Citas - Terapia física
                             respuesta += `<a href="/citas-laboratorio/{{$tokenCita}}/${ulrParams}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">Pagar</a>`;
                         }
                     } else if (estado == 'REALIZADO'){
-                        console.log('estadossss2', estado);
+                        // console.log('estadossss2', estado);
                         respuesta = "";
                         respuesta += ` <button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" id="verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     }
