@@ -1,6 +1,6 @@
 @extends('template.app-template-veris')
 @section('title')
-Mi Veris - Citas - Terapia física
+Mi Veris - Citas - {{ $titulo }}
 @endsection
 @push('css')
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
