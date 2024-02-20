@@ -8,16 +8,16 @@
     </div>
     <div class="offcanvas-body px-3 pt--2" style="background: rgba(249, 250, 251, 1);">
         <div>
-            <h6 class="fs--16 line-height-20 fw-light">Selecciona el paciente</h6>
+            <h6 class="fs--16 line-height-20 fw-light" style="color: #3D4E66 !important;">Selecciona el paciente</h6>
             <div class="list-group gap-3 mb-3 listaPacientesFiltro">
                 <!-- Puedes agregar lista de pacientes dinámicamente aquí desde JavaScript -->
             </div>
             <div class="col-md-12 mb-3">
-                <label for="fechaDesde" class="fw-light fs--16 line-height-20 mb-3">{{ __('Elige el rango de fechas') }}</label>
-                <input type="text" class="form-control fs--1 p-3 bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
+                <label for="fechaDesde" class="fw-light fs--16 line-height-20 mb-3" style="color: #3D4E66 !important;">{{ __('Elige el rango de fechas') }}</label>
+                <input type="text" class="form-control fs--1 p-3 bg-neutral border-0" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
             </div>
             <div class="col-md-12 mb-5">
-                <input type="text" class="form-control fs--1 p-3 bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
+                <input type="text" class="form-control fs--1 p-3 bg-neutral border-0" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
             </div>
             <div class="col-md-12 mb-3">
                 <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>

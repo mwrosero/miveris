@@ -33,7 +33,7 @@ Mi Veris - Citas - Familia y amigos
                         <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
                     </div>
                     <div class="text-center">
-                        <p class="fs--16 line-height-20 fw-medium mb-0">Persona agregada exitosamente</p>
+                        <p class="fs--16 line-height-20 fw-medium text-veris mb-0">Persona agregada exitosamente</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -48,7 +48,7 @@ Mi Veris - Citas - Familia y amigos
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <i class="bi bi-exclamation-triangle-fill  text-primary-veris h2"></i>
-                    <p class="fs--1 fw-medium line-height-20 m-0 mt-3" id="mensajeErrorModalLabel"></p>
+                    <p class="fs--1 fw-medium line-height-20 text-veris m-0 mt-3" id="mensajeErrorModalLabel"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
@@ -62,7 +62,7 @@ Mi Veris - Citas - Familia y amigos
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <i class="bi bi-exclamation-triangle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-medium line-height-20 m-0 mt-3" id="mensajePersonaYaExisteModalLabel"></p>
+                    <p class="fs--1 fw-medium line-height-20 text-veris m-0 mt-3" id="mensajePersonaYaExisteModalLabel"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
