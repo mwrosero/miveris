@@ -7,7 +7,7 @@ Mi Veris - Citas - tratamiento
 @endpush
 @section('content')
 @php
-$data = json_decode(base64_decode($params));
+$tokenMods = base64_encode(uniqid());
 @endphp
 <!-- Modal Convenios -->
 <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
@@ -184,8 +184,10 @@ $data = json_decode(base64_decode($params));
                     <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal" id = "mensajeInformacionCita"></p>
                 </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                <div id="footerInformacionCita">
+                    <div class="modal-footer pt-0 pb-3 px-3">
+                        <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -550,7 +552,7 @@ $data = json_decode(base64_decode($params));
             }, 100);
 
         } catch (error) {
-            console.error('Error al obtener el PDF:', error);
+            console.error('Error al obtener el PDF');
         }
     }
 
@@ -609,6 +611,7 @@ $data = json_decode(base64_decode($params));
                                                 <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
                                                 <span class="text-warning-veris fs--2 line-height-16 mb-1" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
                                             </div>
+                                            ${determinarFechaCaducidadEncabezado(tratamientos, datosTratamiento)}
                                             ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
                                             <div class="recetaMedicaMensaje">
                                                 ${determinarMensajeRecetaMedica(tratamientos)}
@@ -693,7 +696,7 @@ $data = json_decode(base64_decode($params));
 
         let divContenedor = $('#cardPromocion');
         divContenedor.empty(); // Limpia el contenido actual
-        let ruta = "/tu-tratamiento/" + "{{ $params }}";
+        let ruta = "/tu-tratamiento/" + "{{ $tokenMods }}";
         let elemento = '';
         if(ultimoTratamiento.datosConvenio.length > 0){
             
@@ -735,30 +738,19 @@ $data = json_decode(base64_decode($params));
     function determinarFechasCaducadas(datos, datosTratamiento){ 
         let dataFechas = ``;
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
-            if (datos.estado == "PENDIENTE_AGENDAR") {
-                if (datos.esCaducado == "S") {
-                    dataFechas = `<p class="fw-light fs--2 line-height-16 mb-1">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                } else {
-                    dataFechas = `` ;
-                }
-            }
+            
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
                 dataFechas = `<h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(datos.nombreSucursal)}</h6>
-                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.fechaOrden)}</p>
-                                <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
-                                <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.nombrePaciente)}</p> `;
-            }
-        } else {
-            if (datos.estado == "PENDIENTE_AGENDAR") {
-                if (datos.esCaducado == "S") {
-                    dataFechas = `<p class="fw-light fs--2 line-height-16 mb-1">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
-                } else {
-                    dataFechas = `` ;
-                }
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.detalleReserva.fechaReserva)} <b class="hora-cita fw-normal text-primary-veris">${datos.detalleReserva.horaReserva}</b></p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
             }
         }
         return dataFechas;
     }
+
+
+
 
     // determinar si es comprar o por comprar
     function determinarEstado(estado){
@@ -847,13 +839,13 @@ $data = json_decode(base64_decode($params));
                         }
                         if(datosServicio.esCaducado == 'S'){
                             // mostrar boton de informacion que llama al modal de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none me-1 btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S' && datosServicio.esExterna == "N") {
-                                    let ruta = "/citas-elegir-fecha-doctor/{{ $params }}";
+                                    let ruta = "/citas-elegir-fecha-doctor/{{ $tokenMods }}";
                                     if (datosServicio.modalidad == "PRESENCIAL") {
-                                        ruta = "/citas-elegir-central-medica/{{ $params }}";
+                                        ruta = "/citas-elegir-central-medica/{{ $tokenMods }}";
                                     }
                                     respuestaAgenda += `<a url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar">Agendar</a>`;
                                 } else {
@@ -873,9 +865,9 @@ $data = json_decode(base64_decode($params));
                     } else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
                         //respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
-                        let ruta = "/citas-elegir-fecha-doctor/{{ $params }}";
+                        let ruta = "/citas-elegir-fecha-doctor/{{ $tokenMods }}";
                         if (datosServicio.modalidad == "PRESENCIAL") {
-                            ruta = "/citas-elegir-central-medica/{{ $params }}";
+                            ruta = "/citas-elegir-central-medica/{{ $tokenMods }}";
                         }
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
@@ -1037,13 +1029,24 @@ $data = json_decode(base64_decode($params));
 
     // boton informacion
     $(document).on('click', '.btn-informacion', function(){
-        let datos = $(this).data('rel');
-        console.log('datos', datos.mensaje);
-
-        // pasar mensaje a modal
-        $('#mensajeInformacionCita').text(datos.mensaje);
-
-
+        let datos = JSON.parse($(this).attr('data-rel'));
+        console.log(datos)
+        if (datos.esCaducado === "S" && datos.esAgendable === "S") {
+            // CAMBIAR TITUOLO MODAL
+            $('#tituloModalInformacionCita').text('Orden expirada');
+            $('#mensajeInformacionCita').text('El tiempo para agendar esta orden expiró, puedes agendar la cita sin cobertura.');
+            // limpiar footer
+            $('#footerInformacionCita').empty();
+            // agregar boton agendar y salir
+            $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" data-rel='${JSON.stringify(datos)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
+                </div>`);
+        } else {
+            $('#mensajeInformacionCita').text(datos.mensaje);
+        }
     });
 
     
@@ -1091,7 +1094,7 @@ $data = json_decode(base64_decode($params));
         dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
         dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
 
-        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+        localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
         location = url;
     });
 
@@ -1125,7 +1128,7 @@ $data = json_decode(base64_decode($params));
         dataCita.datosTratamiento = datosServicio;
         dataCita.datosTratamiento.origen = "Listatratamientos";
 
-        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+        localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
     });
 
     // boton btn-verPromocion
@@ -1150,7 +1153,7 @@ $data = json_decode(base64_decode($params));
         dataCita.datosTratamiento = datosPromocion;
         dataCita.datosTratamiento.origen = "Listatratamientos";
 
-        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+        localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
     });
 
     $(document).on('click', '.btn-CambiarFechaCita', function(){
@@ -1158,20 +1161,30 @@ $data = json_decode(base64_decode($params));
         let data = $(this).data('rel');
         let url = $(this).attr('url-rel');
 
+        if(data.permiteReserva == "N"){
+            $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }
+
         console.log('dataCa', data);
         console.log('urlCa', url);
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
+        let esVirtual = "N";
+        if(data.modalidad != "PRESENCIAL"){
+            esVirtual = "S";
+        }
         if (data.estaPagada == "N"){
             let params = {}
-            params.online = data.esVirtual;
+            params.online = esVirtual;
             params.especialidad = {
                 codigoEspecialidad: data.codigoEspecialidad,
                 codigoPrestacion  : data.codigoPrestacion,
                 codigoServicio   : data.codigoServicio,
                 codigoTipoAtencion: data.codigoTipoAtencion,
-                esOnline : data.esVirtual,
-                nombre : data.especialidad,
+                esOnline : esVirtual,
+                nombre : data.nombreEspecialidad,
             }
             params.paciente = {
                 "numeroIdentificacion": data.numeroIdentificacion,
@@ -1190,7 +1203,7 @@ $data = json_decode(base64_decode($params));
             }
             params.origen = "inicios";
             
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(params));
+            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
 
             if(datosConvenios.length == 0){
                 location = url;
@@ -1202,14 +1215,14 @@ $data = json_decode(base64_decode($params));
             $('#convenioModal').modal('show');
         }else{    
             let params = {}
-            params.online = data.esVirtual;
+            params.online = esVirtual;
             params.especialidad = {
                 codigoEspecialidad: data.codigoEspecialidad,
                 codigoPrestacion  : data.codigoPrestacion,
                 codigoServicio   : data.codigoServicio,
                 codigoTipoAtencion: data.codigoTipoAtencion,
-                esOnline : data.esVirtual,
-                nombre : data.especialidad,
+                esOnline : esVirtual,
+                nombre : data.nombreEspecialidad,
             }
 
             if (datosConvenios.length > 0) {
@@ -1248,10 +1261,10 @@ $data = json_decode(base64_decode($params));
                 "idCita": data.idCita
             }
             params.origen = "inicios";
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(params));
+            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
             
             if(data.permitePagoReserva == "S" || datosConvenios.length == 0){
-                alert("Corrigiendo")
+                // alert("Corrigiendo")
                 location = url;
             }else{
                 //data.mensajePagoReserva

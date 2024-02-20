@@ -195,9 +195,10 @@ Mi Veris - Citas - Receta médica
         let plataforma = _plataforma;
         let version = _version;
         let servicio = 'FARMACIA';
-        if (fechaDesde != '' && fechaHasta == '') {
-            fechaHasta = fechaDesde;
-        }
+        fechaDesde = $('#fechaDesde').val() || '';
+        fechaHasta = $('#fechaHasta').val() || '';
+        fechaDesde = formatearFecha(fechaDesde);
+        fechaHasta = formatearFecha(fechaHasta);
         if (estado == 'PENDIENTE') {
             args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
         } else if (estado == 'REALIZADO') {

@@ -139,7 +139,11 @@
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
+<<<<<<< HEAD
                     <p class="fs--2 fw-normal text-veris" id="mensajeNoPermiteCambiar"></p>
+=======
+                    <p class="fs--1 fw-normal" id="mensajeNoPermiteCambiar"></p>
+>>>>>>> developer
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris m-0 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
@@ -477,6 +481,16 @@
         
 
     </script>
+
+
+
+    
+
+
+
+
+
+    
 
     
     @stack('scripts')

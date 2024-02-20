@@ -724,3 +724,49 @@ function formatearNumero(numero) {
 function truncateText(text, maxLength) {
     return text.length > maxLength ? text.slice(0, maxLength - 3) + '...' : text;
 }
+
+function determinarMeridiano(horaInicio){
+    let partesHora = horaInicio.split(':');
+    let hora = parseInt(partesHora[0]);
+    let meridiano = "AM";
+    if (hora >= 12) {
+        meridiano = "PM";
+    }
+    return meridiano;
+}
+
+
+
+const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
+    let dataFechas;
+    
+    if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
+        if (datos.estado == "PENDIENTE_AGENDAR" || datos.estado == null) {
+            
+            if (datos.esCaducado == "S") {
+                if(datos.fechaCaducidad == null){
+                    dataFechas = ``;
+                } else {
+                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+                }
+            } else {
+                // orden valida
+                if(datos.fechaCaducidad == null){
+                    
+                    dataFechas = ``;
+                    
+                } else {
+                    dataFechas = `<p class="fs--2 fw-light mb-2">Orden válida hasta: <b class="fecha-cita fw-light text-primary-veris me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            
+                }
+            }
+        }
+        else {
+            dataFechas = ``;
+        }
+    } else {
+        dataFechas = ``;
+    }
+    
+    return dataFechas;
+};

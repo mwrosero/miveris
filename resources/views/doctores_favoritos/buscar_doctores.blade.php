@@ -229,7 +229,7 @@ Mi Veris - Buscar doctor
                                         <div class="card card-border">
                                             <div class="card-body p--2">
                                                 <div class="row g-0 align-items-center">
-                                                    <div class="col-auto">
+                                                    <div class="col-2">
                                                         <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='78px'; this.style.width='64px';">
                                                     </div>
                                                     <div class="col-8">
@@ -239,7 +239,7 @@ Mi Veris - Buscar doctor
                                                             <p class="fs--1 line-height-16 mb-0">${capitalizarElemento(element.nombreEspecialidad)}</p>
                                                         </div>
                                                     </div>
-                                                    <div class="col-1 text-center">
+                                                    <div class="col-2 text-center">
                                                         <button type="button" class="btn btn-icon shadow-none p-0" data-rel='${ JSON.stringify(element)}'><img src="{{asset('assets/img/svg/plus-blue.svg')}}" alt="plus"></button>
                                                     </div>
                                                 </div>
