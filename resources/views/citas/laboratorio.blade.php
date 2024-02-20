@@ -201,9 +201,11 @@ Mi Veris - Citas - Laboratorio
         let version = _version;
         let servicio = 'LABORATORIO';
         
-        if (fechaDesde != '' && fechaHasta == '') {
-            fechaHasta = fechaDesde;
-        }
+        fechaDesde = $('#fechaDesde').val() || '';
+        fechaHasta = $('#fechaHasta').val() || '';
+        fechaDesde = formatearFecha(fechaDesde);
+        fechaHasta = formatearFecha(fechaHasta);
+        
         if (estado == 'PENDIENTE') {
             args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
         } else if (estado == 'REALIZADO') {
@@ -578,7 +580,7 @@ Mi Veris - Citas - Laboratorio
                                 respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             } 
                             
-                            if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                            if (datosServicio.esPagada == 'S') {
                                 // mostrar boton de informacion
                                 respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
                             } 
@@ -602,7 +604,7 @@ Mi Veris - Citas - Laboratorio
                         } else {
                             respuesta += ``;
                         }
-                        if (datosServicio.esPagada == "S") {
+                        if (datosServicio.esPagada == "S" && datosServicio.aplicaSolicitud == "N") {
                             //ver informacion
                             respuesta += `<a href="#" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnInformacionLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
                         } else {

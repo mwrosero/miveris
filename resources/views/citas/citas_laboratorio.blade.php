@@ -159,6 +159,11 @@ Mi Veris - Citas - Citas Laboratorio
                 total += value.total;
             }
         })
+        if(total == 0){
+            $('#btnPagar').addClass('disabled');
+        }else{
+            $('#btnPagar').removeClass('disabled');
+        }
         $('#Subtotal').html("$" + total.toFixed(2));
         $('#btntotal').html("$" + total.toFixed(2));
     }

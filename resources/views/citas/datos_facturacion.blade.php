@@ -656,7 +656,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "idNavegador": "",
             "idiomaNavegador": "",
             "navegadorUA": "",
-            "canalOrigenDigital": _canalOrigen
+            "canalOrigenDigital": _canalOrigen//"VER_CMV"
         });
         const data = await call(args);
         console.log(data);

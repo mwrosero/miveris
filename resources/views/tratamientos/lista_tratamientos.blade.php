@@ -184,8 +184,10 @@ $tokenMods = base64_encode(uniqid());
                     <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal" id = "mensajeInformacionCita"></p>
                 </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                <div id="footerInformacionCita">
+                    <div class="modal-footer pt-0 pb-3 px-3">
+                        <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -550,7 +552,7 @@ $tokenMods = base64_encode(uniqid());
             }, 100);
 
         } catch (error) {
-            console.error('Error al obtener el PDF:', error);
+            console.error('Error al obtener el PDF');
         }
     }
 
@@ -837,7 +839,7 @@ $tokenMods = base64_encode(uniqid());
                         }
                         if(datosServicio.esCaducado == 'S'){
                             // mostrar boton de informacion que llama al modal de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none me-1 btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S' && datosServicio.esExterna == "N") {
@@ -1027,13 +1029,24 @@ $tokenMods = base64_encode(uniqid());
 
     // boton informacion
     $(document).on('click', '.btn-informacion', function(){
-        let datos = $(this).data('rel');
-        console.log('datos', datos.mensaje);
-
-        // pasar mensaje a modal
-        $('#mensajeInformacionCita').text(datos.mensaje);
-
-
+        let datos = JSON.parse($(this).attr('data-rel'));
+        console.log(datos)
+        if (datos.esCaducado === "S" && datos.esAgendable === "S") {
+            // CAMBIAR TITUOLO MODAL
+            $('#tituloModalInformacionCita').text('Orden expirada');
+            $('#mensajeInformacionCita').text('El tiempo para agendar esta orden expiró, puedes agendar la cita sin cobertura.');
+            // limpiar footer
+            $('#footerInformacionCita').empty();
+            // agregar boton agendar y salir
+            $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" data-rel='${JSON.stringify(datos)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
+                </div>`);
+        } else {
+            $('#mensajeInformacionCita').text(datos.mensaje);
+        }
     });
 
     
