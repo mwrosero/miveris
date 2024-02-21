@@ -126,17 +126,9 @@ Mi Veris - Doctores favoritos
     });
 
     async function reservaNoPermitida(url, data ){
-        let convenio = JSON.parse(atob(decodeURIComponent(data)));
-        console.log("convenio", convenio);
-        $('#noPermiteReservaMsg').html(convenio.convenio.mensajeBloqueoReserva)
-        if(convenio.convenio.permiteReserva == "S"){
-            // Actualizar dataCita con los datos del convenio
-            console.log(convenio);
-            return;
-            dataCita.convenio = convenio.convenio;
-            dataCita.paciente = dataPaciente;
-            // Aquí puedes añadir cualquier otra información relevante a dataCita
-
+        let dataCita = JSON.parse(atob(decodeURIComponent(data)));
+        $('#noPermiteReservaMsg').html(dataCita.convenio.mensajeBloqueoReserva)
+        if(dataCita.convenio.permiteReserva == "S"){
             // Guardar el objeto actualizado en localStorage
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
 
