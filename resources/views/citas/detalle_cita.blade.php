@@ -150,7 +150,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }else{
             nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
         }
-        elem += `<p class="fs--2 line-height-16 mb-1">${dataCita.horario.dia} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} - ${dataCita.horario.horaFin} ${determinarMeridiano(horaInicio)}</b></p>
+        elem += `<p class="fs--2 line-height-16 mb-1">${capitalizarElemento(dataCita.horario.dia)} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} - ${dataCita.horario.horaFin} ${determinarMeridiano(horaInicio)}</b></p>
             <p class="fs--2 line-height-16 mb-1 text-capitalize">Dr(a) ${dataCita.horario.nombreMedico.toLowerCase()}</p>
             <p class="fs--2 line-height-16 mb-1 text-capitalize">${nombrePaciente.toLowerCase()}</p>`;
         if(dataCita.convenio.codigoConvenio){
