@@ -560,9 +560,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         /*Detalle de factura*/
         $('#subtotal').html(`$${dataCita.facturacion.totales.subtotal.toFixed(2)}`);
-        $('#creditoConvenio').html(`$${dataCita.facturacion.totales.creditoConvenio.toFixed(2)}`);
-        $('#descuentoAplicado').html(`$${dataCita.facturacion.totales.descuentoAplicado.toFixed(2)}`);
-        $('#iva').html(`$${dataCita.facturacion.totales.iva.toFixed(2)}`);
+        $('#creditoConvenio').html(`-$${dataCita.facturacion.totales.creditoConvenio.toFixed(2)}`);
+        $('#descuentoAplicado').html(`-$${dataCita.facturacion.totales.descuentoAplicado.toFixed(2)}`);
+        $('#iva').html(`+$${dataCita.facturacion.totales.iva.toFixed(2)}`);
         $('#total').html(`$${dataCita.facturacion.totales.total.toFixed(2)}`);
         $('#totalLabel').html(`$${dataCita.facturacion.totales.total.toFixed(2)}`);
     }

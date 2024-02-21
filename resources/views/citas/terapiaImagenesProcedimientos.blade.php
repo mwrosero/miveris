@@ -570,7 +570,8 @@ Mi Veris - Citas - {{ $titulo }}
                 esOnline : data.esVirtual,
                 nombre : data.especialidad,
             }
-            if (datosConvenios.length > 0) {
+            params.convenio = convenio;
+            /*if (datosConvenios.length > 0) {
                 params.convenio = convenio;
             } else {
                 params.convenio = {
@@ -580,7 +581,7 @@ Mi Veris - Citas - {{ $titulo }}
                     "codigoConvenio": null,
                     "secuenciaAfiliado" : null,
                 };
-            }
+            }*/
 
             params.paciente = {
                 "numeroIdentificacion": data.numeroIdentificacion,
