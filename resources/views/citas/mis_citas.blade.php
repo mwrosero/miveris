@@ -161,7 +161,7 @@ Mi Veris - Citas - Mis citas
         await obtenerHistorialCitas();
         await obtenerCitas();
         await consultarGrupoFamiliar();
-        await consultarConvenios();
+        // await consultarConvenios();
 
         $('body').on('click', '.btn-eliminar-cita', function(){
             $('#idCitaEliminar').val($(this).attr('codigoReserva-rel'));
@@ -258,8 +258,8 @@ Mi Veris - Citas - Mis citas
                                                     if(historial.secuenciaAtencion !== null){
                                                         element += `<button type="button" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2 me-1 btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>`;
                                                     }
-                                                        element += `<a href=${quitarComillas(historial.urlEncuesta)} class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>
-                                                            <a href="${ruta}" class="btn btn-sm btn-primary-veris shadow-none mb-2 btn-CambiarFechaCitaHistorial" data-rel='${JSON.stringify(historial)}'>Reagendar</a>
+                                                        element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>
+                                                            <div class="btn btn-sm btn-primary-veris shadow-none mb-2" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(historial)}'>Reagendar</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -340,7 +340,7 @@ Mi Veris - Citas - Mis citas
                                         <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
                                     ` : ''}
                                     <div class="mt-auto">
-                                        ${citas.permiteCambiar == "S" ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
+                                        ${citas.permiteCambiar == "S" ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
                                         ` : `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
                                                 <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
                                             </div>`
@@ -519,7 +519,7 @@ Mi Veris - Citas - Mis citas
         // Obtener el texto completo de la opción seleccionada data-rel
         const texto = $('input[name="listGroupRadios"]:checked').data('rel');
 
-        consultarConvenios(texto);
+        //consultarConvenios(texto);
 
         console.log('texto', texto);
 
@@ -723,7 +723,7 @@ Mi Veris - Citas - Mis citas
     }
 
     // seleccionar convenio convenio-item
-    $(document).on('click', '.convenio-item', function(){
+    /*$(document).on('click', '.convenio-item', function(){
         let data = $(this).data('rel');
         console.log('dataConvenio', data);
         let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
@@ -731,7 +731,11 @@ Mi Veris - Citas - Mis citas
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
         $('#convenioModal').modal('hide');
         location = $(this).attr('url-rel');
-    });
+    });*/
+
+    $('body').on('click','.convenio-item', function(){
+        reservaNoPermitida($(this).attr("url-rel"), $(this).attr("data-rel"));
+    })
 
     // seleccionar convenio convenio-Ninguno
     $(document).on('click', '.convenio-ninguno', function(){
@@ -792,14 +796,14 @@ Mi Veris - Citas - Mis citas
             "numeroPaciente": data.numeroPaciente
         }
 
-        params.reservaEdit = {
+        /*params.reservaEdit = {
             "estaPagada": data.estaPagada,
             "numeroOrden": data.numeroOrden,
             "lineaDetalleOrden": data.lineaDetalleOrden,
             "codigoEmpresaOrden": data.codigoEmpresaOrden,
             "idOrdenAgendable": data.idOrdenAgendable,
             "idCita": data.idCita
-        }
+        }*/
         params.origen = "inicios";
 
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
@@ -814,25 +818,243 @@ Mi Veris - Citas - Mis citas
     });
 
     // servicio para consultar convenios
-    async function consultarConvenios(datos) {
-        console.log('datosPaciente', datos);
-        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
-        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
-        let codigoEmpresa = 1
-        if (datos) {
-            tipoIdentificacion = datos.tipoIdentificacion;
-            numeroIdentificacion = datos.numeroIdentificacion;
+    // async function consultarConvenios(event) {
+    //     let dataRel = $(event.currentTarget).data('rel');
+    //     let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+    //     // let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
+    //     // let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
+    //     let tipoIdentificacion = dataPaciente.tipoIdentificacion;
+    //     let numeroIdentificacion = dataPaciente.numeroIdentificacion;
+    //     let codigoEmpresa = 1
+    //     if (datos) {
+    //         tipoIdentificacion = datos.tipoIdentificacion;
+    //         numeroIdentificacion = datos.numeroIdentificacion;
+    //     }
+    //     let args = [];
+    //     args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+    //     args["method"] = "GET";
+    //     args["showLoader"] = true;
+    //     const dataConvenio = await call(args);
+    //     if(dataConvenio.code == 200){
+    //         datosConvenios = dataConvenio.data;
+    //     }
+       
+    //     return dataConvenio;
+    // }
+
+    async function reservaNoPermitida(url, data ){
+        let dataCita = JSON.parse(atob(decodeURIComponent(data)));
+        $('#noPermiteReservaMsg').html(dataCita.convenio.mensajeBloqueoReserva)
+        if(dataCita.convenio.permiteReserva == "S"){
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+            location.href = url;
+        }else{
+            $('#convenioModal').modal('hide');
+            var myModal = new bootstrap.Modal(document.getElementById('noPermiteReserva'));
+            setTimeout(function(){
+                $('.modal-backdrop').remove();
+                myModal.show();
+            },250);
         }
+    }
+
+    async function consultarConvenios(event) {
+        console.log('entro a consultar convenios');
+        let listaConvenios = $('#listaConvenios');
+        listaConvenios.empty();
+        listaConvenios.append(`<div class="text-center p-2"><small>Nos estamos comunicando con tu aseguradora, el proceso puede tardar unos minutos</small></div>`);
+
+        let dataRel = $(event.currentTarget).data('rel');
+        console.log(dataRel);
+        let dataOnline = dataRel.esVirtual;  
+        let dataCodigoEspecialidad = dataRel.codigoEspecialidad;
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        let canalOrigen = _canalOrigen;
+        let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
+        let tipoIdentificacion = '{{ Session::get('userData')->codigoTipoIdentificacion }}';
+        
+
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
         args["method"] = "GET";
         args["showLoader"] = true;
-        const dataConvenio = await call(args);
-        if(dataConvenio.code == 200){
-            datosConvenios = dataConvenio.data;
+        const data = await call(args);
+        if (data.code == 200){
+            if(data.data.length > 0){
+                // llenar el modal con los convenios
+                listaConvenios.empty();
+                let elemento = '';
+                console.log(data);
+                data.data.forEach((convenios) => {
+                    let params = {};
+                    
+                    params.online = dataOnline;
+                    params.convenio = convenios;
+                    params.convenio.origen = 'mis-citas';
+                    if(dataRel.prestaciones){
+                        params.especialidad = {
+                            codigoEspecialidad: dataRel.codigoEspecialidad,
+                            nombre: dataRel.nombreEspecialidad,
+                            imagen: dataRel.imagenEspecialidad,
+                            codigoServicio: dataRel.prestaciones[0].codigoServicio,
+                            esOnline: dataRel.esVirtual,
+                            codigoPrestacion: dataRel.prestaciones[0].codigoPrestacion,
+                            codigoSucursal: dataRel.codigoSucursal,
+                            origen: 'mis-citas',
+                            
+                        };
+                    }else{
+                        params.especialidad = {
+                            codigoEspecialidad: dataRel.idEspecialidad,
+                            nombre: dataRel.especialidad,
+                            codigoServicio: dataRel.codigoServicio,
+                            esOnline: dataRel.esVirtual,
+                            codigoPrestacion: dataRel.codigoPrestacion,
+                            codigoSucursal: dataRel.codigoSucursal,
+                            origen: 'mis-citas',
+                        };
+
+                        params.reservaEdit = {
+                            "estaPagada": dataRel.estaPagada,
+                            "numeroOrden": (dataRel.numeroOrden !== null) ? dataRel.numeroOrden : '',
+                            "lineaDetalleOrden": (dataRel.lineaDetalleOrden !== null) ? dataRel.lineaDetalleOrden : '',
+                            "codigoEmpresaOrden": (dataRel.codigoEmpresaOrden !== null) ? dataRel.codigoEmpresaOrden : '',
+                            "idOrdenAgendable": (dataRel.idOrdenAgendable !== null) ? dataRel.idOrdenAgendable : '',
+                            "idCita": (dataRel.idCita !== null) ? dataRel.idCita : ''
+                        }
+                    }
+                    params.paciente = {
+                        numeroIdentificacion: '{{ Session::get('userData')->numeroIdentificacion }}',
+                        tipoIdentificacion:  '{{ Session::get('userData')->codigoTipoIdentificacion }}',
+                        nombrePaciente: '{{ Session::get('userData')->primerNombre }}',
+                        numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
+                        origen: 'mis-citas',
+                    }
+                    params.codigoMedicoFavorito = dataRel.codigoProfesional;
+                    params.central = {
+                        codigoEmpresa: dataRel.codigoEmpresa,
+                        codigoSucursal: dataRel.codigoSucursal,
+                        nombreSucursal: (dataRel.nombreSucursal) ? dataRel.nombreSucursal : dataRel.sucursal
+                    }
+                    params.origen = 'mis-citas';
+                    localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+                    let url = `/citas-elegir-fecha-doctor/`;
+                    let ruta = url + "{{ $tokenCita }}";
+                    /*elemento += `<a href="${ruta}" class="stretched-link">
+                                    <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}">
+                                            ${convenios.nombreConvenio}
+                                        </label> 
+                                    </div>
+                                </a>`;*/
+                    if(convenios.permiteReserva == "N"){
+                        ruta = `#`;
+                    }
+                    let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
+                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item mb-2">
+                                    <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                            ${capitalizarCadaPalabra(convenios.nombreConvenio)}
+                                        </label> 
+                                    </div>
+                                </div>`;
+                });
+
+
+                let params = {};
+                    
+                params.online = dataOnline;
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                };
+                params.convenio.origen = 'mis-citas';  
+                params.especialidad = {
+                    codigoEspecialidad: dataCodigoEspecialidad,
+                    nombre: dataRel.nombreEspecialidad,
+                    imagen: dataRel.imagenEspecialidad,
+                    codigoServicio: dataRel.codigoServicio,
+                    esOnline: dataRel.esOnline,
+                    codigoPrestacion: dataRel.codigoPrestacion,
+                    codigoSucursal: dataRel.codigoSucursal,
+                    origen: 'mis-citas',
+                    
+                };
+                params.paciente = {
+                    numeroIdentificacion: '{{ Session::get('userData')->numeroIdentificacion }}',
+                    tipoIdentificacion:  '{{ Session::get('userData')->codigoTipoIdentificacion }}',
+                    nombrePaciente: '{{ Session::get('userData')->primerNombre }}',
+                    numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
+                    origen: 'mis-citas',
+                }
+                params.codigoMedicoFavorito = dataRel.codigoProfesional;
+                params.central = {
+                    codigoEmpresa: dataRel.codigoEmpresa,
+                    codigoSucursal: dataRel.codigoSucursal,
+                    nombreSucursal: dataRel.nombreSucursal
+                }
+                params.origen = 'mis-citas';
+                let url = `/citas-elegir-fecha-doctor/`;
+                let ruta = url + "{{ $tokenCita }}";
+                let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
+                elemento += `<a href="${ruta}" class="d-block convenio-ninguno" data-rel='${ulrParams}' id="convenioNinguno">
+                                <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                                    <label class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                        Ninguno
+                                    </label> 
+                                </div>
+                            </a>`;
+
+                listaConvenios.append(elemento);
+
+                // abrir modal
+                $('#convenioModal').modal('show');
+            }else{
+                let params = {};
+                    
+                params.online = dataOnline;
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                };
+                params.convenio.origen = 'mis-citas';  
+                params.especialidad = {
+                    codigoEspecialidad: dataCodigoEspecialidad,
+                    nombre: dataRel.nombreEspecialidad,
+                    imagen: dataRel.imagenEspecialidad,
+                    codigoServicio: dataRel.codigoServicio,
+                    esOnline: dataRel.esOnline,
+                    codigoPrestacion: dataRel.codigoPrestacion,
+                    codigoSucursal: dataRel.codigoSucursal,
+                    origen: 'mis-citas',
+                    
+                };
+                params.paciente = {
+                    numeroIdentificacion: '{{ Session::get('userData')->numeroIdentificacion }}',
+                    tipoIdentificacion:  '{{ Session::get('userData')->codigoTipoIdentificacion }}',
+                    nombrePaciente: '{{ Session::get('userData')->primerNombre }}',
+                    numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
+                    origen: 'mis-citas',
+                }
+                params.codigoMedicoFavorito = dataRel.codigoProfesional;
+                params.central = {
+                    codigoEmpresa: dataRel.codigoEmpresa,
+                    codigoSucursal: dataRel.codigoSucursal,
+                    nombreSucursal: dataRel.nombreSucursal
+                }
+                params.origen = 'mis-citas';
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+                let url = `/citas-elegir-fecha-doctor/`;
+                let ruta = url + "{{ $tokenCita }}";
+                location.href = ruta;
+            }
         }
-       
-        return dataConvenio;
+
     }
 
     // btn-pagar para redireccionar a la pagina de pago

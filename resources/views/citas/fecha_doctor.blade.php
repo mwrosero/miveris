@@ -186,11 +186,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         online = dataCita?.online;
         codigoEspecialidad = dataCita?.especialidad.codigoEspecialidad;
 
-        if(dataOrigen == 'central'){
-            codigoSucursal = dataCita?.central.codigoSucursal;
-        }else if (dataOrigen == 'doctorFavorito'){
+        if(dataOrigen == 'doctorFavorito'){
             codigoSucursal = dataCita?.especialidad.codigoSucursal;
-        } else {
+        }else if (dataCita?.central){
+            codigoSucursal = dataCita?.central.codigoSucursal;
+        }else {
             codigoSucursal = ""
         }
         codigoServicio = dataCita?.especialidad.codigoServicio || ' ';
