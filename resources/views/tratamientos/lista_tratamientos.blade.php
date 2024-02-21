@@ -282,21 +282,21 @@ $tokenMods = base64_encode(uniqid());
         await obtenerTratamientos();
         llenarPorcentajeBarra();
 
-        var $enlace = $('.btn-agendar');
+        // var $enlace = $('.btn-agendar');
 
-        // Maneja el evento de clic en el enlace
-        $enlace.on('click', function(event) {
-            // Previene el comportamiento predeterminado del enlace
-            event.preventDefault();
+        // // Maneja el evento de clic en el enlace
+        // $enlace.on('click', function(event) {
+        //     // Previene el comportamiento predeterminado del enlace
+        //     event.preventDefault();
 
-            // Establece un retraso de 2 segundos antes de redirigir
-            setTimeout(function() {
-                // Obtiene la URL del enlace
-                var url = $enlace.attr('href');
-                // Redirige a la URL después del retraso
-                window.location.href = url;
-            }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
-        });
+        //     // Establece un retraso de 2 segundos antes de redirigir
+        //     setTimeout(function() {
+        //         // Obtiene la URL del enlace
+        //         var url = $enlace.attr('href');
+        //         // Redirige a la URL después del retraso
+        //         window.location.href = url;
+        //     }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
+        // });
     });
 
     // llenar el porcentaje de la barra con los datos del tratamiento
@@ -847,7 +847,7 @@ $tokenMods = base64_encode(uniqid());
                                     if (datosServicio.modalidad == "PRESENCIAL") {
                                         ruta = "/citas-elegir-central-medica/{{ $tokenMods }}";
                                     }
-                                    respuestaAgenda += `<a url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar">Agendar</a>`;
+                                    respuestaAgenda += `<div url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar">Agendar</div>`;
                                 } else {
                                     if(datosServicio.esExterna == "N"){
                                         respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">Agendar </a>`;
@@ -1117,7 +1117,6 @@ $tokenMods = base64_encode(uniqid());
         let url = $(this).attr('url-rel');
 
         console.log('datosServicio', datosServicio);
-
         let modalidad;
         if (datosServicio.modalidad === 'ONLINE') {
             modalidad = 'S';
