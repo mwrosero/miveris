@@ -314,6 +314,21 @@ Mi Veris - Citas - Mis citas
                         ruta = "/citas-elegir-central-medica/" + tokenCita;
                     }
 
+                    let convenio = {
+                        "secuenciaAfiliado": citas.secuenciaAfiliado,
+                        "idCliente": citas.idCliente,
+                        "codigoConvenio": citas.codigoConvenio,
+                        "secuenciaAfiliado": citas.secuenciaAfiliado,
+                        "codigoEmpresa": citas.codigoEmpresa,
+                        "permitePagoLab": citas.permitePagoLab,
+                        "mensajePagoLab": citas.mensajePagoLab,
+                        "permitePago": citas.permitePagoReserva,
+                        "mensajeBloqueoPago": citas.mensajePagoReserva,
+                        "permiteReserva": citas.permiteReserva,
+                        "mensajeBloqueoReserva": citas.mensajeBloqueoReserva,
+                        "aplicaVerificacionConvenio": citas.aplicaVerificacionConvenio
+                    }
+
                     /*
                     permiteCambiar
                     mensajeInformacion
@@ -346,7 +361,7 @@ Mi Veris - Citas - Mis citas
                                             </div>`
                                         }
                                         ${citas.estaPagada === "N" ? `
-                                        <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                        <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" convenio-rel='${JSON.stringify(convenio)}' data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                         ` : ''}
                                     </div>
                                     ${esConsultaOnline && citas.estaPagada == "S" ? `
@@ -1062,8 +1077,8 @@ Mi Veris - Citas - Mis citas
     // btn-pagar para redireccionar a la pagina de pago
     $(document).on('click', '.btn-pagar', function(){
         let data = $(this).data('rel');
-        console.log('dataPagar', data);
-        if(datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
+        let convenio = $(this).attr('convenio-rel');
+        if(convenio.permitePago == "N" || data.permitePagoReserva == "N"){
             // Modal de error
             // setear el mensaje de error en mensajeError
             $('#mensajeError').text(data.mensajePagoReserva);
@@ -1083,17 +1098,8 @@ Mi Veris - Citas - Mis citas
             esOnline : data.esVirtual,
             nombre : data.especialidad,
         }
-        if (datosConvenios.length > 0) {
-            params.convenio = datosConvenios[0];
-        } else {
-            params.convenio = {
-                "permitePago": "S",
-                "permiteReserva": "S",
-                "idCliente": null,
-                "codigoConvenio": null,
-                "secuenciaAfiliado" : null,
-            };
-        }
+        
+        params.convenio = convenio
 
         params.paciente = {
             "numeroIdentificacion": data.numeroIdentificacion,

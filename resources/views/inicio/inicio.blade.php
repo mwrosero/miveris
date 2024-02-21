@@ -211,6 +211,37 @@ Mi Veris - Inicio
     let datosPaciente = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
+        var swiper = new Swiper('.swiper-acceso-rapidos', {
+            // slidesPerView: 1,
+            spaceBetween: 8,
+            navigation: {
+                nextEl: '.btn-next',
+                prevEl: '.btn-prev',
+            },
+            autoplay: false,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                300: {
+                    slidesPerView: 2,
+                    // centeredSlides: true,
+                    // loop: true,
+                    // spaceBetween: 8,
+                },
+                768: {
+                    slidesPerView: 2,
+                    // centeredSlides: true,
+                    // loop: true,
+                    // spaceBetween: 8,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    // spaceBetween: 8,
+                },
+            },
+        });
         await obtenerPPD();
         await obtenerTratamientos();
         await obtenerCitas();
