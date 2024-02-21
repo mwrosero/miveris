@@ -16,7 +16,7 @@ Mi Veris - Órdenes externas
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-0">
-                    <h5 class="fs-24 fw-medium line-height-28 my-3">María</h5>
+                    <h5 class="fs-24 fw-medium line-height-28 my-3" id="nombrePersonaOrdenExterna"></h5>
                     <p class="fs--1 line-height-16 mb-3">{{ __('¿Deseas el servicio a domicilio?') }}</p>
                 </div>
                 <div class="modal-footer justify-content-center pt-0 pb-3 px-3">
@@ -48,7 +48,7 @@ Mi Veris - Órdenes externas
         <div class="row justify-content-center">
             <div class="col-12 col-md-4">
                 <div class="text-center my-3">
-                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3 fs--18 fw-medium" data-bs-toggle="modal" data-bs-target="#nuevaOrdenExternaModal">
+                    <button type="button" class="btn btn-primary-veris w-100 px-4 py-3 fs--18 fw-medium btn-agregar-orden-externa" data-bs-toggle="modal" data-bs-target="#nuevaOrdenExternaModal">
                         {{ __('Nueva orden externa') }}
                     </button>
                 </div>
@@ -112,6 +112,10 @@ Mi Veris - Órdenes externas
         await consultarGrupoFamiliar();
         // consultar convenios
         await consultarConvenios();
+
+        $('body').on('click', '.btn-agregar-orden-externa', function(){
+            $('#nombrePersonaOrdenExterna').html($('input[name="listGroupRadios"]:checked').data('rel').primerNombre);
+        })
 
         $('body').on('click', '.btn-pagar', async function(){
             let params = {};
