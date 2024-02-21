@@ -116,7 +116,7 @@ Mi Veris - Doctores favoritos
     
 
     // llamada al dom 
-     document.addEventListener("DOMContentLoaded", async function () {
+    document.addEventListener("DOMContentLoaded", async function () {
         await obtenerDoctorFavorito();
 
         $('body').on('click','.convenio-item', function(){
@@ -125,7 +125,7 @@ Mi Veris - Doctores favoritos
 
     });
 
-     async function reservaNoPermitida(url, data ){
+    async function reservaNoPermitida(url, data ){
         let convenio = JSON.parse(atob(decodeURIComponent(data)));
         console.log("convenio", convenio);
         $('#noPermiteReservaMsg').html(convenio.convenio.mensajeBloqueoReserva)
