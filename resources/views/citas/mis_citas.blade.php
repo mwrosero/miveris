@@ -1011,7 +1011,9 @@ Mi Veris - Citas - Mis citas
                 listaConvenios.append(elemento);
 
                 // abrir modal
-                $('#convenioModal').modal('show');
+                if(dataRel.permiteReserva != "N"){
+                    $('#convenioModal').modal('show');
+                }
             }else{
                 let params = {};
                     
