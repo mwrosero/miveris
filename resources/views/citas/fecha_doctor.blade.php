@@ -13,7 +13,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-2">
                     <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3">Veris</h1>
-                    <p class="fs--16 fw-normal mb-3" id="mensajeError" ></p>
+                    <p class="fs--16 fw-normal text-veris mb-3" id="mensajeError" ></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100" data-bs-dismiss="modal" id="btnEntiendoError">Entiendo</button>
@@ -50,7 +50,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="modal-body p-3 pb-2">
                     <div class="text-center">
                         <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3" id="sinFechaDisponiblesLabel">Veris</h1>
-                        <p class="fs--16 fw-normal mb-3">No tiene fechas disponibles.</p>
+                        <p class="fs--16 fw-normal text-veris mb-3">No tiene fechas disponibles.</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -66,7 +66,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="modal-body p-3 pb-2">
                     <div class="text-center">
                         <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3" id="sinMedicosDisponiblesLabel">Veris</h1>
-                        <p class="fs--16 fw-normal mb-3">No tiene médicos disponibles.</p>
+                        <p class="fs--16 fw-normal text-veris mb-3">No tiene médicos disponibles.</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -417,8 +417,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         <div class="card-body">
                                             <div class="text-center">
                                                 <img src="{{ asset('assets/img/svg/doctor_light.svg') }}" class="img-fluid mb-3" alt="">
-                                                
-                                                <p class="fs--1">No hay disponibilidad para el dia ${fechaSeleccionada}, intenta buscar con otra fecha.</p>
+                                                <p class="fs--1 text-veris">No hay disponibilidad para el dia ${fechaSeleccionada}, intenta buscar con otra fecha.</p>
                                             </div>
                                         </div>
                                     </div>`;
