@@ -559,12 +559,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         /*Detalle de factura*/
-        $('#subtotal').html(`$${dataCita.facturacion.totales.subtotal}`)
-        $('#creditoConvenio').html(`$${dataCita.facturacion.totales.creditoConvenio}`)
-        $('#descuentoAplicado').html(`$${dataCita.facturacion.totales.descuentoAplicado}`)
-        $('#iva').html(`$${dataCita.facturacion.totales.iva}`)
-        $('#total').html(`$${dataCita.facturacion.totales.total}`)
-        $('#totalLabel').html(`$${dataCita.facturacion.totales.total}`)
+        $('#subtotal').html(`$${dataCita.facturacion.totales.subtotal.toFixed(2)}`);
+        $('#creditoConvenio').html(`-$${dataCita.facturacion.totales.creditoConvenio.toFixed(2)}`);
+        $('#descuentoAplicado').html(`-$${dataCita.facturacion.totales.descuentoAplicado.toFixed(2)}`);
+        $('#iva').html(`+$${dataCita.facturacion.totales.iva.toFixed(2)}`);
+        $('#total').html(`$${dataCita.facturacion.totales.total.toFixed(2)}`);
+        $('#totalLabel').html(`$${dataCita.facturacion.totales.total.toFixed(2)}`);
     }
 
     async function validarDatosFactura(){
@@ -684,7 +684,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }else{
                 if(tipoBoton == "KUSHKI"){
                     // let ulrParams = btoa(JSON.stringify(dataCita));
-                    // let ruta = `/citas-pago-kushki/{{ $params }}`;
+                    let ruta = `/citas-pago-kushki/{{ $params }}`;
                     window.location.href = ruta;
                 }else{
                     location.href = data.data.linkPagoPTP;

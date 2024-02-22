@@ -38,6 +38,7 @@ async function call(args){
                 hideLoader();
             }
             if(!args.dismissAlert && data.code == 400){
+                window.removeEventListener("beforeunload", beforeUnloadHandler);
                 $('#mensaje_400').html(data.message);
                 var myModal = new bootstrap.Modal(document.getElementById('modalError400'));
                 myModal.show();
@@ -443,6 +444,7 @@ async function recuperarContrasena(){
 // funciones para el filtro pendientes, realizadas 
 
 async function aplicarFiltros(contexto) {
+    console.log("***********----------************")
     console.log('contexto', contexto);
     const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').val();
     const parentesco = $('input[name="listGroupRadios"]:checked').attr('parentesco');
@@ -494,6 +496,8 @@ async function aplicarFiltrosCitas(contexto) {
         }
 
     }
+    $('#filtroTratamientos').offcanvas('hide');
+    console.log("***********----------************")
 }
 
 // limpiar filtros

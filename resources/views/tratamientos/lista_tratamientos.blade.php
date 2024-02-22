@@ -278,25 +278,25 @@ $tokenMods = base64_encode(uniqid());
     let datosPaciente = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        
+        console.log(9)
         await obtenerTratamientos();
         llenarPorcentajeBarra();
 
-        var $enlace = $('.btn-agendar');
+        // var $enlace = $('.btn-agendar');
 
-        // Maneja el evento de clic en el enlace
-        $enlace.on('click', function(event) {
-            // Previene el comportamiento predeterminado del enlace
-            event.preventDefault();
+        // // Maneja el evento de clic en el enlace
+        // $enlace.on('click', function(event) {
+        //     // Previene el comportamiento predeterminado del enlace
+        //     event.preventDefault();
 
-            // Establece un retraso de 2 segundos antes de redirigir
-            setTimeout(function() {
-                // Obtiene la URL del enlace
-                var url = $enlace.attr('href');
-                // Redirige a la URL después del retraso
-                window.location.href = url;
-            }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
-        });
+        //     // Establece un retraso de 2 segundos antes de redirigir
+        //     setTimeout(function() {
+        //         // Obtiene la URL del enlace
+        //         var url = $enlace.attr('href');
+        //         // Redirige a la URL después del retraso
+        //         window.location.href = url;
+        //     }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
+        // });
     });
 
     // llenar el porcentaje de la barra con los datos del tratamiento
@@ -835,9 +835,9 @@ $tokenMods = base64_encode(uniqid());
                         if(datosServicio.esExterna == "N"){
                             respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
                         }else{
-                            respuestaAgenda += ` <a class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                            respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
                         }
-                        if(datosServicio.esCaducado == 'S'){
+                        if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
                             respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
                         } else {
@@ -847,7 +847,7 @@ $tokenMods = base64_encode(uniqid());
                                     if (datosServicio.modalidad == "PRESENCIAL") {
                                         ruta = "/citas-elegir-central-medica/{{ $tokenMods }}";
                                     }
-                                    respuestaAgenda += `<a url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar">Agendar</a>`;
+                                    respuestaAgenda += `<div url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar">Agendar</div>`;
                                 } else {
                                     if(datosServicio.esExterna == "N"){
                                         respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">Agendar </a>`;
@@ -861,7 +861,7 @@ $tokenMods = base64_encode(uniqid());
                     } else if (datosServicio.estado == 'ATENDIDO'){
                         // mostrar boton de ver orden
                         respuestaAgenda = ``;
-                        respuestaAgenda += ` <button type="button" class="btn btn-sm fw-normal fs--18 px-3 py-2 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;  
+                        respuestaAgenda += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;  
                     } else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
                         //respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
@@ -871,7 +871,7 @@ $tokenMods = base64_encode(uniqid());
                         }
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
-                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none">Pagar</a>`;
+                            respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' >Pagar</div>`;
                         }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             if(datosServicio.esPagada == "S" && datosServicio.modalidad == "ONLINE"){
                                 respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
@@ -908,7 +908,7 @@ $tokenMods = base64_encode(uniqid());
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
-                            respuesta += `<a href="/citas-laboratorio/{{$params}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                            respuesta += `<a href="/citas-laboratorio/{{$tokenMods}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
                         }
                     } else if (estado == 'REALIZADO'){
                         console.log('estadossss2', estado);
@@ -1044,10 +1044,62 @@ $tokenMods = base64_encode(uniqid());
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
                 </div>`);
+        } else if(datos.esAgendable === "N") {
+                $('#tituloModalInformacionCita').text('Información');
+                $('#mensajeInformacionCita').text(datos.mensaje);
+                $('#footerInformacionCita').empty();
+                $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
+                        <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                    </div>`)
         } else {
             $('#mensajeInformacionCita').text(datos.mensaje);
         }
     });
+
+    // boton agendar cita modal setear datos en localstorage
+    $(document).on('click', '#btnAgendarCitaModal', function(){
+            
+            let datosServicio = $(this).data('rel');
+            let datos = datosRel.servicio;
+            let url = $(this).attr('url-rel');
+            if(datos.permiteReserva == "N"){// && datos.esPagada == "N"
+                $('#mensajeNoPermiteCambiar').html(datos.mensajeBloqueoReserva);
+            $('#modalPermiteCambiar').modal('show');
+                return;
+            }
+
+            let modalidad;
+            let online;
+            if (datos.modalidad == 'PRESENCIAL') {
+                online = 'N';
+            } else {
+                online = 'S';
+            }
+            // capturar el data-rel del filtro
+            let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+            let params = {}
+            params.online = online;
+            params.paciente = dataPaciente;
+            params.especialidad = {
+                codigoEspecialidad : datos.codigoEspecialidad,
+                codigoPrestacion : datos.codigoPrestacion,
+                codigoServicio : datos.codigoServicio,
+                codigoTipoAtencion : datos.codigoTipoAtencion,
+                esOnline : online,
+                imagen : datos.urlImagenTipoServicio,
+                nombre : datos.nombreServicio,
+            }
+            params.convenio = datosRel.tratamiento.datosConvenio;
+
+            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
+            if (online == 'S') {
+                //window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenMods }}';
+            } else {
+                // ir a central medica
+                //window.location.href = '/citas-elegir-central-medica/{{ $tokenMods }}';
+            }
+            
+        });
 
     
     // boton ver pdf receta
@@ -1065,7 +1117,6 @@ $tokenMods = base64_encode(uniqid());
         let url = $(this).attr('url-rel');
 
         console.log('datosServicio', datosServicio);
-
         let modalidad;
         if (datosServicio.modalidad === 'ONLINE') {
             modalidad = 'S';
@@ -1123,7 +1174,17 @@ $tokenMods = base64_encode(uniqid());
             codigoSucursal : datosServicio.codigoSucursal,
             origen: "Listatratamientos"
         };
-        dataCita.convenio = ultimoTratamiento.datosConvenio;
+        if (ultimoTratamiento.datosConvenio.length > 0) {
+            dataCita.convenio = ultimoTratamiento.datosConvenio;
+        } else {
+            dataCita.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+        }
         dataCita.convenio.origen = "Listatratamientos";
         dataCita.datosTratamiento = datosServicio;
         dataCita.datosTratamiento.origen = "Listatratamientos";
@@ -1195,9 +1256,9 @@ $tokenMods = base64_encode(uniqid());
 
             params.reservaEdit = {
                 "estaPagada": data.estaPagada,
-                "numeroOrden": data.numeroOrden,
+                "numeroOrden": (data.numeroOrden) ? data.numeroOrden : data.idOrden,
                 "lineaDetalleOrden": data.lineaDetalleOrden,
-                "codigoEmpresaOrden": data.codigoEmpresaOrden,
+                "codigoEmpresaOrden": (data.codigoEmpresaOrden) ? data.codigoEmpresaOrden : data.codigoEmpresa,
                 "idOrdenAgendable": data.idOrdenAgendable,
                 "idCita": data.idCita
             }

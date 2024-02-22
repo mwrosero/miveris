@@ -139,11 +139,7 @@
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
-<<<<<<< HEAD
                     <p class="fs--2 fw-normal text-veris" id="mensajeNoPermiteCambiar"></p>
-=======
-                    <p class="fs--1 fw-normal" id="mensajeNoPermiteCambiar"></p>
->>>>>>> developer
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris m-0 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
@@ -189,38 +185,6 @@
         var swiperProximasCitas,swiperUrgenciasAmbulatorias;
         function chartProgres(elemento){
             console.log('elemento',elemento);
-
-            var swiper = new Swiper('.swiper-acceso-rapidos', {
-                // slidesPerView: 1,
-                spaceBetween: 8,
-                navigation: {
-                    nextEl: '.btn-next',
-                    prevEl: '.btn-prev',
-                },
-                autoplay: false,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                breakpoints: {
-                    300: {
-                        slidesPerView: 2,
-                        // centeredSlides: true,
-                        // loop: true,
-                        // spaceBetween: 8,
-                    },
-                    768: {
-                        slidesPerView: 2,
-                        // centeredSlides: true,
-                        // loop: true,
-                        // spaceBetween: 8,
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        // spaceBetween: 8,
-                    },
-                },
-            });
 
             var swiperTratamiento = new Swiper('.swiper-tratamientos', {
                 // slidesPerView: 1,
@@ -419,7 +383,6 @@
 
         // funcion quitar comillas a la url
         function quitarComillas(url){
-            console.log('imagen',url);
             if (url == null) return "";
             let urlSinComillas = url.replace(/['"]+/g, '');
             return urlSinComillas;

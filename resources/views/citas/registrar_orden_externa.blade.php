@@ -38,7 +38,7 @@ $data1 = json_decode($data);
                             <label for="upload" class="btn btn-light me-2" tabindex="0">
                                 <span class="d-none d-sm-block"><i class="fa-solid fa-upload"></i> Añadir archivos .png .jpg .jpeg .pdf</span>
                                 <i class="fa-solid fa-upload d-block d-sm-none"></i>
-                                <input type="file" id="upload" class="account-file-input" hidden="" accept="image/png, image/jpg, image/jpeg, image/pdf," multiple />
+                                <input type="file" id="upload" class="account-file-input" hidden="" accept=".png, .jpg, .jpeg, .pdf" multiple />
                             </label>
                             <div class="mt-0 text-nowrap overflow-hidden text-truncate" id="fileList"></div>
                             <p class="fs--1 mb-0 text-dark">Puedes subir hasta 5 fotos o archivos, cada uno de hasta 8Mb.</p>
@@ -96,6 +96,7 @@ $data1 = json_decode($data);
 
     // Agregar evento de cambio al elemento de carga de archivos
     inputUpload.addEventListener('change', function() {
+        $('#fileList').empty()
         // Obtener la lista de archivos seleccionados
         var archivos = inputUpload.files;
         // Verificar la cantidad total de archivos (ya cargados más los nuevos seleccionados)
@@ -127,6 +128,8 @@ $data1 = json_decode($data);
                 inputUpload.value = ''; // Limpiar la selección
                 return;
             }
+
+            //let elem = ``
 
             fileListContainer.classList.add('mt-3');
             // Crear elemento div para mostrar detalles del archivo
@@ -167,7 +170,6 @@ $data1 = json_decode($data);
 
     // Función para agregar mensajes debajo de la etiqueta label
     function agregarMensaje(mensaje) {
-       
         var mensajeDiv = document.createElement('div');
         mensajeDiv.classList.add('mensaje-error', 'fw-bold', 'fs--2');
         // mensajeDiv.className = '';
