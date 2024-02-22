@@ -54,10 +54,10 @@
         <a class="txt-veris fs-12" href="/olvide-clave"> {{ __('Olvidé mi contraseña')}}</a>
     </div>
     <div class="mt-5 mb-3">
-        <button class="btn d-grid w-100 btn-primary-veris rounded" id="btnLogin" type="submit">{{ __('Iniciar sesión')}}</button>
+        <button class="btn d-grid w-100 btn-primary-veris fs--18 line-height-24 fw-medium px-4 py-3 rounded" id="btnLogin" type="submit">{{ __('Iniciar sesión')}}</button>
     </div>
     <div class="mb-3">
-        <a href="registrar-cuenta" class="btn d-grid w-100 bg-alt rounded">{{ __('Crear una cuenta')}}</a>
+        <a href="registrar-cuenta" class="btn fs--18 line-height-24 fw-medium px-4 py-3 d-grid w-100 bg-alt rounded">{{ __('Crear una cuenta')}}</a>
     </div>
 </form>
 <script>

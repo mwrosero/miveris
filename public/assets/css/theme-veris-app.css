@@ -268,7 +268,13 @@ html:not([dir="rtl"]) .border-start-veris {
 .bg-dark-blue-veris {
   background-color: var(--bg-vris-very-dark-blue) !important;
 }
-
+.btn-disponibilidad-medico:hover{
+  background: #CCEAFA;
+}
+.btn-disponibilidad-medico:active{
+  background: #99D1F3;
+  color: #003B83;
+}
 .badge-discount-top {
   color: #0071CE;
   background: #CCEAFA;

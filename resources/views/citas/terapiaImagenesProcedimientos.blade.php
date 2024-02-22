@@ -570,7 +570,8 @@ Mi Veris - Citas - {{ $titulo }}
                 esOnline : data.esVirtual,
                 nombre : data.especialidad,
             }
-            if (datosConvenios.length > 0) {
+            params.convenio = convenio;
+            /*if (datosConvenios.length > 0) {
                 params.convenio = convenio;
             } else {
                 params.convenio = {
@@ -580,7 +581,7 @@ Mi Veris - Citas - {{ $titulo }}
                     "codigoConvenio": null,
                     "secuenciaAfiliado" : null,
                 };
-            }
+            }*/
 
             params.paciente = {
                 "numeroIdentificacion": data.numeroIdentificacion,
@@ -771,6 +772,8 @@ Mi Veris - Citas - {{ $titulo }}
                         }
                     }else{
                         if (data.data.tienePermisoAdmin) {
+                            $('#mensajeNoTienesImagenesProcedimientosRealizados').addClass('d-none');
+                            $('#mensajeNoTienesPermisosAdministradorRealizados').addClass('d-none');
                             console.log('entrando a realizado lleno');
                             datosLaboratorio = data.data.items;
                             console.log('datosLaboratorio',datosLaboratorio);

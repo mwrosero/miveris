@@ -104,9 +104,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let listaCentrales = $('#listaCentrales');
         listaCentrales.empty();
         let ciudad = JSON.parse($('#ciudad option:selected').attr("data-rel"));
-        
+        let canalOrigen = "VER_CMV";
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=true`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/centrosmedicos?canalOrigen=${canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=true`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

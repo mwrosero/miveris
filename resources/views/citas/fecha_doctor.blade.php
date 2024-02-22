@@ -13,7 +13,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-2">
                     <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3">Veris</h1>
-                    <p class="fs--16 fw-normal mb-3" id="mensajeError" ></p>
+                    <p class="fs--16 fw-normal text-veris mb-3" id="mensajeError" ></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100" data-bs-dismiss="modal" id="btnEntiendoError">Entiendo</button>
@@ -50,7 +50,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="modal-body p-3 pb-2">
                     <div class="text-center">
                         <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3" id="sinFechaDisponiblesLabel">Veris</h1>
-                        <p class="fs--16 fw-normal mb-3">No tiene fechas disponibles.</p>
+                        <p class="fs--16 fw-normal text-veris mb-3">No tiene fechas disponibles.</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -66,7 +66,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="modal-body p-3 pb-2">
                     <div class="text-center">
                         <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3" id="sinMedicosDisponiblesLabel">Veris</h1>
-                        <p class="fs--16 fw-normal mb-3">No tiene médicos disponibles.</p>
+                        <p class="fs--16 fw-normal text-veris mb-3">No tiene médicos disponibles.</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -214,21 +214,28 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         if (dataCita.origen == 'ordenExternaSolicitud') {
-            renderCalendarExterna();
+            //renderCalendarExterna();
+            fechasDisponibles = await obtenerFechasOrdenesExternas();
+            renderCalendar();
             llenarListaExamenes();
             // setear titulo fecha doctor
             document.getElementById('tituloFechaDoctor').innerHTML = 'Exámenes';
         } else {
             await consultarFechasDisponibles();
         }
-        $('body').on('click','.btn-disponibilidad-medico', function(){
+
+        $('body').on('click','.btn-disponibilidad-medico-all', function(){
             let data = $(this).attr("data-rel");
             consultarDisponibilidadMedico(data);
         })
         // Listener para seleccionar un horario
         $('body').on('click', '.card-horario', function () {
             let horario = $(this).data('horario');
-            guardarHorarioEnDataCita(horario);
+            if (dataCita.origen == 'ordenExternaSolicitud') {
+                guardarHorarioEnDataCitaExterna(horario)
+            }else{
+                guardarHorarioEnDataCita(horario);
+            }
         });
 
         // btnEntiendoError redirecciona a la página inicial
@@ -237,7 +244,27 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 window.location.href = "{{ route('home') }}";
             }
         });
+
+        // btnAgendarServicioOrdenExterna llama a la función consultarHorasMotorizados  
+        $('#btnAgendarServicioOrdenExterna').click(async function(){
+            let data = await consultarHorasMotorizados();        
+        });
     });
+
+    async function obtenerFechasOrdenesExternas(){
+        var fechas = [];
+        var fechaActual = new Date();
+        fechaActual.setDate(fechaActual.getDate() + 1); // Empezar desde el día siguiente al actual
+        for (var i = 0; i < 30; i++) { // Generar los próximos 15 días
+            var dia = fechaActual.getDate();
+            var mes = fechaActual.getMonth() + 1;
+            var año = fechaActual.getFullYear();
+            var fechaFormateada = (dia < 10 ? '0' : '') + dia + '/' + (mes < 10 ? '0' : '') + mes + '/' + año;
+            fechas.push(fechaFormateada); // Añadir la fecha al array
+            fechaActual.setDate(fechaActual.getDate() + 1); // Incrementar la fecha para el siguiente día
+        }
+        return fechas;
+    }
 
     function renderCalendar() {
         console.log('Lista de fecha: ' + fechasDisponibles); 
@@ -271,7 +298,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let mes = ((currentDate.getMonth() + 1) < 10) ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
             let fechaSeleccionada = dia +"/"+ mes +"/"+currentDate.getFullYear();
             let classFechaSeleccionada = dia +"_"+ mes +"_"+currentDate.getFullYear();
-            dayElement.classList.add('calendar-day', 'current-month-day', classFechaSeleccionada);
+            // console.log(fechaSeleccionada)
+            let weekNumber = getWeek(fechaSeleccionada);
+            dayElement.classList.add('calendar-day', 'current-month-day', 'semana-'+weekNumber, classFechaSeleccionada);
             dayElement.textContent = i;
             dayElement.setAttribute('fechaSeleccionada-rel', fechaSeleccionada);
 
@@ -401,7 +430,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             </div>
                         </div>
                         <div class="card-footer text-end pt-0 pb--2 px--2">
-                            <button type="button" class="btn btn-sm btn-primary-veris btn-disponibilidad-medico fs--1 line-height-16 fw-medium border-0 m-0 px-3 py-2" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
+                            <button type="button" class="btn btn-sm btn-primary-veris btn-disponibilidad-medico-all fs--1 line-height-16 fw-medium border-0 m-0 px-3 py-2" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
                                 Elegir Cita
                             </button>
                         </div>
@@ -417,8 +446,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         <div class="card-body">
                                             <div class="text-center">
                                                 <img src="{{ asset('assets/img/svg/doctor_light.svg') }}" class="img-fluid mb-3" alt="">
-                                                
-                                                <p class="fs--1">No hay disponibilidad para el dia ${fechaSeleccionada}, intenta buscar con otra fecha.</p>
+                                                <p class="fs--1 text-veris">No hay disponibilidad para el dia ${fechaSeleccionada}, intenta buscar con otra fecha.</p>
                                             </div>
                                         </div>
                                     </div>`;
@@ -458,9 +486,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     dataCita.horario = horario;
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
-                    elemento += `<div class="card card-horario card-body rounded-3 position-relative py-3 mb-2 btn-disponibilidad-medico
-                    " data-horario='${JSON.stringify(horario)}'>
-                    <a href="${ruta}">`;
+                    elemento += `<a href="${ruta}">
+                            <div class="card card-horario card-body rounded-3 position-relative py-3 mb-2 btn-disponibilidad-medico" data-horario='${JSON.stringify(horario)}'>
+                        `;
                     if(horario.porcentajeDescuento > 0){
                         elemento += `<div class="badge-discount-top fs--2 line-height-16 fw-medium"><span>-${horario.porcentajeDescuento}%</span></div>`
                     }
@@ -468,8 +496,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     if(horario.porcentajeDescuento > 0){
                         elemento += `<div class="badge-discount-bottom fs--2 line-height-16 fw-medium"><span>{{ __('descuento') }}</span></div>`;
                     }
-                    elemento += `</a>
-                        </div>`;
+                    elemento += `</div>
+                        </a>`;
                 })
             } else {
                 elemento += `<div class="card card-horario card-body rounded-3 position-relative py-3 mb-2>
@@ -491,6 +519,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     // calendario para consultas externas
     // funcion que muestra el calendario para consultas externas  de los 30 dias posteriores a la fecha actual
     function renderCalendarExterna() {
+        console.log("otro")
         calendarGrid.innerHTML = '';
         const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
         const lastDayOfPreviousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
@@ -588,12 +617,31 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         });
     }
 
-
+    function getWeek(dateString) {
+        var parts = dateString.split('/');
+    
+        // Asegurarse de que hay 3 partes (día, mes, año)
+        if (parts.length !== 3) {
+            throw new Error("Formato de fecha incorrecto. Debe ser dd/mm/yyyy");
+        }
+        
+        // Convertir las partes en números enteros
+        var day = parseInt(parts[0], 10);
+        var month = parseInt(parts[1], 10) - 1; // Restar 1 al mes porque en JavaScript los meses van de 0 a 11
+        var year = parseInt(parts[2], 10);
+        
+        // Crear y devolver el objeto Date
+        let date = new Date(year, month, day);
+        var onejan = new Date(date.getFullYear(),0,1);
+        var millisecsInDay = 86400000;
+        return Math.ceil((((date - onejan) /millisecsInDay) + onejan.getDay()+1)/7);
+    }
 
     // consultar horas de motorizados
     async function consultarHorasMotorizados() {
+        let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/disponibilidad?canalOrigen=APP_CMV&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${fechaOrdenExterna}&codigoZona=${codigoZona}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/disponibilidad?canalOrigen=APP_CMV&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${fechaSeleccionada}&codigoZona=${codigoZona}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -611,14 +659,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     dataCita.horario = horario;
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let ruta = "/confirmacion-cita/" + "{{ $params }}";
-                    elemento += `<div class="card card-horario card-body rounded-3 position-relative py-2 mb-2 btn-disponibilidad-motorizado
-                    " data-horario='${JSON.stringify(horario)}'>
-                    <a href="${ruta}">`;
+                    elemento += `<a href="${ruta}">
+                        <div class="card card-horario card-body rounded-3 position-relative py-3 mb-2 btn-disponibilidad-medico" data-horario='${JSON.stringify(horario)}'>`;
                     
-                    elemento += `<p class="fs--2 text-primary-veris text-center my-1">${horario.rangoAtencion}</p>`;
+                    elemento += `<p class="fs--16 line-height-20 text-primary-veris text-center mb-0">${horario.rangoAtencion}</p>`;
                     
-                    elemento += `</a>
-                        </div>`;
+                    elemento += `</div>
+                        </a>`;
                 })
                 // abrir modal de horarios
                 $('#elegirHorarioModal').modal('show');
@@ -633,39 +680,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         return data;
     }
-    
-
-    // btnAgendarServicioOrdenExterna llama a la función consultarHorasMotorizados  
-    $('#btnAgendarServicioOrdenExterna').click(async function(){
-        let data = await consultarHorasMotorizados();        
-    });
-
-    // btn-disponibilidad-motorizado setea el horario seleccionado en dataCita
-    $('body').on('click', '.btn-disponibilidad-motorizado', function () {
-        let horario = $(this).data('horario');
-        guardarHorarioEnDataCitaExterna(horario);
-    });
 
     // guardarHorarioEnDataCitaExterna 
     function guardarHorarioEnDataCitaExterna(horario) {
+        let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         dataCita.horario = horario;
-        dataCita.fecha = fechaOrdenExterna;
+        dataCita.fecha = fechaSeleccionada;
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
-
-
-    
-
-
-
-                            
-
-
-
-
-
-
-
 
 </script>
 <style>

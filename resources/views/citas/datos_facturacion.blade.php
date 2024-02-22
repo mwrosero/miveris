@@ -391,7 +391,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         if(dataCita.ordenExterna){
-            addPrestacionesToModal();
+            // addPrestacionesToModal();
             $('.modalDesglose-size').removeClass('modal-lg');
             $('.modalDesglose-size').addClass('modal-md');
             $("#btn-ver-examenes").removeClass('d-none');
@@ -560,11 +560,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         /*Detalle de factura*/
         $('#subtotal').html(`$${dataCita.facturacion.totales.subtotal.toFixed(2)}`);
-        $('#creditoConvenio').html(`$${dataCita.facturacion.totales.creditoConvenio.toFixed(2)}`);
-        $('#descuentoAplicado').html(`$${dataCita.facturacion.totales.descuentoAplicado.toFixed(2)}`);
-        $('#iva').html(`$${dataCita.facturacion.totales.iva.toFixed(2)}`);
+        $('#creditoConvenio').html(`-$${dataCita.facturacion.totales.creditoConvenio.toFixed(2)}`);
+        $('#descuentoAplicado').html(`-$${dataCita.facturacion.totales.descuentoAplicado.toFixed(2)}`);
+        $('#iva').html(`+$${dataCita.facturacion.totales.iva.toFixed(2)}`);
         $('#total').html(`$${dataCita.facturacion.totales.total.toFixed(2)}`);
         $('#totalLabel').html(`$${dataCita.facturacion.totales.total.toFixed(2)}`);
+
+        if(dataCita.ordenExterna){
+            addPrestacionesToModal();
+        }
     }
 
     async function validarDatosFactura(){
@@ -727,9 +731,44 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(dataCita.listadoPrestaciones.length < 2){
                 $('.modalDesglose-size').removeClass('modal-lg');
                 $('.modalDesglose-size').addClass('modal-md');
+            }else{
+                $('.modalDesglose-size').removeClass('modal-md');
+                $('.modalDesglose-size').addClass('modal-lg');
             }
         }else{
             elem = `<div class="row">
+                <div class="col-12 text-center fw-medium fs--1 mb-2">${dataCita.ordenExterna.pacientes[0].nombrePacienteOrden}</div>`
+            
+            $.each(dataCita.facturacion.detalleServicio.detalleOrdenes, function(key, value){
+                elem += `<div class="col-12 col-md-6 mb-3">
+                    <p class="text-start text-nowrap overflow-hidden text-truncate fs--2 mb-1">${value.nombrePrestacion}</p>
+                    <div class="card bg-neutral shadow-none p-2">
+                        <table class="card-body w-100">
+                            <tr class="border-bottom">
+                                <th class="fw-medium fs--2">P.V.P.</th>
+                                <th class="fw-medium fs--2">Crédito/convenio</th>
+                                <th class="fw-medium fs--2">IVA</th>
+                                <th class="fw-medium fs--2">TOTAL</th>
+                            </tr>
+                            <tr>
+                                <td class="fs--2">$${value.valorPaciente.toFixed(2)}</td>
+                                <td class="fs--2">$${value.valorCubreEmpresa.toFixed(2)}</td>
+                                <td class="fs--2">$${value.iva.toFixed(2)}</td>
+                                <td class="fs--2">$${value.valorVenta.toFixed(2)}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>`;
+            });
+            elem += `</div>`;
+            if(dataCita.ordenExterna.pacientes[0].examenes.length < 2){
+                $('.modalDesglose-size').removeClass('modal-lg');
+                $('.modalDesglose-size').addClass('modal-md');
+            }else{
+                $('.modalDesglose-size').removeClass('modal-md');
+                $('.modalDesglose-size').addClass('modal-lg');
+            }
+            /*elem = `<div class="row">
                 <div class="col-12 text-center fw-medium fs--1 mb-2">${dataCita.ordenExterna.pacientes[0].nombrePacienteOrden}</div>`
             
                 elem += `<div class="col-12 mb-3">
@@ -752,7 +791,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(dataCita.ordenExterna.pacientes[0].examenes.length < 2){
                 $('.modalDesglose-size').removeClass('modal-lg');
                 $('.modalDesglose-size').addClass('modal-md');
-            }
+            }*/
         }
         $('#contenidoDesglose').append(elem);
     }

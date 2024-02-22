@@ -444,6 +444,7 @@ async function recuperarContrasena(){
 // funciones para el filtro pendientes, realizadas 
 
 async function aplicarFiltros(contexto) {
+    console.log("***********----------************")
     console.log('contexto', contexto);
     const pacienteSeleccionado = $('input[name="listGroupRadios"]:checked').val();
     const parentesco = $('input[name="listGroupRadios"]:checked').attr('parentesco');
@@ -495,6 +496,8 @@ async function aplicarFiltrosCitas(contexto) {
         }
 
     }
+    $('#filtroTratamientos').offcanvas('hide');
+    console.log("***********----------************")
 }
 
 // limpiar filtros
