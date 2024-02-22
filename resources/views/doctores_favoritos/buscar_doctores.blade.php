@@ -67,7 +67,7 @@ Mi Veris - Buscar doctor
         </form>
         <div class="row justify-content-center">
             <div class="mx-n4 px-4 mx-lg-n6 px-lg-6 bg-white py-2 mb-3">
-                <button class="btn btn-sm btn-outline-primary-veris fw-normal" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroSearchDoctors" aria-controls="filtroSearchDoctors"><i class="bi bi-sliders me-1"></i> Filtros</button>
+                <button class="btn btn-sm btn-outline-primary-veris fw-normal" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroSearchDoctors" aria-controls="filtroSearchDoctors"><img src="{{asset('assets/img/svg/filtro.svg')}}" class="me-1" alt="filtro"> Filtros</button>
             </div>
             <div class="col-12 col-lg-9">
                 <div class="row g-4" id="doctoresFavoritos"></div>
