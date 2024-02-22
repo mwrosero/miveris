@@ -772,6 +772,8 @@ Mi Veris - Citas - {{ $titulo }}
                         }
                     }else{
                         if (data.data.tienePermisoAdmin) {
+                            $('#mensajeNoTienesImagenesProcedimientosRealizados').addClass('d-none');
+                            $('#mensajeNoTienesPermisosAdministradorRealizados').addClass('d-none');
                             console.log('entrando a realizado lleno');
                             datosLaboratorio = data.data.items;
                             console.log('datosLaboratorio',datosLaboratorio);
