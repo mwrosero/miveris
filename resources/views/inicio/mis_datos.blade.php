@@ -129,7 +129,7 @@ Mi Veris - Mis Datos
                             </div>
                         </div>
                         <div class="col-12 text-center mt-5">
-                            <button class="btn btn-primary-veris w-50 py-3" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
+                            <button class="btn btn-primary-veris fs--18 linea-height-24 fw-medium w-50 py-3" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
                         </div>
                     </form>
                 </div>
