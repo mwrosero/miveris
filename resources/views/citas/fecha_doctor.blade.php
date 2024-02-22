@@ -286,7 +286,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         // Llenar los días del mes anterior
         for (let i = firstDayOfMonth - 1; i >= 0; i--) {
             const dayElement = document.createElement('div');
-            dayElement.classList.add('calendar-day', 'previous-month-day');
+            dayElement.classList.add('calendar-day', 'previous-month-day', 'dias-calendario');
             dayElement.textContent = lastDayOfPreviousMonth - i;
             calendarGrid.appendChild(dayElement);
         }
@@ -300,7 +300,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let classFechaSeleccionada = dia +"_"+ mes +"_"+currentDate.getFullYear();
             // console.log(fechaSeleccionada)
             let weekNumber = getWeek(fechaSeleccionada);
-            dayElement.classList.add('calendar-day', 'current-month-day', 'semana-'+weekNumber, classFechaSeleccionada);
+            dayElement.classList.add('calendar-day', 'dias-calendario', 'current-month-day', 'semana-'+weekNumber, classFechaSeleccionada);
             dayElement.textContent = i;
             dayElement.setAttribute('fechaSeleccionada-rel', fechaSeleccionada);
 
@@ -329,7 +329,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 });
             } else {
                 // Deshabilitar para fechas no disponibles
-                dayElement.classList.add('unavailable-day');
+                dayElement.classList.add('unavailable-day', 'dias-calendario');
             }
 
             calendarGrid.appendChild(dayElement);
