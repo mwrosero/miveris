@@ -880,6 +880,9 @@ Mi Veris - Citas - Mis citas
         listaConvenios.append(`<div class="text-center p-2"><small>Nos estamos comunicando con tu aseguradora, el proceso puede tardar unos minutos</small></div>`);
 
         let dataRel = $(event.currentTarget).data('rel');
+        if(dataRel.permiteReserva == "N"){
+            return;
+        }
         console.log(dataRel);
         let dataOnline = dataRel.esVirtual;  
         let dataCodigoEspecialidad = dataRel.codigoEspecialidad;
