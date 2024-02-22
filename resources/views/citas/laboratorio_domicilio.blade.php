@@ -169,6 +169,8 @@ Mi Veris - Citas - Laboratorio a domicilio
         formData.append("codigoCiudad", getInput('ciudad'));
         formData.append("direccion", getInput('direccion'));
         formData.append("telefono", getInput('telefono'));
+        formData.append("origenInvocacion", "WEB");
+
 
         args["data"] = formData;
 
