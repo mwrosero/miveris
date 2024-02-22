@@ -80,7 +80,7 @@ Mi Veris - Citas - Familia y amigos
                     <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
                         <div class="mx-0">
                             <h6 class="fw-medium fs--16 line-height-20 mb-1">Hola <b class="fw-medium user-auth">{{ Session::get('userData')->nombre }}</b></h6>
-                            <p class="fs--2 line-height-16 mb-0">Agrega personas a tu lista de familiares y amigos</p>
+                            <p class="fs--2 text-veris line-height-16 mb-0">Agrega personas a tu lista de familiares y amigos</p>
                         </div>
                     </li>
                 </ul>
@@ -113,31 +113,39 @@ Mi Veris - Citas - Familia y amigos
                             </form> 
                         </div>
                     </div>
-                    <div id="resultadoConsulta" style="display: none;">
-                        <ul class="list-group bg-white mb-3">
-                            <li class="list-group-item border-0 d-flex justify-content-start align-items-center px-3 py-2">
-                                <div class="me-auto">
-                                    <h6 class="fw-medium fs--16 line-height-20 mb-0">Personas</h6>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="card mx-auto mx-lg-3">
-                            <div class="card-body p--2">
-                                <p class="text-secondary fs--16 line-height-20 mb-1"> <b class="hora-cita text-veris fw-medium" id="nombrePersona"></b></p>
-                                <p class="text-secondary fs--1 mb-1" >Número de identificación: <b class="hora-cita text-veris fw-medium" id="numeroIdentificacionPersona"></b></p>
-                                <p class="text-secondary fs--1 mb-1" >Ciudad: <b class="hora-cita text-veris fw-medium" id="ciudadPersona"></b></p>
-                                <p class="text-secondary fs--1 mb-1" >Fecha de nacimiento: <b class="hora-cita text-veris fw-medium" id="fechaNacimientoPersona"></b></p>
-                                <div class="d-flex justify-content-end align-items-center mt-3">
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn btn-sm btn-primary-veris fs--1 px-3 py-2" data-bs-toggle="modal" data-bs-target="#parentescoFamiliarModal" id ="btnAgregarPersona">
-                                        Agregar
-                                    </button>
-                                </div>
+                </div>
+            </div>
+        </div>
+        <div id="resultadoConsulta" style="display: none;">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-4 px-0">
+                    <ul class="list-group bg-white rounded-0 mb-3">
+                        <li class="list-group-item border-0 d-flex justify-content-start align-items-center px-3 py-2">
+                            <div class="me-auto">
+                                <h6 class="fw-medium fs--16 line-height-20 mb-0">Personas</h6>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card mx-auto mx-lg-3">
+                        <div class="card-body p--2">
+                            <p class="fs--16 line-height-20 hora-cita text-veris fw-medium mb-1" id="nombrePersona"></p>
+                            <p class="text-secondary line-height-16 fs--1 mb-1" >Número de identificación: <b class="hora-cita fw-medium" style="color: #3D4E66;" id="numeroIdentificacionPersona"></b></p>
+                            <p class="text-secondary line-height-16 fs--1 mb-1" >Ciudad: <b class="hora-cita fw-medium" style="color: #3D4E66;" id="ciudadPersona"></b></p>
+                            <p class="text-secondary line-height-16 fs--1 mb-1" >Fecha de nacimiento: <b class="hora-cita fw-medium" style="color: #3D4E66;" id="fechaNacimientoPersona"></b></p>
+                            <div class="d-flex justify-content-end align-items-center mt-3">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-sm btn-primary-veris fs--1 fw-medium line-height-16 px-3 py-2" data-bs-toggle="modal" data-bs-target="#parentescoFamiliarModal" id ="btnAgregarPersona">
+                                    Agregar
+                                </button>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
+    
             </div>
         </div>
         <div class="container px-0">

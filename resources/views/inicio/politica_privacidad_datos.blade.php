@@ -9,12 +9,14 @@ Mi Veris - Politica-privacidad-datos
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-bold m-0 mt-3">Revisa tu correo</p>
-                    <p class="fs--1 m-0">Confirma la actualización de tus datos en el correo electrónico que te enviamos</p>
+                    <div class="avatar avatar-md mx-auto my-3">
+                        <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
+                    </div>
+                    <p class="fs--16 fw-medium m-0 my-3">Revisa tu correo</p>
+                    <p class="fs--16 line-height-20 fw-medium text-veris mb-0">Confirma la actualización de tus datos en el correo electrónico que te enviamos</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 fw-medium line-height m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
                 </div>
             </div>
         </div>
@@ -24,11 +26,13 @@ Mi Veris - Politica-privacidad-datos
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-bold m-0 mt-3">Datos actualizados correctamente</p>
+                    <div class="avatar avatar-md mx-auto my-3">
+                        <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
+                    </div>
+                    <p class="fs--16 line-height-20 fw-medium text-veris mb-0">Datos actualizados correctamente</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Entendido</button>
                 </div>
             </div>
         </div>
