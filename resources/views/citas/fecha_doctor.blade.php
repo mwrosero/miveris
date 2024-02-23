@@ -658,7 +658,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function consultarHorasMotorizados() {
         let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/disponibilidad?canalOrigen=APP_CMV&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${fechaSeleccionada}&codigoZona=${codigoZona}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/disponibilidad?canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${fechaSeleccionada}&codigoZona=${codigoZona}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["dismissAlert"] = true;

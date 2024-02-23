@@ -184,7 +184,7 @@ Mi Veris - Citas - Laboratorio
     async function obtenerTratamientosId(pacienteSeleccionado='', fechaDesde='', fechaHasta='', estado='PENDIENTE', esAdmin='S') {
         
         let args = [];
-        let canalOrigen = _canalOrigen;//'APP_CMV';
+        let canalOrigen = _canalOrigen;
                 
         //let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
         let numeroPaciente = '';
@@ -434,7 +434,7 @@ Mi Veris - Citas - Laboratorio
         
         let codigoEmpresa = 1
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);
@@ -451,7 +451,7 @@ Mi Veris - Citas - Laboratorio
         console.log('datosPdf', datos);
         console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen
         
         args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
         args["method"] = "GET";

@@ -399,6 +399,7 @@ $tokenMods = base64_encode(uniqid());
             $('#recetaMedicaModal').modal('hide');
             // actualizar la lista de tratamientos
             await obtenerTratamientos();
+            llenarPorcentajeBarra();
 
         } else if (data.code != 200) {
             console.log('errorza');
@@ -443,6 +444,7 @@ $tokenMods = base64_encode(uniqid());
             $('#interconsultaMedicaModal').modal('hide');
             // actualizar la lista de tratamientos
             await obtenerTratamientos();
+            llenarPorcentajeBarra();
         } else if (data.code != 200) {
             console.log('errorza');
             // mostrar modal de error
