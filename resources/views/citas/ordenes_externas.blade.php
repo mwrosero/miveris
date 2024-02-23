@@ -229,8 +229,11 @@ Mi Veris - Órdenes externas
                         <div class="card rounded-3" style="border-left: 0.5rem solid #80BC00;">
                             <div class="card-body p--2">
                                 <h6 class="fs--16 line-height-20 fw-medium mb-1">Orden externa laboratorio ${ordenes.codigoSolicitud}</h6>
-                                <p class="fs--1 line-height-16 fw-normal mb-1"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>
-                                <p class="fs--1 line-height-16 text-dark fw-medium mb-1">${convertirFecha(ordenes.dia)} <span style="color: #80BC00">${ordenes.hora}</span></p>
+                                <p class="fs--1 line-height-16 fw-normal mb-1"> ${capitalizarElemento(ordenes.nombrePaciente)}</p>`
+                            if(ordenes.codigoEstado == 'REV'){
+                                elemento += `<p class="fs--2 line-height-16 fw-normal mb-1"> Tu orden está siendo validada por nuestros asesores.</p>`
+                            }
+                                elemento += `<p class="fs--1 line-height-16 text-dark fw-medium mb-1">${convertirFecha(ordenes.dia)} <span style="color: #80BC00">${ordenes.hora}</span></p>
                                 <div class="d-flex justify-content-between align-items-center pt-3">
                                     ${determinarEstadoOrden(ordenes)}                                    
                                     ${determinarBotonesPagarSolicitar(ordenes)}
