@@ -70,7 +70,7 @@ Mi Veris - Citas - Receta médica
                     <button class="nav-link px-8 px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Pendientes</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-8 px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Realizados</button>
+                    <button class="nav-link px-8 px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Compradas</button>
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
@@ -202,7 +202,7 @@ Mi Veris - Citas - Receta médica
         if (estado == 'PENDIENTE') {
             args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
         } else if (estado == 'REALIZADO') {
-            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=S&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=TODOS&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=S&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
         }
         args["method"] = "GET";
         args["showLoader"] = true;
