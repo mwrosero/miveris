@@ -81,7 +81,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>
-                        <!-- Laboratorio presencial comprado -->
+                        <!-- Laboratorio domicilio comprado -->
                         <div class="content-lab-domicilio d-none">
                             <div class="avatar avatar-lg mx-auto mb-4">
                                 <img src="{{asset('assets/img/svg/visto.svg')}}" alt="cita agendada">
@@ -123,7 +123,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }else if(dataCita.datosTratamiento){
                 $('.content-lab-presencial').removeClass('d-none');
             }else if(dataCita.ordenExterna){
-                $('.content-lab-domicilio').removeClass('d-none');
+                if(dataCita.ordenExterna.aplicoDomicilio == "N"){
+                    $('.content-lab-presencial').removeClass('d-none');
+                }else{
+                    $('.content-lab-domicilio').removeClass('d-none');
+                }
             }
         }
     });

@@ -517,7 +517,7 @@ Mi Veris - Inicio
         let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0&adicionaSolicitudes=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
