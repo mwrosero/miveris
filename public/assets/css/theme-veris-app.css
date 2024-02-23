@@ -1210,6 +1210,12 @@ a.btn.btn-primary-veris:not([href]):hover{
   .fs--lg-1{
     font-size: 0.874rem !important;
   }
+  .fs-lg-20 {
+    font-size: 1.25rem !important;
+  }
+  .fs-lg-28 {
+    font-size: 1.75rem !important;
+  }
   .fs-lg-24 {
     font-size: 1.5rem !important;
   }
