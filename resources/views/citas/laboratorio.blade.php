@@ -629,7 +629,7 @@ Mi Veris - Citas - Laboratorio
                                 params.codigoEmpresa = datosServicio.codigoEmpresa;
                                 let ulrParams = btoa(JSON.stringify(params));
                                 let ruta = `/citas-laboratorio/` + "{{$tokenCita}}";
-                                respuesta += `<a href="${ruta}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                                respuesta += `<a href="${ruta}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
                             }
                         }
                     }
@@ -752,8 +752,8 @@ Mi Veris - Citas - Laboratorio
     });
 
 
-    // boton btn-Pagar
-    $(document).on('click', '.btn-Pagar', function(){
+    // boton btn-pagar
+    $(document).on('click', '.btn-pagar', function(){
         let datosServicio = $(this).data('rel');
         // capturar datarel del filtro
         let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');

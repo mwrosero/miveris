@@ -621,7 +621,7 @@ $tokenMods = base64_encode(uniqid());
                                                     <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">
                                                 </div>
                                                 <div class="d-flex">
-                                                    ${determinarCondicionesBotones(tratamientos, estado)}
+                                                    ${determinarCondicionesBotones(tratamientos, estado,datosTratamiento)}
                                                 </div>
                                             </div>
                                         </div>
@@ -661,7 +661,7 @@ $tokenMods = base64_encode(uniqid());
                                                     <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">
                                                 </div>
                                                 <div class="d-flex">
-                                                    ${determinarCondicionesBotones(tratamientos, estado)}
+                                                    ${determinarCondicionesBotones(tratamientos, estado, datosTratamiento)}
                                                 </div>
                                             </div>
                                         </div>
@@ -790,9 +790,8 @@ $tokenMods = base64_encode(uniqid());
         }
     }
 
-
     // determinar condiciones de los botones 
-    function determinarCondicionesBotones(datosServicio, estado){
+    function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
         let services = datosServicio;
         if (datosServicio.length == 0) {
             return `<div></div>`;
@@ -842,12 +841,12 @@ $tokenMods = base64_encode(uniqid());
                         }
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
-                            respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' >Pagar</div>`;
+                            respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $tokenMods }}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
                         }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             if(datosServicio.esPagada == "S" && datosServicio.modalidad == "ONLINE"){
-                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             }else{
-                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             }
                             if(datosServicio.modalidad == "ONLINE"){
                                 respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
@@ -884,7 +883,7 @@ $tokenMods = base64_encode(uniqid());
                             params.numeroOrden = datosServicio.idOrden;
                             params.codigoEmpresa = datosServicio.codigoEmpresa;
                             let ulrParams = btoa(JSON.stringify(params));
-                            respuesta += `<a href="/citas-laboratorio/{{$tokenMods}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                            respuesta += `<div url-rel="/citas-laboratorio/{{$tokenMods}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
                         }
                     } else if (estado == 'REALIZADO'){
                         console.log('estadossss2', estado);
@@ -1125,10 +1124,10 @@ $tokenMods = base64_encode(uniqid());
         location = url;
     });
 
-    // boton btn-Pagar
-    $(document).on('click', '.btn-Pagar', function(){
+    // boton btn-pagar
+    $(document).on('click', '.btn-pagar', function(){
         let datosServicio = $(this).data('rel');
-        console.log('datosServicio', datosServicio);
+        let convenio = JSON.parse($(this).attr('convenio-rel'));
 
         let modalidad;
         if (datosServicio.modalidad === 'ONLINE') {
@@ -1150,22 +1149,14 @@ $tokenMods = base64_encode(uniqid());
             codigoSucursal : datosServicio.codigoSucursal,
             origen: "Listatratamientos"
         };
-        if (ultimoTratamiento.datosConvenio.length > 0) {
-            dataCita.convenio = ultimoTratamiento.datosConvenio;
-        } else {
-            dataCita.convenio = {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                };
-        }
+        dataCita.convenio = convenio;
         dataCita.convenio.origen = "Listatratamientos";
         dataCita.datosTratamiento = datosServicio;
         dataCita.datosTratamiento.origen = "Listatratamientos";
+        console.log(dataCita)
 
         localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+        location.href = $(this).attr("url-rel");
     });
 
     // boton btn-verPromocion
@@ -1197,6 +1188,7 @@ $tokenMods = base64_encode(uniqid());
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
         let url = $(this).attr('url-rel');
+        let convenio = JSON.parse($(this).attr('convenio-rel'));
 
         if(data.permiteReserva == "N"){
             $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
@@ -1212,103 +1204,37 @@ $tokenMods = base64_encode(uniqid());
         if(data.modalidad != "PRESENCIAL"){
             esVirtual = "S";
         }
-        if (data.estaPagada == "N"){
-            let params = {}
-            params.online = esVirtual;
-            params.especialidad = {
-                codigoEspecialidad: data.codigoEspecialidad,
-                codigoPrestacion  : data.codigoPrestacion,
-                codigoServicio   : data.codigoServicio,
-                codigoTipoAtencion: data.codigoTipoAtencion,
-                esOnline : esVirtual,
-                nombre : data.nombreEspecialidad,
-            }
-            params.paciente = {
-                "numeroIdentificacion": data.numeroIdentificacion,
-                "tipoIdentificacion": data.tipoIdentificacion,
-                "nombrePaciente": data.nombrePaciente,
-                "numeroPaciente": data.numeroPaciente
-            }
-
-            params.reservaEdit = {
-                "estaPagada": data.estaPagada,
-                "numeroOrden": (data.numeroOrden) ? data.numeroOrden : data.idOrden,
-                "lineaDetalleOrden": data.lineaDetalleOrden,
-                "codigoEmpresaOrden": (data.codigoEmpresaOrden) ? data.codigoEmpresaOrden : data.codigoEmpresa,
-                "idOrdenAgendable": data.idOrdenAgendable,
-                "idCita": data.idCita
-            }
-            params.origen = "inicios";
-            
-            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
-
-            if(datosConvenios.length == 0){
-                location = url;
-                return;
-            }
-
-            llenarModalConvenios(datosConvenios, url);
-
-            $('#convenioModal').modal('show');
-        }else{    
-            let params = {}
-            params.online = esVirtual;
-            params.especialidad = {
-                codigoEspecialidad: data.codigoEspecialidad,
-                codigoPrestacion  : data.codigoPrestacion,
-                codigoServicio   : data.codigoServicio,
-                codigoTipoAtencion: data.codigoTipoAtencion,
-                esOnline : esVirtual,
-                nombre : data.nombreEspecialidad,
-            }
-
-            if (datosConvenios.length > 0) {
-                console.log('datosConvenio', datosConvenios);
-                // datosconvenio posicion 0
-                params.convenio = datosConvenios[0];
-
-            } else {
-                params.convenio = {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                };
-            }
-            // params.paciente = {
-            //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
-            //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
-            //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
-            //     "numeroPaciente": datosPaciente.numeroPaciente
-            // }
-            params.paciente = {
-                "numeroIdentificacion": data.numeroIdentificacion,
-                "tipoIdentificacion": data.tipoIdentificacion,
-                "nombrePaciente": data.nombrePaciente,
-                "numeroPaciente": data.numeroPaciente
-            }
-
-            params.reservaEdit = {
-                "estaPagada": data.estaPagada,
-                "numeroOrden": data.numeroOrden,
-                "lineaDetalleOrden": data.lineaDetalleOrden,
-                "codigoEmpresaOrden": data.codigoEmpresaOrden,
-                "idOrdenAgendable": data.idOrdenAgendable,
-                "idCita": data.idCita
-            }
-            params.origen = "inicios";
-            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
-            
-            if(data.permitePagoReserva == "S" || datosConvenios.length == 0){
-                // alert("Corrigiendo")
-                location = url;
-            }else{
-                //data.mensajePagoReserva
-                llenarModalConvenios(datosConvenios, url);
-                $('#convenioModal').modal('show');
-            }
+        
+        let params = {}
+        params.online = esVirtual;
+        params.especialidad = {
+            codigoEspecialidad: data.codigoEspecialidad,
+            codigoPrestacion  : data.codigoPrestacion,
+            codigoServicio   : data.codigoServicio,
+            codigoTipoAtencion: data.codigoTipoAtencion,
+            esOnline : esVirtual,
+            nombre : data.nombreEspecialidad,
         }
+        params.paciente = {
+            "numeroIdentificacion": data.numeroIdentificacion,
+            "tipoIdentificacion": data.tipoIdentificacion,
+            "nombrePaciente": data.nombrePaciente,
+            "numeroPaciente": data.numeroPaciente
+        }
+
+        params.reservaEdit = {
+            "estaPagada": data.esPagada,
+            "numeroOrden": (data.numeroOrden) ? data.numeroOrden : data.idOrden,
+            "lineaDetalleOrden": data.lineaDetalleOrden,
+            "codigoEmpresaOrden": (data.codigoEmpresaOrden) ? data.codigoEmpresaOrden : data.codigoEmpresa,
+            "idOrdenAgendable": data.idOrdenAgendable,
+            "idCita": data.detalleReserva.codigoReserva
+        }
+        params.origen = "inicios";
+        params.convenio = convenio;
+        
+        localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
+        location = url;
     });
 
 
