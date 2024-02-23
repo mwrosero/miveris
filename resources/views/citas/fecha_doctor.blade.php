@@ -50,7 +50,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <div class="modal-body p-3 pb-2">
                     <div class="text-center">
                         <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3" id="sinFechaDisponiblesLabel">Veris</h1>
-                        <p class="fs--16 fw-normal text-veris mb-3">No tiene fechas disponibles.</p>
+                        <p class="fs--16 fw-normal text-veris mb-3" title="titleNoDisponibilidad">No tiene fechas disponibles.</p>
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -173,6 +173,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let fechaOrdenExterna;
     let codigoZona;
 
+    let firstRender = true;
     let numeroSemanaCurso;
     let numeroMesCurso;
     let numeroMesSeleccionado;
@@ -224,13 +225,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             //renderCalendarExterna();
             fechasDisponibles = await obtenerFechasOrdenesExternas();
             await renderCalendar();
-            $('.dias-calendario').addClass('d-none');
-                $('.semana-'+numeroSemanaCurso).removeClass('d-none');
+            reDrawCalendar();
+            // $('.dias-calendario').addClass('d-none');
+            // $('.semana-'+numeroSemanaCurso).removeClass('d-none');
             llenarListaExamenes();
             // setear titulo fecha doctor
             document.getElementById('tituloFechaDoctor').innerHTML = 'Exámenes';
         } else {
             await consultarFechasDisponibles();
+            reDrawCalendar();
         }
 
         $('body').on('click','.btn-disponibilidad-medico-all', function(){
@@ -293,8 +296,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         // Llenar los días del mes anterior
         for (let i = firstDayOfMonth - 1; i >= 0; i--) {
+            let dia = lastDayOfPreviousMonth - i;
+            let mes = ((currentDate.getMonth()) < 10) ? '0' + (currentDate.getMonth()) : (currentDate.getMonth() );
+            let fechaSeleccionada = dia +"/"+ mes +"/"+currentDate.getFullYear();
+            console.log(fechaSeleccionada)
+            let weekNumber = getWeek(fechaSeleccionada);
+            
             const dayElement = document.createElement('div');
-            dayElement.classList.add('calendar-day', 'previous-month-day', 'dias-calendario');
+            dayElement.classList.add('calendar-day', 'previous-month-day', 'dias-calendario', 'semana-'+weekNumber);
             dayElement.textContent = lastDayOfPreviousMonth - i;
             calendarGrid.appendChild(dayElement);
         }
@@ -312,27 +321,32 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             dayElement.textContent = i;
             dayElement.setAttribute('fechaSeleccionada-rel', fechaSeleccionada);
 
-            if (fechasDisponibles.length > 0 && fechaSeleccionada === fechasDisponibles[0]) {
+            if (fechasDisponibles.length > 0 && fechaSeleccionada === fechasDisponibles[0] && firstRender) {
                 // Agregar la clase 'selected-day' a la primera fecha disponible
+                firstRender = false;
                 dayElement.classList.add('selected-day');
+                _fechaSeleccionada = fechasDisponibles[0];
+            }else{
+                $('[fechaseleccionada-rel="' + _fechaSeleccionada + '"]').addClass('selected-day');
             }
             
             if (fechasDisponibles.includes(fechaSeleccionada)) {
                 // Habilitar solo para fechas disponibles
                 dayElement.addEventListener('click', async () => {
-                    console.log(0)
                     if(!$('.' + classFechaSeleccionada).hasClass('unavailable-day')){
-                        console.log(1)
-                        console.log(fechaSeleccionada)
+                        // console.log(fechaSeleccionada)
                         _fechaSeleccionada = fechaSeleccionada;
-                        console.log('_fechaSeleccionada: ' + _fechaSeleccionada);
-                        console.log('fechaSeleccionada: ' + fechaSeleccionada);
+                        // console.log('_fechaSeleccionada: ' + _fechaSeleccionada);
+                        // console.log('fechaSeleccionada: ' + fechaSeleccionada);
                         $('.calendar-day').removeClass('selected-day');
                         $('.' + classFechaSeleccionada).addClass('selected-day');
                         // Aquí puedes hacer algo con la fecha seleccionada, como enviarla al servidor para la cita médica.
-                        await consultarMedicos(fechaSeleccionada);
+                        if (!dataCita.origen || dataCita.origen != 'ordenExternaSolicitud'){
+                            await consultarMedicos(fechaSeleccionada);
+                        }
                         calendarContainer.style.maxHeight = '135px';
                         chevronIcon.className = 'bi bi-chevron-compact-down';
+                        reDrawCalendar();
                     }
                 });
             } else {
@@ -348,28 +362,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         currentDate.setMonth(currentDate.getMonth() - 1);
         numeroMesSeleccionado = currentDate.getMonth() + 1;
         await renderCalendar();
-        if(numeroMesCurso == numeroMesSeleccionado){
-            $('.dias-calendario').addClass('d-none');
-            $('.semana-'+numeroSemanaCurso).removeClass('d-none');
-        }else{
-            $('.dias-calendario').removeClass('d-none');
-        }
+        reDrawCalendar();
     });
 
     nextBtn.addEventListener('click', async () => {
         currentDate.setMonth(currentDate.getMonth() + 1);
         numeroMesSeleccionado = currentDate.getMonth() + 1;
         await renderCalendar();
-        if(numeroMesCurso == numeroMesSeleccionado){
-            if($('#toggle-calendar-btn i').hasClass('bi-chevron-compact-down')){
-                $('.dias-calendario').addClass('d-none');
-                $('.semana-'+numeroSemanaCurso).removeClass('d-none');
-            }else{
-                $('.dias-calendario').removeClass('d-none');
-            }
-        }else{
-            $('.dias-calendario').removeClass('d-none');
-        }
+        reDrawCalendar();
     });
 
     const calendarContainer = document.querySelector('.calendar-container');
@@ -380,26 +380,45 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if (calendarContainer.style.maxHeight) {
             calendarContainer.style.maxHeight = null;
             chevronIcon.className = 'bi bi-chevron-compact-up';
-            if(numeroMesCurso == numeroMesSeleccionado){
-                if($('#toggle-calendar-btn i').hasClass('bi-chevron-compact-down')){
-                    $('.dias-calendario').addClass('d-none');
-                    $('.semana-'+numeroSemanaCurso).removeClass('d-none');
-                }else{
-                    $('.dias-calendario').removeClass('d-none');
-                }
-            }else{
-                $('.dias-calendario').removeClass('d-none');
-            }
         } else {
             calendarContainer.style.maxHeight = '135px';
             chevronIcon.className = 'bi bi-chevron-compact-down';
-            if(numeroMesCurso == numeroMesSeleccionado){
-                $('.dias-calendario').addClass('d-none');
-                $('.semana-'+numeroSemanaCurso).removeClass('d-none');
-            }
         }
-
+        reDrawCalendar();
     });
+
+    function reDrawCalendar(){
+        let numeroMesFechaSeleccionada = obtenerNumeroMes(_fechaSeleccionada);
+        if(calendarContainer.style.maxHeight){
+            console.log("Calendario cerrado")
+            if(numeroMesFechaSeleccionada == numeroMesSeleccionado){
+                let numeroSemanaActual = getWeek(_fechaSeleccionada);
+                $('.dias-calendario').addClass('d-none');
+                $('.semana-'+numeroSemanaActual).removeClass('d-none');
+            }else{
+                $('.dias-calendario').removeClass('d-none');
+            }
+        }else{
+            console.log("Calendario abierto")
+            $('.dias-calendario').removeClass('d-none');
+        }
+    }
+
+    function obtenerNumeroMes(fechaString) {
+        // Dividir la cadena en partes
+        var partes = fechaString.split('/');
+        
+        // Asegurarse de que hay 3 partes (día, mes, año)
+        if (partes.length !== 3) {
+            throw new Error("Formato de fecha incorrecto. Debe ser dd/mm/yyyy");
+        }
+        
+        // Obtener el mes como un número
+        var mes = parseInt(partes[1], 10);
+        
+        // Devolver el número del mes
+        return mes;
+    }
 
     async function consultarFechasDisponibles(){
         let listaEspecialidades = $('#listaEspecialidades');
@@ -426,6 +445,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 await consultarMedicos(fechasDisponibles[0]);
             } else {
                 await renderCalendar();
+                $('#titleNoDisponibilidad').html(data.message);
                 $('#sinFechaDisponibles').modal('show');
                 /* Mostrar la modal cuando No hay fecha disponibles. */
                 console.log("No hay fechas disponibles");
@@ -441,7 +461,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     async function consultarMedicos(fechaSeleccionada){
-        console.log(fechaSeleccionada);
+        // console.log(fechaSeleccionada);
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
         args["method"] = "GET";
@@ -449,7 +469,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         const data = await call(args);
         let listaMedicos = $('#listaMedicos');
         listaMedicos.empty();
-
         if (data.code == 200){
             let elemento = '';
             if(data.data.length > 0){
@@ -559,58 +578,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 
-    // calendario para consultas externas
-    // funcion que muestra el calendario para consultas externas  de los 30 dias posteriores a la fecha actual
-    function renderCalendarExterna() {
-        console.log("otro")
-        calendarGrid.innerHTML = '';
-        const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
-        const lastDayOfPreviousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
-        const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-        monthYearElement.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-
-        // Agregar los días de la semana en el encabezado
-        for (let i = 0; i < daysOfWeek.length; i++) {
-            const dayOfWeekElement = document.createElement('div');
-            dayOfWeekElement.classList.add('calendar-day', 'day-of-week');
-            dayOfWeekElement.textContent = daysOfWeek[i];
-            calendarGrid.appendChild(dayOfWeekElement);
-        }
-
-        // Llenar los días del mes anterior
-        for (let i = firstDayOfMonth - 1; i >= 0; i--) {
-            const dayElement = document.createElement('div');
-            dayElement.classList.add('calendar-day', 'previous-month-day');
-            dayElement.textContent = lastDayOfPreviousMonth - i;
-            calendarGrid.appendChild(dayElement);
-        }
-
-        // Llenar los días del mes actual
-        for (let i = 1; i <= lastDayOfMonth; i++) {
-            const dayElement = document.createElement('div');
-            let dia = (i < 10) ? '0' + i : i;
-            let mes = ((currentDate.getMonth() + 1) < 10) ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
-            let fechaSeleccionada = dia +"/"+ mes +"/"+currentDate.getFullYear();
-            let classFechaSeleccionada = dia +"_"+ mes +"_"+currentDate.getFullYear();
-            dayElement.classList.add('calendar-day', 'current-month-day', classFechaSeleccionada);
-            dayElement.textContent = i;
-            dayElement.setAttribute('fechaSeleccionada-rel', fechaSeleccionada);
-            dayElement.addEventListener('click', async () => {
-                _fechaSeleccionada = fechaSeleccionada;
-                $('.calendar-day').removeClass('selected-day');
-                $('.' + classFechaSeleccionada).addClass('selected-day');
-                // captura la fecha seleccionada
-                renderCalendarExternaFecha = fechaSeleccionada;
-                console.log('renderCalendarExternaFecha: ' + renderCalendarExternaFecha);
-                fechaOrdenExterna = renderCalendarExternaFecha;
-               
-            });
-            calendarGrid.appendChild(dayElement);
-        }
-    }
-
     // llenar lista de medicos con examenes
-
     function llenarListaExamenes() {
         // habilitar el botón de agendar orden externa
         $('#btnAgendarOrdenExterna').removeClass('d-none');
@@ -693,6 +661,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/disponibilidad?canalOrigen=APP_CMV&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${fechaSeleccionada}&codigoZona=${codigoZona}`;
         args["method"] = "GET";
         args["showLoader"] = true;
+        args["dismissAlert"] = true;
         const data = await call(args);
         console.log('consultarHorasMotorizados', data);
         
@@ -724,7 +693,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             
             listaHorariosMedico.append(elemento);    
         } else if (data.code != 200){
-            $('#mensajeError').text(data.message);
+            $('#mensajeError').html(data.message);
             $('#mensajeSolicitudLlamadaModalError').modal('show');
         }
         return data;
