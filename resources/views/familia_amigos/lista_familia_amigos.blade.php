@@ -156,7 +156,7 @@ Mi Veris - Citas - Familia y amigos
                             </div>
                             <div class="d-flex">
                                 <button type="button" class="btn p-0 text-danger shadow-none me-2 eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}" nombre-familiar="${familiar.primerNombre} ${familiar.primerApellido}">
-                                    <img src="{{asset('assets/img/svg/trash.svg')}}" class="p-1" width="32" alt="eliminar familiar medico">
+                                    <img src="{{asset('assets/img/svg/Tacho.svg')}}" class="" alt="eliminar familiar medico">
                                 </button>
                                 <a href='{{ route("familia.datosFamiliar") }}'; class="btn p-0 text-primary" id="enlaceDetalles" 
                                 onclick="localStorage.setItem('primerNombreFamiliar', '${familiar.primerNombre}');
@@ -165,7 +165,7 @@ Mi Veris - Citas - Familia y amigos
                                 localStorage.setItem('administrador', '${familiar.esAdmin}');
                                 localStorage.setItem('numeroIdentificacion', '${familiar.numeroIdentificacion}');
                                 localStorage.setItem('idRelacion', '${familiar.idRelacion}');">
-                                    <img src="{{asset('assets/img/svg/chevron-right-veris.svg')}}" class="p-1" width="32" alt="eliminar familiar medico">
+                                    <img src="{{asset('assets/img/svg/chevron.svg')}}" class="" alt="eliminar familiar medico">
                                 </a>
                                 <input type="hidden" value="${familiar.idRelacion}" id="idRelacion">
                             </div>

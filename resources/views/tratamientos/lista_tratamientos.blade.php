@@ -701,33 +701,34 @@ $tokenMods = base64_encode(uniqid());
         if(ultimoTratamiento.datosConvenio.length > 0){
             
             elemento = `<div class="card rounded-0 border-0">
-                                <div class="card-body p-3 position-relative px-lg-5"
+                                <div class="card-body p--2 position-relative px-lg-5"
                                     style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
-                                    <h4 class="fw-medium text-white mb-0">Compra y gestiona</h4>
-                                    <h6 class=" fw-light text-white mb-0">tu <b>tratamiento</b> sin <b>filas</b></h6>
-                                    <div class="d-flex justify-content-end mt-3">
+                                    <h4 class="fs--20 fs-lg-28 fw-medium text-white mb-1">Compra y gestiona</h4>
+                                    <h6 class="fs--16 fs-lg-20 fw-light text-white mb-0">tu <b>tratamiento</b> sin <b>filas</b></h6>
+                                    <div class="d-flex justify-content-end mt-2">
                                         <a href=" ${ruta}
-                                        " class="btn btn-sm btn-primary-veris px-4 btn-verPromocion
+                                        " class="btn btn-sm btn-primary-veris fs--1 fw-medium line-height-16 px-3 py-2 border-0 btn-verPromocion
                                         " data-rel='${JSON.stringify(datos)}'>Ver tratamiento</a>
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="85" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         } else {
             elemento = `<div class="card rounded-0 border-0">
-                                <div class="card-body p-3 position-relative px-lg-5"
+                                <div class="card-body p--2 position-relative px-lg-5"
                                     style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
-                                    <h4 class="fw-medium text-white mb-0">Descubre la promoción que MiVeris tiene para ti</h4>
-                                    <div class="d-flex justify-content-end mt-3">
+                                    <h4 class="fs--20 fs-lg-28 fw-medium text-white mb-1">Descubre la promoción</h4>
+                                    <h6 class="fs--16 fs-lg-20 fw-light text-white mb-0">que <b>MiVeris</b> tiene para ti</h6>
+                                    <div class="d-flex justify-content-end mt-2">
                                         <a href=" ${ruta}
-                                        " class="btn btn-sm btn-primary-veris px-4 btn-verPromocion
+                                        " class="btn btn-sm btn-primary-veris fs--1 fw-medium line-height-16 px-3 py-2 border-0 btn-verPromocion
                                         " data-rel='${JSON.stringify(datos)}'>Ver tratamiento</a>
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="85" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         }
@@ -777,37 +778,7 @@ $tokenMods = base64_encode(uniqid());
         }
     }
 
-    // determinar si es receta medica o no botones
-    function determinarbotonesRecetaMedica(servicio, esAgendable, tipoServicio, aplicaSolicitud){
-        console.log('esAgendable: ' + esAgendable);
     
-        if(tipoServicio == "FARMACIA" && aplicaSolicitud == 'S'){
-            // Código para RECETA MÉDICA
-            return `<a href="#" class="btn text-primary-veris">Ver receta</a>
-                    <a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else if (tipoServicio == "FARMACIA" && (aplicaSolicitud == 'N' || aplicaSolicitud == null)) {
-            // Código para RECETA MÉDICA
-            return `<a href="#" class="btn text-primary-veris">Ver receta</a>
-                    <a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else if (tipoServicio == "LABORATORIO" && esAgendable == 'N') {
-            // Código para LABORATORIO
-            return `<a href="#" class="btn text-primary-veris">Ver receta</a>
-                    <a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else {
-            // Código para otros servicios
-            let botonAgendarClase = "btn btn-sm btn-primary-veris shadow-none me-1";
-            let botonAgendarDisabled = "";
-
-            // Si esAgendable no es 'S', deshabilitar el botón
-            if(esAgendable !== 'S'){
-                botonAgendarClase += " disabled";
-                botonAgendarDisabled = " disabled";
-            }
-
-            return `<a href="#" class="btn text-primary-veris fw-normal fs--1 px-3 py-2">Ver orden</a>
-                    <a href="#" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
-        }
-    }
 
 
     // determinar si es receta medica o no botones realizados
@@ -895,13 +866,18 @@ $tokenMods = base64_encode(uniqid());
                         respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris">Ver resultados</a>`;
+                            let ruta = "/laboratorio-domicilio/" + "{{ $params }}";
+                            respuesta += `<a url-rel="${ruta}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Ver resultados</a>`;
+                        
                         } else {
                             respuesta += ``;
                         }
                         //condición para 'aplicaSolicitud'
                         if (datosServicio.aplicaSolicitud == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            let ruta = "/laboratorio-domicilio/" + "{{ $params }}";
+                            respuesta += `<a url-rel="${ruta}" class="btn btn-sm btn-primary-veris shadow-none me-1 btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            
+                        
                         } else if (datosServicio.permitePago == "S"){
                             let params = {}
                             params.idPaciente = idPaciente;
@@ -913,7 +889,7 @@ $tokenMods = base64_encode(uniqid());
                     } else if (estado == 'REALIZADO'){
                         console.log('estadossss2', estado);
                         respuesta = "";
-                        respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        respuesta += ` <button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     
                     }
                     return respuesta;
@@ -921,18 +897,18 @@ $tokenMods = base64_encode(uniqid());
 
                 case "RECETAS" :
                     if (estado == 'REALIZADO') {
-                        return `<button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
+                        return `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
                     } else {
                         if(datosServicio.aplicaSolicitud == "S"){
-                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris fw-medium shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                         }
                     }
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <button class="btn text-primary-veris fw-normal fs--1 px-3 py-2" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                    respuestaOdontologia += ` <button class="btn text-primary-veris fw-medium fs--1 px-3 py-2" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     // ABRIRE MODAL DE VIDEO CONSULTA
-                    respuestaOdontologia += `<button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</button>`;
+                    respuestaOdontologia += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</button>`;
                     return respuestaOdontologia;
                     break;
 
@@ -1362,6 +1338,44 @@ $tokenMods = base64_encode(uniqid());
                     </div>`;
         divContenedor.append(elemento);
     }
+
+    // boton btnSolicitarLaboratorio
+    $(document).on('click', '.btnSolicitarLaboratorio', function(){
+        let datosServicio = $(this).data('rel');
+        let url = $(this).attr('url-rel');
+
+        console.log('datosServicio', datosServicio);
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = true;
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = false;
+        }
+
+        dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+            origen: "Listatratamientos"
+        };
+        dataCita.origen = "Listatratamientos";
+        dataCita.convenio = ultimoTratamiento.datosConvenio;
+        dataCita.convenio.origen = "Listatratamientos";
+
+        dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
+        dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
+        dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+        location = url;
+    });
 
     
 </script>

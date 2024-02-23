@@ -35,12 +35,12 @@ Mi Veris - Buscar doctor
         </div>
         <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
             <form action="">
-                <h6 class="fs--16 line-height-20 fw-light">Selecciona la especialidad</h6>
+                <h6 class="fs--16 line-height-20 fw-light" style="color: #3D4E66;">Selecciona la especialidad</h6>
                 <div class="list-group gap-3 mb-3 listaPacientesFiltro" id="listaEspecialidades">
                     <!-- especialidades dinamicas -->
                 </div>
                 <div class="col-md-12 mb-3">
-                    <label for="fechaDesde" class="fw-light fs--16 line-height-20 mb-3">{{ __('Elige el rango de fechas') }}</label>
+                    <label for="fechaDesde" class="fw-light fs--16 line-height-20 mb-3" style="color: #3D4E66;">{{ __('Elige el rango de fechas') }}</label>
                     <input type="text" class="form-control fs--1 p-3 bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
                 </div>
                 <div class="col-md-12 mb-5">

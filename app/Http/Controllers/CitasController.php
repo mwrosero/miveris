@@ -134,8 +134,8 @@ class CitasController extends Controller
     }
 
     // Return view laboratorio a domicilio
-    public function laboratorioDomicilio($codigoTratamiento) {
-        return view('citas.laboratorio_domicilio', ['codigoTratamiento' => $codigoTratamiento]);
+    public function laboratorioDomicilio($params) {
+        return view('citas.laboratorio_domicilio')->with('params',$params);
     }
 
     // Return view citas / laboratorio

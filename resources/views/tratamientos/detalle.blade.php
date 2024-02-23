@@ -358,9 +358,9 @@ Mi Veris - Citas - tratamiento
                                     </span>
                                 </div>
                                 <h3 class="fs--28 line-height-36 fw-medium mb-2">Información</h3>
-                                <p class="fs--16 line-height-20 mb-5">Esta promoción ya no está disponible</p>
+                                <p class="fs--16 line-height-20 text-veris mb-5">Esta promoción ya no está disponible</p>
                                 <img src="{{ asset('assets/img/svg/promocionNoDisponible.svg') }}" class="img-fluid mt-3 mb-3 w-50" alt="">
-                                <a href="/" class="btn btn-lg btn-primary-veris m-0 w-100 px-4 py-3">Volver al inicio</a>
+                                <a href="/" class="btn btn-lg btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>`;
             $('#box-detalle-promocion').append(elem);

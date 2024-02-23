@@ -54,7 +54,7 @@
             required style="background-color: var(--opacidad-oscuro-05, rgba(0, 0, 0, 0.05)) !important;" />
     </div>
     <div class="mb-3">
-        <button class="btn d-grid w-100 bg-veris btn-reset" type="button" id="recuperarContrasena">Enviar</button>
+        <button class="btn fs--18 fw-medium line-height-24 px-4 py-3 d-grid w-100 bg-veris btn-reset" type="button" id="recuperarContrasena">Enviar</button>
     </div>
 </form>
 <!-- /Content Olvide Clave -->
