@@ -82,14 +82,19 @@ Mi Veris - Citas - Laboratorio a domicilio
 <script></script>
 <script>
     // variables globales
-    let codigoTratamiento = {{ $codigoTratamiento }};
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
+    let esDomicilio = dataCita.online;
+    let codigoEmpresaConvenio = dataCita.convenio.codigoEmpresa;
+    let codigoConvenio = dataCita.convenio.codigoConvenio || "";
+    let nombreConvenio = dataCita.convenio.nombreConvenio;
+
 
     // llama al dom
 
     document.addEventListener("DOMContentLoaded", async function () {
         await consultarPacientes();
         await consultarCiudades();
-        console.log('codigoTratamiento', codigoTratamiento);
     });
 
     // funciones asyncronas
@@ -170,7 +175,11 @@ Mi Veris - Citas - Laboratorio a domicilio
         formData.append("direccion", getInput('direccion'));
         formData.append("telefono", getInput('telefono'));
         formData.append("origenInvocacion", "WEB");
-
+        formData.append("telefonoMovil", getInput('telefono'));
+        formData.append("esDomicilio", esDomicilio);
+        formData.append("codigoEmpresaConvenio", codigoEmpresaConvenio);
+        formData.append("codigoConvenio", codigoConvenio);
+        formData.append("nombreConvenio", nombreConvenio);
 
         args["data"] = formData;
 

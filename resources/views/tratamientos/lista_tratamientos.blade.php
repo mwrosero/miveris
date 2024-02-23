@@ -778,37 +778,7 @@ $tokenMods = base64_encode(uniqid());
         }
     }
 
-    // determinar si es receta medica o no botones
-    function determinarbotonesRecetaMedica(servicio, esAgendable, tipoServicio, aplicaSolicitud){
-        console.log('esAgendable: ' + esAgendable);
     
-        if(tipoServicio == "FARMACIA" && aplicaSolicitud == 'S'){
-            // Código para RECETA MÉDICA
-            return `<a href="#" class="btn text-primary-veris">Ver receta</a>
-                    <a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else if (tipoServicio == "FARMACIA" && (aplicaSolicitud == 'N' || aplicaSolicitud == null)) {
-            // Código para RECETA MÉDICA
-            return `<a href="#" class="btn text-primary-veris">Ver receta</a>
-                    <a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris disabled"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else if (tipoServicio == "LABORATORIO" && esAgendable == 'N') {
-            // Código para LABORATORIO
-            return `<a href="#" class="btn text-primary-veris">Ver receta</a>
-                    <a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
-        } else {
-            // Código para otros servicios
-            let botonAgendarClase = "btn btn-sm btn-primary-veris shadow-none me-1";
-            let botonAgendarDisabled = "";
-
-            // Si esAgendable no es 'S', deshabilitar el botón
-            if(esAgendable !== 'S'){
-                botonAgendarClase += " disabled";
-                botonAgendarDisabled = " disabled";
-            }
-
-            return `<a href="#" class="btn text-primary-veris fw-normal fs--1 px-3 py-2">Ver orden</a>
-                    <a href="#" class="${botonAgendarClase}"${botonAgendarDisabled}> Agendar</a>`;
-        }
-    }
 
 
     // determinar si es receta medica o no botones realizados
@@ -896,13 +866,18 @@ $tokenMods = base64_encode(uniqid());
                         respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris">Ver resultados</a>`;
+                            let ruta = "/laboratorio-domicilio/" + "{{ $params }}";
+                            respuesta += `<a url-rel="${ruta}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Ver resultados</a>`;
+                        
                         } else {
                             respuesta += ``;
                         }
                         //condición para 'aplicaSolicitud'
                         if (datosServicio.aplicaSolicitud == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            let ruta = "/laboratorio-domicilio/" + "{{ $params }}";
+                            respuesta += `<a url-rel="${ruta}" class="btn btn-sm btn-primary-veris shadow-none me-1 btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            
+                        
                         } else if (datosServicio.permitePago == "S"){
                             let params = {}
                             params.idPaciente = idPaciente;
@@ -1363,6 +1338,44 @@ $tokenMods = base64_encode(uniqid());
                     </div>`;
         divContenedor.append(elemento);
     }
+
+    // boton btnSolicitarLaboratorio
+    $(document).on('click', '.btnSolicitarLaboratorio', function(){
+        let datosServicio = $(this).data('rel');
+        let url = $(this).attr('url-rel');
+
+        console.log('datosServicio', datosServicio);
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = true;
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = false;
+        }
+
+        dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+            origen: "Listatratamientos"
+        };
+        dataCita.origen = "Listatratamientos";
+        dataCita.convenio = ultimoTratamiento.datosConvenio;
+        dataCita.convenio.origen = "Listatratamientos";
+
+        dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
+        dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
+        dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
+
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+        location = url;
+    });
 
     
 </script>
