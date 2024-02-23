@@ -173,6 +173,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let fechaOrdenExterna;
     let codigoZona;
 
+    let numeroSemanaCurso;
+    let numeroMesCurso;
+    let numeroMesSeleccionado;
+
     if(dataOrigen == 'ordenExternaSolicitud'){
         console.log('No se puede seleccionar fecha y doctor para una cita de orden externa');
         examenes = dataCita.ordenExterna.pacientes[0].examenes;
@@ -209,6 +213,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     const nextBtn = document.querySelector('.next-btn');
 
     let currentDate = new Date();
+    numeroSemanaCurso = getWeekCurrent(currentDate);
+    numeroMesCurso = currentDate.getMonth() + 1;
+    numeroMesSeleccionado = numeroMesCurso;
     let fechasDisponibles = []; // Variable global para almacenar las fechas disponibles
 
     // llamada al dom 
@@ -216,7 +223,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if (dataCita.origen == 'ordenExternaSolicitud') {
             //renderCalendarExterna();
             fechasDisponibles = await obtenerFechasOrdenesExternas();
-            renderCalendar();
+            await renderCalendar();
+            $('.dias-calendario').addClass('d-none');
+                $('.semana-'+numeroSemanaCurso).removeClass('d-none');
             llenarListaExamenes();
             // setear titulo fecha doctor
             document.getElementById('tituloFechaDoctor').innerHTML = 'Exámenes';
@@ -266,9 +275,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         return fechas;
     }
 
-    function renderCalendar() {
-        console.log('Lista de fecha: ' + fechasDisponibles); 
-
+    async function renderCalendar() {
+        // console.log('Lista de fecha: ' + fechasDisponibles); 
         calendarGrid.innerHTML = '';
         const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
         const lastDayOfPreviousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
@@ -336,14 +344,32 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     }
 
-    prevBtn.addEventListener('click', () => {
+    prevBtn.addEventListener('click', async () => {
         currentDate.setMonth(currentDate.getMonth() - 1);
-        renderCalendar();
+        numeroMesSeleccionado = currentDate.getMonth() + 1;
+        await renderCalendar();
+        if(numeroMesCurso == numeroMesSeleccionado){
+            $('.dias-calendario').addClass('d-none');
+            $('.semana-'+numeroSemanaCurso).removeClass('d-none');
+        }else{
+            $('.dias-calendario').removeClass('d-none');
+        }
     });
 
-    nextBtn.addEventListener('click', () => {
+    nextBtn.addEventListener('click', async () => {
         currentDate.setMonth(currentDate.getMonth() + 1);
-        renderCalendar();
+        numeroMesSeleccionado = currentDate.getMonth() + 1;
+        await renderCalendar();
+        if(numeroMesCurso == numeroMesSeleccionado){
+            if($('#toggle-calendar-btn i').hasClass('bi-chevron-compact-down')){
+                $('.dias-calendario').addClass('d-none');
+                $('.semana-'+numeroSemanaCurso).removeClass('d-none');
+            }else{
+                $('.dias-calendario').removeClass('d-none');
+            }
+        }else{
+            $('.dias-calendario').removeClass('d-none');
+        }
     });
 
     const calendarContainer = document.querySelector('.calendar-container');
@@ -354,10 +380,25 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if (calendarContainer.style.maxHeight) {
             calendarContainer.style.maxHeight = null;
             chevronIcon.className = 'bi bi-chevron-compact-up';
+            if(numeroMesCurso == numeroMesSeleccionado){
+                if($('#toggle-calendar-btn i').hasClass('bi-chevron-compact-down')){
+                    $('.dias-calendario').addClass('d-none');
+                    $('.semana-'+numeroSemanaCurso).removeClass('d-none');
+                }else{
+                    $('.dias-calendario').removeClass('d-none');
+                }
+            }else{
+                $('.dias-calendario').removeClass('d-none');
+            }
         } else {
             calendarContainer.style.maxHeight = '135px';
             chevronIcon.className = 'bi bi-chevron-compact-down';
+            if(numeroMesCurso == numeroMesSeleccionado){
+                $('.dias-calendario').addClass('d-none');
+                $('.semana-'+numeroSemanaCurso).removeClass('d-none');
+            }
         }
+
     });
 
     async function consultarFechasDisponibles(){
@@ -379,10 +420,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let elemento = '';
 
             if(data.data.length > 0){
-                renderCalendar();
+                await renderCalendar();
+                $('.dias-calendario').addClass('d-none');
+                $('.semana-'+numeroSemanaCurso).removeClass('d-none');
                 await consultarMedicos(fechasDisponibles[0]);
             } else {
-                renderCalendar();
+                await renderCalendar();
                 $('#sinFechaDisponibles').modal('show');
                 /* Mostrar la modal cuando No hay fecha disponibles. */
                 console.log("No hay fechas disponibles");
@@ -615,6 +658,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 $(this).closest('.examenLista').find('.listaExamenes').html(limitedExamenesList + '<p class="fw-small fs--2 mb-0 ver-todo">Ver todo</p>');
             }
         });
+    }
+
+    function getWeekCurrent(){
+        var onejan = new Date(currentDate.getFullYear(),0,1);
+        var millisecsInDay = 86400000;
+        return Math.ceil((((currentDate - onejan) /millisecsInDay) + onejan.getDay()+1)/7);
     }
 
     function getWeek(dateString) {
