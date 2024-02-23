@@ -650,7 +650,7 @@ Mi Veris - Inicio
 
         let elemento = `<div class="text-center">
                             <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
-                            <h6 class="fw-normal">Agenda una cita y revisa tus <b>tratamientos</b> aquí</h6>
+                            <h6 class="fs--16 fw-normal">Agenda una cita y revisa tus <b>tratamientos</b> aquí</h6>
                         </div>`;
         divContenedor.append(elemento);
             
@@ -728,8 +728,8 @@ Mi Veris - Inicio
 
         let elemento = `<div class="text-center">
                             <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
-                            <h6 class="fw-medium mb-0">No tiene próximas citas</h6>
-                            <p class="fw-normal">Agenda una cita pulsado aqui <a href="{{route('citas')}}">Agendar cita</a></p>
+                            <h6 class="fs--16 fw-medium mb-0">No tiene próximas citas</h6>
+                            <p class="fs--16 fw-normal text-veris">Agenda una cita pulsado aqui <a href="{{route('citas')}}">Agendar cita</a></p>
                         </div>`;
         divContenedor.append(elemento);
     }
@@ -775,7 +775,7 @@ Mi Veris - Inicio
 
         let elemento = `<div class="text-center">
                             <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
-                            <h6 class="fw-medium mb-0">No tiene urgencias ambulatorias</h6>
+                            <h6 class="fs--16 fw-medium mb-0">No tiene urgencias ambulatorias</h6>
                         </div>`;
         divContenedor.append(elemento);
     }
