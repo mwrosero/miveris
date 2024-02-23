@@ -122,7 +122,7 @@
 	        </div>
 	    </div>
 	    <div class="mt-3">
-	        <button class="btn d-grid w-100 bg-veris rounded next-button" type="button">Siguiente</button>
+	        <button class="btn fs--18 fw-medium line-height-24 px-4 py-3 d-grid w-100 bg-veris rounded next-button" type="button">Siguiente</button>
 	    </div>
 	</section>
 	<section class="step step2 d-none">
@@ -188,7 +188,7 @@
 	    </div>
 	    <div class="mt-3">
 			{{-- <button class="btn d-grid w-100 bg-alt rounded mb-2">Anterior</button> --}}
-	      	<button class="btn d-grid w-100 bg-veris rounded btn-registrar">Crear Cuenta</button>
+	      	<button class="btn fs--18 fw-medium line-height-24 px-4 py-3 d-grid w-100 bg-veris rounded btn-registrar">Crear Cuenta</button>
 	    </div>
 	</section>
 	<section class="step step3 d-none">
@@ -209,7 +209,7 @@
 	            placeholder="Ingresa el código de activación"
 	            required />
 	    </div>
-	    <button class="btn d-grid w-100 bg-alt rounded mt-5 mb-2 btn-confirmar" type="button">Confirmar</button>
+	    <button class="btn fs--18 fw-medium line-height-24 px-4 py-3 d-grid w-100 bg-alt rounded mt-5 mb-2 btn-confirmar" type="button">Confirmar</button>
 	</section>
 </form>
 <script>

@@ -39,7 +39,7 @@
 	            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
 	            placeholder="Ingresa el código de activación"/>
 	    </div>
-	    <button class="btn d-grid w-100 bg-alt rounded mt-5 mb-2 btn-confirmar" type="submit">Confirmar</button>
+	    <button class="btn fs--18 fw-medium line-height-24 px-4 py-3 d-grid w-100 bg-alt rounded mt-5 mb-2 btn-confirmar" type="submit">Confirmar</button>
 	</section>
 </form>
 <script>
