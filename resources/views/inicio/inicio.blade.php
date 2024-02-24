@@ -683,7 +683,7 @@ Mi Veris - Inicio
                     <div class="card h-100">
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `
-                                <span class="badge bg-label-primary text-primary-veris fs--1 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
+                                <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
                             ` : ''}
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>

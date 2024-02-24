@@ -198,7 +198,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             </div>
                             <div class="col-12">
                                 <div class="row justify-content-center align-items-center">
-                                    <div class="col-12 col-md-8">
+                                    <div class="col-12 col-md-6">
                                         <div class="btn-master w-100 mx-auto">
                                             <button type="button" id="btn-next" class="col-5 btn disabled text-white shadow-none">Continuar</button>
                                             |
