@@ -115,8 +115,7 @@ Mi Veris - Citas - Mis tratamientos
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
 
-        let numeroPaciente = id;
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos?idPaciente=${numeroPaciente}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${id}&estadoTratamiento=${estadoTratamiento}&canalOrigen=${canalOrigen}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&version=7.8.0`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
@@ -124,13 +123,10 @@ Mi Veris - Citas - Mis tratamientos
         console.log(22,data.data.tienePermisoAdmin);
         
         if(data.code == 200){
-            if (data.data.tienePermisoAdmin == false) {
-                esAdmin = 'N';
-            }
-
-            // si el usuario es yo mismo es admin es true
-            if (id == "{{ Session::get('userData')->numeroPaciente }}") {
+            if (data.data.tienePermisoAdmin) {
                 esAdmin = 'S';
+            }else{
+                esAdmin = 'N';
             }
 
             datosTratamientos = data.data.items;
@@ -347,9 +343,9 @@ Mi Veris - Citas - Mis tratamientos
                             <div class="card bg-transparent shadow-none">
                                 <div class="card-body">
                                     <div class="text-center">
-                                        <h5>No tienes tratamientos</h5>
+                                        <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes tratamientos</h5>
                                         <p>En esta sección podrás revisar tus tratamientos</p>
-                                        <img src="{{ asset('assets/img/svg/sin_tratamiento.svg') }}" class="img-fluid" alt="">
+                                        <img src="{{ asset('assets/img/svg/sin_tratamiento.svg') }}" class="img-fluid" width="300" alt="">
                                     </div>
                                 </div>
                             </div>

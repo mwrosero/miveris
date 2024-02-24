@@ -66,7 +66,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6 text-center mt-5">
+            <div class="col-12 col-md-4 text-center mt-5">
                 {{-- <a href="#" id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100">{{ __('Pagar') }}</a> --}}
                 <button id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100 px-4 py-3 fs-5">{{ __('Pagar') }}</button>
             </div>

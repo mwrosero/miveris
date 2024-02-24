@@ -184,7 +184,7 @@ Mi Veris - Citas - Laboratorio
     async function obtenerTratamientosId(pacienteSeleccionado='', fechaDesde='', fechaHasta='', estado='PENDIENTE', esAdmin='S') {
         
         let args = [];
-        let canalOrigen = _canalOrigen;//'APP_CMV';
+        let canalOrigen = _canalOrigen;
                 
         //let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
         let numeroPaciente = '';
@@ -434,7 +434,7 @@ Mi Veris - Citas - Laboratorio
         
         let codigoEmpresa = 1
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);
@@ -451,7 +451,7 @@ Mi Veris - Citas - Laboratorio
         console.log('datosPdf', datos);
         console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen
         
         args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
         args["method"] = "GET";
@@ -629,7 +629,7 @@ Mi Veris - Citas - Laboratorio
                                 params.codigoEmpresa = datosServicio.codigoEmpresa;
                                 let ulrParams = btoa(JSON.stringify(params));
                                 let ruta = `/citas-laboratorio/` + "{{$tokenCita}}";
-                                respuesta += `<a href="${ruta}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                                respuesta += `<a href="${ruta}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
                             }
                         }
                     }
@@ -752,8 +752,8 @@ Mi Veris - Citas - Laboratorio
     });
 
 
-    // boton btn-Pagar
-    $(document).on('click', '.btn-Pagar', function(){
+    // boton btn-pagar
+    $(document).on('click', '.btn-pagar', function(){
         let datosServicio = $(this).data('rel');
         // capturar datarel del filtro
         let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');

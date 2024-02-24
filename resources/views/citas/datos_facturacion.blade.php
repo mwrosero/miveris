@@ -198,7 +198,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             </div>
                             <div class="col-12">
                                 <div class="row justify-content-center align-items-center">
-                                    <div class="col-12 col-md-8">
+                                    <div class="col-12 col-md-6">
                                         <div class="btn-master w-100 mx-auto">
                                             <button type="button" id="btn-next" class="col-5 btn disabled text-white shadow-none">Continuar</button>
                                             |
@@ -402,7 +402,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 tipoServicio = "ORDEN";
                 tipoSolicitud = "LAB";
             }else{
-                obtenerPreparacionPrevia();
+                //obtenerPreparacionPrevia();
                 tipoServicio= "DOMICILIO";
                 tipoSolicitud= "LAB";
             }
@@ -810,8 +810,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         console.log(data);
 
         if (data.code == 200){
-            dataCita.facturacion = data.data;
-            mostrarInfo();
+            //dataCita.facturacion = data.data;
+            //mostrarInfo();
         }
     }
 

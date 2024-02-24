@@ -229,17 +229,17 @@ Mi Veris - Buscar doctor
                                         <div class="card card-border">
                                             <div class="card-body p--2">
                                                 <div class="row g-0 align-items-center">
-                                                    <div class="col-2">
+                                                    <div class="col-3 col-md-2">
                                                         <img src=${element.imagen} class="card-img-top" alt="centro medico" onerror="this.src='{{ asset('assets/img/svg/avatar_doctor.svg') }}'; this.style.height='78px'; this.style.width='64px';">
                                                     </div>
-                                                    <div class="col-8">
+                                                    <div class="col-7 col-md-8">
                                                         <div class="mx-2">
                                                             <h6 class="fs--16 line-height-20 fw-medium mb-1 truncate-text-two">Dr(a) ${capitalizarElemento(element.primerNombre)} ${capitalizarElemento(element.segundoNombre)} ${capitalizarElemento(element.primerApellido)} ${capitalizarElemento(element.segundoApellido)}</h6>
                                                             <p class="text-primary-veris fw-medium fs--1 line-height-16 mb-1">${capitalizarElemento(element.nombreSucursal)}</p>
                                                             <p class="fs--1 line-height-16 mb-0">${capitalizarElemento(element.nombreEspecialidad)}</p>
                                                         </div>
                                                     </div>
-                                                    <div class="col-2 text-center">
+                                                    <div class="col-2 col-md-2 text-center">
                                                         <button type="button" class="btn btn-icon shadow-none p-0" data-rel='${ JSON.stringify(element)}'><img src="{{asset('assets/img/svg/plus-blue.svg')}}" alt="plus"></button>
                                                     </div>
                                                 </div>

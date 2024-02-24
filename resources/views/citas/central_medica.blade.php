@@ -124,7 +124,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     dataCita.central = central;
                     
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    let path_central = "{{ asset('assets/img/card/avatar_central_medica.png') }}";
+                    let path_central = "{{ asset('assets/img/svg/dummy_central.svg') }}";
 
                     /*const existeImagen = await verificarImagen(central.nombre_foto);
                     if (existeImagen) {
@@ -140,8 +140,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                                     <img src="${path_central}" class="card-img-top" alt="${central.nombreTipoSucursal}">
                                                 </div>
                                                 <div class="col">
-                                                    <h6 class="fs--16 line-height-20 fw-medium mb-1">${central.nombreSucursal}</h6>
-                                                    <p class="fs--1 line-height-16 mb-0">${central.direccion}</p>
+                                                    <h6 class="fs--16 line-height-20 fw-medium mb-1">${capitalizarElemento(central.nombreSucursal)}</h6>
+                                                    <p class="fs--1 line-height-16 mb-0">${capitalizarElemento(central.direccion)}</p>
                                                 </div>
                                             </div>
                                         </div>
