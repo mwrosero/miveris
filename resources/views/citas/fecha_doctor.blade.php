@@ -228,8 +228,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             reDrawCalendar();
             // $('.dias-calendario').addClass('d-none');
             // $('.semana-'+numeroSemanaCurso).removeClass('d-none');
-            llenarListaExamenes();
+            let listaMedicos = $('#listaMedicos');
+            listaMedicos.empty();
+            $.each(dataCita.ordenExterna.pacientes, function(key, paciente){
+                llenarListaExamenes(paciente, '#listaMedicos');
+            })
             // setear titulo fecha doctor
+            $('#btnAgendarOrdenExterna').removeClass('d-none');
             document.getElementById('tituloFechaDoctor').innerHTML = 'Exámenes';
         } else {
             await consultarFechasDisponibles();
@@ -579,33 +584,29 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     // llenar lista de medicos con examenes
-    function llenarListaExamenes() {
-        // habilitar el botón de agendar orden externa
-        $('#btnAgendarOrdenExterna').removeClass('d-none');
-        let listaMedicos = $('#listaMedicos');
-        listaMedicos.empty(); // Vaciar la lista actual para evitar duplicados
+    function llenarListaExamenes(paciente, idElement) {
         let elemento = '';
 
         // Limitar la lista de exámenes a mostrar inicialmente
-        const examenesLimitados = examenes.slice(0, 3);
-        const mostrarVerTodo = examenes.length > 3;
+        const examenesLimitados = paciente.examenes.slice(0, 3);
+        const mostrarVerTodo = paciente.examenes.length > 3;
 
         // Construir el contenido inicial de la lista, separando el nombre del paciente
         elemento += `
             <div class="card-body p-2">
                 <div class="examenLista">
-                    <h6 class="fw-medium mb-0">${pacienteExternaSolicitud.nombrePaciente}</h6>
+                    <h6 class="fw-medium mb-0">${paciente.nombrePacienteOrden}</h6>
                     <div class="listaExamenes">
                         ${examenesLimitados.map(examen => `
                             <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
                         `).join('')}
-                        ${mostrarVerTodo ? '<p class="fw-small fs--2 mb-0 text-primary text-decoration-underline cursor-pointer ver-todo">Ver todo</p>' : ''}
+                        ${mostrarVerTodo ? '<p class="fw-small fs--2 mb-0 text-primary cursor-pointer ver-todo" paciente-rel="'+paciente.numeroIdentificacion+'">Ver todo</p>' : ''}
                     </div>
                 </div>
             </div>
         `;
 
-        listaMedicos.append(elemento);
+        $(idElement).append(elemento);
 
         // Delegar el evento clic desde el elemento #listaMedicos para manejar "Ver todo" y "Ver menos"
         $('#listaMedicos').off('click', '.ver-todo').on('click', '.ver-todo', function() {
@@ -617,15 +618,29 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 const fullExamenesList = examenes.map(examen => `
                     <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
                 `).join('');
-                $(this).closest('.examenLista').find('.listaExamenes').html(fullExamenesList + '<p class="fw-small fs--2 mb-0 text-primary text-decoration-underline cursor-pointer ver-todo expanded">Ver menos</p>');
+                $(this).closest('.examenLista').find('.listaExamenes').html(fullExamenesList + '<p class="fw-small fs--2 mb-0 text-primary cursor-pointer ver-todo expanded">Ver menos</p>');
             } else {
                 // Volver a mostrar solo los exámenes limitados
                 const limitedExamenesList = examenesLimitados.map(examen => `
                     <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
                 `).join('');
-                $(this).closest('.examenLista').find('.listaExamenes').html(limitedExamenesList + '<p class="fw-small fs--2 mb-0 ver-todo">Ver todo</p>');
+                $(this).closest('.examenLista').find('.listaExamenes').html(limitedExamenesList + '<p class="fw-small fs--2 mb-0 text-primary cursor-pointer ver-todo">Ver todo</p>');
             }
         });
+    }
+
+    async function obtenerPreparacionPrevia(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            //dataCita.facturacion = data.data;
+            //mostrarInfo();
+        }
     }
 
     function getWeekCurrent(){

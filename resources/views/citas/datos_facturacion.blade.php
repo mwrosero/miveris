@@ -402,7 +402,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 tipoServicio = "ORDEN";
                 tipoSolicitud = "LAB";
             }else{
-                obtenerPreparacionPrevia();
+                //obtenerPreparacionPrevia();
                 tipoServicio= "DOMICILIO";
                 tipoSolicitud= "LAB";
             }
@@ -810,8 +810,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         console.log(data);
 
         if (data.code == 200){
-            dataCita.facturacion = data.data;
-            mostrarInfo();
+            //dataCita.facturacion = data.data;
+            //mostrarInfo();
         }
     }
 
