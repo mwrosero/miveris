@@ -470,7 +470,7 @@ $tokenMods = base64_encode(uniqid());
 
     // descargar documento pdf
     async function descargarDocumentoPdfPrincipal(datos){
-        console.log('datosrr', datos.realizados);
+        /*console.log('datosrr', datos.realizados);
         let datosFiltrados;
         if(datos.pendientes.length > 0){
             datosFiltrados = datos.pendientes[datos.pendientes.length - 1];
@@ -479,15 +479,12 @@ $tokenMods = base64_encode(uniqid());
             datosFiltrados = datos.realizados[datos.realizados.length - 1];
         }
         console.log('datosFiltrados', datosFiltrados);
+        let secuenciaAtencion = datos.secuenciaAtenciones;
+        console.log('datossFiltrados', datosFiltrados.tipoCard);*/
+        //reporteAcumulativoAtencion
         let args = [];
         let canalOrigen = 'APP_CMV'
-        let secuenciaAtencion = datos.secuenciaAtenciones;
-        console.log('datossFiltrados', datosFiltrados.tipoCard);
-        if(datosFiltrados.tipoCard == 'AGENDA'){
-            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datosFiltrados.idOrden}`;
-        } else {
-            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=RECETA&numeroOrden=&secuenciaReceta=${datosFiltrados.secuenciaReceta}`;
-        }
+        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/reporteAcumulativoAtencion?secuenciaAtencion=${secuenciaAtencion.secuenciaAtenciones}`;
         
         args["method"] = "GET";
         args["showLoader"] = true;

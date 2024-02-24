@@ -52,7 +52,7 @@ Mi Veris - Citas - Receta médica
                     <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
                     <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
-                    <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
+                    <a href="#" class="btn btn m-0 w-100 px-4 py-3" data-bs-dismiss="modal">No lo he hecho</a>
                 </div>
             </div>
         </div>
@@ -700,7 +700,7 @@ Mi Veris - Citas - Receta médica
                     respuestaRecetas += ` <button type="button" class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
 
                     if(estado == 'REALIZADO'){
-                        respuestaRecetas = "";
+                        //respuestaRecetas = "";
                         // abrir offcanvas
                         respuestaRecetas += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
                     } else {
