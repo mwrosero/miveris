@@ -640,6 +640,18 @@ Mi Veris - Citas - Mis citas
                 "idCita": data.idCita
             }
             params.origen = "inicios";
+            if(datosConvenios.length == 0){
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+                location = url;
+                return;
+            }
             
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
 

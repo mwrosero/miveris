@@ -825,6 +825,7 @@ Mi Veris - Inicio
     $(document).on('click', '.btn-CambiarFechaCita', function(){
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
+        console.log('datasss', data);
         let url = $(this).attr('url-rel');
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
@@ -860,12 +861,20 @@ Mi Veris - Inicio
                 "idCita": data.idCita
             }
             params.origen = "inicios";
-            
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             if(datosConvenios.length == 0){
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
                 location = url;
                 return;
             }
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            
 
             llenarModalConvenios(datosConvenios, url);
 
