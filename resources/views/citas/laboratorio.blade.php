@@ -184,7 +184,7 @@ Mi Veris - Citas - Laboratorio
     async function obtenerTratamientosId(pacienteSeleccionado='', fechaDesde='', fechaHasta='', estado='PENDIENTE', esAdmin='S') {
         
         let args = [];
-        let canalOrigen = _canalOrigen;//'APP_CMV';
+        let canalOrigen = _canalOrigen;
                 
         //let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
         let numeroPaciente = '';
@@ -288,7 +288,7 @@ Mi Veris - Citas - Laboratorio
                                                             </div>
                                                             ${determinarFechasCaducadas(detalles, laboratorio)}
                                                             <div>
-                                                                ${determinarCondicionesBotones(detalles, estado)}
+                                                                ${determinarCondicionesBotones(detalles, estado, laboratorio)}
                                                             </div>
                                                             </div>
                                                         </div>
@@ -434,7 +434,7 @@ Mi Veris - Citas - Laboratorio
         
         let codigoEmpresa = 1
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);
@@ -451,7 +451,7 @@ Mi Veris - Citas - Laboratorio
         console.log('datosPdf', datos);
         console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen
         
         args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
         args["method"] = "GET";
@@ -523,7 +523,7 @@ Mi Veris - Citas - Laboratorio
 
 
     // determinar condiciones de los botones 
-    function determinarCondicionesBotones(datosServicio, estado) {
+    function determinarCondicionesBotones(datosServicio, estado, datosTratamiento) {
         let services = datosServicio;
         if (datosServicio.length == 0) {
             return `<div></div>`;
@@ -593,14 +593,22 @@ Mi Veris - Citas - Laboratorio
                 case "LAB":
                     let respuesta = "";
                     respuesta += ` <button type="button" class="btn text-primary-veris fw-normal fs--1 line-height-16 m-0" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                    
+                    let nuevosDatosLaboratorio = {
+                        datosConvenio: datosTratamiento.datosConvenio,
+                        datosServicio: datosServicio
+                    }
                     if(estado == 'REALIZADO'){
                         // clear respuesta
                         respuesta = "";
-                        respuesta += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        respuesta += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden" data-rel='${JSON.stringify(nuevosDatosLaboratorio)}'>Ver orden</button>`;
                     } else {
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
-                            respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-veris fw-normal fs--1 line-height-16 m-0">Ver resultados</a>`;
+
+                            let ruta = "/laboratorio-domicilio/" + "{{ $tokenCita }}";
+                            respuesta += `<a url-rel="${ruta}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-veris btnSolicitarLaboratorio" data-rel='${JSON.stringify(datosServicio)}'>Ver resultados</a>`;
+                        
                         } else {
                             respuesta += ``;
                         }
@@ -610,7 +618,10 @@ Mi Veris - Citas - Laboratorio
                         } else {
                             //condición para 'aplicaSolicitud'
                             if (datosServicio.aplicaSolicitud == "S") {
-                                respuesta += `<a href="/laboratorio-domicilio/${datosServicio.codigoTratamiento}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0"><i class="bi bi-telephone-fill me-2"></i>Solicitar</a>`;
+
+                                let ruta = "/laboratorio-domicilio/" + "{{ $tokenCita }}";
+                                respuesta += `<a url-rel="${ruta}" class="btn btn-sm btn-primary-veris shadow-none me-1 btnSolicitarLaboratorio" data-rel='${JSON.stringify(nuevosDatosLaboratorio)}'><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            
                             } else if (datosServicio.permitePago == "S"){
                                 let params = {};
                                 params.idPaciente = datosServicio.pacPacNumero;
@@ -618,7 +629,7 @@ Mi Veris - Citas - Laboratorio
                                 params.codigoEmpresa = datosServicio.codigoEmpresa;
                                 let ulrParams = btoa(JSON.stringify(params));
                                 let ruta = `/citas-laboratorio/` + "{{$tokenCita}}";
-                                respuesta += `<a href="${ruta}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-Pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                                respuesta += `<a href="${ruta}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
                             }
                         }
                     }
@@ -741,8 +752,8 @@ Mi Veris - Citas - Laboratorio
     });
 
 
-    // boton btn-Pagar
-    $(document).on('click', '.btn-Pagar', function(){
+    // boton btn-pagar
+    $(document).on('click', '.btn-pagar', function(){
         let datosServicio = $(this).data('rel');
         // capturar datarel del filtro
         let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
@@ -774,6 +785,47 @@ Mi Veris - Citas - Laboratorio
         dataCita.origen = 'LABORATORIO';
 
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+    });
+
+
+    // boton btnSolicitarLaboratorio
+    $(document).on('click', '.btnSolicitarLaboratorio', function(){
+        let datos = $(this).data('rel');
+        let datosServicio = datos.datosServicio;
+        let datosConvenioLaboratorio = datos.datosConvenio;
+        
+        let url = $(this).attr('url-rel');
+        // capturar datarel del filtro
+        let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
+        
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = true;
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = false;
+        }
+        let dataCita = {};
+        dataCita.online = modalidad;
+        dataCita.paciente = dataPaciente;
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+           
+        };
+        dataCita.convenio = datosConvenioLaboratorio;
+        dataCita.datosTratamiento = datosServicio;
+        dataCita.datosTratamiento.numeroPaciente = datosServicio.pacPacNumero;
+        dataCita.origen = 'LABORATORIO';
+
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+        window.location.href = url;
+
     });
 </script>
 @endpush
