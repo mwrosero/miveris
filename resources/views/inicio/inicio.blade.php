@@ -905,11 +905,12 @@ Mi Veris - Inicio
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             
             const datosConvenioServicio = await consultarConvenios();
+            console.log('datosConvenioServicio', datosConvenioServicio);
             if (datosConvenioServicio.length == 0) {
                 location = url;
             } else {
 
-                llenarModalConvenios(datosConvenioServicio, url);
+                llenarModalConvenios(datosConvenioServicio.data, url);
 
                 $('#convenioModal').modal('show');
             }
