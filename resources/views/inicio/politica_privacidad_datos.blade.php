@@ -205,9 +205,9 @@ Mi Veris - Politica-privacidad-datos
         if(respone.code == 200){
             console.log('respone.data.estadoPoliticas',respone.data.estadoPoliticas);
             if((respone.data.estadoPoliticas == 'N' || respone.data.estadoPoliticas == 'R') && respone.data.isPoliticasAceptadas == false){
-                $('#inlineRadioCancelacionNo').prop('checked', true);
-            }else{
                 $('#inlineRadioCancelacionSi').prop('checked', true);
+            }else{
+                $('#inlineRadioCancelacionNo').prop('checked', true);
             }
         }
         await obtenerDatosUsuario();
@@ -316,10 +316,10 @@ Mi Veris - Politica-privacidad-datos
 
         console.log('click');
         $(this).prop('disabled', true); // Disable the button
-        await aceptarPoliticas();
+        // await aceptarPoliticas();
         $(this).prop('disabled', false); // Re-enable the button
 
-        await actualizarDatosUsuario();
+        // await actualizarDatosUsuario();
         await enviarCorreoConfirmacion();
         await obtenerPPD();
         
@@ -338,7 +338,7 @@ Mi Veris - Politica-privacidad-datos
 
         args["data"] = JSON.stringify({
             
-            "aceptaPoliticas": $('#inlineRadioCancelacionNo').prop('checked') ? false : $('#inlineRadioCancelacionSi').prop('checked') ? true : false,
+            "aceptaPoliticas": $('#inlineRadioCancelacionNo').prop('checked') ? true : $('#inlineRadioCancelacionSi').prop('checked') ? false : false,
             "versionPoliticas": localStorage.getItem('ultimaVersionPoliticas'),
             "codigoEmpresa": 1,
             "plataforma": "WEB",
