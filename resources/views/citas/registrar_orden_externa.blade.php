@@ -26,6 +26,20 @@ $data1 = json_decode($data);
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalErrorArchivo" tabindex="-1" aria-labelledby="modalErrorArchivoLabel">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris">Archivo no soportado, por favor revisa las especificaciones técnicas</p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris fw-medium fs--18 m-0 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Nueva orden externa') }}</h5>
     </div>
@@ -50,7 +64,7 @@ $data1 = json_decode($data);
                                 <li>Diagnóstico</li>
                                 <li>Firma y sello del médico</li>
                             </ul>
-                            <h5>Registro de datos del paciente</h5>
+                            <h5 class="mb-0">Registro de datos del paciente</h5>
                             <div class="col-md-12">
                                 <label for="paciente" class="form-label fw-bold">Nombre del Paciente *</label>
                                 <input type="text" class="form-control " name="paciente" id="paciente" placeholder="Nombre del paciente" disabled />
@@ -96,12 +110,12 @@ $data1 = json_decode($data);
 
     // Agregar evento de cambio al elemento de carga de archivos
     inputUpload.addEventListener('change', function() {
+        totalArchivos = 0;
         $('#fileList').empty()
         // Obtener la lista de archivos seleccionados
         var archivos = inputUpload.files;
         // Verificar la cantidad total de archivos (ya cargados más los nuevos seleccionados)
         if (totalArchivos + archivos.length > 5) {
-            
             agregarMensaje('Seleccione un máximo de 5 archivos.');
             inputUpload.value = ''; // Limpiar la selección
             return;
@@ -134,8 +148,8 @@ $data1 = json_decode($data);
             fileListContainer.classList.add('mt-3');
             // Crear elemento div para mostrar detalles del archivo
             var archivoDiv = document.createElement('div');
-            archivoDiv.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'border', 'rounded', 'fs--2', 'ps-2', 'mb-2');
-            archivoDiv.innerHTML = '<strong class="fs--2">' + archivo.name + '</strong> (' + formatBytes(archivo.size) + ')';
+            archivoDiv.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'border', 'rounded', 'fs--3', 'ps-2', 'mb-2');
+            archivoDiv.innerHTML = '<strong class="fs--3 overflow-hidden text-truncate w-75">' + archivo.name + '</strong> (' + formatBytes(archivo.size) + ')';
 
             // Agregar botón de eliminación
             var btnEliminar = document.createElement('button');
@@ -170,11 +184,12 @@ $data1 = json_decode($data);
 
     // Función para agregar mensajes debajo de la etiqueta label
     function agregarMensaje(mensaje) {
-        var mensajeDiv = document.createElement('div');
+        /*var mensajeDiv = document.createElement('div');
         mensajeDiv.classList.add('mensaje-error', 'fw-bold', 'fs--2');
         // mensajeDiv.className = '';
         mensajeDiv.textContent = mensaje;
-        fileListContainer.appendChild(mensajeDiv);
+        fileListContainer.appendChild(mensajeDiv);*/
+        $('#modalErrorArchivo').modal('show');
     }
 
     // Función para formatear bytes a kilobytes o megabytes

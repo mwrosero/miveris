@@ -636,8 +636,8 @@ Mi Veris - Citas - {{ $titulo }}
     // funciones asyncronas
     // Consultar los tratamientos de un paciente imagen y procedimientos
     async function obtenerTratamientosId(pacienteSeleccionado='', fechaDesde='', fechaHasta='', estado='PENDIENTE', esAdmin='S') {
-        console.log('obtenerTratamientosImagenProcedimientos');
-        console.log('pacienteSeleccionado', pacienteSeleccionado);
+        // console.log('obtenerTratamientosImagenProcedimientos');
+        // console.log('pacienteSeleccionado', pacienteSeleccionado);
         let args = [];
         let canalOrigen = 'APP_CMV';
                 
@@ -689,7 +689,7 @@ Mi Veris - Citas - {{ $titulo }}
                     } else {
                         if (data.data.tienePermisoAdmin) {
                             datosLaboratorio = data.data.items;
-                            console.log('datosLaboratorio',datosLaboratorio);
+                            // console.log('datosLaboratorio',datosLaboratorio);
                             let html = $('#contenedorTratamientosImagenes');
                             $('#mensajeNoTienesImagenesProcedimientos').addClass('d-none');
                             $('#mensajeNoTienesPermisosAdministrador').addClass('d-none');
@@ -755,10 +755,10 @@ Mi Veris - Citas - {{ $titulo }}
                     } 
                 }
             } else if(estado == 'REALIZADO'){
-                console.log('entrando a realizado');
+                // console.log('entrando a realizado');
                 if (data.code == 200) {
                     if(data.data.items.length == 0){
-                        console.log('entrando a realizado vacio');
+                        // console.log('entrando a realizado vacio');
                         if (data.data.tienePermisoAdmin) {
                             let html = $('#contenedorTratamientosImagenesRealizados');
                             html.empty();
@@ -774,9 +774,9 @@ Mi Veris - Citas - {{ $titulo }}
                         if (data.data.tienePermisoAdmin) {
                             $('#mensajeNoTienesImagenesProcedimientosRealizados').addClass('d-none');
                             $('#mensajeNoTienesPermisosAdministradorRealizados').addClass('d-none');
-                            console.log('entrando a realizado lleno');
+                            // console.log('entrando a realizado lleno');
                             datosLaboratorio = data.data.items;
-                            console.log('datosLaboratorio',datosLaboratorio);
+                            // console.log('datosLaboratorio',datosLaboratorio);
                             let html = $('#contenedorTratamientosImagenesRealizados');
                             html.empty();
 
@@ -859,7 +859,7 @@ Mi Veris - Citas - {{ $titulo }}
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log('dataFa', data);
+        // console.log('dataFa', data);
         if(data.code == 200){
             familiar = data.data;
             mostrarListaPacientesFiltro();
@@ -882,7 +882,7 @@ Mi Veris - Citas - {{ $titulo }}
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);
-        console.log('dataConvenio', dataConvenio);
+        // console.log('dataConvenio', dataConvenio);
         if(dataConvenio.code == 200){
             datosConvenios = dataConvenio.data;
         }
@@ -892,15 +892,15 @@ Mi Veris - Citas - {{ $titulo }}
 
     // descargar documento pdf
     async function descargarDocumentoPdf(datos){
-        console.log('datosPdf', datos);
-        console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
+        // console.log('datosPdf', datos);
+        // console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
         let args = [];
         let canalOrigen = 'APP_CMV'
         
         args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        console.log('arsgs', args["endpoint"]);
+        // console.log('arsgs', args["endpoint"]);
         try {
             const blob = await callInformes(args);
             const pdfUrl = URL.createObjectURL(blob);
@@ -949,8 +949,8 @@ Mi Veris - Citas - {{ $titulo }}
 
     // determinar condiciones de los botones 
     function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
-        console.log(datosServicio)
-        console.log(datosTratamiento)
+        // console.log(datosServicio)
+        // console.log(datosTratamiento)
         let services = datosServicio;
         if (datosServicio.length == 0) {
             return `<div></div>`;
