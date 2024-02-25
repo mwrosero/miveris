@@ -301,7 +301,9 @@ Mi Veris - Inicio
         $(document).on('click', '.btn-pagar', function(){
             let data = $(this).data('rel');
             console.log('dataPagar', data);
-            if(datosConvenios.length > 0 && datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
+            if(data.permitePagoReserva == "N"){
+            // if(datosConvenios.length > 0 && datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
+                
                 // Modal de error
                 // setear el mensaje de error en mensajeError
                 $('#mensajeError').text(data.mensajePagoReserva);
@@ -320,17 +322,24 @@ Mi Veris - Inicio
                 esOnline : data.esVirtual,
                 nombre : data.especialidad,
             }
-            if (datosConvenios.length > 0) {
-                params.convenio = datosConvenios[0];
-            } else {
-                params.convenio = {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                };
+            params.convenio = {
+                permitePago: data.permitePagoReserva,
+                permiteReserva: data.permitePagoReserva,
+                idCliente: data.idCliente,
+                codigoConvenio: data.codigoConvenio,
+                secuenciaAfiliado: data.secuenciaAfiliado,
             }
+            // if (datosConvenios.length > 0) {
+            //     params.convenio = datosConvenios[0];
+            // } else {
+            //     params.convenio = {
+            //         "permitePago": "S",
+            //         "permiteReserva": "S",
+            //         "idCliente": null,
+            //         "codigoConvenio": null,
+            //         "secuenciaAfiliado" : null,
+            //     };
+            // }
 
             params.paciente = {
                 "numeroIdentificacion": data.numeroIdentificacion,
@@ -825,6 +834,7 @@ Mi Veris - Inicio
     $(document).on('click', '.btn-CambiarFechaCita', function(){
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
+        console.log('datasss', data);
         let url = $(this).attr('url-rel');
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
@@ -860,12 +870,22 @@ Mi Veris - Inicio
                 "idCita": data.idCita
             }
             params.origen = "inicios";
-            
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+            const datosConveniosFecha = consultarConvenios();
             if(datosConvenios.length == 0){
-                location = url;
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+                // location = url;
                 return;
             }
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            
 
             llenarModalConvenios(datosConvenios, url);
 

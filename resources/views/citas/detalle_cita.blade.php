@@ -196,9 +196,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if(dataCita.reservaEdit){
             codigoReserva = dataCita.reservaEdit.idCita;
-            numeroOrden = dataCita.reservaEdit.numeroOrden;
-            codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden;
-            lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden;
+            numeroOrden = dataCita.reservaEdit.numeroOrden || '';
+            codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden || '';
+            lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden || '';
         }
         if(dataCita.tratamiento){
             if(dataCita.origen && dataCita.origen == "Listatratamientos"){
