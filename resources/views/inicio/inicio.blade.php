@@ -323,11 +323,17 @@ Mi Veris - Inicio
                 nombre : data.especialidad,
             }
             params.convenio = {
-                permitePago: data.permitePagoReserva,
-                permiteReserva: data.permitePagoReserva,
+                
+                secuenciaAfiliado: data.secuenciaAfiliado,
                 idCliente: data.idCliente,
                 codigoConvenio: data.codigoConvenio,
-                secuenciaAfiliado: data.secuenciaAfiliado,
+                codigoEmpresa: data.codigoEmpresa,
+                permitePagoLab : data.permitePagoLab,
+                permitePago: data.permitePagoReserva,
+                mensajeBloqueoPago : data.mensajeBloqueoPago,
+                mensajeBloqueoReserva : data.mensajeBloqueoReserva,
+                permiteReserva: data.permitePagoReserva,
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
             }
             // if (datosConvenios.length > 0) {
             //     params.convenio = datosConvenios[0];
@@ -871,18 +877,30 @@ Mi Veris - Inicio
             }
             params.origen = "inicios";
 
-            const datosConveniosFecha = consultarConvenios();
-            if(datosConvenios.length == 0){
-                params.convenio = {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                };
-                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-                // location = url;
-                return;
+            // if(datosConvenios.length == 0){
+            //     params.convenio = {
+            //         "permitePago": "S",
+            //         "permiteReserva": "S",
+            //         "idCliente": null,
+            //         "codigoConvenio": null,
+            //         "secuenciaAfiliado" : null,
+            //     };
+            //     localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            //     // location = url;
+            //     return;
+            // }
+            params.convenio = {
+                
+                secuenciaAfiliado: data.secuenciaAfiliado,
+                idCliente: data.idCliente,
+                codigoConvenio: data.codigoConvenio,
+                codigoEmpresa: data.codigoEmpresa,
+                permitePagoLab : data.permitePagoLab,
+                permitePago: data.permitePagoReserva,
+                mensajeBloqueoPago : data.mensajeBloqueoPago,
+                mensajeBloqueoReserva : data.mensajeBloqueoReserva,
+                permiteReserva: data.permitePagoReserva,
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
             }
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             
@@ -901,21 +919,34 @@ Mi Veris - Inicio
                 esOnline : data.esVirtual,
                 nombre : data.especialidad,
             }
-
-            if (datosConvenios.length > 0) {
-                console.log('datosConvenio', datosConvenios);
-                // datosconvenio posicion 0
-                params.convenio = datosConvenios[0];
-
-            } else {
-                params.convenio = {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                };
+            params.convenio = {
+                
+                secuenciaAfiliado: data.secuenciaAfiliado,
+                idCliente: data.idCliente,
+                codigoConvenio: data.codigoConvenio,
+                codigoEmpresa: data.codigoEmpresa,
+                permitePagoLab : data.permitePagoLab,
+                permitePago: data.permitePagoReserva,
+                mensajeBloqueoPago : data.mensajeBloqueoPago,
+                mensajeBloqueoReserva : data.mensajeBloqueoReserva,
+                permiteReserva: data.permitePagoReserva,
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
             }
+
+            // if (datosConvenios.length > 0) {
+            //     console.log('datosConvenio', datosConvenios);
+            //     // datosconvenio posicion 0
+            //     params.convenio = datosConvenios[0];
+
+            // } else {
+            //     params.convenio = {
+            //         "permitePago": "S",
+            //         "permiteReserva": "S",
+            //         "idCliente": null,
+            //         "codigoConvenio": null,
+            //         "secuenciaAfiliado" : null,
+            //     };
+            // }
             // params.paciente = {
             //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
             //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
