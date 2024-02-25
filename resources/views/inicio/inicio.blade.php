@@ -837,7 +837,7 @@ Mi Veris - Inicio
     }
 
     // setear los valores de la cita en localstorage
-    $(document).on('click', '.btn-CambiarFechaCita', function(){
+    $(document).on('click', '.btn-CambiarFechaCita', async function(){
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
         console.log('datasss', data);
@@ -904,10 +904,16 @@ Mi Veris - Inicio
             }
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             
+            const datosConvenioServicio = await consultarConvenios();
+            console.log('datosConvenioServicio', datosConvenioServicio);
+            if (datosConvenioServicio.length == 0) {
+                location = url;
+            } else {
 
-            llenarModalConvenios(datosConvenios, url);
+                llenarModalConvenios(datosConvenioServicio.data, url);
 
-            $('#convenioModal').modal('show');
+                $('#convenioModal').modal('show');
+            }
         }else{    
             let params = {}
             params.online = data.esVirtual;
