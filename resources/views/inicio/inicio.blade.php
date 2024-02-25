@@ -906,7 +906,7 @@ Mi Veris - Inicio
             
             const datosConvenioServicio = await consultarConvenios();
             console.log('datosConvenioServicio', datosConvenioServicio);
-            if (datosConvenioServicio.length == 0) {
+            if (datosConvenioServicio.data.length == 0) {
                 location = url;
             } else {
 
