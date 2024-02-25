@@ -670,20 +670,28 @@ Mi Veris - Citas - Mis citas
                 nombre : data.especialidad,
             }
 
-            if (datosConvenios.length > 0) {
-                console.log('datosConvenio', datosConvenios);
-                // datosconvenio posicion 0
-                params.convenio = datosConvenios[0];
-
-            } else {
-                params.convenio = {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                };
+            params.convenio = {
+                permitePago: data.permitePagoReserva,
+                permiteReserva: data.permitePagoReserva,
+                idCliente: data.idCliente,
+                codigoConvenio: data.codigoConvenio,
+                secuenciaAfiliado: data.secuenciaAfiliado,
             }
+
+            // if (datosConvenios.length > 0) {
+            //     console.log('datosConvenio', datosConvenios);
+            //     // datosconvenio posicion 0
+            //     params.convenio = datosConvenios[0];
+
+            // } else {
+            //     params.convenio = {
+            //         "permitePago": "S",
+            //         "permiteReserva": "S",
+            //         "idCliente": null,
+            //         "codigoConvenio": null,
+            //         "secuenciaAfiliado" : null,
+            //     };
+            // }
             // params.paciente = {
             //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
             //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
