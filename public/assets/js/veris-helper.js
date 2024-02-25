@@ -318,15 +318,19 @@ function esValidaCedula(cedula) {
     return false;
 }
 
-async function verificarCuenta(){
+async function verificarCuenta() {
     let args = [];
-    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/cuenta?tipoIdentificacion="+getInput('tipoIdentificacion')+"&numeroIdentificacion="+getInput('numeroIdentificacion');
+    args["endpoint"] = api_url + "/digitalestest/v1/seguridad/cuenta?tipoIdentificacion=" + getInput('tipoIdentificacion') + "&numeroIdentificacion=" + getInput('numeroIdentificacion');
     args["method"] = "GET";
     args["showLoader"] = false;
 
-    const data = await call(args);
-    if(data.code == 200 && data.data != null){
-        return true;
+    try {
+        const data = await call(args);
+        if ('code' in data && data.code == 200 && data.data != null) {
+            return true;
+        }
+    } catch (error) {
+        console.error("Error al verificar la cuenta:", error);
     }
 
     return false;

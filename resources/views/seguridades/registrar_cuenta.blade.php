@@ -291,6 +291,7 @@
 			let errors = false;
             let msg = `<ul class="ms-0 text-start" id="itemsMsg">`;
             let existeCuenta = await verificarCuenta();
+			console.log(7,existeCuenta);
             let title = 'Campos requeridos';
             if(!existeCuenta){
 	            if(getInput('numeroIdentificacion') == ""){
@@ -389,6 +390,12 @@
 			let errors = false;
             let msg = `<ul class="ms-0 text-start">`;
 			let title = 'Campos requeridos';
+
+			// cedula validar vacio 
+			if(campoEstaVacio(getInput('numeroIdentificacion'))){
+			    errors = true;
+			    msg += `<li class="ms-0">Campo identificación es requerido</li>`;
+			}
 			
 			if(campoEstaVacio(getInput('primerNombre'))){
 			    errors = true;
