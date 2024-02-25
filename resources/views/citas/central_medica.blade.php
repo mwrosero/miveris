@@ -137,7 +137,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         <div class="card-body p--2 pb-0">
                                             <div class="d-flex mb-2">
                                                 <div class="avatar avatar-88 me-2">
-                                                    <img src="${path_central}" class="card-img-top" alt="${central.nombreTipoSucursal}">
+                                                    <img src="${central.nombre_foto}" class="card-img-top" alt="${central.nombreTipoSucursal}">
                                                 </div>
                                                 <div class="col">
                                                     <h6 class="fs--16 line-height-20 fw-medium mb-1">${capitalizarElemento(central.nombreSucursal)}</h6>
