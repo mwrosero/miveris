@@ -639,7 +639,7 @@ Mi Veris - Citas - {{ $titulo }}
         // console.log('obtenerTratamientosImagenProcedimientos');
         // console.log('pacienteSeleccionado', pacienteSeleccionado);
         let args = [];
-        let canalOrigen = 'APP_CMV';
+        let canalOrigen = _canalOrigen;
                 
         let numeroPaciente = '';
         if (pacienteSeleccionado && numeroPaciente != {{ Session::get('userData')->numeroPaciente }}) {

@@ -317,7 +317,7 @@ $tokenMods = base64_encode(uniqid());
     async function obtenerTratamientos(){
         $('#datosTratamientoCard').empty();
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen;
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
