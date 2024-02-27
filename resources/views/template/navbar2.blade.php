@@ -15,6 +15,8 @@
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-4 me-xl-1" id="dropdownNotifications">
                 <a class="nav-link dropdown-toggle hide-arrow fs-3" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
                     <i class="fa-solid fa-bell"></i>
+                    {{-- <span class="badge rounded-pill badge-notification bg-danger campana-notificaciones">9</span> --}}
+                    <span class="icon-button__badge d-none" id="numeroNotificaciones"></span>
                 </a>
             </li>
             <!--/ Notification -->
@@ -257,16 +259,7 @@
             if (data.data.cantidadNotificaciones > 0){
                 $('#numeroNotificaciones').removeClass('d-none');
                 $('#numeroNotificaciones').html(data.data.cantidadNotificaciones);
-                // agregar clase danger
-                $('#numeroNotificaciones').addClass('badge-danger');
-            } else {
-                // console.log('no hay notificaciones dsd');
-                $('#numeroNotificaciones').addClass('d-none');
-                // clear numero notificaciones
-                $('#numeroNotificaciones').html('');
-
-            }
-            
+            }            
         return data;
         }
     }
@@ -398,16 +391,15 @@
         font-size: 24px; /* ajusta el tamaño según sea necesario */
     }
 
-    #numeroNotificaciones {
+    /*#numeroNotificaciones {
         position: absolute;
         bottom: 0;
         right: 0;
         transform: translate(50%, 50%);
-        font-size: 12px; /* ajusta el tamaño del texto según sea necesario */
-    }
+        font-size: 12px;
+    }*/
 
     .verisNotificacion {
-        
         font-family: Gotham Rounded;
         font-size: 14px;
         font-weight: 350;
@@ -415,8 +407,22 @@
         letter-spacing: 0em;
         text-align: left;
         color: #0071CE;
+    }
 
-
+    .icon-button__badge {
+        position: absolute;
+        top: 12px;
+        right: -10px;
+        width: 12px;
+        height: 12px;
+        background: #fb1503;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        font-size: 40%;
+        padding: 9px;
     }
 
 </style>
