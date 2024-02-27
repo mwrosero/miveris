@@ -639,7 +639,7 @@ Mi Veris - Citas - {{ $titulo }}
         // console.log('obtenerTratamientosImagenProcedimientos');
         // console.log('pacienteSeleccionado', pacienteSeleccionado);
         let args = [];
-        let canalOrigen = 'APP_CMV';
+        let canalOrigen = _canalOrigen;
                 
         let numeroPaciente = '';
         if (pacienteSeleccionado && numeroPaciente != {{ Session::get('userData')->numeroPaciente }}) {
@@ -878,7 +878,7 @@ Mi Veris - Citas - {{ $titulo }}
         
         let codigoEmpresa = 1
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);

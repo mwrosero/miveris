@@ -427,11 +427,11 @@
 
     .icon-button__badge {
         position: absolute;
-        top: 12px;
-        right: -10px;
+        top: 15px;
+        right: -5px;
         width: 12px;
         height: 12px;
-        background: #fb1503;
+        background: #ef4f62;
         color: #ffffff;
         display: flex;
         justify-content: center;
