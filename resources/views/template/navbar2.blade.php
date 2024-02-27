@@ -306,16 +306,16 @@
                 botonNotificacion = ``;
                 break;
             case 'CITA_MEDICA':
-                botonNotificacion = `<a href="/citas" class="fs--1 text-primary-veris">Agendar cita</a>`;
+                botonNotificacion = `<div class="btn text-primary-veris fw-medium fs--2 p-0" href="/citas" class="fs--1 text-primary-veris">Agendar cita</div>`;
                 break;
             case 'ORDEN_HC':
-                botonNotificacion = `<a href="/mis-tratamientos" class="fs--1 text-primary-veris">Ver</a>`;
+                botonNotificacion = `<div class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-tratamientos" class="fs--1 text-primary-veris">Ver</div>`;
                 break;
             case 'REAGENDAR_CITA' :
-                botonNotificacion = `<a href="/mis-citas" class="fs--1 text-primary-veris">Reagendar</a>`;
+                botonNotificacion = `<div class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-citas" class="fs--1 text-primary-veris">Reagendar</div>`;
                 break;
             case 'PROXIMA_CITA' :
-                botonNotificacion = `<a href="/mis-citas" class="fs--1 text-primary-veris">Ver</a>`;
+                botonNotificacion = `<div class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-citas" class="fs--1 text-primary-veris">Ver</div>`;
                 break;
         }
         return botonNotificacion;
@@ -382,6 +382,22 @@
     $('#dropdownNotifications').click(function(){
         getNotificaciones();
     });
+
+    async function actualizarEstadoNotificacion(estado, codigoNotificacion){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
+        
+        args["method"] = "PUT";
+        args["showLoader"] = true;
+        // console.log(2,args["endpoint"]);
+        
+        const data = await call(args);
+        // console.log('cambiar estado notificacion', data);
+        if (data.code == 200) {
+            cantidadNotificaciones();
+        }
+    }
 
 
 </script>
