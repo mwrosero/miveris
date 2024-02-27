@@ -183,7 +183,7 @@ Mi Veris - Órdenes externas
             numeroIdentificacion = datos.numeroIdentificacion;
         }
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);
@@ -206,7 +206,7 @@ Mi Veris - Órdenes externas
             tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
         }
 
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/listaSolicitudes?canalOrigen=APP_CMV&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${codigoUsuario}&tipoIdentificacion=${tipoIdentificacion}&esExterna=S`;
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/listaSolicitudes?canalOrigen=${_canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${codigoUsuario}&tipoIdentificacion=${tipoIdentificacion}&esExterna=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

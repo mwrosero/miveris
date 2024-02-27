@@ -369,7 +369,7 @@ $tokenMods = base64_encode(uniqid());
             datosExterna = false;
         }
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
         args["method"] = "PUT";
@@ -415,7 +415,7 @@ $tokenMods = base64_encode(uniqid());
         console.log('datosInterconsulta', datos);
         
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
         args["method"] = "PUT";

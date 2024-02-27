@@ -219,7 +219,7 @@ Mi Veris - Citas - tratamiento
     async function valorizacionServicios() {
         let args = {};
         let idTratamiento = codigoTratamiento;
-        let canalOrigenDigital = 'APP_CMV';
+        let canalOrigenDigital = _canalOrigen;
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
         args["method"] = "POST";
         args["showLoader"] = true;
