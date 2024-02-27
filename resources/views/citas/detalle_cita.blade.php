@@ -154,7 +154,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             <p class="fs--2 line-height-16 mb-1 text-capitalize">Dr(a) ${dataCita.horario.nombreMedico.toLowerCase()}</p>
             <p class="fs--2 line-height-16 mb-1 text-capitalize">${nombrePaciente.toLowerCase()}</p>`;
         if(dataCita.convenio.codigoConvenio){
-            elem += `<p class="fs--2 line-height-16 mb-1 text-capitalize">${dataCita.convenio.nombreConvenio.toLowerCase()}</p>`
+            elem += `<p class="fs--2 line-height-16 mb-1 text-capitalize">${ (dataCita.convenio.nombreConvenio) ? dataCita.convenio.nombreConvenio.toLowerCase() : ''}</p>`
         }
         $('#contentDetalleCita').html(elem);
 
