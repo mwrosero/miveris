@@ -52,7 +52,6 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/promocion/detalle/{params}', [DashboardController::class, 'promocionDetalle'])->name('home.promocionDetalle')->withoutMiddleware(['guest']);
 
     #Citas
-
     //Route::get('/agendamiento', [CitasController::class, 'agendamiento'])->name('agendamiento')->withoutMiddleware(['guest']);
     Route::get('/citas', [CitasController::class, 'citas'])->name('citas')->withoutMiddleware(['guest']);
     Route::get('/citas-elegir-paciente/{params}',[CitasController::class, 'listaPacientes'])->name('citas.listaPacientes')->withoutMiddleware(['guest']);
@@ -70,6 +69,9 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/citas-confirmar-pago/{params}',[CitasController::class, 'confirmarPago'])->name('citas.confirmarPago')->withoutMiddleware(['guest']);
     Route::get('/confirmacion-cita/{params}',[CitasController::class, 'confirmacionCita'])->name('citas.confirmacionCita')->withoutMiddleware(['guest']);
     Route::get('/cita-agendada/{params}',[CitasController::class, 'citaAgendada'])->name('citas.agendada')->withoutMiddleware(['guest']);
+    #Reserva VUA
+    Route::get('/urgencias-ambulatorias', [CitasController::class, 'reservarVUA'])->name('citas.reservarVUA')->withoutMiddleware(['guest']);
+    
     #Laboratorio
     Route::get('/laboratorio',[CitasController::class, 'laboratorio'])->name('citas.laboratorio')->withoutMiddleware(['guest']);
     Route::get('/laboratorio-domicilio/{params}', [CitasController::class, 'laboratorioDomicilio'])->name('citas.laboratorioDomicilio')->withoutMiddleware((['guest']));
@@ -131,4 +133,6 @@ Route::group(['middleware' => ['loggedUser']], function () {
 
     #Experiencia
     Route::get('/cuentanos-tu-experiencia', [ExperienciaController::class, 'tuExperiencia'])->name('experiencia')->withoutMiddleware(['guest']);
+
+    
 });
