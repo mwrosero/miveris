@@ -182,4 +182,9 @@ class CitasController extends Controller
     public function misCitas() {
         return view('citas.mis_citas');
     }
+
+    // Reserva VUA
+    public function reservarVUA() {
+        return view('citas.citas_vua');
+    }
 }

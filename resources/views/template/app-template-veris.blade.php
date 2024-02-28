@@ -280,6 +280,9 @@
                 },
             });
 
+            
+            
+            
             /* // Inicializa apexchart
             let chartElements = document.querySelectorAll(elemento);
             // Mapea valores de atributos personalizados a colores
