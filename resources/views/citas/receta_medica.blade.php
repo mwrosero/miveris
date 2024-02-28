@@ -180,7 +180,7 @@ Mi Veris - Citas - Receta médica
         console.log('obtenerTratamientosImagenProcedimientos');
         console.log('pacienteSeleccionado', pacienteSeleccionado);
         let args = [];
-        let canalOrigen = 'APP_CMV';
+        let canalOrigen = _canalOrigen;
                 
         let numeroPaciente = '';
         if (pacienteSeleccionado && numeroPaciente != {{ Session::get('userData')->numeroPaciente }}) {
@@ -433,7 +433,7 @@ Mi Veris - Citas - Receta médica
     async function consultarDetalleReceta(datos){
         console.log('datosDetta', datos);
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen;
         
         args["endpoint"] = api_url + `/digitalestest/v1/recetas/detallereceta?canalOrigen=${canalOrigen}&codigoReceta=${datos.secuenciaReceta}`;
         args["method"] = "GET";
@@ -501,7 +501,7 @@ Mi Veris - Citas - Receta médica
             datosExterna = false;
         }
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen;
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
         args["method"] = "PUT";

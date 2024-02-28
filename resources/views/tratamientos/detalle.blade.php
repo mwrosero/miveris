@@ -14,12 +14,9 @@ Mi Veris - Citas - tratamiento
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body p-3">
-                    <h1 class="modal-title fs-5 fw-medium text-center border-bottom mb-3 pb-2">Informacion</h1>
+                    <h1 class="modal-title fs-5 fw-medium text-center border-bottom mb-3 pb-2">Información</h1>
                     <p class="fs--1 fw-medium text-primary">Servicios incluidos en la compra</p>
                     <ul>
-                        <li>Opciones...</li>
-                        <li>Opciones...</li>
-                        <li>Opciones...</li>
                     </ul>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -49,7 +46,7 @@ Mi Veris - Citas - tratamiento
     </div>
 
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Tú tratamiento') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Tu tratamiento') }}</h5>
     </div>
     <section class="pt-3 px-0 px-md-3 pb-0">
         <div class="row g-0 justify-content-center mt-5">
@@ -100,11 +97,11 @@ Mi Veris - Citas - tratamiento
                         </div>
                         <div class="d-flex justify-content-center align-items-center bg-white mb-3 py-2">
                             <div class="content-img">
-                                <img src="{{ asset('assets/img/svg/regalo_abierto.svg') }}" alt="" />
+                                {{-- <img id="img_convenio" alt="" /> --}}
                             </div>
                             <div class="ms-4">
                                 <p class="text-danger fw-normal fs--2 mb-0" id="content-precioBase">Precio normal <del class="fw-medium" id="precioBaseEnd"></del></p>
-                                <h2 class="text-primary fw-medium mb-0" id="precioTotalEnd"></h2>
+                                <h2 class="text-primary fw-medium mb-0 text-center" id="precioTotalEnd"></h2>
                             </div>
                         </div>
                         <div class="p-3">
@@ -131,6 +128,9 @@ Mi Veris - Citas - tratamiento
     // llamada al dom
     
     document.addEventListener("DOMContentLoaded", async function () {
+        // Precargar elementos
+        $('.content-img').html(`<img src="${dataCita.convenio.rutaImagenConvenio}" onerror="this.src='{{ asset('assets/img/svg/regalo_abierto.svg') }}'" class="card-img-top">`);
+
         await valorizacionServicios();
         console.log(dataCita.promocion)
         $('body').on('change','.input-group input', async function(){
@@ -154,7 +154,7 @@ Mi Veris - Citas - tratamiento
             let listaServicios = modal.find('#listaServicios');
             recipient.detallePrestaciones.forEach((resultados) => {
                 resultados.grupoDetalles.forEach((resultados2) => {
-                    listaServicios.append(`<li>${resultados2.nombrePrestacion}</li>`);
+                    listaServicios.append(`<li>${capitalizarCadaPalabra(resultados2.nombrePrestacion)}</li>`);
                 });
             });
 
@@ -173,7 +173,7 @@ Mi Veris - Citas - tratamiento
             let listaServicios = modal.find('#listaServicios');
             recipient.detallePrestaciones.forEach((resultados) => {
                 resultados.grupoDetalles.forEach((resultados2) => {
-                    listaServicios.append(`<li>${resultados2.nombrePrestacion}</li>`);
+                    listaServicios.append(`<li>${capitalizarCadaPalabra(resultados2.nombrePrestacion)}</li>`);
                 });
             });
 
@@ -205,21 +205,22 @@ Mi Veris - Citas - tratamiento
     function llenarContenedorPrincipalDescuento() {
         let contenedorPrincipalDescuento = $('#contenedorPrincipal-descuento');
         contenedorPrincipalDescuento.empty();
-        if (dataCita.convenio.length > 0){
+        if(dataCita.convenio.idCliente !== null){
+            contenedorPrincipalDescuento.append(`<p class="mb-0">Compra y gestiona </p>
+                                                <p class="mb-0">tu tratamiento en app</p>`);
+        } else {
             contenedorPrincipalDescuento.append(`<p class="mb-0">Veris te regala un</p>
                                                 <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
                                                 <p class="mb-0">por pagar en app</p>`);
-        } else {
-            contenedorPrincipalDescuento.append(`<p class="mb-0">Compra y gestiona </p>
-                                                <p class="mb-0">tu tratamiento en app</p>`);
-        }    
+        } 
+        return; 
     }
 
     // Obtener la valorizacion de los servicios del tratamiento
     async function valorizacionServicios() {
         let args = {};
         let idTratamiento = codigoTratamiento;
-        let canalOrigenDigital = 'APP_CMV';
+        let canalOrigenDigital = _canalOrigen;
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
         args["method"] = "POST";
         args["showLoader"] = true;
@@ -365,6 +366,7 @@ Mi Veris - Citas - tratamiento
                         </div>`;
             $('#box-detalle-promocion').append(elem);
         }else{
+            await llenarContenedorPrincipalDescuento()
             let contentDescuento = $('#content-descuento');
             contentDescuento.empty();
             contentDescuento.append(`${dataCita.promocion.porcentajeDescuentoPromocion}% de descuento`);
@@ -377,7 +379,7 @@ Mi Veris - Citas - tratamiento
             dataCita.promocion.serviciosIncluyeCompra.forEach((resultados, index) => {
                 elemento += `<li class="list-group-item d-flex justify-content-between align-items-center shadow-veris border-0 rounded-0">
                                 <div class="w-auto">
-                                    <p class="text-veris mb-0">${resultados.descripcionServicio}</p>
+                                    <p class="text-veris mb-0">${capitalizarCadaPalabra(resultados.descripcionServicio)}</p>
                                     <div class="d-flex align-items-center">
                                         <p class="text-primary fw-medium fs--2 mb-0" id="precioTotal">
                                             
@@ -412,7 +414,7 @@ Mi Veris - Citas - tratamiento
             dataCita.promocion.serviciosNoIncluyeCompra.forEach((resultados) => {
                 //console.log(resultados.colorInformacion);
                 elementoNoIncluido += `<div class="d-flex align-items-center justify-content-between">
-                                            <div class="accordion-body" style="flex-grow: 1;">${resultados.descripcionServicio}</div>
+                                            <div class="accordion-body" style="flex-grow: 1;">${capitalizarCadaPalabra(resultados.descripcionServicio)}</div>
                                             <button type="button" class="btn btn-sm shadow-none py-0 px-1 text-primary" ;"
                                                 data-bs-toggle="modal" data-bs-target="#serviciosNoIncluidosModal" data-rel='${JSON.stringify(resultados)}'>
                                                 <i class="bi bi-info-circle" style="color: ${resultados.colorInformacion};"

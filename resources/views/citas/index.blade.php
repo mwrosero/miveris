@@ -263,6 +263,7 @@ Mi Veris - Citas
 
         let params = {}
         params.online = 'N';
+        params.vua = true;
 
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
 

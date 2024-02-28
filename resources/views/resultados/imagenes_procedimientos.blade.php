@@ -136,7 +136,7 @@ Mi Veris - Resultados
         const tipoServicio = "IMG,PROC";
         const canalOrigen = _canalOrigen;
         const args = {
-            "endpoint": `${api_url}/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${numeroIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
+            "endpoint": `${api_url}/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
         };
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -178,7 +178,7 @@ Mi Veris - Resultados
                                                         <img src=${quitarComillas(resultados.iconoServicio)} alt="imagenes-procedimientos" class="rounded-circle border" style="background: #F1F8E2;">
                                                     </div>
                                                     <button onclick="detallesResultadosLaboratorio('${resultados.codigoOrdenApoyo}')"
-                                                    type="button" class="btn btn-primary-veris shadow-none fs--1 line-height-16 border-0 rounded-1 verResultados" data-bs-toggle="modal" data-bs-target="#resultadImagenesProcedimientosModal">
+                                                    type="button" class="btn btn-primary-veris shadow-none fs--1 line-height-16 border-0 rounded-1 verResultados">
                                                         Ver resultados
                                                     </button>
                                                 </div>

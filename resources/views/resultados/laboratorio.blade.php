@@ -138,7 +138,7 @@ Mi Veris - Resultados
         const tipoServicio = "LAB";
         const canalOrigen = _canalOrigen;
         const args = {
-            "endpoint": `${api_url}/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario=${numeroIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
+            "endpoint": `${api_url}/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
         };
         args["method"] = "GET";
         args["showLoader"] = true;

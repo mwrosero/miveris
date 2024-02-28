@@ -13,8 +13,10 @@
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-4 me-xl-1" id="dropdownNotifications">
-                <a class="nav-link dropdown-toggle hide-arrow fs-3" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
+                <a class="nav-link dropdown-toggle hide-arrow fs-3 position-relative" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
                     <i class="fa-solid fa-bell"></i>
+                    {{-- <span class="badge rounded-pill badge-notification bg-danger campana-notificaciones">9</span> --}}
+                    <span class="icon-button__badge d-none" id="numeroNotificaciones"></span>
                 </a>
             </li>
             <!--/ Notification -->
@@ -176,7 +178,7 @@
                                         </p>
                                     </div>
                                     <div class="text-end">
-                                        ${determinarBotonNotificacion(notificacion.categoria)}
+                                        ${determinarBotonNotificacion(notificacion.categoria, notificacion.codigoNotificacion)}
                                         
                                     </div>
                                 </div>`;
@@ -257,16 +259,7 @@
             if (data.data.cantidadNotificaciones > 0){
                 $('#numeroNotificaciones').removeClass('d-none');
                 $('#numeroNotificaciones').html(data.data.cantidadNotificaciones);
-                // agregar clase danger
-                $('#numeroNotificaciones').addClass('badge-danger');
-            } else {
-                // console.log('no hay notificaciones dsd');
-                $('#numeroNotificaciones').addClass('d-none');
-                // clear numero notificaciones
-                $('#numeroNotificaciones').html('');
-
-            }
-            
+            }            
         return data;
         }
     }
@@ -305,7 +298,7 @@
     }
 
     //determinar boton notificacion
-    function determinarBotonNotificacion(categoria){
+    function determinarBotonNotificacion(categoria, codigoNotificacion){
         // console.log(2,categoria)
         let botonNotificacion = '';
         switch (categoria) {
@@ -313,16 +306,16 @@
                 botonNotificacion = ``;
                 break;
             case 'CITA_MEDICA':
-                botonNotificacion = `<a href="/citas" class="fs--1 text-primary-veris">Agendar cita</a>`;
+                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/citas"')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/citas" class="fs--1 text-primary-veris">Agendar cita</div>`;
                 break;
             case 'ORDEN_HC':
-                botonNotificacion = `<a href="/mis-tratamientos" class="fs--1 text-primary-veris">Ver</a>`;
+                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-tratamientos')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-tratamientos" class="fs--1 text-primary-veris">Ver</div>`;
                 break;
             case 'REAGENDAR_CITA' :
-                botonNotificacion = `<a href="/mis-citas" class="fs--1 text-primary-veris">Reagendar</a>`;
+                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-citas')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-citas" class="fs--1 text-primary-veris">Reagendar</div>`;
                 break;
             case 'PROXIMA_CITA' :
-                botonNotificacion = `<a href="/mis-citas" class="fs--1 text-primary-veris">Ver</a>`;
+                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-citas')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-citas" class="fs--1 text-primary-veris">Ver</div>`;
                 break;
         }
         return botonNotificacion;
@@ -390,6 +383,22 @@
         getNotificaciones();
     });
 
+    async function actualizarEstadoNotificacion(codigoNotificacion, url){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
+        
+        args["method"] = "PUT";
+        args["showLoader"] = true;
+        // console.log(2,args["endpoint"]);
+        
+        const data = await call(args);
+        // console.log('cambiar estado notificacion', data);
+        if (data.code == 200) {
+            location.href = url;
+        }
+    }
+
 
 </script>
 <style>
@@ -398,16 +407,15 @@
         font-size: 24px; /* ajusta el tamaño según sea necesario */
     }
 
-    #numeroNotificaciones {
+    /*#numeroNotificaciones {
         position: absolute;
         bottom: 0;
         right: 0;
         transform: translate(50%, 50%);
-        font-size: 12px; /* ajusta el tamaño del texto según sea necesario */
-    }
+        font-size: 12px;
+    }*/
 
     .verisNotificacion {
-        
         font-family: Gotham Rounded;
         font-size: 14px;
         font-weight: 350;
@@ -415,8 +423,26 @@
         letter-spacing: 0em;
         text-align: left;
         color: #0071CE;
+    }
 
+    .icon-button__badge {
+        position: absolute;
+        top: 15px;
+        right: -5px;
+        width: 12px;
+        height: 12px;
+        background: #ef4f62;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        font-size: 40%;
+        padding: 9px;
+    }
 
+    .layout-navbar {
+        height: 3.74rem !important;
     }
 
 </style>

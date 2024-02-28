@@ -301,7 +301,9 @@ Mi Veris - Inicio
         $(document).on('click', '.btn-pagar', function(){
             let data = $(this).data('rel');
             console.log('dataPagar', data);
-            if(datosConvenios.length > 0 && datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
+            if(data.permitePagoReserva == "N"){
+            // if(datosConvenios.length > 0 && datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
+                
                 // Modal de error
                 // setear el mensaje de error en mensajeError
                 $('#mensajeError').text(data.mensajePagoReserva);
@@ -320,17 +322,30 @@ Mi Veris - Inicio
                 esOnline : data.esVirtual,
                 nombre : data.especialidad,
             }
-            if (datosConvenios.length > 0) {
-                params.convenio = datosConvenios[0];
-            } else {
-                params.convenio = {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                };
+            params.convenio = {
+                
+                secuenciaAfiliado: data.secuenciaAfiliado,
+                idCliente: data.idCliente,
+                codigoConvenio: data.codigoConvenio,
+                codigoEmpresa: data.codigoEmpresa,
+                permitePagoLab : data.permitePagoLab,
+                permitePago: data.permitePagoReserva,
+                mensajeBloqueoPago : data.mensajeBloqueoPago,
+                mensajeBloqueoReserva : data.mensajeBloqueoReserva,
+                permiteReserva: data.permitePagoReserva,
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
             }
+            // if (datosConvenios.length > 0) {
+            //     params.convenio = datosConvenios[0];
+            // } else {
+            //     params.convenio = {
+            //         "permitePago": "S",
+            //         "permiteReserva": "S",
+            //         "idCliente": null,
+            //         "codigoConvenio": null,
+            //         "secuenciaAfiliado" : null,
+            //     };
+            // }
 
             params.paciente = {
                 "numeroIdentificacion": data.numeroIdentificacion,
@@ -400,9 +415,9 @@ Mi Veris - Inicio
         let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
         let codigoEmpresa = 1
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const dataConvenio = await call(args);
         if(dataConvenio.code == 200){
             datosConvenios = dataConvenio.data;
@@ -416,7 +431,7 @@ Mi Veris - Inicio
         let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
         let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const dataPaciente = await call(args);
@@ -822,9 +837,10 @@ Mi Veris - Inicio
     }
 
     // setear los valores de la cita en localstorage
-    $(document).on('click', '.btn-CambiarFechaCita', function(){
+    $(document).on('click', '.btn-CambiarFechaCita', async function(){
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
+        console.log('datasss', data);
         let url = $(this).attr('url-rel');
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
@@ -860,16 +876,44 @@ Mi Veris - Inicio
                 "idCita": data.idCita
             }
             params.origen = "inicios";
-            
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-            if(datosConvenios.length == 0){
-                location = url;
-                return;
+
+            // if(datosConvenios.length == 0){
+            //     params.convenio = {
+            //         "permitePago": "S",
+            //         "permiteReserva": "S",
+            //         "idCliente": null,
+            //         "codigoConvenio": null,
+            //         "secuenciaAfiliado" : null,
+            //     };
+            //     localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            //     // location = url;
+            //     return;
+            // }
+            params.convenio = {
+                
+                secuenciaAfiliado: data.secuenciaAfiliado,
+                idCliente: data.idCliente,
+                codigoConvenio: data.codigoConvenio,
+                codigoEmpresa: data.codigoEmpresa,
+                permitePagoLab : data.permitePagoLab,
+                permitePago: data.permitePagoReserva,
+                mensajeBloqueoPago : data.mensajeBloqueoPago,
+                mensajeBloqueoReserva : data.mensajeBloqueoReserva,
+                permiteReserva: data.permitePagoReserva,
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
             }
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            
+            const datosConvenioServicio = await consultarConvenios();
+            console.log('datosConvenioServicio', datosConvenioServicio);
+            if (datosConvenioServicio.data.length == 0) {
+                location = url;
+            } else {
 
-            llenarModalConvenios(datosConvenios, url);
+                llenarModalConvenios(datosConvenioServicio.data, url);
 
-            $('#convenioModal').modal('show');
+                $('#convenioModal').modal('show');
+            }
         }else{    
             let params = {}
             params.online = data.esVirtual;
@@ -881,21 +925,34 @@ Mi Veris - Inicio
                 esOnline : data.esVirtual,
                 nombre : data.especialidad,
             }
-
-            if (datosConvenios.length > 0) {
-                console.log('datosConvenio', datosConvenios);
-                // datosconvenio posicion 0
-                params.convenio = datosConvenios[0];
-
-            } else {
-                params.convenio = {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                };
+            params.convenio = {
+                
+                secuenciaAfiliado: data.secuenciaAfiliado,
+                idCliente: data.idCliente,
+                codigoConvenio: data.codigoConvenio,
+                codigoEmpresa: data.codigoEmpresa,
+                permitePagoLab : data.permitePagoLab,
+                permitePago: data.permitePagoReserva,
+                mensajeBloqueoPago : data.mensajeBloqueoPago,
+                mensajeBloqueoReserva : data.mensajeBloqueoReserva,
+                permiteReserva: data.permitePagoReserva,
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
             }
+
+            // if (datosConvenios.length > 0) {
+            //     console.log('datosConvenio', datosConvenios);
+            //     // datosconvenio posicion 0
+            //     params.convenio = datosConvenios[0];
+
+            // } else {
+            //     params.convenio = {
+            //         "permitePago": "S",
+            //         "permiteReserva": "S",
+            //         "idCliente": null,
+            //         "codigoConvenio": null,
+            //         "secuenciaAfiliado" : null,
+            //     };
+            // }
             // params.paciente = {
             //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
             //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,

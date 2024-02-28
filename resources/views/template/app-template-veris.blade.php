@@ -55,7 +55,8 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets/js/config.js') }}"></script>
     <script>
-        const api_url = "https://api-phantomx.veris.com.ec"; 
+        const api_url = "{{ \App\Models\Veris::BASE_URL }}";
+        const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 

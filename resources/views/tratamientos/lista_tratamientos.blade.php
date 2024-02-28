@@ -313,10 +313,11 @@ $tokenMods = base64_encode(uniqid());
     }
     
     // funciones asyncronas
-    // obtener tratamientos  ​/tratamientos​/{idTratamiento}
+    // obtener tratamientos 
     async function obtenerTratamientos(){
+        $('#datosTratamientoCard').empty();
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen;
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
@@ -368,7 +369,7 @@ $tokenMods = base64_encode(uniqid());
             datosExterna = false;
         }
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
         args["method"] = "PUT";
@@ -414,7 +415,7 @@ $tokenMods = base64_encode(uniqid());
         console.log('datosInterconsulta', datos);
         
         let args = [];
-        let canalOrigen = 'APP_CMV'
+        let canalOrigen = _canalOrigen
         
         args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
         args["method"] = "PUT";
@@ -791,6 +792,7 @@ $tokenMods = base64_encode(uniqid());
 
     // determinar condiciones de los botones 
     function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
+        console.log(estado, datosServicio.estado, datosServicio.tipoCard)
         let services = datosServicio;
         if (datosServicio.length == 0) {
             return `<div></div>`;
@@ -799,12 +801,13 @@ $tokenMods = base64_encode(uniqid());
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
-                    //respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                    //respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard">Ver orden</a>`;
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
+                        console.log(0)
                         if(datosServicio.esExterna == "N"){
-                            respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                            respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                         }else{
-                            respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                            respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                         }
                         if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
@@ -827,10 +830,6 @@ $tokenMods = base64_encode(uniqid());
                                 respuestaAgenda += `<button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</button>`;
                             }
                         }
-                    } else if (datosServicio.estado == 'ATENDIDO'){
-                        // mostrar boton de ver orden
-                        respuestaAgenda = ``;
-                        respuestaAgenda += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;  
                     } else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
                         //respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
@@ -840,31 +839,44 @@ $tokenMods = base64_encode(uniqid());
                         }
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
+                            respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                             respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $tokenMods }}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
-                        }  else if(datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
-                            if(datosServicio.modalidad != "ONLINE"){
-                                respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</a>`;
+                        }else if(datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                            if(datosServicio.modalidad != "ONLINE" && datosServicio.esPagada == "S"){
+                                respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                             }
-                            if(datosServicio.esPagada == "S" && datosServicio.modalidad == "ONLINE"){
+                            if((datosServicio.esPagada == "S" && datosServicio.modalidad == "ONLINE") || datosServicio.esPagada == "N"){
                                 respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             }else{
                                 respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             }
-                            if(datosServicio.modalidad == "ONLINE"){
+                            if(datosServicio.modalidad == "ONLINE" && datosServicio.esPagada == "S"){
                                 respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
+                            }
+                            if(datosServicio.esPagada == "N"){
+                                respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $tokenMods }}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
                             }
                         } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                             // mostrar boton de informacion
                             respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
                         } 
-                    }
+                    }else if (datosServicio.estado == 'ATENDIDO'){
+                        // mostrar boton de ver orden
+                        respuestaAgenda = ``;
+                        respuestaAgenda += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`; 
+                    } 
                     return respuestaAgenda;
                     break;
                 case "LAB":
                     console.log('estadossss', estado);
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
-                        respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}' data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
+                        if(datosServicio.verResultados != "S" && datosServicio.aplicaSolicitud != "S" && datosServicio.permitePago != "S"){
+                            respuesta += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        }else{
+                            respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        }
+                        
                         // condición para 'verResultados'
                         if (datosServicio.verResultados == "S") {
                             let ruta = "/laboratorio-domicilio/" + "{{ $params }}";
@@ -892,24 +904,38 @@ $tokenMods = base64_encode(uniqid());
                         respuesta = "";
                         respuesta += ` <button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     
+                    }else if (datosServicio.estado == 'ATENDIDO'){
+                        // mostrar boton de ver orden
+                        respuestaAgenda = ``;
+                        respuestaAgenda += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;  
                     }
                     return respuesta;
                     break;
-
                 case "RECETAS" :
+                    let respuestaReceta = ``;
                     if (estado == 'REALIZADO') {
-                        return `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
-                    } else {
+                        respuestaReceta += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
+                    } else if(estado == "PENDIENTE") {
+                        if(datosServicio.aplicaSolicitud != "S"){
+                            respuestaReceta += ` <button class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        }else{
+                            respuestaReceta += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        }
                         if(datosServicio.aplicaSolicitud == "S"){
-                            return `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris fw-medium shadow-none me-1"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
+                            respuestaReceta += `<a href="/farmacia-domicilio/${codigoTratamiento}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris fw-medium shadow-none"><i class="bi bi-telephone-fill me-2"></i> Solicitar</a>`;
                         }
                     }
+                    return respuestaReceta;
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <button class="btn text-primary-veris fw-medium fs--1 px-3 py-2" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                    // ABRIRE MODAL DE VIDEO CONSULTA
-                    respuestaOdontologia += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</button>`;
+                    if(estado == "PENDIENTE"){
+                        respuestaOdontologia += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        // ABRIRE MODAL DE VIDEO CONSULTA
+                        respuestaOdontologia += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</button>`;
+                    }else if(estado == 'REALIZADO'){
+                        respuestaOdontologia += ` <button class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                    }
                     return respuestaOdontologia;
                     break;
 
@@ -1093,6 +1119,12 @@ $tokenMods = base64_encode(uniqid());
         let datosServicio = $(this).data('rel');
         let url = $(this).attr('url-rel');
 
+        if(datosServicio.permiteReserva == "N"){
+            $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }
+
         console.log('datosServicio', datosServicio);
         let modalidad;
         if (datosServicio.modalidad === 'ONLINE') {
@@ -1131,6 +1163,12 @@ $tokenMods = base64_encode(uniqid());
         let datosServicio = $(this).data('rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
 
+        if(datosServicio.permitePago == "N"){
+            $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }
+
         let modalidad;
         if (datosServicio.modalidad === 'ONLINE') {
             modalidad = 'S';
@@ -1164,7 +1202,6 @@ $tokenMods = base64_encode(uniqid());
     // boton btn-verPromocion
     $(document).on('click', '.btn-verPromocion', function(){
         let datosPromocion = $(this).data('rel');
-
 
         dataCita.especialidad = {
             codigoEspecialidad: datosPromocion.codigoEspecialidad,

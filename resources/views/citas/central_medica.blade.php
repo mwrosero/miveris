@@ -103,10 +103,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function consultarCentralesPorCiudad(){
         let listaCentrales = $('#listaCentrales');
         listaCentrales.empty();
+        let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = JSON.parse($('#ciudad option:selected').attr("data-rel"));
         let canalOrigen = "VER_CMV";
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/centrosmedicos?canalOrigen=${canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=true`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/centrosmedicos?canalOrigen=${canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -131,25 +132,46 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         path_central = central.nombre_foto;
                     }*/
                     
-                    console.log(99)
-                    elemento += `<div class="col-12 col-md-6">
-                                    <div class="card h-100 card-central-medica" data-central-medica='${ JSON.stringify(central) }'>
-                                        <div class="card-body p--2 pb-0">
-                                            <div class="d-flex mb-2">
-                                                <div class="avatar avatar-88 me-2">
-                                                    <img src="${path_central}" class="card-img-top" alt="${central.nombreTipoSucursal}">
-                                                </div>
-                                                <div class="col">
-                                                    <h6 class="fs--16 line-height-20 fw-medium mb-1">${capitalizarElemento(central.nombreSucursal)}</h6>
-                                                    <p class="fs--1 line-height-16 mb-0">${capitalizarElemento(central.direccion)}</p>
-                                                </div>
-                                            </div>
+                    if(central.idCentro != "1-46"){
+                        elemento += `<div class="col-12 col-md-6">
+                            <div class="card h-100 card-central-medica" data-central-medica='${ JSON.stringify(central) }'>
+                                <div class="card-body p--2 pb-0">
+                                    <div class="d-flex mb-2">
+                                        <div class="avatar avatar-88 me-2">
+                                            <img src="${central.nombre_foto}" onerror="this.src='{{ asset('assets/img/svg/dummy_central.svg') }}'" class="card-img-top" alt="${central.nombreTipoSucursal}">
                                         </div>
-                                        <div class="card-footer text-end pt--20 pb--2 px--2">
-                                            <a href="/citas-elegir-fecha-doctor/{{$params}}" class="btn btn-sm btn-primary-veris border-0 px-3 py-2 fs--1 btn-ver-medicos">{{ __('Ver Médicos') }}</a>
+                                        <div class="col">
+                                            <h6 class="fs--16 line-height-20 fw-medium mb-1">${capitalizarElemento(central.nombreSucursal)}</h6>
+                                            <p class="fs--1 line-height-16 mb-0">${capitalizarElemento(central.direccion)}</p>
                                         </div>
                                     </div>
-                                </div>`
+                                </div>
+                                <div class="card-footer text-end pt--20 pb--2 px--2">
+                                    <a href="/citas-elegir-fecha-doctor/{{$params}}" class="btn btn-sm btn-primary-veris border-0 px-3 py-2 fs--1 btn-ver-medicos">{{ __('Ver Médicos') }}</a>
+                                </div>
+                            </div>
+                        </div>`
+                    }else{
+                        elemento += `<div class="col-12 col-md-6">
+                            <div class="card h-100 card-central-medica" data-central-medica='${ JSON.stringify(central) }'>
+                                <div class="card-body p--2 pb-0">
+                                    <div class="d-flex mb-2">
+                                        <div class="avatar avatar-88 me-2">
+                                            <img src="${central.nombre_foto}" onerror="this.src='{{ asset('assets/img/svg/dummy_central.svg') }}'" class="card-img-top" alt="${central.nombreTipoSucursal}">
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="fs--16 line-height-20 fw-medium mb-1">Veris - Juan Tanca Marengo</h6>
+                                            <h6 class="fs--16 line-height-20 fw-medium mb-1 text-danger">${capitalizarElemento(central.nombreSucursal)}</h6>
+                                            <p class="fs--1 line-height-16 mb-0">${capitalizarElemento(central.direccion)}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-end pt--20 pb--2 px--2">
+                                    <a href="/citas-elegir-fecha-doctor/{{$params}}" class="btn btn-sm btn-primary-veris border-0 px-3 py-2 fs--1 btn-ver-medicos">{{ __('Reservar') }}</a>
+                                </div>
+                            </div>
+                        </div>`
+                    }
                 };
                 
             } else {

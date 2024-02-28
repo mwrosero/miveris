@@ -21,6 +21,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             </div>
         </div>
     </div>
+
+    <!-- Modal de error validacion fecha -->
+    <div class="modal fade" id="modalValidacionFecha" tabindex="-1" aria-labelledby="modalValidacionFechaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3 pb-2">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Información de tu seguro</h1>
+                    <p class="fs--1 fw-normal" id="msg-validacion-fecha"></p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100" data-bs-dismiss="modal" id="btnEntiendoError">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- modal elegir horario -->
     <div class="modal bg-transparent fade" id="elegirHorarioModal" tabindex="-1" aria-labelledby="elegirHorarioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -242,7 +257,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         $('body').on('click','.btn-disponibilidad-medico-all', function(){
-            let data = $(this).attr("data-rel");
+            let data = $(this).attr("data-rel")
             consultarDisponibilidadMedico(data);
         })
         // Listener para seleccionar un horario
@@ -267,6 +282,37 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let data = await consultarHorasMotorizados();        
         });
     });
+
+    async function validacionFecha(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/validacionFecha`;
+        args["method"] = "POST";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        args["dismissAlert"] = true;
+        args["data"] = JSON.stringify({
+            "idCliente": dataCita.convenio.idCliente,
+            "fechaSeleccionada": _fechaSeleccionada
+        });
+        const data = await call(args);
+        console.log(data)
+        if(data.code == 200){
+            if(data.data.mensajeValidacion1 != null){
+                //mostrar mensaje
+                if(data.data.aplicaCondicionesSeguro){
+                    $('.box-disponibilidad').empty();
+                }
+                let msg = data.data.mensajeValidacion1+"<br>"+data.data.mensajeValidacion2;
+                $('#msg-validacion-fecha').html(msg.replace(/\*(.*?)\*/g, '<b class="text-primary-veris">$1</b>'));
+                $('#modalValidacionFecha').modal("show");
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return false;
+        }
+    }
 
     async function obtenerFechasOrdenesExternas(){
         var fechas = [];
@@ -466,6 +512,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     async function consultarMedicos(fechaSeleccionada){
+        if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
+            let data = $(this).attr("data-rel");
+            let necesitaValidacionFecha = await validacionFecha();
+            console.log(necesitaValidacionFecha)
+            if(necesitaValidacionFecha){
+                $('#listaMedicos').empty();
+                return;
+            }
+        }
+
         // console.log(fechaSeleccionada);
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;

@@ -245,7 +245,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         if(!dataCita.promocion){
-            await crearPreTransaccion();
+            if(!dataCita.preTransaccion){
+                await crearPreTransaccion();
+            }else{
+                consultarDatosFactura();
+            }
         }else{
             await consultarDatosFactura();
         }
@@ -434,6 +438,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.reserva){
             dataPT.listaCitas = [{
                 "codigoReserva": dataCita.reserva.codigoReserva
+            }]
+        }
+
+        if(dataCita.datosTratamiento){
+            dataPT.listaCitas = [{
+                "codigoReserva": dataCita.datosTratamiento.detalleReserva.codigoReserva
             }]
         }
 

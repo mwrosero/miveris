@@ -27,6 +27,24 @@ Mi Veris - Citas - Selecciona tu tarjeta
             </div>
         </div>
     </div>
+
+    <!-- Modal eliminar tarjeta -->
+    <div class="modal fade" id="modalEliminarTarjeta" tabindex="-1" aria-labelledby="modalEliminarTarjetaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3 pb-0">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Eliminar tarjeta</h1>
+                    <p class="fs--1 fw-normal text-veris" id="mensajeError">¿Estás seguro(a) de eliminar esta tarjeta?</p>
+                    <input type="hidden" id="idTarjetaEliminar">
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3 d-flex justify-content-around align-items-center">
+                    <div class="text-primary-veris fs--1 fw-medium cursor-pointer text-center" data-bs-dismiss="modal">Cancelar</div>
+                    <div class="text-primary-veris fs--1 fw-medium cursor-pointer text-center btn-confirmar-eliminar-tarjeta">Eliminar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Selecciona tu tarjeta') }}</h5>
     </div>
@@ -92,13 +110,19 @@ Mi Veris - Citas - Selecciona tu tarjeta
         })
 
         $('body').on('click', '.btn-delete-card', async function(){
-            let tarjeta = $(this).attr("codigoTarjetaSuscrita-rel")
-            await eliminarTarjeta(tarjeta)
+            $('#idTarjetaEliminar').val($(this).attr('codigoTarjetaSuscrita-rel'));
+            var myModal = new bootstrap.Modal(document.getElementById('modalEliminarTarjeta'));
+            myModal.show();
+        })
+
+        $('body').on('click', '.btn-confirmar-eliminar-tarjeta', async function(){
+            await eliminarTarjeta()
         })
 
     });
 
-    async function eliminarTarjeta(tarjeta){
+    async function eliminarTarjeta(){
+        let tarjeta = $('#idTarjetaEliminar').val();
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&codigoTarjetaSuscrita=${tarjeta}`;
         args["method"] = "DELETE";
@@ -109,12 +133,15 @@ Mi Veris - Citas - Selecciona tu tarjeta
         console.log(data);
 
         if (data.code == 200){
+            $('#modalEliminarTarjeta').hide();
+            $('.modal-backdrop').remove();
             $('.tarjeta-'+tarjeta).remove();
             if($('#listado-tarjetas .item-tarjeta').length == 0){
                 let elem = `<div class="col-12 text-center">
                     No tiene tarjetas guardadas
                 </div>`;
                 $('#listado-tarjetas').append(elem);  
+                window.removeEventListener("beforeunload", beforeUnloadHandler);
                 var myModal = new bootstrap.Modal(document.getElementById('noExisteTarjeta'));
                 myModal.show();
             }
