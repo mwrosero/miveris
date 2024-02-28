@@ -792,6 +792,7 @@ $tokenMods = base64_encode(uniqid());
 
     // determinar condiciones de los botones 
     function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
+        console.log(estado, datosServicio.estado, datosServicio.tipoCard)
         let services = datosServicio;
         if (datosServicio.length == 0) {
             return `<div></div>`;
@@ -802,6 +803,7 @@ $tokenMods = base64_encode(uniqid());
                     // Agregar ver orden 
                     //respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard">Ver orden</a>`;
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
+                        console.log(0)
                         if(datosServicio.esExterna == "N"){
                             respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                         }else{
@@ -828,10 +830,6 @@ $tokenMods = base64_encode(uniqid());
                                 respuestaAgenda += `<button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</button>`;
                             }
                         }
-                    } else if (datosServicio.estado == 'ATENDIDO'){
-                        // mostrar boton de ver orden
-                        respuestaAgenda = ``;
-                        respuestaAgenda += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}>Ver orden</button>`;  
                     } else if (datosServicio.estado == 'AGENDADO'){
                         // mostrar boton de ver orden
                         //respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris shadow-none">Ver orden</a>`;
@@ -843,7 +841,7 @@ $tokenMods = base64_encode(uniqid());
                             // mostrar boton de pagar
                             respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                             respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $tokenMods }}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
-                        }  else if(datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                        }else if(datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             if(datosServicio.modalidad != "ONLINE" && datosServicio.esPagada == "S"){
                                 respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                             }
@@ -862,7 +860,11 @@ $tokenMods = base64_encode(uniqid());
                             // mostrar boton de informacion
                             respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
                         } 
-                    }
+                    }else if (datosServicio.estado == 'ATENDIDO'){
+                        // mostrar boton de ver orden
+                        respuestaAgenda = ``;
+                        respuestaAgenda += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`; 
+                    } 
                     return respuestaAgenda;
                     break;
                 case "LAB":
@@ -902,6 +904,10 @@ $tokenMods = base64_encode(uniqid());
                         respuesta = "";
                         respuesta += ` <button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     
+                    }else if (datosServicio.estado == 'ATENDIDO'){
+                        // mostrar boton de ver orden
+                        respuestaAgenda = ``;
+                        respuestaAgenda += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;  
                     }
                     return respuesta;
                     break;
@@ -909,7 +915,7 @@ $tokenMods = base64_encode(uniqid());
                     let respuestaReceta = ``;
                     if (estado == 'REALIZADO') {
                         respuestaReceta += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
-                    } else {
+                    } else if(estado == "PENDIENTE") {
                         if(datosServicio.aplicaSolicitud != "S"){
                             respuestaReceta += ` <button class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         }else{
@@ -923,9 +929,13 @@ $tokenMods = base64_encode(uniqid());
                     break;
                 case "ODONTOLOGIA" :
                     let respuestaOdontologia = "";
-                    respuestaOdontologia += ` <button class="btn text-primary-veris fw-medium fs--1 px-3 py-2" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                    // ABRIRE MODAL DE VIDEO CONSULTA
-                    respuestaOdontologia += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</button>`;
+                    if(estado == "PENDIENTE"){
+                        respuestaOdontologia += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                        // ABRIRE MODAL DE VIDEO CONSULTA
+                        respuestaOdontologia += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</button>`;
+                    }else if(estado == 'REALIZADO'){
+                        respuestaOdontologia += ` <button class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                    }
                     return respuestaOdontologia;
                     break;
 
