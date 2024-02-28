@@ -21,6 +21,25 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // }
 
 @endphp
+<!-- Modal de error -->
+<div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3">Información de tu seguro</h1>
+                <p class="fs--1 fw-normal" id="mensajeError"></p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <a href="tel:+59346009600" id="btn-lamar" class="btn btn-primary-veris d-none m-0 w-100 px-4 py-3 mb-2"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                {{-- <button type="button" id="btn-dismiss-error" class="btn btn-action-error px-3 py-2 border-0 text-primary-veris shadow-none fw-normal fs--1 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
+                <a href="/" id="btn-redirect-error" class="btn btn-action-error px-3 py-2 border-0 text-primary-veris shadow-none fw-normal fs--1 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Regresar</a> --}}
+                <button type="button" id="btn-dismiss-error" class="btn btn-action-error btn-primary-veris fw-medium fs--18 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Regresar</button>
+                <a href="/" id="btn-redirect-error" class="btn btn-action-error btn-primary-veris fw-medium fs--18 m-0 w-100 px-4 py-3">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="flex-grow-1 container-p-y pt-0">
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Revisa tus datos') }}</h5>
@@ -223,7 +242,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "fechaSeleccionada": dia2,
             "idCliente": idCliente,
             "estaPagada": (dataCita.reservaEdit) ? dataCita.reservaEdit.estaPagada : 'N',
-            "esEmbarazada": "N",
+            "esEmbarazada": (dataCita.estaEmbarazada) ? dataCita.estaEmbarazada : "N",
             "medPayPlan": medPayPlan
         });
         const data = await call(args);
@@ -315,6 +334,22 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 $('#btn-pagar').attr('href','/cita-agendada/{{ $params }}');
             }
             $('#btn-pagar').removeClass('d-none');
+
+            if((data.data.mensajeValidacion !== "" && data.data.mensajeValidacion !== null) || (data.data.mensajeValidacion2 !== "" && data.data.mensajeValidacion2 !== null)){
+                $('#mensajeError').html(`${data.data.mensajeValidacion} <br> ${data.data.mensajeValidacion2}`);
+                $('.btn-action-error').addClass('d-none');
+                if(data.data.aplicaCondicionesSeguro){
+                    //redirecciona al home
+                    $('#btn-redirect-error').removeClass('d-none');
+                }else{
+                    //dismiss modal
+                    $('#btn-dismiss-error').removeClass('d-none');
+                }
+                if(data.data.mostraOpcionLlamar){
+                    $('#btn-lamar').attr("href","tel:+593"+data.data.numeroContactCenter);
+                }
+                $('#ModalError').modal("show");
+            }
         }
         return data;
     }
@@ -406,20 +441,126 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if (data.code == 200){
             dataCita.reserva = data.data;
+            guardarData();
             if(dataCita.tratamiento && dataCita.tratamiento.esPagada == "S"){
-                guardarData();
                 location.href = '/cita-agendada/{{ $params }}';
                 return;
             }
             if(data.data.permitePago == "S"){
-                guardarData();
-                location.href = '/citas-datos-facturacion/{{ $params }}';
+                await crearPreTransaccion()
+                //location.href = '/citas-datos-facturacion/{{ $params }}';
             }else{
                 location.href = '/cita-agendada/{{ $params }}';
             }
         }else{
             //guardarData();
             //location.href = '/citas-datos-facturacion/{{ $params }}';
+            alert(data.message);
+        }
+    }
+
+    async function crearPreTransaccion(){
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/crear_pretransaccion?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+
+        // let idPaciente = {{ Session::get('userData')->numeroPaciente }};
+        let idPaciente = dataCita.paciente.numeroPaciente;
+        let tipoServicio = "CITA";
+        let tipoSolicitud = null;
+
+        let codigoConvenio;
+        let secuenciaAfiliado;
+        
+        if(dataCita.listadoPrestaciones && dataCita.listadoPrestaciones.length > 0){
+            tipoServicio = "ORDEN";
+            addPrestacionesToModal();
+            $("#btn-ver-examenes").removeClass('d-none');
+        }
+
+        if(dataCita.ordenExterna){
+            // addPrestacionesToModal();
+            $('.modalDesglose-size').removeClass('modal-lg');
+            $('.modalDesglose-size').addClass('modal-md');
+            $("#btn-ver-examenes").removeClass('d-none');
+            $('#modalDesglose .modal-header').hide();
+            // idPaciente = dataCita.paciente.numeroPaciente;
+            codigoConvenio = dataCita.ordenExterna.pacientes[0].codigoConvenio;
+            if(dataCita.ordenExterna.aplicoDomicilio === 'N'){
+                tipoServicio = "ORDEN";
+                tipoSolicitud = "LAB";
+            }else{
+                //obtenerPreparacionPrevia();
+                tipoServicio= "DOMICILIO";
+                tipoSolicitud= "LAB";
+            }
+        }else{
+            if(!dataCita.paquete){
+                codigoConvenio = dataCita?.convenio.codigoConvenio;
+                secuenciaAfiliado = dataCita?.convenio.secuenciaAfiliado;
+            }
+        }
+
+        if(dataCita.paquete){
+            tipoServicio= "PAQUETE";
+        }
+
+        //Consultar si idPaciente es del que hizo login o del beneficiario de lo que se va a pagar
+        let dataPT = {
+            "idPaciente":idPaciente,
+            //"codigoPreTransaccion": dataCita.reserva.secuenciaTransaccion,
+            "tipoServicio": tipoServicio,
+            "tipoSolicitud": tipoSolicitud,
+            "codigoConvenio": codigoConvenio,
+            "secuenciaAfiliado": secuenciaAfiliado,
+        }
+
+        if(dataCita.dataOrdenExterna){
+            dataPT.codigoPreTransaccion = dataCita.dataOrdenExterna.codigoPreTransaccion
+        }
+
+        if(dataCita.reserva){
+            dataPT.listaCitas = [{
+                "codigoReserva": dataCita.reserva.codigoReserva
+            }]
+        }
+
+        if(dataCita.paquete){
+            dataPT.paquete = {
+                "codigoPaquete": dataCita.paquete.codigoPaquete
+            }
+        }
+
+        if(dataCita.reservaEdit){
+            dataPT.listaCitas = [{
+                "codigoReserva": dataCita.reservaEdit.idCita
+            }]
+        }
+
+
+        if(dataCita.listadoPrestaciones && dataCita.listadoPrestaciones.length > 0){
+            dataPT.listaOrdenes = dataCita.listadoPrestaciones;
+        }
+
+        if(dataCita.ordenExterna){
+            if(dataCita.ordenExterna.aplicoDomicilio === 'N'){
+                dataPT.listaOrdenes = dataCita.ordenExterna.pacientes[0].examenes;
+            }else{
+                dataPT.codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;
+            }
+        }
+
+        args["data"] = JSON.stringify(dataPT);
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            dataCita.preTransaccion = data.data;
+            guardarData();
+            location.href = '/citas-datos-facturacion/{{ $params }}';
+        }else{
             alert(data.message);
         }
     }

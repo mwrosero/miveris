@@ -417,7 +417,7 @@ Mi Veris - Inicio
         let args = [];
         args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const dataConvenio = await call(args);
         if(dataConvenio.code == 200){
             datosConvenios = dataConvenio.data;
