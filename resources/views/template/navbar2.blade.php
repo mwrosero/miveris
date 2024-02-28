@@ -13,7 +13,7 @@
         <ul class="navbar-nav flex-row align-items-center">
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-4 me-xl-1" id="dropdownNotifications">
-                <a class="nav-link dropdown-toggle hide-arrow fs-3" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
+                <a class="nav-link dropdown-toggle hide-arrow fs-3 position-relative" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
                     <i class="fa-solid fa-bell"></i>
                     {{-- <span class="badge rounded-pill badge-notification bg-danger campana-notificaciones">9</span> --}}
                     <span class="icon-button__badge d-none" id="numeroNotificaciones"></span>
