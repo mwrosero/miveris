@@ -127,12 +127,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
+        if(dataCita.reserva){
+            await eliminarReserva();
+        }
         await obtenerPrecio();
         llenarDataDetallesCitas();
-
-        if(dataCita.reserva){
-            eliminarReserva();
-        }
 
         $('body').on('click', '#btn-pagar', function () {
             reservarCita();
