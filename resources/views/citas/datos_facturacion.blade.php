@@ -245,7 +245,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         if(!dataCita.promocion){
-            await crearPreTransaccion();
+            if(!dataCita.preTransaccion){
+                await crearPreTransaccion();
+            }else{
+                consultarDatosFactura();
+            }
         }else{
             await consultarDatosFactura();
         }

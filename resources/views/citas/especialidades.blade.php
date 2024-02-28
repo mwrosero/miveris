@@ -7,6 +7,29 @@ Elige la especialidad
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd($data);
 @endphp
+<!-- Modal mensaje -->
+<div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3">
+                <div class="text-center">
+                    <div class="avatar avatar-md mx-auto mb-3">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            <i class="fa-solid fa-info fs-2"></i>
+                        </span>
+                    </div>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Información solicitada por tu aseguradora</h1>
+                    <p class="fs--1 fw-normal mb-3 mx-3 line-height-16">¿Esta cita es por <b>embarazo</b> o control del mismo?</p>
+                    <input type="hidden" id="especialidadElegida">
+                </div>
+                <div class="d-flex">
+                    <div respuesta-rel="S" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 me-3 btn-respuesta-embarazo">SI</div>
+                    <div respuesta-rel="N" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 btn-respuesta-embarazo">NO</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="citaPendienteModal" tabindex="-1" aria-labelledby="citaPendienteModalLabel" aria-hidden="true">
@@ -73,7 +96,27 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         await consultarEspecialidades();
 
         $('body').on('click', '.item-especialidad', async function(){
-            await consultarSiEsTratamiento($(this).attr('data-rel'));
+            dataCita.estaEmbarazada = "N";
+            let especialidad = JSON.parse($(this).attr('data-rel'));
+            dataCita.especialidad = especialidad;
+            if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
+                let controlEmbarazo = await validacionConvenio($(this).attr('data-rel'));
+                console.log(controlEmbarazo);
+                if(controlEmbarazo){
+                    $('#especialidadElegida').val($(this).attr('data-rel'))
+                    $('#modalEmbarazo').modal("show");
+                }else{
+                    await consultarSiEsTratamiento($(this).attr('data-rel'));
+                }
+            }else{
+                await consultarSiEsTratamiento($(this).attr('data-rel'));
+            }
+        })
+
+        $('body').on('click', '.btn-respuesta-embarazo', async function(){
+            let estaEmbarazada = $(this).attr('respuesta-rel');
+            dataCita.estaEmbarazada = estaEmbarazada;
+            await consultarSiEsTratamiento($('#especialidadElegida').val());
         })
 
         $('body').on('input','#buscar', function () {
@@ -109,6 +152,29 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
         });
     });
+
+    async function validacionConvenio(detalle){
+        let especialidad = JSON.parse(detalle);
+        let args = [];
+        args["endpoint"] = api_url + `/digitalestest/v1/comercial/validacionConvenio`;
+        args["method"] = "POST";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        args["dismissAlert"] = true;
+        args["data"] = JSON.stringify({
+            "idCliente": dataCita.convenio.idCliente,
+            "codigoEspecialidad": parseInt(especialidad.codigoEspecialidad),
+            "idPaciente": parseInt(numeroPaciente),
+            "codigoTipoAtencion": dataCita.especialidad.codigoTipoAtencion
+        });
+        const data = await call(args);
+        
+        if(data.code == 200){
+            return data.data.requiereControlEmbarazo;
+        }else{
+            return false;
+        }
+    }
 
     async function consultarEspecialidades(){
         let listaEspecialidades = $('#listaEspecialidades');
