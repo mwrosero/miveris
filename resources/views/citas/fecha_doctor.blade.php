@@ -27,7 +27,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-2">
-                    <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3">Veris</h1><h1 class="modal-title fs--20 line-height-24 my-3">Información de tu seguro</h1>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Información de tu seguro</h1>
                     <p class="fs--1 fw-normal" id="msg-validacion-fecha"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
