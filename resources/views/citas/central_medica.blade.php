@@ -103,7 +103,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function consultarCentralesPorCiudad(){
         let listaCentrales = $('#listaCentrales');
         listaCentrales.empty();
-        let mostrarVua = (dataCita.vua) ? dataCita.vua : false;
+        let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = JSON.parse($('#ciudad option:selected').attr("data-rel"));
         let canalOrigen = "VER_CMV";
         let args = [];

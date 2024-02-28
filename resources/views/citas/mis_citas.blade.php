@@ -1028,9 +1028,9 @@ Mi Veris - Citas - Mis citas
                     codigoEspecialidad: dataCodigoEspecialidad,
                     nombre: dataRel.nombreEspecialidad,
                     imagen: dataRel.imagenEspecialidad,
-                    codigoServicio: dataRel.codigoServicio,
+                    codigoServicio: dataRel.prestaciones[0].codigoServicio,
                     esOnline: dataRel.esOnline,
-                    codigoPrestacion: dataRel.codigoPrestacion,
+                    codigoPrestacion: dataRel.prestaciones[0].codigoPrestacion,
                     codigoSucursal: dataRel.codigoSucursal,
                     origen: 'mis-citas',
                     
@@ -1081,9 +1081,9 @@ Mi Veris - Citas - Mis citas
                     codigoEspecialidad: dataCodigoEspecialidad,
                     nombre: dataRel.nombreEspecialidad,
                     imagen: dataRel.imagenEspecialidad,
-                    codigoServicio: dataRel.codigoServicio,
+                    codigoServicio: dataRel.prestaciones[0].codigoServicio,
                     esOnline: dataRel.esOnline,
-                    codigoPrestacion: dataRel.codigoPrestacion,
+                    codigoPrestacion: dataRel.prestaciones[0].codigoPrestacion,
                     codigoSucursal: dataRel.codigoSucursal,
                     origen: 'mis-citas',
                     

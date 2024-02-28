@@ -441,4 +441,8 @@
         padding: 9px;
     }
 
+    .layout-navbar {
+        height: 3.74rem !important;
+    }
+
 </style>
