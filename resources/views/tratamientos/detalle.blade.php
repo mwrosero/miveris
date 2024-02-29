@@ -105,7 +105,7 @@ Mi Veris - Citas - tratamiento
                             </div>
                         </div>
                         <div class="p-3">
-                            <div class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprar</div>
+                            <div class="btn-master w-100 text-center waves-effect waves-light"  id="btnComprar">Comprar</div>
                             <a href="javascript:history.go(-1)" class="btn w-100 mb-3">Ahora no</a>
                         </div>
                         

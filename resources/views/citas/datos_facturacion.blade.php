@@ -593,6 +593,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 errors = true;
                 msg += `<li class="ms-0">El campo Razón Social es obligatorio.</li>`;
             }
+            var numeroIdentificacion = $("#numeroIdentificacion").val();
+            if (numeroIdentificacion.length !== 13) {
+                errors = true;
+                msg += `<li class="ms-0">El campo Número Documento debe tener 13 dígitos.</li>`;
+            }else if (!esValidaCedula(numeroIdentificacion)) {
+                errors = true;
+                msg += `<li class="ms-0">Número Documento inválido.</li>`;
+            }
         } else if (tipoIdentificacion == 2) {
             // Validar numeroIdentificacion
             var numeroIdentificacion = $("#numeroIdentificacion").val();
