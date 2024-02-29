@@ -185,7 +185,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     "permiteReserva": "S",
                     "idCliente": null,
                     "codigoConvenio": null,
-
                 };
                 params.paciente = dataRel;
                 let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));

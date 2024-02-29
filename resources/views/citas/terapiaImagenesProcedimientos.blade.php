@@ -349,7 +349,7 @@ Mi Veris - Citas - {{ $titulo }}
             let datosConvenio = datosRel.tratamiento;
             if(datos.permiteReserva == "N"){// && datos.esPagada == "N"
                 $('#mensajeNoPermiteCambiar').html(datos.mensajeBloqueoReserva);
-            $('#modalPermiteCambiar').modal('show');
+                $('#modalPermiteCambiar').modal('show');
                 return;
             }
             let online;
@@ -550,14 +550,13 @@ Mi Veris - Citas - {{ $titulo }}
             let data = $(this).data('rel');
             let convenio = $(this).attr('convenio-rel');
             // console.log('dataPagar', data);
-            if(convenio.permitePago == "N" || data.permitePagoReserva == "N"){
+            if(data.permitePago == "N" || data.permitePagoReserva == "N"){
                 // Modal de error
                 // setear el mensaje de error en mensajeError
-                $('#mensajeError').text(data.mensajePagoReserva);
-                
-                $('#ModalError').modal('show');
+                console.log(data)
+                $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoPago);
+                $('#modalPermiteCambiar').modal('show');
                 return;
-
             }
 
             let params = {}
@@ -959,13 +958,13 @@ Mi Veris - Citas - {{ $titulo }}
                 case "AGENDA" :
                     let respuestaAgenda = "";
                     // Agregar ver orden 
-                    respuestaAgenda += ` <button type="button" class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
                     let datosCombinados = {
                         servicio: datosServicio,
                         tratamiento: datosTratamiento
                     };
                     let convenio = datosTratamiento.datosConvenio;
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
+                        respuestaAgenda += ` <button type="button" class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
                         if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
                             respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Información</button>`;
@@ -999,21 +998,26 @@ Mi Veris - Citas - {{ $titulo }}
                         if (datosServicio.modalidad == "PRESENCIAL") {
                             ruta = "/citas-elegir-central-medica/{{ $tokenCita }}";
                         }
-                        // mostrar boton de ver orden
-                        if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
-                            // mostrar boton de pagar
+                        if(datosServicio.detalleReserva !== null && datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                            respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
                             respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(convenio)}'>Pagar</div>`;
-                        }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
-                            
-                            // respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
-                            respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
-                            if(datosServicio.modalidad == "ONLINE"){
-                                respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
-                            }
-                        } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
-                            // mostrar boton de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
-                        } 
+                        }else{
+                            // mostrar boton de ver orden
+                            if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
+                                // mostrar boton de pagar
+                                respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(convenio)}'>Pagar</div>`;
+                            }  else if  (datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
+                                
+                                // respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                if(datosServicio.modalidad == "ONLINE"){
+                                    respuestaAgenda += `<a href="${datosServicio.detalleReserva.idTeleconsulta}" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 btn-primary-veris shadow-none">Conectarme</a>`;
+                                }
+                            } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
+                                // mostrar boton de informacion
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
+                            } 
+                        }
                     }
                     return respuestaAgenda;
                     break;

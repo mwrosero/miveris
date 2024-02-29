@@ -81,9 +81,9 @@ $data1 = json_decode($data);
                                 <label for="telefono" class="form-label fw-bold">Teléfono *</label>
                                 <input type="number" class="form-control " name="telefono" id="telefono"  required />
                             </div>
-                            <div class="col-md-12 d-none">
-                                <label for="conveio" class="form-label fw-bold">Elige el convenio *</label>
-                                <input type="text" class="form-control bg-neutral" name="conveio" id="conveio" placeholder="Convenio" disabled />
+                            <div class="col-md-12">
+                                <label for="convenio" class="form-label fw-bold">Convenio *</label>
+                                <input type="text" class="form-control bg-neutral" name="convenio" id="convenio" placeholder="Convenio" disabled />
                             </div>
                             <div class="col-12">
                                 <button class="btn btn-primary-veris w-100" type="submit" id="botonSiguiente">Siguiente</button>
@@ -221,13 +221,13 @@ $data1 = json_decode($data);
         $('#numeroIdentificacion').prop('disabled', true);
         $('#email').prop('disabled', true);
         $('#telefono').prop('disabled', true);
-        $('#conveio').prop('disabled', true);
+        $('#convenio').prop('disabled', true);
         // agregar bg-neutral a los campos faltantes
         $('#paciente').addClass('bg-neutral');
         $('#numeroIdentificacion').addClass('bg-neutral');
         $('#email').addClass('bg-neutral');
         $('#telefono').addClass('bg-neutral');
-        $('#conveio').addClass('bg-neutral');
+        $('#convenio').addClass('bg-neutral');
 
     }
     let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;
@@ -254,14 +254,12 @@ $data1 = json_decode($data);
         // ocultar convenio si es null
         console.log('convenio', convenio);
         if (convenio.length == 0) {
-            $('#conveio').parent().hide();
+            $('#convenio').parent().hide();
         }
         
         llenarDatos();
 
         $('#botonSiguiente').prop('disabled', true);
-
-        
 
     });
 
@@ -288,15 +286,10 @@ $data1 = json_decode($data);
             data.data.forEach(element => {
                 options += `<option value="${element.codigoConvenio}">${element.nombreConvenio}</option>`;
             });
-            $('#conveio').html(options);
-
-            
-            
-
+            $('#convenio').html(options);
         }
         return data;
     }
-
 
     // crear solicitud de orden externa
 
@@ -304,8 +297,6 @@ $data1 = json_decode($data);
 
         // si origen es ordenExternaDomicilio
         if (dataCita.origen !== 'ordenExternaDomicilio') {
-            
-            
             nombrePaciente = $('#paciente').val();
             correo = $('#email').val();
             telefono = $('#telefono').val();
@@ -321,8 +312,6 @@ $data1 = json_decode($data);
 
         // recibir los datos de la imagen 
         let files = document.getElementById('upload').files;
-
-        
 
         let formData = new FormData();
         formData.append("tipoIdentificacionPaciente", tipoIdentificacion);
@@ -341,12 +330,8 @@ $data1 = json_decode($data);
         formData.append("codigoConvenio", codigoConvenio);
         formData.append("nombreConvenio", nombreConvenio);
         formData.append("archivos", files);
-        
 
         args["data"] = formData;
-
-
-        console.log('args1111', args["data"]);
 
         const data = await call(args);
         console.log('actualizarDatosUsuario',data);
@@ -368,17 +353,14 @@ $data1 = json_decode($data);
         }
 
         return data;
-
     }
 
     // enviar formulario
 
     $("form").on('submit', async function(e) {
         e.preventDefault(); 
-
         await crearSolicitudLaboratorioDomicilio();
     });
-    
 
     // llenar datos con localstorage
     function llenarDatos() {
@@ -393,10 +375,7 @@ $data1 = json_decode($data);
             $('#numeroIdentificacion').val(dataCita.paciente.numeroIdentificacion);
             $('#email').val(dataCita.paciente.correo);
             $('#telefono').val(dataCita.paciente.telefono);
-            $('#conveio').val(dataCita.convenio.codigoConvenio);
-
-
-
+            $('#convenio').val(`${ (dataCita.convenio.nombreConvenio !== null) ? dataCita.convenio.nombreConvenio : "Ninguno" }`);
         }
     }
 
@@ -408,11 +387,7 @@ $data1 = json_decode($data);
         }else{
             $('#botonSiguiente').prop('disabled', true);
         }
-
-        
     });
-
-
 
 </script>
 @endpush
