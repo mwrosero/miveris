@@ -105,7 +105,7 @@ Mi Veris - Citas - tratamiento
                             </div>
                         </div>
                         <div class="p-3">
-                            <div class="btn-master w-100 text-center waves-effect waves-light"  id="btnComprar">Comprar</div>
+                            <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 waves-effect waves-light text-center"  id="btnComprar">Comprar</button>
                             <a href="javascript:history.go(-1)" class="btn w-100 mb-3">Ahora no</a>
                         </div>
                         
@@ -426,7 +426,7 @@ Mi Veris - Citas - tratamiento
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus" onclick="restarCantidad(${index})"
                                     >-</button>
                                     <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
-                                    value="1" id="cantidadServicio-${index}"
+                                    value="${resultados.cantidadMaximaPermitida}" id="cantidadServicio-${index}"
                                      />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus" onclick="sumarCantidad(${index})"
                                     >+</button>
@@ -463,6 +463,7 @@ Mi Veris - Citas - tratamiento
 
             precioBaseEnd.append(`$${dataCita.promocion.valorNormal.toFixed(2)}`);
             precioTotalEnd.append(`$${dataCita.promocion.valorPromocion.toFixed(2)}`);
+
         }
 
         return;
@@ -471,6 +472,11 @@ Mi Veris - Citas - tratamiento
     function drawNuevosValores(){
         $('#precioBaseEnd').html(`$${dataCita.promocion.valorNormal.toFixed(2)}`);
         $('#precioTotalEnd').html(`$${dataCita.promocion.valorPromocion.toFixed(2)}`);
+        if(dataCita.promocion.valorPromocion > 0){
+            $('#btnComprar').removeClass('disabled');
+        }else{
+            $('#btnComprar').addClass('disabled');
+        }
     }
 </script>
 @endpush
