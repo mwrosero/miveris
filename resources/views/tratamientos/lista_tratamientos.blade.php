@@ -1197,7 +1197,7 @@ $tokenMods = base64_encode(uniqid());
             $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
             $('#modalPermiteCambiar').modal('show');
             return;
-        }else if(datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL"){
+        }else if(datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL" && datosServicio.permitePago == "N"){
             $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
             $('#modalPermiteCambiar').modal('show');
             return;
