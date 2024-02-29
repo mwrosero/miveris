@@ -317,15 +317,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 }
             }
             if(permitePago == "N"){
-                elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
-                        <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
-                        <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
-                    </div>`;
+                if(dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S"){
+                    elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
+                            <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
+                            <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
+                        </div>`;
+                }
             }
             $('#msg-cita').append(elemMsg)
             
             dataCita.precio = data.data;
             //let urlParams = btoa(JSON.stringify(params));
+            if(dataCita.tratamiento && dataCita.tratamiento.esPagada && dataCita.tratamiento.esPagada =="S"){
+                $('#btn-pagar').html('Continuar');
+                $('#btn-pagar').attr('href','/cita-agendada/{{ $params }}');
+            }
             if (dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") {
                 $('#btn-pagar').attr('href','/citas-datos-facturacion/{{ $params }}');
             }else{

@@ -65,7 +65,7 @@ Mi Veris - Citas - tratamiento
                             <img src="{{ asset('assets/img/svg/especialidades/alergologia.svg') }}" alt="especialidad" />
                             <div class="ms-2">
                                 <h6 class="fw-medium mb-0">Traumatología</h6>
-                                <p class="fw-normal fs--1 mb-0">Ver tratamiento en PDF <i class="bi bi-chevron-right ms-2"></i></p>
+                                <p class="fw-normal fs--1 mb-0" id="verPdf">Ver tratamiento en PDF <i class="bi bi-chevron-right ms-2"></i></p>
                             </div>
                         </a>
                         <h6 class="fw-medium py-2 px-3 mb-0" style="background: #E9EFF4;">Selecciona tus servicios</h6>
@@ -131,6 +131,10 @@ Mi Veris - Citas - tratamiento
         // Precargar elementos
         $('.content-img').html(`<img src="${dataCita.convenio.rutaImagenConvenio}" onerror="this.src='{{ asset('assets/img/svg/regalo_abierto.svg') }}'" class="card-img-top">`);
 
+        if(dataCita.convenio.idCliente !== null){
+            $('.promo-img').html(`<img src="{{ asset('assets/img/svg/promocionNoDisponible.svg') }}" class="card-img-top" style="max-height:165px;margin-top: -15px;" alt="">`);
+        }
+
         await valorizacionServicios();
         console.log(dataCita.promocion)
         $('body').on('change','.input-group input', async function(){
@@ -140,6 +144,10 @@ Mi Veris - Citas - tratamiento
             drawNuevosValores();
             //await drawServicios();
         })
+
+        $('#verPdf').click(function(){
+            descargarDocumentoPdfPrincipal();
+        });
 
         // boton info
         $('#informacionModal').on('show.bs.modal', function (event) {
@@ -201,13 +209,33 @@ Mi Veris - Citas - tratamiento
         })
     });
 
+    async function descargarDocumentoPdfPrincipal(){
+        let args = [];
+        let canalOrigen = 'APP_CMV'
+        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/reporteAcumulativoAtencion?secuenciaAtencion=${dataCita.datosTratamiento.secuenciaAtenciones}`;
+        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+        } catch (error) {
+            console.error('Error al obtener el PDF:', error);
+        }
+    }
+
     // llenar contenedor principal descuento
     function llenarContenedorPrincipalDescuento() {
         let contenedorPrincipalDescuento = $('#contenedorPrincipal-descuento');
         contenedorPrincipalDescuento.empty();
         if(dataCita.convenio.idCliente !== null){
             contenedorPrincipalDescuento.append(`<p class="mb-0">Compra y gestiona </p>
-                                                <p class="mb-0">tu tratamiento en app</p>`);
+                                                <p class="mb-0">tu tratamiento sin filas</p>`);
         } else {
             contenedorPrincipalDescuento.append(`<p class="mb-0">Veris te regala un</p>
                                                 <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
@@ -383,7 +411,7 @@ Mi Veris - Citas - tratamiento
                                     <div class="d-flex align-items-center">
                                         <p class="text-primary fw-medium fs--2 mb-0" id="precioTotal">
                                             
-                                            <del class="text-danger fw-normal" id="precioBase-${index}">$$${resultados.valorNormal}</del> 
+                                            <del class="text-danger fw-normal" id="precioBase-${index}">$${resultados.valorNormal}</del> 
                                             <span class="fw-medium" id="precioTotalList-${index}">
                                             $${resultados.valorPromocion}
                                             </span>
@@ -433,8 +461,8 @@ Mi Veris - Citas - tratamiento
             precioBaseEnd.empty();
             precioTotalEnd.empty();
 
-            precioBaseEnd.append(`$${dataCita.promocion.valorNormal}`);
-            precioTotalEnd.append(`$${dataCita.promocion.valorPromocion}`);
+            precioBaseEnd.append(`$${dataCita.promocion.valorNormal.toFixed(2)}`);
+            precioTotalEnd.append(`$${dataCita.promocion.valorPromocion.toFixed(2)}`);
         }
 
         return;
