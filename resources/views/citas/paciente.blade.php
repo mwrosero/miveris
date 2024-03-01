@@ -261,7 +261,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     <div class="card h-100 cursor-pointer">
                         <div class="card-body text-center px-3 py-2">
                             
-                            <div data-bs-toggle="modal"  onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
+                            <div onclick="consultarConvenios(event)" data-rel='${JSON.stringify(pacientes)}'>
                                <div class="d-flex justify-content-center align-items-center mb-1">
                                     <div class="avatar avatar-10">
                                         <span class="avatar-initial rounded-circle ${backgroundClass}">${pacientes.primerNombre.charAt(0).toUpperCase()}</span>

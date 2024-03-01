@@ -139,7 +139,7 @@ Mi Veris - Citas - tratamiento
         console.log(dataCita.promocion)
         $('body').on('change','.input-group input', async function(){
             let detalle = JSON.parse($(this).attr("data-rel"));
-            await actualizarValorizacionServicios(detalle, $(this).val());
+            await actualizarValorizacionServicios(detalle, $(this).val(), $(this).attr('index-rel'));
             console.log(dataCita.promocion);
             drawNuevosValores();
             //await drawServicios();
@@ -352,7 +352,7 @@ Mi Veris - Citas - tratamiento
 
     // actualizar la valorizacion de los servicios del tratamiento con un put
 
-    async function actualizarValorizacionServicios(detalle, qty) {
+    async function actualizarValorizacionServicios(detalle, qty, index) {
         //console.log('-------------'+dataCita.promocion.codigoPreTransaccion)
         let args = {};
         //let canalOrigenDigital = 'APP_CMV';
@@ -371,7 +371,13 @@ Mi Veris - Citas - tratamiento
 
         const data = await call(args);
         dataCita.promocion = data.data
-        // console.log('dataservicio', data);
+        console.log('dataservicio', data);
+        $.each(data.data.serviciosIncluyeCompra, function(key, resultados){
+            if(key == index){
+                $('#item-'+key).attr("data-rel",JSON.stringify(resultados))
+            }
+        })
+
         return data;
     }
 
@@ -425,7 +431,7 @@ Mi Veris - Citas - tratamiento
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus" onclick="restarCantidad(${index})"
                                     >-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
+                                    <input id="item-${index}" index-rel="${index}" class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
                                     value="${resultados.cantidadMaximaPermitida}" id="cantidadServicio-${index}"
                                      />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus" onclick="sumarCantidad(${index})"
