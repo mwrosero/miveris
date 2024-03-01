@@ -440,7 +440,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }]
         }
 
-        if(dataCita.datosTratamiento){
+        if(dataCita.datosTratamiento && !dataCita.listadoPrestaciones){
             dataPT.listaCitas = [{
                 "codigoReserva": dataCita.datosTratamiento.detalleReserva.codigoReserva
             }]

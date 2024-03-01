@@ -373,7 +373,7 @@ $data1 = json_decode($data);
             $('#numeroIdentificacion').val(dataCita.paciente.numeroIdentificacion);
             $('#email').val(dataCita.paciente.correo);
             $('#telefono').val(dataCita.paciente.telefono);
-            $('#convenio').val(`${ (dataCita.convenio.nombreConvenio !== null) ? dataCita.convenio.nombreConvenio : "Ninguno" }`);
+            $('#convenio').val(`${ (typeof dataCita !== 'undefined' && dataCita.convenio && typeof dataCita.convenio.nombreConvenio !== 'undefined') ? dataCita.convenio.nombreConvenio : "Ninguno" }`);
         }
         let disabled = false;
         $("form input, form textarea").each(function(){
