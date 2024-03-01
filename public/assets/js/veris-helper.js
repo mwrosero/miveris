@@ -49,6 +49,7 @@ async function call(args){
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
             }
+            throw error;
             // toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.","ERROR");
             //console.log(error);
         });
