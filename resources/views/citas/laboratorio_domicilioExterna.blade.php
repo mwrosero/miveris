@@ -56,32 +56,30 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
                                 <select class="form-select" name="ciudad" id="ciudad" required>
                                 </select>
                             </div>
-
                             <div class="col-md-12">
                                 <label for="direccion" class="form-label fw-medium">Dirección *</label>
                                 <textarea class="form-control" name="direccion" id="direccion" rows="3" required style="resize: none;"></textarea>
                             </div>
-
                             <div class="col-md-12">
                                 <label for="numeroIdentificacion" class="form-label fw-medium">Cédula o pasaporte *</label>
                                 <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion"  required />
                             </div>
-
                             <div class="col-md-12">
                                 <label for="email" class="form-label fw-medium">Email *</label>
                                 <input type="email" class="form-control " name="email" id="email"  required />
                             </div>
-
                             <div class="col-md-12">
                                 <label for="telefono" class="form-label fw-medium">Teléfono *</label>
                                 <input type="number" class="form-control" name="telefono" id="telefono"  required />
                             </div>
-
+                            <div class="col-md-12">
+                                <label for="convenio" class="form-label fw-bold">Convenio *</label>
+                                <input type="text" class="form-control bg-neutral" name="convenio" id="convenio" placeholder="Convenio" disabled />
+                            </div>
                             <div class="col-md-12">
                                 <label for="referencias" class="form-label fw-medium">Referencias *</label>
                                 <textarea class="form-control" name="referencias" id="referencias" rows="3" required style="resize: none;"></textarea>
                             </div>
-
                             <div class="col-12">
                                 <button class="btn btn-primary-veris w-100 fs--18 fw-medium line-leight-24 px-4 py-3 waves-effect waves-light" type="submit"  id="btnSiguiente" disabled
                                 >Siguiente</button>
@@ -342,6 +340,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
             $('#numeroIdentificacion').val(dataCita.paciente.numeroIdentificacion);
             $('#email').val(dataCita.paciente.correo);
             $('#telefono').val(dataCita.paciente.telefono);
+            $('#convenio').val(`${ (dataCita.convenio.nombreConvenio !== null) ? dataCita.convenio.nombreConvenio : "Ninguno" }`);
         }
     }
 
