@@ -70,7 +70,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/confirmacion-cita/{params}',[CitasController::class, 'confirmacionCita'])->name('citas.confirmacionCita')->withoutMiddleware(['guest']);
     Route::get('/cita-agendada/{params}',[CitasController::class, 'citaAgendada'])->name('citas.agendada')->withoutMiddleware(['guest']);
     #Reserva VUA
-    Route::get('/urgencias-ambulatorias', [CitasController::class, 'reservarVUA'])->name('citas.reservarVUA')->withoutMiddleware(['guest']);
+    Route::get('/cita-urgencias-ambulatorias/{params}', [CitasController::class, 'reservarVUA'])->name('citas.reservarVUA')->withoutMiddleware(['guest']);
     
     #Laboratorio
     Route::get('/laboratorio',[CitasController::class, 'laboratorio'])->name('citas.laboratorio')->withoutMiddleware(['guest']);

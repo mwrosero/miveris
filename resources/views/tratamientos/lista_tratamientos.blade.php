@@ -76,7 +76,7 @@ $tokenMods = base64_encode(uniqid());
                     <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
                     <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
-                    <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
+                    <a href="#" class="btn btn m-0 w-100 px-4 py-3" data-bs-dismiss="modal">No lo he hecho</a>
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@ $tokenMods = base64_encode(uniqid());
                     
                     <p class="text-center fw-medium lh-1 fs--1 my-3">{{ __('¿Ya realizaste esta cita médica?') }}</p>
                     <a href="#" id="btnInterconsultaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
-                    <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
+                    <a href="#" class="btn btn m-0 w-100 px-4 py-3" data-bs-dismiss="modal">No lo he hecho</a>
                 </div>
             </div>
         </div>
@@ -377,7 +377,7 @@ $tokenMods = base64_encode(uniqid());
         let args = [];
         let canalOrigen = _canalOrigen
         
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=APP_CMV`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -423,13 +423,13 @@ $tokenMods = base64_encode(uniqid());
         let args = [];
         let canalOrigen = _canalOrigen
         
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=APP_CMV`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify(
             {
-                "codigoTratamiento": datos.codigoTratamiento,
+                "codigoTratamiento": dataCita.tratamiento.codigoTratamiento,
                 "lineaDetalleTratamiento": datos.lineaDetalleTratamiento,
                 "ordenes": [
                     {
@@ -1263,7 +1263,7 @@ $tokenMods = base64_encode(uniqid());
         let url = $(this).attr('url-rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
 
-        if(data.permiteReserva == "N"){
+        if(data.permiteReserva == "N" && data.esPagada != "S"){
             $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
             $('#modalPermiteCambiar').modal('show');
             return;

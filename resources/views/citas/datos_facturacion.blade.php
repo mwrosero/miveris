@@ -265,7 +265,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         })
 
         $('body').on('change', '#checkTerminosCondicion', function(){
-            
             if($('#checkTerminosCondicion').is(':checked')) {
                 $('#btn-next').removeClass('disabled');
             } else {
