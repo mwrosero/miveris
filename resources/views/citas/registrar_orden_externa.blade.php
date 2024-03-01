@@ -213,8 +213,6 @@ $data1 = json_decode($data);
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
 
-
-
     if (dataCita.origen == 'ordenExternaDomicilio') {
         // deshabilitar campos
         $('#paciente').prop('disabled', true);
