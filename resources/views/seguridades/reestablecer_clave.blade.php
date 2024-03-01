@@ -18,20 +18,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 </div>
 @endsection
 @section('content')
-<!-- Modal -->
-<div class="modal fade" id="modalError400" tabindex="-1" aria-labelledby="modalError400Label" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
-        <div class="modal-content">
-            <div class="modal-body text-center p-3">
-                <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
-                <p class="fs--1 fw-normal mb-0 text-veris" id="mensaje_400"></p>
-            </div>
-            <div class="modal-footer pt-0 pb-3 px-3">
-                <a href="/" class="btn btn-primary-veris fw-medium fs--18 m-0 mb-3 w-100 px-4 py-3">Aceptar</a>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="text-center mb-2">
     <img class="logo-login" src="../../assets/img/veris/isotipo.svg">
 </div>
