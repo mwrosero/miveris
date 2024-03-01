@@ -86,7 +86,7 @@ Mi Veris - Citas - Promociones
 
         // Evento de escritura en el input
         $('#buscarPorPromocion').on('keyup', function() {
-            clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se escribe
+            //clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se escribe
 
             var searchText = $(this).val();
             if (searchText.length >= 3) { // Solo realizar la búsqueda si hay al menos 3 caracteres
