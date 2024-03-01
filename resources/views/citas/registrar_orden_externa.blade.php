@@ -375,6 +375,18 @@ $data1 = json_decode($data);
             $('#telefono').val(dataCita.paciente.telefono);
             $('#convenio').val(`${ (dataCita.convenio.nombreConvenio !== null) ? dataCita.convenio.nombreConvenio : "Ninguno" }`);
         }
+        let disabled = false;
+        $("form input, form textarea").each(function(){
+            if($(this).val() == ""){
+                disabled = true;
+            }
+        });
+
+        if(disabled){
+            $('#btnSiguiente').attr('disabled', true);
+        }else{
+            $('#btnSiguiente').attr('disabled', false);
+        }
     }
 
 
