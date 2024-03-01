@@ -555,10 +555,10 @@ Mi Veris - Inicio
     async function obtenerUrgenciasAmbulatorias(){
         let args = [];
         let canalOrigen = _canalOrigen;
-        let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/digitalestest/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/reservas/ingresos?idPaciente=${numeroPaciente}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -567,7 +567,7 @@ Mi Veris - Inicio
            if(data.data.length == 0){
                 mostrarNoExistenUrgencias();
               } else {
-                // mostrarUrgenciasAmbulatorias();
+                mostrarUrgenciasAmbulatorias();
            }
         }
         return data;
