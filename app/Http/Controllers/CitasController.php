@@ -184,7 +184,7 @@ class CitasController extends Controller
     }
 
     // Reserva VUA
-    public function reservarVUA() {
-        return view('citas.citas_vua');
+    public function reservarVUA($params) {
+        return view('citas.citas_vua')->with('params',$params);
     }
 }

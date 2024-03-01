@@ -456,6 +456,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     function obtenerNumeroMes(fechaString) {
+        console.log(fechaString)
         // Dividir la cadena en partes
         var partes = fechaString.split('/');
         
@@ -490,6 +491,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let elemento = '';
 
             if(data.data.length > 0){
+                _fechaSeleccionada = fechasDisponibles[0];
                 await renderCalendar();
                 $('.dias-calendario').addClass('d-none');
                 $('.semana-'+numeroSemanaCurso).removeClass('d-none');
@@ -584,7 +586,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function consultarDisponibilidadMedico(dataMedico){
         let medico = JSON.parse(dataMedico);
-        let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
+        //let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let listaHorariosMedico = $('#listaHorariosMedico');
         listaHorariosMedico.empty();
         let bloques = '';
@@ -593,7 +595,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&bloques=${bloques}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(_fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&bloques=${bloques}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -609,6 +611,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     dataCita.horario = horario;
                     let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
                     let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
+                    if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
+                        ruta = "/cita-urgencias-ambulatorias/" + "{{ $params }}";
+                    }
                     elemento += `<a href="${ruta}">
                             <div class="card card-horario card-body rounded-3 position-relative py-3 mb-2 btn-disponibilidad-medico" data-horario='${JSON.stringify(horario)}'>
                         `;
@@ -727,9 +732,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // consultar horas de motorizados
     async function consultarHorasMotorizados() {
-        let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
+        //let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/disponibilidad?canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${fechaSeleccionada}&codigoZona=${codigoZona}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/disponibilidad?canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${_fechaSeleccionada}&codigoZona=${codigoZona}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["dismissAlert"] = true;

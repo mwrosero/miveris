@@ -401,7 +401,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "valorDescuento": dataCita.precio.valorDescuento,
             "valorSubtotalCita": dataCita.precio.valor,
             "numeroAutorizacion": dataCita.precio.numeroAutorizacion,
-            "esEmbarazada": "N",            
+            "esEmbarazada": (dataCita.estaEmbarazada) ? dataCita.estaEmbarazada : "N",
             "fechaSeleccionada": dataCita.horario.dia2,
             /*Si estoy modificando/tratamiento o sino N*/
             "estaPagada": estaPagada
@@ -452,6 +452,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 return;
             }
             if(data.data.permitePago == "S"){
+                /*
+                https://api-phantomx.veris.com.ec/digitalestest/v1/agenda/validarPermitePago?canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
+                */
                 await crearPreTransaccion()
                 //location.href = '/citas-datos-facturacion/{{ $params }}';
             }else{
