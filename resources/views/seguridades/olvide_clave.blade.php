@@ -80,33 +80,49 @@
             }
 
             if(!errors){
-                let reset = codigoReset();
-                reset.then((data) => {
-                    console.log(data); // Aquí obtendrás el resultado de la promesa una vez que se resuelva.
-                    if(data.code == 200){
-                        let param = {};
-                        param.tipoIdentificacion = getInput('tipoIdentificacion');
-                        param.numeroIdentificacion = getInput('numeroIdentificacion');
-                        let codigoUsuario = btoa(JSON.stringify(param));
-                        location.href = '/reestablecer-clave/'+codigoUsuario;
-                    }else{
-                        title = 'Veris';
-                        msg = `<span class="txt-alt">${data.message}</span>`;
-                        $('#modalAlertButtonAccion').addClass('d-none');
-                        $('#modalAlertButton').removeClass('d-none');
-                        $('#modalAlertTitle').html(title);
-                        $('#modalAlertMessage').html(msg);
-                        $('#modalAlert').modal('show');
-                    }
-                }).catch((error) => {
+                let reset = await codigoReset();
+                if(reset.code == 200){
+                    let param = {};
+                    param.tipoIdentificacion = getInput('tipoIdentificacion');
+                    param.numeroIdentificacion = getInput('numeroIdentificacion');
+                    let codigoUsuario = btoa(JSON.stringify(param));
+                    location.href = '/reestablecer-clave/'+codigoUsuario;
+                }else{
                     title = 'Veris';
-                    msg = `<span class="txt-alt">${error.message}</span>`;
+                    msg = `<span class="txt-alt">${reset.message}</span>`;
                     $('#modalAlertButtonAccion').addClass('d-none');
                     $('#modalAlertButton').removeClass('d-none');
                     $('#modalAlertTitle').html(title);
                     $('#modalAlertMessage').html(msg);
                     $('#modalAlert').modal('show');
-                });
+                }
+                // reset.then((data) => {
+                //     console.log(data); // Aquí obtendrás el resultado de la promesa una vez que se resuelva.
+                //     if(data.code == 200){
+                //         let param = {};
+                //         param.tipoIdentificacion = getInput('tipoIdentificacion');
+                //         param.numeroIdentificacion = getInput('numeroIdentificacion');
+                //         let codigoUsuario = btoa(JSON.stringify(param));
+                //         location.href = '/reestablecer-clave/'+codigoUsuario;
+                //     }else{
+                //         title = 'Veris';
+                //         msg = `<span class="txt-alt">${data.message}</span>`;
+                //         $('#modalAlertButtonAccion').addClass('d-none');
+                //         $('#modalAlertButton').removeClass('d-none');
+                //         $('#modalAlertTitle').html(title);
+                //         $('#modalAlertMessage').html(msg);
+                //         $('#modalAlert').modal('show');
+                //     }
+                // }).catch((error) => {
+                //     console.log(error);
+                //     title = 'Veris';
+                //     msg = `<span class="txt-alt">${error.message}</span>`;
+                //     $('#modalAlertButtonAccion').addClass('d-none');
+                //     $('#modalAlertButton').removeClass('d-none');
+                //     $('#modalAlertTitle').html(title);
+                //     $('#modalAlertMessage').html(msg);
+                //     $('#modalAlert').modal('show');
+                // });
 
             }else{
                 msg += `</ul>`;

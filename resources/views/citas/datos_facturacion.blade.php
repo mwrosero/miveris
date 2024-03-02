@@ -265,7 +265,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         })
 
         $('body').on('change', '#checkTerminosCondicion', function(){
-            
             if($('#checkTerminosCondicion').is(':checked')) {
                 $('#btn-next').removeClass('disabled');
             } else {
@@ -441,7 +440,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }]
         }
 
-        if(dataCita.datosTratamiento){
+        if(dataCita.datosTratamiento && !dataCita.listadoPrestaciones){
             dataPT.listaCitas = [{
                 "codigoReserva": dataCita.datosTratamiento.detalleReserva.codigoReserva
             }]
@@ -592,6 +591,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if (razonSocial.trim() === "") {
                 errors = true;
                 msg += `<li class="ms-0">El campo Razón Social es obligatorio.</li>`;
+            }
+            var numeroIdentificacion = $("#numeroIdentificacion").val();
+            if (numeroIdentificacion.length !== 13) {
+                errors = true;
+                msg += `<li class="ms-0">El campo Número Documento debe tener 13 dígitos.</li>`;
             }
         } else if (tipoIdentificacion == 2) {
             // Validar numeroIdentificacion

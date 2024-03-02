@@ -49,6 +49,7 @@ async function call(args){
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
             }
+            throw error;
             // toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.","ERROR");
             //console.log(error);
         });
@@ -434,13 +435,35 @@ async function recuperarContrasena(){
     args["showLoader"] = true;
     args["bodyType"] = "json";
     args["data"] = JSON.stringify({
-        "codigoUsuario": codigoUsuario,
+        "codigoUsuario": params.numeroIdentificacion,
         "codigoAutorizacion": parseInt(getInput('codigoAutorizacion')),
         "nuevaClave": getInput('password'),
         "canalOrigenDigital": _canalOrigen
     });
 
     const data = await call(args);
+    if(data.code == 200){
+        title = "Contraseña modificada";
+        msg = "Tu contraseña ha sido modificada con éxito"
+        $('#modalAlertButtonAccion').removeClass('w-50');
+        $('#modalAlertButtonAccion').addClass('w-100');
+        $('#modalAlertButtonAccion').attr('href','/login');
+        $('#modalAlertButtonAccion').removeClass('d-none');
+        
+        $('#modalAlertButton').addClass('d-none');
+        $('#modalAlertButtonAccion').html("Entendido");
+        $('#modalAlertTitle').html(title);
+        $('#modalAlertMessage').html(msg);
+        $('#modalAlert').modal('show');
+    }else{
+        title = 'Veris';
+        msg = `<span class="txt-alt">${recuperar.message}</span>`;
+        $('#modalAlertButtonAccion').addClass('d-none');
+        $('#modalAlertButton').removeClass('d-none');
+        $('#modalAlertTitle').html(title);
+        $('#modalAlertMessage').html(msg);
+        $('#modalAlert').modal('show');
+    }
     return data;
 }
 

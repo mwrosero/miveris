@@ -108,9 +108,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     });
 
+    let params;
     document.addEventListener("DOMContentLoaded", async function () {
         const reestablecerButton = document.querySelector(".btn-recuperar");
         await obtenerDatosUsuario();
+        params = @json($data);
         reestablecerButton.addEventListener("click", async function (e) {
             e.preventDefault();
             let errors = false;
@@ -141,28 +143,28 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             if(!errors){
                 let recuperar = await recuperarContrasena();
-                if(recuperar.code == 200){
-                    title = "Contraseña modificada";
-                    msg = "Tu contraseña ha sido modificada con éxito"
-                    $('#modalAlertButtonAccion').removeClass('w-50');
-                    $('#modalAlertButtonAccion').addClass('w-100');
-                    $('#modalAlertButtonAccion').attr('href','/login');
-                    $('#modalAlertButtonAccion').removeClass('d-none');
+                // if(recuperar.code == 200){
+                //     title = "Contraseña modificada";
+                //     msg = "Tu contraseña ha sido modificada con éxito"
+                //     $('#modalAlertButtonAccion').removeClass('w-50');
+                //     $('#modalAlertButtonAccion').addClass('w-100');
+                //     $('#modalAlertButtonAccion').attr('href','/login');
+                //     $('#modalAlertButtonAccion').removeClass('d-none');
                     
-                    $('#modalAlertButton').addClass('d-none');
-                    $('#modalAlertButtonAccion').html("Entendido");
-                    $('#modalAlertTitle').html(title);
-                    $('#modalAlertMessage').html(msg);
-                    $('#modalAlert').modal('show');
-                }else{
-                    title = 'Veris';
-                    msg = `<span class="txt-alt">${recuperar.message}</span>`;
-                    $('#modalAlertButtonAccion').addClass('d-none');
-                    $('#modalAlertButton').removeClass('d-none');
-                    $('#modalAlertTitle').html(title);
-                    $('#modalAlertMessage').html(msg);
-                    $('#modalAlert').modal('show');
-                }
+                //     $('#modalAlertButton').addClass('d-none');
+                //     $('#modalAlertButtonAccion').html("Entendido");
+                //     $('#modalAlertTitle').html(title);
+                //     $('#modalAlertMessage').html(msg);
+                //     $('#modalAlert').modal('show');
+                // }else{
+                //     title = 'Veris';
+                //     msg = `<span class="txt-alt">${recuperar.message}</span>`;
+                //     $('#modalAlertButtonAccion').addClass('d-none');
+                //     $('#modalAlertButton').removeClass('d-none');
+                //     $('#modalAlertTitle').html(title);
+                //     $('#modalAlertMessage').html(msg);
+                //     $('#modalAlert').modal('show');
+                // }
             }else{
                 msg += `</ul>`;
                 $('#modalAlertTitle').html(title);

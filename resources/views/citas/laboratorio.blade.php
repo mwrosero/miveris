@@ -524,11 +524,11 @@ Mi Veris - Citas - Laboratorio
 
     // determinar condiciones de los botones 
     function determinarCondicionesBotones(datosServicio, estado, datosTratamiento) {
+        console.log(datosServicio, estado, datosTratamiento)
         let services = datosServicio;
         if (datosServicio.length == 0) {
             return `<div></div>`;
         } else {
-
             switch (datosServicio.tipoCard) {
                 case "AGENDA" :
                     let respuestaAgenda = "";
@@ -568,8 +568,7 @@ Mi Veris - Citas - Laboratorio
                             // clear respuesta
                             respuestaAgenda = "";
                             respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btnVerOrden" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
-                        }
-                        else{
+                        }else{
                             respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
 
                             if (datosServicio.permitePago == 'S'){
@@ -589,7 +588,6 @@ Mi Veris - Citas - Laboratorio
 
                     return respuestaAgenda;
                     break;
-
                 case "LAB":
                     let respuesta = "";
                     respuesta += ` <button type="button" class="btn text-primary-veris fw-normal fs--1 line-height-16 m-0" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
@@ -630,6 +628,18 @@ Mi Veris - Citas - Laboratorio
                                 let ulrParams = btoa(JSON.stringify(params));
                                 let ruta = `/citas-laboratorio/` + "{{$tokenCita}}";
                                 respuesta += `<a href="${ruta}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                            } else if (datosServicio.permitePago == "N"){
+                                let params = {};
+                                params.idPaciente = datosServicio.pacPacNumero;
+                                params.numeroOrden = datosServicio.idOrden;
+                                params.codigoEmpresa = datosServicio.codigoEmpresa;
+                                let ulrParams = btoa(JSON.stringify(params));
+                                let ruta = `/citas-laboratorio/` + "{{$tokenCita}}";
+                                if(datosServicio.modalidad == "PRESENCIAL"){
+                                    respuesta += `<div class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-pagar" data-rel='${JSON.stringify(datosServicio)}'><i class="fa-solid fa-circle-info me-2 line-height-20"></i>Información</div>`;
+                                }else{
+                                    respuesta += `<a href="${ruta}" class="btn btn-sm btn-primary-veris fw-normal fs--1 line-height-16 m-0 btn-pagar" data-rel='${JSON.stringify(datosServicio)}'>Pagar</a>`;
+                                }
                             }
                         }
                     }
@@ -757,7 +767,15 @@ Mi Veris - Citas - Laboratorio
         let datosServicio = $(this).data('rel');
         // capturar datarel del filtro
         let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
-        console.log('datospaciente', dataPaciente);
+        console.log(datosServicio);
+        if(datosServicio.permitePago == "N"  && datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL"){
+            // Modal de error
+            // setear el mensaje de error en mensajeError
+            console.log(datosServicio)
+            $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }
 
         let modalidad;
         if (datosServicio.modalidad === 'ONLINE') {

@@ -32,7 +32,7 @@ Mi Veris - Citas - Receta médica
                                 indicaciones
                             </small>
                         </div>
-                        <i class="fa-solid fa-bell ms-auto"></i>
+                        {{-- <i class="fa-solid fa-bell ms-auto"></i> --}}
                     </label>
                 </div>
             </div>
@@ -458,7 +458,7 @@ Mi Veris - Citas - Receta médica
                                         ${receta.indicaciones}
                                     </small>
                                 </div>
-                                <i class="fa-solid fa-bell ms-auto"></i>
+                                <!--i class="fa-solid fa-bell ms-auto"></i-->
                             </label>`;
             });
             html.append(elementos);

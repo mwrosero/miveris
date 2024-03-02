@@ -56,7 +56,7 @@ $tokenMods = base64_encode(uniqid());
                                 indicaciones
                             </small>
                         </div>
-                        <i class="fa-solid fa-bell ms-auto"></i>
+                        {{-- <i class="fa-solid fa-bell ms-auto"></i> --}}
                     </label>
                 </div>
             </div>
@@ -76,7 +76,7 @@ $tokenMods = base64_encode(uniqid());
                     <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
                     <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
                     <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
-                    <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
+                    <a href="#" class="btn btn m-0 w-100 px-4 py-3" data-bs-dismiss="modal">No lo he hecho</a>
                 </div>
             </div>
         </div>
@@ -93,7 +93,7 @@ $tokenMods = base64_encode(uniqid());
                     
                     <p class="text-center fw-medium lh-1 fs--1 my-3">{{ __('¿Ya realizaste esta cita médica?') }}</p>
                     <a href="#" id="btnInterconsultaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
-                    <a href="#" class="btn btn m-0 w-100 px-4 py-3">No lo he hecho</a>
+                    <a href="#" class="btn btn m-0 w-100 px-4 py-3" data-bs-dismiss="modal">No lo he hecho</a>
                 </div>
             </div>
         </div>
@@ -104,8 +104,8 @@ $tokenMods = base64_encode(uniqid());
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3">Solicitud fallida</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError"></p>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Solicitud fallida</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris" id="mensajeError"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
@@ -119,8 +119,8 @@ $tokenMods = base64_encode(uniqid());
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
-                    <p class="fs--1 fw-normal">{{ __('Para realizarte este examen acercate a una central médica') }}</p>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris">{{ __('Para realizarte este examen acercate a una central médica') }}</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
@@ -134,12 +134,13 @@ $tokenMods = base64_encode(uniqid());
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
-                    <p class="fs--1 fw-normal">{{ __('Para agendar esta videoconsulta llama al') }} <b>{{ __('6009600') }}</b></p>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris">{{ __('Para agendar este procedimiento llama al') }} <b>{{ __('6009600') }}</b></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <a href="tel:+59346009600" class="btn btn-primary-veris m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
-                    <button type="button" class="btn text-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
+                    {{-- <a href="tel:+59346009600" class="btn btn-primary-veris m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                    <button type="button" class="btn text-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button> --}}
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
                 </div>
             </div>
         </div>
@@ -150,12 +151,13 @@ $tokenMods = base64_encode(uniqid());
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
-                    <p class="fs--1 fw-normal" id = "mensajeInformacion"></p>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Veris') }}</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris" id = "mensajeInformacion"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <a href="tel:+59346009600" class="btn btn-primary-veris m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
-                    <button type="button" class="btn text-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
+                    {{-- <a href="tel:+59346009600" class="btn btn-primary-veris m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                    <button type="button" class="btn text-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button> --}}
+                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
                 </div>
             </div>
         </div>
@@ -166,8 +168,8 @@ $tokenMods = base64_encode(uniqid());
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Veris') }}</h1>
-                    <p class="fs--1 fw-normal" id="mensajeNoPermiteReserva">{{ __('Reserva no permitida por este canal') }}</p>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Veris') }}</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris" id="mensajeNoPermiteReserva">{{ __('Reserva no permitida por este canal') }}</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
@@ -181,8 +183,8 @@ $tokenMods = base64_encode(uniqid());
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs-5 fw-medium mb-3">{{ __('Información') }}</h1>
-                    <p class="fs--1 fw-normal" id = "mensajeInformacionCita"></p>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris" id = "mensajeInformacionCita"></p>
                 </div>
                 <div id="footerInformacionCita">
                     <div class="modal-footer pt-0 pb-3 px-3">
@@ -279,6 +281,7 @@ $tokenMods = base64_encode(uniqid());
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         console.log(9)
+
         await obtenerTratamientos();
         llenarPorcentajeBarra();
 
@@ -350,6 +353,9 @@ $tokenMods = base64_encode(uniqid());
             else {
                 document.getElementById("cardPromocion").style.display = "none";
             }
+            if(porcentaje == 100){
+                $('#datosTratamientoCard').append(`<img src="{{ asset('assets/img/svg/golden.svg') }}" class="pe-3 position-absolute" alt="golden">`);
+            }
         } else if (data.code != 200) {
             console.log('errorza');
             // mostrar modal de error
@@ -371,7 +377,7 @@ $tokenMods = base64_encode(uniqid());
         let args = [];
         let canalOrigen = _canalOrigen
         
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=APP_CMV`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -417,13 +423,13 @@ $tokenMods = base64_encode(uniqid());
         let args = [];
         let canalOrigen = _canalOrigen
         
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
+        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=APP_CMV`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify(
             {
-                "codigoTratamiento": datos.codigoTratamiento,
+                "codigoTratamiento": dataCita.tratamiento.codigoTratamiento,
                 "lineaDetalleTratamiento": datos.lineaDetalleTratamiento,
                 "ordenes": [
                     {
@@ -585,7 +591,7 @@ $tokenMods = base64_encode(uniqid());
                                         ${receta.indicaciones}
                                     </small>
                                 </div>
-                                <i class="fa-solid fa-bell ms-auto"></i>
+                                <!--i class="fa-solid fa-bell ms-auto"></i-->
                             </label>`;
             });
             html.append(elementos);
@@ -646,12 +652,13 @@ $tokenMods = base64_encode(uniqid());
         divContenedorRealizados.empty(); // Limpia el contenido actual
         if(data.length > 0){
             data.forEach((tratamientos) =>{
+
                 let elemento = `<div class="col-12">
                                     <div class="card h-100">
                                         <div class="card-body p--2">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)}</h6>
-                                                <span id="estado" class="fs--1 line-height-16 mb-1"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span></span>
+                                                <span id="estado" class="fs--1 line-height-16 mb-1"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${ (tratamientos.tipoCard == "RECETAS") ? "Comprada" : "Atendida" }</span></span>
                                             </div>
                                             <div>
                                                 ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
@@ -792,7 +799,7 @@ $tokenMods = base64_encode(uniqid());
 
     // determinar condiciones de los botones 
     function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
-        console.log(estado, datosServicio.estado, datosServicio.tipoCard)
+        // console.log(estado, datosServicio.estado, datosServicio.tipoCard)
         let services = datosServicio;
         if (datosServicio.length == 0) {
             return `<div></div>`;
@@ -811,7 +818,7 @@ $tokenMods = base64_encode(uniqid());
                         }
                         if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}'>Información</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}'>Información</a>`;
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S' && datosServicio.esExterna == "N") {
@@ -858,7 +865,10 @@ $tokenMods = base64_encode(uniqid());
                             }
                         } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                             // mostrar boton de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
+                            // respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" onclick="mostrarInformacion('${datosServicio.detalleReserva.mensajeInformacion}')">Información</a>`;
+                            respuestaAgenda = `<div class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0" onclick="mostrarInformacion('${datosServicio.detalleReserva.mensajeInformacion}')">
+                                        <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
+                                    </div>`
                         } 
                     }else if (datosServicio.estado == 'ATENDIDO'){
                         // mostrar boton de ver orden
@@ -872,7 +882,18 @@ $tokenMods = base64_encode(uniqid());
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
                         if(datosServicio.verResultados != "S" && datosServicio.aplicaSolicitud != "S" && datosServicio.permitePago != "S"){
-                            respuesta += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                            // respuesta += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                            respuesta += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                            let params = {}
+                            params.idPaciente = idPaciente;
+                            params.numeroOrden = datosServicio.idOrden;
+                            params.codigoEmpresa = datosServicio.codigoEmpresa;
+                            let ulrParams = btoa(JSON.stringify(params));
+                            if(datosServicio.modalidad == "PRESENCIAL"){
+                                respuesta += `<div url-rel="/citas-laboratorio/{{$tokenMods}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'><i class="fa-solid fa-circle-info me-2 line-height-20"></i>Información</div>`;
+                            }else{
+                                respuesta += `<div url-rel="/citas-laboratorio/{{$tokenMods}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
+                            }
                         }else{
                             respuesta += ` <button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         }
@@ -932,7 +953,7 @@ $tokenMods = base64_encode(uniqid());
                     if(estado == "PENDIENTE"){
                         respuestaOdontologia += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         // ABRIRE MODAL DE VIDEO CONSULTA
-                        respuestaOdontologia += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal"> Agendar</button>`;
+                        respuestaOdontologia += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris" data-bs-toggle="modal" data-bs-target="#mensajeVideoConsultaModal">Agendar</button>`;
                     }else if(estado == 'REALIZADO'){
                         respuestaOdontologia += ` <button class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     }
@@ -1033,6 +1054,7 @@ $tokenMods = base64_encode(uniqid());
     // boton informacion
     $(document).on('click', '.btn-informacion', function(){
         let datos = JSON.parse($(this).attr('data-rel'));
+        let datosTratamiento = JSON.parse($(this).attr('datosTratamiento-rel'));
         console.log(datos)
         if (datos.esCaducado === "S" && datos.esAgendable === "S") {
             // CAMBIAR TITUOLO MODAL
@@ -1042,7 +1064,7 @@ $tokenMods = base64_encode(uniqid());
             $('#footerInformacionCita').empty();
             // agregar boton agendar y salir
             $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" data-rel='${JSON.stringify(datos)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" datosTratamiento-rel='${JSON.stringify(datosTratamiento)}' data-rel='${JSON.stringify(datos)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
@@ -1062,12 +1084,13 @@ $tokenMods = base64_encode(uniqid());
     // boton agendar cita modal setear datos en localstorage
     $(document).on('click', '#btnAgendarCitaModal', function(){
             
-            let datosServicio = $(this).data('rel');
-            let datos = datosRel.servicio;
+            let datos = $(this).data('rel');
+            let datosServicio = JSON.parse($(this).attr('datosTratamiento-rel'));
+            console.log(datosServicio)
             let url = $(this).attr('url-rel');
             if(datos.permiteReserva == "N"){// && datos.esPagada == "N"
                 $('#mensajeNoPermiteCambiar').html(datos.mensajeBloqueoReserva);
-            $('#modalPermiteCambiar').modal('show');
+                $('#modalPermiteCambiar').modal('show');
                 return;
             }
 
@@ -1078,11 +1101,9 @@ $tokenMods = base64_encode(uniqid());
             } else {
                 online = 'S';
             }
-            // capturar el data-rel del filtro
-            let dataPaciente = $('input[name="listGroupRadios"]:checked').data('rel');
             let params = {}
             params.online = online;
-            params.paciente = dataPaciente;
+            params.paciente = dataCita.paciente;
             params.especialidad = {
                 codigoEspecialidad : datos.codigoEspecialidad,
                 codigoPrestacion : datos.codigoPrestacion,
@@ -1092,14 +1113,20 @@ $tokenMods = base64_encode(uniqid());
                 imagen : datos.urlImagenTipoServicio,
                 nombre : datos.nombreServicio,
             }
-            params.convenio = datosRel.tratamiento.datosConvenio;
+            // params.convenio = datosServicio.datosConvenio;
+            params.convenio = {
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+            };
 
             localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
             if (online == 'S') {
-                //window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenMods }}';
+                window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenMods }}';
             } else {
                 // ir a central medica
-                //window.location.href = '/citas-elegir-central-medica/{{ $tokenMods }}';
+                window.location.href = '/citas-elegir-central-medica/{{ $tokenMods }}';
             }
             
         });
@@ -1150,9 +1177,12 @@ $tokenMods = base64_encode(uniqid());
         dataCita.convenio = ultimoTratamiento.datosConvenio;
         dataCita.convenio.origen = "Listatratamientos";
 
-        dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
-        dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
-        dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
+        dataCita.tratamiento = {
+            numeroOrden: datosServicio.idOrden,
+            codigoEmpOrden: datosServicio.codigoEmpresa,
+            lineaDetalle: datosServicio.lineaDetalleOrden,
+            esPagada: datosServicio.esPagada
+        }
 
         localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
         location = url;
@@ -1163,12 +1193,16 @@ $tokenMods = base64_encode(uniqid());
         let datosServicio = $(this).data('rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
 
-        if(datosServicio.permitePago == "N"){
+        if(datosServicio.permitePago == "N" && datosServicio.tipoCard != "LAB"){
+            $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }else if(datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL" && datosServicio.permitePago == "N"){
             $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
             $('#modalPermiteCambiar').modal('show');
             return;
         }
-
+        // console.log(datosServicio);return;
         let modalidad;
         if (datosServicio.modalidad === 'ONLINE') {
             modalidad = 'S';
@@ -1229,7 +1263,7 @@ $tokenMods = base64_encode(uniqid());
         let url = $(this).attr('url-rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
 
-        if(data.permiteReserva == "N"){
+        if(data.permiteReserva == "N" && data.esPagada != "S"){
             $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
             $('#modalPermiteCambiar').modal('show');
             return;

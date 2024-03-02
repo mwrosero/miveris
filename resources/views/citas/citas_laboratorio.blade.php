@@ -32,7 +32,7 @@ Mi Veris - Citas - Citas Laboratorio
                                 <div class="col-3"><p class="fw-light text-end mb-0" id="Subtotal"></p></div>
                             </div>
                         </div>
-                        <div class="mb-2">
+                        <div class="mb-2" id="box-info-pago">
                             <div class="d-flex align-items-center">
                                 <i class="bi bi-check-square-fill fs-5 text-success me-2"></i>
                                 <p class="text-900 fw-normal fs--2 mb-0"> Pago permitido por este canal</p>
@@ -42,7 +42,7 @@ Mi Veris - Citas - Citas Laboratorio
                                 <p class="text-900 fw-normal fs--2 mb-0"> Pago no permitido por este canal</p>
                             </div>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-auto d-none" id="box-permite-pagar">
                             <div class="btn-master w-100">
                                 <a href="/citas-datos-facturacion/{{ $params }}" id="btnPagar" class="btn text-white shadow-none">{{ __('Pagar') }}</a>
                                 |
@@ -70,6 +70,15 @@ Mi Veris - Citas - Citas Laboratorio
         $('#pacienteLabel').html('Paciente: '+dataCita.paciente.primerNombre.toLowerCase() + " " + dataCita.paciente.primerApellido.toLowerCase() + " " +dataCita.paciente.segundoApellido.toLowerCase());
         let labelOrden = dataCita.datosTratamiento.detalleLaboratorio.descripcionOrden;
         $('#ordenLabel').html(labelOrden.charAt(0).toUpperCase() + labelOrden.slice(1).toLowerCase());
+        if(dataCita.datosTratamiento.permitePago == "N"){
+            $('#box-permite-pagar').remove();
+            $('#box-info-pago').append(`<div class="d-flex align-items-center mt-1">
+                <i class="fa-solid fa-circle-info text-primary-veris fs-5 me-2"></i>
+                <p class="text-900 fw-normal fs--1 mb-0"> Orden no se permite pagar en esta aplicación.</p>
+            </div>`)
+        }else{
+            $('#box-permite-pagar').removeClass('d-none')
+        }
         await consultarDetallesOrdenLaboratorio();
 
 

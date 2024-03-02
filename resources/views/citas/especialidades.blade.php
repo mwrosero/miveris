@@ -19,7 +19,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         </span>
                     </div>
                     <h1 class="modal-title fs--20 line-height-24 my-3">Información solicitada por tu aseguradora</h1>
-                    <p class="fs--1 fw-normal mb-3 mx-3 line-height-16">¿Esta cita es por <b>embarazo</b> o control del mismo?</p>
+                    <p class="fs--1 fw-normal mb-3 mx-3 line-height-16">¿Esta cita es por control de <b>embarazo</b>?</p>
                     <input type="hidden" id="especialidadElegida">
                 </div>
                 <div class="d-flex">

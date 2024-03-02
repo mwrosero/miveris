@@ -14,14 +14,14 @@ Mi Veris - Citas - Promociones
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Promociones') }}</h5>
     </div>
     <section class="p-3 mb-3">
-        <form class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center">
             <div class="col-12 col-md-6 mb--24">
                 <div class="input-group search-box">
                     <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
                     <input type="search" class="form-control bg-transparent fs--16 border-0 p-3 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Buscar plan preventivo" aria-describedby="search" />
                 </div>
             </div>
-        </form>
+        </div>
 
         <div class="row justify-content-center">
             <div class="col-lg-10">
@@ -86,7 +86,7 @@ Mi Veris - Citas - Promociones
 
         // Evento de escritura en el input
         $('#buscarPorPromocion').on('keyup', function() {
-            clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se escribe
+            //clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se escribe
 
             var searchText = $(this).val();
             if (searchText.length >= 3) { // Solo realizar la búsqueda si hay al menos 3 caracteres
@@ -128,34 +128,38 @@ Mi Veris - Citas - Promociones
             }else{
                 cargandoContenido = false;  
             }
-            $.each(data.data.items, function(key, paquete){
-                elem += `<div class="col-md-6">
-                    <div class="card w-100" style="border: 1px solid #E7E9EC;box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);">
-                        <div class="row g-0 justify-content-between aling-items-center cursor-pointer btn-comprar" data-rel='${ JSON.stringify(paquete) }'>
-                            <div class="col-4 col-md-auto">
-                                <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
-                            </div>
-                            <div class="col-8 col-md-8">
-                                <div class="card-body h-100 p--2 pb-2 d-flex flex-column justify-content-center">
-                                    <h6 class="text-end fs--1 line-height-16 fw-medium mb-2">${truncateText(capitalizarElemento(paquete.nombrePaquete), 40)}</h6>
-                                    <div class="d-flex justify-content-end">`;
-                                        if(paquete.porcentajeDescuento > 0){
-                                            elem += `<span class="badge bg-primary d-flex align-items-center fs--2 line-height-16 rounded-1 px--2 py-2 mx-3">-${paquete.porcentajeDescuento}%</span>`;
-                                        }
-                                            elem += `<div class="content-precio text-end">`;
-                                        if(paquete.porcentajeDescuento > 0){
-                                            elem += `<p class="fs--3 line-height-16 mb-0" style="color: #6E7A8C;">Antes <del>$${paquete.valorAnteriorPaquete.toFixed(2)}</del></p>`
-                                        }
-                                            elem += `<h4 class="fs-24 line-height-28 fw-medium mb-0" style="color: #0071CE !important;">$${paquete.valorTotalPaquete.toFixed(2)}</h4>
+            if(data.data.items.length > 0){
+                $.each(data.data.items, function(key, paquete){
+                    elem += `<div class="col-md-6">
+                        <div class="card w-100" style="border: 1px solid #E7E9EC;box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);">
+                            <div class="row g-0 justify-content-between aling-items-center cursor-pointer btn-comprar" data-rel='${ JSON.stringify(paquete) }'>
+                                <div class="col-4 col-md-auto">
+                                    <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
+                                </div>
+                                <div class="col-8 col-md-8">
+                                    <div class="card-body h-100 p--2 pb-2 d-flex flex-column justify-content-center">
+                                        <h6 class="text-end fs--1 line-height-16 fw-medium mb-2">${truncateText(capitalizarElemento(paquete.nombrePaquete), 40)}</h6>
+                                        <div class="d-flex justify-content-end">`;
+                                            if(paquete.porcentajeDescuento > 0){
+                                                elem += `<span class="badge bg-primary d-flex align-items-center fs--2 line-height-16 rounded-1 px--2 py-2 mx-3">-${paquete.porcentajeDescuento}%</span>`;
+                                            }
+                                                elem += `<div class="content-precio text-end">`;
+                                            if(paquete.porcentajeDescuento > 0){
+                                                elem += `<p class="fs--3 line-height-16 mb-0" style="color: #6E7A8C;">Antes <del>$${paquete.valorAnteriorPaquete.toFixed(2)}</del></p>`
+                                            }
+                                                elem += `<h4 class="fs-24 line-height-28 fw-medium mb-0" style="color: #0071CE !important;">$${paquete.valorTotalPaquete.toFixed(2)}</h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>`;
-            })
-            page++;
+                    </div>`;
+                })
+                page++;
+            }else{
+                elem += `<p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>`;
+            }
             $('#listado-paquetes').append(elem);
         }else{
             alert(data.message);

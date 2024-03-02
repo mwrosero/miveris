@@ -65,7 +65,7 @@ Mi Veris - Citas - tratamiento
                             <img src="{{ asset('assets/img/svg/especialidades/alergologia.svg') }}" alt="especialidad" />
                             <div class="ms-2">
                                 <h6 class="fw-medium mb-0">Traumatología</h6>
-                                <p class="fw-normal fs--1 mb-0">Ver tratamiento en PDF <i class="bi bi-chevron-right ms-2"></i></p>
+                                <p class="fw-normal fs--1 mb-0" id="verPdf">Ver tratamiento en PDF <i class="bi bi-chevron-right ms-2"></i></p>
                             </div>
                         </a>
                         <h6 class="fw-medium py-2 px-3 mb-0" style="background: #E9EFF4;">Selecciona tus servicios</h6>
@@ -105,7 +105,7 @@ Mi Veris - Citas - tratamiento
                             </div>
                         </div>
                         <div class="p-3">
-                            <div class="btn btn-primary-veris w-100 mb-3"  id="btnComprar">Comprar</div>
+                            <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 waves-effect waves-light text-center"  id="btnComprar">Comprar</button>
                             <a href="javascript:history.go(-1)" class="btn w-100 mb-3">Ahora no</a>
                         </div>
                         
@@ -131,15 +131,23 @@ Mi Veris - Citas - tratamiento
         // Precargar elementos
         $('.content-img').html(`<img src="${dataCita.convenio.rutaImagenConvenio}" onerror="this.src='{{ asset('assets/img/svg/regalo_abierto.svg') }}'" class="card-img-top">`);
 
+        if(dataCita.convenio.idCliente !== null){
+            $('.promo-img').html(`<img src="{{ asset('assets/img/svg/promocionNoDisponible.svg') }}" class="card-img-top" style="max-height:165px;margin-top: -15px;" alt="">`);
+        }
+
         await valorizacionServicios();
         console.log(dataCita.promocion)
         $('body').on('change','.input-group input', async function(){
             let detalle = JSON.parse($(this).attr("data-rel"));
-            await actualizarValorizacionServicios(detalle, $(this).val());
+            await actualizarValorizacionServicios(detalle, $(this).val(), $(this).attr('index-rel'));
             console.log(dataCita.promocion);
             drawNuevosValores();
             //await drawServicios();
         })
+
+        $('#verPdf').click(function(){
+            descargarDocumentoPdfPrincipal();
+        });
 
         // boton info
         $('#informacionModal').on('show.bs.modal', function (event) {
@@ -201,13 +209,33 @@ Mi Veris - Citas - tratamiento
         })
     });
 
+    async function descargarDocumentoPdfPrincipal(){
+        let args = [];
+        let canalOrigen = 'APP_CMV'
+        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/reporteAcumulativoAtencion?secuenciaAtencion=${dataCita.datosTratamiento.secuenciaAtenciones}`;
+        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+        } catch (error) {
+            console.error('Error al obtener el PDF:', error);
+        }
+    }
+
     // llenar contenedor principal descuento
     function llenarContenedorPrincipalDescuento() {
         let contenedorPrincipalDescuento = $('#contenedorPrincipal-descuento');
         contenedorPrincipalDescuento.empty();
         if(dataCita.convenio.idCliente !== null){
             contenedorPrincipalDescuento.append(`<p class="mb-0">Compra y gestiona </p>
-                                                <p class="mb-0">tu tratamiento en app</p>`);
+                                                <p class="mb-0">tu tratamiento sin filas</p>`);
         } else {
             contenedorPrincipalDescuento.append(`<p class="mb-0">Veris te regala un</p>
                                                 <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
@@ -324,7 +352,7 @@ Mi Veris - Citas - tratamiento
 
     // actualizar la valorizacion de los servicios del tratamiento con un put
 
-    async function actualizarValorizacionServicios(detalle, qty) {
+    async function actualizarValorizacionServicios(detalle, qty, index) {
         //console.log('-------------'+dataCita.promocion.codigoPreTransaccion)
         let args = {};
         //let canalOrigenDigital = 'APP_CMV';
@@ -343,7 +371,13 @@ Mi Veris - Citas - tratamiento
 
         const data = await call(args);
         dataCita.promocion = data.data
-        // console.log('dataservicio', data);
+        console.log('dataservicio', data);
+        $.each(data.data.serviciosIncluyeCompra, function(key, resultados){
+            if(key == index){
+                $('#item-'+key).attr("data-rel",JSON.stringify(resultados))
+            }
+        })
+
         return data;
     }
 
@@ -383,7 +417,7 @@ Mi Veris - Citas - tratamiento
                                     <div class="d-flex align-items-center">
                                         <p class="text-primary fw-medium fs--2 mb-0" id="precioTotal">
                                             
-                                            <del class="text-danger fw-normal" id="precioBase-${index}">$$${resultados.valorNormal}</del> 
+                                            <del class="text-danger fw-normal" id="precioBase-${index}">$${resultados.valorNormal}</del> 
                                             <span class="fw-medium" id="precioTotalList-${index}">
                                             $${resultados.valorPromocion}
                                             </span>
@@ -397,8 +431,8 @@ Mi Veris - Citas - tratamiento
                                 <div class="input-group input-group-sm flex-nowrap w-25" data-quantity="data-quantity">
                                     <button class="btn btn-sm btn-minus px-2" data-type="minus" onclick="restarCantidad(${index})"
                                     >-</button>
-                                    <input class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
-                                    value="1" id="cantidadServicio-${index}"
+                                    <input id="item-${index}" index-rel="${index}" class="form-control text-center input-spin-none bg-transparent px-0" type="number" data-rel='${JSON.stringify(resultados)}' min="0" max=${resultados.cantidadMaximaPermitida}
+                                    value="${resultados.cantidadMaximaPermitida}" id="cantidadServicio-${index}"
                                      />
                                     <button class="btn btn-sm btn-plus px-2" data-type="plus" onclick="sumarCantidad(${index})"
                                     >+</button>
@@ -433,8 +467,9 @@ Mi Veris - Citas - tratamiento
             precioBaseEnd.empty();
             precioTotalEnd.empty();
 
-            precioBaseEnd.append(`$${dataCita.promocion.valorNormal}`);
-            precioTotalEnd.append(`$${dataCita.promocion.valorPromocion}`);
+            precioBaseEnd.append(`$${dataCita.promocion.valorNormal.toFixed(2)}`);
+            precioTotalEnd.append(`$${dataCita.promocion.valorPromocion.toFixed(2)}`);
+
         }
 
         return;
@@ -443,6 +478,11 @@ Mi Veris - Citas - tratamiento
     function drawNuevosValores(){
         $('#precioBaseEnd').html(`$${dataCita.promocion.valorNormal.toFixed(2)}`);
         $('#precioTotalEnd').html(`$${dataCita.promocion.valorPromocion.toFixed(2)}`);
+        if(dataCita.promocion.valorPromocion > 0){
+            $('#btnComprar').removeClass('disabled');
+        }else{
+            $('#btnComprar').addClass('disabled');
+        }
     }
 </script>
 @endpush
