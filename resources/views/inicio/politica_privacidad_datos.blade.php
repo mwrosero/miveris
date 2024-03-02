@@ -47,7 +47,7 @@ Mi Veris - Politica-privacidad-datos
                     <form class="row g-3"  >
                         @csrf
                         <div class="col-12 justify-content-center align-items-center">
-                            <h5 class="text-center fw-bold mb-2">{{ __('Confirmación de política de privacidad de datos personales') }}</h5>
+                            <h5 class="text-center fw-medium fs--20 line-height-24 mb-2">{{ __('Confirmación de política de privacidad de datos personales') }}</h5>
                             <p class="text-center mb-4">{{ __('ARCO (Acceso-Rectificación - Cancelación - Oposición)' )}}</p>
                         </div>
                         <div class="col-md-6 border-lg-end">
@@ -83,44 +83,44 @@ Mi Veris - Politica-privacidad-datos
 
                         <h5 class="text-center mt-4 pt-2">Datos</h5>
                         <div class="col-md-3">
-                            <label for="primerNombre" class="form-label fw-bold">Primer nombre</label>
-                            <input type="text" class="form-control border-desaturated" name="primerNombre" id="primerNombre" autocomplete="do-not-autofill" required readonly />
+                            <label for="primerNombre" class="form-label fw-medium fs--1">Primer nombre</label>
+                            <input type="text" class="form-control fs--1 p-3" name="primerNombre" id="primerNombre" autocomplete="do-not-autofill" required disabled readonly />
 
                             <div class="invalid-feedback">
                                 Ingrese su primer nombre.
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <label for="segundoNombre" class="form-label fw-bold">Segundo nombre</label>
-                            <input type="text" class="form-control border-desaturated" name="segundoNombre" id="segundoNombre" autocomplete="do-not-autofill" required readonly/>
+                            <label for="segundoNombre" class="form-label fw-medium fs--1">Segundo nombre</label>
+                            <input type="text" class="form-control fs--1 p-3" name="segundoNombre" id="segundoNombre" autocomplete="do-not-autofill" required disabled readonly />
                             <div class="invalid-feedback">
                                 Ingrese su segundo nombre.
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <label for="prmerApellido" class="form-label fw-bold">Primer apellido</label>
-                            <input type="text" class="form-control border-desaturated" name="prmerApellido" id="prmerApellido" autocomplete="do-not-autofill" required readonly/>
+                            <label for="prmerApellido" class="form-label fw-medium fs--1">Primer apellido</label>
+                            <input type="text" class="form-control fs--1 p-3" name="prmerApellido" id="prmerApellido" autocomplete="do-not-autofill" required />
                             <div class="invalid-feedback">
                                 Ingrese su primer apellido.
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <label for="segundoApellido" class="form-label fw-bold">Segundo apellido</label>
-                            <input type="text" class="form-control border-desaturated" name="segundoApellido" id="segundoApellido" autocomplete="do-not-autofill" required readonly/>
+                            <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo apellido</label>
+                            <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" autocomplete="do-not-autofill" required />
                             <div class="invalid-feedback">
                                 Ingrese su segundo apellido.
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <label for="fechaNacimiento" class="form-label fw-bold">Fecha de nacimiento</label>
-                            <input type="text" class="form-control border-desaturated" name="fechaNacimiento" id="fechaNacimiento" required readonly />
+                            <label for="fechaNacimiento" class="form-label fw-medium fs--1">Fecha de nacimiento</label>
+                            <input type="text" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" required disabled readonly />
                             <div class="invalid-feedback">
                                 Ingrese su fecha de naciemiento.
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <label for="sexo" class="form-label fw-bold">Sexo</label>
-                            <select class="form-select border-desaturated custom-select-disabled" name="sexo" id="sexo" required >
+                            <label for="sexo" class="form-label fw-medium fs--1">Sexo</label>
+                            <select class="form-select fs--1 p-3" name="sexo" id="sexo" required >
                                 <!-- Opciones del select aquí -->
                                 <option value="0">Elegir</option>
                                 <option value="F">Femenino</option>
@@ -128,48 +128,48 @@ Mi Veris - Politica-privacidad-datos
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="numeroIdentificacion" class="form-label fw-bold">Número de identificación</label>
-                            <input type="text" class="form-control border-desaturated bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" required readonly/>
+                            <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de identificación</label>
+                            <input type="text" class="form-control fs--1 p-3" name="numeroIdentificacion" id="numeroIdentificacion" required disabled readonly/>
                             <div class="invalid-feedback">
                                 Ingrese su número de identificación.
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="telefono" class="form-label fw-bold">Número de teléfono</label>
-                            <input type="number" class="form-control border-desaturated" name="telefono" id="telefono" autocomplete="do-not-autofill" required readonly/>
+                            <label for="telefono" class="form-label fw-medium fs--1">Número de teléfono</label>
+                            <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono" autocomplete="do-not-autofill" required disabled readonly/>
                             <div class="invalid-feedback">
                                 Ingrese un número de teléfono.
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="correoElctronico" class="form-label fw-bold">Correo electrónico</label>
-                            <input type="email" class="form-control border-desaturated" name="correoElctronico" id="correoElctronico" autocomplete="do-not-autofill" required  readonly/>
+                            <label for="correoElctronico" class="form-label fw-medium fs--1">Correo electrónico</label>
+                            <input type="email" class="form-control fs--1 p-3" name="correoElctronico" id="correoElctronico" autocomplete="do-not-autofill" required  disabled readonly/>
                             <div class="invalid-feedback">
                                 Ingrese un correo electrónico.
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="pais" class="form-label fw-bold">País</label>
-                            <select class="form-select border-desaturated custom-select-disabled" name="pais" id="pais" required disabled>
+                            <label for="pais" class="form-label fw-medium fs--1">País</label>
+                            <select class="form-select fs--1 p-3" name="pais" id="pais" required disabled>
                                 <!-- Opciones del select aquí -->
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="provincia" class="form-label fw-bold">Provincia</label>
-                            <select class="form-select border-desaturated custom-select-disabled" name="provincia" id="provincia" required disabled >
+                            <label for="provincia" class="form-label fw-medium fs--1">Provincia</label>
+                            <select class="form-select fs--1 p-3" name="provincia" id="provincia" required disabled >
                                 <!-- Opciones del select aquí -->
                             </select>
                         </div>
                         
                         <div class="col-md-6">
-                            <label for="ciudad" class="form-label fw-bold">Ciudad</label>
-                            <select class="form-select border-desaturated custom-select-disabled" name="ciudad" id="ciudad"  required disabled >
+                            <label for="ciudad" class="form-label fw-medium fs--1">Ciudad</label>
+                            <select class="form-select fs--1 p-3" name="ciudad" id="ciudad"  required disabled >
                                 
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="dirección" class="form-label fw-bold">Dirección</label>
-                            <input type="text" class="form-control border-desaturated" name="direccion" id="direccion" autocomplete="do-not-autofill"  required readonly/>
+                            <label for="dirección" class="form-label fw-medium fs--1">Dirección</label>
+                            <input type="text" class="form-control fs--1 p-3" name="direccion" id="direccion" autocomplete="do-not-autofill" required />
                             <div class="invalid-feedback">
                                 Ingrese su dirección.
                             </div>
@@ -459,7 +459,7 @@ Mi Veris - Politica-privacidad-datos
 
     function toggleFieldsBasedOnRectificationOption() {
         const isRectificationYesChecked = $('#inlineRadioRectificacionSi').is(':checked');
-
+        console.log(isRectificationYesChecked);
         // Campos a habilitar/deshabilitar
         const fields = ['#primerNombre', '#segundoNombre', '#prmerApellido', '#segundoApellido', 
                         '#fechaNacimiento', '#telefono', '#correoElctronico', '#pais', 
@@ -467,6 +467,7 @@ Mi Veris - Politica-privacidad-datos
 
         // Habilitar/deshabilitar basado en la selección
         fields.forEach(field => {
+            $(field).prop('disabled', !isRectificationYesChecked);
             $(field).prop('readonly', !isRectificationYesChecked);
         });
 
@@ -475,11 +476,11 @@ Mi Veris - Politica-privacidad-datos
 
         // agregar la clase para oscurecer los campos deshabilitados de select y input
         if (isRectificationYesChecked) {
-            $('#pais, #provincia, #ciudad, #sexo').removeClass('custom-select-disabled');
-            $('#primerNombre, #segundoNombre, #prmerApellido,  #segundoApellido, #fechaNacimiento, #telefono, #correoElctronico, #direccion').removeClass('bg-neutral');
+            $('#pais, #provincia, #ciudad, #sexo').removeClass('border-transparent');
+            $('#primerNombre, #segundoNombre, #prmerApellido,  #segundoApellido, #fechaNacimiento, #telefono, #correoElctronico, #direccion').removeClass('border-transparent');
         } else {
-            $('#pais, #provincia, #ciudad, #sexo').addClass('custom-select-disabled');
-            $('#primerNombre, #segundoNombre, #prmerApellido, #segundoApellido, #fechaNacimiento, #telefono, #correoElctronico, #direccion').addClass('bg-neutral');
+            $('#pais, #provincia, #ciudad, #sexo').addClass('border-transparent');
+            $('#primerNombre, #segundoNombre, #prmerApellido, #segundoApellido, #fechaNacimiento, #telefono, #correoElctronico, #direccion').addClass('border-transparent');
         }
         
 
