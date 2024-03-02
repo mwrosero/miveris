@@ -36,8 +36,8 @@
     <section class="step step1">
     	<p class="text-left text-md-center title-section txt-alt mt-4 mt-md-2">Crear una cuenta</p>
 	    <div class="mb-2">
-	        <label for="tipoIdentificacion" class="form-label fw-medium">Tipo de identificación *</label>
-	        <select class="form-select form-filter border-0"
+	        <label for="tipoIdentificacion" class="form-label fw-medium fs--1">Tipo de identificación *</label>
+	        <select class="form-select fs--1 p-3"
 	            id="tipoIdentificacion"
 	            name="tipoIdentificacion"
 	            onchange="actualizarMaxlength(this)"
@@ -47,9 +47,9 @@
 	        </select>
 	    </div>
 	    <div class="mb-2">
-	        <label for="numeroIdentificacion" class="form-label fw-medium">Número de identificación *</label>
+	        <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de identificación *</label>
 	        <input type="text"
-	            class="form-control form-filter border-0"
+	            class="form-control fs--1 p-3"
 	            id="numeroIdentificacion"
 	            name="numeroIdentificacion"
 	            placeholder="Ingresa tu número de identificación"
@@ -59,18 +59,18 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="mail" class="form-label fw-medium">Correo electrónico *</label>
+	        <label for="mail" class="form-label fw-medium fs--1">Correo electrónico *</label>
 	        <input type="email"
-	            class="form-control form-filter border-0"
+	            class="form-control fs--1 p-3"
 	            id="mail"
 	            name="mail"
 	            placeholder="Ingresa tu correo electrónico"
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="fechaNacimiento" class="form-label fw-medium">Fecha de Nacimiento *</label>
+	        <label for="fechaNacimiento" class="form-label fw-medium fs--1">Fecha de Nacimiento *</label>
 	        <input type="text"
-	            class="form-control form-filter border-0"
+	            class="form-control fs--1 p-3"
 	            id="fechaNacimiento"
 	            name="fechaNacimiento"
 	            placeholder="Fecha de Nacimiento"
@@ -78,9 +78,9 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="telefono" class="form-label fw-medium">Teléfono *</label>
+	        <label for="telefono" class="form-label fw-medium fs--1">Teléfono *</label>
 	        <input type="tel"
-	            class="form-control form-filter border-0"
+	            class="form-control fs--1 p-3"
 				onkeypress="return validarNumero(event)"
 	            oninput="limitarCaracteres(this, 10)"
 	            id="telefono"
@@ -90,34 +90,34 @@
 	    </div>
 	    <div class="mb-2 form-password-toggle">
 	        <div class="d-flex justify-content-between">
-	            <label class="form-label fw-medium" for="password">Contraseña *</label>
+	            <label class="form-label fw-medium fs--1" for="password">Contraseña *</label>
 	        </div>
 	        <div class="input-group input-group-merge">
 	            <input type="password"
 	            id="password"
-	            class="form-control form-filter border-0"
+	            class="form-control fs--1 p-3"
 	            name="password"
 	            placeholder="Ingresa tu contraseña"
 	            aria-describedby="password"
 	            required />
-	            <span id="togglePassword" class="input-group-text cursor-pointer form-filter border-0"
+	            <span id="togglePassword" class="input-group-text cursor-pointer fs--1 p-3"
 	            ><i class="ti ti-eye-off"></i></span>
 	        </div>
 	        <span class="fs-10">Tu contraseña debe tener 8 dígitos mínimo</span>
 	    </div>
 	    <div class="mb-2 form-password-toggle">
 	        <div class="d-flex justify-content-between">
-	            <label class="form-label fw-medium" for="password2">Repite tu contraseña *</label>
+	            <label class="form-label fw-medium fs--1" for="password2">Repite tu contraseña *</label>
 	        </div>
 	        <div class="input-group input-group-merge">
 	            <input type="password"
 	            id="password2"
-	            class="form-control form-filter border-0"
+	            class="form-control fs--1 p-3"
 	            name="password2"
 	            placeholder="Repite la contraseña"
 	            aria-describedby="password2"
 	            required />
-	            <span id="togglePassword2" class="input-group-text cursor-pointer form-filter border-0"
+	            <span id="togglePassword2" class="input-group-text cursor-pointer fs--1 p-3"
 	            ><i class="ti ti-eye-off"></i></span>
 	        </div>
 	    </div>
@@ -127,8 +127,8 @@
 	</section>
 	<section class="step step2 d-none">
 		<div class="mb-2">
-	        <label for="genero" class="form-label fw-medium">Género *</label>
-	        <select class="form-select form-filter border-0"
+	        <label for="genero" class="form-label fw-medium fs--1">Género *</label>
+	        <select class="form-select fs--1 p-3"
 	            id="genero"
 	            name="genero"
 	            autofocus
@@ -139,7 +139,7 @@
 	        </select>
 	    </div>
 	    <div class="mb-2">
-	        <label for="primerNombre" class="form-label fw-medium">Nombre *</label>
+	        <label for="primerNombre" class="form-label fw-medium fs--1">Nombre *</label>
 	        <input type="text"
 	            class="form-control"
 	            id="primerNombre"
@@ -148,7 +148,7 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="primerApellido" class="form-label fw-medium">Primer Apellido *</label>
+	        <label for="primerApellido" class="form-label fw-medium fs--1">Primer Apellido *</label>
 	        <input type="text"
 	            class="form-control"
 	            id="primerApellido"
@@ -157,7 +157,7 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="segundoApellido" class="form-label fw-medium">Segundo Apellido *</label>
+	        <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo Apellido *</label>
 	        <input type="text"
 	            class="form-control"
 	            id="segundoApellido"
@@ -166,8 +166,8 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="provincia" class="form-label fw-medium">Provincia *</label>
-	        <select class="form-select form-filter border-0"
+	        <label for="provincia" class="form-label fw-medium fs--1">Provincia *</label>
+	        <select class="form-select fs--1 p-3"
 	            id="provincia"
 	            name="provincia"
 	            autofocus
@@ -177,8 +177,8 @@
 	        </select>
 	    </div>
 	    <div class="mb-2">
-	        <label for="ciudad" class="form-label fw-medium">Ciudad *</label>
-	        <select class="form-select form-filter border-0"
+	        <label for="ciudad" class="form-label fw-medium fs--1">Ciudad *</label>
+	        <select class="form-select fs--1 p-3"
 	            id="ciudad"
 	            name="ciudad"
 	            autofocus
@@ -199,7 +199,7 @@
 	        <p class="txt-alt fw-medium email-masked"></p>
 	    </div>
 	    <div class="mb-2">
-	        <label for="codigoActivacion" class="form-label fw-medium">Código de activación *</label>
+	        <label for="codigoActivacion" class="form-label fw-medium fs--1">Código de activación *</label>
 	        <input type="number"
 	            class="form-control"
 	            id="codigoActivacion"
