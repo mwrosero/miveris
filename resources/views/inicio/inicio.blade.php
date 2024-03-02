@@ -96,7 +96,7 @@ Mi Veris - Inicio
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Inicio') }}</h5>
     </div>
     <!-- Accesos rápidos -->
-    <section class="bg-light-grayish-blue p-3 mb-3">
+    <section class="bg-light-grayish-blue p-3 pe-0 pe-md-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="fw-medium border-start-veris ps-3 fs-18">{{ __('Accesos rápidos') }}</h6>
         </div>
@@ -151,8 +151,8 @@ Mi Veris - Inicio
                     </a>
                 </div>
             </div>
-            <button type="button" id="prevProperties" class="d-flex d-lg-none mt-n4 btn btn-prev rounded-circle"></button>
-            <button type="button" id="nextProperties" class="d-flex d-lg-none mt-n4 btn btn-next rounded-circle"></button>
+            <button type="button" id="prevProperties" class="d-flex d-none mt-n4 btn btn-prev rounded-circle"></button>
+            <button type="button" id="nextProperties" class="d-flex d-none mt-n4 btn btn-next rounded-circle"></button>
         </div>
     </section>
     <!-- Tratamientos dinamico -->
@@ -214,6 +214,7 @@ Mi Veris - Inicio
         var swiper = new Swiper('.swiper-acceso-rapidos', {
             // slidesPerView: 1,
             spaceBetween: 8,
+            
             navigation: {
                 nextEl: '.btn-next',
                 prevEl: '.btn-prev',
@@ -225,10 +226,10 @@ Mi Veris - Inicio
             },
             breakpoints: {
                 300: {
-                    slidesPerView: 2,
-                    // centeredSlides: true,
+                    slidesPerView: 2.1,
+                    centeredSlides: false,
                     // loop: true,
-                    // spaceBetween: 8,
+                    spaceBetween: 4,
                 },
                 768: {
                     slidesPerView: 2,

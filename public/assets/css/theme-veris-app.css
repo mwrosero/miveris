@@ -1282,6 +1282,13 @@ a.btn.btn-primary-veris:not([href]):hover{
 }
 
 @media (max-width: 575.98px) {
+  /* .swiper-slide .card{
+    width: 10.188rem;
+  } */
+  .swiper-acceso-rapidos .swiper-slide{
+    width: 10.188rem !important;
+  }
+
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
