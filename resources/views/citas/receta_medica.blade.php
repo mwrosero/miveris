@@ -87,7 +87,7 @@ Mi Veris - Citas - Receta médica
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes recetas médicas</h5>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes recetas médicas</h5>
                                     <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus recetas médicas</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-blue">
@@ -103,7 +103,7 @@ Mi Veris - Citas - Receta médica
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes permisos de administrador</h5>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes permisos de administrador</h5>
                                     <p class="fs--16 line-height-20 mb-4">Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
                                     <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
                                 </div>
@@ -121,7 +121,7 @@ Mi Veris - Citas - Receta médica
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes ordenes de recetas realizadas</h5>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes ordenes de recetas realizadas</h5>
                                     <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus ordenes de recetas realizadas</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-blue">
@@ -137,7 +137,7 @@ Mi Veris - Citas - Receta médica
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes permisos de administrador</h5>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes permisos de administrador</h5>
                                     <p class="fs--16 line-height-20 mb-4">Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
                                     <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
                                 </div>

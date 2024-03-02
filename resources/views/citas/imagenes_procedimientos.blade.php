@@ -102,8 +102,8 @@ Mi Veris - Citas - Imágenes y procedimientos
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes imágenes o procedimientos</h5>
-                                    <p>En esta sección podrás revisar tus imágenes o procedimientos</p>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes imágenes o procedimientos</h5>
+                                    <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus imágenes o procedimientos</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-blue">
                                             <img src="{{ asset('assets/img/svg/imagen.svg') }}" alt="imagen" class="rounded-circle">
@@ -118,8 +118,8 @@ Mi Veris - Citas - Imágenes y procedimientos
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes permisos de administrador</h5>
-                                    <p>Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes permisos de administrador</h5>
+                                    <p class="fs--16 line-height-20 mb-4">Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
                                     <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
                                 </div>
                             </div>
@@ -135,8 +135,8 @@ Mi Veris - Citas - Imágenes y procedimientos
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes imágenes o procedimientos realizadas</h5>
-                                    <p>En esta sección podrás revisar tus ordenes de laboratorio realizadas</p>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes imágenes o procedimientos realizadas</h5>
+                                    <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus ordenes de laboratorio realizadas</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-blue">
                                             <img src="{{ asset('assets/img/svg/imagen.svg') }}" alt="imagen" class="rounded-circle">
@@ -151,8 +151,8 @@ Mi Veris - Citas - Imágenes y procedimientos
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5>No tienes permisos de administrador</h5>
-                                    <p>Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes permisos de administrador</h5>
+                                    <p class="fs--16 line-height-20 mb-4">Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
                                     <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
                                 </div>
                             </div>

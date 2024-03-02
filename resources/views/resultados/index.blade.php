@@ -19,13 +19,13 @@ Mi Veris - Resultados
                 <div class="card card-border">
                     <a href="{{route('resultados.laboratorio')}}">
                         <div class="row g-0 justify-content-between align-items-center">
-                            <div class="col-9 col-md-auto">
+                            <div class="col-8 col-md-auto">
                                 <div class="card-body p-0 ps-2">
                                     <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Laboratorio') }}</h6>
                                 </div>
                             </div>
-                            <div class="col-3 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/microscopio.svg') }}" class="card-img-top rounded-2" alt="{{ __('Laboratorio') }}">
+                            <div class="col-4 col-md-auto text-end">
+                                <img src="{{ asset('assets/img/card/svg/microscopio.svg') }}" class="img-fluid rounded-2" alt="{{ __('Laboratorio') }}">
                             </div>
                         </div>
                     </a>
@@ -36,13 +36,13 @@ Mi Veris - Resultados
                 <div class="card card-border">
                     <a href="{{ route('resultados.ImagenesProcedimientos') }}">
                         <div class="row g-0 justify-content-between align-items-center">
-                            <div class="col-9 col-md-auto">
+                            <div class="col-8 col-md-auto">
                                 <div class="card-body p-0 ps-2">
                                     <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Imágenes y procedimientos') }}</h6>
                                 </div>
                             </div>
-                            <div class="col-3 col-md-auto">
-                                <img src="{{ asset('assets/img/card/svg/imagen.svg') }}" class="card-img-top rounded-2" alt="{{ __('Imágenes y procedimientos') }}">
+                            <div class="col-4 col-md-auto text-end">
+                                <img src="{{ asset('assets/img/card/svg/imagen.svg') }}" class="img-fluid rounded-2" alt="{{ __('Imágenes y procedimientos') }}">
                             </div>
                         </div>
                     </a>

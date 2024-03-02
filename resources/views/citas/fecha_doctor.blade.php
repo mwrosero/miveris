@@ -544,7 +544,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </div>
                                 <div class="col-9">
                                     <h6 class="fs--16 line-height-20 fw-medium mb-1">Dr(a) ${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
-                                    <p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${nombreSucursal}</p>
+                                    <p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(nombreSucursal)}</p>
                                     <p class="fs--1 line-height-16 fw-normal mb-1" style="color: 33D4E66;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
                                     <div class="d-flex mb-1">
                                         <p class="fs--1 line-height-16 fw-normal mb-0 me-1" style="color: #9EA7B3;">Disponibilidad:</p>

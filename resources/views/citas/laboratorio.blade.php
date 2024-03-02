@@ -65,7 +65,7 @@ Mi Veris - Citas - Laboratorio
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes órdenes de laboratorio</h5>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes órdenes de laboratorio</h5>
                                     <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus órdenes de laboratorio</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-green">
@@ -83,7 +83,7 @@ Mi Veris - Citas - Laboratorio
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes permisos de administrador</h5>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes permisos de administrador</h5>
                                     <p class="fs--16 line-height-20 mb-4">Pídele a esta persona que te otorgue los permisos en la sección Familia y amigos.</p>
                                     <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
                                 </div>
@@ -101,7 +101,7 @@ Mi Veris - Citas - Laboratorio
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes órdenes de laboratorio realizadas</h5>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes órdenes de laboratorio realizadas</h5>
                                     <p class="fs--16 line-height-20 mb-4">En esta sección podrás revisar tus órdenes de laboratorio realizadas</p>
                                     <div class="avatar avatar-xxl-10 mx-auto">
                                         <span class="avatar-initial rounded-circle bg-light-grayish-green">
@@ -119,7 +119,7 @@ Mi Veris - Citas - Laboratorio
                         <div class="card bg-transparent shadow-none">
                             <div class="card-body">
                                 <div class="text-center">
-                                    <h5 class="fs-24 fw-medium line-height-20 mb-4">No tienes permisos de administrador</h5>
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes permisos de administrador</h5>
                                     <p class="fs--16 line-height-20 mb-4">Pídele a esta persona que te otorgue los permisos en la sección Familia y amigos.</p>
                                     <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
                                 </div>
