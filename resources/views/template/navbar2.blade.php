@@ -95,18 +95,20 @@
 
 <!-- Notificaciones -->
 <div class="offcanvas offcanvas-end" style="margin-top: 62px;" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
-    <div class="offcanvas-header justify-content-end pb-0">
-        <button type="button" class="btn btn-sm shadow-none text-decoration-underline" data-bs-dismiss="offcanvas" aria-label="Close">Cerrar</button>
+    <div class="offcanvas-header justify-content-end p-0">
+        <div class="w-100 px-4 py-2 text-end" style="background: #F3F4F5;">
+            <button type="button" class="btn btn-sm fs--1 text-primary-veris fw-normal line-height-16 shadow-none text-decoration-underline p-2" data-bs-dismiss="offcanvas" aria-label="Close">Cerrar</button>
+        </div>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0 py-0 px-0">
-        <h5 id="offcanvasEndLabel" class="offcanvas-title px-3 mb-3 bg-white">Notificaciones</h5>
+        <h5 id="offcanvasEndLabel" class="offcanvas-title fs-20 line-height-24 px-4 py-3 bg-white">Notificaciones</h5>
         <div class="d-flex flex-column border-300" id= "notificaciones" style="min-height: 75vh;">
             <!-- Notificaciones dinamicas -->
         </div>
         <div class="d-flex flex-column justify-content-center align-items-center py-5 d-none" id="noNotificaciones">
             <img src="{{ asset('assets/img/svg/bellNotificacion.svg') }}" alt="" width="50px" class="mb-3">
-            <h5 class="fs-0 text-300">No tienes notificaciones</h5>
-            <div> En esta sección podrás revisar tus notificaciones</div>
+            <h5 class="fs-24 line-height-28 fw-medium mb-4">No tienes notificaciones</h5>
+            <p class="fs--16 line-height-20 text-veris fw-normal mb-4 w-75 text-center"> En esta sección podrás revisar tus notificaciones</p>
             <img src="{{ asset('assets/img/svg/amico.svg') }}" alt="" class="img-fluid w-50">
         </div>
     </div>
