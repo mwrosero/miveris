@@ -30,9 +30,9 @@
 	        <p class="txt-alt fw-medium email-masked"></p>
 	    </div>
 	    <div class="mb-2">
-	        <label for="codigoActivacion" class="form-label fw-medium">Código de activación *</label>
+	        <label for="codigoActivacion" class="form-label fw-medium fs--1">Código de activación *</label>
 	        <input type="number"
-	            class="form-control"
+	            class="form-control fs--1 p-3"
 	            id="codigoActivacion"
 	            name="codigoActivacion"
 	            oninput="limitarCaracteres(this, 10)"

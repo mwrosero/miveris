@@ -16,9 +16,9 @@
         </div>
     @endif
     <div class="mb-2">
-        <label for="codigo" class="form-label bg-colortext fw-medium mt-2">Código de validación</label>
+        <label for="codigo" class="form-label bg-colortext fw-medium fs--1 mt-2">Código de validación</label>
         <input type="text"
-            class="form-control"
+            class="form-control fs--1 p-3"
             id="codigo"
             name="codigo"
             autofocus
@@ -26,8 +26,8 @@
             value="{{ $codigo }}" />
     </div>
     <div class="mb-2">
-        <label for="nuevaClave" class="form-label bg-colortext fw-medium mt-2">Nueva contraseña</label>
-        <div class="input-group input-group-merge">
+        <label for="nuevaClave" class="form-label bg-colortext fw-medium fs--1 mt-2">Nueva contraseña</label>
+        <div class="input-group fs--1 p-3 input-group-merge">
             <input type="password"
                 class="form-control"
                 id="nuevaClave"
@@ -38,8 +38,8 @@
         </div>
     </div>
     <div class="mb-3">
-        <label for="confirmarClave" class="form-label bg-colortext fw-medium mt-2">Confirmar nueva contraseña</label>
-        <div class="input-group input-group-merge">
+        <label for="confirmarClave" class="form-label bg-colortext fw-medium fs--1 mt-2">Confirmar nueva contraseña</label>
+        <div class="input-group fs--1 p-3 input-group-merge">
             <input type="password"
                 class="form-control"
                 id="confirmarClave"

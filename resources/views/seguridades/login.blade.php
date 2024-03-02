@@ -24,7 +24,7 @@
     <div class="mb-3 mt-5">
         <label for="numeroIdentificacion" class="form-label fw-medium">Número de identificación *</label>
         <input type="text"
-            class="form-control"
+            class="form-control fs--1 p-3"
             id="numeroIdentificacion"
             name="numeroIdentificacion"
             oninput="limitarCaracteres(this, 13)"
@@ -42,7 +42,7 @@
         <div class="input-group input-group-merge">
             <input type="password"
             id="password"
-            class="form-control"
+            class="form-control fs--1 p-3"
             name="password"
             placeholder="Ingresa tu contraseña"
             aria-describedby="password"/>
