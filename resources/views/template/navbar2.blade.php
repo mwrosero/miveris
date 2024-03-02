@@ -95,14 +95,14 @@
 
 <!-- Notificaciones -->
 <div class="offcanvas offcanvas-end" style="margin-top: 62px;" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
-    <div class="offcanvas-header justify-content-end p-0">
+    <div class="offcanvas-header flex-column align-items-start p-0">
         <div class="w-100 px-4 py-2 text-end" style="background: #F3F4F5;">
             <button type="button" class="btn btn-sm fs--1 text-primary-veris fw-normal line-height-16 shadow-none text-decoration-underline p-2" data-bs-dismiss="offcanvas" aria-label="Close">Cerrar</button>
         </div>
+        <h5 class="offcanvas-title fs-20 line-height-24 w-100 px-4 py-3 bg-white" id="offcanvasEndLabel">Notificaciones</h5>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0 py-0 px-0">
-        <h5 id="offcanvasEndLabel" class="offcanvas-title fs-20 line-height-24 px-4 py-3 bg-white">Notificaciones</h5>
-        <div class="d-flex flex-column border-300" id= "notificaciones" style="min-height: 75vh;">
+        <div class="d-flex flex-column border-300" id="notificaciones" style="min-height: 75vh;">
             <!-- Notificaciones dinamicas -->
         </div>
         <div class="d-flex flex-column justify-content-center align-items-center py-5 d-none" id="noNotificaciones">
@@ -171,7 +171,7 @@
                 const bgClass = notificacion.estado !== "LEIDO" ? "bg-light-grayish-cyan" : "";
                 htmlContent += `<div class="py-3 border-bottom px-3 ${bgClass}">
                                     <div class="d-flex justify-content-between">
-                                        <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> ${determinarCategoria(notificacion.categoria)}</h4>
+                                        <p class="fs--2 text-primary-veris line-height-16 fw-medium mb-0"><i class="fa-solid fa-circle fs--3 me-2"></i> ${determinarCategoria(notificacion.categoria)}</p>
                                         <span class="fs--3">${notificacion.valorTiempo}</span>
                                     </div>
                                     <div class="flex-1 ms-4">

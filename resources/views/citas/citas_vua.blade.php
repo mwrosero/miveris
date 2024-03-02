@@ -48,7 +48,7 @@ Mi Veris - Citas - Confirma tu atención
                         <button type="button" id="nextProperties" class="d-flex mt-n4 btn btn-next-arrow fs--24"></button>
                     </div>
                     <div class="form-check d-flex justify-content-center align-items-center mb-4">
-                        <input class="form-check-input atencionInmediata-input me-2 mb-1" type="checkbox" value="" id="checkConfirmacionInmediata" required>
+                        <input class="form-check-input atencionInmediata-input me-2 mb-1 width-24" type="checkbox" value="" id="checkConfirmacionInmediata" required>
                         <label class="form-check-label fs--1 fw-normal line-height-16 text-veris text-start" for="checkConfirmacionInmediata">
                             Confirmo que tengo un caso de atención inmediata
                         </label>

@@ -128,7 +128,7 @@
                     <p class="fs--1 fw-normal mb-0 text-veris" id="mensaje_400"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <a href="/" class="btn btn-primary-veris fw-medium fs--18 m-0 mb-3 w-100 px-4 py-3">Aceptar</a>
+                    <a href="/" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</a>
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@
                     <p class="fs--2 fw-normal text-veris" id="mensajeNoPermiteCambiar"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+                    <button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>

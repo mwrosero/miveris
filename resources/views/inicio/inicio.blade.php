@@ -46,45 +46,45 @@ Mi Veris - Inicio
 
     <!-- Modal Agendar Cita -->
     <div class="modal modal-top fade" id="agendarCitaMedicaModal" tabindex="-1" aria-labelledby="agendarCitaMedicaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-dialog modal-sm modal-dialog-centered px-2 px-md-0 mx-auto">
             <form class="modal-content rounded-4">
                 <div class="modal-header py-3">
-                    <button type="button" class="btn-close fw-medium bg-transparent me-2 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close fw-medium bg-transparent me-1 me-md-2 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body pt-3 px-3 pb--40">
+                <div class="modal-body pt-3 px-2 px-md-3 pb--40">
                     <h5 class="text-center fs--20 line-height-24 mb--32">¿Qué quieres agendar?</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
-                            <div class="card card-border">
-                                <a href="/mis-tratamientos">
+                            <a href="/mis-tratamientos">
+                                <div class="card card-border">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-7 col-md-6">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Lo que envió') }} <br> {{ __('mi doctor') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-5 col-md-auto">
-                                            <img src="{{ asset('assets/img/card/svg/paste.svg') }}" class="card-img-top" alt="paste">
+                                        <div class="col-5 col-md-auto text-end">
+                                            <img src="{{ asset('assets/img/card/svg/paste.svg') }}" class="img-fluid" alt="paste">
                                         </div>
                                     </div>
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                         </div>
                         <div class="col-6 col-lg-6">
-                            <div class="card card-border">
-                                <a href="/citas">
+                            <a href="/citas">
+                                <div class="card card-border">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-7 col-md-6">
                                             <div class="card-body p-0 ps-2">
                                                 <h6 class="fw-medium fs--2 mb-0">{{ __('Una nueva') }} <br> {{ __('cita médica') }}</h6>
                                             </div>
                                         </div>
-                                        <div class="col-5 col-md-auto">
-                                            <img src="{{ asset('assets/img/card/svg/doctor.svg') }}" class="card-img-top" alt="doctor">
+                                        <div class="col-5 col-md-auto text-end">
+                                            <img src="{{ asset('assets/img/card/svg/doctor.svg') }}" class="img-fluid" alt="doctor">
                                         </div>
                                     </div>
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -103,52 +103,52 @@ Mi Veris - Inicio
         <div class="swiper swiper-acceso-rapidos position-relative py-3">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <div class="card">
-                        <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal">
+                    <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal">
+                        <div class="card">
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-7 col-md-7">
                                     <div class="card-body p-0 ps-2">
                                         <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendar cita médica') }}</h6>
                                     </div>
                                 </div>
-                                <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="card-img-top" alt="">
+                                <div class="col-5 col-md-auto text-end">
+                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="img-fluid" alt="">
                                 </div>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
                 <div class="swiper-slide">
-                    <div class="card">
-                        <a href="{{route('home.promociones')}}">
+                    <a href="{{route('home.promociones')}}">
+                        <div class="card">
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-7 col-md-7">
                                     <div class="card-body p-0 ps-2">
                                         <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Comprar promociones') }}</h6>
                                     </div>
                                 </div>
-                                <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/comprar_1.svg') }}" class="card-img-top" alt=""  >
+                                <div class="col-5 col-md-auto text-end">
+                                    <img src="{{ asset('assets/img/card/svg/comprar_1.svg') }}" class="img-fluid" alt=""  >
                                 </div>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
                 <div class="swiper-slide">
-                    <div class="card">
-                        <a href="/servicio-domicilio" >
+                    <a href="/servicio-domicilio" >
+                        <div class="card">
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-7 col-md-7">
                                     <div class="card-body p-0 ps-2">
                                         <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Solicitar servicios') }} <br> {{ __('a domicilio') }}</h6>
                                     </div>
                                 </div>
-                                <div class="col-5 col-md-auto">
-                                    <img src="{{ asset('assets/img/card/svg/motociclista_1.svg') }}" class="card-img-top" alt=""  >
+                                <div class="col-5 col-md-auto text-end">
+                                    <img src="{{ asset('assets/img/card/svg/motociclista_1.svg') }}" class="img-fluid" alt=""  >
                                 </div>
                             </div>
-                        </a>
-                    </div>
+                        </div>
+                    </a>
                 </div>
             </div>
             <button type="button" id="prevProperties" class="d-flex d-lg-none mt-n4 btn btn-prev rounded-circle"></button>
@@ -555,10 +555,10 @@ Mi Veris - Inicio
     async function obtenerUrgenciasAmbulatorias(){
         let args = [];
         let canalOrigen = _canalOrigen;
-        let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
+        let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/reservas/ingresos?idPaciente=${numeroPaciente}`
+        args["endpoint"] = api_url + `/digitalestest/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -567,7 +567,7 @@ Mi Veris - Inicio
            if(data.data.length == 0){
                 mostrarNoExistenUrgencias();
               } else {
-                mostrarUrgenciasAmbulatorias();
+                // mostrarUrgenciasAmbulatorias();
            }
         }
         return data;
