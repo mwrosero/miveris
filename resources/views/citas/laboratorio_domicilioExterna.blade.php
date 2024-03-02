@@ -19,7 +19,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
                 <p class="fs--1 fw-normal" id="mensajeNoCobertura"></p>
             </div>
             <div class="modal-footer pt-0 pb-3 px-3">
-                <button type="button" class="btn btn-primary-veris m-0 mb-3 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+                <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
                     <p class="fs--1 fw-medium m-0 mt-3" id="mensajeOrden">Orden generada exitosamente</p>
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
-                    <button type="button" class="btn btn-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 w-100 m-0 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
                 </div>
             </div>
         </div>
@@ -52,37 +52,36 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
                     <div class="card-body">
                         <form class="row g-3" enctype="multipart/form-data">
                             <div class="col-md-12">
-                                <label for="ciudad" class="form-label fw-medium">Selecciona tu Ciudad *</label>
-                                <select class="form-select" name="ciudad" id="ciudad" required>
+                                <label for="ciudad" class="form-label fw-medium fs--1">Selecciona tu Ciudad *</label>
+                                <select class="form-select fs--1 p-3" name="ciudad" id="ciudad" required>
                                 </select>
                             </div>
                             <div class="col-md-12">
-                                <label for="direccion" class="form-label fw-medium">Dirección *</label>
-                                <textarea class="form-control" name="direccion" id="direccion" rows="3" required style="resize: none;"></textarea>
+                                <label for="direccion" class="form-label fw-medium fs--1">Dirección *</label>
+                                <textarea class="form-control fs--1 p-3" name="direccion" id="direccion" rows="3" required style="resize: none;"></textarea>
                             </div>
                             <div class="col-md-12">
-                                <label for="numeroIdentificacion" class="form-label fw-medium">Cédula o pasaporte *</label>
-                                <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion"  required />
+                                <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Cédula o pasaporte *</label>
+                                <input type="text" class="form-control fs--1 p-3" name="numeroIdentificacion" id="numeroIdentificacion"  required />
                             </div>
                             <div class="col-md-12">
-                                <label for="email" class="form-label fw-medium">Email *</label>
-                                <input type="email" class="form-control " name="email" id="email"  required />
+                                <label for="email" class="form-label fw-medium fs--1">Email *</label>
+                                <input type="email" class="form-control fs--1 p-3" name="email" id="email"  required />
                             </div>
                             <div class="col-md-12">
-                                <label for="telefono" class="form-label fw-medium">Teléfono *</label>
-                                <input type="number" class="form-control" name="telefono" id="telefono"  required />
+                                <label for="telefono" class="form-label fw-medium fs--1">Teléfono *</label>
+                                <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono"  required />
                             </div>
                             <div class="col-md-12">
-                                <label for="convenio" class="form-label fw-bold">Convenio *</label>
-                                <input type="text" class="form-control bg-neutral" name="convenio" id="convenio" placeholder="Convenio" disabled />
+                                <label for="convenio" class="form-label fw-medium">Convenio *</label>
+                                <input type="text" class="form-control fs--1 p-3" name="convenio" id="convenio" placeholder="Convenio" disabled />
                             </div>
                             <div class="col-md-12">
-                                <label for="referencias" class="form-label fw-medium">Referencias *</label>
+                                <label for="referencias" class="form-label fw-medium fs--1">Referencias *</label>
                                 <textarea class="form-control" name="referencias" id="referencias" rows="3" required style="resize: none;"></textarea>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary-veris w-100 fs--18 fw-medium line-leight-24 px-4 py-3 waves-effect waves-light" type="submit"  id="btnSiguiente" disabled
-                                >Siguiente</button>
+                                <button class="btn btn-primary-veris w-100 fs--18 fw-medium line-leight-24 px-4 py-3 waves-effect waves-light shadow-none" type="submit"  id="btnSiguiente" disabled>Siguiente</button>
                             </div>
                         </form>
                     </div>

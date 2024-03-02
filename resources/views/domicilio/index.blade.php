@@ -57,7 +57,7 @@ Mi Veris - Citas - Servicios a domicilio
                                     </div>
                                     <div class="col-md-12">
                                         <label for="paciente" class="form-label fs--1 fw-medium">Selecciona el paciente</label>
-                                        <select class="form-select fs--1 p-3 bg-neutral" name="paciente" id="paciente" >
+                                        <select class="form-select fs--1 p-3" name="paciente" id="paciente" >
                                             <option selected disabled value="">Elegir...</option>
                                             <option value="">...</option>
                                             <option value="">...</option>
@@ -68,7 +68,7 @@ Mi Veris - Citas - Servicios a domicilio
                                     </div>
                                     <div class="col-md-12">
                                         <label for="paciente" class="form-label fs--1 fw-medium">Selecciona la ciudad</label>
-                                        <select class="form-select fs--1 p-3 bg-neutral" name="ciudad" id="ciudad" required>
+                                        <select class="form-select fs--1 p-3" name="ciudad" id="ciudad" required>
                                             <option selected disabled value="">Elegir...</option>
                                             <option value="">...</option>
                                             <option value="">...</option>
@@ -78,13 +78,13 @@ Mi Veris - Citas - Servicios a domicilio
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control fs--1 p-3 bg-neutral" name="telefono" id="telefono" value="" placeholder="Teléfono móvil" maxlength="10" required />
+                                        <input type="text" class="form-control fs--1 p-3" name="telefono" id="telefono" value="" placeholder="Teléfono móvil" maxlength="10" required />
                                         <div class="invalid-feedback">
                                             Ingrese un numero de telefono
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <input type="text" class="form-control fs--1 p-3 bg-neutral"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
+                                        <input type="text" class="form-control fs--1 p-3"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
                                         <div class="invalid-feedback">
                                             Ingrese una direccion
                                         </div>
@@ -93,7 +93,7 @@ Mi Veris - Citas - Servicios a domicilio
                             </div>
                         </div>
                         <div class="col-12 mt-5">
-                            <button class="btn btn-lg btn-primary-veris w-100 px-4 py-3" type="submit" id="btnSolicitarLlamada" disabled><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
+                            <button class="btn btn-lg btn-primary-veris fs--18 line-height-24 fw-medium w-100 px-4 py-3" type="submit" id="btnSolicitarLlamada" disabled><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
                         </div>
                     </form>
                 </div>

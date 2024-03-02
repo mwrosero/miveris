@@ -87,7 +87,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="row g-3">
                                     <div class="col-md-12">
                                         <label for="tipoIdentificacion" class="form-label fw-medium fs--1">Elige tu documento *</label>
-                                        <select class="form-select form-filter border-0 fs--1 p-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                                        <select class="form-select fs--1 p-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
                                             <option value="2">CÉDULA</option>
                                             <option value="1">RUC</option>
                                         </select>
@@ -97,35 +97,35 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                     <div class="col-md-12">
                                         <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de documento *</label>
-                                        <input type="number" class="form-control form-filter border-0 fs--1 p-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
+                                        <input type="number" class="form-control fs--1 p-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
                                         <div class="invalid-feedback">
                                             Ingrese un numero de identificacion.
                                         </div>
                                     </div>
                                     <div class="col-md-12 d-none box-ruc">
                                         <label for="razonSocial" class="form-label fw-medium fs--1">Razón Social *</label>
-                                        <input type="text" class="form-control border-fiord fs--1 p-3" name="razonSocial" id="razonSocial" placeholder="" required />
+                                        <input type="text" class="form-control fs--1 p-3" name="razonSocial" id="razonSocial" placeholder="" required />
                                         <div class="invalid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
                                         <label for="primerNombre" class="form-label fw-medium fs--1">Primer Nombre *</label>
-                                        <input type="text" class="form-control border-fiord fs--1 p-3" name="primerNombre" id="primerNombre" placeholder="" required />
+                                        <input type="text" class="form-control fs--1 p-3" name="primerNombre" id="primerNombre" placeholder="" required />
                                         <div class="invalid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
                                         <label for="primerApellido" class="form-label fw-medium fs--1">Primer Apellido *</label>
-                                        <input type="text" class="form-control border-fiord fs--1 p-3" name="primerApellido" id="primerApellido" placeholder="" required />
+                                        <input type="text" class="form-control fs--1 p-3" name="primerApellido" id="primerApellido" placeholder="" required />
                                         <div class="invalid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
                                         <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo Apellido *</label>
-                                        <input type="text" class="form-control border-fiord fs--1 p-3" name="segundoApellido" id="segundoApellido" placeholder="" required />
+                                        <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" placeholder="" required />
                                         <div class="invalid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
@@ -136,47 +136,47 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <div class="row g-3">
                                     <div class="col-md-12">
                                         <label for="direccion" class="form-label fw-medium fs--1">Dirección *</label>
-                                        <input type="text" class="form-control form-filter border-0 fs--1 p-3" name="direccion" id="direccion" placeholder="" required />
+                                        <input type="text" class="form-control fs--1 p-3" name="direccion" id="direccion" placeholder="" required />
                                         <div class="invalid-feedback">
                                             Ingrese una direccion.
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <label for="telefono" class="form-label fw-medium fs--1">Teléfono *</label>
-                                        <input type="number" class="form-control border-fiord fs--1 p-3" name="telefono" id="telefono" placeholder="+593 999 999 9999" required />
+                                        <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono" placeholder="+593 999 999 9999" required />
                                         <div class="invalid-feedback">
                                             Ingrese un telefono.
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <label for="mail" class="form-label fw-medium fs--1">Email *</label>
-                                        <input type="email" class="form-control border-fiord fs--1 p-3" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
+                                        <input type="email" class="form-control fs--1 p-3" name="mail" id="mail" placeholder="micorreo@gmail.com" required />
                                         <div class="valid-feedback">
                                             Ingrese un correo electronico.
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <ul class="list-group fs--1 bg-neutral rounded-3 pt-2 pb-2">
-                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-medium">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 fw-medium">
                                                 Detalle de factura
                                             </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2">
                                                 Subtotal
                                                 <span class="badge text-dark fw-normal fs--1 p-0" id="subtotal"></span>
                                             </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2">
                                                 Crédito/convenio
                                                 <span class="badge text-dark fw-normal fs--1 p-0" id="creditoConvenio"></span>
                                             </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2">
                                                 Descuento aplicado
                                                 <span class="badge text-dark fw-normal fs--1 p-0" id="descuentoAplicado"></span>
                                             </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2">
                                                 IVA
                                                 <span class="badge text-dark fw-normal fs--1 p-0" id="iva"></span>
                                             </li>
-                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 border-0 fw-medium">
+                                            <li class="list-group-item d-flex justify-content-between align-items-center py-0 px-2 fw-medium">
                                                 Total
                                                 <span class="badge text-dark fw-normal fs--1 p-0" id="total"></span>
                                             </li>
@@ -185,8 +185,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </div>
                             </div>
                             <div class="col-12 text-center mt-4">
-                                <div class="form-check d-flex justify-content-center align-items-center">
-                                    <input class="form-check-input terminos-input me-2 mb-1" type="checkbox" value="" id="checkTerminosCondicion" required>
+                                <div class="form-check d-flex justify-content-md-center align-items-center">
+                                    <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
                                     <label class="form-check-label fs--1 fw-medium line-height-16" for="checkTerminosCondicion">
                                         Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank" class="">Términos y condiciones</a> 
                                         <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
@@ -199,11 +199,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <div class="col-12">
                                 <div class="row justify-content-center align-items-center">
                                     <div class="col-12 col-md-6">
-                                        <div class="btn-master w-100 mx-auto">
-                                            <button type="button" id="btn-next" class="col-5 btn disabled text-white shadow-none">Continuar</button>
+                                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-between align-items-center disabled" id="btn-next">
+                                            <span class="col-5 shadow-none">Continuar</span>
                                             |
-                                            <p class="col-5 btn text-white mb-0 shadow-none cursor-inherit" id="totalLabel"></p>
-                                        </div>
+                                            <span class="col-5 mb-0 shadow-none cursor-inherit" id="totalLabel"></span>
+                                        </button>
+                                        <!-- <div class="btn-master w-100 mx-auto">
+                                            <button type="button" id="btn-next" class="col-5 btn fs--18 line-height-24 disabled text-white shadow-none">Continuar</button>
+                                            |
+                                            <p class="col-5 btn text-white fs--18 line-height-24 mb-0 shadow-none cursor-inherit" id="totalLabel"></p>
+                                        </div> -->
                                     </div>
                                     <div class="col-12 col-md-8">
                                         <div id="btn-ver-examenes" class="btn-master w-lg-50 mx-auto mt-2 cursor-pointer justify-content-center align-items-center d-none">

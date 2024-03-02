@@ -17,7 +17,7 @@ $data1 = json_decode($data);
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h5 class="fw-bold fs-24 mb-0" id="titulo">Registro exitoso</h5>
+                    <h5 class="fw-medium fs-24 mb-0" id="titulo">Registro exitoso</h5>
                     <p class="fs--1 m-0" id="mensaje"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
@@ -49,7 +49,7 @@ $data1 = json_decode($data);
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body">
                         <form class="row g-3" enctype="multipart/form-data">
-                            <label for="upload" class="btn btn-light me-2" tabindex="0">
+                            <label for="upload" class="btn p-3 fs--16 shadow-none me-2 fw-normal" style="color: #989FA5;border-radius: 8px;background: var(--Opacidad-Oscuro-05, rgba(0, 0, 0, 0.05));" tabindex="0">
                                 <span class="d-none d-sm-block"><i class="fa-solid fa-upload"></i> Añadir archivos .png .jpg .jpeg .pdf</span>
                                 <i class="fa-solid fa-upload d-block d-sm-none"></i>
                                 <input type="file" id="upload" class="account-file-input" hidden="" accept=".png, .jpg, .jpeg, .pdf" multiple />
@@ -66,27 +66,27 @@ $data1 = json_decode($data);
                             </ul>
                             <h5 class="mb-0">Registro de datos del paciente</h5>
                             <div class="col-md-12">
-                                <label for="paciente" class="form-label fw-bold">Nombre del Paciente *</label>
-                                <input type="text" class="form-control " name="paciente" id="paciente" placeholder="Nombre del paciente" disabled />
+                                <label for="paciente" class="form-label fw-medium">Nombre del Paciente *</label>
+                                <input type="text" class="form-control fs--1 p-3" name="paciente" id="paciente" placeholder="Nombre del paciente" disabled />
                             </div>
                             <div class="col-md-12">
-                                <label for="numeroIdentificacion" class="form-label fw-bold">Cédula o pasaporte *</label>
-                                <input type="text" class="form-control bg-neutral" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required disabled/>
+                                <label for="numeroIdentificacion" class="form-label fw-medium">Cédula o pasaporte *</label>
+                                <input type="text" class="form-control fs--1 p-3 border-transparent" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required disabled/>
                             </div>
                             <div class="col-md-12">
-                                <label for="email" class="form-label fw-bold">Email *</label>
-                                <input type="email" class="form-control " name="email" id="email"  required />
+                                <label for="email" class="form-label fw-medium">Email *</label>
+                                <input type="email" class="form-control fs--1 p-3 " name="email" id="email"  required />
                             </div>
                             <div class="col-md-12">
-                                <label for="telefono" class="form-label fw-bold">Teléfono *</label>
-                                <input type="number" class="form-control " name="telefono" id="telefono"  required />
+                                <label for="telefono" class="form-label fw-medium">Teléfono *</label>
+                                <input type="number" class="form-control fs--1 p-3 " name="telefono" id="telefono"  required />
                             </div>
                             <div class="col-md-12">
-                                <label for="convenio" class="form-label fw-bold">Convenio *</label>
-                                <input type="text" class="form-control bg-neutral" name="convenio" id="convenio" placeholder="Convenio" disabled />
+                                <label for="convenio" class="form-label fw-medium">Convenio *</label>
+                                <input type="text" class="form-control fs--1 p-3 border-transparent" name="convenio" id="convenio" placeholder="Convenio" disabled />
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-primary-veris w-100" type="submit" id="botonSiguiente">Siguiente</button>
+                                <button class="btn btn-primary-veris fs--18 line-height-24 px-4 py-3 w-100 shadow-none" type="submit" id="botonSiguiente">Siguiente</button>
 
                             </div>
                         </form>
@@ -185,7 +185,7 @@ $data1 = json_decode($data);
     // Función para agregar mensajes debajo de la etiqueta label
     function agregarMensaje(mensaje) {
         /*var mensajeDiv = document.createElement('div');
-        mensajeDiv.classList.add('mensaje-error', 'fw-bold', 'fs--2');
+        mensajeDiv.classList.add('mensaje-error', 'fw-medium', 'fs--2');
         // mensajeDiv.className = '';
         mensajeDiv.textContent = mensaje;
         fileListContainer.appendChild(mensajeDiv);*/
@@ -220,12 +220,12 @@ $data1 = json_decode($data);
         $('#email').prop('disabled', true);
         $('#telefono').prop('disabled', true);
         $('#convenio').prop('disabled', true);
-        // agregar bg-neutral a los campos faltantes
-        $('#paciente').addClass('bg-neutral');
-        $('#numeroIdentificacion').addClass('bg-neutral');
-        $('#email').addClass('bg-neutral');
-        $('#telefono').addClass('bg-neutral');
-        $('#convenio').addClass('bg-neutral');
+        // agregar border-transparent a los campos faltantes
+        $('#paciente').addClass('border-transparent');
+        $('#numeroIdentificacion').addClass('border-transparent');
+        $('#email').addClass('border-transparent');
+        $('#telefono').addClass('border-transparent');
+        $('#convenio').addClass('border-transparent');
 
     }
     let tipoIdentificacion = dataCita.paciente.tipoIdentificacion;

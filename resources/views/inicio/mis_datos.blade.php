@@ -44,36 +44,36 @@ Mi Veris - Mis Datos
                         <div class="col-md-6">
                             <div class="row g-2">
                                 <div class="col-md-12">
-                                    <label for="nombre" class="form-label fw-semibold">{{ __('Nombre') }}*</label>
-                                    <input type="text" class="form-control" name="nombre" id="nombre" required />
+                                    <label for="nombre" class="form-label fw-medium fs--1">{{ __('Nombre') }}*</label>
+                                    <input type="text" class="form-control fs--1 p-3" name="nombre" id="nombre" required />
                                     <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="primerApellido" class="form-label fw-semibold">{{ __('Primer apellido') }}*</label>
-                                    <input type="text" class="form-control" name="primerApellido" id="primerApellido" required />
+                                    <label for="primerApellido" class="form-label fw-medium fs--1">{{ __('Primer apellido') }}*</label>
+                                    <input type="text" class="form-control fs--1 p-3" name="primerApellido" id="primerApellido" required />
                                     <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="segundoApellido" class="form-label fw-semibold">{{ __('Segundo apellido') }}*</label>
-                                    <input type="text" class="form-control" name="segundoApellido" id="segundoApellido" required />
+                                    <label for="segundoApellido" class="form-label fw-medium fs--1">{{ __('Segundo apellido') }}*</label>
+                                    <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" required />
                                     <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="fechaNacimiento" class="form-label fw-semibold">{{ __('Fecha de nacimiento') }} *</label>
-                                    <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" required />
+                                    <label for="fechaNacimiento" class="form-label fw-medium fs--1">{{ __('Fecha de nacimiento') }} *</label>
+                                    <input type="date" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" required />
                                     <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="sexo" class="form-label fw-semibold">{{ __('Sexo') }} *</label>
-                                    <select class="form-select" name="sexo" id="sexo" required>
+                                    <label for="sexo" class="form-label fw-medium fs--1">{{ __('Sexo') }} *</label>
+                                    <select class="form-select fs--1 p-3" name="sexo" id="sexo" required>
                                         <option value="M" {{ (Session::get('userData')->sexo == 'M') ? 'selected' : '' }}>Masculino</option>
                                         <option value="F" {{ (Session::get('userData')->sexo == 'F') ? 'selected' : '' }}>Femenino</option>
                                     </select>
@@ -86,22 +86,22 @@ Mi Veris - Mis Datos
                         <div class="col-md-6">
                             <div class="row g-2">
                                 <div class="col-md-12">
-                                    <label for="mail" class="form-label fw-semibold">{{ __('Correo electrónico') }} *</label>
-                                    <input type="email" class="form-control" name="mail" id="mail" required />
+                                    <label for="mail" class="form-label fw-medium fs--1">{{ __('Correo electrónico') }} *</label>
+                                    <input type="email" class="form-control fs--1 p-3" name="mail" id="mail" required />
                                     <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="telefono" class="form-label fw-semibold">{{ __('Teléfono') }} *</label>
-                                    <input type="number" class="form-control" name="telefono" id="telefono" required />
+                                    <label for="telefono" class="form-label fw-medium fs--1">{{ __('Teléfono') }} *</label>
+                                    <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono" required />
                                     <div class="invalid-feedback">
                                         Looks good!
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="provincia" class="form-label fw-semibold">{{ __('Provincia') }} *</label>
-                                    <select class="form-select" name="provincia" id="provincia" required>
+                                    <label for="provincia" class="form-label fw-medium fs--1">{{ __('Provincia') }} *</label>
+                                    <select class="form-select fs--1 p-3" name="provincia" id="provincia" required>
                                         <option selected disabled value="">Selecciona uno</option>
                                         <option>...</option>
                                     </select>
@@ -110,8 +110,8 @@ Mi Veris - Mis Datos
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="ciudad" class="form-label fw-semibold">{{ __('Ciudad') }} *</label>
-                                    <select class="form-select" name="ciudad" id="ciudad" required>
+                                    <label for="ciudad" class="form-label fw-medium fs--1">{{ __('Ciudad') }} *</label>
+                                    <select class="form-select fs--1 p-3" name="ciudad" id="ciudad" required>
                                         <option selected disabled value="">Selecciona uno</option>
                                         <option>...</option>
                                     </select>
@@ -120,8 +120,8 @@ Mi Veris - Mis Datos
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <label for="direccion" class="form-label fw-semibold">{{ __('Dirección') }}*</label>
-                                    <input type="text" class="form-control" name="direccion" id="direccion" value="" required />
+                                    <label for="direccion" class="form-label fw-medium fs--1">{{ __('Dirección') }}*</label>
+                                    <input type="text" class="form-control fs--1 p-3" name="direccion" id="direccion" value="" required />
                                     <div class="valid-feedback">
                                         Looks good!
                                     </div>
