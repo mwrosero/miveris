@@ -31,7 +31,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end rounded-3 mt-2 py-1">
                     <li>
-                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('misDatos')}}">
+                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('home.misDatos')}}">
                             <i class="fa-solid fa-user text-primary-veris me-2 ti-sm"></i>
                             <span class="align-middle">Mis datos</span>
                         </a>
@@ -40,7 +40,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('politicaPrivacidadDatos')}}">
+                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('home.politicaPrivacidadDatos')}}">
                             <i class="fa-solid fa-shield-halved text-primary-veris me-2 ti-sm"></i>
                             <span class="align-middle">Política de privacidad </span>
                         </a>
@@ -212,9 +212,7 @@
         
     }
 
-
     // cantidad de notificaciones
-
     async function cantidadNotificaciones(){
         let args = [];
         let canalOrigen = _canalOrigen;
@@ -241,8 +239,6 @@
             }
         }
     }
-
-
 
     // recibir numero de notificaciones
     async function numeroNotificaciones(){
@@ -275,14 +271,12 @@
     });
 
     // determinar categoria
-
     function determinarCategoria(categoria){
         let categoriaNotificacion = '';
         switch (categoria) {
             case 'PENDIENTE_PAGO':
                 categoriaNotificacion = 'Pago pendiente';
                 break;
-
             case 'ORDEN_HC':
                 categoriaNotificacion = 'Revisa tus ordenes';
                 break;
@@ -333,7 +327,6 @@
     }
 
     // cambiar estado de notificacion
-
     $('#dropdownNotifications').click(function(){
         // enviar el id de la notificacion de las notificaciones que estan en la pagina actual
         // console.log('activar notificacion ');
@@ -341,13 +334,9 @@
         $('#numeroNotificaciones').addClass('d-none');
         // clear numero notificaciones
         numeroNotificaciones();
-
-
-
     });
 
     // enviar codigo de notificacion 
-
     function activarNotificacion(){
         let notificacionesPaginaActual = todasNotificaciones.slice((paginaActual - 1) * notificacionesPorPagina, paginaActual * notificacionesPorPagina);
         // console.log('notificaciones pagina actual', notificacionesPaginaActual);
@@ -358,12 +347,7 @@
         });
     }
 
-
-
-    
-
     // cambia estado de notificacion a leido
-
     async function cambiarEstadoNotificacion(codigoNotificacion){
         let args = [];
         let canalOrigen = _canalOrigen;
@@ -400,8 +384,6 @@
             location.href = url;
         }
     }
-
-
 </script>
 <style>
     .fa-solid.fa-bell {
