@@ -41,10 +41,10 @@ Mi Veris - Buscar doctor
                 </div>
                 <div class="col-md-12 mb-3">
                     <label for="fechaDesde" class="fw-light fs--16 line-height-20 mb-3" style="color: #3D4E66;">{{ __('Elige el rango de fechas') }}</label>
-                    <input type="text" class="form-control fs--1 p-3 bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
+                    <input type="text" class="form-control fs--1 p-3" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
                 </div>
                 <div class="col-md-12 mb-5">
-                    <input type="text" class="form-control fs--1 p-3 bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
+                    <input type="text" class="form-control fs--1 p-3" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
                 </div>
                 <div class="col-md-12 mb-3">
                     <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>
@@ -77,7 +77,7 @@ Mi Veris - Buscar doctor
                         <div class="card-body">
                             <div class="text-center">
                                 <img src="{{ asset('assets/img/svg/doctors_search.svg') }}" class="img-fluid mb-3" alt="">
-                                <h5>No hay doctores disponibles</h5>
+                                <h5 class="fs-24 fw-medium line-height-28 mb-4">No hay doctores disponibles</h5>
                             </div>
                         </div>
                     </div>
@@ -115,20 +115,14 @@ Mi Veris - Buscar doctor
 
     document.getElementById('fechaHasta').disabled = true;
     // quitar el readonly
-
     $("#fechaDesde").removeAttr("readonly");
     $("#fechaHasta").removeAttr("readonly");
     // no permitir autocomplete
     $("#fechaDesde").attr("autocomplete", "off");
     $("#fechaHasta").attr("autocomplete", "off");
 
-
-
 </script>
-
 <script>
-    
-
     // variables globales
     let dataEspecialidades = [];
     let dataDoctores = [];
@@ -176,9 +170,7 @@ Mi Veris - Buscar doctor
         return data;
     }
 
-
     // consultar disponibilidad de doctores
-
     async function obtenerDisponibilidadDoctor(doctores) {
         console.log('filtrott', doctores);
         let args = [];
@@ -215,7 +207,6 @@ Mi Veris - Buscar doctor
             if (data.data.length == 0){
                 console.log('no hay doctores'); 
                 // limpiar doctores
-
                 $('#doctoresFavoritos').empty();
                 $('#noHayDoctores').removeClass('d-none');
             } else{
@@ -290,20 +281,14 @@ Mi Veris - Buscar doctor
 
     }
 
-
-    
-
     //agregar doctor favorito boton +
     $(document).on('click', '.btn-icon', async function() {
         let doctor = $(this).data('rel');
         console.log('doctor', doctor);
         await agregarDoctorFavorito(doctor);
     });
-
-
     
     // funciones js
-
     // fecha valida
     function esFechaValida(fecha) {
         const date = new Date(fecha);
@@ -312,7 +297,6 @@ Mi Veris - Buscar doctor
 
     // aplicar filtros
     $('#aplicarFiltros').on('click', async function(){
-        
         let especialidadSeleccionada = $('input[name="listGroupRadios"]:checked').data('rel');
         console.log('filtros',especialidadSeleccionada);
         let fechaDesde = $('#fechaDesde').val();
@@ -392,8 +376,6 @@ Mi Veris - Buscar doctor
             html.append(elemento); // Actualizar el HTML del contenedor de doctores
         }
     });
-
-
 
 </script>
 @endpush
