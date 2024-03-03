@@ -14,10 +14,10 @@
             </div>
             <div class="col-md-12 mb-3">
                 <label for="fechaDesde" class="fw-light fs--16 line-height-20 mb-3" style="color: #3D4E66 !important;">{{ __('Elige el rango de fechas') }}</label>
-                <input type="text" class="form-control fs--1 p-3 bg-neutral border-0" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
+                <input type="text" class="form-control fs--1 p-3" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
             </div>
             <div class="col-md-12 mb-5">
-                <input type="text" class="form-control fs--1 p-3 bg-neutral border-0" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
+                <input type="text" class="form-control fs--1 p-3" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
             </div>
             <div class="col-md-12 mb-3">
                 <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>

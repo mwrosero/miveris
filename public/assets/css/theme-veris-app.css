@@ -231,20 +231,20 @@ html:not([dir="rtl"]) .border-start-veris {
 .swiper-button-next::after,
 .swiper-button-prev::after {
   font-family: bootstrap-icons !important;
-  font-weight: 700;
-  font-size: .75rem !important;
+  font-weight: 900 !important;
+  font-size: 1.5rem !important;
   line-height: 2rem !important;
 }
 
 .btn-prev-arrow{
-  left: -14px !important;
+  left: -10px !important;
 }
 .btn-prev {
   left: 0 !important;
 }
 
 .btn-next-arrow{
-  right: -14px !important;
+  right: -10px !important;
 }
 
 .btn-next {

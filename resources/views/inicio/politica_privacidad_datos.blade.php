@@ -40,148 +40,149 @@ Mi Veris - Politica-privacidad-datos
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Política de privacidad de datos') }}</h5>
     </div>
-    <div class="row g-0 justify-content-center align-items-center">
-        <div class="col-md-8">
-            <div class="card bg-transparent shadow-none">
-                <div class="card-body pt-5">
-                    <form class="row g-3"  >
-                        @csrf
-                        <div class="col-12 justify-content-center align-items-center">
-                            <h5 class="text-center fw-medium fs--20 line-height-24 mb-2">{{ __('Confirmación de política de privacidad de datos personales') }}</h5>
-                            <p class="text-center mb-4">{{ __('ARCO (Acceso-Rectificación - Cancelación - Oposición)' )}}</p>
-                        </div>
-                        <div class="col-md-6 border-lg-end">
-                            <div class="d-flex justify-content-between">
-                                <p class="lh-normal mb-0">{{ __('Rectificación de datos personales') }}</p>
-                                <div class="d-flex">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionNo" value="option1" >
-                                        <label class="form-check-label cursor-pointer" for="inlineRadioRectificacionNo">{{ __('No') }}</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionSi" value="option2" checked>
-                                        <label class="form-check-label cursor-pointer" for="inlineRadioRectificacionSi">{{ __('Si') }}</label>
-                                    </div>
-                                </div>
+    <section class="p-3">
+        <div class="row g-0 justify-content-center align-items-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card bg-transparent shadow-none">
+                    <div class="card-body pt-5 px-0">
+                        <form class="row g-3"  >
+                            @csrf
+                            <div class="col-12 justify-content-center align-items-center">
+                                <h5 class="text-center fw-medium fs--20 line-height-24 mb-2">{{ __('Confirmación de política de privacidad de datos personales') }}</h5>
+                                <p class="text-center mb-4">{{ __('ARCO (Acceso-Rectificación - Cancelación - Oposición)' )}}</p>
                             </div>
-                        </div>
-                        <div class="col-md-6 border-lg-start ps-lg-4">
-                            <div class="d-flex justify-content-between">
-                                <p class="lh-normal mb-0">{{ __('Cancelación / Oposición de datos personales') }}</p>
-                                <div class="d-flex">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioCancelacion" id="inlineRadioCancelacionNo" value="option1">
-                                        <label class="form-check-label cursor-pointer" for="inlineRadioCancelacionNo">{{ __('No') }}</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioCancelacion" id="inlineRadioCancelacionSi" value="option2">
-                                        <label class="form-check-label cursor-pointer" for="inlineRadioCancelacionSi">{{ __('Si') }}</label>
+                            <div class="col-md-6 border-lg-end">
+                                <div class="d-flex justify-content-between">
+                                    <p class="lh-normal mb-0">{{ __('Rectificación de datos personales') }}</p>
+                                    <div class="d-flex">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionNo" value="option1" >
+                                            <label class="form-check-label cursor-pointer" for="inlineRadioRectificacionNo">{{ __('No') }}</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioRectificacion" id="inlineRadioRectificacionSi" value="option2" checked>
+                                            <label class="form-check-label cursor-pointer" for="inlineRadioRectificacionSi">{{ __('Si') }}</label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="col-md-6 border-lg-start ps-lg-4">
+                                <div class="d-flex justify-content-between">
+                                    <p class="lh-normal mb-0">{{ __('Cancelación / Oposición de datos personales') }}</p>
+                                    <div class="d-flex">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioCancelacion" id="inlineRadioCancelacionNo" value="option1">
+                                            <label class="form-check-label cursor-pointer" for="inlineRadioCancelacionNo">{{ __('No') }}</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input cursor-pointer" type="radio" name="inlineRadioCancelacion" id="inlineRadioCancelacionSi" value="option2">
+                                            <label class="form-check-label cursor-pointer" for="inlineRadioCancelacionSi">{{ __('Si') }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h5 class="text-center mt-4 pt-2">Datos</h5>
+                            <div class="col-md-3">
+                                <label for="primerNombre" class="form-label fw-medium fs--1">Primer nombre</label>
+                                <input type="text" class="form-control fs--1 p-3" name="primerNombre" id="primerNombre" autocomplete="do-not-autofill" required disabled readonly />
 
-                        <h5 class="text-center mt-4 pt-2">Datos</h5>
-                        <div class="col-md-3">
-                            <label for="primerNombre" class="form-label fw-medium fs--1">Primer nombre</label>
-                            <input type="text" class="form-control fs--1 p-3" name="primerNombre" id="primerNombre" autocomplete="do-not-autofill" required disabled readonly />
-
-                            <div class="invalid-feedback">
-                                Ingrese su primer nombre.
+                                <div class="invalid-feedback">
+                                    Ingrese su primer nombre.
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="segundoNombre" class="form-label fw-medium fs--1">Segundo nombre</label>
-                            <input type="text" class="form-control fs--1 p-3" name="segundoNombre" id="segundoNombre" autocomplete="do-not-autofill" required disabled readonly />
-                            <div class="invalid-feedback">
-                                Ingrese su segundo nombre.
+                            <div class="col-md-3">
+                                <label for="segundoNombre" class="form-label fw-medium fs--1">Segundo nombre</label>
+                                <input type="text" class="form-control fs--1 p-3" name="segundoNombre" id="segundoNombre" autocomplete="do-not-autofill" required disabled readonly />
+                                <div class="invalid-feedback">
+                                    Ingrese su segundo nombre.
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="prmerApellido" class="form-label fw-medium fs--1">Primer apellido</label>
-                            <input type="text" class="form-control fs--1 p-3" name="prmerApellido" id="prmerApellido" autocomplete="do-not-autofill" required />
-                            <div class="invalid-feedback">
-                                Ingrese su primer apellido.
+                            <div class="col-md-3">
+                                <label for="prmerApellido" class="form-label fw-medium fs--1">Primer apellido</label>
+                                <input type="text" class="form-control fs--1 p-3" name="prmerApellido" id="prmerApellido" autocomplete="do-not-autofill" required />
+                                <div class="invalid-feedback">
+                                    Ingrese su primer apellido.
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo apellido</label>
-                            <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" autocomplete="do-not-autofill" required />
-                            <div class="invalid-feedback">
-                                Ingrese su segundo apellido.
+                            <div class="col-md-3">
+                                <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo apellido</label>
+                                <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" autocomplete="do-not-autofill" required />
+                                <div class="invalid-feedback">
+                                    Ingrese su segundo apellido.
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="fechaNacimiento" class="form-label fw-medium fs--1">Fecha de nacimiento</label>
-                            <input type="text" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" required disabled readonly />
-                            <div class="invalid-feedback">
-                                Ingrese su fecha de naciemiento.
+                            <div class="col-md-3">
+                                <label for="fechaNacimiento" class="form-label fw-medium fs--1">Fecha de nacimiento</label>
+                                <input type="text" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" required disabled readonly />
+                                <div class="invalid-feedback">
+                                    Ingrese su fecha de naciemiento.
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-3">
-                            <label for="sexo" class="form-label fw-medium fs--1">Sexo</label>
-                            <select class="form-select fs--1 p-3" name="sexo" id="sexo" required >
-                                <!-- Opciones del select aquí -->
-                                <option value="0">Elegir</option>
-                                <option value="F">Femenino</option>
-                                <option value="M">Masculino</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de identificación</label>
-                            <input type="text" class="form-control fs--1 p-3" name="numeroIdentificacion" id="numeroIdentificacion" required disabled readonly/>
-                            <div class="invalid-feedback">
-                                Ingrese su número de identificación.
+                            <div class="col-md-3">
+                                <label for="sexo" class="form-label fw-medium fs--1">Sexo</label>
+                                <select class="form-select fs--1 p-3" name="sexo" id="sexo" required >
+                                    <!-- Opciones del select aquí -->
+                                    <option value="0">Elegir</option>
+                                    <option value="F">Femenino</option>
+                                    <option value="M">Masculino</option>
+                                </select>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="telefono" class="form-label fw-medium fs--1">Número de teléfono</label>
-                            <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono" autocomplete="do-not-autofill" required disabled readonly/>
-                            <div class="invalid-feedback">
-                                Ingrese un número de teléfono.
+                            <div class="col-md-6">
+                                <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de identificación</label>
+                                <input type="text" class="form-control fs--1 p-3" name="numeroIdentificacion" id="numeroIdentificacion" required disabled readonly/>
+                                <div class="invalid-feedback">
+                                    Ingrese su número de identificación.
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="correoElctronico" class="form-label fw-medium fs--1">Correo electrónico</label>
-                            <input type="email" class="form-control fs--1 p-3" name="correoElctronico" id="correoElctronico" autocomplete="do-not-autofill" required  disabled readonly/>
-                            <div class="invalid-feedback">
-                                Ingrese un correo electrónico.
+                            <div class="col-md-6">
+                                <label for="telefono" class="form-label fw-medium fs--1">Número de teléfono</label>
+                                <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono" autocomplete="do-not-autofill" required disabled readonly/>
+                                <div class="invalid-feedback">
+                                    Ingrese un número de teléfono.
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="pais" class="form-label fw-medium fs--1">País</label>
-                            <select class="form-select fs--1 p-3" name="pais" id="pais" required disabled>
-                                <!-- Opciones del select aquí -->
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="provincia" class="form-label fw-medium fs--1">Provincia</label>
-                            <select class="form-select fs--1 p-3" name="provincia" id="provincia" required disabled >
-                                <!-- Opciones del select aquí -->
-                            </select>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <label for="ciudad" class="form-label fw-medium fs--1">Ciudad</label>
-                            <select class="form-select fs--1 p-3" name="ciudad" id="ciudad"  required disabled >
-                                
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="dirección" class="form-label fw-medium fs--1">Dirección</label>
-                            <input type="text" class="form-control fs--1 p-3" name="direccion" id="direccion" autocomplete="do-not-autofill" required />
-                            <div class="invalid-feedback">
-                                Ingrese su dirección.
+                            <div class="col-md-6">
+                                <label for="correoElctronico" class="form-label fw-medium fs--1">Correo electrónico</label>
+                                <input type="email" class="form-control fs--1 p-3" name="correoElctronico" id="correoElctronico" autocomplete="do-not-autofill" required  disabled readonly/>
+                                <div class="invalid-feedback">
+                                    Ingrese un correo electrónico.
+                                </div>
                             </div>
+                            <div class="col-md-6">
+                                <label for="pais" class="form-label fw-medium fs--1">País</label>
+                                <select class="form-select fs--1 p-3" name="pais" id="pais" required disabled>
+                                    <!-- Opciones del select aquí -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="provincia" class="form-label fw-medium fs--1">Provincia</label>
+                                <select class="form-select fs--1 p-3" name="provincia" id="provincia" required disabled >
+                                    <!-- Opciones del select aquí -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ciudad" class="form-label fw-medium fs--1">Ciudad</label>
+                                <select class="form-select fs--1 p-3" name="ciudad" id="ciudad"  required disabled >
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="dirección" class="form-label fw-medium fs--1">Dirección</label>
+                                <input type="text" class="form-control fs--1 p-3" name="direccion" id="direccion" autocomplete="do-not-autofill" required />
+                                <div class="invalid-feedback">
+                                    Ingrese su dirección.
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer row justify-content-center mt-5 px-0">
+                        <div class="col-12 col-md-6">
+                            <button class="btn btn-primary-veris fs--18 line-height-24 fw-medium py-3 px-4 w-100" id="botonConfirmarPDP">{{ __('Guardar') }}</button>
                         </div>
-                        <div class="col-12 text-center mt-5">
-                            <button class="btn btn-primary-veris fs--18 line-height-24 fw-medium w-50 py-3" id="botonConfirmarPDP">{{ __('Guardar') }}</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
 @endsection
 @push('scripts')

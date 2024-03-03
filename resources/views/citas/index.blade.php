@@ -176,12 +176,12 @@ Mi Veris - Citas
                 <div class="card">
                     <a href="{{route('citas.misCitas')}}" id= btnMisCitas>
                         <div class="row g-0 justify-content-between align-items-center">
-                            <div class="col-8 col-md-7">
+                            <div class="col-7 col-md-7">
                                 <div class="card-body p-0 ps-2">
                                     <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Próximas ') }} <br> {{ __('citas') }}</h6>
                                 </div>
                             </div>
-                            <div class="col-4 col-md-auto">
+                            <div class="col-5 col-md-auto">
                                 <img src="{{ asset('assets/img/card/svg/calendario.svg') }}" class="img-fluid rounded-2" alt="{{ __('Próximas citas') }}">
                             </div>
                         </div>
@@ -192,12 +192,12 @@ Mi Veris - Citas
                 <div class="card">
                     <a href="{{route('citas.misCitas')}}" id= btnHistorialCitas>
                         <div class="row g-0 justify-content-between align-items-center">
-                            <div class="col-8 col-md-7">
+                            <div class="col-7 col-md-7">
                                 <div class="card-body p-0 ps-2">
                                     <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Historial de ') }} <br>{{ __('citas') }}</h6>
                                 </div>
                             </div>
-                            <div class="col-4 col-md-auto">
+                            <div class="col-5 col-md-auto">
                                 <img src="{{ asset('assets/img/card/svg/clock.svg') }}" class="img-fluid rounded-2" alt="{{ __('Historial de citas') }}">
                             </div>
                         </div>
