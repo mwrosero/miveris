@@ -4045,22 +4045,22 @@ textarea.form-control-lg {
 .pagination {
   --bs-pagination-padding-x: 0.35rem;
   --bs-pagination-padding-y: 0.594rem;
-  --bs-pagination-font-size: 0.9375rem;
-  --bs-pagination-color: #5d596c;
+  --bs-pagination-font-size: 0.75rem;
+  --bs-pagination-color: #3A5068;
   --bs-pagination-bg: rgba(75, 70, 92, 0.08);
   --bs-pagination-border-width: 0px;
   --bs-pagination-border-color: rgba(75, 70, 92, 0.08);
   --bs-pagination-border-radius: 0.375rem;
-  --bs-pagination-hover-color: #5d596c;
+  --bs-pagination-hover-color: #3A5068;
   --bs-pagination-hover-bg: rgba(75, 70, 92, 0.16);
   --bs-pagination-hover-border-color: rgba(75, 70, 92, 0.16);
-  --bs-pagination-focus-color: #5d596c;
+  --bs-pagination-focus-color: #3A5068;
   --bs-pagination-focus-bg: rgba(75, 70, 92, 0.16);
   --bs-pagination-focus-box-shadow: none;
   --bs-pagination-active-color: #fff;
   --bs-pagination-active-bg: #0071CE;
   --bs-pagination-active-border-color: #0071CE;
-  --bs-pagination-disabled-color: #a5a3ae;
+  --bs-pagination-disabled-color: #3A5068;
   --bs-pagination-disabled-bg: rgba(75, 70, 92, 0.08);
   --bs-pagination-disabled-border-color: rgba(75, 70, 92, 0.08);
   display: flex;
