@@ -200,9 +200,9 @@ Mi Veris - Citas - Receta médica
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
         if (estado == 'PENDIENTE') {
-            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+            args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
         } else if (estado == 'REALIZADO') {
-            args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=TODOS&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=S&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+            args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=TODOS&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=S&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
         }
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -389,7 +389,7 @@ Mi Veris - Citas - Receta médica
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -410,7 +410,7 @@ Mi Veris - Citas - Receta médica
         let args = [];
         let canalOrigen = 'APP_CMV'
         
-        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
@@ -435,7 +435,7 @@ Mi Veris - Citas - Receta médica
         let args = [];
         let canalOrigen = _canalOrigen;
         
-        args["endpoint"] = api_url + `/digitalestest/v1/recetas/detallereceta?canalOrigen=${canalOrigen}&codigoReceta=${datos.secuenciaReceta}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/recetas/detallereceta?canalOrigen=${canalOrigen}&codigoReceta=${datos.secuenciaReceta}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
@@ -472,7 +472,7 @@ Mi Veris - Citas - Receta médica
         let args = [];
         let canalOrigen = 'APP_CMV'
         
-        args["endpoint"] = api_url + `/digitalestest/v1/recetas/archivoreceta?codigoReceta=${datos.secuenciaReceta}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/recetas/archivoreceta?codigoReceta=${datos.secuenciaReceta}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
@@ -503,7 +503,7 @@ Mi Veris - Citas - Receta médica
         let args = [];
         let canalOrigen = _canalOrigen;
         
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${canalOrigen}`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";

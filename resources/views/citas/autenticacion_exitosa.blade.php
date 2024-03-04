@@ -55,7 +55,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function pagarCita(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";

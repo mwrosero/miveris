@@ -159,7 +159,7 @@ Mi Veris - Órdenes externas
     // funciones asyncronas
     async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -183,7 +183,7 @@ Mi Veris - Órdenes externas
             numeroIdentificacion = datos.numeroIdentificacion;
         }
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);
@@ -206,7 +206,7 @@ Mi Veris - Órdenes externas
             tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
         }
 
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/listaSolicitudes?canalOrigen=${_canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${codigoUsuario}&tipoIdentificacion=${tipoIdentificacion}&esExterna=S`;
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/listaSolicitudes?canalOrigen=${_canalOrigen}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${codigoUsuario}&tipoIdentificacion=${tipoIdentificacion}&esExterna=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -271,7 +271,7 @@ Mi Veris - Órdenes externas
         let codigoTipoIdentificacion = data.tipoIdentificacion;
         let numeroIdentificacion = data.numeroIdentificacion;
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?idPreTransaccion=${codigoPreTransaccion}&codigoTipoIdentificacion=${codigoTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/consultar_datos_factura?idPreTransaccion=${codigoPreTransaccion}&codigoTipoIdentificacion=${codigoTipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}
         `;
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -320,7 +320,7 @@ Mi Veris - Órdenes externas
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -344,7 +344,7 @@ Mi Veris - Órdenes externas
         
         let codigoEmpresa = 1
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=APP_CMV&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);

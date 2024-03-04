@@ -14,7 +14,7 @@ async function obtenerTratamientos(estado, pacienteSeleccionado, fechaDesde, fec
 }
 
 function construirEndpoint(estado, fechaDesde, fechaHasta) {
-    const baseEndpoint = `${api_url}/digitalestest/v1/tratamientos/detallesPorServicio`;
+    const baseEndpoint = `${api_url}/${api_war}/v1/tratamientos/detallesPorServicio`;
     const numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
     const parametrosComunes = `idPaciente=${numeroPaciente}&canalOrigen=${_canalOrigen}&estadoTratamiento=${estado}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=LABORATORIO&plataforma=${_plataforma}&version=${_version}&aplicaNuevoControl=false`;
 

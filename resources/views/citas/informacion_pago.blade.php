@@ -160,7 +160,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }
         $('#totalInfo').html(`$${dataCita.facturacion.totales.total.toFixed(2)}`);
-        //https://api-phantomx.veris.com.ec/digitalestest/v1/seguridad/parametrosNuvei?codigoAplicacion=MI_VERIS_WEB
+        //https://api-phantomx.veris.com.ec/${api_war}/v1/seguridad/parametrosNuvei?codigoAplicacion=MI_VERIS_WEB
         let credenciales = await obtenerCredenciales();
         console.log(credenciales)
         Payment.init('{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', dataCita.transaccionVirtual.applicationCode, dataCita.transaccionVirtual.applicationKey);
@@ -256,7 +256,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function obtenerCredenciales(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/parametrosNuvei?codigoAplicacion=MI_VERIS_WEB`;
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/parametrosNuvei?codigoAplicacion=MI_VERIS_WEB`;
         args["method"] = "GET";
         args["bodyType"] = "json";
         args["showLoader"] = false;
@@ -267,7 +267,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function autenticarOTP(codeOTP,type){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas/verificacion`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/tarjetas/verificacion`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -313,7 +313,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function registrarTarjeta(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/tarjetas`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -331,7 +331,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function pagarCita(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";

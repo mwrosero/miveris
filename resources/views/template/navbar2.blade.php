@@ -139,7 +139,7 @@
         let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}";
 
         console.log(codigoUsuario);
-        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/notificaciones/bandeja?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`;
         args["method"] = "GET";
         args["showLoader"] = true;
 
@@ -223,7 +223,7 @@
         let args = [];
         let canalOrigen = _canalOrigen;
         let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
-        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;
         
         args["method"] = "GET";
         args["showLoader"] = false;
@@ -253,7 +253,7 @@
         let codigoUsuario = "{{Session::get('userData')->numeroIdentificacion}}"
 
         // console.log(codigoUsuario);
-        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
+        args["endpoint"] = api_url + `/${api_war}/v1/notificaciones/cantidad?codigoUsuario=${codigoUsuario}`;        
         args["method"] = "GET";
         args["showLoader"] = false;
         // console.log('no',args["endpoint"] );
@@ -357,7 +357,7 @@
     async function cambiarEstadoNotificacion(codigoNotificacion){
         let args = [];
         let canalOrigen = _canalOrigen;
-        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
         
         args["method"] = "PUT";
         args["showLoader"] = true;
@@ -378,7 +378,7 @@
     async function actualizarEstadoNotificacion(codigoNotificacion, url){
         let args = [];
         let canalOrigen = _canalOrigen;
-        args["endpoint"] = api_url + `/digitalestest/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
         
         args["method"] = "PUT";
         args["showLoader"] = true;

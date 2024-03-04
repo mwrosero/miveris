@@ -103,7 +103,7 @@ Mi Veris - Citas - Farmacia a domicilio
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -126,7 +126,7 @@ Mi Veris - Citas - Farmacia a domicilio
     async function consultarCiudades() {
         let args = [];
         canalOrigen = _canalOrigen
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/ciudades?canalOrigen=${canalOrigen}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -144,7 +144,7 @@ Mi Veris - Citas - Farmacia a domicilio
 
     async function crearFarmaciaDomicilio() {
         let args = [];
-        args["endpoint"] = api_url + "/digitalestest/v1/domicilio/farmacia/solicitud";
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/farmacia/solicitud`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "POST";
         args["showLoader"] = true;

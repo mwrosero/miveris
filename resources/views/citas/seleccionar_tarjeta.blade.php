@@ -124,7 +124,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
     async function eliminarTarjeta(){
         let tarjeta = $('#idTarjetaEliminar').val();
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&codigoTarjetaSuscrita=${tarjeta}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&codigoTarjetaSuscrita=${tarjeta}`;
         args["method"] = "DELETE";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -150,7 +150,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
 
     async function pagarCita(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -185,7 +185,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
     async function cargarListaTarjetas(){
         $('#listado-tarjetas').empty();
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu={{ Session::get('userData')->numeroIdentificacion }}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu={{ Session::get('userData')->numeroIdentificacion }}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

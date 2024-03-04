@@ -212,7 +212,7 @@ Mi Veris - Citas - tratamiento
     async function descargarDocumentoPdfPrincipal(){
         let args = [];
         let canalOrigen = 'APP_CMV'
-        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/reporteAcumulativoAtencion?secuenciaAtencion=${dataCita.datosTratamiento.secuenciaAtenciones}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/reporteAcumulativoAtencion?secuenciaAtencion=${dataCita.datosTratamiento.secuenciaAtenciones}`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -249,7 +249,7 @@ Mi Veris - Citas - tratamiento
         let args = {};
         let idTratamiento = codigoTratamiento;
         let canalOrigenDigital = _canalOrigen;
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -356,7 +356,7 @@ Mi Veris - Citas - tratamiento
         //console.log('-------------'+dataCita.promocion.codigoPreTransaccion)
         let args = {};
         //let canalOrigenDigital = 'APP_CMV';
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}/actualizar_servicio`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${codigoTratamiento}/actualizar_servicio`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";

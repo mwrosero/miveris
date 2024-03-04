@@ -138,7 +138,7 @@ Mi Veris - Buscar doctor
     async function consultarEspecialidades() {
         let canalOrigen = _canalOrigen;
         let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
-        let endpoint = api_url + `/digitalestest/v1/perfil/especialidades?codigoUsuario=${codigoUsuario}`;
+        let endpoint = api_url + `/${api_war}/v1/perfil/especialidades?codigoUsuario=${codigoUsuario}`;
         console.log(endpoint);
         const data = await call({ endpoint, method: "GET", showLoader: false });
         dataEspecialidades = data.data;
@@ -197,7 +197,7 @@ Mi Veris - Buscar doctor
         fechaDesde = esFechaValida(fechaDesde) ? formatearFecha(fechaDesde) : '';
         fechaHasta = esFechaValida(fechaHasta) ? formatearFecha(fechaHasta) : '';
 
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores?codigoUsuario=${codigoUsuario}&codigoSucursal=${codigoSucursal}&codigoEspecialidad=${codigoEspecialidad}&fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}&canalOrigen=${canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/doctores?codigoUsuario=${codigoUsuario}&codigoSucursal=${codigoSucursal}&codigoEspecialidad=${codigoEspecialidad}&fechaDesde=${fechaDesde}&fechaHasta=${fechaHasta}&canalOrigen=${canalOrigen}`;
     
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -251,7 +251,7 @@ Mi Veris - Buscar doctor
 
         let args = [];
         let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/doctores/favoritos/agregar?codigoUsuario=${codigoUsuario}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/doctores/favoritos/agregar?codigoUsuario=${codigoUsuario}`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "POST";
         args["showLoader"] = true;

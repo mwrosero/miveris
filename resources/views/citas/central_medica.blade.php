@@ -78,7 +78,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function consultarCiudadesEspecialidad() {
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
         args["method"] = "GET";
         args["showLoader"] = false;
         const data = await call(args);
@@ -107,7 +107,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         let ciudad = JSON.parse($('#ciudad option:selected').attr("data-rel"));
         let canalOrigen = "VER_CMV";
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/centrosmedicos?canalOrigen=${canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

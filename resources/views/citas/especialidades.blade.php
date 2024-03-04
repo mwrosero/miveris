@@ -156,7 +156,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function validacionConvenio(detalle){
         let especialidad = JSON.parse(detalle);
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/validacionConvenio`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validacionConvenio`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -181,7 +181,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -235,7 +235,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function consultarSiEsTratamiento(dataEspecialidad){
         let especialidad = JSON.parse(dataEspecialidad);
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&idPaciente=${numeroPaciente}
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&idPaciente=${numeroPaciente}
         &codigoServicio=${ especialidad.codigoServicio }&codigoPrestacion=${ especialidad.codigoPrestacion }&codigoConvenio=${ convenio }`;
         
         args["method"] = "GET";

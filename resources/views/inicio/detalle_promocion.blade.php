@@ -115,7 +115,7 @@ Mi Veris - Citas - Detalle
 
     async function obtenerDetallePaquetePromocional(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=${dataCita.paquete.codigoEmpresaPaquete}&codigoPaquete=${dataCita.paquete.codigoPaquete}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=${dataCita.paquete.codigoEmpresaPaquete}&codigoPaquete=${dataCita.paquete.codigoPaquete}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -139,7 +139,7 @@ Mi Veris - Citas - Detalle
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

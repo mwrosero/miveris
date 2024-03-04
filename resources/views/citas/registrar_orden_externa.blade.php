@@ -272,7 +272,7 @@ $data1 = json_decode($data);
 
         let codigoUsuario = dataRel.numeroIdentificacion;
         let tipoIdentificacion = dataRel.tipoIdentificacion;
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -303,7 +303,7 @@ $data1 = json_decode($data);
         }
 
         let args = [];
-        args["endpoint"] = api_url + "/digitalestest/v1/domicilio/laboratorio/solicitud";
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/solicitud`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "formdata";

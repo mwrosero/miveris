@@ -138,7 +138,7 @@ Mi Veris - Resultados
         const tipoServicio = "LAB";
         const canalOrigen = _canalOrigen;
         const args = {
-            "endpoint": `${api_url}/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
+            "endpoint": `${api_url}/${api_war}/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
         };
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -207,7 +207,7 @@ Mi Veris - Resultados
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
 
-        args["endpoint"] = api_url + `/digitalestest/v1/examenes/archivoresultado?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo}&tipo=${tipo}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/examenes/archivoresultado?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo}&tipo=${tipo}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         try {
@@ -232,7 +232,7 @@ Mi Veris - Resultados
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
