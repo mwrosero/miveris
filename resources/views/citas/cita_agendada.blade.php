@@ -121,7 +121,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }else if(dataCita.promocion){
                 $('.content-tratamiento').removeClass('d-none');
             }else if(dataCita.datosTratamiento){
-                $('.content-lab-presencial').removeClass('d-none');
+                if(dataCita.datosTratamiento.tipoServicio == "LABORATORIO"){
+                    $('.content-lab-presencial').removeClass('d-none');
+                }else{
+                    $('.content-presencial').removeClass('d-none');
+                }
             }else if(dataCita.ordenExterna){
                 if(dataCita.ordenExterna.aplicoDomicilio == "N"){
                     $('.content-lab-presencial').removeClass('d-none');
