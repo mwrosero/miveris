@@ -22,7 +22,7 @@ class SeguridadesController extends Controller
         $numeroIdentificacion = $data['numeroIdentificacion'];
         $password = $data['password'];
 
-        $method = '/digitalestest/v1/seguridad/login';
+        $method = '/'.Veris::BASE_WAR.'/v1/seguridad/login';
         $res =  Http::withOptions([
                     'verify' => false, // Desactivar verificación de certificados
                 ])->withHeaders([
@@ -65,7 +65,7 @@ class SeguridadesController extends Controller
         $numeroIdentificacion = Session::get('userDataTmp')->numeroIdentificacion;
         // dd($data['codigoActivacion']);
 
-        $method = '/digitalestest/v1/seguridad/cuenta/activacion';
+        $method = '/'.Veris::BASE_WAR.'/v1/seguridad/cuenta/activacion';
 
         $response = Veris::call([
             'endpoint' => Veris::BASE_URL.$method,

@@ -63,7 +63,7 @@ class CitasController extends Controller
         $tokenCita = $data['tokenCita'];
 
         $codigoPreTransaccion = $dataCita->preTransaccion->codigoPreTransaccion;
-        $method = '/digitalestest/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$codigoPreTransaccion;
+        $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$codigoPreTransaccion;
 
         $response = Veris::call([
             'endpoint' => Veris::BASE_URL.$method,
