@@ -21,7 +21,7 @@ Mi Veris - Resultados
     <div class="modal fade" id="haOcurridoUnErrorModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-3" id="modalBody">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <h5 class="mb-3">Veris</h5>
                         <p class="mb-3">Ha ocurrido un error inesperado</p>
@@ -240,6 +240,7 @@ Mi Veris - Resultados
                             `;
                 });
                 html.append(elemento);
+                $('#resultadImagenesProcedimientosModal').modal("show")
             }
         }
     }
