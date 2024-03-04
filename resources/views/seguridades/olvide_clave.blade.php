@@ -31,19 +31,19 @@
         </div>
     @endif
     <div class="mt-5 mb-2">
-        <label for="tipoIdentificacion" class="form-label fw-medium">Tipo de identificación *</label>
-        <select class="form-select border-0"
+        <label for="tipoIdentificacion" class="form-label fw-medium fs--1">Tipo de identificación *</label>
+        <select class="form-select fs--1 p-3"
             id="tipoIdentificacion"
             name="tipoIdentificacion"
             onchange="actualizarMaxlength(this)"
-            required style="background-color: var(--opacidad-oscuro-05, rgba(0, 0, 0, 0.05)) !important;" />
+            required />
             {{-- <option disabled selected hidden>Elegir</option> --}}
         </select>
     </div>
     <div class="mb-3">
-        <label for="numeroIdentificacion" class="form-label fw-medium">Número de identificación *</label>
+        <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de identificación *</label>
         <input type="number"
-            class="form-control border-0"
+            class="form-control fs--1 p-3"
             id="numeroIdentificacion"
             name="numeroIdentificacion"
             placeholder="Ingresa tu número de identificación"
@@ -51,7 +51,7 @@
             oninput="limitarCaracteres(this, this.getAttribute('maxlength'))"
             onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
             autofocus
-            required style="background-color: var(--opacidad-oscuro-05, rgba(0, 0, 0, 0.05)) !important;" />
+            required />
     </div>
     <div class="mb-3">
         <button class="btn fs--18 fw-medium line-height-24 px-4 py-3 d-grid w-100 bg-veris btn-reset" type="button" id="recuperarContrasena">Enviar</button>

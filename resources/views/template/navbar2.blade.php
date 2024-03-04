@@ -31,7 +31,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end rounded-3 mt-2 py-1">
                     <li>
-                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('misDatos')}}">
+                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('home.misDatos')}}">
                             <i class="fa-solid fa-user text-primary-veris me-2 ti-sm"></i>
                             <span class="align-middle">Mis datos</span>
                         </a>
@@ -40,7 +40,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('politicaPrivacidadDatos')}}">
+                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('home.politicaPrivacidadDatos')}}">
                             <i class="fa-solid fa-shield-halved text-primary-veris me-2 ti-sm"></i>
                             <span class="align-middle">Política de privacidad </span>
                         </a>
@@ -95,19 +95,26 @@
 
 <!-- Notificaciones -->
 <div class="offcanvas offcanvas-end" style="margin-top: 62px;" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
-    <div class="offcanvas-header justify-content-end pb-0">
-        <button type="button" class="btn btn-sm shadow-none text-decoration-underline" data-bs-dismiss="offcanvas" aria-label="Close">Cerrar</button>
+    <div class="offcanvas-header flex-column align-items-start p-0">
+        <div class="w-100 px-4 py-2 text-end" style="background: #F3F4F5;">
+            <button type="button" class="btn btn-sm fs--1 text-primary-veris fw-normal line-height-16 shadow-none text-decoration-underline p-2" data-bs-dismiss="offcanvas" aria-label="Close">Cerrar</button>
+        </div>
+        <h5 class="offcanvas-title fs-20 line-height-24 w-100 px-4 py-3 bg-white" id="offcanvasEndLabel">Notificaciones</h5>
     </div>
-    <div class="offcanvas-body mx-0 flex-grow-0 py-0 px-0">
-        <h5 id="offcanvasEndLabel" class="offcanvas-title px-3 mb-3 bg-white">Notificaciones</h5>
-        <div class="d-flex flex-column border-300" id= "notificaciones" style="min-height: 75vh;">
+    <div class="offcanvas-body mx-0 flex-grow-0 py-0 px-0" style="background: #F3F4F5 !important;">
+        <div class="d-flex flex-column border-300" id="notificaciones" style="min-height: 75vh;">
             <!-- Notificaciones dinamicas -->
         </div>
         <div class="d-flex flex-column justify-content-center align-items-center py-5 d-none" id="noNotificaciones">
             <img src="{{ asset('assets/img/svg/bellNotificacion.svg') }}" alt="" width="50px" class="mb-3">
-            <h5 class="fs-0 text-300">No tienes notificaciones</h5>
-            <div> En esta sección podrás revisar tus notificaciones</div>
+            <h5 class="fs-24 line-height-28 fw-medium mb-4">No tienes notificaciones</h5>
+            <p class="fs--16 line-height-20 text-veris fw-normal mb-4 w-75 text-center"> En esta sección podrás revisar tus notificaciones</p>
             <img src="{{ asset('assets/img/svg/amico.svg') }}" alt="" class="img-fluid w-50">
+        </div>
+    </div>
+    <div class="offcanvas-footer" style="background: #F3F4F5;">
+        <div class="" id="paginationContainer">
+            <!-- Paginación aquí -->
         </div>
     </div>
 </div>
@@ -117,12 +124,12 @@
     let paginaActual = 1;
     const notificacionesPorPagina = 5;
     let todasNotificaciones = [];
-    // llamada al dom
 
+    // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         // await cantidadNotificaciones();
         await numeroNotificaciones();
-    } );
+    });
 
     // funciones asincronas
     // notificaciones
@@ -144,32 +151,32 @@
         } else if (data.code != 200) {
             console.log('error', data);
         }
-        
         return data;
     }
 
     function mostrarNotificaciones(pagina) {
         let htmlContent = '';
-
         const notificaciones = todasNotificaciones;
         // Calcular el rango de notificaciones a mostrar
         const inicio = (pagina - 1) * notificacionesPorPagina;
         const fin = inicio + notificacionesPorPagina;
+
         if (notificaciones.length === 0) {
             $('#noNotificaciones').removeClass('d-none');
             $('#notificaciones').addClass('d-none');
-
+            $('#paginationContainer').addClass('d-none'); // Ocultar la paginación cuando no hay notificaciones
             return;
-        }
-        else {
+        } else {
             $('#noNotificaciones').addClass('d-none');
             $('#notificaciones').removeClass('d-none');
-        
+            $('#paginationContainer').removeClass('d-none'); // Mostrar la paginación cuando hay notificaciones
+
             notificaciones.slice(inicio, fin).forEach(notificacion => {
-                const bgClass = notificacion.estado !== "LEIDO" ? "bg-light-grayish-cyan" : "";
-                htmlContent += `<div class="py-3 border-bottom px-3 ${bgClass}">
+                const bgClass = notificacion.estado !== "LEIDO" ? "bg-light-grayish-cyan" : "bg-white";
+                htmlContent += `
+                                <div class="py-3 border-bottom px-3 ${bgClass}">
                                     <div class="d-flex justify-content-between">
-                                        <h4 class="fs--2 text-primary-veris"><i class="fa-solid fa-circle fs--3 me-2"></i> ${determinarCategoria(notificacion.categoria)}</h4>
+                                        <p class="fs--2 text-primary-veris line-height-16 fw-medium mb-0"><i class="fa-solid fa-circle fs--3 me-2"></i> ${determinarCategoria(notificacion.categoria)}</p>
                                         <span class="fs--3">${notificacion.valorTiempo}</span>
                                     </div>
                                     <div class="flex-1 ms-4">
@@ -179,40 +186,39 @@
                                     </div>
                                     <div class="text-end">
                                         ${determinarBotonNotificacion(notificacion.categoria, notificacion.codigoNotificacion)}
-                                        
                                     </div>
-                                </div>`;
+                                </div>
+                `;
             });
             let totalPaginas = Math.ceil(notificaciones.length / notificacionesPorPagina);
-
-
+            $('#notificaciones').html(htmlContent);
             // Agregar paginación al final
-            htmlContent += `<div class="px-3 mt-auto">
+            let paginationHtml  = `
+                        <div class="p-3">
                             <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center">
+                                <ul class="pagination justify-content-center mb-0">
                                     <li class="page-item ${pagina === 1 ? 'disabled' : ''}">
                                         <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual - 1)" aria-label="Previous">
-                                            <span aria-hidden="true">&lt;</span>
+                                            <i class="bi bi-chevron-left fs-20"></i>
                                         </a>
                                     </li>
-                                    <li class="page-item disabled"><span class="page-link bg-transparent">${pagina} de ${totalPaginas}</span></li>
+                                    <li class="page-item my-auto disabled"><span class="page-link bg-transparent line-heigth-16 d-flex">${pagina} <div class="mx-2"> de </div> ${totalPaginas}</span></li>
                                     <li class="page-item ${pagina === totalPaginas ? 'disabled' : ''}">
                                         <a class="page-link bg-transparent" href="#" onclick="cambiarPagina(paginaActual + 1)" aria-label="Next">
-                                            <span aria-hidden="true">&gt;</span>
+                                            <i class="bi bi-chevron-right fs-20"></i>
                                         </a>
                                     </li>
                                 </ul>
                             </nav>
-                        </div>`;
+                        </div>
+            `;
             
-            $('#notificaciones').html(htmlContent);
+            $('#paginationContainer').html(paginationHtml);
         }
         
     }
 
-
     // cantidad de notificaciones
-
     async function cantidadNotificaciones(){
         let args = [];
         let canalOrigen = _canalOrigen;
@@ -239,8 +245,6 @@
             }
         }
     }
-
-
 
     // recibir numero de notificaciones
     async function numeroNotificaciones(){
@@ -273,14 +277,12 @@
     });
 
     // determinar categoria
-
     function determinarCategoria(categoria){
         let categoriaNotificacion = '';
         switch (categoria) {
             case 'PENDIENTE_PAGO':
                 categoriaNotificacion = 'Pago pendiente';
                 break;
-
             case 'ORDEN_HC':
                 categoriaNotificacion = 'Revisa tus ordenes';
                 break;
@@ -331,7 +333,6 @@
     }
 
     // cambiar estado de notificacion
-
     $('#dropdownNotifications').click(function(){
         // enviar el id de la notificacion de las notificaciones que estan en la pagina actual
         // console.log('activar notificacion ');
@@ -339,13 +340,9 @@
         $('#numeroNotificaciones').addClass('d-none');
         // clear numero notificaciones
         numeroNotificaciones();
-
-
-
     });
 
     // enviar codigo de notificacion 
-
     function activarNotificacion(){
         let notificacionesPaginaActual = todasNotificaciones.slice((paginaActual - 1) * notificacionesPorPagina, paginaActual * notificacionesPorPagina);
         // console.log('notificaciones pagina actual', notificacionesPaginaActual);
@@ -356,12 +353,7 @@
         });
     }
 
-
-
-    
-
     // cambia estado de notificacion a leido
-
     async function cambiarEstadoNotificacion(codigoNotificacion){
         let args = [];
         let canalOrigen = _canalOrigen;
@@ -398,8 +390,6 @@
             location.href = url;
         }
     }
-
-
 </script>
 <style>
     .fa-solid.fa-bell {

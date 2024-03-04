@@ -46,8 +46,8 @@ Route::group(['middleware' => ['loggedUser']], function () {
     #Inicio
     Route::get('/', [DashboardController::class, 'home'])->name('home')->withoutMiddleware(['guest']);
     Route::get('/logout', [SeguridadesController::class, 'logout'])->name('logout')->withoutMiddleware(['guest']);
-    Route::get('/mis-datos', [DashboardController::class, 'misDatos'])->name('misDatos')->withoutMiddleware(['guest']);
-    Route::get('/politica-privacidad-datos', [DashboardController::class, 'politicaPrivacidadDatos'])->name('politicaPrivacidadDatos')->withoutMiddleware(['guest']);
+    Route::get('/mis-datos', [DashboardController::class, 'misDatos'])->name('home.misDatos')->withoutMiddleware(['guest']);
+    Route::get('/politica-privacidad-datos', [DashboardController::class, 'politicaPrivacidadDatos'])->name('home.politicaPrivacidadDatos')->withoutMiddleware(['guest']);
     Route::get('/promociones', [DashboardController::class, 'listaPromociones'])->name('home.promociones')->withoutMiddleware(['guest']);
     Route::get('/promocion/detalle/{params}', [DashboardController::class, 'promocionDetalle'])->name('home.promocionDetalle')->withoutMiddleware(['guest']);
 

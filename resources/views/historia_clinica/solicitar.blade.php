@@ -28,17 +28,17 @@ Mi Veris - Historia clínica
     <section class="mb-3">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-7 col-lg-5 py-4">
+                <div class="col-md-8 col-lg-5">
                     <div class="card bg-transparent shadow-none">
-                        <div class="card-body">
+                        <div class="card-body px-0">
                             <form class="row g-3 needs-validation" id="solicitudHistorial" novalidate>
                                 <div class="col-md-12">
                                     <label for="fechaDesde" class="form-label fs--1 line-height-16 fw-medium">{{ __('Desde la fecha') }}</label>
-                                    <input class="form-control fs--1 line-height-16 p-3 bg-neutral" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required/>
+                                    <input class="form-control fs--1 line-height-16 p-3" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required/>
                                 </div>
                                 <div class="col-md-12">
                                     <label for="fechaHasta" class="form-label fs--1 line-height-16 fw-medium">{{ __('Hasta la fecha') }}</label>
-                                    <input class="form-control fs--1 line-height-16 p-3 bg-neutral" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
+                                    <input class="form-control fs--1 line-height-16 p-3" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
                                 </div>
                                 <div class="col-md-12">
                                     <label for="motivo" class="form-label fs--1 line-height-16 fw-medium">{{ __('Motivo de su consulta') }}</label>
@@ -46,9 +46,9 @@ Mi Veris - Historia clínica
                                     <div class="text-end fs--3" id="contadorCaracteres">0 / 400</div>
                                 </div>
                                 <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="terminoCondicionCheck" required />
-                                        <label class="form-check-label fs--1" for="terminoCondicionCheck">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input width-24 me-2" type="checkbox" value="" id="terminoCondicionCheck" required />
+                                        <label class="form-check-label fs--1 my-auto" for="terminoCondicionCheck">
                                             Acepto los términos y condiciones
                                         </label>
                                     </div>
@@ -56,11 +56,11 @@ Mi Veris - Historia clínica
                             </form>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-7 col-lg-5">
-                    <button class="btn btn-primary-veris w-100 fs--18 fw-medium line-height-24 px-4 py-3" form="solicitudHistorial" type="submit" disabled>Solicitar</button>
+                    <div class="card-footer px-0">
+                        <div class="col-12">
+                            <button class="btn btn-primary-veris w-100 fs--18 fw-medium line-height-24 px-4 py-3 shadow-none" form="solicitudHistorial" type="submit" disabled>Solicitar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

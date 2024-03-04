@@ -27,9 +27,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 <p class="fs--2 text-center text-dark-veris fw-medium email-masked"></p>
 <form id="formAuthentication" class="mb-3">
     <div class="mb-3">
-        <label for="codigoAutorizacion" class="form-label bg-colortext fw-medium mt-3">Código de autorización *</label>
+        <label for="codigoAutorizacion" class="form-label bg-colortext fw-medium fs--1 mt-3">Código de autorización *</label>
         <input type="text"
-            class="form-control form-filter border-0"
+            class="form-control fs--1 p-3"
             oninput="limitarCaracteres(this, 10)"
             onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
             id="codigoAutorizacion"
@@ -41,33 +41,33 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     </div>
     <div class="mb-2 form-password-toggle">
         <div class="d-flex justify-content-between">
-            <label class="form-label fw-medium" for="password">Contraseña *</label>
+            <label class="form-label fw-medium fs--1" for="password">Contraseña *</label>
         </div>
         <div class="input-group input-group-merge">
             <input type="password"
             id="password"
-            class="form-control form-filter border-0"
+            class="form-control fs--1 p-3"
             name="password"
             autocomplete="new-password"
             placeholder="Ingresa tu contraseña"
             required />
-            <span id="togglePassword" class="input-group-text cursor-pointer form-filter border-0"
+            <span id="togglePassword" class="input-group-text cursor-pointer"
             ><i class="ti ti-eye-off"></i></span>
         </div>
     </div>
     <div class="mb-3 form-password-toggle">
         <div class="d-flex justify-content-between">
-            <label class="form-label fw-medium" for="password">Contraseña *</label>
+            <label class="form-label fw-medium fs--1" for="password">Contraseña *</label>
         </div>
         <div class="input-group input-group-merge">
             <input type="password"
             id="password2"
-            class="form-control form-filter border-0"
+            class="form-control fs--1 p-3"
             name="password2"
             autocomplete="new-password2"
             placeholder="Confirma la contraseña"
             required />
-            <span id="togglePassword2" class="input-group-text cursor-pointer form-filter border-0"
+            <span id="togglePassword2" class="input-group-text cursor-pointer"
             ><i class="ti ti-eye-off"></i></span>
         </div>
     </div>

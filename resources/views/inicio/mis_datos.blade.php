@@ -26,116 +26,119 @@ Mi Veris - Mis Datos
     {{-- @foreach (Session::get('userData') as $key => $value)
     <p class="ps-4 mb-1 pb-2 bg-white">{{ $key }}: {{ $value }}</p>
     @endforeach --}}
-
-    <div class="row g-0 justify-content-center align-items-center">
-        <div class="col-md-8">
-            <div class="card bg-transparent shadow-none">
-                <div class="card-body">
-                    <form class="row g-3">
-                        @csrf
-                        <div class="col-12 justify-content-center align-items-center">
-                            <div class="d-flex justify-content-center align-items-center mb-3">
-                                <span class="avatar avatar-xxl">
-                                    <img src="{{ asset('assets/img/avatars/avatar.svg') }}" class="avatar-img rounded-circle" alt="user">
-                                </span>
+    <section class="p-3">
+        <div class="row g-0 justify-content-center align-items-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="card bg-transparent shadow-none">
+                    <div class="card-body px-0">
+                        <form class="row g-3">
+                            @csrf
+                            <div class="col-12 justify-content-center align-items-center">
+                                <div class="d-flex justify-content-center align-items-center mb-3">
+                                    <span class="avatar avatar-xxl">
+                                        <img src="{{ asset('assets/img/avatars/avatar.svg') }}" class="avatar-img rounded-circle" alt="user">
+                                    </span>
+                                </div>
+                                <p class="user-name text-center fw-bold fs-sm mb-3">{{ Session::get('userData')->nombre }}</p>  
                             </div>
-                            <p class="user-name text-center fw-bold fs-sm mb-3">{{ Session::get('userData')->nombre }}</p>  
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row g-2">
-                                <div class="col-md-12">
-                                    <label for="nombre" class="form-label fw-semibold">{{ __('Nombre') }}*</label>
-                                    <input type="text" class="form-control" name="nombre" id="nombre" required />
-                                    <div class="invalid-feedback">
-                                        Looks good!
+                            <div class="col-md-6">
+                                <div class="row g-2">
+                                    <div class="col-md-12">
+                                        <label for="nombre" class="form-label fw-medium fs--1">{{ __('Nombre') }}*</label>
+                                        <input type="text" class="form-control fs--1 p-3" name="nombre" id="nombre" required />
+                                        <div class="invalid-feedback">
+                                            Looks good!
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="primerApellido" class="form-label fw-semibold">{{ __('Primer apellido') }}*</label>
-                                    <input type="text" class="form-control" name="primerApellido" id="primerApellido" required />
-                                    <div class="invalid-feedback">
-                                        Looks good!
+                                    <div class="col-md-12">
+                                        <label for="primerApellido" class="form-label fw-medium fs--1">{{ __('Primer apellido') }}*</label>
+                                        <input type="text" class="form-control fs--1 p-3" name="primerApellido" id="primerApellido" required />
+                                        <div class="invalid-feedback">
+                                            Looks good!
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="segundoApellido" class="form-label fw-semibold">{{ __('Segundo apellido') }}*</label>
-                                    <input type="text" class="form-control" name="segundoApellido" id="segundoApellido" required />
-                                    <div class="invalid-feedback">
-                                        Looks good!
+                                    <div class="col-md-12">
+                                        <label for="segundoApellido" class="form-label fw-medium fs--1">{{ __('Segundo apellido') }}*</label>
+                                        <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" required />
+                                        <div class="invalid-feedback">
+                                            Looks good!
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="fechaNacimiento" class="form-label fw-semibold">{{ __('Fecha de nacimiento') }} *</label>
-                                    <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" required />
-                                    <div class="invalid-feedback">
-                                        Looks good!
+                                    <div class="col-md-12">
+                                        <label for="fechaNacimiento" class="form-label fw-medium fs--1">{{ __('Fecha de nacimiento') }} *</label>
+                                        <input type="date" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" required />
+                                        <div class="invalid-feedback">
+                                            Looks good!
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="sexo" class="form-label fw-semibold">{{ __('Sexo') }} *</label>
-                                    <select class="form-select" name="sexo" id="sexo" required>
-                                        <option value="M" {{ (Session::get('userData')->sexo == 'M') ? 'selected' : '' }}>Masculino</option>
-                                        <option value="F" {{ (Session::get('userData')->sexo == 'F') ? 'selected' : '' }}>Femenino</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a valid state.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row g-2">
-                                <div class="col-md-12">
-                                    <label for="mail" class="form-label fw-semibold">{{ __('Correo electrónico') }} *</label>
-                                    <input type="email" class="form-control" name="mail" id="mail" required />
-                                    <div class="invalid-feedback">
-                                        Looks good!
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="telefono" class="form-label fw-semibold">{{ __('Teléfono') }} *</label>
-                                    <input type="number" class="form-control" name="telefono" id="telefono" required />
-                                    <div class="invalid-feedback">
-                                        Looks good!
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="provincia" class="form-label fw-semibold">{{ __('Provincia') }} *</label>
-                                    <select class="form-select" name="provincia" id="provincia" required>
-                                        <option selected disabled value="">Selecciona uno</option>
-                                        <option>...</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a valid state.
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="ciudad" class="form-label fw-semibold">{{ __('Ciudad') }} *</label>
-                                    <select class="form-select" name="ciudad" id="ciudad" required>
-                                        <option selected disabled value="">Selecciona uno</option>
-                                        <option>...</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Please select a valid state.
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="direccion" class="form-label fw-semibold">{{ __('Dirección') }}*</label>
-                                    <input type="text" class="form-control" name="direccion" id="direccion" value="" required />
-                                    <div class="valid-feedback">
-                                        Looks good!
+                                    <div class="col-md-12">
+                                        <label for="sexo" class="form-label fw-medium fs--1">{{ __('Sexo') }} *</label>
+                                        <select class="form-select fs--1 p-3" name="sexo" id="sexo" required>
+                                            <option value="M" {{ (Session::get('userData')->sexo == 'M') ? 'selected' : '' }}>Masculino</option>
+                                            <option value="F" {{ (Session::get('userData')->sexo == 'F') ? 'selected' : '' }}>Femenino</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a valid state.
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="row g-2">
+                                    <div class="col-md-12">
+                                        <label for="mail" class="form-label fw-medium fs--1">{{ __('Correo electrónico') }} *</label>
+                                        <input type="email" class="form-control fs--1 p-3" name="mail" id="mail" required />
+                                        <div class="invalid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="telefono" class="form-label fw-medium fs--1">{{ __('Teléfono') }} *</label>
+                                        <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono" required />
+                                        <div class="invalid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="provincia" class="form-label fw-medium fs--1">{{ __('Provincia') }} *</label>
+                                        <select class="form-select fs--1 p-3" name="provincia" id="provincia" required>
+                                            <option selected disabled value="">Selecciona uno</option>
+                                            <option>...</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a valid state.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="ciudad" class="form-label fw-medium fs--1">{{ __('Ciudad') }} *</label>
+                                        <select class="form-select fs--1 p-3" name="ciudad" id="ciudad" required>
+                                            <option selected disabled value="">Selecciona uno</option>
+                                            <option>...</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select a valid state.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="direccion" class="form-label fw-medium fs--1">{{ __('Dirección') }}*</label>
+                                        <input type="text" class="form-control fs--1 p-3" name="direccion" id="direccion" value="" required />
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer row justify-content-center mt-5 px-0">
+                        <div class="col-12 col-md-6">
+                            <button class="btn btn-primary-veris fs--18 linea-height-24 fw-medium py-3 px-4 w-100" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
                         </div>
-                        <div class="col-12 text-center mt-5">
-                            <button class="btn btn-primary-veris fs--18 linea-height-24 fw-medium w-50 py-3" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 </div>
 @endsection
 @push('scripts')

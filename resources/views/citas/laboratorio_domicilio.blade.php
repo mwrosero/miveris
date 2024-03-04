@@ -33,7 +33,7 @@ Mi Veris - Citas - Laboratorio a domicilio
                             <form class="row g-3 px-2 needs-validation" novalidate>
                                 <div class="col-md-12">
                                     <label for="paciente" class="form-label fs--1 line-height-16 fw-medium rounded-3">Selecciona el paciente</label>
-                                    <select class="form-select fs--1 p-3 bg-neutral rounded-3" name="paciente" id="paciente" >
+                                    <select class="form-select fs--1 p-3 rounded-3" name="paciente" id="paciente" >
                                         <option selected disabled value="">Elegir...</option>
                                         <option value="">...</option>
                                         <option value="">...</option>
@@ -44,7 +44,7 @@ Mi Veris - Citas - Laboratorio a domicilio
                                 </div>
                                 <div class="col-md-12">
                                     <label for="paciente" class="form-label fs--1 line-height-16 fw-medium rounded-3">Selecciona la ciudad</label>
-                                    <select class="form-select fs--1 p-3 bg-neutral rounded-3" name="ciudad" id="ciudad" required>
+                                    <select class="form-select fs--1 p-3 rounded-3" name="ciudad" id="ciudad" required>
                                         <option selected disabled value="">Elegir...</option>
                                         <option value="">...</option>
                                         <option value="">...</option>
@@ -54,13 +54,13 @@ Mi Veris - Citas - Laboratorio a domicilio
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <input type="number" class="form-control fs--1 p-3 bg-neutral rounded-3" name="telefono" id="telefono" value="" placeholder="Teléfono móvil" required />
+                                    <input type="number" class="form-control fs--1 p-3 rounded-3" name="telefono" id="telefono" value="" placeholder="Teléfono móvil" required />
                                     <div class="invalid-feedback">
                                         Ingrese un numero de telefono
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <input type="text" class="form-control fs--1 p-3 bg-neutral rounded-3"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
+                                    <input type="text" class="form-control fs--1 p-3 rounded-3"  name="direccion"id="direccion" value="" placeholder="Dirección" required />
                                     <div class="invalid-feedback">
                                         Ingrese una direccion
                                     </div>
