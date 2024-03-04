@@ -116,7 +116,7 @@ Mi Veris - Citas - Promociones
 
     async function obtenerPaquetesPromocionales(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=APP_CMV&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&verDetalle=false&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&verDetalle=false&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
