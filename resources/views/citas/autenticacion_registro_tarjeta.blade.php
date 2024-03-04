@@ -104,7 +104,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     });
     async function autenticarOTP(codeOTP){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas/verificacion`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/tarjetas/verificacion`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;

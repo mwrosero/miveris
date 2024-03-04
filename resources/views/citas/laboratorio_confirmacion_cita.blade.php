@@ -138,7 +138,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function reservarCita() {
 
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/reserva`;
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/reserva`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "POST";
         args["showLoader"] = true;

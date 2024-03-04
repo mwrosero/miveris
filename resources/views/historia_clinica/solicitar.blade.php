@@ -154,7 +154,7 @@ Mi Veris - Historia clínica
         fechaHasta = formatearFecha(fechaHasta);
         let motivo = document.getElementById('motivo').value;
 
-        args["endpoint"] = api_url + `/digitalestest/v1/hc/solicitud`;
+        args["endpoint"] = api_url + `/${api_war}/v1/hc/solicitud`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "POST";
         args["showLoader"] = true;

@@ -176,7 +176,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ dataUser.tipoIdentificacion }&numeroIdentificacion=${ dataUser.numeroIdentificacion }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ dataUser.tipoIdentificacion }&numeroIdentificacion=${ dataUser.numeroIdentificacion }`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;

@@ -60,7 +60,7 @@ Mi Veris - Historia clínica
          let args = [];
          canalOrigen = _canalOrigen
          codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-         args["endpoint"] = api_url + `/digitalestest/v1/hc/doctores?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${codigoEspecialidad}&esOnline=${esOnline}`;
+         args["endpoint"] = api_url + `/${api_war}/v1/hc/doctores?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${codigoEspecialidad}&esOnline=${esOnline}`;
          
          args["method"] = "GET";
          args["showLoader"] = true;

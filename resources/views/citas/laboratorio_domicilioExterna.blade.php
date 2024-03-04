@@ -299,7 +299,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     async function consultarCobertura(latitud, longitud) {
         let args = [];
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/coberturaServicio?canalOrigen=${_canalOrigen}&latitud=${latitud }&longitud=${longitud}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/coberturaServicio?canalOrigen=${_canalOrigen}&latitud=${latitud }&longitud=${longitud}`;
         args["method"] = "GET";
         args["dismissAlert"] = true;
         args["showLoader"] = false;
@@ -310,7 +310,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     async function consultarCiudadesEspecialidad() {
         let args = [];
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=false `;
         args["method"] = "GET";
         args["showLoader"] = false;
         const data = await call(args);

@@ -392,7 +392,7 @@ Mi Veris - Inicio
     async function eliminarReserva(){
         let args = [];
         let canalOrigen = _canalOrigen
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
         args["method"] = "PUT";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -416,7 +416,7 @@ Mi Veris - Inicio
         let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
         let codigoEmpresa = 1
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataConvenio = await call(args);
@@ -432,7 +432,7 @@ Mi Veris - Inicio
         let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
         let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const dataPaciente = await call(args);
@@ -445,7 +445,7 @@ Mi Veris - Inicio
     let _ppd;
     async function obtenerPPD(){
         let args = [];
-        args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
+        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1`;
         args["method"] = "GET";
         args["showLoader"] = true;
 
@@ -478,7 +478,7 @@ Mi Veris - Inicio
     //aceptar las politicas
     async function aceptarPoliticas(){
         let args = [];
-        args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -507,7 +507,7 @@ Mi Veris - Inicio
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
         // imprimir todos los valores de session
         
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
@@ -533,7 +533,7 @@ Mi Veris - Inicio
         let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0&adicionaSolicitudes=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0&adicionaSolicitudes=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
@@ -559,7 +559,7 @@ Mi Veris - Inicio
         let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/digitalestest/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
+        args["endpoint"] = api_url + `/${api_war}/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -1020,7 +1020,7 @@ Mi Veris - Inicio
     // consultar datos de facturacion
     async function consultarDatosFacturacion(data){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?idPreTransaccion=5017811&codigoTipoIdentificacion=2&numeroIdentificacion=0940389299
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/consultar_datos_factura?idPreTransaccion=5017811&codigoTipoIdentificacion=2&numeroIdentificacion=0940389299
         `;
         args["method"] = "GET";
         args["showLoader"] = true;
