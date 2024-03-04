@@ -247,6 +247,7 @@ async function obtenerProvincias(){
     let args = [];
     args["endpoint"] = api_url + `/${api_war}/v1/seguridad/provincias?codigoPais=1`;
     args["method"] = "GET";
+    args["dismissAlert"] = true;
     args["showLoader"] = false;
 
     const data = await call(args);
@@ -270,6 +271,7 @@ async function obtenerCiudades(codigoCiudades){
     // args["endpoint"] = api_url + `/${api_war}/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
     args["endpoint"] = api_url + `/${api_war}/v1/seguridad/ciudades?codigoPais=1&codigoProvincia=${codigoCiudades}`;
     args["method"] = "GET";
+    args["dismissAlert"] = true;
     args["showLoader"] = false;
 
     const data = await call(args);
@@ -323,6 +325,7 @@ async function verificarCuenta() {
     let args = [];
     args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?tipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
     args["method"] = "GET";
+    args["dismissAlert"] = true;
     args["showLoader"] = false;
 
     try {
