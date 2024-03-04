@@ -617,9 +617,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             var primerNombre = $("#primerNombre").val();
             var primerApellido = $("#primerApellido").val();
             var segundoApellido = $("#segundoApellido").val();
-            if (primerNombre.trim() === "" || primerApellido.trim() === "" || segundoApellido.trim() === "") {
+            if (primerNombre.trim() === "") {
                 errors = true;
-                msg += `<li class="ms-0">Los campos Primer Nombre, Primer Apellido y Segundo Apellido son obligatorios.</li>`;
+                msg += `<li class="ms-0">El campo primer nombre es obligatorio.</li>`;
+            }
+            if (primerApellido.trim() === "") {
+                errors = true;
+                msg += `<li class="ms-0">El campo primer apellido es obligatorio.</li>`;
+            }
+            if (segundoApellido.trim() === "") {
+                errors = true;
+                msg += `<li class="ms-0">El campo segundo apellido es obligatorio.</li>`;
             }
         }
 
@@ -627,9 +635,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         var direccion = $("#direccion").val();
         var telefono = $("#telefono").val();
         var mail = $("#mail").val();
-        if (direccion.trim() === "" || telefono.trim() === "" || mail.trim() === "") {
+        if (direccion.trim() === "") {
             errors = true;
-            msg += `<li class="ms-0">Los campos Dirección, Teléfono y Correo Electrónico son obligatorios.</li>`;
+            msg += `<li class="ms-0">El campo dirección obligatorio.</li>`;
+        }
+        if (telefono.trim() === "") {
+            errors = true;
+            msg += `<li class="ms-0">El campo teléfono es obligatorio.</li>`;
+        }
+        if (mail.trim() === "") {
+            errors = true;
+            msg += `<li class="ms-0">El campo correo electrónico es obligatorio.</li>`;
         }
         msg += `</ul>`;
 
