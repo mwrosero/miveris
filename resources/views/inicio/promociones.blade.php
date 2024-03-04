@@ -158,7 +158,9 @@ Mi Veris - Citas - Promociones
                 })
                 page++;
             }else{
-                elem += `<p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>`;
+                if(page == 1){
+                    elem += `<p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>`;
+                }
             }
             $('#listado-paquetes').append(elem);
         }else{
