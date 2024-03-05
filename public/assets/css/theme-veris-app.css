@@ -905,8 +905,8 @@ Due to the split circle of progress-left and progress right, we must use the ani
   color: var(--bg-vris-strong-red) !important;
 }
 .width-24{
-  width: 1.5rem !important;
-  height: 1.5rem !important;
+  min-width: 1.5rem !important;
+  min-height: 1.5rem !important;
 }
 
 .nav.nav-pills .nav-item > button{
@@ -1293,7 +1293,9 @@ a.btn.btn-primary-veris:not([href]):hover{
   .swiper-acceso-rapidos .swiper-slide{
     width: 10.188rem !important;
   }
-
+  /* .width-24{
+    max-width: 1.7rem !important;
+  } */
 }
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

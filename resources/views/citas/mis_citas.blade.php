@@ -66,14 +66,15 @@ Mi Veris - Citas - Mis citas
 
     <!-- offcanva ver pdf -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="verPdf" aria-labelledby="verPdfLabel">
-        <div class="offcanvas-header py-3 px-4">
-            <h5 class="offcanvas-title fs--20 line-height-24" id="verPdfLabel">Mis documentos</h5>
-            <button type="button" class="btn d-lg-none d-block" data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-arrow-left"></i> <b class="fw-normal">Atrás</b></button>
+        <div class="offcanvas-header flex-column align-items-start p-0">
+            <div class="w-100 px-4 py-2 d-lg-none d-block" style="background: #F3F4F5;">
+                <button type="button" class="btn p-0 d-flex align-items-center" data-bs-dismiss="offcanvas" aria-label="Close"><img src="{{asset('assets/img/svg/arrow-left-filtro-body.svg')}}" class="me-1" alt="atras"><b class="fw-medium fs-- text-veris">Atrás</b></button>
+            </div>
+            <h5 class="offcanvas-title fs--20 line-height-24 w-100 px-4 py-3" id="verPdfLabel">Mis documentos</h5>
         </div>
-        <br>
-        <div class="offcanvas-body px-3 pt--2" style="background: rgba(249, 250, 251, 1);">
+        <div class="offcanvas-body p-3" style="background: rgba(249, 250, 251, 1) !important;">
             <div>
-                <div class="list-group gap-3 mb-3 verPdf">
+                <div class="list-group gap-3 verPdf">
                 </div>
             </div>
         </div>
@@ -426,12 +427,12 @@ Mi Veris - Citas - Mis citas
                 let nuevosdatos = {}
                 nuevosdatos.datosCita = datos;
                 nuevosdatos.datosDocumento = documento;
-                let elemento = `<button class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3 btnDescargarPdf text-start" data-rel=${btoa(JSON.stringify(nuevosdatos))}>
-                                    <span class="text-veris fw-medium">
+                let elemento = `<label class="list-group-item d-flex align-items-center gap-2 bg-white card-border cursor-pointer rounded-3 p-3 btnDescargarPdf text-start" data-rel=${btoa(JSON.stringify(nuevosdatos))}>
+                                    <span class="text-veris fw-medium fs--16 line-height-20">
                                         ${capitalizarElemento(documento.nombreDocumento)}
                                     </span>
-                                    <i class="bi bi-download ms-auto"></i>
-                                </button>`;
+                                    <i class="bi bi-download ms-auto text-primary-veris fs--20" style="font-weight: 900;"></i>
+                                </label>`;
                 divContenedor.append(elemento);
             });
         }
