@@ -62,9 +62,9 @@ Mi Veris - Citas - tratamiento
                     </div>
                     <div class="card-body px-0">
                         <a href="#" class="d-flex align-items-center gap-2 bg-white py-2 px-3">
-                            <img src="{{ asset('assets/img/svg/especialidades/alergologia.svg') }}" alt="especialidad" />
+                            <img id="iconoEspecialidadPromo" src="" alt="especialidad" style="width: 40px;" />
                             <div class="ms-2">
-                                <h6 class="fw-medium mb-0">Traumatología</h6>
+                                <h6 class="fw-medium mb-0" id="nombreEspecialidadPromo"></h6>
                                 <p class="fw-normal fs--1 mb-0" id="verPdf">Ver tratamiento en PDF <i class="bi bi-chevron-right ms-2"></i></p>
                             </div>
                         </a>
@@ -134,6 +134,9 @@ Mi Veris - Citas - tratamiento
         if(dataCita.convenio.idCliente !== null){
             $('.promo-img').html(`<img src="{{ asset('assets/img/svg/promocionNoDisponible.svg') }}" class="card-img-top" style="max-height:165px;margin-top: -15px;" alt="">`);
         }
+
+        $('#nombreEspecialidadPromo').html(dataCita.datosTratamiento.nombreEspecialidad);
+        $('#iconoEspecialidadPromo').attr("src",dataCita.datosTratamiento.urlImagenEspecialidad);
 
         await valorizacionServicios();
         console.log(dataCita.promocion)
@@ -212,7 +215,7 @@ Mi Veris - Citas - tratamiento
     async function descargarDocumentoPdfPrincipal(){
         let args = [];
         let canalOrigen = 'APP_CMV'
-        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/reporteAcumulativoAtencion?secuenciaAtencion=${dataCita.datosTratamiento.secuenciaAtenciones}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/reporteAcumulativoAtencion?secuenciaAtencion=${dataCita.datosTratamiento.secuenciaAtenciones}`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -239,7 +242,7 @@ Mi Veris - Citas - tratamiento
         } else {
             contenedorPrincipalDescuento.append(`<p class="mb-0">Veris te regala un</p>
                                                 <h4 class="text-white mb-0" id="content-descuento">% de descuento</h4>
-                                                <p class="mb-0">por pagar en app</p>`);
+                                                <p class="mb-0">por pagar en Mi Veris</p>`);
         } 
         return; 
     }
@@ -249,7 +252,7 @@ Mi Veris - Citas - tratamiento
         let args = {};
         let idTratamiento = codigoTratamiento;
         let canalOrigenDigital = _canalOrigen;
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${idTratamiento}/valorizacion_servicio`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -356,7 +359,7 @@ Mi Veris - Citas - tratamiento
         //console.log('-------------'+dataCita.promocion.codigoPreTransaccion)
         let args = {};
         //let canalOrigenDigital = 'APP_CMV';
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}/actualizar_servicio`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${codigoTratamiento}/actualizar_servicio`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";

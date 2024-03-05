@@ -141,7 +141,7 @@
 	    <div class="mb-2">
 	        <label for="primerNombre" class="form-label fw-medium fs--1">Nombre *</label>
 	        <input type="text"
-	            class="form-control"
+	            class="form-control fs--1 p-3"
 	            id="primerNombre"
 	            name="primerNombre"
 	            placeholder="Ingresa tu nombre"
@@ -150,7 +150,7 @@
 	    <div class="mb-2">
 	        <label for="primerApellido" class="form-label fw-medium fs--1">Primer Apellido *</label>
 	        <input type="text"
-	            class="form-control"
+	            class="form-control fs--1 p-3"
 	            id="primerApellido"
 	            name="primerApellido"
 	            placeholder="Ingresa tu primer apellido"
@@ -159,7 +159,7 @@
 	    <div class="mb-2">
 	        <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo Apellido *</label>
 	        <input type="text"
-	            class="form-control"
+	            class="form-control fs--1 p-3"
 	            id="segundoApellido"
 	            name="segundoApellido"
 	            placeholder="Ingresa tu segundo apellido"
@@ -219,9 +219,9 @@
 		console.log(dataProvincia);
 		obtenerCiudades(dataProvincia[0].codigoProvincia);
 
-        $('body').on('change', '#provincia', async function(){
+        /*$('body').on('change', '#provincia', async function(){
         	await obtenerCiudades();
-        })
+        })*/
     });
 
 	const passwordInput = document.getElementById('password');

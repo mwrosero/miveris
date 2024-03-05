@@ -285,7 +285,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function validacionFecha(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/validacionFecha`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validacionFecha`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -481,7 +481,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -526,7 +526,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         // console.log(fechaSeleccionada);
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -595,7 +595,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(_fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&bloques=${bloques}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(_fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&bloques=${bloques}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -692,7 +692,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function obtenerPreparacionPrevia(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -734,7 +734,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function consultarHorasMotorizados() {
         //let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/disponibilidad?canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${_fechaSeleccionada}&codigoZona=${codigoZona}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/disponibilidad?canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${_fechaSeleccionada}&codigoZona=${codigoZona}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["dismissAlert"] = true;

@@ -200,7 +200,7 @@ Mi Veris - Citas - Mis citas
 
     async function eliminarReserva(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
         args["method"] = "PUT";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -223,15 +223,15 @@ Mi Veris - Citas - Mis citas
         let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
         if (!Date.parse(fechaDesde) || !Date.parse(fechaHasta)) {
             console.log('Fechas inválidas');
-            args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion} `; 
+            args["endpoint"] = api_url + `/${api_war}/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion} `; 
         } else {
             console.log('si hay fechas');
             fechaDesde = formatearFecha(fechaDesde);
             fechaHasta = formatearFecha(fechaHasta);
-            args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&desde=${fechaDesde}&hasta=${fechaHasta}`;
+            args["endpoint"] = api_url + `/${api_war}/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&desde=${fechaDesde}&hasta=${fechaHasta}`;
         }
         
-        // args["endpoint"] = api_url + `/digitalestest/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
+        // args["endpoint"] = api_url + `/${api_war}/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
         console.log('argsss', args["endpoint"]);
         args["showLoader"] = true;
@@ -300,7 +300,7 @@ Mi Veris - Citas - Mis citas
             numeroPaciente = pacienteSeleccionado;
         }
 
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/citasVigentes?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('citasxd',args["endpoint"]);
@@ -398,7 +398,7 @@ Mi Veris - Citas - Mis citas
     async function consultarGrupoFamiliar() {
         let args = [];
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${_canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo?canalOrigen=${_canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -415,7 +415,7 @@ Mi Veris - Citas - Mis citas
     async function obtenerListaDocumentos(datos) {
         console.log('datossss', datos.secuenciaAtencion);    
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/documentos?secuenciaAtencion=${datos.secuenciaAtencion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/documentos?secuenciaAtencion=${datos.secuenciaAtencion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -464,10 +464,10 @@ Mi Veris - Citas - Mis citas
 
         if (tipoServicio == 'RECETA') {
             console.log('entro a receta');
-            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=&secuenciaReceta=${datos.datosDocumento.secuenciaReceta} `;
+            args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=&secuenciaReceta=${datos.datosDocumento.secuenciaReceta} `;
         }
         else {
-            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=${numeroOrden} `;
+            args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=${numeroOrden} `;
         }
         
         args["method"] = "GET";
@@ -772,7 +772,7 @@ Mi Veris - Citas - Mis citas
         let numeroIdentificacion = identificacion;
         let codigoEmpresa = 1
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const dataConvenio = await call(args);
@@ -881,7 +881,7 @@ Mi Veris - Citas - Mis citas
     //         numeroIdentificacion = datos.numeroIdentificacion;
     //     }
     //     let args = [];
-    //     args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+    //     args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
     //     args["method"] = "GET";
     //     args["showLoader"] = true;
     //     const dataConvenio = await call(args);
@@ -927,7 +927,7 @@ Mi Veris - Citas - Mis citas
         let tipoIdentificacion = '{{ Session::get('userData')->codigoTipoIdentificacion }}';
         
 
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

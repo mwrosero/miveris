@@ -12,7 +12,7 @@ class Veris extends Model
     use HasFactory;
     //DEV
     public const BASE_URL = 'https://api-phantomx.veris.com.ec';
-    public const BASE_WAR = '/digitalestest';
+    public const BASE_WAR = 'digitalestest';
     public const CANAL_ORIGEN = 'MVE_CMV';
     public const APPLICATION = 'UEhBTlRPTVhfRU1QUkVTQVJJQUw=';
     public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';

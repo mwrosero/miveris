@@ -303,7 +303,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function reservarCita(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/agenda/reservar?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservar?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -379,7 +379,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function crearPreTransaccion(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/crear_pretransaccion?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_pretransaccion?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -491,7 +491,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     //Consultar datos de facturación si son del dueño de la cuenta o del beneficiario
     async function consultarDatosFactura(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${ dataCita.preTransaccion.codigoPreTransaccion }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}&numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/consultar_datos_factura?canalOrigen=${_canalOrigen}&idPreTransaccion=${ dataCita.preTransaccion.codigoPreTransaccion }&codigoTipoIdentificacion={{ Session::get('userData')->codigoTipoIdentificacion }}&numeroIdentificacion={{ Session::get('userData')->numeroIdentificacion }}`;
         //dataCita.paciente.numeroPaciente
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -509,7 +509,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     //obtener las politicas
     async function obtenerPPD(){
         let args = [];
-        args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1";
+        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1`;
         args["method"] = "GET";
         args["showLoader"] = true;
 
@@ -529,7 +529,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function aceptarPoliticas(){
         
         let args = [];
-        args["endpoint"] = api_url + "/digitalestest/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -617,9 +617,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             var primerNombre = $("#primerNombre").val();
             var primerApellido = $("#primerApellido").val();
             var segundoApellido = $("#segundoApellido").val();
-            if (primerNombre.trim() === "" || primerApellido.trim() === "" || segundoApellido.trim() === "") {
+            if (primerNombre.trim() === "") {
                 errors = true;
-                msg += `<li class="ms-0">Los campos Primer Nombre, Primer Apellido y Segundo Apellido son obligatorios.</li>`;
+                msg += `<li class="ms-0">El campo primer nombre es obligatorio.</li>`;
+            }
+            if (primerApellido.trim() === "") {
+                errors = true;
+                msg += `<li class="ms-0">El campo primer apellido es obligatorio.</li>`;
+            }
+            if (segundoApellido.trim() === "") {
+                errors = true;
+                msg += `<li class="ms-0">El campo segundo apellido es obligatorio.</li>`;
             }
         }
 
@@ -627,9 +635,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         var direccion = $("#direccion").val();
         var telefono = $("#telefono").val();
         var mail = $("#mail").val();
-        if (direccion.trim() === "" || telefono.trim() === "" || mail.trim() === "") {
+        if (direccion.trim() === "") {
             errors = true;
-            msg += `<li class="ms-0">Los campos Dirección, Teléfono y Correo Electrónico son obligatorios.</li>`;
+            msg += `<li class="ms-0">El campo dirección obligatorio.</li>`;
+        }
+        if (telefono.trim() === "") {
+            errors = true;
+            msg += `<li class="ms-0">El campo teléfono es obligatorio.</li>`;
+        }
+        if (mail.trim() === "") {
+            errors = true;
+            msg += `<li class="ms-0">El campo correo electrónico es obligatorio.</li>`;
         }
         msg += `</ul>`;
 
@@ -654,9 +670,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }
         let args = [];
-        //args["endpoint"] = api_url + `/digitalestest/v1/facturacion/crear_transaccion_virtual?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        //args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_transaccion_virtual?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
         args["endpoint"] = api_url +
-        `/digitalestest/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        `/${api_war}/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
         args["method"] = "POST"; args["showLoader"] = true; args
         ["bodyType"] = "json"; args["data"] = JSON.stringify({            
             "codigoUsuario": "{{ Session::get('userData')->numeroIdentificacion }}",
@@ -822,7 +838,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function obtenerPreparacionPrevia(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -836,7 +852,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function cargarListaTarjetas(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu={{ Session::get('userData')->numeroIdentificacion }}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu={{ Session::get('userData')->numeroIdentificacion }}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

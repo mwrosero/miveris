@@ -86,7 +86,7 @@ Mi Veris - Citas - Promociones
 
         // Evento de escritura en el input
         $('#buscarPorPromocion').on('keyup', function() {
-            //clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se escribe
+            clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se escribe
 
             var searchText = $(this).val();
             if (searchText.length >= 3) { // Solo realizar la búsqueda si hay al menos 3 caracteres
@@ -116,7 +116,7 @@ Mi Veris - Citas - Promociones
 
     async function obtenerPaquetesPromocionales(){
         let args = [];
-        args["endpoint"] = api_url + `/digitalestest/v1/comercial/paquetes?canalOrigen=APP_CMV&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&verDetalle=false&buscarPorPromocion=${ encodeURIComponent(getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&verDetalle=false&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -158,7 +158,9 @@ Mi Veris - Citas - Promociones
                 })
                 page++;
             }else{
-                elem += `<p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>`;
+                if(page == 1){
+                    elem += `<p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>`;
+                }
             }
             $('#listado-paquetes').append(elem);
         }else{

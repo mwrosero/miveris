@@ -98,7 +98,7 @@ Mi Veris - Citas - Citas Laboratorio
         let args = [];
         let canalOrigen = _canalOrigen
         
-        args["endpoint"] = api_url + `/digitalestest/v1/ordenes/detallesLaboratorio?canalOrigen=${canalOrigen}&idPaciente=${idPaciente}&numeroOrden=${numeroOrden}&codigoEmpresa=${codigoEmpresa}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/ordenes/detallesLaboratorio?canalOrigen=${canalOrigen}&idPaciente=${idPaciente}&numeroOrden=${numeroOrden}&codigoEmpresa=${codigoEmpresa}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

@@ -21,7 +21,7 @@ Mi Veris - Resultados
     <div class="modal fade" id="haOcurridoUnErrorModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
-                <div class="modal-body p-3" id="modalBody">
+                <div class="modal-body p-3">
                     <div class="text-center">
                         <h5 class="mb-3">Veris</h5>
                         <p class="mb-3">Ha ocurrido un error inesperado</p>
@@ -136,7 +136,7 @@ Mi Veris - Resultados
         const tipoServicio = "IMG,PROC";
         const canalOrigen = _canalOrigen;
         const args = {
-            "endpoint": `${api_url}/digitalestest/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
+            "endpoint": `${api_url}/${api_war}/v1/examenes/resultadosPorTipo?canalOrigen=${canalOrigen}&codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&desde=${desde}&hasta=${hasta}&tipoServicio=${tipoServicio}`
         };
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -207,7 +207,7 @@ Mi Veris - Resultados
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
 
-        args["endpoint"] = api_url + `/digitalestest/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
+        args["endpoint"] = api_url + `/${api_war}/v1/examenes/detalleexamen?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -240,6 +240,7 @@ Mi Veris - Resultados
                             `;
                 });
                 html.append(elemento);
+                $('#resultadImagenesProcedimientosModal').modal("show")
             }
         }
     }
@@ -251,7 +252,7 @@ Mi Veris - Resultados
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
 
-        args["endpoint"] = api_url + `/digitalestest/v1/examenes/archivoresultado?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
+        args["endpoint"] = api_url + `/${api_war}/v1/examenes/archivoresultado?canalOrigen=${canalOrigen}&codigoOrdenApoyo=${codigoApoyo} `;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
@@ -290,7 +291,7 @@ Mi Veris - Resultados
         let args = [];
         canalOrigen = _canalOrigen
         codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/digitalestest/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

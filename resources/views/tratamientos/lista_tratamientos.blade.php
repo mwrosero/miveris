@@ -322,7 +322,7 @@ $tokenMods = base64_encode(uniqid());
         let args = [];
         let canalOrigen = _canalOrigen;
         
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -377,7 +377,7 @@ $tokenMods = base64_encode(uniqid());
         let args = [];
         let canalOrigen = _canalOrigen
         
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=APP_CMV`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=APP_CMV`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -423,7 +423,7 @@ $tokenMods = base64_encode(uniqid());
         let args = [];
         let canalOrigen = _canalOrigen
         
-        args["endpoint"] = api_url + `/digitalestest/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=APP_CMV`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=APP_CMV`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -491,7 +491,7 @@ $tokenMods = base64_encode(uniqid());
         //reporteAcumulativoAtencion
         let args = [];
         let canalOrigen = 'APP_CMV'
-        args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/reporteAcumulativoAtencion?secuenciaAtencion=${secuenciaAtencion.secuenciaAtenciones}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/reporteAcumulativoAtencion?secuenciaAtencion=${secuenciaAtencion.secuenciaAtenciones}`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -517,10 +517,10 @@ $tokenMods = base64_encode(uniqid());
         let canalOrigen = 'APP_CMV'
         let secuenciaAtencion = datos.secuenciaAtencion;
         if(datosFiltrados.tipoCard == 'RECETAS'){
-            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=RECETA&numeroOrden=&secuenciaReceta=${datosFiltrados.secuenciaReceta}`;
+            args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=RECETA&numeroOrden=&secuenciaReceta=${datosFiltrados.secuenciaReceta}`;
         }
         else{
-            args["endpoint"] = api_url + `/digitalestest/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datosFiltrados.idOrden}`;
+            args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datosFiltrados.idOrden}`;
         }
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -543,7 +543,7 @@ $tokenMods = base64_encode(uniqid());
         let args = [];
         let canalOrigen = 'APP_CMV'
         
-        args["endpoint"] = api_url + `/digitalestest/v1/recetas/archivoreceta?codigoReceta=${datos.secuenciaReceta}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/recetas/archivoreceta?codigoReceta=${datos.secuenciaReceta}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
@@ -568,7 +568,7 @@ $tokenMods = base64_encode(uniqid());
         let args = [];
         let canalOrigen = 'APP_CMV'
         
-        args["endpoint"] = api_url + `/digitalestest/v1/recetas/detallereceta?canalOrigen=${canalOrigen}&codigoReceta=${datos.secuenciaReceta}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/recetas/detallereceta?canalOrigen=${canalOrigen}&codigoReceta=${datos.secuenciaReceta}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
