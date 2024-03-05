@@ -9,17 +9,16 @@ Mi Veris - Citas - Receta médica
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- offcanva detalle Receta médica -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="detalleRecetaMedica" aria-labelledby="detalleRecetaMedicaLabel">
-        <div class="offcanvas-header justify-content-between align-items-center py-2">
-            <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
-            <button type="button" class="btn d-block d-md-none" data-bs-dismiss="offcanvas" aria-label="Close">
-                <i class="bi bi-arrow-left"></i><b class="fw-medium">Atrás</b>
-            </button>
+        <div class="offcanvas-header flex-column align-items-start p-0">
+            <div class="w-100 px-4 py-2 d-lg-none d-block" style="background: #F3F4F5;">
+                <button type="button" class="btn p-0 d-flex align-items-center" data-bs-dismiss="offcanvas" aria-label="Close"><img src="{{asset('assets/img/svg/arrow-left-filtro-body.svg')}}" class="me-1" alt="atras"><b class="fw-medium fs-- text-veris">Atrás</b></button>
+            </div>
+            <h5 class="offcanvas-title fs--20 line-height-24 w-100 px-4 py-3" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
         </div>
-        
-        <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
+        <div class="offcanvas-body p-3" style="background: rgba(249, 250, 251, 1) !important;">
             <small class="d-none">Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
             <div>
-                <div class="list-group gap-2 mb-3 verPdf">
+                <div class="list-group gap-3 verPdf">
                     <label class="list-group-item d-flex align-items-center gap--2 border rounded-3 py-3">
                         <div class="d-flex flex-column">
                             <small class="text-veris fw-medium denominacion">
@@ -37,13 +36,13 @@ Mi Veris - Citas - Receta médica
                 </div>
             </div>
         </div>
-        
-        <div class="offcanvas-footer px-4">
+        <div class="offcanvas-footer px-3">
             <div class="col-md-12">
-                <button class="btn btn-primary-veris w-100 py-3 my-3 verPdfReceta" type="button"  data-context="contextoAplicarFiltros">Ver PDF</button>
+                <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3 verPdfReceta" type="button"  data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
+
     <!-- Modal Receta médica -->
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
@@ -57,8 +56,6 @@ Mi Veris - Citas - Receta médica
             </div>
         </div>
     </div>
-
-
 
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Receta médica') }}</h5>
@@ -446,16 +443,16 @@ Mi Veris - Citas - Receta médica
             html.empty();
             let elementos = '';
             data.data.forEach((receta) => {
-                elementos += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
+                elementos += `<label class="list-group-item d-flex align-items-center gap-2 bg-white card-border rounded-3 p--2">
                                 <div class="d-flex flex-column">
-                                    <small class="text-veris fw-medium denominacion">
-                                        ${agregarEspacios(receta.denominacion)}
+                                    <small class="text-veris fs--1 line-height-16 mb-1 fw-medium denominacion">
+                                        ${capitalizarElemento(agregarEspacios(receta.denominacion))}
                                     </small>
-                                    <small class="text-veris fw-light concentracion" style="color: #3D4E66;">
-                                        ${receta.concentracion} ${receta.formaFarmaceutica}
+                                    <small class="text-veris fw-light fs--2 line-height-16 concentracion" style="color: #3D4E66;">
+                                        ${capitalizarElemento(receta.concentracion)} ${capitalizarElemento(receta.formaFarmaceutica)}
                                     </small>
-                                    <small class="text-veris fw-light indicaciones style="color: #3D4E66;"">
-                                        ${receta.indicaciones}
+                                    <small class="text-veris fw-light fs--2 line-height-16 indicaciones style="color: #3D4E66;"">
+                                        ${capitalizarElemento(receta.indicaciones)}
                                     </small>
                                 </div>
                                 <!--i class="fa-solid fa-bell ms-auto"></i-->
