@@ -17,15 +17,14 @@ Mi Veris - Citas - Información de pago
             <div class="col-auto col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body text-center">
-                        <img src="{{ asset('assets/img/card/tarjeta_pago.png') }}" class="img-fluid mb-3" alt="{{ __('tarjeta de pago') }}">
-                        <ul class="list-group bg-white mb-3">
+                        <ul class="list-group mb-3" style="background: #E9EFF4;">
                             <li class="list-group-item border-0 text-primary-veris d-flex justify-content-between align-items-center">
-                                Total a pagar:
-                                <span class="badge text-primary-veris" id="totalInfo"></span>
+                                <img src="{{ asset('assets/img/card/p2p-cards.svg') }}" class="img-fluid mt-1" alt="{{ __('tarjeta de pago') }}">
+                                <button class="btn btn-label-primary-veris cursor-pointer" id="btn-pago-p2p">Click aquí</button>
                             </li>
                         </ul>
                         <!-- content-pago -->
-                        <div class="card card-body">
+                        <div class="card card-body bg-transparent shadow-none pt-1">
                             <div class="row g-3">
                                 @if (session()->has('mensaje'))
                                     <div class="alert alert-warning mb-3">
@@ -69,9 +68,12 @@ Mi Veris - Citas - Información de pago
     let dataCita = JSON.parse(local);
 
     document.addEventListener("DOMContentLoaded", async function () {
-        $('#totalInfo').html(`$${dataCita.facturacion.totales.total}`);
         $('#dataCita').val(btoa(JSON.stringify(dataCita)));
         $('#tokenCita').val("{{ $params }}");
+
+        $('body').on('click', '#btn-pago-p2p', async function(){
+            await pagarPtp();
+        })
         
 		kushki = new KushkiCheckout({
 	        form: "kushki-pay-form",
@@ -83,5 +85,48 @@ Mi Veris - Citas - Información de pago
 	        is_subscription: false // true si se trata de una suscripcion (pago recurrente); false, si no.
 	    });
     });
+
+    async function pagarPtp(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["method"] = "POST"; 
+        args["showLoader"] = true; 
+        args["bodyType"] = "json"; 
+        args["data"] = JSON.stringify({            
+            "codigoUsuario": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "codigoTipoIdentificacion": parseInt(dataCita.datosIngresadosFactura.codigoTipoIdentificacion),
+            "numeroIdentificacion": dataCita.datosIngresadosFactura.numeroIdentificacion,
+            "nombreFactura": dataCita.datosIngresadosFactura.nombreFactura,
+            "primerNombre": dataCita.datosIngresadosFactura.primerNombre,
+            "primerApellido": dataCita.datosIngresadosFactura.primerApellido,
+            "segundoApellido": dataCita.datosIngresadosFactura.segundoApellido,
+            "direccionFactura": dataCita.datosIngresadosFactura.direccionFactura,
+            "telefonoFactura": dataCita.datosIngresadosFactura.telefonoFactura,
+            "mailFactura": dataCita.datosIngresadosFactura.mailFactura,
+            "emailFactura": dataCita.datosIngresadosFactura.emailFactura,
+            "direccionIP": "",
+            "modeloDispositivo": "",
+            "versionSO": "",
+            "plataformaOrigen": "WEB",
+            "tipoBoton": "PTP",
+            "sistemaOperativo": "",
+            "idNavegador": "",
+            "idiomaNavegador": "",
+            "navegadorUA": "",
+            "canalOrigenDigital": _canalOrigen//"VER_CMV"
+        });
+        const data = await call(args);
+        window.removeEventListener("beforeunload", beforeUnloadHandler);
+        if (data.code == 200){
+            dataCita.transaccionVirtual = data.data;
+            guardarData();
+            location.href = data.data.linkPagoPTP;
+        }else{
+            alert(data.message);
+        }
+    }
+    function guardarData(){
+        localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+    }
 </script>
 @endpush

@@ -132,7 +132,7 @@ Mi Veris - Citas - tratamiento
         $('.content-img').html(`<img src="${dataCita.convenio.rutaImagenConvenio}" onerror="this.src='{{ asset('assets/img/svg/regalo_abierto.svg') }}'" class="card-img-top">`);
 
         if(dataCita.convenio.idCliente !== null){
-            $('.promo-img').html(`<img src="{{ asset('assets/img/svg/promocionNoDisponible.svg') }}" class="card-img-top" style="max-height:165px;margin-top: -15px;" alt="">`);
+            $('.promo-img').html(`<img src="{{ asset('assets/img/card/carrito_promocion.png') }}" class="card-img-top" alt="">`);
         }
 
         $('#nombreEspecialidadPromo').html(dataCita.datosTratamiento.nombreEspecialidad);
@@ -388,6 +388,10 @@ Mi Veris - Citas - tratamiento
         $('#box-detalle-promocion').removeClass('d-none');
         if(dataCita.promocion.serviciosIncluyeCompra.length == 0){
             $('#box-detalle-promocion').empty();
+            let msg = "Esta promoción ya no está disponible";
+            if(dataCita.convenio.idCliente !== null){
+                msg = "Sin servicios pendientes por comprar";
+            }
             let elem = `<div class="card-body">
                             <div class="text-center">
                                 <div class="avatar avatar-lg mx-auto mb-3">
@@ -396,9 +400,9 @@ Mi Veris - Citas - tratamiento
                                     </span>
                                 </div>
                                 <h3 class="fs--28 line-height-36 fw-medium mb-2">Información</h3>
-                                <p class="fs--16 line-height-20 text-veris mb-5">Esta promoción ya no está disponible</p>
-                                <img src="{{ asset('assets/img/svg/promocionNoDisponible.svg') }}" class="img-fluid mt-3 mb-3 w-50" alt="">
-                                <a href="/" class="btn btn-lg btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3">Volver al inicio</a>
+                                <p class="fs--16 line-height-20 text-veris mb-5">${msg}</p>
+                                <img src="{{ asset('assets/img/card/carrito_promocion.png') }}" class="img-fluid mt-3 mb-3" alt="">
+                                <a href="" class="btn btn-lg btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>`;
             $('#box-detalle-promocion').append(elem);
