@@ -715,7 +715,7 @@ $tokenMods = base64_encode(uniqid());
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/svg/regalo.svg') }}" class="img-fluid" width="94" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="tratamiento" />
                                 </div>
                             </div>`;
         } else {
@@ -731,7 +731,7 @@ $tokenMods = base64_encode(uniqid());
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="tratamiento" />
+                                    <img src="{{ asset('/assets/img/svg/regalo.svg') }}" class="img-fluid" width="94" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         }
