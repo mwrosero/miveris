@@ -727,7 +727,7 @@ $tokenMods = base64_encode(uniqid());
                                     <div class="d-flex justify-content-end mt-2">
                                         <a href=" ${ruta}
                                         " class="btn btn-sm btn-primary-veris fs--1 fw-medium line-height-16 px-3 py-2 border-0 btn-verPromocion
-                                        " data-rel='${JSON.stringify(datos)}'>Ver tratamiento</a>
+                                        " data-rel='${JSON.stringify(datos)}'>Ver promoción</a>
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
