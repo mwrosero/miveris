@@ -31,7 +31,7 @@ Mi Veris - Citas - Información de pago
                                         {{ session('mensaje') }}
                                     </div>
                                 @endif
-                            	<form class="kushki-pay-form col-12" id="kushki-pay-form" action="/citas-procesar-pago-kushki/" method="POST">
+                            	<form class="kushki-pay-form col-12" id="kushki-pay-form" action="/citas-procesar-pago-kushki" method="POST">
                                     @csrf
                                 </form>
                                 <input type="hidden" name="tokenCita" id="tokenCita" form="kushki-pay-form">
