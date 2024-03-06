@@ -696,17 +696,13 @@ $tokenMods = base64_encode(uniqid());
 
     // mostrar banner de promocion
     function mostrarBannerPromocion(datos){
-        let params = {};
-        params.codigoTratamiento = codigoTratamiento;
-        params.convenio = ultimoTratamiento.datosConvenio;
-        let ulrParams = btoa(JSON.stringify(params));
+        console.log(datos)
 
         let divContenedor = $('#cardPromocion');
         divContenedor.empty(); // Limpia el contenido actual
         let ruta = "/tu-tratamiento/" + "{{ $tokenMods }}";
         let elemento = '';
-        if(ultimoTratamiento.datosConvenio.length > 0){
-            
+        if(datos.datosConvenio.idCliente !== null){
             elemento = `<div class="card rounded-0 border-0">
                                 <div class="card-body p--2 position-relative px-lg-5"
                                     style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
@@ -719,7 +715,7 @@ $tokenMods = base64_encode(uniqid());
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/svg/regalo.svg') }}" class="img-fluid" width="94" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         } else {
@@ -735,7 +731,7 @@ $tokenMods = base64_encode(uniqid());
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="tratamiento" />
                                 </div>
                             </div>`;
         }
