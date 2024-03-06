@@ -617,11 +617,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     elemento += `<a href="${ruta}">
                             <div class="card card-horario card-body rounded-3 position-relative py-3 mb-2 btn-disponibilidad-medico" data-horario='${JSON.stringify(horario)}'>
                         `;
-                    if(horario.porcentajeDescuento > 0){
+                    if(horario.porcentajeDescuento > 0 && dataCita.convenio.permitePago != "N"){
                         elemento += `<div class="badge-discount-top fs--2 line-height-16 fw-medium"><span>-${horario.porcentajeDescuento}%</span></div>`
                     }
                     elemento += `<p class="fs--16 line-height-20 text-primary-veris text-center mb-0">${horario.horaInicio} - ${horario.horaFin}</p>`;
-                    if(horario.porcentajeDescuento > 0){
+                    if(horario.porcentajeDescuento > 0 && dataCita.convenio.permitePago != "N"){
                         elemento += `<div class="badge-discount-bottom fs--2 line-height-16 fw-medium"><span>{{ __('descuento') }}</span></div>`;
                     }
                     elemento += `</div>
