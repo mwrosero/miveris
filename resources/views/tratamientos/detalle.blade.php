@@ -78,7 +78,7 @@ Mi Veris - Citas - tratamiento
                             
                             
                         </ul>
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion accordion-flush d-none" id="accordionFlushNoIncluidos">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed fw-normal text-veris fs--2 bg-labe-grayish" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -87,7 +87,7 @@ Mi Veris - Citas - tratamiento
                                 </h2>
                                 <div>
                                     <!-- items servicios no incluidos -->
-                                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushNoIncluidos">
                                         <div class="accordion-body" >Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
                                     </div>
 
@@ -135,7 +135,7 @@ Mi Veris - Citas - tratamiento
             $('.promo-img').html(`<img src="{{ asset('assets/img/card/carrito_promocion.png') }}" class="card-img-top" alt="">`);
         }
 
-        $('#nombreEspecialidadPromo').html(dataCita.datosTratamiento.nombreEspecialidad);
+        $('#nombreEspecialidadPromo').html(capitalizarCadaPalabra(dataCita.datosTratamiento.nombreEspecialidad));
         $('#iconoEspecialidadPromo').attr("src",dataCita.datosTratamiento.urlImagenEspecialidad);
 
         await valorizacionServicios();
@@ -447,6 +447,10 @@ Mi Veris - Citas - tratamiento
                             </li>`;
             });
             html.append(elemento);
+
+            if(dataCita.promocion.serviciosNoIncluyeCompra.length > 0){
+                $('#accordionFlushNoIncluidos').removeClass('d-none');
+            }
 
             let serviciosNoIncluidos = $('#flush-collapseOne');
             serviciosNoIncluidos.empty();
