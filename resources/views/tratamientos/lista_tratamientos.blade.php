@@ -33,17 +33,17 @@ $tokenMods = base64_encode(uniqid());
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- offcanva detalle Receta médica -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="detalleRecetaMedica" aria-labelledby="detalleRecetaMedicaLabel">
-        <div class="offcanvas-header justify-content-between align-items-center py-2">
-            <h5 class="offcanvas-title" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
-            <button type="button" class="btn d-block d-md-none" data-bs-dismiss="offcanvas" aria-label="Close">
-                <i class="bi bi-arrow-left"></i><b class="fw-medium">Atrás</b>
-            </button>
+        <div class="offcanvas-header flex-column align-items-start p-0">
+            <div class="w-100 px-4 py-2 d-lg-none d-block" style="background: #F3F4F5;">
+                <button type="button" class="btn p-0 d-flex align-items-center" data-bs-dismiss="offcanvas" aria-label="Close"><img src="{{asset('assets/img/svg/arrow-left-filtro-body.svg')}}" class="me-1" alt="atras"><b class="fw-medium fs-- text-veris">Atrás</b></button>
+            </div>
+            <h5 class="offcanvas-title fs--20 line-height-24 w-100 px-4 py-3" id="detalleRecetaMedicaLabel">Detalle de receta</h5>
         </div>
         
-        <div class="offcanvas-body py-2" style="background: rgba(249, 250, 251, 1);">
+        <div class="offcanvas-body p-3" style="background: rgba(249, 250, 251, 1) !important;">
             <small class="d-none">Activa los recordatorios para notificarte el horario del que debes tomar tus medicinas</small>
             <div>
-                <div class="list-group gap-2 mb-3 verPdf">
+                <div class="list-group gap-3 verPdf">
                     <label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
                         <div class="d-flex flex-column">
                             <small class="text-veris fw-medium denominacion">
@@ -61,9 +61,9 @@ $tokenMods = base64_encode(uniqid());
                 </div>
             </div>
         </div>
-        <div class="offcanvas-footer px-4">
+        <div class="offcanvas-footer px-3">
             <div class="col-md-12">
-                <button class="btn btn-primary-veris w-100 fs--18 line-height-24 py-3 my-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
+                <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3 verPdfReceta" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Ver PDF</button>
             </div>
         </div>
     </div>
@@ -579,16 +579,16 @@ $tokenMods = base64_encode(uniqid());
             html.empty();
             let elementos = '';
             data.data.forEach((receta) => {
-                elementos += `<label class="list-group-item d-flex align-items-center gap-2 border rounded-3 py-3">
+                elementos += `<label class="list-group-item d-flex align-items-center gap-2 bg-white card-border rounded-3 p--2">
                                 <div class="d-flex flex-column">
-                                    <small class="text-veris fw-medium denominacion">
-                                        ${agregarEspacios(receta.denominacion)}
+                                    <small class="text-veris fs--1 line-height-16 mb-1 fw-medium denominacion">
+                                        ${capitalizarElemento(agregarEspacios(receta.denominacion))}
                                     </small>
-                                    <small class="text-veris fw-light concentracion">
-                                        ${receta.concentracion} ${receta.formaFarmaceutica}
+                                    <small class="text-veris fw-light fs--2 line-height-16 concentracion">
+                                        ${capitalizarElemento(receta.concentracion)} ${capitalizarElemento(receta.formaFarmaceutica)}
                                     </small>
-                                    <small class="text-veris fw-light indicaciones">
-                                        ${receta.indicaciones}
+                                    <small class="text-veris fw-light fs--2 line-height-16 indicaciones">
+                                        ${capitalizarElemento(receta.indicaciones)}
                                     </small>
                                 </div>
                                 <!--i class="fa-solid fa-bell ms-auto"></i-->

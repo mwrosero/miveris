@@ -9,10 +9,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <section class="p-3 mb-3">
-        <div class="row justify-content-center">
+        <div class="row g-0 justify-content-center">
             <div class="col-md-6">
                 <div class="card bg-transparent shadow-none">
-                    <div class="card-body text-center">
+                    <div class="card-body text-center p-0">
                         <!-- cita presencial online -->
                         <div class="content-presencial d-none">
                             <div class="avatar avatar-lg mx-auto mb-4">
@@ -92,7 +92,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <img src="{{ asset('assets/img/svg/lab_domicilio.svg') }}"  alt="cita agendada">
                             </div>
                             <div class="mt-5">
-                                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
+                                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 fw-medium w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>
                     </div>

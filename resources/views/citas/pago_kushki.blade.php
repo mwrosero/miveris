@@ -12,9 +12,9 @@ Mi Veris - Citas - Información de pago
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Información de pago') }}</h5>
     </div>
-    <section class="p-3 mb-3">
+    <section class="p-3 pt-5 mb-3">
         <div class="row justify-content-center">
-            <div class="col-auto col-md-6 col-lg-5">
+            <div class="col-12 col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body text-center">
                         <ul class="list-group mb-3" style="background: #E9EFF4;">
