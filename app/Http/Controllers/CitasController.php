@@ -82,20 +82,6 @@ class CitasController extends Controller
             'method'   => 'POST'
         ]);
 
-        dump([
-                "tipoIdentificacion" => $dataCita->facturacion->datosFactura->codigoTipoIdentificacion,
-                "numeroIdentificacion" => $dataCita->facturacion->datosFactura->codigoTipoIdentificacion,
-                "codigoTransaccion" => $dataCita->transaccionVirtual->codigoTransaccion,
-                "cardToken" => $data['kushkiToken'],
-                "suscripcionToken" => null,
-                "nombreTarjetahabiente" => $dataCita->facturacion->datosFactura->primerNombre." ".$dataCita->facturacion->datosFactura->primerApellido,
-                "emailTarjetahabiente" => $dataCita->facturacion->datosFactura->email,
-                "codigoSuscripcionTarjeta" => null,
-                "codigoSeguridad" => null,
-                "canalOrigenDigital" => Veris::CANAL_ORIGEN
-            ]);
-        dd($response);
-
         if($response->code == 200){
             return redirect('/cita-agendada/'.$tokenCita);
         }else{
