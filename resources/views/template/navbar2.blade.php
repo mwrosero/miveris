@@ -417,8 +417,8 @@
 
     .icon-button__badge {
         position: absolute;
-        top: 15px;
-        right: -5px;
+        top: 13px;
+        right: -10px;
         width: 12px;
         height: 12px;
         background: #ef4f62;

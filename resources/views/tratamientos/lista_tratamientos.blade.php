@@ -1086,7 +1086,9 @@ $tokenMods = base64_encode(uniqid());
             
             let datos = $(this).data('rel');
             let datosServicio = JSON.parse($(this).attr('datosTratamiento-rel'));
-            console.log(datosServicio)
+            // console.log(datos)
+            // console.log(datosServicio)
+            // return;
             let url = $(this).attr('url-rel');
             if(datos.permiteReserva == "N"){// && datos.esPagada == "N"
                 $('#mensajeNoPermiteCambiar').html(datos.mensajeBloqueoReserva);
@@ -1114,12 +1116,7 @@ $tokenMods = base64_encode(uniqid());
                 nombre : datos.nombreServicio,
             }
             // params.convenio = datosServicio.datosConvenio;
-            params.convenio = {
-                "permitePago": "S",
-                "permiteReserva": "S",
-                "idCliente": null,
-                "codigoConvenio": null,
-            };
+            params.convenio = datosServicio.datosConvenio;
 
             localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
             if (online == 'S') {
@@ -1178,6 +1175,7 @@ $tokenMods = base64_encode(uniqid());
         dataCita.convenio.origen = "Listatratamientos";
 
         dataCita.tratamiento = {
+            cantidadIntervalosReserva: datosServicio.cantidadIntervalosReserva,
             numeroOrden: datosServicio.idOrden,
             codigoEmpOrden: datosServicio.codigoEmpresa,
             lineaDetalle: datosServicio.lineaDetalleOrden,
@@ -1262,6 +1260,7 @@ $tokenMods = base64_encode(uniqid());
         let data = $(this).data('rel');
         let url = $(this).attr('url-rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
+        // console.log(convenio);return;
 
         if(data.permiteReserva == "N" && data.esPagada != "S"){
             $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
