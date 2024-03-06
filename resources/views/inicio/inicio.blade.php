@@ -530,10 +530,11 @@ Mi Veris - Inicio
     async function obtenerCitas(){
         let args = [];
         let canalOrigen = _canalOrigen;
-        let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
+        let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0&adicionaSolicitudes=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroPaciente=${numeroPaciente}&numeroIdentificacion=${numeroIdentificacion}&codigoUsuario=${numeroIdentificacion}&version=7.8.0&adicionaSolicitudes=S&soloUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
@@ -694,15 +695,17 @@ Mi Veris - Inicio
             mensajeInformacion
             */
 
-            elemento += `
-                <div class="swiper-slide frank">
+            let tituloCard = capitalizarElemento(citas.especialidad);
+            if(citas.esLabDomicilio && citas.esLabDomicilio == "S"){
+                tituloCard = `Solicitud de laboratorio a domicilio - ${citas.codigoSolicitud}`;
+                elemento += `<div class="swiper-slide frank">
                     <div class="card h-100">
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `
                                 <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
                             ` : ''}
                             <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>
+                                <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
                                 <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
                             </div>
                             <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
@@ -730,6 +733,43 @@ Mi Veris - Inicio
                         </div>
                     </div>
                 </div>`;
+            }else{
+                elemento += `<div class="swiper-slide frank">
+                    <div class="card h-100">
+                        <div class="card-body p--2">
+                            ${esConsultaOnline ? `
+                                <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
+                            ` : ''}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
+                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
+                            </div>
+                            <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
+                        </div>
+                        <div class="card-footer pt-0 pb--2 px--2 d-flex ${classElem} align-items-center">
+                            ${citas.estaPagada === "N" ? `
+                                <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
+                            ` : ''}
+                            <div class="mt-auto">
+                                ${citas.permiteCambiar == "S" ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
+                                ` : `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
+                                        <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
+                                    </div>`
+                                }
+                                ${citas.estaPagada === "N" ? `
+                                <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                ` : ''}
+                            </div>
+                            ${esConsultaOnline && citas.estaPagada == "S" ? `
+                                <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>`;
+            }
         });
         divContenedor.append(elemento);
     }
