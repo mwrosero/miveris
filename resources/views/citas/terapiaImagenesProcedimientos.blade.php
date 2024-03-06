@@ -1032,8 +1032,13 @@ Mi Veris - Citas - {{ $titulo }}
                             ruta = "/citas-elegir-central-medica/{{ $tokenCita }}";
                         }
                         if(datosServicio.detalleReserva !== null && datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
-                            respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita" convenio-rel='${JSON.stringify(convenio)}'>${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
-                            respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(convenio)}'>Pagar</div>`;
+                            if(datosServicio.esPagada == "N"){
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita" convenio-rel='${JSON.stringify(convenio)}'>${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                                respuestaAgenda += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(convenio)}'>Pagar</div>`;
+                            }else{
+                                respuestaAgenda += ` <button type="button" class="btn btn-sm text-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita" convenio-rel='${JSON.stringify(convenio)}'>${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            }
                         }else{
                             // mostrar boton de ver orden
                             if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
