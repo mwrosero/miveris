@@ -142,10 +142,16 @@ Mi Veris - Citas - tratamiento
         console.log(dataCita.promocion)
         $('body').on('change','.input-group input', async function(){
             let detalle = JSON.parse($(this).attr("data-rel"));
-            await actualizarValorizacionServicios(detalle, $(this).val(), $(this).attr('index-rel'));
-            console.log(dataCita.promocion);
-            drawNuevosValores();
-            //await drawServicios();
+            console.log("valor: "+$(this).val())
+            console.log("max: "+$(this).attr("max"))
+            if($(this).val() >= 0 && $(this).val() <= $(this).attr("max")){
+                await actualizarValorizacionServicios(detalle, $(this).val(), $(this).attr('index-rel'));
+                console.log(dataCita.promocion);
+                drawNuevosValores();
+                //await drawServicios();
+            }else{
+                console.log("no permite")
+            }
         })
 
         $('#verPdf').click(function(){
@@ -273,12 +279,12 @@ Mi Veris - Citas - tratamiento
     // funcion para manejar los eventos de los botones de los precios
 
     function sumarCantidad(index) {
-        let cantidadMaxima = parseFloat($(`#cantidadServicio-${index}`).attr('max'));
+        let cantidadMaxima = parseFloat($(`#item-${index}`).attr('max'));
 
-        let valorPromocion = parseFloat($(`#valorPromocionHidden-${index}`).val());
-        let valorNormal = parseFloat($(`#valorNormalHidden-${index}`).val());
+        // let valorPromocion = parseFloat($(`#valorPromocionHidden-${index}`).val());
+        // let valorNormal = parseFloat($(`#valorNormalHidden-${index}`).val());
 
-        let cantidad = parseFloat($(`#listaServicios li:nth-child(${index + 1}) .input-group input`).val());
+        let cantidad = parseFloat($(`#item-${index}`).val());
         cantidad++;
 
         if (cantidad > cantidadMaxima) {
@@ -356,7 +362,7 @@ Mi Veris - Citas - tratamiento
     // actualizar la valorizacion de los servicios del tratamiento con un put
 
     async function actualizarValorizacionServicios(detalle, qty, index) {
-        //console.log('-------------'+dataCita.promocion.codigoPreTransaccion)
+        console.log(detalle, qty, index)
         let args = {};
         //let canalOrigenDigital = 'APP_CMV';
         args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${codigoTratamiento}/actualizar_servicio`;
