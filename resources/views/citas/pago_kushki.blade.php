@@ -12,31 +12,33 @@ Mi Veris - Citas - Información de pago
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Información de pago') }}</h5>
     </div>
-    <section class="p-3 mb-3">
+    <section class="p-3 pt-5 mb-3">
         <div class="row justify-content-center">
-            <div class="col-auto col-md-6 col-lg-5">
+            <div class="col-12 col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none">
-                    <div class="card-body text-center">
+                    <div class="card-body text-center p-0">
                         <img src="{{ asset('assets/img/card/tarjeta_pago.png') }}" class="img-fluid mb-3" alt="{{ __('tarjeta de pago') }}">
-                        <ul class="list-group bg-white mb-3">
-                            <li class="list-group-item border-0 text-primary-veris d-flex justify-content-between align-items-center">
-                                Total a pagar:
-                                <span class="badge text-primary-veris" id="totalInfo"></span>
+                        <ul class="list-group bg-white rounded-4 mb-3">
+                            <li class="list-group-item border-0 text-primary-veris d-flex justify-content-between align-items-center p-3">
+                                <span class="fs--1 line-height-16 fw-medium">Total a pagar:</span> 
+                                <span class="fs--1 line-height-16 fw-medium text-primary-veris" id="totalInfo"></span>
                             </li>
                         </ul>
                         <!-- content-pago -->
-                        <div class="card card-body">
-                            <div class="row g-3">
-                                @if (session()->has('mensaje'))
-                                    <div class="alert alert-warning mb-3">
-                                        {{ session('mensaje') }}
-                                    </div>
-                                @endif
-                            	<form class="kushki-pay-form col-12" id="kushki-pay-form" action="/citas-procesar-pago-kushki/" method="POST">
-                                    @csrf
-                                </form>
-                                <input type="hidden" name="tokenCita" id="tokenCita" form="kushki-pay-form">
-                                <input type="hidden" name="dataCita" id="dataCita" form="kushki-pay-form">
+                        <div class="card rounded-4">
+                            <div class="card-body p-3">
+                                <div class="row g-3">
+                                    @if (session()->has('mensaje'))
+                                        <div class="alert alert-warning mb-3">
+                                            {{ session('mensaje') }}
+                                        </div>
+                                    @endif
+                                    <form class="kushki-pay-form col-12 d-flex justify-content-center" id="kushki-pay-form" action="/citas-procesar-pago-kushki/" method="POST">
+                                        @csrf
+                                    </form>
+                                    <input type="hidden" name="tokenCita" id="tokenCita" form="kushki-pay-form">
+                                    <input type="hidden" name="dataCita" id="dataCita" form="kushki-pay-form">
+                                </div>
                             </div>
                         </div>
                         {{-- <div class="my-3">

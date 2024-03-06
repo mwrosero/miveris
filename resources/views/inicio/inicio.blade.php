@@ -98,9 +98,9 @@ Mi Veris - Inicio
     <!-- Accesos rápidos -->
     <section class="bg-light-grayish-blue p-3 pe-0 pe-md-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
-            <h6 class="fw-medium border-start-veris ps-3 fs-18">{{ __('Accesos rápidos') }}</h6>
+            <h6 class="fw-medium border-start-veris ps-3 fs-18 mb-0">{{ __('Accesos rápidos') }}</h6>
         </div>
-        <div class="swiper swiper-acceso-rapidos position-relative py-3">
+        <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-md-2 pb-md-4">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal">
@@ -157,12 +157,12 @@ Mi Veris - Inicio
     </section>
     <!-- Tratamientos dinamico -->
     <section class="bg-light-grayish-blue p-3 mb-3">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Mis tratamientos</h5>
             <a href="{{route('tratamientos')}}" class="fw-medium fs--2 me-1" id="verTodosTratamientos">Ver todos</a>
         </div>
-        <div class="swiper swiper-tratamientos position-relative py-3">
-            <div class="swiper-wrapper mb-3 mb-md-0" id="contenedorTratamientoHome">
+        <div class="swiper swiper-tratamientos position-relative pb-4">
+            <div class="swiper-wrapper py-2" id="contenedorTratamientoHome">
             </div>
             <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
             <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>

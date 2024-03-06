@@ -1230,7 +1230,9 @@ a.btn.btn-primary-veris:not([href]):hover{
 .input-spin-none {
   border: 1px solid #f3f4f5 !important
 }
-
+.kushki-pay-form > iframe{
+  border: 0;
+}
 /* X-Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .border-lg-end {
@@ -1292,6 +1294,14 @@ a.btn.btn-primary-veris:not([href]):hover{
   } */
   .swiper-acceso-rapidos .swiper-slide{
     width: 10.188rem !important;
+    min-height: 6.938rem;
+  }
+  .swiper-acceso-rapidos .swiper-slide .card{
+    min-height: 6.938rem;
+  }
+  #agendarCitaMedicaModal .modal-body .card,
+  #consultaMedicaModal .modal-body .card{
+    min-height: 6.938rem;
   }
   /* .width-24{
     max-width: 1.7rem !important;
