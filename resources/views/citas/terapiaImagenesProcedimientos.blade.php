@@ -346,6 +346,7 @@ Mi Veris - Citas - {{ $titulo }}
         $(document).on('click', '#btnAgendarCitaModal', function(){
             let datosRel = $(this).data('rel');
             let datos = datosRel.servicio;
+            console.log(datos)
             let datosConvenio = datosRel.tratamiento;
             if(datos.permiteReserva == "N"){// && datos.esPagada == "N"
                 $('#mensajeNoPermiteCambiar').html(datos.mensajeBloqueoReserva);
@@ -376,10 +377,10 @@ Mi Veris - Citas - {{ $titulo }}
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             if (online == 'S') {
-                //window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
+                window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
             } else {
                 // ir a central medica
-                //window.location.href = '/citas-elegir-central-medica/{{ $tokenCita }}';
+                window.location.href = '/citas-elegir-central-medica/{{ $tokenCita }}';
             }
             
         });
