@@ -8,14 +8,14 @@ Mi Veris - Citas - Laboratorio a domicilio
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModal" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">Solicitud exitosa</h1>
-                    <p class="fs--1 fw-normal">Un asesor te contactará pronto</p>
+                    <p class="fs--1 fw-normal text-veris">Un asesor te contactará pronto</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 fw-medium line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entiendo</button>
                 </div>
             </div>
         </div>
