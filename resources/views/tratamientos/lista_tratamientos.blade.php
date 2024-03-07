@@ -305,7 +305,7 @@ $tokenMods = base64_encode(uniqid());
     // llenar el porcentaje de la barra con los datos del tratamiento
     function llenarPorcentajeBarra(){
         let porcentaje = datosTratamiento.porcentajeAvanceTratamiento;
-        document.getElementById("progress-circle").setAttribute("data-percentage", porcentaje);
+        document.getElementById("progress-circle").setAttribute("data-percentage", roundToDraw(porcentaje));
         // llenar el totalTratamientoEnviados y totalTratamientoRealizados
         // limpiar el contenido
         console.log('datosTratamientoee', datosTratamiento.totalTratamientoEnviados);
@@ -318,7 +318,6 @@ $tokenMods = base64_encode(uniqid());
     // funciones asyncronas
     // obtener tratamientos 
     async function obtenerTratamientos(){
-        $('#datosTratamientoCard').empty();
         let args = [];
         let canalOrigen = _canalOrigen;
         
@@ -332,7 +331,7 @@ $tokenMods = base64_encode(uniqid());
             secuenciaAtencion = data.data;
             ultimoTratamientoData = data.data;
             ultimoTratamiento = data.data;
-                
+            $('#datosTratamientoCard').empty();    
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
             let elemento = `<h5 class="card-title card-g text-primary-veris line-height-24 mb-1">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
@@ -931,6 +930,7 @@ $tokenMods = base64_encode(uniqid());
                 case "RECETAS" :
                     let respuestaReceta = ``;
                     if (estado == 'REALIZADO') {
+                        respuestaReceta += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         respuestaReceta += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
                     } else if(estado == "PENDIENTE") {
                         if(datosServicio.aplicaSolicitud != "S"){
