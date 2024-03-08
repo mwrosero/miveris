@@ -422,6 +422,7 @@ Mi Veris - Inicio
             await obtenerCitas();
             swiperProximasCitas.update();
             swiperProximasCitas.slideTo(0);
+            await obtenerUrgenciasAmbulatorias();
             swiperUrgenciasAmbulatorias.update();
             swiperUrgenciasAmbulatorias.slideTo(0);
         }
@@ -571,23 +572,25 @@ Mi Veris - Inicio
     }
 
     // consultar urgencias ambulatorias
+    let citas_vua;
     async function obtenerUrgenciasAmbulatorias(){
         let args = [];
         let canalOrigen = _canalOrigen;
-        let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/${api_war}/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservas/ingresos?idPaciente=${numeroPaciente}&canalOrigen=${_canalOrigen}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
+        citas_vua = '';
         if (data.code == 200) {
-           console.log('exito',data.data.length);
-           if(data.data.length == 0){
+            if(data.data === null || data.data.length == 0){
                 mostrarNoExistenUrgencias();
-              } else {
-                // mostrarUrgenciasAmbulatorias();
-           }
+            } else {
+                citas_vua = data.data
+                mostrarUrgenciasAmbulatorias();
+            }
         }
         return data;
     }
@@ -810,31 +813,33 @@ Mi Veris - Inicio
 
     // llenar el div de urgencias ambulatorias
     function mostrarUrgenciasAmbulatorias() {
-        let data = datosCitas;
+        let data = citas_vua;
 
         let divContenedor = $('#contenedorUrgenciasAmbulatorias');
         divContenedor.empty(); // Limpia el contenido actual
 
-        let elemento =+ ``;
+        var elemento = ``;
         data.forEach((urgencias) => {
-        let elemento =+ `<div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(urgencias.modulo)}</h6>
-                                        <span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i>Reservado</span>
-                                    </div>
-                                    <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.nombreSucursal)}</p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.paciente)}</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
-                                        <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris fs--1 line-height-16">Nueva fecha</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
+            console.log(urgencias)
+            elemento += `<div class="swiper-slide">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(urgencias.nombreEspecialidad)}</h6>
+                            <span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i>Reservado</span>
+                        </div>
+                        <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.nombreSucursal)}</p>
+                        <p class="fw-normal fs--2 line-height-16 mb-1">${urgencias.fechaAdmision.replace(/\*(.*?)\*/g, '<b class="hora-cita fw-normal text-primary-veris">$1</b>')}</p>
+                        <!--p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(urgencias.medico)}</p-->
+                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.paciente)}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="button" codigoReserva-rel="${urgencias.codigoReserva}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
+                            <a href="https://maps.app.goo.gl/Fndz1pxDUdT3sYyg7" target="_blank" class="btn btn-sm btn-primary-veris fs--1 line-height-16">Cómo llegar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            console.log(elemento)
         });
         divContenedor.append(elemento);
     }
@@ -1058,7 +1063,7 @@ Mi Veris - Inicio
             elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}' class="convenio-item mb-2">
                                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
-                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer text-primary-veris fs--1 line-height-16">
                                             ${capitalizarCadaPalabra(convenios.nombreConvenio)}
                                         </label> 
                                     </div>
