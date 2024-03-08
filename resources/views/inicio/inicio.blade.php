@@ -401,8 +401,22 @@ Mi Veris - Inicio
         console.log(data);
 
         if (data.code == 200){
-            //dataCita.facturacion = data.data;
-            //mostrarInfo();
+            let elem = ``;
+            if(data.data !== null && data.data.length > 0){
+                $.each(data.data, function(key, value){
+                    elem += `<p class="text-veris text-start fw-medium fs--2 mb-0">${capitalizarElemento(value.examenes)}</p>`;
+                    if(value.preparacionPrevia !== null && value.preparacionPrevia.length > 0){
+                        $.each(value.preparacionPrevia, function(k,v){
+                            elem += `<p class="fw-light text-start fs--2 line-height-16 mb-1">${v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()}</p>`
+                        })
+                    }
+                    elem += `<hr class="mb-2 mt-2">`
+                })
+            }else{
+                elem += `<p class="text-veris text-center fw-medium fs--1 mt-5 mb-0">No existe información.</p>`
+            }
+            $('.items-preparacion').html(elem);
+            $('#modalPreparacionPrevia').modal("show")
         }
     }
 
