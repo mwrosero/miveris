@@ -360,7 +360,7 @@ Mi Veris - Doctores favoritos
                         ruta = `#`;
                     }
                     let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item mb-2">
+                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item mb-2" data-bs-dismiss="modal">
                                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
                                         <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">

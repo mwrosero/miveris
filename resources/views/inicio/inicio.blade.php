@@ -296,7 +296,10 @@ Mi Veris - Inicio
             location = $(this).attr('url-rel');
         });
 
-
+        $(document).on('click', '.btn-preparacionPrevia', function(){
+            let data = $(this).data('rel');
+            obtenerPreparacionPrevia(data.codigoSolicitud)
+        })
 
         // btn-pagar para redireccionar a la pagina de pago
         $(document).on('click', '.btn-pagar', function(){
@@ -388,6 +391,20 @@ Mi Veris - Inicio
         });
 
     });
+
+    async function obtenerPreparacionPrevia(codigoSolicitud){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ codigoSolicitud }`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            //dataCita.facturacion = data.data;
+            //mostrarInfo();
+        }
+    }
 
     async function eliminarReserva(){
         let args = [];
@@ -697,8 +714,18 @@ Mi Veris - Inicio
 
             let tituloCard = capitalizarElemento(citas.especialidad);
             if(citas.esLabDomicilio && citas.esLabDomicilio == "S"){
+                let prestaciones = ``;
+                let count = 0;
+                $.each(citas.pacientes, function(k,v){
+                    $.each(v.examenes, function(k1,v1){
+                        if(count < 3){
+                            count++;
+                            prestaciones +=`<li class="text-nowrap overflow-hidden text-truncate fs--3 line-height-12">${v1.nombreExamen}${(v.examenes.length < 3 || count == 3) ? `...` : ``}</li>`;
+                        }
+                    })
+                })
                 tituloCard = `Solicitud de laboratorio a domicilio - ${citas.codigoSolicitud}`;
-                elemento += `<div class="swiper-slide frank">
+                elemento += `<div class="swiper-slide">
                     <div class="card h-100">
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `
@@ -706,35 +733,26 @@ Mi Veris - Inicio
                             ` : ''}
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
-                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
+                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: #D84315;"><i class="fa-solid fa-circle"></i> Pago pendiente</span>
                             </div>
-                            <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
+                            <ul class="fw-normal fs--2 line-height-16 mb-1 p-0">
+                                ${ prestaciones }
+                            </ul>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
-                            <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
                         </div>
-                        <div class="card-footer pt-0 pb--2 px--2 d-flex ${classElem} align-items-center">
-                            ${citas.estaPagada === "N" ? `
-                                <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
-                            ` : ''}
+                        <div class="card-footer pt-0 pb--2 px--2 d-flex justify-content-end align-items-center">
                             <div class="mt-auto">
-                                ${citas.permiteCambiar == "S" ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
-                                ` : `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
-                                        <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
-                                    </div>`
-                                }
                                 ${citas.estaPagada === "N" ? `
+                                <div class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>
                                 <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
-                                ` : ''}
+                                ` : `<div class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>`}
                             </div>
-                            ${esConsultaOnline && citas.estaPagada == "S" ? `
-                                <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
-                            ` : ''}
                         </div>
                     </div>
                 </div>`;
             }else{
-                elemento += `<div class="swiper-slide frank">
+                elemento += `<div class="swiper-slide">
                     <div class="card h-100">
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `

@@ -372,7 +372,7 @@ Mi Veris - Citas - Laboratorio
                                                                     <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                                 </div>
                                                                 <div>
-                                                                    ${determinarCondicionesBotones(detalles, estado)} 
+                                                                    ${determinarCondicionesBotones(detalles, estado, laboratorio)} 
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -449,11 +449,11 @@ Mi Veris - Citas - Laboratorio
     // descargar documento pdf
     async function descargarDocumentoPdf(datos){
         console.log('datosPdf', datos);
-        console.log('dataSecuenciaAtencion', datos.secuenciaAtenciones);
+        console.log('dataSecuenciaAtencion', datos.datosServicio.secuenciaAtenciones);
         let args = [];
         let canalOrigen = _canalOrigen
         
-        args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.idOrden}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.datosServicio.secuenciaAtencion}&tipoServicio=ORDEN&numeroOrden=${datos.datosServicio.idOrden}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
