@@ -737,10 +737,10 @@ Mi Veris - Citas - Mis citas
             console.log('convenioss', convenios);
             elemento += `
                         <div data-rel='${JSON.stringify(convenios)}' url-rel='${url}' class="convenio-item">
-                            <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                            <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                 <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
-                                <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
-                                    ${convenios.nombreConvenio}
+                                <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer text-primary-veris fs--1 line-height-16">
+                                    ${capitalizarCadaPalabra(convenios.nombreConvenio)}
                                 </label> 
                             </div>
                         </div>`;
