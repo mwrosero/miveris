@@ -345,7 +345,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $('#btn-pagar').removeClass('d-none');
 
             if((data.data.mensajeValidacion !== "" && data.data.mensajeValidacion !== null) || (data.data.mensajeValidacion2 !== "" && data.data.mensajeValidacion2 !== null)){
-                $('#mensajeError').html(`${data.data.mensajeValidacion} <br> ${data.data.mensajeValidacion2}`);
+                $('#mensajeError').html(`${data.data.mensajeValidacion} <br> ${(data.data.mensajeValidacion2 !== null) ? data.data.mensajeValidacion2 : ""}`);
                 $('.btn-action-error').addClass('d-none');
                 if(data.data.aplicaCondicionesSeguro){
                     //redirecciona al home
