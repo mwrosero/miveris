@@ -41,6 +41,23 @@ Mi Veris - Órdenes externas
         </div>
     </div>
 
+    <!-- Modal infomracion de la solicitud -->
+    <div class="modal fade" id="informacionSolicitud" tabindex="-1" aria-labelledby="informacionSolicitudLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Información') }}</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris" id = "mensajeInformacionSolicitud"></p>
+                </div>
+                <div id="footerInformacionCita">
+                    <div class="modal-footer pt-0 pb-3 px-3">
+                        <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Órdenes externas') }}</h5>
     </div>
@@ -115,6 +132,11 @@ Mi Veris - Órdenes externas
 
         $('body').on('click', '.btn-agregar-orden-externa', function(){
             $('#nombrePersonaOrdenExterna').html($('input[name="listGroupRadios"]:checked').data('rel').primerNombre);
+        })
+
+        $('body').on('click', '.btn-informacion', function(){
+            $('#mensajeInformacionSolicitud').html($(this).attr("msg-rel"));
+            $("#informacionSolicitud").modal("show");
         })
 
         $('body').on('click', '.btn-pagar', async function(){
@@ -475,6 +497,10 @@ Mi Veris - Órdenes externas
                     elemento = `<button type="button" url-rel="${ruta}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-pagar btn-primary-veris fs--1 line-height-16 fw-medium px-3 py-2">Pagar</button>`;
                 }
                 
+            }else{
+                if(data.aplicoDomicilio == "N"){
+                    elemento = `<div class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" msg-rel='${data.mensajePago}'><i class="fa-solid fa-circle-info me-2 line-height-20"></i>Información</div>`;
+                }
             }
             if(data.aplicoDomicilio == "S"){
                 elemento = `<button type="button" url-rel="/citas-elegir-fecha-doctor/{{ $tokenCita }}" data-rel='${JSON.stringify(data)}' class="btn btn-sm btn-solicitar btn-primary-veris fs--1 line-height-16 fw-medium px-3 py-2">Solicitar</button>`;

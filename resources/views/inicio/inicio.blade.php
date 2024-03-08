@@ -440,7 +440,7 @@ Mi Veris - Inicio
                     elem += `<hr class="mb-2 mt-2">`
                 })
             }else{
-                elem += `<p class="text-veris text-center fw-medium fs--1 mt-5 mb-0">No existe información.</p>`
+                elem += `<p class="text-veris text-center fw-medium fs--1 mt-5 mb-5">No existe preparación previa para estos exámenes.</p>`
             }
             $('.items-preparacion').html(elem);
             $('#modalPreparacionPrevia').modal("show")
