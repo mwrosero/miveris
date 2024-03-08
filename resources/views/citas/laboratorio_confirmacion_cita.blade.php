@@ -45,33 +45,45 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <div class="row justify-content-center">
             <div class="col-auto col-md-6 col-lg-5">
                 <div class="card">
+                    <div class="card-header' border-24" style="background: var(--neutral-05, #F3F4F5);">
+                        <div class="row g-3">
+                            <div class="col-md-12" id="listaPrestaciones">
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <form class="row g-3">
-                             
                             <div class="col-md-12">
                                 <label for="fechaAtencion" class="form-label fw-semibold">{{ __('Fecha de la atención') }} </label>
-                                <input readonly type="text" class="form-control fs--1 p-3 bg-neutral" name="fechaAtencion" id="fechaAtencion" value="" readonly />
+                                <input readonly type="text" class="form-control fs--1 p-3 bg-neutral" name="fechaAtencion" id="fechaAtencion" value="" disabled />
                                 <div class="invalid-feedback">
                                     Ingrese una fecha de atención
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <label for="horarioLlegada" class="form-label fw-semibold">{{ __('Horario de llegada') }} </label>
-                                <input readonly type="text" class="form-control fs--1 p-3 bg-neutral" name="horarioLlegada" id="horarioLlegada" value="" readonly />
+                                <input readonly type="text" class="form-control fs--1 p-3 bg-neutral" name="horarioLlegada" id="horarioLlegada" value="" disabled />
                                 <div class="invalid-feedback">
                                     Ingrese un horario de llegada
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <label for="nombrePaciente" class="form-label fw-semibold">{{ __('Nombre del paciente') }} </label>
-                                <input readonly type="text" class="form-control fs--1 p-3 bg-neutral" name="nombrePaciente" id="nombrePaciente" value="" readonly />
+                                <input readonly type="text" class="form-control fs--1 p-3 bg-neutral" name="nombrePaciente" id="nombrePaciente" value="" disabled />
+                                <div class="invalid-feedback">
+                                    Ingrese un nombre de paciente
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="direccion" class="form-label fw-semibold">{{ __('Dirección') }} </label>
+                                <input readonly type="text" class="form-control fs--1 p-3 bg-neutral" name="direccion" id="direccion" value="" disabled />
                                 <div class="invalid-feedback">
                                     Ingrese un nombre de paciente
                                 </div>
                             </div>
                             <div class="col-md-12">
                                 <label for="telefono" class="form-label fw-semibold">{{ __('Teléfono') }} </label>
-                                <input readonly type="text" class="form-control fs--1 p-3 bg-neutral" name="telefono" id="telefono" value="" readonly />
+                                <input readonly type="text" class="form-control fs--1 p-3 bg-neutral" name="telefono" id="telefono" value="" disabled />
                                 <div class="invalid-feedback">
                                     Ingrese un teléfono
                                 </div> 
@@ -100,6 +112,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let fechaAtencion = dataCita.fecha;
     let horarioLlegada = dataCita.horario.rangoAtencion;
     let nombrePaciente = dataCita.ordenExterna.nombrePaciente;
+    let direccion = dataCita.ordenExterna.direccion;
     let telefono = dataCita.ordenExterna.telefono;
     let codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;
     let codigoProfesional = dataCita.horario.codigoProfesional;
@@ -114,8 +127,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         document.getElementById('fechaAtencion').value = fechaAtencion;
         document.getElementById('horarioLlegada').value = horarioLlegada;
         document.getElementById('nombrePaciente').value = nombrePaciente;
+        document.getElementById('direccion').value = direccion;
         document.getElementById('telefono').value = telefono;
         document.getElementById('btnConfirmarPagar').disabled = false;
+
+        $.each(dataCita.ordenExterna.pacientes, function(key, paciente){
+            llenarListaExamenes(paciente, '#listaPrestaciones');
+        })
     });
 
 
@@ -160,6 +178,51 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             console.log('data', data);
             return data;
         }
+    }
+
+    function llenarListaExamenes(paciente, idElement) {
+        let elemento = '';
+
+        // Limitar la lista de exámenes a mostrar inicialmente
+        const examenesLimitados = paciente.examenes.slice(0, 3);
+        const mostrarVerTodo = paciente.examenes.length > 3;
+
+        // Construir el contenido inicial de la lista, separando el nombre del paciente
+        elemento += `
+            <div class="card-body p-2">
+                <div class="examenLista">
+                    <h6 class="fw-medium mb-0">${paciente.nombrePacienteOrden}</h6>
+                    <div class="listaExamenes">
+                        ${examenesLimitados.map(examen => `
+                            <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
+                        `).join('')}
+                        ${mostrarVerTodo ? '<p class="fw-small fs--2 mb-0 text-primary cursor-pointer ver-todo" paciente-rel="'+paciente.numeroIdentificacion+'">Ver todo</p>' : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        $(idElement).append(elemento);
+
+        // Delegar el evento clic desde el elemento #listaMedicos para manejar "Ver todo" y "Ver menos"
+        $('#listaMedicos').off('click', '.ver-todo').on('click', '.ver-todo', function() {
+            const isExpanded = $(this).hasClass('expanded');
+            $(this).toggleClass('expanded');
+
+            if (!isExpanded) {
+                // Mostrar todos los exámenes
+                const fullExamenesList = examenes.map(examen => `
+                    <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
+                `).join('');
+                $(this).closest('.examenLista').find('.listaExamenes').html(fullExamenesList + '<p class="fw-small fs--2 mb-0 text-primary cursor-pointer ver-todo expanded">Ver menos</p>');
+            } else {
+                // Volver a mostrar solo los exámenes limitados
+                const limitedExamenesList = examenesLimitados.map(examen => `
+                    <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
+                `).join('');
+                $(this).closest('.examenLista').find('.listaExamenes').html(limitedExamenesList + '<p class="fw-small fs--2 mb-0 text-primary cursor-pointer ver-todo">Ver todo</p>');
+            }
+        });
     }
 
 </script>
