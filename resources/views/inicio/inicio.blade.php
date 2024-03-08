@@ -301,6 +301,17 @@ Mi Veris - Inicio
             obtenerPreparacionPrevia(data.codigoSolicitud)
         })
 
+        $(document).on('click', '.btn-pagar-lab', async function(){
+            let params = {};
+            let data = JSON.parse($(this).attr("data-rel"));
+            const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
+            params.paciente = paciente.data
+            params.ordenExterna = data;
+            params.origen = 'ordenExterna'; 
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location.href = `/citas-datos-facturacion/{{ $tokenCita }}`;
+        })
+
         // btn-pagar para redireccionar a la pagina de pago
         $(document).on('click', '.btn-pagar', function(){
             let data = $(this).data('rel');
@@ -391,6 +402,22 @@ Mi Veris - Inicio
         });
 
     });
+
+    async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        
+        const data = await call(args);
+        console.log('datosUsuario',data);
+        if (data.code == 200) {
+            return data;
+        }
+        return [];
+    } 
+
 
     async function obtenerPreparacionPrevia(codigoSolicitud){
         let args = [];
@@ -762,7 +789,7 @@ Mi Veris - Inicio
                             <div class="mt-auto">
                                 ${citas.estaPagada === "N" ? `
                                 <div class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>
-                                <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar-lab" data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                 ` : `<div class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>`}
                             </div>
                         </div>
