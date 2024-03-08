@@ -44,13 +44,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-auto col-md-6 col-lg-5">
-                <div class="card">
-                    <div class="card-header' border-24" style="background: var(--neutral-05, #F3F4F5);">
-                        <div class="row g-3">
-                            <div class="col-md-12" id="listaPrestaciones">
-                            </div>
+                <div class="card bg-transparent shadow-none">
+                    <div class="card-body pb-0">
+                        <div class="g-3 bg-white shadow-sm rounded p-3" id="listaPrestaciones">
                         </div>
                     </div>
+                </div>
+                <div class="card bg-transparent shadow-none">
                     <div class="card-body">
                         <form class="row g-3">
                             <div class="col-md-12">
@@ -120,6 +120,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let codigoPlanificacion = dataCita.horario.codigoPlanificacion;
     let lineaDetalle = dataCita.horario.lineaDetalle;
     let fecha = dataCita.fecha;
+    let examenes;
 
 
     // llamar al dom
@@ -130,6 +131,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         document.getElementById('direccion').value = direccion;
         document.getElementById('telefono').value = telefono;
         document.getElementById('btnConfirmarPagar').disabled = false;
+
+        examenes = dataCita.ordenExterna.pacientes[0].examenes;
 
         $.each(dataCita.ordenExterna.pacientes, function(key, paciente){
             llenarListaExamenes(paciente, '#listaPrestaciones');
@@ -188,24 +191,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         const mostrarVerTodo = paciente.examenes.length > 3;
 
         // Construir el contenido inicial de la lista, separando el nombre del paciente
-        elemento += `
-            <div class="card-body p-2">
-                <div class="examenLista">
-                    <h6 class="fw-medium mb-0">${paciente.nombrePacienteOrden}</h6>
-                    <div class="listaExamenes">
-                        ${examenesLimitados.map(examen => `
-                            <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
-                        `).join('')}
-                        ${mostrarVerTodo ? '<p class="fw-small fs--2 mb-0 text-primary cursor-pointer ver-todo" paciente-rel="'+paciente.numeroIdentificacion+'">Ver todo</p>' : ''}
-                    </div>
+        elemento += `<div class="examenLista">
+                <h6 class="fw-medium mb-0">${paciente.nombrePacienteOrden}</h6>
+                <div class="listaExamenes">
+                    ${examenesLimitados.map(examen => `
+                        <p class="fw-small fs--2 mb-0">${examen.nombreExamen}</p>
+                    `).join('')}
+                    ${mostrarVerTodo ? '<p class="fw-small fs--2 mb-0 text-primary cursor-pointer ver-todo" paciente-rel="'+paciente.numeroIdentificacion+'">Ver todo</p>' : ''}
                 </div>
             </div>
         `;
 
         $(idElement).append(elemento);
 
-        // Delegar el evento clic desde el elemento #listaMedicos para manejar "Ver todo" y "Ver menos"
-        $('#listaMedicos').off('click', '.ver-todo').on('click', '.ver-todo', function() {
+        // Delegar el evento clic desde el elemento #listaPrestaciones para manejar "Ver todo" y "Ver menos"
+        $('#listaPrestaciones').off('click', '.ver-todo').on('click', '.ver-todo', function() {
             const isExpanded = $(this).hasClass('expanded');
             $(this).toggleClass('expanded');
 
