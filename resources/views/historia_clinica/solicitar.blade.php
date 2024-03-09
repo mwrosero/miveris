@@ -81,7 +81,8 @@ Mi Veris - Historia clínica
                 document.getElementById('fechaHasta').disabled = false;
                 fechaHastaPicker = flatpickr("#fechaHasta", {
                     minDate: dateStr,
-                    maxDate: new Date().fp_incr(0)
+                    maxDate: new Date().fp_incr(0),
+                    locale: _langDate,
                 });
             }
         }
