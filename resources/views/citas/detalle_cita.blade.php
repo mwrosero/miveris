@@ -23,7 +23,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endphp
 <!-- Modal de error -->
 <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
         <div class="modal-content">
             <div class="modal-body text-center p-3 pb-0">
                 <h1 class="modal-title fs--20 line-height-24 my-3">Información de tu seguro</h1>

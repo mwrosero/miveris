@@ -13,7 +13,7 @@ Mi Veris - Citas - Laboratorio
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-24 fw-medium my-3">{{ __('Veris') }}</h1>
@@ -27,7 +27,7 @@ Mi Veris - Citas - Laboratorio
     </div>
     <!-- Modal información -->
     <div class="modal fade" id="modalInformacion" tabindex="-1" aria-labelledby="modalInformacionLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-24 fw-medium my-3">{{ __('Información') }}</h1>

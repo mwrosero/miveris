@@ -56,7 +56,7 @@ Mi Veris - Doctores favoritos
     </div>
     <!-- Modal noPermiteReserva-->
     <div class="modal fade" id="noPermiteReserva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="noPermiteReservaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
                     <div class="text-center">
@@ -72,7 +72,7 @@ Mi Veris - Doctores favoritos
     </div>
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>
@@ -86,7 +86,7 @@ Mi Veris - Doctores favoritos
     </div>
     <!-- Modal -->
     <div class="modal fade" id="eliminarDoctorModal" tabindex="-1" aria-labelledby="eliminarDoctorModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-0">
                     <h5 class="fs-20 fw-medium line-height-24 my-3">Eliminar doctor</h5>

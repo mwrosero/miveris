@@ -43,7 +43,7 @@ Mi Veris - Órdenes externas
 
     <!-- Modal infomracion de la solicitud -->
     <div class="modal fade" id="informacionSolicitud" tabindex="-1" aria-labelledby="informacionSolicitudLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Información') }}</h1>

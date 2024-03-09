@@ -11,7 +11,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal tu cita ha sido agendada -->
     <div class="modal fade" id="modalCitaAgendada" tabindex="-1" aria-labelledby="modalCitaAgendadaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Tu cita ha sido agendada</h1>
@@ -26,7 +26,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     </div>
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3 pb-2">Solicitud fallida</h1>

@@ -9,7 +9,7 @@ Mi Veris - Resultados
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- modal -->
     <div class="modal fade" id="resultadImagenesProcedimientosModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3" id="modalBody">
                     <!-- contenido dinamico -->
@@ -19,12 +19,12 @@ Mi Veris - Resultados
     </div>
     <!-- modal  ha ocurrido un error -->
     <div class="modal fade" id="haOcurridoUnErrorModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3" id="modalBody">
                     <div class="text-center">
                         <h5 class="fs--20 line-height-24 mt-3">Veris</h5>
-                        <p class="fs--1 mb-3">Ha ocurrido un error inesperado</p>
+                        <p class="fs--1 mb-3 text-veris">Ha ocurrido un error inesperado</p>
                         <button type="button" class="btn btn-primary-veris shadow-none fs--18 line-height-24 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
                     </div>
                 </div>
