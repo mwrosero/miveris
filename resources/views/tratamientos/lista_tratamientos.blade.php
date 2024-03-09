@@ -226,7 +226,7 @@ $tokenMods = base64_encode(uniqid());
         <div class="row g-0">
             <div class="col-md-12">
                 <div class="card rounded-0 border-0 shadow-none">
-                    <div class="card-body p-3 pb-0">
+                    <div class="card-body p-3 pb-2">
                         <div class="row gx-0 justify-content-between align-items-center">
                             <div class="col-9 col-md-10" id="datosTratamientoCard">
                                 <!-- datos del tratamiento -->
@@ -249,9 +249,8 @@ $tokenMods = base64_encode(uniqid());
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-end rounded-0 px-3 pb-2">
-                        <a href="#" class="btn btn-sm btn-label-primary-veris px-3 mb-2" id="verPdf"
-                        >Ver PDF</a>
+                    <div class="card-footer d-flex justify-content-end rounded-0 px-3 pb-3">
+                        <a href="#" class="btn btn-sm btn-label-primary-veris fs--1 px-3" id="verPdf">Ver PDF</a>
                     </div>
                 </div>  
                 <div class="card rounded-0 border-0" id="cardPromocion">
@@ -748,10 +747,10 @@ $tokenMods = base64_encode(uniqid());
         let elemento = '';
         if(datos.datosConvenio.idCliente !== null){
             elemento = `<div class="card rounded-0 border-0">
-                                <div class="card-body p--2 position-relative px-lg-5"
+                                <div class="card-body px-3 py-4 position-relative px-lg-5"
                                     style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
-                                    <h4 class="fs--20 fs-lg-28 fw-medium text-white mb-1">Compra y gestiona</h4>
-                                    <h6 class="fs--16 fs-lg-20 fw-light text-white mb-0">tu <b>tratamiento</b> sin <b>filas</b></h6>
+                                    <h4 class="fs--20 fs-lg-28 fw-medium text-white line-height-24 mb-1">Compra y gestiona</h4>
+                                    <h6 class="fs--16 fs-lg-20 fw-light text-white mb-0">tu <b class="fw-medium">tratamiento</b> sin <b>filas</b></h6>
                                     <div class="d-flex justify-content-end mt-2">
                                         <a href=" ${ruta}
                                         " class="btn btn-sm btn-primary-veris fs--1 fw-medium line-height-16 px-3 py-2 border-0 btn-verPromocion
@@ -764,10 +763,11 @@ $tokenMods = base64_encode(uniqid());
                             </div>`;
         } else {
             elemento = `<div class="card rounded-0 border-0">
-                                <div class="card-body p--2 position-relative px-lg-5"
+                                <div class="card-body px-3 py-4 position-relative px-lg-5"
                                     style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
-                                    <h4 class="fs--20 fs-lg-28 fw-medium text-white mb-1">Descubre la promoción</h4>
-                                    <h6 class="fs--16 fs-lg-20 fw-light text-white mb-0">que <b>MiVeris</b> tiene para ti</h6>
+                                    <h4 class="fs--20 fs-lg-28 fw-medium text-white line-height-24 fw-normal mb-1">Descubre la <b class="fw-medium">promoción</b></h4>
+                                    <h6 class="fs--16 fs-lg-20 fw-light text-white mb-0">que la app <b class="fw-medium">Mi Veris</b></h6>
+                                    <h6 class="fs--16 fs-lg-20 fw-light text-white mb-0">tiene para ti</h6>
                                     <div class="d-flex justify-content-end mt-2">
                                         <a href=" ${ruta}
                                         " class="btn btn-sm btn-primary-veris fs--1 fw-medium line-height-16 px-3 py-2 border-0 btn-verPromocion

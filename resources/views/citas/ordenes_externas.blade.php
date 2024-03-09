@@ -13,11 +13,11 @@ Mi Veris - Órdenes externas
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="nuevaOrdenExternaModal" tabindex="-1" aria-labelledby="nuevaOrdenExternaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-0">
                     <h5 class="fs-24 fw-medium line-height-28 my-3" id="nombrePersonaOrdenExterna"></h5>
-                    <p class="fs--1 line-height-16 mb-3">{{ __('¿Deseas el servicio a domicilio?') }}</p>
+                    <p class="fs--1 line-height-16 text-veris mb-3">{{ __('¿Deseas el servicio a domicilio?') }}</p>
                 </div>
                 <div class="modal-footer justify-content-center pt-0 pb-3 px-3">
                     <a  class="btn btn-primary-veris col-4 fs--18 line-height-24 mx-2 px-4 py-3" id="btnNo">{{ __('No') }}</a>
@@ -28,11 +28,11 @@ Mi Veris - Órdenes externas
     </div>
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-0">
                     <h5 class="fs-24 fw-medium line-height-28 my-3">Solicitud fallida</h5>
-                    <p class="fs--1 line-height-16 mb-3" id="mensajeError"></p>
+                    <p class="fs--1 line-height-16 text-veris mb-3" id="mensajeError"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
@@ -70,12 +70,12 @@ Mi Veris - Órdenes externas
                     </button>
                 </div>
             </div>
-            <div class="mx-n4 px-2 mx-lg-n6 px-lg-6 bg-white mb-3">
+            <div class="mx-n4 px-2 mx-lg-n6 px-lg-6 bg-white mb-3 mb-md-4">
                 <!-- filtro -->
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltrosLaboratorio'])
                 @include('components.offCanvaHC', ['context' => 'contextoLimpiarFiltros'])
             </div>
-            <div class="row gy-3 justify-content-center">
+            <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-9">
                     <div class="row g-3" id="ordenesExternas">
                         <!-- items dinamicos -->
@@ -86,7 +86,7 @@ Mi Veris - Órdenes externas
                 <!-- Mensaje El paciente seleccionado no tiene órdenes disponibles. -->
                 <div class="col-12 col-md-4 d-none" id="mensajeOrdenesExternas">
                     <div class="card bg-transparent shadow-none">
-                        <div class="card-body">
+                        <div class="card-body px-0">
                             <div class="text-center">
                                 <img src="{{ asset('assets/img/svg/doctor_light.svg') }}" class="img-fluid mb-3" alt="">
                                 <h5>El paciente seleccionado no tiene órdenes disponibles.</h5>

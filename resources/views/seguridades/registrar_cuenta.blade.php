@@ -290,7 +290,7 @@
 			
 			e.preventDefault();
 			let errors = false;
-            let msg = `<ul class="ms-0 text-start" id="itemsMsg">`;
+            let msg = `<ul class="ms-0 text-start text-veris" id="itemsMsg">`;
             let existeCuenta = await verificarCuenta();
 			console.log(7,existeCuenta);
             let title = 'Campos requeridos';
@@ -389,7 +389,7 @@
 			console.log('click registrar');
 			e.preventDefault();
 			let errors = false;
-            let msg = `<ul class="ms-0 text-start">`;
+            let msg = `<ul class="ms-0 text-start text-veris">`;
 			let title = 'Campos requeridos';
 
 			// cedula validar vacio 

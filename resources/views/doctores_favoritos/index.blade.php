@@ -90,7 +90,7 @@ Mi Veris - Doctores favoritos
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-0">
                     <h5 class="fs-20 fw-medium line-height-24 my-3">Eliminar doctor</h5>
-                    <p class="fs-1-6 fw-normal line-height-16 mb-3">¿Estás seguro de eliminar este doctor de su lista de favoritos?</p>
+                    <p class="fs-1-6 fw-normal line-height-16 text-veris mb-3">¿Estás seguro de eliminar este doctor de su lista de favoritos?</p>
                 </div>
                 <div class="modal-footer flex-nowrap justify-content-center pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-link text-primary-veris shadow-none fs--1 line-height-16 my-0 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>

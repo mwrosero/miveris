@@ -55,7 +55,7 @@ Mi Veris - Citas - Detalle
         <div class="row justify-content-center">
             <div class="col-auto col-md-5">
                 <div class="card bg-transparent shadow-none">
-                    <div class="card-body p-0">
+                    <div class="card-body px-0">
                         <div class="text-center mb-40">
                             <img src="{{ asset('assets/img/svg/veris-v60.svg') }}" class="img-fluid mb-3" alt="{{ __('veris') }}">
                             <h4 class="fs-24">{{ __('Plan preventivo') }}</h4>
@@ -69,7 +69,7 @@ Mi Veris - Citas - Detalle
                             </div>
                         </div>
                         <div class="card card-border mb-4">
-                            <div class="card-body p-3">
+                            <div class="card-body px-0 py-3">
                                 <p class="fs--2 mt-3 mb-4" id="descripcionPaquete"></p>
                                 <h6 class="text-start fs--1 fw-medium mb-4">DETALLES DE PAQUETE</h6>
                                 <ul class="fs--2 mb-3" id="detallePaquete">

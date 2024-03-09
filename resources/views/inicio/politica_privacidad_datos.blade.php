@@ -12,8 +12,8 @@ Mi Veris - Politica-privacidad-datos
                     <div class="avatar avatar-md mx-auto my-3">
                         <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
                     </div>
-                    <p class="fs--16 fw-medium m-0 my-3">Revisa tu correo</p>
-                    <p class="fs--16 line-height-20 fw-medium text-veris mb-0">Confirma la actualización de tus datos en el correo electrónico que te enviamos</p>
+                    <h5 class="fs--24 line-height-28 text-veris fw-medium m-0 my-3">Revisa tu correo</h5>
+                    <p class="fs--16 line-height-20 text-veris mb-0">Confirma la actualización de tus datos en el correo electrónico que te enviamos</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 fw-medium line-height m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>

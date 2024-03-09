@@ -25,9 +25,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-body text-center p-3">
+            <div class="modal-body text-center p-3 pb-0">
                 <h1 class="modal-title fs--20 line-height-24 my-3">Información de tu seguro</h1>
-                <p class="fs--1 fw-normal" id="mensajeError"></p>
+                <p class="fs--1 line-height-16 text-veris fw-normal" id="mensajeError"></p>
             </div>
             <div class="modal-footer pt-0 pb-3 px-3">
                 <a href="tel:+59346009600" id="btn-lamar" class="btn btn-primary-veris d-none m-0 w-100 px-4 py-3 mb-2"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
@@ -302,7 +302,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(porcentajeDescuentos == 0 && permiteReserva == "S" && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                         <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
-                        <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Puedes <b>reagendar</b> tu cita las veces que necesites.</p>
+                        <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Puedes <b class="fw-medium text-veris">reagendar</b> tu cita las veces que necesites.</p>
                     </div>`;
             }
             //Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.
@@ -316,7 +316,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 if((dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") && valorTotalCopago > 0) {
                     elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                             <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
-                            <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Recuerda que para poder conectarte a tu cita <b>debes pagarla en los próximos 30 minutos</b>.</p>
+                            <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Recuerda que para poder conectarte a tu cita <b class="fw-medium text-veris">debes pagarla en los próximos 30 minutos</b>.</p>
                         </div>`;
                 }
             }
@@ -324,7 +324,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 if((dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") && valorTotalCopago > 0){
                     elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                             <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
-                            <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;"><b>Recuerda</b> llegar <b>20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
+                            <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;"><b class="fw-medium">Recuerda</b> llegar <b class="fw-medium text-veris">20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
                         </div>`;
                 }
             }
