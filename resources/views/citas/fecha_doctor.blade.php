@@ -524,6 +524,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }
 
+        let codigoMedico = "";
+        if(dataCita.codigoMedicoFavorito){
+            codigoMedico = dataCita.codigoMedicoFavorito
+        }
         // console.log(fechaSeleccionada);
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
@@ -532,10 +536,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         const data = await call(args);
         let listaMedicos = $('#listaMedicos');
         listaMedicos.empty();
+        let newArrayCard;
+        if(codigoMedico != ""){
+            newArrayCard = data.data.filter(item => item.codigoMedico === parseInt(codigoMedico))
+        }else{
+            newArrayCard = data.data;
+        }
+        console.log(newArrayCard)
         if (data.code == 200){
             let elemento = '';
-            if(data.data.length > 0){
-                data.data.forEach((medico) => {
+            if(newArrayCard.length > 0){
+                newArrayCard.forEach((medico) => {
                     elemento += `<div class="card shadow-none mb-3">
                         <div class="card-body p--2">
                             <div class="row g-2">

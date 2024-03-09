@@ -66,7 +66,7 @@ Mi Veris - Mis Datos
                                     </div>
                                     <div class="col-md-12">
                                         <label for="fechaNacimiento" class="form-label fw-medium fs--1">{{ __('Fecha de nacimiento') }} *</label>
-                                        <input type="date" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" required />
+                                        <input type="date" lang="es" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" required />
                                         <div class="invalid-feedback">
                                             Looks good!
                                         </div>
