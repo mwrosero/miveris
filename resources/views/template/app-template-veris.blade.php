@@ -119,6 +119,21 @@
         </div>
     </div>
 
+    <!-- Modal preparación previa -->
+    <div class="modal fade" id="modalPreparacionPrevia" tabindex="-1" aria-labelledby="modalPreparacionPreviaCitaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3 pb-0">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Preparación previa</h1>
+                    <div class="items-preparacion"></div>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3 d-flex justify-content-end align-items-end">
+                    <div class="text-veris fs--1 fw-medium cursor-pointer text-center" data-bs-dismiss="modal">Aceptar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="modalError400" tabindex="-1" aria-labelledby="modalError400Label" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">

@@ -18,7 +18,7 @@ Mi Veris - Citas - Familia y amigos
                     </div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+                    <a href="/familia-amigos-lista" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</a>
                 </div>
             </div>
         </div>

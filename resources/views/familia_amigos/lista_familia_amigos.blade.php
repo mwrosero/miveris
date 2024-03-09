@@ -114,8 +114,7 @@ Mi Veris - Citas - Familia y amigos
         console.log('data', data);
         if(data.code == 200){
             familiar = data.data;
-            mostrarDatosEnDiv();
-
+            mostrarDatosEnDiv(data.message);
         }
         return data;
     }
@@ -142,37 +141,41 @@ Mi Veris - Citas - Familia y amigos
     }
 
     // funciones jquery
-    function mostrarDatosEnDiv() {
+    function mostrarDatosEnDiv(msg) {
         const data = familiar;
         const divContenedor = document.getElementById('familia-lista');
         // Limpiar el contenido actual
         divContenedor.innerHTML = '';
         // Iterar sobre los datos y crear elementos para cada familiar
-        data.forEach(familiar => {
-            let elem = `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
-                            <div class="col-auto">
-                                <p class="text-veris fs--1 fw-medium line-height-16 mb-1" id="nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
-                                <p class="fs--3 line-height-12 mb-1" id="parentezco">${capitalizarElemento(familiar.parentesco)}</p>
-                            </div>
-                            <div class="d-flex">
-                                <button type="button" class="btn p-0 text-danger shadow-none me-2 eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}" nombre-familiar="${familiar.primerNombre} ${familiar.primerApellido}">
-                                    <img src="{{asset('assets/img/svg/Tacho.svg')}}" class="" alt="eliminar familiar medico">
-                                </button>
-                                <a href='{{ route("familia.datosFamiliar") }}'; class="btn p-0 text-primary" id="enlaceDetalles" 
-                                onclick="localStorage.setItem('primerNombreFamiliar', '${familiar.primerNombre}');
-                                localStorage.setItem('primerApellidoFamiliar', '${familiar.primerApellido}');
-                                localStorage.setItem('codigoParentesco', '${familiar.codigoParentesco}');
-                                localStorage.setItem('administrador', '${familiar.esAdmin}');
-                                localStorage.setItem('numeroIdentificacion', '${familiar.numeroIdentificacion}');
-                                localStorage.setItem('idRelacion', '${familiar.idRelacion}');">
-                                    <img src="{{asset('assets/img/svg/chevron.svg')}}" class="" alt="eliminar familiar medico">
-                                </a>
-                                <input type="hidden" value="${familiar.idRelacion}" id="idRelacion">
-                            </div>
-                        </label>`;
-            // Agregar el elemento al contenedor en cada iteración
-            $('#familia-lista').append(elem);
-        });
+        let elem = ``;
+        if(familiar !== null){
+            data.forEach(familiar => {
+                elem += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
+                    <div class="col-auto">
+                        <p class="text-veris fs--1 fw-medium line-height-16 mb-1" id="nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
+                        <p class="fs--3 line-height-12 mb-1" id="parentezco">${capitalizarElemento(familiar.parentesco)}</p>
+                    </div>
+                    <div class="d-flex">
+                        <button type="button" class="btn p-0 text-danger shadow-none me-2 eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}" nombre-familiar="${familiar.primerNombre} ${familiar.primerApellido}">
+                            <img src="{{asset('assets/img/svg/Tacho.svg')}}" class="" alt="eliminar familiar medico">
+                        </button>
+                        <a href='{{ route("familia.datosFamiliar") }}'; class="btn p-0 text-primary" id="enlaceDetalles" 
+                        onclick="localStorage.setItem('primerNombreFamiliar', '${familiar.primerNombre}');
+                        localStorage.setItem('primerApellidoFamiliar', '${familiar.primerApellido}');
+                        localStorage.setItem('codigoParentesco', '${familiar.codigoParentesco}');
+                        localStorage.setItem('administrador', '${familiar.esAdmin}');
+                        localStorage.setItem('numeroIdentificacion', '${familiar.numeroIdentificacion}');
+                        localStorage.setItem('idRelacion', '${familiar.idRelacion}');">
+                            <img src="{{asset('assets/img/svg/chevron.svg')}}" class="" alt="eliminar familiar medico">
+                        </a>
+                        <input type="hidden" value="${familiar.idRelacion}" id="idRelacion">
+                    </div>
+                </label>`;
+            });
+        }else{
+            elem += `<p class="fs--16 text-center line-height-20 mb-4">${msg}</p>`;
+        }
+        $('#familia-lista').append(elem);
     }
 </script>
 @endpush

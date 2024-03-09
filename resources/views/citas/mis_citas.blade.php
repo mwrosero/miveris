@@ -276,10 +276,14 @@ Mi Veris - Citas - Mis citas
                                                     if(historial.secuenciaAtencion !== null){
                                                         element += `<button type="button" class="btn btn-sm btn-outline-primary-veris fs--1 shadow-none mb-2 me-1 btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>`;
                                                     }
-                                                        element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>
-                                                            <div class="btn btn-sm btn-primary-veris shadow-none mb-2" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(historial)}'>Reagendar</div>
+                                                    element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>`;
+                                                    if(historial.esImagen == "S"){
+                                                        element += `<a href="/imagenes-procedimientos" target="_blank" class="btn btn-sm btn-primary-veris shadow-none ms-1 mb-2">Reagendar</a>`
+                                                    }else{
+                                                        element += `<div class="btn btn-sm btn-primary-veris shadow-none ms-1 mb-2" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(historial)}'>Reagendar</div>`
+                                                    }
+                                                    element += `</div>
                                                         </div>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>`;
@@ -624,6 +628,7 @@ Mi Veris - Citas - Mis citas
         let url = $(this).attr('url-rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
         console.log('dataCitaa', data);
+        console.log(url)
 
         if(data.permiteReserva == "N"){
             $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
@@ -661,8 +666,7 @@ Mi Veris - Citas - Mis citas
                 "idCita": data.idCita
             }
             params.origen = "inicios";
-            params.convenio = {
-                
+            params.convenio = {                
                 secuenciaAfiliado: data.secuenciaAfiliado,
                 idCliente: data.idCliente,
                 codigoConvenio: data.codigoConvenio,
@@ -678,22 +682,15 @@ Mi Veris - Citas - Mis citas
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
 
             const datosConvenioServicio = await consultarConveniosFecha(data.numeroIdentificacion, data.tipoIdentificacion);
-            
+            console.log(datosConvenioServicio)
             if (datosConvenioServicio.data.length == 0) {
                 location = url;
             } else {
-
                 llenarModalConvenios(datosConvenioServicio.data, url);
-
                 $('#convenioModal').modal('show');
             }
 
-            // location = url;
-
-
          } else {
-
-         
 
             let params = {}
             params.online = data.esVirtual;
@@ -744,24 +741,24 @@ Mi Veris - Citas - Mis citas
             console.log('convenioss', convenios);
             elemento += `
                         <div data-rel='${JSON.stringify(convenios)}' url-rel='${url}' class="convenio-item">
-                            <div class="list-group-item fs--2 rounded-3 p-2 border-0">
+                            <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                 <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
-                                <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer">
-                                    ${convenios.nombreConvenio}
+                                <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer text-primary-veris fs--1 line-height-16">
+                                    ${capitalizarCadaPalabra(convenios.nombreConvenio)}
                                 </label> 
                             </div>
                         </div>`;
                                 
             // agregar convenio ninguno
-            elemento += `
-                        <a href="${url}" class="d-block convenio-ninguno" data-rel='ninguno' id="convenioNinguno">
-                            <div class="list-group-item rounded-3 py-2 px-3 border-0">
-                                <label class="text-primary-veris fs--1 line-height-16 cursor-pointer">
-                                    Ninguno
-                                </label> 
-                            </div>
-                        </a>`;
         });
+        elemento += `
+                    <a href="${url}" class="d-block convenio-ninguno" data-rel='ninguno' id="convenioNinguno">
+                        <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                            <label class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                Ninguno
+                            </label> 
+                        </div>
+                    </a>`;
         divContenedor.append(elemento);
     }
 
@@ -774,7 +771,7 @@ Mi Veris - Citas - Mis citas
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const dataConvenio = await call(args);
         if(dataConvenio.code == 200){
             datosConvenios = dataConvenio.data;
@@ -893,9 +890,13 @@ Mi Veris - Citas - Mis citas
     // }
 
     async function reservaNoPermitida(url, data ){
-        let dataCita = JSON.parse(atob(decodeURIComponent(data)));
-        $('#noPermiteReservaMsg').html(dataCita.convenio.mensajeBloqueoReserva)
-        if(dataCita.convenio.permiteReserva == "S"){
+        let dataConvenio = JSON.parse(data);
+        console.log(url)
+        console.log(dataConvenio)
+        $('#noPermiteReservaMsg').html(dataConvenio.mensajeBloqueoReserva)
+        if(dataConvenio.permiteReserva == "S"){
+            let dataCita = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
+            dataCita.convenio = dataConvenio;
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
             location.href = url;
         }else{

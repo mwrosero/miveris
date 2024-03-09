@@ -167,7 +167,7 @@ Mi Veris - Historia clínica
             "motivo": motivo,
             "fechaDesde": fechaDesde,
             "fechaHasta": fechaHasta,
-            "tipoSolicitud": codigoEspecialidad,
+            "tipoSolicitud": "HC",
             "canalOrigen": _canalOrigen,
             "doctores": doctores
         });

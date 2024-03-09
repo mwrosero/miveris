@@ -9,6 +9,29 @@ Mi Veris - Citas - tratamiento
 @php
 $tokenMods = base64_encode(uniqid());
 @endphp
+<!-- Modal embarazo -->
+<div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3">
+                <div class="text-center">
+                    <div class="avatar avatar-md mx-auto mb-3">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            <i class="fa-solid fa-info fs-2"></i>
+                        </span>
+                    </div>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Información solicitada por tu aseguradora</h1>
+                    <p class="fs--1 fw-normal mb-3 mx-3 line-height-16">¿Esta cita es por control de <b>embarazo</b>?</p>
+                    <input type="hidden" id="datosGen">
+                </div>
+                <div class="d-flex">
+                    <div respuesta-rel="S" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 me-3 btn-respuesta-embarazo">SI</div>
+                    <div respuesta-rel="N" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 btn-respuesta-embarazo">NO</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Modal Convenios -->
 <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -302,10 +325,32 @@ $tokenMods = base64_encode(uniqid());
         // });
     });
 
+    async function validacionConvenio(dataCita){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validacionConvenio`;
+        args["method"] = "POST";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        args["dismissAlert"] = true;
+        args["data"] = JSON.stringify({
+            "idCliente": dataCita.convenio.idCliente,
+            "codigoEspecialidad": parseInt(dataCita.especialidad.codigoEspecialidad),
+            "idPaciente": parseInt(dataCita.paciente.numeroPaciente),
+            "codigoTipoAtencion": null
+        });
+        const data = await call(args);
+        
+        if(data.code == 200){
+            return data.data.requiereControlEmbarazo;
+        }else{
+            return false;
+        }
+    }
+
     // llenar el porcentaje de la barra con los datos del tratamiento
     function llenarPorcentajeBarra(){
         let porcentaje = datosTratamiento.porcentajeAvanceTratamiento;
-        document.getElementById("progress-circle").setAttribute("data-percentage", porcentaje);
+        document.getElementById("progress-circle").setAttribute("data-percentage", roundToDraw(porcentaje));
         // llenar el totalTratamientoEnviados y totalTratamientoRealizados
         // limpiar el contenido
         console.log('datosTratamientoee', datosTratamiento.totalTratamientoEnviados);
@@ -318,7 +363,6 @@ $tokenMods = base64_encode(uniqid());
     // funciones asyncronas
     // obtener tratamientos 
     async function obtenerTratamientos(){
-        $('#datosTratamientoCard').empty();
         let args = [];
         let canalOrigen = _canalOrigen;
         
@@ -332,7 +376,7 @@ $tokenMods = base64_encode(uniqid());
             secuenciaAtencion = data.data;
             ultimoTratamientoData = data.data;
             ultimoTratamiento = data.data;
-                
+            $('#datosTratamientoCard').empty();    
             let datosTratamientoCard =  $('#datosTratamientoCard');
             datosTratamientoCard.empty; // Limpia el contenido actual
             let elemento = `<h5 class="card-title card-g text-primary-veris line-height-24 mb-1">${capitalizarElemento(ultimoTratamiento.nombreEspecialidad)} </h5>
@@ -696,17 +740,13 @@ $tokenMods = base64_encode(uniqid());
 
     // mostrar banner de promocion
     function mostrarBannerPromocion(datos){
-        let params = {};
-        params.codigoTratamiento = codigoTratamiento;
-        params.convenio = ultimoTratamiento.datosConvenio;
-        let ulrParams = btoa(JSON.stringify(params));
+        console.log(datos)
 
         let divContenedor = $('#cardPromocion');
         divContenedor.empty(); // Limpia el contenido actual
         let ruta = "/tu-tratamiento/" + "{{ $tokenMods }}";
         let elemento = '';
-        if(ultimoTratamiento.datosConvenio.length > 0){
-            
+        if(datos.datosConvenio.idCliente !== null){
             elemento = `<div class="card rounded-0 border-0">
                                 <div class="card-body p--2 position-relative px-lg-5"
                                     style="background: linear-gradient(-264deg, #0805A1 1.3%, #1C89EE 42.84%, #3EDCFF 98.49%);">
@@ -719,7 +759,7 @@ $tokenMods = base64_encode(uniqid());
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="tratamiento" />
                                 </div>
                             </div>`;
         } else {
@@ -731,11 +771,11 @@ $tokenMods = base64_encode(uniqid());
                                     <div class="d-flex justify-content-end mt-2">
                                         <a href=" ${ruta}
                                         " class="btn btn-sm btn-primary-veris fs--1 fw-medium line-height-16 px-3 py-2 border-0 btn-verPromocion
-                                        " data-rel='${JSON.stringify(datos)}'>Ver tratamiento</a>
+                                        " data-rel='${JSON.stringify(datos)}'>Ver promoción</a>
                                     </div>
                                 </div>
                                 <div class="position-absolute end-7 bottom-40">
-                                    <img src="{{ asset('/assets/img/card/carrito_promocion.png') }}" class="img-fluid" width="94" alt="carrito_promocion" />
+                                    <img src="{{ asset('/assets/img/svg/regalo.svg') }}" class="img-fluid" width="94" alt="carrito_promocion" />
                                 </div>
                             </div>`;
         }
@@ -935,6 +975,7 @@ $tokenMods = base64_encode(uniqid());
                 case "RECETAS" :
                     let respuestaReceta = ``;
                     if (estado == 'REALIZADO') {
+                        respuestaReceta += ` <button class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                         respuestaReceta += `<button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris btnVerOrden" data-bs-toggle="offcanvas" data-bs-target="#detalleRecetaMedica" aria-controls="detalleRecetaMedica" data-rel='${JSON.stringify(datosServicio)}'>Ver receta</button>`;
                     } else if(estado == "PENDIENTE") {
                         if(datosServicio.aplicaSolicitud != "S"){
@@ -1086,7 +1127,9 @@ $tokenMods = base64_encode(uniqid());
             
             let datos = $(this).data('rel');
             let datosServicio = JSON.parse($(this).attr('datosTratamiento-rel'));
-            console.log(datosServicio)
+            // console.log(datos)
+            // console.log(datosServicio)
+            // return;
             let url = $(this).attr('url-rel');
             if(datos.permiteReserva == "N"){// && datos.esPagada == "N"
                 $('#mensajeNoPermiteCambiar').html(datos.mensajeBloqueoReserva);
@@ -1114,12 +1157,7 @@ $tokenMods = base64_encode(uniqid());
                 nombre : datos.nombreServicio,
             }
             // params.convenio = datosServicio.datosConvenio;
-            params.convenio = {
-                "permitePago": "S",
-                "permiteReserva": "S",
-                "idCliente": null,
-                "codigoConvenio": null,
-            };
+            params.convenio = datosServicio.datosConvenio;
 
             localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
             if (online == 'S') {
@@ -1142,7 +1180,7 @@ $tokenMods = base64_encode(uniqid());
 
     // setear los valores del agendamiento en localstorage
 
-    $(document).on('click', '.btn-agendar', function(){
+    $(document).on('click', '.btn-agendar', async function(){
         let datosServicio = $(this).data('rel');
         let url = $(this).attr('url-rel');
 
@@ -1178,15 +1216,37 @@ $tokenMods = base64_encode(uniqid());
         dataCita.convenio.origen = "Listatratamientos";
 
         dataCita.tratamiento = {
+            cantidadIntervalosReserva: datosServicio.cantidadIntervalosReserva,
             numeroOrden: datosServicio.idOrden,
             codigoEmpOrden: datosServicio.codigoEmpresa,
             lineaDetalle: datosServicio.lineaDetalleOrden,
             esPagada: datosServicio.esPagada
         }
 
-        localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
-        location = url;
+        if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
+            let controlEmbarazo = await validacionConvenio(dataCita);
+            if(controlEmbarazo){
+                $('#datosGen').val(data);
+                $('.btn-respuesta-embarazo').attr("url-rel",$url);
+                $('#modalEmbarazo').modal("show");
+            }else{
+                localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+                location = url;
+            }
+        }else{
+            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+            location = url;
+        }
+        
     });
+
+    $('body').on('click', '.btn-respuesta-embarazo', async function(){
+        let estaEmbarazada = $(this).attr('respuesta-rel');
+        dataCita.estaEmbarazada = estaEmbarazada;
+        localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+        let ruta = $(this).attr('url-rel');
+        location.href = ruta;
+    })
 
     // boton btn-pagar
     $(document).on('click', '.btn-pagar', function(){
@@ -1262,6 +1322,7 @@ $tokenMods = base64_encode(uniqid());
         let data = $(this).data('rel');
         let url = $(this).attr('url-rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
+        // console.log(convenio);return;
 
         if(data.permiteReserva == "N" && data.esPagada != "S"){
             $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);

@@ -671,10 +671,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         let args = [];
         //args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_transaccion_virtual?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
-        args["endpoint"] = api_url +
-        `/${api_war}/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
-        args["method"] = "POST"; args["showLoader"] = true; args
-        ["bodyType"] = "json"; args["data"] = JSON.stringify({            
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["method"] = "POST"; 
+        args["showLoader"] = true; 
+        args["bodyType"] = "json"; 
+        args["data"] = JSON.stringify({            
             "codigoUsuario": "{{ Session::get('userData')->numeroIdentificacion }}",
             "codigoTipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
             "numeroIdentificacion": getInput('numeroIdentificacion'),
@@ -871,6 +872,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     function guardarData(){
+        dataCita.datosIngresadosFactura = {            
+            "codigoTipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
+            "numeroIdentificacion": getInput('numeroIdentificacion'),
+            "nombreFactura": getInput('razonSocial'),
+            "primerNombre": getInput('primerNombre'),
+            "primerApellido": getInput('primerApellido'),
+            "segundoApellido": getInput('segundoApellido'),
+            "direccionFactura": getInput('direccion'),
+            "telefonoFactura": getInput('telefono'),
+            "mailFactura": getInput('mail'),
+            "emailFactura": getInput('mail'),
+        }
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>

@@ -232,8 +232,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let cantidad = '';
+        if(dataCita.tratamiento && dataCita.tratamiento.cantidadIntervalosReserva){
+            cantidad = dataCita.tratamiento.cantidadIntervalosReserva
+        }
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -309,7 +313,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     </div>`;
             }
             if(online == "S"){
-                if(dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") {
+                if((dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") && valorTotalCopago > 0) {
                     elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                             <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
                             <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Recuerda que para poder conectarte a tu cita <b class="fw-medium text-veris">debes pagarla en los próximos 30 minutos</b>.</p>
@@ -317,7 +321,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 }
             }
             if(permitePago == "N"){
-                if(dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S"){
+                if((dataCita.reservaEdit == null || dataCita.reservaEdit.estaPagada !== "S") && valorTotalCopago > 0){
                     elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                             <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
                             <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;"><b class="fw-medium">Recuerda</b> llegar <b class="fw-medium text-veris">20 minutos antes</b> de la cita y acercarte a caja para realizar el pago.</p>
@@ -341,7 +345,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $('#btn-pagar').removeClass('d-none');
 
             if((data.data.mensajeValidacion !== "" && data.data.mensajeValidacion !== null) || (data.data.mensajeValidacion2 !== "" && data.data.mensajeValidacion2 !== null)){
-                $('#mensajeError').html(`${data.data.mensajeValidacion} <br> ${data.data.mensajeValidacion2}`);
+                $('#mensajeError').html(`${data.data.mensajeValidacion} <br> ${(data.data.mensajeValidacion2 !== null) ? data.data.mensajeValidacion2 : ""}`);
                 $('.btn-action-error').addClass('d-none');
                 if(data.data.aplicaCondicionesSeguro){
                     //redirecciona al home

@@ -296,7 +296,21 @@ Mi Veris - Inicio
             location = $(this).attr('url-rel');
         });
 
+        $(document).on('click', '.btn-preparacionPrevia', function(){
+            let data = $(this).data('rel');
+            obtenerPreparacionPrevia(data.codigoSolicitud)
+        })
 
+        $(document).on('click', '.btn-pagar-lab', async function(){
+            let params = {};
+            let data = JSON.parse($(this).attr("data-rel"));
+            const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
+            params.paciente = paciente.data
+            params.ordenExterna = data;
+            params.origen = 'ordenExterna'; 
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location.href = `/citas-datos-facturacion/{{ $tokenCita }}`;
+        })
 
         // btn-pagar para redireccionar a la pagina de pago
         $(document).on('click', '.btn-pagar', function(){
@@ -389,6 +403,50 @@ Mi Veris - Inicio
 
     });
 
+    async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        
+        const data = await call(args);
+        console.log('datosUsuario',data);
+        if (data.code == 200) {
+            return data;
+        }
+        return [];
+    } 
+
+
+    async function obtenerPreparacionPrevia(codigoSolicitud){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ codigoSolicitud }`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+
+        if (data.code == 200){
+            let elem = ``;
+            if(data.data !== null && data.data.length > 0){
+                $.each(data.data, function(key, value){
+                    elem += `<p class="text-veris text-start fw-medium fs--2 mb-0">${capitalizarElemento(value.examenes)}</p>`;
+                    if(value.preparacionPrevia !== null && value.preparacionPrevia.length > 0){
+                        $.each(value.preparacionPrevia, function(k,v){
+                            elem += `<p class="fw-light text-start fs--2 line-height-16 mb-1">${v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()}</p>`
+                        })
+                    }
+                    elem += `<hr class="mb-2 mt-2">`
+                })
+            }else{
+                elem += `<p class="text-veris text-center fw-medium fs--1 mt-5 mb-5">No existe preparación previa para estos exámenes.</p>`
+            }
+            $('.items-preparacion').html(elem);
+            $('#modalPreparacionPrevia').modal("show")
+        }
+    }
+
     async function eliminarReserva(){
         let args = [];
         let canalOrigen = _canalOrigen
@@ -405,6 +463,7 @@ Mi Veris - Inicio
             await obtenerCitas();
             swiperProximasCitas.update();
             swiperProximasCitas.slideTo(0);
+            await obtenerUrgenciasAmbulatorias();
             swiperUrgenciasAmbulatorias.update();
             swiperUrgenciasAmbulatorias.slideTo(0);
         }
@@ -530,10 +589,11 @@ Mi Veris - Inicio
     async function obtenerCitas(){
         let args = [];
         let canalOrigen = _canalOrigen;
-        let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
+        let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0&adicionaSolicitudes=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroPaciente=${numeroPaciente}&numeroIdentificacion=${numeroIdentificacion}&codigoUsuario=${numeroIdentificacion}&version=7.8.0&adicionaSolicitudes=S&soloUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
@@ -553,23 +613,25 @@ Mi Veris - Inicio
     }
 
     // consultar urgencias ambulatorias
+    let citas_vua;
     async function obtenerUrgenciasAmbulatorias(){
         let args = [];
         let canalOrigen = _canalOrigen;
-        let numeroPaciente = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/${api_war}/v1/atencion_prioritaria/ingresos?idPaciente=${numeroPaciente}`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservas/ingresos?idPaciente=${numeroPaciente}&canalOrigen=${_canalOrigen}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
+        citas_vua = '';
         if (data.code == 200) {
-           console.log('exito',data.data.length);
-           if(data.data.length == 0){
+            if(data.data === null || data.data.length == 0){
                 mostrarNoExistenUrgencias();
-              } else {
-                // mostrarUrgenciasAmbulatorias();
-           }
+            } else {
+                citas_vua = data.data
+                mostrarUrgenciasAmbulatorias();
+            }
         }
         return data;
     }
@@ -694,15 +756,54 @@ Mi Veris - Inicio
             mensajeInformacion
             */
 
-            elemento += `
-                <div class="swiper-slide frank">
+            let tituloCard = capitalizarElemento(citas.especialidad);
+            if(citas.esLabDomicilio && citas.esLabDomicilio == "S"){
+                let prestaciones = ``;
+                let count = 0;
+                $.each(citas.pacientes, function(k,v){
+                    $.each(v.examenes, function(k1,v1){
+                        if(count < 3){
+                            count++;
+                            prestaciones +=`<li class="text-nowrap overflow-hidden text-truncate fs--3 line-height-12">${v1.nombreExamen}${(v.examenes.length < 3 || count == 3) ? `...` : ``}</li>`;
+                        }
+                    })
+                })
+                tituloCard = `Solicitud de laboratorio a domicilio - ${citas.codigoSolicitud}`;
+                elemento += `<div class="swiper-slide">
                     <div class="card h-100">
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `
                                 <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
                             ` : ''}
                             <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>
+                                <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
+                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: #D84315;"><i class="fa-solid fa-circle"></i> Pago pendiente</span>
+                            </div>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
+                            <ul class="fw-normal fs--2 line-height-16 mb-1 p-0">
+                                ${ prestaciones }
+                            </ul>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                        </div>
+                        <div class="card-footer pt-0 pb--2 px--2 d-flex justify-content-end align-items-center">
+                            <div class="mt-auto">
+                                ${citas.estaPagada === "N" ? `
+                                <div class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>
+                                <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar-lab" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                ` : `<div class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>`}
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            }else{
+                elemento += `<div class="swiper-slide">
+                    <div class="card h-100">
+                        <div class="card-body p--2">
+                            ${esConsultaOnline ? `
+                                <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
+                            ` : ''}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
                                 <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
                             </div>
                             <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
@@ -730,6 +831,7 @@ Mi Veris - Inicio
                         </div>
                     </div>
                 </div>`;
+            }
         });
         divContenedor.append(elemento);
     }
@@ -752,31 +854,33 @@ Mi Veris - Inicio
 
     // llenar el div de urgencias ambulatorias
     function mostrarUrgenciasAmbulatorias() {
-        let data = datosCitas;
+        let data = citas_vua;
 
         let divContenedor = $('#contenedorUrgenciasAmbulatorias');
         divContenedor.empty(); // Limpia el contenido actual
 
-        let elemento =+ ``;
+        var elemento = ``;
         data.forEach((urgencias) => {
-        let elemento =+ `<div class="swiper-slide">
-                            <div class="card">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(urgencias.modulo)}</h6>
-                                        <span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i>Reservado</span>
-                                    </div>
-                                    <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.nombreSucursal)}</p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">AGO 09, 2022 <b class="hora-cita fw-normal text-primary-veris">10:20 AM</b></p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(urgencias.medico)}</p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.paciente)}</p>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
-                                        <a href="javascript:void(0)" class="btn btn-sm btn-primary-veris fs--1 line-height-16">Nueva fecha</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>`;
+            console.log(urgencias)
+            elemento += `<div class="swiper-slide">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(urgencias.nombreEspecialidad)}</h6>
+                            <span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i>Reservado</span>
+                        </div>
+                        <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.nombreSucursal)}</p>
+                        <p class="fw-normal fs--2 line-height-16 mb-1">${urgencias.fechaAdmision.replace(/\*(.*?)\*/g, '<b class="hora-cita fw-normal text-primary-veris">$1</b>')}</p>
+                        <!--p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(urgencias.medico)}</p-->
+                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.paciente)}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="button" codigoReserva-rel="${urgencias.codigoReserva}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
+                            <a href="https://maps.app.goo.gl/Fndz1pxDUdT3sYyg7" target="_blank" class="btn btn-sm btn-primary-veris fs--1 line-height-16">Cómo llegar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            console.log(elemento)
         });
         divContenedor.append(elemento);
     }
@@ -1000,7 +1104,7 @@ Mi Veris - Inicio
             elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}' class="convenio-item mb-2">
                                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
-                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="cursor-pointer text-primary-veris fs--1 line-height-16">
                                             ${capitalizarCadaPalabra(convenios.nombreConvenio)}
                                         </label> 
                                     </div>

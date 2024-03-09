@@ -153,28 +153,14 @@ Mi Veris - Citas - Confirma tu atención
             "origen": 4,
             "motivoConsulta": "",
             "codigoServicio": dataCita.especialidad.codigoServicio,
-            "canalOrigenAgendamiento": "MVE",
-            "codigoEmpresaRegistro": 1,
-            "codigoSucursalRegistro": null,
-            "porcentajeDescuento": dataCita.horario.porcentajeDescuento,
-            // "permitePago": dataCita.convenio.permitePago,
-            "permitePago": dataCita.convenio.permitePago,
+            "porcentajeDescuento": 0,
+            "permitePago": "S",
+            "valorizacion": 0,
+            "aplicaProntoPago": "N",
+            "aplicaNuevoControl": false,
             "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
-            "canalOrigen": _canalOrigen,
-            "enviarLinkPago": null,
             "tipoProcesoVUA": "INGRESO",
-            /*precio*/
-            //"valorizacion": dataCita.precio.valorCanalVirtual,
-            /*precio o reagendamiento*/
-            //"secuenciaTransaccion": dataCita.precio.secuenciaTransaccion,
-            //"valorCita": dataCita.precio.valorCanalVirtual,
-            //"valorDescuento": dataCita.precio.valorDescuento,
-            //"valorSubtotalCita": dataCita.precio.valor,
-            //"numeroAutorizacion": dataCita.precio.numeroAutorizacion,
-            "esEmbarazada": (dataCita.estaEmbarazada) ? dataCita.estaEmbarazada : "N",
-            "fechaSeleccionada": dataCita.horario.dia2,
-            /*Si estoy modificando/tratamiento o sino N*/
-            "estaPagada": estaPagada
+            
         }
 
         /*Para reagendamiento*/
@@ -183,33 +169,6 @@ Mi Veris - Citas - Confirma tu atención
         if(dataCita.online == "N"){
             datosReserva.codigoSucursal = dataCita.central.codigoSucursal;
         }    
-
-        /*Solo si tiene convenio seleccionado*/
-        if(dataCita.convenio.codigoConvenio){
-            datosReserva.codigoEmpConvenio = 1;
-            datosReserva.codigoConvenio = dataCita.convenio.codigoConvenio;
-            datosReserva.idCliente = dataCita.convenio.idCliente;
-        }
-
-        if(dataCita.tratamiento){
-            if(dataCita.origen && dataCita.origen == "Listatratamientos"){
-                datosReserva.numeroOrden = dataCita.tratamiento.numeroOrden;
-                datosReserva.codigoEmpOrden = dataCita.tratamiento.codigoEmpOrden;
-                datosReserva.lineaDetalle = dataCita.tratamiento.lineaDetalle;
-            }else{
-                datosReserva.numeroOrden = dataCita.tratamiento.numeroOrden;
-                datosReserva.codigoEmpOrden = dataCita.tratamiento.codigoEmpresaOrden;
-                datosReserva.lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
-            }
-        }
-
-        if(dataCita.reservaEdit){
-            /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
-            datosReserva.numeroOrden = dataCita.reservaEdit.numeroOrden;
-            datosReserva.codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden;
-            datosReserva.lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden;
-            datosReserva.codigoReservaCambio = dataCita.reservaEdit.idCita;
-        }
 
         args["data"] = JSON.stringify(datosReserva);
         const data = await call(args);

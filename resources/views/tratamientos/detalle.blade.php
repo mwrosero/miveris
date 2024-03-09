@@ -78,7 +78,7 @@ Mi Veris - Citas - tratamiento
                             
                             
                         </ul>
-                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion accordion-flush d-none" id="accordionFlushNoIncluidos">
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
                                     <button class="accordion-button collapsed fw-normal text-veris fs--2 bg-labe-grayish" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
@@ -87,7 +87,7 @@ Mi Veris - Citas - tratamiento
                                 </h2>
                                 <div>
                                     <!-- items servicios no incluidos -->
-                                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushNoIncluidos">
                                         <div class="accordion-body" >Placeholder content for this accordion, which is intended to demonstrate the <code>.accordion-flush</code> class. This is the first item's accordion body.</div>
                                     </div>
 
@@ -132,20 +132,26 @@ Mi Veris - Citas - tratamiento
         $('.content-img').html(`<img src="${dataCita.convenio.rutaImagenConvenio}" onerror="this.src='{{ asset('assets/img/svg/regalo_abierto.svg') }}'" class="card-img-top">`);
 
         if(dataCita.convenio.idCliente !== null){
-            $('.promo-img').html(`<img src="{{ asset('assets/img/svg/promocionNoDisponible.svg') }}" class="card-img-top" style="max-height:165px;margin-top: -15px;" alt="">`);
+            $('.promo-img').html(`<img src="{{ asset('assets/img/card/carrito_promocion.png') }}" class="card-img-top" alt="">`);
         }
 
-        $('#nombreEspecialidadPromo').html(dataCita.datosTratamiento.nombreEspecialidad);
+        $('#nombreEspecialidadPromo').html(capitalizarCadaPalabra(dataCita.datosTratamiento.nombreEspecialidad));
         $('#iconoEspecialidadPromo').attr("src",dataCita.datosTratamiento.urlImagenEspecialidad);
 
         await valorizacionServicios();
         console.log(dataCita.promocion)
         $('body').on('change','.input-group input', async function(){
             let detalle = JSON.parse($(this).attr("data-rel"));
-            await actualizarValorizacionServicios(detalle, $(this).val(), $(this).attr('index-rel'));
-            console.log(dataCita.promocion);
-            drawNuevosValores();
-            //await drawServicios();
+            console.log("valor: "+$(this).val())
+            console.log("max: "+$(this).attr("max"))
+            if($(this).val() >= 0 && $(this).val() <= $(this).attr("max")){
+                await actualizarValorizacionServicios(detalle, $(this).val(), $(this).attr('index-rel'));
+                console.log(dataCita.promocion);
+                drawNuevosValores();
+                //await drawServicios();
+            }else{
+                console.log("no permite")
+            }
         })
 
         $('#verPdf').click(function(){
@@ -273,12 +279,12 @@ Mi Veris - Citas - tratamiento
     // funcion para manejar los eventos de los botones de los precios
 
     function sumarCantidad(index) {
-        let cantidadMaxima = parseFloat($(`#cantidadServicio-${index}`).attr('max'));
+        let cantidadMaxima = parseFloat($(`#item-${index}`).attr('max'));
 
-        let valorPromocion = parseFloat($(`#valorPromocionHidden-${index}`).val());
-        let valorNormal = parseFloat($(`#valorNormalHidden-${index}`).val());
+        // let valorPromocion = parseFloat($(`#valorPromocionHidden-${index}`).val());
+        // let valorNormal = parseFloat($(`#valorNormalHidden-${index}`).val());
 
-        let cantidad = parseFloat($(`#listaServicios li:nth-child(${index + 1}) .input-group input`).val());
+        let cantidad = parseFloat($(`#item-${index}`).val());
         cantidad++;
 
         if (cantidad > cantidadMaxima) {
@@ -356,7 +362,7 @@ Mi Veris - Citas - tratamiento
     // actualizar la valorizacion de los servicios del tratamiento con un put
 
     async function actualizarValorizacionServicios(detalle, qty, index) {
-        //console.log('-------------'+dataCita.promocion.codigoPreTransaccion)
+        console.log(detalle, qty, index)
         let args = {};
         //let canalOrigenDigital = 'APP_CMV';
         args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${codigoTratamiento}/actualizar_servicio`;
@@ -388,6 +394,10 @@ Mi Veris - Citas - tratamiento
         $('#box-detalle-promocion').removeClass('d-none');
         if(dataCita.promocion.serviciosIncluyeCompra.length == 0){
             $('#box-detalle-promocion').empty();
+            let msg = "Esta promoción ya no está disponible";
+            if(dataCita.convenio.idCliente !== null){
+                msg = "Sin servicios pendientes por comprar";
+            }
             let elem = `<div class="card-body">
                             <div class="text-center">
                                 <div class="avatar avatar-lg mx-auto mb-3">
@@ -396,9 +406,9 @@ Mi Veris - Citas - tratamiento
                                     </span>
                                 </div>
                                 <h3 class="fs--28 line-height-36 fw-medium mb-2">Información</h3>
-                                <p class="fs--16 line-height-20 text-veris mb-5">Esta promoción ya no está disponible</p>
-                                <img src="{{ asset('assets/img/svg/promocionNoDisponible.svg') }}" class="img-fluid mt-3 mb-3 w-50" alt="">
-                                <a href="/" class="btn btn-lg btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3">Volver al inicio</a>
+                                <p class="fs--16 line-height-20 text-veris mb-5">${msg}</p>
+                                <img src="{{ asset('assets/img/card/carrito_promocion.png') }}" class="img-fluid mt-3 mb-3" alt="">
+                                <a href="" class="btn btn-lg btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>`;
             $('#box-detalle-promocion').append(elem);
@@ -443,6 +453,10 @@ Mi Veris - Citas - tratamiento
                             </li>`;
             });
             html.append(elemento);
+
+            if(dataCita.promocion.serviciosNoIncluyeCompra.length > 0){
+                $('#accordionFlushNoIncluidos').removeClass('d-none');
+            }
 
             let serviciosNoIncluidos = $('#flush-collapseOne');
             serviciosNoIncluidos.empty();

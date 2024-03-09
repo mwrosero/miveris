@@ -135,7 +135,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             correo = dataRel.correo;
         }
 
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=${dataCita.online}&excluyeNinguno=S  `
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

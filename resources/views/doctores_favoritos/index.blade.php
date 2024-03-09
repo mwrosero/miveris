@@ -10,6 +10,29 @@ Mi Veris - Doctores favoritos
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
+<!-- Modal embarazo -->
+<div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3">
+                <div class="text-center">
+                    <div class="avatar avatar-md mx-auto mb-3">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            <i class="fa-solid fa-info fs-2"></i>
+                        </span>
+                    </div>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Información solicitada por tu aseguradora</h1>
+                    <p class="fs--1 fw-normal mb-3 mx-3 line-height-16">¿Esta cita es por control de <b>embarazo</b>?</p>
+                    <input type="hidden" id="datosGen">
+                </div>
+                <div class="d-flex">
+                    <div respuesta-rel="S" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 me-3 btn-respuesta-embarazo">SI</div>
+                    <div respuesta-rel="N" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 btn-respuesta-embarazo">NO</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal convenios-->
     <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
@@ -119,20 +142,77 @@ Mi Veris - Doctores favoritos
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerDoctorFavorito();
 
+        $('#eliminarDoctorModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget); // Botón que activó el modal
+            // extrae el dato de data rel
+            let data = button.data('rel');
+            // setea el valor de data rel en el boton eliminar
+            $('#btnEliminarDoctor').attr('data-rel', data);
+        });
+
+        // eliminar doctor favorito
+        $('body').on('click', '#btnEliminarDoctor', async function () {
+            let secuenciaDoctor = $(this).attr("data-rel");
+            // console.log('Secuencia Doctor:', secuenciaDoctor);
+            await eliminarDoctorFavorito(secuenciaDoctor);
+        });
+
         $('body').on('click','.convenio-item', function(){
             reservaNoPermitida($(this).attr("url-rel"), $(this).attr("data-rel"));
         })
 
+        $('body').on('click', '.btn-respuesta-embarazo', async function(){
+            let dataCita = JSON.parse(atob(decodeURIComponent($('#datosGen').val())));
+            let estaEmbarazada = $(this).attr('respuesta-rel');
+            dataCita.estaEmbarazada = estaEmbarazada;
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+            let url = `/citas-elegir-fecha-doctor/`;
+            let ruta = url + "{{ $tokenCita }}";
+            location.href = ruta;
+        })
+
     });
 
-    async function reservaNoPermitida(url, data ){
+    async function validacionConvenio(dataCita){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validacionConvenio`;
+        args["method"] = "POST";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        args["dismissAlert"] = true;
+        args["data"] = JSON.stringify({
+            "idCliente": dataCita.convenio.idCliente,
+            "codigoEspecialidad": parseInt(dataCita.especialidad.codigoEspecialidad),
+            "idPaciente": parseInt(dataCita.paciente.numeroPaciente),
+            "codigoTipoAtencion": null
+        });
+        const data = await call(args);
+        
+        if(data.code == 200){
+            return data.data.requiereControlEmbarazo;
+        }else{
+            return false;
+        }
+    }
+
+    async function reservaNoPermitida(url, data){
         let dataCita = JSON.parse(atob(decodeURIComponent(data)));
         $('#noPermiteReservaMsg').html(dataCita.convenio.mensajeBloqueoReserva)
         if(dataCita.convenio.permiteReserva == "S"){
             // Guardar el objeto actualizado en localStorage
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
-
-            location.href = url;
+            if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
+                let controlEmbarazo = await validacionConvenio(dataCita);
+                if(controlEmbarazo){
+                    $('#datosGen').val(data)
+                    $('#modalEmbarazo').modal("show");
+                }else{
+                    localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+                    location.href = url;
+                }
+            }else{
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+                location.href = url;
+            }
         }else{
             $('#convenioModal').modal('hide');
             var myModal = new bootstrap.Modal(document.getElementById('noPermiteReserva'));
@@ -151,11 +231,11 @@ Mi Veris - Doctores favoritos
         $('#doctoresFavoritos').empty();
 
         args["endpoint"] = api_url + `/${api_war}/v1/perfil/doctores/favoritos?codigoUsuario=${codigoUsuario}&idPersona=${codigoUsuario}&canalOrigen=${canalOrigen}`;
-        console.log(args["endpoint"]);
+        // console.log(args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log('doc',data);
+        // console.log('doc',data);
 
         if (data.data == null) {
             // limpiar el html
@@ -186,7 +266,7 @@ Mi Veris - Doctores favoritos
                                         <p class="fs--1 line-height-16 mb-1">${capitalizarPrimeraLetra(doctores.nombreEspecialidad)}</p>
                                         <div class="d-flex mb-1">
                                             <p class="fs--1 line-height-16 mb-1" style="color: #3D4E66;">Disponibilidad:</p>
-                                            <p class="fs--1 line-height-16 fw-normal mb-0" style="color: #0055AA;" id="disponibilidad">${determinarValorNull(doctores.dia)}</p>
+                                            <p class="fs--1 line-height-16 fw-normal mb-0 text-nowrap overflow-hidden text-truncate disponibilidad" style="color: #0055AA;">${determinarValorNull(doctores.dia)}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -210,7 +290,7 @@ Mi Veris - Doctores favoritos
 
     // consultar convenios 
     async function consultarConvenios(event) {
-        console.log('entro a consultar convenios');
+        // console.log('entro a consultar convenios');
         let listaConvenios = $('#listaConvenios');
         listaConvenios.empty();
         listaConvenios.append(`<div class="text-center p-2"><small>Nos estamos comunicando con tu aseguradora, el proceso puede tardar unos minutos</small></div>`);
@@ -234,7 +314,7 @@ Mi Veris - Doctores favoritos
                 listaConvenios.empty();
                 let elemento = '';
                 data.data.forEach((convenios) => {
-                    console.log('convenioslrrtd', convenios);
+                    // console.log('convenioslrrtd', convenios);
                     let params = {};
                     
                     params.online = dataOnline;
@@ -280,7 +360,7 @@ Mi Veris - Doctores favoritos
                         ruta = `#`;
                     }
                     let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item mb-2">
+                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item mb-2" data-bs-dismiss="modal">
                                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
                                         <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
@@ -396,15 +476,14 @@ Mi Veris - Doctores favoritos
             month: '2-digit',
             year: 'numeric'
         });
-        console.log(fechaHoy);
+        // console.log(doctor);
 
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${canalOrigen}&codigoEmpresa=${doctor.codigoEmpresa}&codigoSucursal=${doctor.codigoSucursal}&codigoEspecialidad=${doctor.codigoEspecialidad}&codigoPrestacion=${doctor.codigoPrestacion}&codigoServicio=${doctor.codigoServicio}&online=${doctor.esOnline}&fechaSeleccionada=${fechaHoy}`;
-        console.log(args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log('doctor',doctor);
-        console.log('disponibilidad',data);
+        // console.log('doctor',doctor);
+        // console.log('disponibilidad',data);
         if (data.data.length == 0) {
             return 'No hay disponibilidad';
         }
@@ -416,14 +495,14 @@ Mi Veris - Doctores favoritos
 
     // eliminar doctor favorito
     async function eliminarDoctorFavorito(secuenciaDoctor) {
-        console.log('secuencia', secuenciaDoctor);
+        // console.log('secuencia', secuenciaDoctor);
         let args = [];
         let codigoUsuario ='{{Session::get('userData')->numeroIdentificacion}}';
         args["endpoint"] = api_url + `/${api_war}/v1/perfil/doctores/favoritos/eliminar?codigoUsuario=${codigoUsuario}&secuenciaDoctor=${secuenciaDoctor}`;
         args["method"] = "DELETE";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log('eliminar',data);
+        // console.log('eliminar',data);
         if (data.code == 200) {
             $('#eliminarDoctorModal').modal('hide');
             await obtenerDoctorFavorito();
@@ -434,23 +513,6 @@ Mi Veris - Doctores favoritos
         }
         return data;
     }
-
-    // funciones js 
-    // setear los valores de data-rel en el modal
-    $('#eliminarDoctorModal').on('show.bs.modal', function (event) {
-        let button = $(event.relatedTarget); // Botón que activó el modal
-        // extrae el dato de data rel
-        let data = button.data('rel');
-        // setea el valor de data rel en el boton eliminar
-        $('#btnEliminarDoctor').attr('data-rel', data);
-    });
-
-    // eliminar doctor favorito
-    $('body').on('click', '#btnEliminarDoctor', async function () {
-        let secuenciaDoctor = $(this).attr("data-rel");
-        console.log('Secuencia Doctor:', secuenciaDoctor);
-        await eliminarDoctorFavorito(secuenciaDoctor);
-    });
 
 </script>
 @endpush
