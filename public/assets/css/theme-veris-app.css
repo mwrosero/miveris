@@ -1191,6 +1191,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .shadow-veris {
   box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 }
+b{font-weight: 500 !important;}
 .btn{
   --bs-btn-padding-x: 1rem !important;
   --bs-btn-padding-y: 0.5rem !important;

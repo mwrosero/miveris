@@ -14,9 +14,9 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 <div class="modal fade" id="modalCobertura" tabindex="-1" aria-labelledby="modalCoberturaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
         <div class="modal-content">
-            <div class="modal-body text-center p-3">
-                <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
-                <p class="fs--1 fw-normal" id="mensajeNoCobertura"></p>
+            <div class="modal-body text-center p-3 pb-0">
+                <h1 class="fs-24 fw-medium line-height-28 my-3">Veris</h1>
+                <p class="fs--1 line-height-16 text-veris mb-3" id="mensajeNoCobertura"></p>
             </div>
             <div class="modal-footer pt-0 pb-3 px-3">
                 <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
@@ -29,9 +29,9 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
     <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
-                <div class="modal-body text-center p-3">
+                <div class="modal-body text-center p-3 pb-0">
                     <i class="bi bi-check-circle-fill text-primary-veris h2"></i>
-                    <p class="fs--1 fw-medium m-0 mt-3" id="mensajeOrden">Orden generada exitosamente</p>
+                    <p class="fs--1 line-height-16 text-veris fw-medium m-0 mt-3" id="mensajeOrden">Orden generada exitosamente</p>
                 </div>
                 <div class="modal-footer pb-3 pt-0 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 line-height-24 w-100 m-0 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
@@ -49,7 +49,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
         <div class="row justify-content-center">
             <div class="col-auto col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none">
-                    <div class="card-body">
+                    <div class="card-body px-0">
                         <form class="row g-3" enctype="multipart/form-data">
                             <div class="col-md-12">
                                 <label for="ciudad" class="form-label fw-medium fs--1">Selecciona tu Ciudad *</label>

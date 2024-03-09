@@ -274,7 +274,7 @@ Mi Veris - Citas - Mis citas
                                                     <div class="d-flex justify-content-end align-items-center mt-3">
                                                         <div>`
                                                     if(historial.secuenciaAtencion !== null){
-                                                        element += `<button type="button" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2 me-1 btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>`;
+                                                        element += `<button type="button" class="btn btn-sm btn-outline-primary-veris fs--1 shadow-none mb-2 me-1 btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>`;
                                                     }
                                                     element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>`;
                                                     if(historial.esImagen == "S"){
