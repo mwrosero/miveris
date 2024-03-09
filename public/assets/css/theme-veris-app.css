@@ -1516,10 +1516,10 @@ a.btn.btn-primary-veris:not([href]):hover {
     min-height: 6.938rem;
   }
 
-  #agendarCitaMedicaModal .modal-body .card,
+  /* #agendarCitaMedicaModal .modal-body .card,
   #consultaMedicaModal .modal-body .card {
     min-height: 6.938rem;
-  }
+  } */
 
   /* .width-24{
     max-width: 1.7rem !important;
