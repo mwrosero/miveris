@@ -74,6 +74,7 @@
 	            id="fechaNacimiento"
 	            name="fechaNacimiento"
 	            placeholder="Fecha de Nacimiento"
+	            lang="es"
 	            onfocus="(this.type='date')"
 	            required />
 	    </div>
