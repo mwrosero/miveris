@@ -276,11 +276,11 @@ Mi Veris - Citas - Mis citas
                                                     if(historial.secuenciaAtencion !== null){
                                                         element += `<button type="button" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2 me-1 btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>`;
                                                     }
-                                                    if(historial.codigoTipoAtencion != "C"){
-                                                        element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="btn btn-sm btn-primary-veris shadow-none mb-2">Calificar</a>`
+                                                    element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>`;
+                                                    if(historial.esImagen == "S"){
+                                                        element += `<a href="/imagenes-procedimientos" target="_blank" class="btn btn-sm btn-primary-veris shadow-none ms-1 mb-2">Reagendar</a>`
                                                     }else{
-                                                        element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>
-                                                            <div class="btn btn-sm btn-primary-veris shadow-none mb-2" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(historial)}'>Reagendar</div>`
+                                                        element += `<div class="btn btn-sm btn-primary-veris shadow-none ms-1 mb-2" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(historial)}'>Reagendar</div>`
                                                     }
                                                     element += `</div>
                                                         </div>

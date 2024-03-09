@@ -10,7 +10,7 @@ Mi Veris - Doctores favoritos
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
-<!-- Modal mensaje -->
+<!-- Modal embarazo -->
 <div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
         <div class="modal-content">

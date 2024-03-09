@@ -115,7 +115,6 @@ Mi Veris - Citas - Familia y amigos
         if(data.code == 200){
             familiar = data.data;
             mostrarDatosEnDiv(data.message);
-
         }
         return data;
     }
@@ -151,7 +150,7 @@ Mi Veris - Citas - Familia y amigos
         let elem = ``;
         if(familiar !== null){
             data.forEach(familiar => {
-                elem = `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
+                elem += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
                     <div class="col-auto">
                         <p class="text-veris fs--1 fw-medium line-height-16 mb-1" id="nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
                         <p class="fs--3 line-height-12 mb-1" id="parentezco">${capitalizarElemento(familiar.parentesco)}</p>

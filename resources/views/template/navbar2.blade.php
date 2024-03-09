@@ -435,4 +435,11 @@
         height: 3.74rem !important;
     }
 
+    .menu-vertical,
+    .menu-vertical .menu-block,
+    .menu-vertical .menu-inner > .menu-item,
+    .menu-vertical .menu-inner > .menu-header {
+      width: 18rem;
+    }
+
 </style>
