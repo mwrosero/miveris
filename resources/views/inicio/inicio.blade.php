@@ -305,6 +305,35 @@ Mi Veris - Inicio
             let params = {};
             let data = JSON.parse($(this).attr("data-rel"));
             const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
+            // console.log(data);return;
+            if(data.permitePagoReserva == "N"){
+                $('#mensajeError').text(data.mensajePagoReserva);
+                $('#ModalError').modal('show');
+                return;
+            }
+
+            if(data.codigoConvenio !== null){
+                params.convenio = {
+                    "secuenciaAfiliado": data.secuenciaAfiliado,
+                    "idCliente": data.idCliente,
+                    "codigoConvenio": data.codigoConvenio,
+                    "codigoEmpresa": data.codigoEmpresa,
+                    "permitePagoLab" : data.permitePagoLab,
+                    "permitePago": data.permitePagoReserva,
+                    "mensajeBloqueoPago" : data.mensajeBloqueoPago,
+                    "mensajeBloqueoReserva" : data.mensajeBloqueoReserva,
+                    "permiteReserva": data.permitePagoReserva,
+                    "aplicaVerificacionConvenio": data.aplicaVerificacionConvenio,  
+                };
+            }else{
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+            }
             params.paciente = paciente.data
             params.ordenExterna = data;
             params.origen = 'ordenExterna'; 

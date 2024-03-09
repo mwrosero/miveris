@@ -83,6 +83,7 @@ Mi Veris - Resultados
 <script>
     let fechaDesdePicker = flatpickr("#fechaDesde", {
         maxDate: new Date().fp_incr(0),
+        locale: _langDate,
         onChange: function(selectedDates, dateStr, instance) {
             if (!document.getElementById('fechaHasta').disabled) {
                 fechaHastaPicker.set('minDate', dateStr);
@@ -99,6 +100,7 @@ Mi Veris - Resultados
     let fechaHastaPicker = flatpickr("#fechaHasta", {
         maxDate: new Date().fp_incr(0),
         minDate: new Date(), 
+        locale: _langDate,
         onChange: function(selectedDates, dateStr, instance) {
         }
     });

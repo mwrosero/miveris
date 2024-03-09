@@ -154,9 +154,11 @@ Mi Veris - Citas - Mis citas
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
     flatpickr("#fechaDesde", {
+        locale: _langDate,
         // maxDate: "today"
     });
     flatpickr("#fechaHasta", {
+        locale: _langDate,
         // maxDate: "today"
     });
 

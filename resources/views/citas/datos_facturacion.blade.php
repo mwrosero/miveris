@@ -405,7 +405,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $("#btn-ver-examenes").removeClass('d-none');
             $('#modalDesglose .modal-header').hide();
             // idPaciente = dataCita.paciente.numeroPaciente;
-            codigoConvenio = dataCita.ordenExterna.pacientes[0].codigoConvenio;
+            codigoConvenio = (dataCita.ordenExterna.pacientes[0]?.codigoConvenio === undefined ) ? "" : dataCita.ordenExterna.pacientes[0].codigoConvenio;
             if(dataCita.ordenExterna.aplicoDomicilio === 'N'){
                 tipoServicio = "ORDEN";
                 tipoSolicitud = "LAB";
