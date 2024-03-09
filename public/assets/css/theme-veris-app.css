@@ -51,18 +51,22 @@ body {
   -webkit-mask: linear-gradient(#f8f7fa, #f8f7fa 18%, transparent 100%);
   mask: none !important;
 }
-.avatar-10{
+
+.avatar-10 {
   width: 2.5rem !important;
   height: 2.5rem !important;
 }
-.avatar-18{
+
+.avatar-18 {
   width: 4.25rem !important;
   height: 4.25rem !important;
 }
-.avatar-88{
+
+.avatar-88 {
   width: 5.5rem !important;
   height: 5.5rem !important;
 }
+
 .avatar-tratamiento {
   position: relative;
   width: 3rem;
@@ -165,9 +169,11 @@ body {
 html:not([dir="rtl"]) .border-start-veris {
   border-left: 3px solid var(--bg-vris-blue) !important;
 }
-.border-start-grenadier{
+
+.border-start-grenadier {
   border-left: 3px solid var(--bg-vris-strong-red) !important;
 }
+
 .btn-outline-primary-veris {
   color: var(--bg-vris-blue) !important;
   border-color: var(--bg-vris-blue) !important;
@@ -197,13 +203,16 @@ html:not([dir="rtl"]) .border-start-veris {
   border-color: transparent;
   background: #E9F7FF !important;
 }
-.swiper{
+
+.swiper {
   width: 100%;
   height: 100%;
 }
-.swiper-slide{
+
+.swiper-slide {
   height: auto !important;
 }
+
 /* .swiper-acceso-rapidos {
   width: 100%;
   overflow: hidden !important;
@@ -236,14 +245,15 @@ html:not([dir="rtl"]) .border-start-veris {
   line-height: 2rem !important;
 }
 
-.btn-prev-arrow{
+.btn-prev-arrow {
   left: -10px !important;
 }
+
 .btn-prev {
   left: 0 !important;
 }
 
-.btn-next-arrow{
+.btn-next-arrow {
   right: -10px !important;
 }
 
@@ -269,6 +279,7 @@ html:not([dir="rtl"]) .border-start-veris {
   box-shadow: 0 .125rem .125rem -.125rem rgba(31, 27, 45, .08), 0 .25rem .75rem rgba(31, 27, 45, .08) !important;
   z-index: 10 !important;
 }
+
 .btn-next:not(.swiper-button-disabled),
 .btn-prev:not(.swiper-button-disabled) {
   /* Estilos aquí */
@@ -276,8 +287,9 @@ html:not([dir="rtl"]) .border-start-veris {
   background: rgba(204, 234, 250, 0.80) !important;
   box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);
 }
+
 .btn-next-arrow,
-.btn-prev-arrow{
+.btn-prev-arrow {
   position: absolute !important;
   top: 60% !important;
   width: 2.25rem !important;
@@ -290,16 +302,20 @@ html:not([dir="rtl"]) .border-start-veris {
   z-index: 10 !important;
   box-shadow: none !important;
 }
+
 .bg-dark-blue-veris {
   background-color: var(--bg-vris-very-dark-blue) !important;
 }
-.btn-disponibilidad-medico:hover{
+
+.btn-disponibilidad-medico:hover {
   background: #CCEAFA;
 }
-.btn-disponibilidad-medico:active{
+
+.btn-disponibilidad-medico:active {
   background: #99D1F3;
   color: #003B83;
 }
+
 .badge-discount-top {
   color: #0071CE;
   background: #CCEAFA;
@@ -337,17 +353,25 @@ html:not([dir="rtl"]) .border-start-veris {
   padding: 16px 32px;
   border-radius: 8px;
 }
-.mt--32{margin-top: 32px !important;}
-.swiper-slide .card{
+
+.mt--32 {
+  margin-top: 32px !important;
+}
+
+.swiper-slide .card {
   /* border: 1px solid var(--Neutral-10) !important; */
   box-shadow: inset 0 0 0 1px #E7E9EC, 0px 4px 8px 0px rgba(0, 0, 0, 0.10);
 
 }
+
 /* .swiper-slide .card > a,
 .swiper-slide .card > a > img{
   max-height: 111px;
 } */
-.card{border-radius: 0.5rem !important;}
+.card {
+  border-radius: 0.5rem !important;
+}
+
 .card-body {
   color: var(--bg-vris-very-dark-blue) !important;
 }
@@ -356,11 +380,13 @@ html:not([dir="rtl"]) .border-start-veris {
   border-radius: 24px !important;
   background: #003B83 !important;
 }
-.card-border{
+
+.card-border {
   box-shadow: inset 0 0 0 1px #E7E9EC, 0px 4px 8px 0px rgba(0, 0, 0, 0.10) !important;
   /* border: 1px solid #E7E9EC !important; */
   /* box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10) !important; */
 }
+
 .calendar-body {
   background: #003B83;
   border-top-left-radius: 24px !important;
@@ -387,9 +413,10 @@ html:not([dir="rtl"]) .border-start-veris {
 }
 
 
-.fw-medium{
+.fw-medium {
   font-weight: 500 !important;
 }
+
 .form-label {
   color: var(--bg-vris-very-dark-blue) !important;
 }
@@ -425,18 +452,21 @@ h1,
 .lh-normal {
   line-height: normal !important;
 }
+
 .convenio-item .list-group-item:hover,
 .convenio-ninguno .list-group-item:hover,
-.grupoFamiliar-item .list-group-item:hover{
+.grupoFamiliar-item .list-group-item:hover {
   border-radius: 4px !important;
   background: #CCEAFA;
 }
+
 .convenio-item .list-group-item:active,
 .convenio-ninguno .list-group-item:active,
-.grupoFamiliar-item .list-group-item:active{
+.grupoFamiliar-item .list-group-item:active {
   background: #99D1F3;
   color: #003B83;
 }
+
 .list-group-checkable .list-group-item,
 .list-group-flush .list-group-item {
   cursor: pointer;
@@ -470,10 +500,12 @@ h1,
   z-index: 2;
   margin-top: -.7em;
 }
-.listaPacientesFiltro .form-check-input{
+
+.listaPacientesFiltro .form-check-input {
   border: none;
 }
-.listaPacientesFiltro .form-check-input:checked + .list-group-item {
+
+.listaPacientesFiltro .form-check-input:checked+.list-group-item {
   border-radius: 8px;
   border: 1px solid var(--Primario-1-Tint-20, #3394DD);
   background: var(--Neutral-Blanco-00, #FFF);
@@ -503,31 +535,54 @@ h1,
   display: block;
   position: relative;
 }
-.listaPacientesFiltro .form-check-input:checked[type="radio"]{
+
+.listaPacientesFiltro .form-check-input:checked[type="radio"] {
   background-image: none;
 }
-.listaPacientesFiltro .form-check-input:checked, .form-check-input[type="checkbox"]:indeterminate{
+
+.listaPacientesFiltro .form-check-input:checked,
+.form-check-input[type="checkbox"]:indeterminate {
   background-color: transparent;
   border-color: transparent;
 }
-.listaPacientesFiltro .form-check-input:focus{
+
+.listaPacientesFiltro .form-check-input:focus {
   box-shadow: none;
 }
-.mb-8{margin-bottom: 2rem !important;}
-.mb--20{margin-bottom: 20px;}
-.mb--24{margin-bottom: 24px;}
-.mb--32{margin-bottom: 32px;}
-.mb-40{margin-bottom: 2.5rem;}
+
+.mb-8 {
+  margin-bottom: 2rem !important;
+}
+
+.mb--20 {
+  margin-bottom: 20px;
+}
+
+.mb--24 {
+  margin-bottom: 24px;
+}
+
+.mb--32 {
+  margin-bottom: 32px;
+}
+
+.mb-40 {
+  margin-bottom: 2.5rem;
+}
+
 .modal {
   background-color: rgba(0, 0, 0, 0.5) !important;
 }
+
 .offcanvas-body {
   background: var(--bg-vris-light-grayish-blue-rgba) !important;
 }
+
 input.form-control:placeholder-shown {
   border: 1px solid #E7E9EC;
   background-color: #E7E9EC;
 }
+
 .progress-circle {
   width: 68px;
   height: 68px;
@@ -537,15 +592,46 @@ input.form-control:placeholder-shown {
   box-shadow: none;
   position: relative;
 }
-.p--2{padding: 0.75rem !important;}
-.px--2{padding-left: 0.75rem !important; padding-right: 0.75rem !important;}
-.pt--2{padding-top: 0.75rem !important;}
-.pb--2{padding-bottom: 0.75rem !important;}
-.py--2{padding-top: 0.75rem !important; padding-bottom: 0.75rem !important;}
-.p-10{padding: 10px;}
-.pt--20{padding-top: 20px !important;}
-.px-32{padding-left: 32px; padding-right: 32px;}
-.pb--40{padding-bottom: 2.5rem !important;}
+
+.p--2 {
+  padding: 0.75rem !important;
+}
+
+.px--2 {
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+}
+
+.pt--2 {
+  padding-top: 0.75rem !important;
+}
+
+.pb--2 {
+  padding-bottom: 0.75rem !important;
+}
+
+.py--2 {
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+.p-10 {
+  padding: 10px;
+}
+
+.pt--20 {
+  padding-top: 20px !important;
+}
+
+.px-32 {
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.pb--40 {
+  padding-bottom: 2.5rem !important;
+}
+
 .progress-circle:after {
   content: "";
   width: 100%;
@@ -731,6 +817,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .progress-circle[data-percentage="100"] .progress-left .progress-bar {
   animation: loading-5 1.5s linear forwards 1.5s;
 }
+
 @keyframes loading-0 {
   0% {
     -webkit-transform: rotate(0deg);
@@ -830,6 +917,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .progress-circle {
   margin-bottom: 1em;
 }
+
 .search-box,
 .form-filter {
   background-color: var(--opacidad-oscuro-05, rgba(0, 0, 0, 0.05)) !important;
@@ -865,7 +953,10 @@ Due to the split circle of progress-left and progress right, we must use the ani
   width: 2rem !important;
 } */
 
-.swiper-pagination-fraction, .swiper-pagination-custom, .swiper-horizontal > .swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal{
+.swiper-pagination-fraction,
+.swiper-pagination-custom,
+.swiper-horizontal>.swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal {
   bottom: 0px !important;
 }
 
@@ -882,9 +973,11 @@ Due to the split circle of progress-left and progress right, we must use the ani
   border-top-right-radius: 50em !important;
   border-bottom-right-radius: 50em !important;
 }
-.text-veris-many{
+
+.text-veris-many {
   color: #003B83 !important;
 }
+
 .text-opcaity {
   color: var(--bg-vris-very-dark-blue-rgba);
 }
@@ -904,14 +997,16 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .text-danger-veris {
   color: var(--bg-vris-strong-red) !important;
 }
-.width-24{
+
+.width-24 {
   min-width: 1.5rem !important;
   min-height: 1.5rem !important;
 }
 
-.nav.nav-pills .nav-item > button{
+.nav.nav-pills .nav-item>button {
   font-size: 14px;
 }
+
 /* .menu-link > svg > path{
   fill: var(--bg-vris-white);
 }
@@ -920,16 +1015,22 @@ Due to the split circle of progress-left and progress right, we must use the ani
 } */
 
 .menu-item .svg-container {
-  width: 28px; /* Ajusta el ancho según tus necesidades */
-  height: 28px; /* Ajusta la altura según tus necesidades */
+  width: 28px;
+  /* Ajusta el ancho según tus necesidades */
+  height: 28px;
+  /* Ajusta la altura según tus necesidades */
   display: inline-block;
   vertical-align: middle;
-  margin-right: 10px; /* Espaciado a la derecha del icono */
-  transition: background 0.3s ease-in-out; /* Transición de 0.3 segundos */
+  margin-right: 10px;
+  /* Espaciado a la derecha del icono */
+  transition: background 0.3s ease-in-out;
+  /* Transición de 0.3 segundos */
 }
+
 .menu-item .svg-container.svg-inicio {
   background: url('../img/svg/menu/light/inicio_light.svg') no-repeat center center;
 }
+
 .menu-item.active .svg-container.svg-inicio {
   background: url('../img/svg/menu/solid/inicio_solid.svg') no-repeat center center;
 }
@@ -937,6 +1038,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .menu-item .svg-container.svg-citas {
   background: url('../img/svg/menu/light/citas_light.svg') no-repeat center center;
 }
+
 .menu-item.active .svg-container.svg-citas {
   background: url('../img/svg/menu/solid/citas_solid.svg') no-repeat center center;
 }
@@ -944,6 +1046,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .menu-item .svg-container.svg-tratamientos {
   background: url('../img/svg/menu/light/tratamientos_light.svg') no-repeat center center;
 }
+
 .menu-item.active .svg-container.svg-tratamientos {
   background: url('../img/svg/menu/solid/tratamientos_solid.svg') no-repeat center center;
 }
@@ -951,6 +1054,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .menu-item .svg-container.svg-resultados {
   background: url('../img/svg/menu/light/resultados_light.svg') no-repeat center center;
 }
+
 .menu-item.active .svg-container.svg-resultados {
   background: url('../img/svg/menu/solid/resultados_solid.svg') no-repeat center center;
 }
@@ -958,6 +1062,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .menu-item .svg-container.svg-domicilio {
   background: url('../img/svg/menu/light/domicilio_light.svg') no-repeat center center;
 }
+
 .menu-item.active .svg-container.svg-domicilio {
   background: url('../img/svg/menu/solid/domicilio_solid.svg') no-repeat center center;
 }
@@ -965,6 +1070,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .menu-item .svg-container.svg-familia {
   background: url('../img/svg/menu/light/familia_light.svg') no-repeat center center;
 }
+
 .menu-item.active .svg-container.svg-familia {
   background: url('../img/svg/menu/solid/familia_solid.svg') no-repeat center center;
 }
@@ -972,6 +1078,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .menu-item .svg-container.svg-doctoresFavoritos {
   background: url('../img/svg/menu/light/doctoresFavoritos_light.svg') no-repeat center center;
 }
+
 .menu-item.active .svg-container.svg-doctoresFavoritos {
   background: url('../img/svg/menu/solid/doctoresFavoritos_solid.svg') no-repeat center center;
 }
@@ -979,6 +1086,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .menu-item .svg-container.svg-historiaClinica {
   background: url('../img/svg/menu/light/historiaClinica_light.svg') no-repeat center center;
 }
+
 .menu-item.active .svg-container.svg-historiaClinica {
   background: url('../img/svg/menu/solid/historiaClinica_solid.svg') no-repeat center center;
 }
@@ -986,33 +1094,42 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .menu-item .svg-container.svg-experiencia {
   background: url('../img/svg/menu/light/experiencia_light.svg') no-repeat center center;
 }
+
 .menu-item.active .svg-container.svg-experiencia {
   background: url('../img/svg/menu/solid/experiencia_solid.svg') no-repeat center center;
 }
-.listaPacientesFiltro > label span{
+
+.listaPacientesFiltro>label span {
   color: #3D4E66 !important;
 }
-.listaPacientesFiltro .list-group-item{
+
+.listaPacientesFiltro .list-group-item {
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);
 }
+
 .text-lime-veris {
   color: var(--bg-vris-strong-cyan-lime-green) !important;
 }
-.text-one-line{
+
+.text-one-line {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.text-body-secondary{
+
+.text-body-secondary {
   color: #3D4E66 !important;
 }
-.truncate-text-two{
+
+.truncate-text-two {
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* número de líneas a mostrar */
+  -webkit-line-clamp: 2;
+  /* número de líneas a mostrar */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .top-25 {
   top: 25% !important;
 }
@@ -1025,35 +1142,98 @@ Due to the split circle of progress-left and progress right, we must use the ani
   color: var(--bg-vris-strong-cyan-lime-green) !important;
 }
 
-.fs--3{font-size: 0.625rem !important;}
-.fs--2{font-size: 0.75rem !important;}
-.fs--1{font-size: 0.875rem !important;}
-.fs--16{font-size: 1rem !important;}
-.fs--18{font-size: 1.125rem !important;}
-.fs--20{font-size: 1.25rem !important;}
-.fs--28{font-size: 1.75rem !important;}
-.fs--36{font-size: 2.25rem !important;}
-.fs-18{font-size: 1.125rem;}
-.fs-20{font-size: 1.25rem;}
-.fs-24{font-size: 1.5rem;}
+.fs--3 {
+  font-size: 0.625rem !important;
+}
 
-.h-90 {height: 90% !important;}
-.line-height-12{line-height: 12px !important;}
-.line-height-16{line-height: 16px !important;}
-.line-height-20{line-height: 20px !important;}
-.line-height-24{line-height: 24px !important;}
-.line-height-28{line-height: 28px !important;}
-.line-height-36{line-height: 36px !important;}
-.line-height-44{line-height: 44px !important;}
-.p-8{padding: 2rem !important;}
-.px-8{
+.fs--2 {
+  font-size: 0.75rem !important;
+}
+
+.fs--1 {
+  font-size: 0.875rem !important;
+}
+
+.fs--16 {
+  font-size: 1rem !important;
+}
+
+.fs--18 {
+  font-size: 1.125rem !important;
+}
+
+.fs--20 {
+  font-size: 1.25rem !important;
+}
+
+.fs--28 {
+  font-size: 1.75rem !important;
+}
+
+.fs--36 {
+  font-size: 2.25rem !important;
+}
+
+.fs-18 {
+  font-size: 1.125rem;
+}
+
+.fs-20 {
+  font-size: 1.25rem;
+}
+
+.fs-24 {
+  font-size: 1.5rem;
+}
+
+.h-90 {
+  height: 90% !important;
+}
+
+.line-height-12 {
+  line-height: 12px !important;
+}
+
+.line-height-16 {
+  line-height: 16px !important;
+}
+
+.line-height-20 {
+  line-height: 20px !important;
+}
+
+.line-height-24 {
+  line-height: 24px !important;
+}
+
+.line-height-28 {
+  line-height: 28px !important;
+}
+
+.line-height-36 {
+  line-height: 36px !important;
+}
+
+.line-height-44 {
+  line-height: 44px !important;
+}
+
+.p-8 {
+  padding: 2rem !important;
+}
+
+.px-8 {
   padding-left: 2rem !important;
   padding-right: 2rem !important;
 }
-.py-8{
-  padding-top: 2rem !important; /* 32px */
-  padding-bottom: 2rem !important; /* 32px */
+
+.py-8 {
+  padding-top: 2rem !important;
+  /* 32px */
+  padding-bottom: 2rem !important;
+  /* 32px */
 }
+
 /* caledario */
 .border-24 {
   border-radius: 24px !important;
@@ -1063,9 +1243,11 @@ Due to the split circle of progress-left and progress right, we must use the ani
   border-top-left-radius: 24px !important;
   border-top-right-radius: 24px !important;
 }
-.form-factura input.border-fiord{
+
+.form-factura input.border-fiord {
   border: 1px solid #3D4E66;
 }
+
 .calendar-container {
   width: 300px;
   /* max-height: 135px; */
@@ -1100,7 +1282,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
   /* Ajusta el ancho de los días según sea necesario */
   font-size: 1rem;
   margin: auto;
-  
+
 }
 
 .calendar-day.empty-day {
@@ -1118,32 +1300,47 @@ Due to the split circle of progress-left and progress right, we must use the ani
   color: var(--bg-vris-very-dark-blue);
   border-radius: 50rem;
 }
-.day-of-week.header{
+
+.day-of-week.header {
   cursor: not-allowed;
   pointer-events: none;
   user-select: none;
 }
+
 .selected-day {
   background-color: var(--bg-vris-white);
   color: var(--bg-vris-very-dark-blue);
   border-radius: 50rem;
 }
+
 .unavailable-day {
-  cursor: not-allowed; /* Cambia el cursor a "no permitido" */
-  color: #ccc; /* Cambia el color del texto a gris */
-  pointer-events: none; /* Deshabilita eventos de puntero, como clics */
-  user-select: none; /* Evita la selección de texto */
-  opacity: 0.7; /* Ajusta la opacidad para indicar visualmente la indisponibilidad */
+  cursor: not-allowed;
+  /* Cambia el cursor a "no permitido" */
+  color: #ccc;
+  /* Cambia el color del texto a gris */
+  pointer-events: none;
+  /* Deshabilita eventos de puntero, como clics */
+  user-select: none;
+  /* Evita la selección de texto */
+  opacity: 0.7;
+  /* Ajusta la opacidad para indicar visualmente la indisponibilidad */
   /* Agrega cualquier otro estilo que desees para indicar la indisponibilidad */
 }
+
 .calendar-day.previous-month-day {
-  cursor: not-allowed; /* Cambia el cursor a "no permitido" */
-  color: #ccc; /* Cambia el color del texto a gris */
-  pointer-events: none; /* Deshabilita eventos de puntero, como clics */
-  user-select: none; /* Evita la selección de texto */
-  opacity: 0.7; /* Ajusta la opacidad para indicar visualmente la indisponibilidad */
+  cursor: not-allowed;
+  /* Cambia el cursor a "no permitido" */
+  color: #ccc;
+  /* Cambia el color del texto a gris */
+  pointer-events: none;
+  /* Deshabilita eventos de puntero, como clics */
+  user-select: none;
+  /* Evita la selección de texto */
+  opacity: 0.7;
+  /* Ajusta la opacidad para indicar visualmente la indisponibilidad */
   /* Agrega cualquier otro estilo que desees para indicar la indisponibilidad */
 }
+
 .top-n35 {
   top: -35% !important;
 }
@@ -1191,11 +1388,16 @@ Due to the split circle of progress-left and progress right, we must use the ani
 .shadow-veris {
   box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 }
-b{font-weight: 500 !important;}
-.btn{
+
+b {
+  font-weight: 500 !important;
+}
+
+.btn {
   --bs-btn-padding-x: 1rem !important;
   --bs-btn-padding-y: 0.5rem !important;
 }
+
 .btn-check:checked+.btn,
 :not(.btn-check)+.btn:active,
 .btn:first-child:active,
@@ -1209,14 +1411,15 @@ b{font-weight: 500 !important;}
   background: #F3F4F5 !important;
   box-shadow: none !important;
 }
-.btn-primary-veris{
+
+.btn-primary-veris {
   --bs-btn-color: #fff;
   --bs-btn-bg: #0071CE;
   --bs-btn-border-color: #0071CE;
   --bs-btn-hover-color: #CCEAFA;
   --bs-btn-hover-bg: #0055AA;
   --bs-btn-hover-border-color: #0055AA;
-  --bs-btn-focus-shadow-rgb: 49,132,253;
+  --bs-btn-focus-shadow-rgb: 49, 132, 253;
   --bs-btn-active-color: #CCEAFA;
   --bs-btn-active-bg: #003B83;
   --bs-btn-active-border-color: #003B83;
@@ -1225,15 +1428,19 @@ b{font-weight: 500 !important;}
   --bs-btn-disabled-bg: #E7E9EC;
   --bs-btn-disabled-border-color: #E7E9EC;
 }
-a.btn.btn-primary-veris:not([href]):hover{
+
+a.btn.btn-primary-veris:not([href]):hover {
   color: #CCEAFA;
 }
+
 .input-spin-none {
   border: 1px solid #f3f4f5 !important
 }
-.kushki-pay-form > iframe{
+
+.kushki-pay-form>iframe {
   border: 0;
 }
+
 /* X-Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .border-lg-end {
@@ -1262,15 +1469,19 @@ a.btn.btn-primary-veris:not([href]):hover{
   .ml-lg-10 {
     margin-left: 10.5rem !important;
   }
-  .fs--lg-1{
+
+  .fs--lg-1 {
     font-size: 0.874rem !important;
   }
+
   .fs-lg-20 {
     font-size: 1.25rem !important;
   }
+
   .fs-lg-28 {
     font-size: 1.75rem !important;
   }
+
   .fs-lg-24 {
     font-size: 1.5rem !important;
   }
@@ -1281,33 +1492,46 @@ a.btn.btn-primary-veris:not([href]):hover{
     top: -25%;
     right: -7%;
   }
+
   .w-md-50 {
     width: 50% !important;
   }
+
   .fs-md-24 {
     font-size: 1.5rem !important;
   }
 }
 
 @media (max-width: 575.98px) {
+
   /* .swiper-slide .card{
     width: 10.188rem;
   } */
-  .swiper-acceso-rapidos .swiper-slide{
+  .swiper-acceso-rapidos .swiper-slide {
     width: 10.188rem !important;
     min-height: 6.938rem;
   }
-  .swiper-acceso-rapidos .swiper-slide .card{
+
+  .swiper-acceso-rapidos .swiper-slide .card {
     min-height: 6.938rem;
   }
+
   #agendarCitaMedicaModal .modal-body .card,
-  #consultaMedicaModal .modal-body .card{
+  #consultaMedicaModal .modal-body .card {
     min-height: 6.938rem;
   }
+
   /* .width-24{
     max-width: 1.7rem !important;
   } */
+  .menu-vertical,
+  .menu-vertical .menu-block,
+  .menu-vertical .menu-inner>.menu-item,
+  .menu-vertical .menu-inner>.menu-header {
+    width: 17.5rem;
+  }
 }
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
