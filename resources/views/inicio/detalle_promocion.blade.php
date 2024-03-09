@@ -69,7 +69,7 @@ Mi Veris - Citas - Detalle
                             </div>
                         </div>
                         <div class="card card-border mb-4">
-                            <div class="card-body px-0 py-3">
+                            <div class="card-body">
                                 <p class="fs--2 mt-3 mb-4" id="descripcionPaquete"></p>
                                 <h6 class="text-start fs--1 fw-medium mb-4">DETALLES DE PAQUETE</h6>
                                 <ul class="fs--2 mb-3" id="detallePaquete">

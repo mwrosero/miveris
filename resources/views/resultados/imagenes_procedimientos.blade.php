@@ -9,7 +9,7 @@ Mi Veris - Resultados
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- modal -->
     <div class="modal fade" id="resultadImagenesProcedimientosModal" tabindex="-1" aria-labelledby="resultadImagenesProcedimientosModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3" id="modalBody">
                     <!-- contenido dinamico -->
@@ -19,7 +19,7 @@ Mi Veris - Resultados
     </div>
     <!-- modal  ha ocurrido un error -->
     <div class="modal fade" id="haOcurridoUnErrorModal" tabindex="-1" aria-labelledby="resultadoLaboratorioModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
                     <div class="text-center">

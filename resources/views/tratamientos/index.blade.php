@@ -13,11 +13,11 @@ Mi Veris - Citas - Mis tratamientos
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
                     <h1 class="modal-title fs-5 fw-medium mb-3">Solicitud fallida</h1>
-                    <p class="fs--1 fw-normal" id="mensajeError">
+                    <p class="fs--1 fw-normal text-veris" id="mensajeError">
                 </p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
