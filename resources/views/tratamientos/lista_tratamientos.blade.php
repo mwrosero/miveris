@@ -21,7 +21,7 @@ $tokenMods = base64_encode(uniqid());
                         </span>
                     </div>
                     <h1 class="modal-title fs--20 line-height-24 my-3">Información solicitada por tu aseguradora</h1>
-                    <p class="fs--1 fw-normal mb-3 mx-3 line-height-16">¿Esta cita es por control de <b>embarazo</b>?</p>
+                    <p class="fs--1 fw-normal text-veris mb-3 mx-3 line-height-16">¿Esta cita es por control de <b>embarazo</b>?</p>
                     <input type="hidden" id="datosGen">
                 </div>
                 <div class="d-flex">
@@ -93,12 +93,12 @@ $tokenMods = base64_encode(uniqid());
 
     <!-- Modal Receta médica -->
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
                     <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
-                    <p class="text-center lh-1 fs--1 my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
-                    <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
+                    <p class="text-center lh-1 fs--1 text-veris my-3">{{ __('¿Compraste esta receta en otra farmacia distinta a la de Veris y/o tomaste el medicamento?') }}</p>
+                    <a href="#" id="btnRecetaMedicaSi" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn m-0 w-100 px-4 py-3" data-bs-dismiss="modal">No lo he hecho</a>
                 </div>
             </div>
@@ -108,14 +108,14 @@ $tokenMods = base64_encode(uniqid());
 
     <!-- Modal Interconsulta médica -->
     <div class="modal fade" id="interconsultaMedicaModal" tabindex="-1" aria-labelledby="interconsultaMedicaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
                     <h5 class="fw-medium text-center">{{ __('Interconsulta - Medicina General') }}</h5>
-                    <p class="text-center lh-1 fs--1 my-3">{{ __('No contamos con esta especialidad') }}</p>
+                    <p class="text-center lh-1 fs--1 text-veris my-3">{{ __('No contamos con esta especialidad') }}</p>
                     
                     <p class="text-center fw-medium lh-1 fs--1 my-3">{{ __('¿Ya realizaste esta cita médica?') }}</p>
-                    <a href="#" id="btnInterconsultaMedicaSi" class="btn btn-primary-veris m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
+                    <a href="#" id="btnInterconsultaMedicaSi" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3">{{ __('Sí, lo hice') }}</a>
                     <a href="#" class="btn btn m-0 w-100 px-4 py-3" data-bs-dismiss="modal">No lo he hecho</a>
                 </div>
             </div>
@@ -124,14 +124,14 @@ $tokenMods = base64_encode(uniqid());
     
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs--20 line-height-24 my-3">Solicitud fallida</h1>
                     <p class="fs--1 fw-normal mb-0 text-veris" id="mensajeError"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
                 </div>
             </div>
         </div>
@@ -139,14 +139,14 @@ $tokenMods = base64_encode(uniqid());
 
     <!-- Modal Examenes presencial -->
     <div class="modal fade" id="mensajeLaboratorioPresencialModal" tabindex="-1" aria-labelledby="mensajeLaboratorioPresencialModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal mb-0 text-veris">{{ __('Para realizarte este examen acercate a una central médica') }}</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                 </div>
             </div>
         </div>
@@ -154,16 +154,16 @@ $tokenMods = base64_encode(uniqid());
 
     <!-- Modal VideoConsulta -->
     <div class="modal fade" id="mensajeVideoConsultaModal" tabindex="-1" aria-labelledby="mensajeVideoConsultaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal mb-0 text-veris">{{ __('Para agendar este procedimiento llama al') }} <b>{{ __('6009600') }}</b></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    {{-- <a href="tel:+59346009600" class="btn btn-primary-veris m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                    {{-- <a href="tel:+59346009600" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
                     <button type="button" class="btn text-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button> --}}
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
                 </div>
             </div>
         </div>
@@ -171,16 +171,16 @@ $tokenMods = base64_encode(uniqid());
 
     <!-- Modal ver informacion -->
     <div class="modal fade" id="informacionModal" tabindex="-1" aria-labelledby="informacionModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Veris') }}</h1>
                     <p class="fs--1 fw-normal mb-0 text-veris" id = "mensajeInformacion"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    {{-- <a href="tel:+59346009600" class="btn btn-primary-veris m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
+                    {{-- <a href="tel:+59346009600" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3"><i class="bi bi-telephone-fill me-2"></i> Llamar</a>
                     <button type="button" class="btn text-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button> --}}
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Cerrar') }}</button>
                 </div>
             </div>
         </div>
@@ -188,14 +188,14 @@ $tokenMods = base64_encode(uniqid());
 
     <!-- Modal no permite reserva -->
     <div class="modal fade" id="mensajeNoPermiteReservaModal" tabindex="-1" aria-labelledby="mensajeNoPermiteReservaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Veris') }}</h1>
                     <p class="fs--1 fw-normal mb-0 text-veris" id="mensajeNoPermiteReserva">{{ __('Reserva no permitida por este canal') }}</p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                 </div>
             </div>
         </div>
@@ -203,7 +203,7 @@ $tokenMods = base64_encode(uniqid());
 
     <!-- Modal infomracion de la cita -->
     <div class="modal fade" id="informacionCitaModal" tabindex="-1" aria-labelledby="informacionCitaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
                     <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Información') }}</h1>
@@ -211,7 +211,7 @@ $tokenMods = base64_encode(uniqid());
                 </div>
                 <div id="footerInformacionCita">
                     <div class="modal-footer pt-0 pb-3 px-3">
-                        <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                     </div>
                 </div>
             </div>
@@ -1115,7 +1115,7 @@ $tokenMods = base64_encode(uniqid());
                 $('#mensajeInformacionCita').text(datos.mensaje);
                 $('#footerInformacionCita').empty();
                 $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
-                        <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
+                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Entiendo') }}</button>
                     </div>`)
         } else {
             $('#mensajeInformacionCita').text(datos.mensaje);

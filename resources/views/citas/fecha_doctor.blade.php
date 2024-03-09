@@ -9,7 +9,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal de error -->
     <div class="modal fade" id="mensajeSolicitudLlamadaModalError" tabindex="-1" aria-labelledby="mensajeSolicitudLlamadaModalErrorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-2">
                     <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3">Veris</h1>
@@ -24,7 +24,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     <!-- Modal de error validacion fecha -->
     <div class="modal fade" id="modalValidacionFecha" tabindex="-1" aria-labelledby="modalValidacionFechaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-2">
                     <h1 class="modal-title fs--20 line-height-24 my-3">Información de tu seguro</h1>
@@ -60,7 +60,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     </div>
     <!-- modal NO HAY FECHA DISPONIBLES -->
     <div class="modal fade" id="sinFechaDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinFechaDisponiblesLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3 pb-2">
                     <div class="text-center">
@@ -76,7 +76,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     </div>
     <!-- modal no hay medicos disponibles -->
     <div class="modal fade" i|d="sinMedicosDisponibles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="sinMedicosDisponiblesLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3 pb-2">
                     <div class="text-center">

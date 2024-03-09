@@ -11,7 +11,7 @@ Mi Veris - Citas - tratamiento
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="informacionModal" tabindex="-1" aria-labelledby="informacionModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
                     <h1 class="modal-title fs-5 fw-medium text-center border-bottom mb-3 pb-2">Información</h1>
@@ -27,7 +27,7 @@ Mi Veris - Citas - tratamiento
     </div>
     <!-- Modal servicios no incluidos -->
     <div class="modal fade" id="serviciosNoIncluidosModal" tabindex="-1" aria-labelledby="serviciosNoIncluidosModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
                     <h1 class="modal-title fs-5 fw-medium text-center border-bottom mb-3 pb-2">Informacion</h1>

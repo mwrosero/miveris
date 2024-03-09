@@ -45,7 +45,7 @@ Mi Veris - Citas - Receta médica
 
     <!-- Modal Receta médica -->
     <div class="modal fade" id="recetaMedicaModal" tabindex="-1" aria-labelledby="recetaMedicaModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body p-3">
                     <h5 class="fw-medium text-center">{{ __('Receta médica') }}</h5>
