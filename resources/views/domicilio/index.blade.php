@@ -93,7 +93,7 @@ Mi Veris - Citas - Servicios a domicilio
                             </div>
                         </div>
                         <div class="col-12 mt-5">
-                            <button class="btn btn-lg btn-primary-veris fs--18 line-height-24 fw-medium w-100 px-4 py-3" type="submit" id="btnSolicitarLlamada" disabled><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
+                            <button class="btn btn-lg btn-primary-veris fs--18 line-height-24 fw-medium w-100 px-4 py-3 shadow-none" type="submit" id="btnSolicitarLlamada" disabled><i class="bi bi-telephone-fill me-2"></i> Solicitar llamada</button>
                         </div>
                     </form>
                 </div>

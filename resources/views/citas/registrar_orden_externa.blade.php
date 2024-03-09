@@ -16,9 +16,9 @@ $data1 = json_decode($data);
     <div class="modal fade" id="mensajeOrdenExitosa" tabindex="-1" aria-labelledby="mensajeOrdenExitosaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <h5 class="fw-medium fs-24 mb-0" id="titulo">Registro exitoso</h5>
-                    <p class="fs--1 m-0" id="mensaje"></p>
+                <div class="modal-body text-center p-3 pb-0">
+                    <h5 class="fs-24 fw-medium line-height-28 my-3" id="titulo">Registro exitoso</h5>
+                    <p class="fs--1 line-height-16 text-veris mb-3" id="mensaje"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 w-100 m-0 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Aceptar</button>
