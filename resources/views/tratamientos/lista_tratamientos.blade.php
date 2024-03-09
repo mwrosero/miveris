@@ -382,7 +382,7 @@ $tokenMods = base64_encode(uniqid());
                                 <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(ultimoTratamiento.nombrePaciente)}</p>
                                 <p class="fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(ultimoTratamiento.nombreMedico)}</p>
                                 <p class="fs--2 line-height-16 mb-1">Tratamiento enviado: <b class="fw-light text-primary-veris" id="fechaTratamiento">${ultimoTratamiento.fechaTratamiento}</b></p>
-                                <p class="fs--2 line-height-16 mb-1">${capitalizarElemento(data.data.datosConvenio.nombreConvenio)}</p> `;
+                                <p class="fs--2 line-height-16 mb-1">${ (data.data.datosConvenio.idCliente !== null) ? capitalizarElemento(data.data.datosConvenio.nombreConvenio) : "" }</p> `;
             datosTratamientoCard.append(elemento);
             // mostrar el porcentaje
             document.getElementById("progress-circle").setAttribute("data-percentage", porcentaje);

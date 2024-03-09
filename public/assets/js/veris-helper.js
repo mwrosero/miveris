@@ -1,7 +1,17 @@
 const _canalOrigen = "MVE_CMV";
 const _plataforma = "WEB";
 const _version = "7.8.0";
-
+const _langDate = {
+            firstDayOfWeek: 1,
+            weekdays: {
+                shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
+            }, 
+            months: {
+                shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
+                longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            }
+        }
 async function call(args){
     if(args.showLoader || args.showLoader == true){
         showLoader();
@@ -515,14 +525,17 @@ async function aplicarFiltrosCitas(contexto) {
     } else if (document.getElementById('pills-historial-tab').getAttribute('aria-selected') === 'true') {
         estadoCitas = 'HISTORICO';
     }
+    console.log(estadoCitas)
 
     console.log('estadoCitas', estadoCitas);    
     if (contexto === 'contextoAplicarFiltros') {
         if (estadoCitas === 'ACTUAL'){
             await obtenerCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);
+            obtenerHistorialCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);
         }
         else if (estadoCitas === 'HISTORICO'){
             await obtenerHistorialCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);
+            obtenerCitas(fechaDesde, fechaHasta, pacienteSeleccionado, esAdmin, estadoCitas);
         }
 
     }
@@ -804,3 +817,31 @@ const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
     
     return dataFechas;
 };
+
+async function obtenerPreparacionPrevia(codigoSolicitud){
+    let args = [];
+    args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ codigoSolicitud }`;
+    args["method"] = "GET";
+    args["showLoader"] = true;
+    const data = await call(args);
+    console.log(data);
+
+    if (data.code == 200){
+        let elem = ``;
+        if(data.data !== null && data.data.length > 0){
+            $.each(data.data, function(key, value){
+                elem += `<p class="text-veris text-start fw-medium fs--2 mb-0">${capitalizarElemento(value.examenes)}</p>`;
+                if(value.preparacionPrevia !== null && value.preparacionPrevia.length > 0){
+                    $.each(value.preparacionPrevia, function(k,v){
+                        elem += `<p class="fw-light text-start fs--2 line-height-16 mb-1">${v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()}</p>`
+                    })
+                }
+                elem += `<hr class="mb-2 mt-2">`
+            })
+        }else{
+            elem += `<p class="text-veris text-center fw-medium fs--1 mt-5 mb-5">No existe preparación previa para estos exámenes.</p>`
+        }
+        $('.items-preparacion').html(elem);
+        $('#modalPreparacionPrevia').modal("show")
+    }
+}

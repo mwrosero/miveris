@@ -263,12 +263,12 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
             e.preventDefault();
             let lnglat = await obtenerLatitudYLongitudDelMarcador();
             let validarCobertura = await consultarCobertura(lnglat.latitud, lnglat.longitud);
-            if(validarCobertura.code == 400 || !validarCobertura.data.tieneCobertura || validarCobertura.data.tieneCobertura == "N"){
+            if(validarCobertura.code != 200 || !validarCobertura.data.tieneCobertura || validarCobertura.data.tieneCobertura == "N"){
                 let msg = "";
-                if(validarCobertura.code == 400){
-                    msg = validarCobertura.message;
-                }else{
+                if(validarCobertura.code == 200){
                     msg = validarCobertura.data.mensaje;
+                }else{
+                    msg = validarCobertura.message;
                 }
                 $('#mensajeNoCobertura').html(msg);
                 $('#modalCobertura').modal('show');
@@ -302,7 +302,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
         args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/coberturaServicio?canalOrigen=${_canalOrigen}&latitud=${latitud }&longitud=${longitud}`;
         args["method"] = "GET";
         args["dismissAlert"] = true;
-        args["showLoader"] = false;
+        args["showLoader"] = true;
         const data = await call(args);
         return data;
     }

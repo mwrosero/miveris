@@ -305,6 +305,35 @@ Mi Veris - Inicio
             let params = {};
             let data = JSON.parse($(this).attr("data-rel"));
             const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
+            // console.log(data);return;
+            if(data.permitePagoReserva == "N"){
+                $('#mensajeError').text(data.mensajePagoReserva);
+                $('#ModalError').modal('show');
+                return;
+            }
+
+            if(data.codigoConvenio !== null){
+                params.convenio = {
+                    "secuenciaAfiliado": data.secuenciaAfiliado,
+                    "idCliente": data.idCliente,
+                    "codigoConvenio": data.codigoConvenio,
+                    "codigoEmpresa": data.codigoEmpresa,
+                    "permitePagoLab" : data.permitePagoLab,
+                    "permitePago": data.permitePagoReserva,
+                    "mensajeBloqueoPago" : data.mensajeBloqueoPago,
+                    "mensajeBloqueoReserva" : data.mensajeBloqueoReserva,
+                    "permiteReserva": data.permitePagoReserva,
+                    "aplicaVerificacionConvenio": data.aplicaVerificacionConvenio,  
+                };
+            }else{
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+            }
             params.paciente = paciente.data
             params.ordenExterna = data;
             params.origen = 'ordenExterna'; 
@@ -417,35 +446,6 @@ Mi Veris - Inicio
         }
         return [];
     } 
-
-
-    async function obtenerPreparacionPrevia(codigoSolicitud){
-        let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ codigoSolicitud }`;
-        args["method"] = "GET";
-        args["showLoader"] = true;
-        const data = await call(args);
-        console.log(data);
-
-        if (data.code == 200){
-            let elem = ``;
-            if(data.data !== null && data.data.length > 0){
-                $.each(data.data, function(key, value){
-                    elem += `<p class="text-veris text-start fw-medium fs--2 mb-0">${capitalizarElemento(value.examenes)}</p>`;
-                    if(value.preparacionPrevia !== null && value.preparacionPrevia.length > 0){
-                        $.each(value.preparacionPrevia, function(k,v){
-                            elem += `<p class="fw-light text-start fs--2 line-height-16 mb-1">${v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()}</p>`
-                        })
-                    }
-                    elem += `<hr class="mb-2 mt-2">`
-                })
-            }else{
-                elem += `<p class="text-veris text-center fw-medium fs--1 mt-5 mb-5">No existe preparación previa para estos exámenes.</p>`
-            }
-            $('.items-preparacion').html(elem);
-            $('#modalPreparacionPrevia').modal("show")
-        }
-    }
 
     async function eliminarReserva(){
         let args = [];
@@ -777,7 +777,7 @@ Mi Veris - Inicio
                             ` : ''}
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
-                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: #D84315;"><i class="fa-solid fa-circle"></i> Pago pendiente</span>
+                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${ (citas.estaPagada == "S") ? "#00C853" : "#D84315"};"><i class="fa-solid fa-circle"></i> ${ (citas.estaPagada == "S") ? "Cita pagada" : "Pago pendiente" }</span>
                             </div>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
                             <ul class="fw-normal fs--2 line-height-16 mb-1 p-0">
