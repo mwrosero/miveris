@@ -58,7 +58,7 @@
 
         function validateForm(){
 			let errors = false;
-            let msg = `<ul class="ms-0 text-start">`;
+            let msg = `<ul class="ms-0 text-start text-veris">`;
             let title = 'Campos requeridos';
 
             if(getInput('codigoActivacion') == ""){

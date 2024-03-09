@@ -116,7 +116,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         reestablecerButton.addEventListener("click", async function (e) {
             e.preventDefault();
             let errors = false;
-            let msg = `<ul class="ms-0 text-start">`;
+            let msg = `<ul class="ms-0 text-start text-veris">`;
             let title = 'Campos requeridos';
             if(getInput('codigoAutorizacion') == ""){
                 errors = true;
