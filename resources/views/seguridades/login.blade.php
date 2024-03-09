@@ -87,7 +87,7 @@
 
         function validateForm(){
             let errors = false;
-            let msg = `<ul class="ms-0 text-start">`;
+            let msg = `<ul class="ms-0 text-start text-veris">`;
             if(getInput('numeroIdentificacion') == ""){
                 errors = true;
                 msg += `<li class="ms-0">Campo cédula o pasaporte es requerido</li>`;

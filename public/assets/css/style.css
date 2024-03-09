@@ -26,6 +26,10 @@
     --font: "Gotham Rounded", sans-serif;
 }
 
+.text-veris {
+    color: #0A2240 !important;
+}
+
 @font-face {
     font-family: 'Gotham Rounded';
     src: url('fonts/GothamRnd-Medium.woff2') format('woff2'),

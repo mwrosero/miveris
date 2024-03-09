@@ -73,7 +73,7 @@
             <div class="authentication-wrapper authentication-basic">
                 <div class="authentication-inner">
                     <div class="card shadow-none">
-                        <div class="card-body px-2 px-lg-4">
+                        <div class="card-body px-0 px-md-4">
                             @yield('content')
                         </div>
                     </div>
