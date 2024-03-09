@@ -278,7 +278,7 @@ Mi Veris - Citas - Mis citas
                                                     }
                                                     element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>`;
                                                     if(historial.esImagen == "S"){
-                                                        element += `<a href="/imagenes-procedimientos" target="_blank" class="btn btn-sm btn-primary-veris shadow-none ms-1 mb-2">Reagendar</a>`
+                                                        element += `<a href="/imagenes-procedimientos" class="btn btn-sm btn-primary-veris shadow-none ms-1 mb-2">Reagendar</a>`
                                                     }else{
                                                         element += `<div class="btn btn-sm btn-primary-veris shadow-none ms-1 mb-2" onclick="consultarConvenios(event)" data-rel='${JSON.stringify(historial)}'>Reagendar</div>`
                                                     }
