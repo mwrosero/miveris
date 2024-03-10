@@ -315,7 +315,8 @@ Mi Veris - Citas - Mis citas
                 $('#historialCitas').empty();
                 $('#mensajeNoHistorialCitas').removeClass('d-none');
             } else {
-                $('#mensajeNoCita').addClass('d-none');
+                //$('#mensajeNoCita').addClass('d-none');
+                $('#mensajeNoHistorialCitas').addClass('d-none');
                 // llenar div historialCitas
                 let historialCitas = $('#historialCitas');
                 historialCitas.empty();
