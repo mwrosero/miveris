@@ -210,7 +210,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                             <p class="col-5 btn text-white fs--18 line-height-24 mb-0 shadow-none cursor-inherit" id="totalLabel"></p>
                                         </div> -->
                                     </div>
-                                    <div class="col-12 col-md-8">
+                                </div>
+                                <div class="row justify-content-center align-items-center">
+                                    <div class="col-12 col-md-6">
                                         <div id="btn-ver-examenes" class="btn-master w-lg-50 mx-auto mt-2 cursor-pointer justify-content-center align-items-center d-none">
                                             <div class="text-center">
                                                 Ver exámenes a pagar

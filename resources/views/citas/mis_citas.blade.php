@@ -189,6 +189,51 @@ Mi Veris - Citas - Mis citas
             myModal.show();
         })
 
+        $(document).on('click', '.btn-preparacionPrevia', function(){
+            let data = $(this).data('rel');
+            obtenerPreparacionPrevia(data.codigoSolicitud)
+        })
+
+        $(document).on('click', '.btn-pagar-lab', async function(){
+            let params = {};
+            let data = JSON.parse($(this).attr("data-rel"));
+            const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
+            // console.log(data);return;
+            if(data.permitePagoReserva == "N"){
+                $('#mensajeError').text(data.mensajePagoReserva);
+                $('#ModalError').modal('show');
+                return;
+            }
+
+            if(data.codigoConvenio !== null){
+                params.convenio = {
+                    "secuenciaAfiliado": data.secuenciaAfiliado,
+                    "idCliente": data.idCliente,
+                    "codigoConvenio": data.codigoConvenio,
+                    "codigoEmpresa": data.codigoEmpresa,
+                    "permitePagoLab" : data.permitePagoLab,
+                    "permitePago": data.permitePagoReserva,
+                    "mensajeBloqueoPago" : data.mensajeBloqueoPago,
+                    "mensajeBloqueoReserva" : data.mensajeBloqueoReserva,
+                    "permiteReserva": data.permitePagoReserva,
+                    "aplicaVerificacionConvenio": data.aplicaVerificacionConvenio,  
+                };
+            }else{
+                params.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                };
+            }
+            params.paciente = paciente.data
+            params.ordenExterna = data;
+            params.origen = 'ordenExterna'; 
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location.href = `/citas-datos-facturacion/{{ $tokenCita }}`;
+        })
+
         $('body').on('click', '.btn-confirmar-eliminar-cita', async function(){
             await eliminarReserva()
         })
@@ -215,6 +260,21 @@ Mi Veris - Citas - Mis citas
             await obtenerCitas();
         }
     }
+
+    async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        
+        const data = await call(args);
+        console.log('datosUsuario',data);
+        if (data.code == 200) {
+            return data;
+        }
+        return [];
+    } 
 
     //funciones asincronas
     // obtener historial de citas
@@ -313,7 +373,7 @@ Mi Veris - Citas - Mis citas
             numeroPaciente = pacienteSeleccionado;
         }
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&version=7.8.0`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${_canalOrigen}&adicionaSolicitudes=S&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&codigoUsuario=${numeroPaciente}&version=7.8.0`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('citasxd',args["endpoint"]);
@@ -333,74 +393,117 @@ Mi Veris - Citas - Mis citas
                 divContenedor.empty();
                 let elemento = '';
                 const tokenCita = "{{ $tokenCita }}";
+                
                 data.data.forEach((citas) => {
-                    console.log("-------------------------------")
-                    console.log(citas)
-                    const classElem = citas.estaPagada === "S" ? 'justify-content-end' : 'justify-content-between';
-                    const esConsultaOnline = citas.esVirtual === "S";
-                    const esPagada = citas.estaPagada === "S" ? 'Pagada' : 'No pagada';
-                    let ruta = "/citas-elegir-fecha-doctor/" + tokenCita;
-
-                    if (citas.esVirtual !== "S") {
-                        ruta = "/citas-elegir-central-medica/" + tokenCita;
-                    }
-
-                    let convenio = {
-                        "secuenciaAfiliado": citas.secuenciaAfiliado,
-                        "idCliente": citas.idCliente,
-                        "codigoConvenio": citas.codigoConvenio,
-                        "secuenciaAfiliado": citas.secuenciaAfiliado,
-                        "codigoEmpresa": citas.codigoEmpresa,
-                        "permitePagoLab": citas.permitePagoLab,
-                        "mensajePagoLab": citas.mensajePagoLab,
-                        "permitePago": citas.permitePagoReserva,
-                        "mensajeBloqueoPago": citas.mensajePagoReserva,
-                        "permiteReserva": citas.permiteReserva,
-                        "mensajeBloqueoReserva": citas.mensajeBloqueoReserva,
-                        "aplicaVerificacionConvenio": citas.aplicaVerificacionConvenio
-                    }
-
-                    /*
-                    permiteCambiar
-                    mensajeInformacion
-                    */
-
-                    elemento += `
-                        <div class="col-12 col-md-6">
+                    if(citas.esLabDomicilio && citas.esLabDomicilio == "S"){
+                        let esConsultaOnline = citas.esVirtual === "S";
+                        let tituloCard = capitalizarElemento(citas.especialidad);
+                        let prestaciones = ``;
+                        let count = 0;
+                        $.each(citas.pacientes, function(k,v){
+                            $.each(v.examenes, function(k1,v1){
+                                if(count < 3){
+                                    count++;
+                                    prestaciones +=`<li class="text-nowrap overflow-hidden text-truncate fs--3 line-height-12">${v1.nombreExamen}${(v.examenes.length < 3 || count == 3) ? `...` : ``}</li>`;
+                                }
+                            })
+                        })
+                        tituloCard = `Solicitud de laboratorio a domicilio - ${citas.codigoSolicitud}`;
+                        elemento += `<div class="col-12 col-md-6">
                             <div class="card">
                                 <div class="card-body p--2">
                                     ${esConsultaOnline ? `
-                                        <span class="badge bg-label-primary text-primary-veris fs--1 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
+                                        <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
                                     ` : ''}
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>
-                                        <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
+                                        <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
+                                        <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${ (citas.estaPagada == "S") ? "#00C853" : "#D84315"};"><i class="fa-solid fa-circle"></i> ${ (citas.estaPagada == "S") ? "Cita pagada" : "Pago pendiente" }</span>
                                     </div>
-                                    <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">${citas.dia} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio} ${determinarMeridiano(citas.horaInicio)}</b></p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
+                                    <ul class="fw-normal fs--2 line-height-16 mb-1 p-0">
+                                        ${ prestaciones }
+                                    </ul>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
                                 </div>
-                                <div class="card-footer pt-0 p--2 d-flex ${classElem} align-items-center">
-                                    ${citas.estaPagada === "N" ? `
-                                        <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
-                                    ` : ''}
+                                <div class="card-footer pt-0 pb--2 px--2 d-flex justify-content-end align-items-center">
                                     <div class="mt-auto">
-                                        ${citas.permiteCambiar == "S" ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" convenio-rel='${JSON.stringify(convenio)}' data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
-                                        ` : `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
-                                                <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
-                                            </div>`
-                                        }
                                         ${citas.estaPagada === "N" ? `
-                                        <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" convenio-rel='${JSON.stringify(convenio)}' data-rel='${JSON.stringify(citas)}'>Pagar</a>
-                                        ` : ''}
+                                        <div class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>
+                                        <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar-lab" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                        ` : `<div class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>`}
                                     </div>
-                                    ${esConsultaOnline && citas.estaPagada == "S" ? `
-                                        <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
-                                    ` : ''}
                                 </div>
                             </div>
                         </div>`;
+                    }else{
+                        console.log("-------------------------------")
+                        console.log(citas)
+                        const classElem = citas.estaPagada === "S" ? 'justify-content-end' : 'justify-content-between';
+                        const esConsultaOnline = citas.esVirtual === "S";
+                        const esPagada = citas.estaPagada === "S" ? 'Pagada' : 'No pagada';
+                        let ruta = "/citas-elegir-fecha-doctor/" + tokenCita;
+
+                        if (citas.esVirtual !== "S") {
+                            ruta = "/citas-elegir-central-medica/" + tokenCita;
+                        }
+
+                        let convenio = {
+                            "secuenciaAfiliado": citas.secuenciaAfiliado,
+                            "idCliente": citas.idCliente,
+                            "codigoConvenio": citas.codigoConvenio,
+                            "secuenciaAfiliado": citas.secuenciaAfiliado,
+                            "codigoEmpresa": citas.codigoEmpresa,
+                            "permitePagoLab": citas.permitePagoLab,
+                            "mensajePagoLab": citas.mensajePagoLab,
+                            "permitePago": citas.permitePagoReserva,
+                            "mensajeBloqueoPago": citas.mensajePagoReserva,
+                            "permiteReserva": citas.permiteReserva,
+                            "mensajeBloqueoReserva": citas.mensajeBloqueoReserva,
+                            "aplicaVerificacionConvenio": citas.aplicaVerificacionConvenio
+                        }
+
+                        /*
+                        permiteCambiar
+                        mensajeInformacion
+                        */
+
+                        elemento += `
+                            <div class="col-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-body p--2">
+                                        ${esConsultaOnline ? `
+                                            <span class="badge bg-label-primary text-primary-veris fs--1 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
+                                        ` : ''}
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>
+                                            <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
+                                        </div>
+                                        <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
+                                        <p class="fw-normal fs--2 line-height-16 mb-1">${citas.dia} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio} ${determinarMeridiano(citas.horaInicio)}</b></p>
+                                        <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
+                                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
+                                    </div>
+                                    <div class="card-footer pt-0 p--2 d-flex ${classElem} align-items-center">
+                                        ${citas.estaPagada === "N" ? `
+                                            <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
+                                        ` : ''}
+                                        <div class="mt-auto">
+                                            ${citas.permiteCambiar == "S" ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" convenio-rel='${JSON.stringify(convenio)}' data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
+                                            ` : `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
+                                                    <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
+                                                </div>`
+                                            }
+                                            ${citas.estaPagada === "N" ? `
+                                            <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" convenio-rel='${JSON.stringify(convenio)}' data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                            ` : ''}
+                                        </div>
+                                        ${esConsultaOnline && citas.estaPagada == "S" ? `
+                                            <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
+                                        ` : ''}
+                                    </div>
+                                </div>
+                            </div>`;
+                        }
                 });
                 divContenedor.append(elemento);
             }
