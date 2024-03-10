@@ -20,6 +20,16 @@ class Veris extends Model
     public const ENVIRONMENT_NUVEI = "stg";
     public const TEST_ENVIRONMENT_KUSHKI = true;
 
+    //PROD
+    // public const BASE_URL = 'https://api.phantomx.com.ec';
+    // public const BASE_WAR = 'digitales';
+    // public const CANAL_ORIGEN = 'MVE_CMV';
+    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
+    // public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
+    // public const KUSHKI_MERCHANT_ID = '1012311620855990918315314280226';
+    // public const ENVIRONMENT_NUVEI = "prod";
+    // public const TEST_ENVIRONMENT_KUSHKI = false;
+
     static function call(Array $config)
     {
         $ch = curl_init();
