@@ -806,7 +806,7 @@ Mi Veris - Inicio
                             ` : ''}
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
-                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: #D84315;"><i class="fa-solid fa-circle"></i> Pago pendiente</span>
+                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${ (citas.estaPagada == "S") ? "#00C853" : "#D84315"};"><i class="fa-solid fa-circle"></i> ${ (citas.estaPagada == "S") ? "Cita pagada" : "Pago pendiente" }</span>
                             </div>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
                             <ul class="fw-normal fs--2 line-height-16 mb-1 p-0">
