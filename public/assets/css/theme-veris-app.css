@@ -1528,7 +1528,7 @@ a.btn.btn-primary-veris:not([href]):hover {
   .menu-vertical .menu-block,
   .menu-vertical .menu-inner>.menu-item,
   .menu-vertical .menu-inner>.menu-header {
-    width: 18rem !important;
+    width: 17.5rem !important;
   }
 }
 
