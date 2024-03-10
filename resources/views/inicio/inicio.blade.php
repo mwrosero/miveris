@@ -447,35 +447,6 @@ Mi Veris - Inicio
         return [];
     } 
 
-
-    async function obtenerPreparacionPrevia(codigoSolicitud){
-        let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ codigoSolicitud }`;
-        args["method"] = "GET";
-        args["showLoader"] = true;
-        const data = await call(args);
-        console.log(data);
-
-        if (data.code == 200){
-            let elem = ``;
-            if(data.data !== null && data.data.length > 0){
-                $.each(data.data, function(key, value){
-                    elem += `<p class="text-veris text-start fw-medium fs--2 mb-0">${capitalizarElemento(value.examenes)}</p>`;
-                    if(value.preparacionPrevia !== null && value.preparacionPrevia.length > 0){
-                        $.each(value.preparacionPrevia, function(k,v){
-                            elem += `<p class="fw-light text-start fs--2 line-height-16 mb-1">${v.charAt(0).toUpperCase() + v.slice(1).toLowerCase()}</p>`
-                        })
-                    }
-                    elem += `<hr class="mb-2 mt-2">`
-                })
-            }else{
-                elem += `<p class="text-veris text-center fw-medium fs--1 mt-5 mb-5">No existe preparación previa para estos exámenes.</p>`
-            }
-            $('.items-preparacion').html(elem);
-            $('#modalPreparacionPrevia').modal("show")
-        }
-    }
-
     async function eliminarReserva(){
         let args = [];
         let canalOrigen = _canalOrigen

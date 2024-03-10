@@ -167,7 +167,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div>
                                 </div>
                                 <div class="card-footer text-end pt--20 pb--2 px--2">
-                                    <a href="/citas-elegir-fecha-doctor/{{$params}}" class="btn btn-sm btn-primary-veris border-0 px-3 py-2 fs--1 btn-ver-medicos">{{ __('Reservar') }}</a>
+                                    <a href="/citas-elegir-fecha-doctor/{{$params}}" class="btn btn-sm btn-primary-veris border-0 px-3 py-2 fs--1 btn-ver-medicos ${ (central.sucursalSinAgenda) ? "disabled" : "" }">${ (central.sucursalSinAgenda) ? "Sin agenda" : "Reservar" }</a>
                                 </div>
                             </div>
                         </div>`
