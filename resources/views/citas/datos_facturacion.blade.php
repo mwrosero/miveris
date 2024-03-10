@@ -779,7 +779,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 // $.each(dataCita.facturacion.detalleServicio.detalleOrdenes, function(key, value){
                 $.each(value.detalleExamenes, function(key, value){
                     elem += `<div class="col-12 col-md-6 mb-3">
-                        <p class="text-start text-nowrap overflow-hidden text-truncate fs--2 mb-1">${value.nombrePrestacion}</p>
+                        <p class="text-start text-nowrap overflow-hidden text-truncate fs--2 mb-1">${value.nombreExamen}</p>
                         <div class="card bg-neutral shadow-none p-2">
                             <table class="card-body w-100">
                                 <tr class="border-bottom">
