@@ -219,11 +219,18 @@ Mi Veris - Citas - Mis citas
     //funciones asincronas
     // obtener historial de citas
     async function obtenerHistorialCitas(fechaDesde, fechaHasta, pacienteSeleccionado , esAdmin, estadoCitas) {
-        console.log(fechaDesde, fechaHasta);
+        // console.log(fechaDesde, fechaHasta);
+        console.log(fechaDesde, fechaHasta, pacienteSeleccionado , esAdmin, estadoCitas)
         let args = [];
-        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let numeroIdentificacion;
+        if(pacienteSeleccionado === undefined){
+            numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+        }else{
+            numeroIdentificacion = pacienteSeleccionado;
+        }
         let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
         if (!Date.parse(fechaDesde) || !Date.parse(fechaHasta)) {
+            console.log("000000000000000000")
             console.log('Fechas inválidas');
             args["endpoint"] = api_url + `/${api_war}/v1/agenda/historialCitas?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion} `; 
         } else {
@@ -276,7 +283,7 @@ Mi Veris - Citas - Mis citas
                                                     <div class="d-flex justify-content-end align-items-center mt-3">
                                                         <div>`
                                                     if(historial.secuenciaAtencion !== null){
-                                                        element += `<button type="button" class="btn btn-sm btn-outline-primary-veris fs--1 shadow-none mb-2 me-1 btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>`;
+                                                        element += `<button type="button" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2 me-1  btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>`;
                                                     }
                                                     element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2">Calificar</a>`;
                                                     if(historial.esImagen == "S"){
