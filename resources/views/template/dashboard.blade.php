@@ -69,6 +69,13 @@
             const api_url = "{{ \App\Models\Ism::BASE_URL }}";
             const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
         </script>
+        <script type="text/javascript">
+            (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "lenv2pcdwb");
+        </script>
     </head>
 
     <body>
