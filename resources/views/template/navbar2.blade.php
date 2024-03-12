@@ -421,7 +421,7 @@
         right: -10px;
         width: 12px;
         height: 12px;
-        background: #ef4f62;
+        background: #FF0000;
         color: #ffffff;
         display: flex;
         justify-content: center;

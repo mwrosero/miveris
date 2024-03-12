@@ -250,6 +250,7 @@ Mi Veris - Inicio
         // chartProgres('#chart-progress');
         await consultarConvenios();
         await consultarDatosPaciente();
+        controlVersion();
         // initializeSwiper('.swipertratamientos');
         // initializeSwiper('.swiper-proximas-citas');
 
@@ -532,6 +533,15 @@ Mi Veris - Inicio
                 $('#modalPPD').modal('hide');
             }
         }
+    }
+
+    async function controlVersion(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/controlVersion?codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&plataforma=WEB&version=1.0.0&canalOrigen=${_canalOrigen}`;
+                args["method"] = "GET";
+                args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data)
     }
 
     //aceptar las politicas
