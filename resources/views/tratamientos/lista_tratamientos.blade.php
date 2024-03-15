@@ -886,7 +886,12 @@ $tokenMods = base64_encode(uniqid());
                         }
                         if (datosServicio.permitePago == 'S' && datosServicio.esPagada == "N"){
                             // mostrar boton de pagar
-                            respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
+                            if(datosServicio.detalleReserva === null){
+                                respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
+                            }else{
+                                respuestaAgenda += `<a href="#" url-rel='${ruta}' data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 ms-2 text-primary-veris border-none shadow-none btn-CambiarFechaCita">${datosServicio.detalleReserva.nombreBotonCambiar}</a>`;
+                            }
+
                             respuestaAgenda += `<div url-rel="/citas-datos-facturacion/{{ $tokenMods }}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-pagar" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}'>Pagar</div>`;
                         }else if(datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             if(datosServicio.modalidad != "ONLINE" && datosServicio.esPagada == "S"){
@@ -1252,6 +1257,12 @@ $tokenMods = base64_encode(uniqid());
     $(document).on('click', '.btn-pagar', function(){
         let datosServicio = $(this).data('rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
+
+        if(datosServicio.esPagada && datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL"){
+            $('#mensajeNoPermiteCambiar').html(datosServicio.mensaje);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }
 
         if(datosServicio.permitePago == "N" && datosServicio.tipoCard != "LAB"){
             $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
