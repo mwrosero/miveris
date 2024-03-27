@@ -28,6 +28,18 @@ class DashboardController extends Controller
         return view('inicio.promociones');
     }
 
+    public function comprarPromociones() {
+        return view('inicio.comprar-promociones');
+    }
+
+    public function misPromociones() {
+        return view('inicio.mis-promociones');
+    }
+
+    public function promocion() {
+        return view('inicio.mis-promociones');
+    }
+
     public function promocionDetalle($params) {
         return view('inicio.detalle_promocion')->with('params',$params);
     }

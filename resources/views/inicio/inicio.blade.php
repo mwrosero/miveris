@@ -124,7 +124,7 @@ Mi Veris - Inicio
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-7 col-md-7">
                                     <div class="card-body p-0 ps-2">
-                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Comprar promociones') }}</h6>
+                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Ver promociones compradas') }}</h6>
                                     </div>
                                 </div>
                                 <div class="col-5 col-md-auto text-end">
