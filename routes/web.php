@@ -49,6 +49,9 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/mis-datos', [DashboardController::class, 'misDatos'])->name('home.misDatos')->withoutMiddleware(['guest']);
     Route::get('/politica-privacidad-datos', [DashboardController::class, 'politicaPrivacidadDatos'])->name('home.politicaPrivacidadDatos')->withoutMiddleware(['guest']);
     Route::get('/promociones', [DashboardController::class, 'listaPromociones'])->name('home.promociones')->withoutMiddleware(['guest']);
+    Route::get('/comprar-promociones', [DashboardController::class, 'comprarPromociones'])->name('home.comprar-promociones')->withoutMiddleware(['guest']);
+    Route::get('/mis-promociones', [DashboardController::class, 'misPromociones'])->name('home.mis-promociones')->withoutMiddleware(['guest']);
+    Route::get('/promocion/{params}', [DashboardController::class, 'promocion'])->name('home.promocion')->withoutMiddleware(['guest']);
     Route::get('/promocion/detalle/{params}', [DashboardController::class, 'promocionDetalle'])->name('home.promocionDetalle')->withoutMiddleware(['guest']);
 
     #Citas
