@@ -182,8 +182,7 @@ Mi Veris - Citas - Promociones
             isFiltered = false;
         })
 
-        // $('body').on('click', '.category-item', function(){
-        $(window).on('scroll touchmove', async function() {
+        $('body').on('click', '.category-item', function(){
             // if (!$(event.target).hasClass('btn-unselect')) {
                 if($(this).hasClass('category-selected')){
                     $(this).find('.ico-unselected').removeClass('d-none')
@@ -236,7 +235,8 @@ Mi Veris - Citas - Promociones
 
         $('#list-promociones-sugeridas').removeClass('invisible');
 
-        $(window).scroll(function() {
+        // $(window).scroll(function() {
+        $(window).on('scroll touchmove', async function() {
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 10 > $(document).height()) {
                 cargandoContenido = true;
                 // console.log("near bottom!");
