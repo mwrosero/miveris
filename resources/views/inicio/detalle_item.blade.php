@@ -59,7 +59,6 @@ Mi Veris - Citas - Detalle
                     </div>`;
             }else{
                 estado += `<div class="label-status-detalle fs--2 line-height-16 m-0 ms-2">
-                        <i class="fa-regular fa-calendar-check me-2"></i>
                         <i class="fa-solid fa-check me-2 text-success"></i>
                         <span class="text-success">Atendida</span>
                     </div>`;

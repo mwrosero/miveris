@@ -15,15 +15,27 @@ Mi Veris - Citas - Mis Promociones
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
-            <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3" id="pills-tab" role="tablist">
+            <ul class="nav nav-pills justify-content-center w-auto p-1 rounded-3 invisible" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link btn-estado-promocion px-8 px-md-5 active" tipoFiltro-rel="ASIGNADO" id="pills-compradas-tab" data-bs-toggle="pill" data-bs-target="#pills-compradas" type="button" role="tab" aria-controls="pills-compradas" aria-selected="true">Compradas</button>
+                    <button class="nav-link bg-white btn-estado-promocion px-8 px-md-5 m-1 d-flex flex-column active" tipoFiltro-rel="ASIGNADO" id="pills-compradas-tab" data-bs-toggle="pill" data-bs-target="#pills-compradas" type="button" role="tab" aria-controls="pills-compradas" aria-selected="true">
+                        <img src="{{ asset('assets/img/svg/promociones-compradas-selected-ico.svg') }}" alt="" class="ico-estado ico-estado-activo">
+                        <img src="{{ asset('assets/img/svg/promociones-compradas-ico.svg') }}" alt="" class="d-none ico-estado ico-estado-inactivo">
+                        <p class="fs--2 line-height-20 mt-2 mb-0">Compradas</p>
+                    </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link btn-estado-promocion px-8 px-md-5" tipoFiltro-rel="REALIZADAS" id="pills-realizadas-tab" data-bs-toggle="pill" data-bs-target="#pills-realizadas" type="button" role="tab" aria-controls="pills-realizadas" aria-selected="false">Realizadas</button>
+                    <button class="nav-link bg-white btn-estado-promocion px-8 px-md-5 m-1 d-flex flex-column" tipoFiltro-rel="REALIZADAS" id="pills-realizadas-tab" data-bs-toggle="pill" data-bs-target="#pills-realizadas" type="button" role="tab" aria-controls="pills-realizadas" aria-selected="false">
+                        <img src="{{ asset('assets/img/svg/promociones-realizadas-ico.svg') }}" alt="" class="ico-estado ico-estado-inactivo">
+                        <img src="{{ asset('assets/img/svg/promociones-realizadas-selected-ico.svg') }}" alt="" class="d-none ico-estado ico-estado-activo">
+                        <p class="fs--2 line-height-20 mt-2 mb-0">Realizadas</p>
+                    </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link btn-estado-promocion px-8 px-md-5" tipoFiltro-rel="ARCHIVADAS" id="pills-archivadas-tab" data-bs-toggle="pill" data-bs-target="#pills-archivadas" type="button" role="tab" aria-controls="pills-archivadas" aria-selected="false">Archivadas</button>
+                    <button class="nav-link bg-white btn-estado-promocion px-8 px-md-5 m-1 d-flex flex-column" tipoFiltro-rel="ARCHIVADAS" id="pills-archivadas-tab" data-bs-toggle="pill" data-bs-target="#pills-archivadas" type="button" role="tab" aria-controls="pills-archivadas" aria-selected="false">
+                        <img src="{{ asset('assets/img/svg/promociones-archivadas-ico.svg') }}" alt="" class="ico-estado ico-estado-inactivo">
+                        <img src="{{ asset('assets/img/svg/promociones-archivadas-selected-ico.svg') }}" alt="" class="d-none ico-estado ico-estado-activo">
+                        <p class="fs--2 line-height-20 mt-2 mb-0">Archivadas</p>
+                    </button>
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
@@ -56,10 +68,10 @@ Mi Veris - Citas - Mis Promociones
     let cargandoContenido = false;
     
     document.addEventListener("DOMContentLoaded", async function () {
-        
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         await consultarGrupoFamiliar();
+        $('#pills-tab').removeClass("invisible");
 
         $('.box-fechas-filtro').remove();
 
@@ -146,6 +158,12 @@ Mi Veris - Citas - Mis Promociones
 
         // boton promociones compradas
         $('#pills-compradas-tab, #pills-realizadas-tab, #pills-archivadas-tab').on('click', async function(){
+            $('.ico-estado-activo').addClass('d-none');
+            $('.ico-estado-inactivo').removeClass('d-none');
+
+            $(this).find('.ico-estado-inactivo').addClass('d-none')
+            $(this).find('.ico-estado-activo').removeClass('d-none')
+
             page = 1;
             $('#contenedorPromociones').empty();
             await obtenerPaquetesPromocionales($('.btn-estado-promocion.active').attr("tipoFiltro-rel"));
@@ -238,7 +256,7 @@ Mi Veris - Citas - Mis Promociones
                                 </div>
                                 <div class="card-footer border-0 d-flex justify-content-between align-items-center p-3 pt-0">
                                     <img src="{{ asset('assets/img/svg/golden.svg') }}" />
-                                    <a href="/mi-promocion/detalle/${value.secuenciaPaquetePaciente}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">Ver promoción</a>
+                                    <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver promoción</div>
                                 </div>
                             </div>
                         </div>`;
@@ -292,4 +310,23 @@ Mi Veris - Citas - Mis Promociones
     }
 
 </script>
+<style>
+    .nav-pills .nav-link{
+        box-shadow: 0px 2px 4px 0px #0000000D !important;
+        border-radius: 8px !important;
+        padding: 8px !important;
+        border: 2px solid #fff;
+        color: #3A5068;
+        width: 104px !important;
+    }
+    .nav-pills .nav-link.active, .nav-pills .nav-link.active:hover, .nav-pills .nav-link.active:focus {
+        background-color: #fff;
+        color: #0071CE;
+        border: 2px solid #0071CE;
+        box-shadow: 0px 2px 4px 0px #0000000D !important;
+        border-radius: 8px !important;
+        padding: 8px !important;
+        font-weight: 500;
+    }
+</style>    
 @endpush

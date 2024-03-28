@@ -14,22 +14,24 @@ Mi Veris - Citas - Detalle
     <div class="d-flex justify-content-between align-items-center bg-white shadow-bottom">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Promoción') }}</h5>
     </div>
-    <section class="p-0 mb-3">
-        <div class="row d-flex justify-content-start align-items-start">
-            <div class="col-12 col-md-4 feature-img-promocion" style="height: 200px;">
-            </div>
-            <div class="col-10 offset-1 offset-md-0 col-md-6 mt-3">
-                <h2 class="title-promocion fs--16 mb-2 h-auto"></h2>
-                <p class="fs--2 mb-2 nombrePaciente"></p>
-                <p class="fs--2 mb-2 fechaValides"></p>
-            </div>
-        </div>
-        <div class="row box-llamada-all d-none">
-            <div class="col-10 offset-1 offset-md-3 col-md-6 text-center mt-3">
-                <div class="box-llamada d-flex justify-content-around align-items-center fs--1 line-height-16 ">
+    <section class="p-0 mb-3" style="overflow-x: hidden;">
+        {{-- <div class="container"> --}}
+            <div class="row d-flex justify-content-start align-items-start">
+                <div class="col-12 col-md-4 feature-img-promocion" style="height: 200px;">
+                </div>
+                <div class="col-10 offset-1 offset-md-0 col-md-6 mt-3">
+                    <h2 class="title-promocion fs--16 mb-2 h-auto"></h2>
+                    <p class="fs--2 mb-2 nombrePaciente"></p>
+                    <p class="fs--2 mb-2 fechaValides"></p>
                 </div>
             </div>
-        </div>
+            <div class="row box-llamada-all d-none">
+                <div class="col-10 offset-1 offset-md-3 col-md-6 text-center mt-3">
+                    <div class="box-llamada d-flex justify-content-around align-items-center fs--1 line-height-16">
+                    </div>
+                </div>
+            </div>
+        {{-- </div> --}}
     </section>
     <section class="p-0 px-md-3">
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue d-none" id="tituloPromocionPendiente">{{ __('Pendientes') }}</h5>
@@ -137,7 +139,7 @@ Mi Veris - Citas - Detalle
                                         <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                     </div>
                                     <div>
-                                        <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle">Ver detalle</div>
+                                        <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(detalles.detalles)}'detalles>Ver detalle</div>
                                     </div>
                                 </div>
                             </div>
