@@ -114,12 +114,12 @@ Mi Veris - Citas - Promociones
         $(window).on('scroll', onScroll); 
 
         async function onScroll(){
-            console.log('onScroll');
-            console.log(cargandoContenido)
-            console.log(isFiltered)
-            console.log($(window).scrollTop() + $(window).height() + 10)
-            console.log($(document).height())
-            if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 10 > $(document).height()) {
+            // console.log('onScroll');
+            // console.log(cargandoContenido)
+            // console.log(isFiltered)
+            // console.log($(window).scrollTop() + $(window).height() + 10)
+            // console.log($(document).height())
+            if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
                 console.log("near bottom!");
                 await obtenerPaquetesPromocionales();
