@@ -110,7 +110,8 @@ Mi Veris - Citas - Promociones
 
         await obtenerPaquetesPromocionales();
 
-        $(window).scroll(async function() {
+        //$(window).scroll(async function() {
+        $(window).on('scroll touchmove', async function() {
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 10 > $(document).height()) {
                 cargandoContenido = true;
                 console.log("near bottom!");
