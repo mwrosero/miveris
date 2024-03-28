@@ -235,14 +235,26 @@ Mi Veris - Citas - Promociones
 
         $('#list-promociones-sugeridas').removeClass('invisible');
 
-        // $(window).scroll(function() {
-        $(window).on('scroll touchmove', async function() {
+        $(document.body).on('touchmove', onScroll); // for mobile
+        $(window).on('scroll', onScroll); 
+
+        async function onScroll(){
+            console.log('onScroll');
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 10 > $(document).height()) {
                 cargandoContenido = true;
-                // console.log("near bottom!");
-                obtenerPaquetesPromocionales();
+                console.log("near bottom!");
+                await obtenerPaquetesPromocionales();
             }
-        });
+        }
+
+        // $(window).scroll(function() {
+        // $(window).on('scroll touchmove', async function() {
+        //     if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 10 > $(document).height()) {
+        //         cargandoContenido = true;
+        //         // console.log("near bottom!");
+        //         obtenerPaquetesPromocionales();
+        //     }
+        // });
 
         $('body').on('click','.btn-comprar', function(){
             let url = '/promocion/detalle/';
