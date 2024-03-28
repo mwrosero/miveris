@@ -9,6 +9,20 @@ Mi Veris - Citas - Mis Promociones
 @php
     $tokenCita = base64_encode(uniqid());
 @endphp
+<!-- Modal Permite Cambio -->
+<div class="modal fade" id="modalArchivarDesarchivar" tabindex="-1" aria-labelledby="modalArchivarDesarchivarLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3 pb-0">
+                <h1 class="fs-24 fw-medium line-height-28 my-3">Veris</h1>
+                <p class="fs--1 line-height-16 text-veris mb-3" id="mensajeArchivarDesarchivar"></p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" onclick="refreshSection();">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis Promociones') }}</h5>
@@ -114,6 +128,10 @@ Mi Veris - Citas - Mis Promociones
             };
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
+        })
+
+        $('body').on('click', '.btnDesarchivar', async function(){
+            await archivarDesarchivar($(this).attr("secuenciaPaquetePaciente-rel"), $(this).attr("tipo-rel"));
         })
 
         /*
@@ -228,7 +246,7 @@ Mi Veris - Citas - Mis Promociones
             if(data.data.tienePermisoAdmin){
                 $.each(data.data.items, function(key, value){
                     if(tipoFiltro == "ASIGNADO" || tipoFiltro == "ARCHIVADAS"){
-                        elem += `<div class="col-md-6">
+                        elem += `<div class="col-md-6" id="promocion-${value.secuenciaPaquetePaciente}">
                             <div class="card m-1">
                                 <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
                                 </div>
@@ -238,15 +256,17 @@ Mi Veris - Citas - Mis Promociones
                                     <p class="fs--2">Válido hasta: ${ validarCaducidad(value.fechaCaducidad, value.esCaducada) }</p>
                                 </div>
                                 <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0">`
-                                if(value.esCaducada){
-                                    elem += `<a href="#" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btnDesarchivar">Desarchivar</a>`
+                                if(value.esCaducada && tipoFiltro == "ASIGNADO"){
+                                    elem += `<a href="#" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btnDesarchivar" tipo-rel="A" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Archivar</a>`
+                                }else if(tipoFiltro == "ARCHIVADAS"){
+                                    elem += `<a href="#" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btnDesarchivar" tipo-rel="D" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Desarchivar</a>`
                                 }
                                     elem += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver promoción</div>
                                 </div>
                             </div>
                         </div>`;
                     }else if(tipoFiltro == "REALIZADAS"){
-                        elem += `<div class="col-md-6">
+                        elem += `<div class="col-md-6" id="promocion-${value.secuenciaPaquetePaciente}">
                             <div class="card m-1">
                                 <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
                                 </div>
@@ -307,6 +327,27 @@ Mi Veris - Citas - Mis Promociones
             elem += `<span class="text-primary-veris">${fecha}</span>`;
         }
         return elem;
+    }
+
+    async function archivarDesarchivar(secuenciaPaquetePaciente, tipo){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paqueteArchivar/${secuenciaPaquetePaciente}`;
+        args["method"] = "PUT";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(tipo);
+        console.log(data);
+        //Menos para edictar reserva 
+        if(data.code == 200){
+            // $('#promocion-'+secuenciaPaquetePaciente).remove();
+            $('#mensajeArchivarDesarchivar').html(data.message);
+            $('#modalArchivarDesarchivar').modal("show");
+        }
+    }
+
+    async function refreshSection(){
+        await obtenerPaquetesPromocionales($('.btn-estado-promocion.active').attr("tipoFiltro-rel"));
     }
 
 </script>
