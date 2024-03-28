@@ -219,7 +219,7 @@ Mi Veris - Citas - Promociones
     async function obtenerPaquetesPromocionales(){
         var paciente = JSON.parse($('input[name="listGroupRadios"]:checked').attr("data-rel"));
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=SUGERIDOS&idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${paciente.numeroPaciente}&page=${page}&perPage=${perPage}&verDetalle=false&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=SUGERIDOS&idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${paciente.numeroPaciente}&page=${page}&perPage=${perPage}&esPagado=false&verDetalle=false`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
