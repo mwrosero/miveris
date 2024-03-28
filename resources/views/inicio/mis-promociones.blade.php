@@ -17,26 +17,32 @@ Mi Veris - Citas - Mis Promociones
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-8 px-md-5 active" id="pills-compradas-tab" data-bs-toggle="pill" data-bs-target="#pills-compradas" type="button" role="tab" aria-controls="pills-compradas" aria-selected="true">Compradas</button>
+                    <button class="nav-link btn-estado-promocion px-8 px-md-5 active" tipoFiltro-rel="ASIGNADO" id="pills-compradas-tab" data-bs-toggle="pill" data-bs-target="#pills-compradas" type="button" role="tab" aria-controls="pills-compradas" aria-selected="true">Compradas</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-8 px-md-5" id="pills-realizadas-tab" data-bs-toggle="pill" data-bs-target="#pills-realizadas" type="button" role="tab" aria-controls="pills-realizadas" aria-selected="false">Realizadas</button>
+                    <button class="nav-link btn-estado-promocion px-8 px-md-5" tipoFiltro-rel="REALIZADAS" id="pills-realizadas-tab" data-bs-toggle="pill" data-bs-target="#pills-realizadas" type="button" role="tab" aria-controls="pills-realizadas" aria-selected="false">Realizadas</button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link px-8 px-md-5" id="pills-archivadas-tab" data-bs-toggle="pill" data-bs-target="#pills-archivadas" type="button" role="tab" aria-controls="pills-archivadas" aria-selected="false">Realizadas</button>
+                    <button class="nav-link btn-estado-promocion px-8 px-md-5" tipoFiltro-rel="ARCHIVADAS" id="pills-archivadas-tab" data-bs-toggle="pill" data-bs-target="#pills-archivadas" type="button" role="tab" aria-controls="pills-archivadas" aria-selected="false">Archivadas</button>
                 </li>
             </ul>
             <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
                 <!-- Filtro -->
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
-                <div class="tab-pane fade mt-3 show active" id="pills-compradas" role="tabpanel" aria-labelledby="pills-compradas-tab" tabindex="0">
+                {{-- <div class="tab-pane fade mt-3 show active" id="pills-compradas" role="tabpanel" aria-labelledby="pills-compradas-tab" tabindex="0">
                     <div id="contenedorPromocionesCompradas" class="px-0">
                     </div>
                 </div>
                 <div class="tab-pane fade mt-3" id="pills-realizadas" role="tabpanel" aria-labelledby="pills-realizadas-tab" tabindex="0">R
                 </div>
                 <div class="tab-pane fade mt-3" id="pills-archivadas" role="tabpanel" aria-labelledby="pills-archivadas-tab" tabindex="0">A
+                </div> --}}
+            </div>
+        </div>
+        <div class="row justify-content-center mt-2">
+            <div class="col-lg-10">
+                <div class="row gy-3" id="contenedorPromociones">
                 </div>
             </div>
         </div>
@@ -48,62 +54,101 @@ Mi Veris - Citas - Mis Promociones
     let page = 1;
     let perPage = 16;
     let cargandoContenido = false;
+    
     document.addEventListener("DOMContentLoaded", async function () {
         
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         await consultarGrupoFamiliar();
+
+        $('.box-fechas-filtro').remove();
+
+        $('#aplicarFiltros').on('click', async function() {
+            // colocar el nombre del filtro
+            page = 1;
+            $('#contenedorPromociones').empty();
+            let texto = $('input[name="listGroupRadios"]:checked').data('rel');
+            const elemento = document.getElementById('nombreFiltro');
+            if (texto == 'YO') {
+                elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+            } else {
+                elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
+            }
+            isFiltered = true;
+            await obtenerPaquetesPromocionales($('.btn-estado-promocion.active').attr("tipoFiltro-rel"));
+            isFiltered = false;
+            $('#filtroTratamientos').offcanvas('hide');
+
+        });
+
+        $('#btnLimpiarFiltros').on('click', async function() {
+            page = 1;
+            $('#contenedorPromociones').empty();
+            const contexto = $(this).data('context');
+            $('input[name="listGroupRadios"]').prop('checked', false);
+            $('input[name="listGroupRadios"]').first().prop('checked', true);
+            const elemento = document.getElementById('nombreFiltro');
+            elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+            isFiltered = true;
+            await obtenerPaquetesPromocionales($('.btn-estado-promocion.active').attr("tipoFiltro-rel"));
+            isFiltered = false;
+            $('#filtroTratamientos').offcanvas('hide');
+        });
+
+        $('body').on('click','.btn-detalle', function(){
+            let url = '/mi-promocion/detalle/';
+            let data = {
+                "paquete": JSON.parse($(this).attr("data-rel"))
+            };
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
+            location.href = url + "{{ $tokenCita }}";
+        })
+
         /*
         ASIGNADO
         REALIZADAS
         ARCHIVADAS
         */
-        await obtenerPaquetesPromocionales("contenedorPromocionesCompradas","ASIGNADO")
+        await obtenerPaquetesPromocionales("ASIGNADO")
 
         // aplicar filtros
         $('#aplicarFiltros').on('click', async function() {
-            const contexto = $(this).data('context');
-            aplicarFiltros(contexto);
-            // Obtener el texto completo de la opción seleccionada data-rel
-            let texto = $('input[name="listGroupRadios"]:checked').data('rel');
-            await consultarConvenios(texto);
-            identificacionSeleccionada = texto.numeroPaciente;
             // colocar el nombre del filtro
+            page = 1;
+            $('#listado-paquetes').empty();
+            let texto = $('input[name="listGroupRadios"]:checked').data('rel');
             const elemento = document.getElementById('nombreFiltro');
             if (texto == 'YO') {
                 elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
-            } else{
+            } else {
                 elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);
             }
-        });
+            isFiltered = true;
+            await obtenerPaquetesPromocionales($('.btn-estado-promocion.active').attr("tipoFiltro-rel"));
+            isFiltered = false;
+            $('#filtroTratamientos').offcanvas('hide');
 
-        // limpiar filtros
-        $('#btnLimpiarFiltros').on('click', function() {
+        });
+        
+        $('#btnLimpiarFiltros').on('click', async function() {
+            page = 1;
+            $('#listado-paquetes').empty();
             const contexto = $(this).data('context');
-            limpiarFiltros(contexto);
-            identificacionSeleccionada = "{{ Session::get('userData')->numeroPaciente }}";
+            $('input[name="listGroupRadios"]').prop('checked', false);
+            $('input[name="listGroupRadios"]').first().prop('checked', true);
             const elemento = document.getElementById('nombreFiltro');
             elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
+            isFiltered = true;
+            await obtenerPaquetesPromocionales($('.btn-estado-promocion.active').attr("tipoFiltro-rel"));
+            isFiltered = false;
+            $('#filtroTratamientos').offcanvas('hide');
         });
 
         // boton promociones compradas
-        $('#pills-compradas-tab').on('click', async function(){
-            const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
-            // await obtenerTratamientosId(identificacionSeleccionada, '', '', 'REALIZADO', esAdmin);
-        });
-
-        // boton promociones realizadas
-        $('#pills-realizadas-tab').on('click', async function(){
-            // console.log('pendientes');
-            const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
-            // await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
-        });
-
-        // boton promociones archivadas
-        $('#pills-archivadas-tab').on('click', async function(){
-            // console.log('pendientes');
-            const esAdmin = $('input[name="listGroupRadios"]:checked').attr('esAdmin');
-            // await obtenerTratamientosId(identificacionSeleccionada, '', '', 'PENDIENTE', esAdmin);
+        $('#pills-compradas-tab, #pills-realizadas-tab, #pills-archivadas-tab').on('click', async function(){
+            page = 1;
+            $('#contenedorPromociones').empty();
+            await obtenerPaquetesPromocionales($('.btn-estado-promocion.active').attr("tipoFiltro-rel"));
         });
     })
 
@@ -146,71 +191,105 @@ Mi Veris - Citas - Mis Promociones
         });
     }
 
-    async function obtenerPaquetesPromocionales(idSection, tipoFiltro){
+    async function obtenerPaquetesPromocionales(tipoFiltro){
         var paciente = JSON.parse($('input[name="listGroupRadios"]:checked').attr("data-rel"));
         // let idPaciente = "";
         // if(parseInt({{ Session::get('userData')->numeroPaciente }}) !== paciente.numeroPaciente){
 
         // }
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=${tipoFiltro}&page=${page}&perPage=${perPage}&idPaciente=${ paciente.numeroPaciente }&estaPagado=true&verDetalle=false&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=${tipoFiltro}&page=${page}&perPage=${perPage}&idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${ paciente.numeroPaciente }&estaPagado=true&verDetalle=false`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-    }
+        
+        console.log(data);
 
-    async function __obtenerPaquetesPromocionales(){
-        let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&verDetalle=false&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
-        args["method"] = "GET";
-        args["showLoader"] = true;
-        const data = await call(args);
-
-        if (data.code == 200){
+        if(data.code == 200){
             let elem = ``;
-            if(data.data.items.length == 0){
-                cargandoContenido = true;
-            }else{
-                cargandoContenido = false;  
-            }
-            if(data.data.items.length > 0){
-                $.each(data.data.items, function(key, paquete){
-                    elem += `<div class="col-md-6">
-                        <div class="card w-100" style="border: 1px solid #E7E9EC;box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);">
-                            <div class="row g-0 justify-content-between aling-items-center cursor-pointer btn-comprar" data-rel='${ JSON.stringify(paquete) }'>
-                                <div class="col-4 col-md-auto">
-                                    <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
+            if(data.data.tienePermisoAdmin){
+                $.each(data.data.items, function(key, value){
+                    if(tipoFiltro == "ASIGNADO" || tipoFiltro == "ARCHIVADAS"){
+                        elem += `<div class="col-md-6">
+                            <div class="card m-1">
+                                <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
                                 </div>
-                                <div class="col-8 col-md-8">
-                                    <div class="card-body h-100 p--2 pb-2 d-flex flex-column justify-content-center">
-                                        <h6 class="text-end fs--1 line-height-16 fw-medium mb-2">${truncateText(capitalizarElemento(paquete.nombrePaquete), 40)}</h6>
-                                        <div class="d-flex justify-content-end">`;
-                                            if(paquete.porcentajeDescuento > 0){
-                                                elem += `<span class="badge bg-primary d-flex align-items-center fs--2 line-height-16 rounded-1 px--2 py-2 mx-3">-${paquete.porcentajeDescuento}%</span>`;
-                                            }
-                                                elem += `<div class="content-precio text-end">`;
-                                            if(paquete.porcentajeDescuento > 0){
-                                                elem += `<p class="fs--3 line-height-16 mb-0" style="color: #6E7A8C;">Antes <del>$${paquete.valorAnteriorPaquete.toFixed(2)}</del></p>`
-                                            }
-                                                elem += `<h4 class="fs-24 line-height-28 fw-medium mb-0" style="color: #0071CE !important;">$${paquete.valorTotalPaquete.toFixed(2)}</h4>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="card-body p-3 pb-0">
+                                    <h2 class="title-promocion-mis-compras line-height-20 fs--16 mb-2">${capitalizarCadaPalabra(value.nombrePaquete)}</h2>
+                                    <p class="fs--2 text-nowrap overflow-hidden text-truncate">${capitalizarCadaPalabra(value.nombrePaciente)}</p>
+                                    <p class="fs--2">Válido hasta: ${ validarCaducidad(value.fechaCaducidad, value.esCaducada) }</p>
+                                </div>
+                                <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0">`
+                                if(value.esCaducada){
+                                    elem += `<a href="#" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btnDesarchivar">Desarchivar</a>`
+                                }
+                                    elem += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver promoción</div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }else if(tipoFiltro == "REALIZADAS"){
+                        elem += `<div class="col-md-6">
+                            <div class="card m-1">
+                                <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
+                                </div>
+                                <div class="card-body p-3 pb-0">
+                                    <h2 class="title-promocion-mis-compras line-height-20 fs--16 mb-2">${capitalizarCadaPalabra(value.nombrePaquete)}</h2>
+                                    <p class="fs--2 text-nowrap overflow-hidden text-truncate">${capitalizarCadaPalabra(value.nombrePaciente)}</p>
+                                </div>
+                                <div class="card-footer border-0 d-flex justify-content-between align-items-center p-3 pt-0">
+                                    <img src="{{ asset('assets/img/svg/golden.svg') }}" />
+                                    <a href="/mi-promocion/detalle/${value.secuenciaPaquetePaciente}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none">Ver promoción</a>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
+                })
+                if(data.data.items == 0){
+                    let tipoF;
+                    if(tipoFiltro == "ASIGNADO"){
+                        tipoF = "asignadas";
+                    }else if(tipoFiltro == "REALIZADAS"){
+                        tipoF = "realizadas";
+                    }else{
+                        tipoF = "archivadas";
+                    }
+                    elem += `<div class="col-12 d-flex justify-content-center" id="mensajeNoTienesPermisosAdministradorRealizados">
+                        <div class="card bg-transparent shadow-none">
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes promociones ${tipoF}</h5>
+                                    <img src="{{ asset('assets/img/svg/no-resultados-promociones.svg') }}" class="img-fluid" alt="">
                                 </div>
                             </div>
                         </div>
                     </div>`;
-                })
-                page++;
-            }else{
-                if(page == 1){
-                    elem += `<p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>`;
                 }
+            }else{
+                elem += `<div class="col-12 d-flex justify-content-center" id="mensajeNoTienesPermisosAdministradorRealizados">
+                        <div class="card bg-transparent shadow-none">
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes permisos de administrador</h5>
+                                    <p class="fs--16 line-height-20 mb-4">Pídele a esta persona que te otorgue los permisos en la sección <b>Familia y amigos</b>.</p>
+                                    <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
             }
-            $('#listado-paquetes').append(elem);
-        }else{
-            alert(data.message);
+            $('#contenedorPromociones').html(elem);
         }
     }
+
+    function validarCaducidad(fecha, esCaducada){
+        let elem = ``;
+        if(esCaducada){
+            elem += `<span class="text-danger">${fecha} | Caducado</span>`;
+        }else{
+            elem += `<span class="text-primary-veris">${fecha}</span>`;
+        }
+        return elem;
+    }
+
 </script>
 @endpush

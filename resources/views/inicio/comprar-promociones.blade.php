@@ -9,14 +9,66 @@ Mi Veris - Citas - Promociones
 @php
     $tokenCita = base64_encode(uniqid());
 @endphp
+{{-- Modal Categoria Promociones --}}
+<div class="modal fade" id="modalCategoriaPromociones" tabindex="-1" aria-labelledby="modalCategoriaPromociones" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3 pb-0" id="lista-categorias">
+                    {{-- <h1 class="modal-title fs--20 line-height-24 my-3">Filtrar por</h1>
+                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                        <i class="fa-solid fa-person-dress fs--20 me-3"></i>
+                        <span class="fs--16 me-3">Mujeres</span>
+                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                        <i class="fa-solid fa-person fs--20 me-3"></i>
+                        <span class="fs--16 me-3">Hombres</span>
+                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                        <i class="fa-solid fa-child-reaching fs--20 me-3"></i>
+                        <span class="fs--16 me-3">Adolescentes</span>
+                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                        <i class="fa-solid fa-baby fs--20 me-3"></i>
+                        <span class="fs--16 me-3">Niños</span>
+                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                        <i class="fa-solid fa-person-cane fs--20 me-3"></i>
+                        <span class="fs--16 me-3">Adultos mayores</span>
+                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                        <i class="fa-solid fa-display fs--20 me-3"></i>
+                        <span class="fs--16 me-3">Veris virtual</span>
+                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                        <i class="fa-solid fa-tag fs--20 me-3"></i>
+                        <span class="fs--16 me-3">Promociones</span>
+                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                        <i class="fa-solid fa-tooth fs--20 me-3"></i>
+                        <span class="fs--16 me-3">Odontológicos</span>
+                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                    </div> --}}
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris btnAplicarFiltroCategorias fw-medium fs--18 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aplicar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 <div class="flex-grow-1 container-p-y pt-0">
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Comprar promociones') }}</h5>
     </div>
-    <section class="p-3 mb-3">
+    <section class="mb-0 p-3 pb-0">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-medium border-start-veris ps-3 fs-18">{{ __('Promociones sugeridas') }} <a href="#" class="ms-3 fs--2"> Ver todas</a></h5>
-
+            <h5 class="fw-medium border-start-veris ps-3 fs-18">{{ __('Promociones sugeridas') }} <a href="/promociones/sugeridas" class="ms-3 fs--2"> Ver todas</a></h5>
         </div>
         <div class="swiper swiper-promociones-sugeridas position-relative py-3 pt-md-2 pb-md-4">
             <div class="swiper-wrapper invisible" id="list-promociones-sugeridas">
@@ -52,8 +104,18 @@ Mi Veris - Citas - Promociones
                 </div>
             </div>
         </div>
-
-        <div class="row justify-content-center">
+    </section>
+    <section class="mb-3 shadow-bottom">
+        <div class="col-auto p-2">
+            <button class="btn btn-sm btn-outline-primary-veris ms-2 px-2 waves-effect" type="button" data-bs-toggle="modal" data-bs-target="#modalCategoriaPromociones">
+                <p class="fs--1 line-height-16 fw-normal mb-0" id="nombreFiltro">Filtrar por categorías</p>
+                <img src="{{asset('assets/img/svg/arrow-down.svg')}}" class="ms-1" alt="filtro categorías"> 
+            </button>
+            <div class="box-categorias-seleccionadas ms-2 mt-2 d-inline-block justify-content-start align-items-center"></div>
+        </div>
+    </section>
+    <section class="mb-3 p-3">
+        <div class="row justify-content-center mt-2">
             <div class="col-lg-10">
                 <div class="row gy-3" id="listado-paquetes">
                     {{-- <div class="col-md-6">
@@ -81,7 +143,6 @@ Mi Veris - Citas - Promociones
                     </div> --}}
                 </div>
             </div>
-           
         </div>
     </section>
 </div>
@@ -91,9 +152,53 @@ Mi Veris - Citas - Promociones
     let page = 1;
     let perPage = 8;
     let cargandoContenido = false;
+    let isFiltered = false;
     document.addEventListener("DOMContentLoaded", async function () {
+        obtenerCategorias();
         await obtenerPaquetesSugeridos();
         await obtenerPaquetesPromocionales();
+
+        $('body').on('click', '.btnEliminarCategoria', async function(){
+            $('[categoria-rel="'+$(this).attr("categoria-rel")+'"]').removeClass('category-selected');
+            $('[categoria-rel="'+$(this).attr("categoria-rel")+'"]').find('.ico-unselected').removeClass('d-none')
+            $('[categoria-rel="'+$(this).attr("categoria-rel")+'"]').find('.ico-selected').addClass('d-none')
+            $('.btnAplicarFiltroCategorias').click();
+        })
+
+        $('body').on('click', '.btnAplicarFiltroCategorias', async function(){
+            let categorias = await obtenerCategoriasSeleccionadas("texto-valor");
+            let elem = ``;
+            $.each(categorias, function(key, value){
+                let label = value.split("-");
+                elem += `<span class="badge bg-filter-promocion p-2 me-2 mb-2 fs--2 fw-medium">${label[1]} <i class="fa-solid fa-xmark ms-2 cursor-pointer btnEliminarCategoria" categoria-rel="${label[0]}"></i></span>`
+            })
+            $('.box-categorias-seleccionadas').html(elem);
+            categorias.join(',')
+            page = 1;
+            $('#listado-paquetes').empty();
+            cargandoContenido = false;
+            isFiltered = true;
+            await obtenerPaquetesPromocionales();
+            isFiltered = false;
+        })
+
+        $('body').on('click', '.category-item', function(){
+            // if (!$(event.target).hasClass('btn-unselect')) {
+                if($(this).hasClass('category-selected')){
+                    $(this).find('.ico-unselected').removeClass('d-none')
+                    $(this).find('.ico-selected').addClass('d-none')
+                    $(this).removeClass('category-selected');
+                }else{
+                    $(this).find('.ico-selected').removeClass('d-none')
+                    $(this).find('.ico-unselected').addClass('d-none')
+                    $(this).addClass('category-selected');
+                }
+            // }
+        })
+
+        // $('body').on('click', '.btn-unselect', function(){
+        //     $(this).parent().removeClass('category-selected');
+        // })
 
         var swiper = new Swiper('.swiper-promociones-sugeridas', {
             // slidesPerView: 1,
@@ -110,13 +215,13 @@ Mi Veris - Citas - Promociones
             },
             breakpoints: {
                 300: {
-                    slidesPerView: 2.1,
+                    slidesPerView: 1.1,
                     centeredSlides: false,
                     // loop: true,
                     spaceBetween: 4,
                 },
                 768: {
-                    slidesPerView: 2,
+                    slidesPerView: 2.1,
                     // centeredSlides: true,
                     // loop: true,
                     // spaceBetween: 8,
@@ -131,9 +236,9 @@ Mi Veris - Citas - Promociones
         $('#list-promociones-sugeridas').removeClass('invisible');
 
         $(window).scroll(function() {
-            if(!cargandoContenido && $(window).scrollTop() + $(window).height() + 10 > $(document).height()) {
+            if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 10 > $(document).height()) {
                 cargandoContenido = true;
-                console.log("near bottom!");
+                // console.log("near bottom!");
                 obtenerPaquetesPromocionales();
             }
         });
@@ -180,14 +285,48 @@ Mi Veris - Citas - Promociones
         });
     })
 
-    async function obtenerPaquetesSugeridos(){
-        
+    async function obtenerCategoriasSeleccionadas(type){
+        var itemsSeleccionados = [];
+        $('.category-item').each(function() {
+            if ($(this).hasClass('category-selected')) {
+                if(type == "valor"){
+                    itemsSeleccionados.push($(this).attr('categoria-rel'))
+                }else{
+                    itemsSeleccionados.push($(this).attr('categoria-rel')+'-'+$(this).attr('nombreCategoria-rel'))
+                }
+            }
+        });
+        return itemsSeleccionados;
+    }
+
+    async function obtenerCategorias(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=SUGERIDOS&page=1&perPage=5&idPaciente={{ Session::get('userData')->numeroPaciente }}&estaPagado=true&verDetalle=false&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/categoriasPaquete?canalOrigen=${_canalOrigen}`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        
+        if(data.code == 200){
+            let elem = `<h1 class="modal-title fs--20 line-height-24 my-3">Filtrar por</h1>`;
+            $.each(data.data, function(key, categoria){
+                elem += `<div nombreCategoria-rel="${capitalizarCadaPalabra(categoria.nombreCategoria)}" categoria-rel="${categoria.nemonicoCategoria}" class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                        <img src="${categoria.urlImagenCategoria}" class="ico-categoria me-3 ico-unselected"/>
+                        <img src="${categoria.urlImagenCategoriaSel}" class="ico-categoria me-3 ico-selected d-none"/>
+                        <span class="fs--16 me-3">${capitalizarCadaPalabra(categoria.nombreCategoria)}</span>
+                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                    </div>`
+            })
+            $('#lista-categorias').html(elem)
+        }
+    }
+
+    async function obtenerPaquetesSugeridos(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=SUGERIDOS&page=1&perPage=5&idPaciente={{ Session::get('userData')->numeroPaciente }}&estaPagado=false&verDetalle=false`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log(data)
+        // console.log(data)
 
         if(data.code == 200){
             let elem = ``;
@@ -195,21 +334,21 @@ Mi Veris - Citas - Promociones
                 elem += `<div class="swiper-slide">
                     <a class="cursor-pointer btn-comprar" data-rel='${ JSON.stringify(value) }'>
                         <div class="card m-1">
-                            <div class="card-header position-relative feature-img-promocion" style="background: url({{asset('assets/img/card/svg/bg-promo-default.svg')}}) no-repeat center;">`;
+                            <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">`;
                             if(value.porcentajeDescuento && value.porcentajeDescuento > 0){
                                 elem += `<span class="label-descuento-promocion position-absolute fs--2 fw-medium">-${value.porcentajeDescuento}%</span>`;
                             }
                         elem += `</div>
                             <div class="card-body p-3 pb-0">
-                                <h2 class="title-promocion fs--16 mb-2">${value.nombrePaquete}</h2>
-                                <h5 class="paciente-promocion fs--2 p-2"><strong>Ideal para: </strong>${value.nombrePaciente}</h5>
+                                <h2 class="title-promocion fs--16 line-height-20 mb-2">${capitalizarCadaPalabra(value.nombrePaquete)}</h2>
+                                <h5 class="paciente-promocion fs--2 p-2 text-nowrap overflow-hidden text-truncate"><strong>Ideal para: </strong>${capitalizarCadaPalabra(value.nombrePaciente)}</h5>
                             </div>
                             <div class="card-footer border-0 d-flex justify-content-between align-items-center p-3 pt-0">`;
                             if(value.porcentajeDescuento && value.porcentajeDescuento > 0){
                                 elem += `<div class="precio-anterior me-2">Antes <span class="text-decoration-line-through">$${value.valorAnteriorPaquete.toFixed(2)}</span>
                                 </div>`;
                             }
-                            elem += `<div class="precio-venta fs-medium">$${value.valorTotalPaquete.toFixed(2)}</div>
+                            elem += `<div class="precio-venta ms-auto fs-medium">$${value.valorTotalPaquete.toFixed(2)}</div>
                             </div>
                         </div>
                     </a>
@@ -220,8 +359,9 @@ Mi Veris - Citas - Promociones
     }
 
     async function obtenerPaquetesPromocionales(){
+        let categorias = await obtenerCategoriasSeleccionadas("valor");
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&verDetalle=false&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=${page}&perPage=${perPage}&estaPagado=false&verDetalle=false&categoria=${ categorias.join(',') }&buscarPorPromocion=${ (getInput('buscarPorPromocion').replace(/\s/g, '+')) }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -236,25 +376,23 @@ Mi Veris - Citas - Promociones
             if(data.data.items.length > 0){
                 $.each(data.data.items, function(key, paquete){
                     elem += `<div class="col-md-6">
-                        <div class="card w-100" style="border: 1px solid #E7E9EC;box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);">
+                        <div class="card w-100" style="border: 1px solid #E7E9EC;box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);border-radius: 8px;">
                             <div class="row g-0 justify-content-between aling-items-center cursor-pointer btn-comprar" data-rel='${ JSON.stringify(paquete) }'>
-                                <div class="col-4 col-md-auto">
-                                    <img src="{{ asset('assets/img/svg/promocion.svg') }}" class="img-fluid" alt="{{ __('promoción') }}">
-                                </div>
+                                <div class="col-4 position-relative feature-img-promocion-horizontal" style="background: url(${paquete.urlImagen}) no-repeat center;">`
+                                if(paquete.porcentajeDescuento && paquete.porcentajeDescuento > 0){
+                                    elem += `<span class="label-descuento-promocion position-absolute fs--2 fw-medium">-${paquete.porcentajeDescuento}%</span>`;
+                                }
+                                elem += `</div>
                                 <div class="col-8 col-md-8">
                                     <div class="card-body h-100 p--2 pb-2 d-flex flex-column justify-content-center">
-                                        <h6 class="text-end fs--1 line-height-16 fw-medium mb-2">${truncateText(capitalizarElemento(paquete.nombrePaquete), 40)}</h6>
-                                        <div class="d-flex justify-content-end">`;
-                                            if(paquete.porcentajeDescuento > 0){
-                                                elem += `<span class="badge bg-primary d-flex align-items-center fs--2 line-height-16 rounded-1 px--2 py-2 mx-3">-${paquete.porcentajeDescuento}%</span>`;
+                                        <h6 class="title-promocion-horizontal fs--1 line-height-16 mb-2">${capitalizarElemento(paquete.nombrePaquete)}</h6>
+                                        <div class="border-0 d-flex justify-content-between align-items-center">`;
+                                            if(paquete.porcentajeDescuento && paquete.porcentajeDescuento > 0){
+                                                elem += `<div class="precio-anterior me-2">Antes <span class="text-decoration-line-through">$${paquete.valorAnteriorPaquete.toFixed(2)}</span>
+                                                </div>`;
                                             }
-                                                elem += `<div class="content-precio text-end">`;
-                                            if(paquete.porcentajeDescuento > 0){
-                                                elem += `<p class="fs--3 line-height-16 mb-0" style="color: #6E7A8C;">Antes <del>$${paquete.valorAnteriorPaquete.toFixed(2)}</del></p>`
-                                            }
-                                                elem += `<h4 class="fs-24 line-height-28 fw-medium mb-0" style="color: #0071CE !important;">$${paquete.valorTotalPaquete.toFixed(2)}</h4>
+                                            elem += `<div class="precio-venta ms-auto fs-medium">$${paquete.valorTotalPaquete.toFixed(2)}</div>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

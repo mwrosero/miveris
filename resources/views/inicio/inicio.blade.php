@@ -232,7 +232,7 @@ Mi Veris - Inicio
                     spaceBetween: 4,
                 },
                 768: {
-                    slidesPerView: 2,
+                    slidesPerView: 2.1,
                     // centeredSlides: true,
                     // loop: true,
                     // spaceBetween: 8,

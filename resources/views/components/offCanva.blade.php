@@ -12,11 +12,11 @@
             <div class="list-group gap-3 mb-3 listaPacientesFiltro">
                 <!-- Puedes agregar lista de pacientes dinámicamente aquí desde JavaScript -->
             </div>
-            <div class="col-md-12 mb-3">
+            <div class="col-md-12 mb-3 box-fechas-filtro">
                 <label for="fechaDesde" class="fw-light fs--16 line-height-20 mb-3" style="color: #3D4E66 !important;">{{ __('Elige el rango de fechas') }}</label>
                 <input type="text" class="form-control fs--1 p-3" placeholder="Desde la fecha" name="fechaDesde" id="fechaDesde" required />
             </div>
-            <div class="col-md-12 mb-5">
+            <div class="col-md-12 mb-5 box-fechas-filtro">
                 <input type="text" class="form-control fs--1 p-3" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
             </div>
             <div class="col-md-12 mb-3">
