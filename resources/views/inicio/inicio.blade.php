@@ -119,7 +119,7 @@ Mi Veris - Inicio
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    <a href="{{route('home.promociones')}}">
+                    <a href="{{route('promociones.promociones')}}">
                         <div class="card">
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-7 col-md-7">

@@ -1059,6 +1059,14 @@ Due to the split circle of progress-left and progress right, we must use the ani
   background: url('../img/svg/menu/solid/resultados_solid.svg') no-repeat center center;
 }
 
+.menu-item .svg-container.svg-promociones {
+  background: url('../img/svg/menu/light/promociones_light.svg') no-repeat center center;
+}
+
+.menu-item.active .svg-container.svg-promociones {
+  background: url('../img/svg/menu/solid/promociones_solid.svg') no-repeat center center;
+}
+
 .menu-item .svg-container.svg-domicilio {
   background: url('../img/svg/menu/light/domicilio_light.svg') no-repeat center center;
 }
