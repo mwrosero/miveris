@@ -33,6 +33,12 @@
                 <div data-i18n="Resultados">Resultados</div>
             </a>
         </li>
+        <li class="menu-item {{ Route::is('promociones.mis-promociones') || Route::is('promociones.*')  ? 'active' : '' }}">
+            <a href="{{route('promociones.mis-promociones')}}" class="menu-link fs--1 text-white">
+                <div class="svg-container svg-promociones me-3"></div>
+                <div data-i18n="Promociones compradas">Promociones compradas</div>
+            </a>
+        </li>
         <li class="menu-item {{ Route::is('domicilio') || Route::is('domicilio.*')  ? 'active' : '' }}">
             <a href="{{route('domicilio')}}" class="menu-link fs--1 text-white">
                 <div class="svg-container svg-domicilio me-3"></div>
