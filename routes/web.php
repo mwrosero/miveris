@@ -50,9 +50,12 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/politica-privacidad-datos', [DashboardController::class, 'politicaPrivacidadDatos'])->name('home.politicaPrivacidadDatos')->withoutMiddleware(['guest']);
     Route::get('/promociones', [DashboardController::class, 'listaPromociones'])->name('home.promociones')->withoutMiddleware(['guest']);
     Route::get('/comprar-promociones', [DashboardController::class, 'comprarPromociones'])->name('home.comprar-promociones')->withoutMiddleware(['guest']);
+    Route::get('/promociones/sugeridas', [DashboardController::class, 'promocionesSugeridas'])->name('home.promociones-sugeridas')->withoutMiddleware(['guest']);
     Route::get('/mis-promociones', [DashboardController::class, 'misPromociones'])->name('home.mis-promociones')->withoutMiddleware(['guest']);
     Route::get('/promocion/{params}', [DashboardController::class, 'promocion'])->name('home.promocion')->withoutMiddleware(['guest']);
     Route::get('/promocion/detalle/{params}', [DashboardController::class, 'promocionDetalle'])->name('home.promocionDetalle')->withoutMiddleware(['guest']);
+    Route::get('/mi-promocion/detalle/{params}', [DashboardController::class, 'miPromocionDetalle'])->name('home.miPromocionDetalle')->withoutMiddleware(['guest']);
+    Route::get('/detalle/item/{params}', [DashboardController::class, 'detalleItem'])->name('home.detalleItem')->withoutMiddleware(['guest']);
 
     #Citas
     //Route::get('/agendamiento', [CitasController::class, 'agendamiento'])->name('agendamiento')->withoutMiddleware(['guest']);
