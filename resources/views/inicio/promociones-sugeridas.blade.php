@@ -66,7 +66,7 @@ Mi Veris - Citas - Promociones
 @push('scripts')
 <script>
     let page = 1;
-    let perPage = 10;
+    let perPage = 5;
     let cargandoContenido = false;
     let isFiltered = false;
     document.addEventListener("DOMContentLoaded", async function () {
@@ -113,18 +113,13 @@ Mi Veris - Citas - Promociones
         $(document.body).on('touchmove', onScroll); // for mobile
         $(window).on('scroll', onScroll); 
 
-        async function onScroll(){
-            // console.log('onScroll');
-            // console.log(cargandoContenido)
-            // console.log(isFiltered)
-            // console.log($(window).scrollTop() + $(window).height() + 10)
-            // console.log($(document).height())
+        /*async function onScroll(){
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
                 cargandoContenido = true;
                 console.log("near bottom!");
                 await obtenerPaquetesPromocionales();
             }
-        }
+        }*/
 
         //$(window).scroll(async function() {
         // $(window).on('scroll touchmove', async function() {
@@ -269,7 +264,7 @@ Mi Veris - Citas - Promociones
                         </div>
                     </div>`;
             }
-            $('#listado-paquetes').append(elem);
+            $('#listado-paquetes').html(elem);
         }else{
             alert(data.message);
         }

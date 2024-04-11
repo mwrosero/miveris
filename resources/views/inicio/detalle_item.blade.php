@@ -52,27 +52,70 @@ Mi Veris - Citas - Detalle
         let elem = ``;
         $.each(dataCita.detalle, function(key, value){
             let estado = ``;
-            if(value.estado == "Disponible"){
-                estado += `<div class="label-status-detalle fs--2 line-height-16 m-0 ms-2">
-                        <i class="fa-regular fa-calendar-check me-2"></i>
-                        Disponible
-                    </div>`;
+            if(value.estado == "Atendida"){
+                elem += `<div class="col-12 mt-3">
+                    <div class="card">
+                        <div class="card-body p--2">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1">${capitalizarElemento(value.nombreDetalle)}</h6>
+                                <span class="text-warning-veris fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">
+                                    <i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span>
+                                </span>
+                            </div>
+                            <h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.nombreSucursal)}</h6>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.fechaReserva)} <b class="hora-cita fw-normal text-primary-veris">${value.detalleReserva.horaReserva}</b></p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(value.detalleReserva.nombreMedicoReserva)}</p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(dataCita.nombrePaciente)}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div class="avatar-sm me-2">
+                                    <img src="${quitarComillas(dataCita.promocion.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
             }else{
-                estado += `<div class="label-status-detalle fs--2 line-height-16 m-0 ms-2">
-                        <i class="fa-solid fa-check me-2 text-success"></i>
-                        <span class="text-success">Atendida</span>
-                    </div>`;
+                if(value.estado == "Disponible"){
+                    estado += `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2">
+                            <i class="fa-regular fa-calendar-check me-2"></i>
+                            Disponible
+                        </div>`;
+                }else if(value.estado == "Caducado"){
+                    estado += `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2">
+                            <img src="{{asset('assets/img/svg/fa-diamond-exclamation.svg')}}" />
+                            <span style="color: #D84315;">Caducado</span>
+                        </div>`;
+                }else{
+                    estado += `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2">
+                            <i class="fa-solid fa-check me-2 text-success"></i>
+                            <span class="text-success">Atendida</span>
+                        </div>`;
+                }
+                elem += `<div class="col-12 mt-3">
+                            <div class="card h-100" style="box-shadow: 0px 4px 8px 0px #0000001A;">
+                                <div class="card-body p--2 d-flex justify-content-between align-items-center">
+                                    <div class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 m-0">
+                                        ${value.nombreDetalle}
+                                    </div>
+                                    ${estado}
+                                </div>
+                            </div>
+                        </div>`;
+            }
+        })
+        
+
+        if(dataCita.promocion.tipoServicio == "LABORATORIO" || dataCita.promocion.tipoServicio == "IMAGEN" || dataCita.promocion.tipoServicio == "PROCEDIMIENTOS"){
+            let urlResultado = "/resultados-laboratorio";
+            if(dataCita.promocion.tipoServicio != "LABORATORIO"){
+                urlResultado = "/resultados-imagenes-procedimientos";
             }
             elem += `<div class="col-12 mt-3">
-                <div class="card h-100" style="box-shadow: 0px 4px 8px 0px #0000001A;">
-                    <div class="card-body p--2 d-flex justify-content-between align-items-center">
-                        <div class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 m-0">${value.nombreDetalle}</div>
-                        ${estado}
-                    </div>
-                </div>
-            </div>`;
-        })
-        $('#listado-detalles').html(elem)
+                        <a href="${urlResultado}" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect waves-light order-last">Ver resultados</a>
+                    </div>`;
+        }
+
+        $('#listado-detalles').html(elem);
     })
 
 </script>

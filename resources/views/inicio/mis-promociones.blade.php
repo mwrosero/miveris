@@ -34,7 +34,7 @@ Mi Veris - Citas - Mis Promociones
                     <button class="nav-link bg-white btn-estado-promocion px-8 px-md-5 m-1 d-flex flex-column active" tipoFiltro-rel="ASIGNADO" id="pills-compradas-tab" data-bs-toggle="pill" data-bs-target="#pills-compradas" type="button" role="tab" aria-controls="pills-compradas" aria-selected="true">
                         <img src="{{ asset('assets/img/svg/promociones-compradas-selected-ico.svg') }}" alt="" class="ico-estado ico-estado-activo">
                         <img src="{{ asset('assets/img/svg/promociones-compradas-ico.svg') }}" alt="" class="d-none ico-estado ico-estado-inactivo">
-                        <p class="fs--2 line-height-20 mt-2 mb-0">Compradas</p>
+                        <p class="fs--2 line-height-20 mt-2 mb-0">Asignadas</p>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -255,13 +255,19 @@ Mi Veris - Citas - Mis Promociones
                                     <p class="fs--2 text-nowrap overflow-hidden text-truncate">${capitalizarCadaPalabra(value.nombrePaciente)}</p>
                                     <p class="fs--2">Válido hasta: ${ validarCaducidad(value.fechaCaducidad, value.esCaducada) }</p>
                                 </div>
-                                <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0">`
-                                if(value.esCaducada && tipoFiltro == "ASIGNADO"){
-                                    elem += `<a href="#" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btnDesarchivar" tipo-rel="A" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Archivar</a>`
-                                }else if(tipoFiltro == "ARCHIVADAS"){
-                                    elem += `<a href="#" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btnDesarchivar" tipo-rel="D" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Desarchivar</a>`
+                                <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0">`;
+                                if(!value.esCaducada){
+                                    elem += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver promoción</div>`;
+                                }else{
+                                    elem += `<div class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver promoción</div>`;
                                 }
-                                    elem += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver promoción</div>
+                                
+                                if(value.esCaducada && tipoFiltro == "ASIGNADO"){
+                                    elem += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btnDesarchivar" tipo-rel="A" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Archivar</a>`
+                                }else if(tipoFiltro == "ARCHIVADAS"){
+                                    elem += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btnDesarchivar" tipo-rel="D" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Desarchivar</a>`
+                                }
+                                    elem += `
                                 </div>
                             </div>
                         </div>`;
