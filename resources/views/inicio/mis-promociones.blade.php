@@ -34,7 +34,7 @@ Mi Veris - Citas - Mis Promociones
                     <button class="nav-link bg-white btn-estado-promocion px-8 px-md-5 m-1 d-flex flex-column active" tipoFiltro-rel="ASIGNADO" id="pills-compradas-tab" data-bs-toggle="pill" data-bs-target="#pills-compradas" type="button" role="tab" aria-controls="pills-compradas" aria-selected="true">
                         <img src="{{ asset('assets/img/svg/promociones-compradas-selected-ico.svg') }}" alt="" class="ico-estado ico-estado-activo">
                         <img src="{{ asset('assets/img/svg/promociones-compradas-ico.svg') }}" alt="" class="d-none ico-estado ico-estado-inactivo">
-                        <p class="fs--2 line-height-20 mt-2 mb-0">Asignadas</p>
+                        <p class="fs--2 line-height-20 mt-2 mb-0">Compradas</p>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -291,7 +291,7 @@ Mi Veris - Citas - Mis Promociones
                 if(data.data.items == 0){
                     let tipoF;
                     if(tipoFiltro == "ASIGNADO"){
-                        tipoF = "asignadas";
+                        tipoF = "compradas";
                     }else if(tipoFiltro == "REALIZADAS"){
                         tipoF = "realizadas";
                     }else{
