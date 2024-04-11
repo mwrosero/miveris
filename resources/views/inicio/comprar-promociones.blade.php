@@ -418,7 +418,7 @@ Mi Veris - Citas - Promociones
                     elem += `<p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>`;
                 }
             }
-            $('#listado-paquetes').append(elem);
+            $('#listado-paquetes').html(elem);
         }else{
             alert(data.message);
         }

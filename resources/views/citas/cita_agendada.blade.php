@@ -42,15 +42,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <!-- Paquete comprado -->
                         <div class="content-paquete d-none">
                             <div class="avatar avatar-lg mx-auto mb-4">
-                                <img src="{{asset('assets/img/svg/visto.svg')}}" alt="cita agendada">
+                                <img src="{{asset('assets/img/svg/visto.svg')}}" alt="Promoción comprada">
                             </div>
                             <h3 class="fs--28 line-height-36 fw-medium mb-4">Promoción comprada</h3>
+                            <p style="color: #0A2240;" class="fs--16 line-height-20">Tu promoción se compró exitosamente. ¡Nos vemos pronto!</p>
                             <p class="fs--16 line-height-20 mb-5" id="infoAgendar"></p>
                             <div class="d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('assets/img/svg/cita_agendada_online.svg') }}"  alt="cita agendada">
+                                <img src="{{ asset('assets/img/svg/paquete-comprado.svg') }}"  alt="Promoción comprada">
                             </div>
                             <div class="mt-5">
-                                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
+                                <a href="/mis-promociones" class="btn btn-primary-veris fs--18 line-height-24 w-75 px-4 py-3">Ir a mis promociones</a>
+                                <a href="/" class="btn btn-sm fs--18 line-height-24 w-75 border-0 text-primary-veris shadow-none">Volver al inicio</a>
                             </div>
                         </div>
                         <!-- Promoción tratamiento comprado -->

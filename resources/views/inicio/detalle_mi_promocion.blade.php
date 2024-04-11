@@ -27,7 +27,7 @@ Mi Veris - Citas - Detalle
             </div>
             <div class="row box-llamada-all d-none">
                 <div class="col-10 offset-1 offset-md-3 col-md-6 text-center mt-3">
-                    <div class="box-llamada d-flex justify-content-around align-items-center fs--1 line-height-16">
+                    <div class="box-llamada d-flex justify-content-center align-items-center fs--1 line-height-16">
                     </div>
                 </div>
             </div>
@@ -59,6 +59,9 @@ Mi Veris - Citas - Detalle
 <script>
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    if(dataCita.paquete.esCaducada){
+        $('#tituloPromocionPendiente').html('Caducado');
+    }
     document.addEventListener("DOMContentLoaded", async function () {
         $('.feature-img-promocion').css('background', 'url("'+dataCita.paquete.urlImagen+'") no-repeat center');
         $('.title-promocion').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaquete));
@@ -70,7 +73,9 @@ Mi Veris - Citas - Detalle
         $('body').on('click','.btn-detalle', function(){
             let url = '/detalle/item/';
             let data = {
-                "detalle": JSON.parse($(this).attr("data-rel"))
+                "detalle": JSON.parse($(this).attr("data-rel")),
+                "promocion": JSON.parse($(this).attr("promocion-rel")),
+                "nombrePaciente": dataCita.paquete.nombrePaciente
             };
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
@@ -113,7 +118,7 @@ Mi Veris - Citas - Detalle
                                         <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                     </div>
                                     <div>
-                                        <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(detalles.detalles)}'detalles>Ver detalle</div>
+                                        <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>Ver detalle</div>
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +144,7 @@ Mi Veris - Citas - Detalle
                                         <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                     </div>
                                     <div>
-                                        <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(detalles.detalles)}'detalles>Ver detalle</div>
+                                        <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>Ver detalle</div>
                                     </div>
                                 </div>
                             </div>
