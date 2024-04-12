@@ -110,8 +110,8 @@ Mi Veris - Citas - Promociones
 
         await obtenerPaquetesPromocionales();
 
-        $(document.body).on('touchmove', onScroll); // for mobile
-        $(window).on('scroll', onScroll); 
+        //$(document.body).on('touchmove', onScroll); // for mobile
+        //$(window).on('scroll', onScroll); 
 
         /*async function onScroll(){
             if(!cargandoContenido && !isFiltered && $(window).scrollTop() + $(window).height() + 100 > $(document).height()) {
@@ -264,7 +264,7 @@ Mi Veris - Citas - Promociones
                         </div>
                     </div>`;
             }
-            $('#listado-paquetes').html(elem);
+            $('#listado-paquetes').append(elem);
         }else{
             alert(data.message);
         }

@@ -77,7 +77,7 @@ Mi Veris - Citas - Detalle
                             </div>
                         </div>
                         <!-- Button trigger modal -->
-                        <div class="text-center">
+                        <div class="text-center box-action">
                             <button type="button" class="btn btn-primary-veris w-100 fs--18 line-height-24 fw-medium px-4 py-3" data-bs-toggle="modal" data-bs-target="#plaPreventivoModal">
                                 Continuar
                             </button>
@@ -97,6 +97,22 @@ Mi Veris - Citas - Detalle
         $('#nombrePaquete').html(capitalizarElemento(dataCita.paquete.nombrePaquete));
         $('#descripcionPaquete').html(dataCita.paquete.descripcionPaquete);
         $('#valorTotalPaquete').html(`$${dataCita.paquete.valorTotalPaquete.toFixed(2)}`);
+
+        if(dataCita.paquete.idPaciente !== null){
+            $('.box-action').html(`<button type="button" class="btn btn-primary-veris btn-asignar w-100 fs--18 line-height-24 fw-medium px-4 py-3">
+                                Continuar
+                            </button>`)
+        }
+
+        $('body').on('click', '.btn-asignar', function(){
+            let url = '/citas-datos-facturacion/';
+            dataCita.paciente = {
+                "numeroPaciente": dataCita.paquete.idPaciente
+            };
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            location.href = url + "{{ $params }}";
+        })
+
         if(dataCita.paquete.porcentajeDescuento > 0){
             $('#porcentajeDescuento').html(`-${dataCita.paquete.porcentajeDescuento} OFF`).removeClass('d-none');
             $('#valorAnteriorPaquete').html(`$${dataCita.paquete.valorAnteriorPaquete.toFixed(2)}`);
