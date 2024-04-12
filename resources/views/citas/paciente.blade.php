@@ -107,6 +107,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // consultar lista de convenios
     async function consultarConvenios(event) {
+        if(typeof dataCita.paquete !== 'undefined'){
+            let dataRel = $(event.currentTarget).data('rel');
+            let url = '/citas-datos-facturacion/';
+            dataCita.paciente = dataRel;
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            location.href = url + "{{ $params }}";
+            return;
+        }
         let listaConvenios = $('#listaConvenios');
         listaConvenios.empty();
         listaConvenios.append(`<div class="text-center p-2"><small>Nos estamos comunicando con tu aseguradora, el proceso puede tardar unos minutos</small></div>`);
