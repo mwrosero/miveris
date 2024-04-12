@@ -266,25 +266,25 @@ Mi Veris - Citas - Promociones
         })
 
         var typingTimer; // Timer identifier
-        var doneTypingInterval = 1000; // Tiempo de pausa en milisegundos (0.5 segundos)
+        var doneTypingInterval = 750; // Tiempo de pausa en milisegundos (0.5 segundos)
 
         // Evento de escritura en el input
-        $('#buscarPorPromocion').on('keyup', function() {
+        $('#buscarPorPromocion').on('keyup', async function() {
             clearTimeout(typingTimer); // Limpiar el temporizador cada vez que se escribe
 
             var searchText = $(this).val();
             if (searchText.length >= 3) { // Solo realizar la búsqueda si hay al menos 3 caracteres
-                typingTimer = setTimeout(function() {
+                typingTimer = setTimeout(async function() {
                     page = 1;
                     $('#listado-paquetes').empty();
-                    cargandoContenido = false;
-                    obtenerPaquetesPromocionales(); // Llamar a la función de búsqueda después de la pausa
+                    cargandoContenido = true;
+                    await obtenerPaquetesPromocionales(); // Llamar a la función de búsqueda después de la pausa
                 }, doneTypingInterval);
             }else if(searchText.length == 0){
                 page = 1;
                 $('#listado-paquetes').empty();
                 cargandoContenido = false;
-                obtenerPaquetesPromocionales();
+                await obtenerPaquetesPromocionales();
             }
         });
 
