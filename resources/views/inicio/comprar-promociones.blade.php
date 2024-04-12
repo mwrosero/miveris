@@ -266,7 +266,7 @@ Mi Veris - Citas - Promociones
         })
 
         var typingTimer; // Timer identifier
-        var doneTypingInterval = 500; // Tiempo de pausa en milisegundos (0.5 segundos)
+        var doneTypingInterval = 1000; // Tiempo de pausa en milisegundos (0.5 segundos)
 
         // Evento de escritura en el input
         $('#buscarPorPromocion').on('keyup', function() {
