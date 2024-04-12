@@ -49,10 +49,12 @@ Mi Veris - Citas - Detalle
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
+        let showResultados = false;
         let elem = ``;
         $.each(dataCita.detalle, function(key, value){
             let estado = ``;
             if(value.estado == "Atendida"){
+                showResultados = true;
                 elem += `<div class="col-12 mt-3">
                     <div class="card">
                         <div class="card-body p--2">
@@ -105,7 +107,7 @@ Mi Veris - Citas - Detalle
         })
         
 
-        if(dataCita.promocion.tipoServicio == "LABORATORIO" || dataCita.promocion.tipoServicio == "IMAGEN" || dataCita.promocion.tipoServicio == "PROCEDIMIENTOS"){
+        if((dataCita.promocion.tipoServicio == "LABORATORIO" || dataCita.promocion.tipoServicio == "IMAGENES" || dataCita.promocion.tipoServicio == "PROCEDIMIENTOS") && showResultados){
             let urlResultado = "/resultados-laboratorio";
             if(dataCita.promocion.tipoServicio != "LABORATORIO"){
                 urlResultado = "/resultados-imagenes-procedimientos";

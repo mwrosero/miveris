@@ -415,10 +415,11 @@ Mi Veris - Citas - Promociones
                 page++;
             }else{
                 if(page == 1){
+                    $('#listado-paquetes').empty();
                     elem += `<p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>`;
                 }
             }
-            $('#listado-paquetes').html(elem);
+            $('#listado-paquetes').append(elem);
         }else{
             alert(data.message);
         }
