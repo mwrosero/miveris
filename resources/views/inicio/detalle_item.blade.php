@@ -55,6 +55,8 @@ Mi Veris - Citas - Detalle
             let estado = ``;
             if(value.estado == "Atendida"){
                 showResultados = true;
+            }
+            if(value.estado == "Atendida" && dataCita.promocion.tipoServicio != "LABORATORIO"){
                 elem += `<div class="col-12 mt-3">
                     <div class="card">
                         <div class="card-body p--2">
