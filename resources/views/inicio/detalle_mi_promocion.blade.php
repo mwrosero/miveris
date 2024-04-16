@@ -16,17 +16,17 @@ Mi Veris - Citas - Detalle
     </div>
     <section class="p-0 mb-3" style="overflow-x: hidden;">
         {{-- <div class="container"> --}}
-            <div class="row d-flex justify-content-start align-items-start">
+            <div class="row g-3 d-flex justify-content-start align-items-start mx-0">
                 <div class="col-12 col-md-4 feature-img-promocion" style="height: 200px;">
                 </div>
-                <div class="col-10 offset-1 offset-md-0 col-md-6 mt-3">
-                    <h2 class="title-promocion fs--16 mb-2 h-auto"></h2>
-                    <p class="fs--2 mb-2 nombrePaciente"></p>
-                    <p class="fs--2 mb-2 fechaValides"></p>
+                <div class="col-12 offset-md-0 col-md-6 mt-3 pb-2 px-3">
+                    <h6 class="title-promocion text-primary-veris fs--18 line-height-24 fw-medium mb-1 h-auto"></h6>
+                    <p class="fw-medium fs--2 line-height-16 mb-1 nombrePaciente"></p>
+                    <p class="fw-medium fs--2 line-height-16 mb-1 fechaValides"></p>
                 </div>
             </div>
-            <div class="row box-llamada-all d-none">
-                <div class="col-10 offset-1 offset-md-3 col-md-6 text-center mt-3">
+            <div class="row g-3 box-llamada-all d-none mx-0">
+                <div class="col-12 offset-md-3 col-md-6 text-center mt-3 px-3">
                     <div class="box-llamada d-flex justify-content-center align-items-center fs--1 line-height-16">
                     </div>
                 </div>
@@ -35,7 +35,7 @@ Mi Veris - Citas - Detalle
     </section>
     <section class="p-0 px-md-3">
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue d-none" id="tituloPromocionPendiente">{{ __('Pendientes') }}</h5>
-        <div class="container mb-4">
+        <div class="mb-4">
             <div class="d-flex justify-content-center mb-3 px-3">
                 <div class="col-12 col-md-10 col-lg-9">
                     <div class="row g-3" id="contenedorPromocionPendiente">
@@ -44,7 +44,7 @@ Mi Veris - Citas - Detalle
             </div>
         </div>
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue d-none" id="tituloPromocionRealizado">{{ __('Realizados') }}</h5>
-        <div class="container mb-4">
+        <div class="mb-4">
             <div class="d-flex justify-content-center mb-3 px-3">
                 <div class="col-12 col-md-10 col-lg-9">
                     <div class="row g-3" id="contenedorPromocionRealizado">
@@ -101,7 +101,7 @@ Mi Veris - Citas - Detalle
         console.log(data);
         if (data.code == 200){
             if(data.data.pendientes.length > 0){
-                $('.box-llamada').html(`<i class="fa-solid fa-circle-info text-primary-veris line-height-16 fs--16 me-2"></i><div>Para agendar tus servicios llámanos al <span>${data.data.numeroContactCenter}</span>.</div><a href="tel:+593${data.data.numeroContactCenter}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ms-2 d-block d-md-none" style="border-radius:8px;">Llamar</a>`);
+                $('.box-llamada').html(`<i class="fa-solid fa-circle-info text-primary-veris line-height-16 fs--16 me-2"></i><div>Para agendar tus servicios llámanos al <span>${data.data.numeroContactCenter}</span>.</div><a href="tel:+593${data.data.numeroContactCenter}" class="btn btn-sm btn-primary-veris fw-medium fs--16 line-height-16 px-3 py-2 shadow-none ms-2 d-block d-md-none" style="border-radius:8px;">Llamar</a>`);
                 $('.box-llamada-all').removeClass('d-none');
                 let elemPendiente = ``;
                 $('#tituloPromocionPendiente').removeClass('d-none');

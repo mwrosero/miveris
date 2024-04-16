@@ -52,7 +52,7 @@ Mi Veris - Citas - Mis Promociones
                     </button>
                 </li>
             </ul>
-            <div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
+            <div class="tab-content bg-transparent px-0 pt-0 pb-3 px-lg-4" id="pills-tabContent">
                 <!-- Filtro -->
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
@@ -252,8 +252,8 @@ Mi Veris - Citas - Mis Promociones
                                 </div>
                                 <div class="card-body p-3 pb-0">
                                     <h2 class="title-promocion-mis-compras line-height-20 fs--16 mb-2">${capitalizarCadaPalabra(value.nombrePaquete)}</h2>
-                                    <p class="fs--2 text-nowrap overflow-hidden text-truncate">${capitalizarCadaPalabra(value.nombrePaciente)}</p>
-                                    <p class="fs--2">Válido hasta: ${ validarCaducidad(value.fechaCaducidad, value.esCaducada) }</p>
+                                    <p class="fs--2 mb-1 text-nowrap overflow-hidden text-truncate">${capitalizarCadaPalabra(value.nombrePaciente)}</p>
+                                    <p class="fs--2 mb-1">Válido hasta: ${ validarCaducidad(value.fechaCaducidad, value.esCaducada) }</p>
                                 </div>
                                 <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0">`;
                                 if(!value.esCaducada){
@@ -278,7 +278,7 @@ Mi Veris - Citas - Mis Promociones
                                 </div>
                                 <div class="card-body p-3 pb-0">
                                     <h2 class="title-promocion-mis-compras line-height-20 fs--16 mb-2">${capitalizarCadaPalabra(value.nombrePaquete)}</h2>
-                                    <p class="fs--2 text-nowrap overflow-hidden text-truncate">${capitalizarCadaPalabra(value.nombrePaciente)}</p>
+                                    <p class="fs--2 mb-1 text-nowrap overflow-hidden text-truncate">${capitalizarCadaPalabra(value.nombrePaciente)}</p>
                                 </div>
                                 <div class="card-footer border-0 d-flex justify-content-between align-items-center p-3 pt-0">
                                     <img src="{{ asset('assets/img/svg/golden.svg') }}" />
