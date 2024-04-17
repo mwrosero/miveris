@@ -14,15 +14,15 @@ Mi Veris - Citas - Detalle
     <div class="d-flex justify-content-between align-items-center bg-white shadow-bottom">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Promoción') }}</h5>
     </div>
-    <section class="p-0 mb-3" style="overflow-x: hidden;">
+    <section class="p-0 mb-0" style="overflow-x: hidden;">
         {{-- <div class="container"> --}}
             <div class="row g-3 d-flex justify-content-start align-items-start mx-0">
                 <div class="col-12 col-md-4 feature-img-promocion" style="height: 200px;">
                 </div>
-                <div class="col-12 offset-md-0 col-md-6 mt-3 pb-2 px-3">
+                <div class="col-12 offset-md-0 col-md-6 mt-3 pb-2 mb-1 px-3">
                     <h6 class="title-promocion text-primary-veris fs--18 line-height-24 fw-medium mb-1 h-auto"></h6>
-                    <p class="fw-medium fs--2 line-height-16 mb-1 nombrePaciente"></p>
-                    <p class="fw-medium fs--2 line-height-16 mb-1 fechaValides"></p>
+                    <p class="fw-medium fs--2 line-height-16 mb-1 text-veris nombrePaciente"></p>
+                    <p class="fw-medium fs--2 line-height-16 mb-1 fechaValidez"></p>
                 </div>
             </div>
             <div class="row g-3 box-llamada-all d-none mx-0">
@@ -35,7 +35,7 @@ Mi Veris - Citas - Detalle
     </section>
     <section class="p-0 px-md-3">
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue d-none" id="tituloPromocionPendiente">{{ __('Pendientes') }}</h5>
-        <div class="mb-4">
+        <div class="mb-4 contenedorPromocionPendienteSection">
             <div class="d-flex justify-content-center mb-3 px-3">
                 <div class="col-12 col-md-10 col-lg-9">
                     <div class="row g-3" id="contenedorPromocionPendiente">
@@ -44,7 +44,7 @@ Mi Veris - Citas - Detalle
             </div>
         </div>
         <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue d-none" id="tituloPromocionRealizado">{{ __('Realizados') }}</h5>
-        <div class="mb-4">
+        <div class="mb-4 contenedorPromocionRealizadoSection">
             <div class="d-flex justify-content-center mb-3 px-3">
                 <div class="col-12 col-md-10 col-lg-9">
                     <div class="row g-3" id="contenedorPromocionRealizado">
@@ -63,10 +63,11 @@ Mi Veris - Citas - Detalle
         $('#tituloPromocionPendiente').html('Caducado');
     }
     document.addEventListener("DOMContentLoaded", async function () {
+
         $('.feature-img-promocion').css('background', 'url("'+dataCita.paquete.urlImagen+'") no-repeat center');
         $('.title-promocion').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaquete));
         $('.nombrePaciente').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaciente));
-        $('.fechaValides').html(validarCaducidad())
+        $('.fechaValidez').html(validarCaducidad())
         //consultarGrupoFamiliar();
         await obtenerDetallePaquetePromocional();
 
@@ -127,6 +128,8 @@ Mi Veris - Citas - Detalle
                     </div>`; 
                 })
                 $('#contenedorPromocionPendiente').html(elemPendiente);
+            }else{
+                $('.contenedorPromocionPendienteSection').remove();
             }
             if(data.data.realizados.length > 0){
                 let elemRealizado = ``;

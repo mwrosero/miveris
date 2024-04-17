@@ -56,21 +56,22 @@ Mi Veris - Citas - Detalle
             <div class="col-auto col-md-5">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body px-0">
-                        <div class="text-center mb-40">
+                        <div class="text-center mb--32">
                             <img src="{{ asset('assets/img/svg/veris-v60.svg') }}" class="img-fluid mb-3" alt="{{ __('veris') }}">
-                            <h4 class="fs-24">{{ __('Plan preventivo') }}</h4>
+                            <h4 class="fs-24" id="nombrePaquete"></h4>
                         </div>
-                        <div class="d-flex justify-content-between mx-lg-4 mb-4">
-                            <p class="fs--1 fw-normal pe-2" id="nombrePaquete"></p>
-                            <div class="col-auto text-end lh-1">
-                                <h5 class="text-primary-veris fs--20 fw-bold mb-0" id="valorTotalPaquete"></h5>
+                        <p class="text-veris fs--1 fw-bold mb-2 d-none text-center" id="porcentajeDescuento"></p>
+                        <div class="d-flex justify-content-center align-items-center mx-lg-4 mb--32 lh-1" id="detalleValoresPaquete">
+                            {{-- <p class="fs--1 fw-normal pe-2"></p> --}}
+                            {{-- <div class="col-auto text-center lh-1"> --}}
+                                {{-- <h5 class="text-primary-veris fs--20 fw-bold mb-0" id="valorTotalPaquete"></h5>
                                 <p class="text-veris fs--1 fw-bold mb-0 d-none" id="porcentajeDescuento"></p>
-                                <p class="fs--1 fw-normal mb-0 d-none" style="color: #6E7A8C !important;"><del id="valorAnteriorPaquete"></del></p>
-                            </div>
+                                <p class="fs--1 fw-normal mb-0 d-none" style="color: #6E7A8C !important;"><del id="valorAnteriorPaquete"></del></p> --}}
+                            {{-- </div> --}}
                         </div>
                         <div class="card card-border mb-4">
-                            <div class="card-body">
-                                <p class="fs--2 mt-3 mb-4" id="descripcionPaquete"></p>
+                            <div class="card-body pt-3 pb-3">
+                                <p class="fs--2 mb-4" id="descripcionPaquete"></p>
                                 <h6 class="text-start fs--1 fw-medium mb-4">DETALLES DE PAQUETE</h6>
                                 <ul class="fs--2 mb-3" id="detallePaquete">
                                 </ul>
@@ -98,8 +99,8 @@ Mi Veris - Citas - Detalle
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
         $('#nombrePaquete').html(capitalizarElemento(dataCita.paquete.nombrePaquete));
+
         $('#descripcionPaquete').html(dataCita.paquete.descripcionPaquete);
-        $('#valorTotalPaquete').html(`$${dataCita.paquete.valorTotalPaquete.toFixed(2)}`);
 
         // if(dataCita.paquete.idPaciente !== null){
         //     $('.box-action').html(`<button type="button" class="btn btn-primary-veris btn-asignar w-100 fs--18 line-height-24 fw-medium px-4 py-3">
@@ -121,11 +122,19 @@ Mi Veris - Citas - Detalle
             location.href = url + "{{ $params }}";
         })
 
+        let valorAnteriorElem = ``;
         if(dataCita.paquete.porcentajeDescuento > 0){
-            $('#porcentajeDescuento').html(`-${dataCita.paquete.porcentajeDescuento} OFF`).removeClass('d-none');
-            $('#valorAnteriorPaquete').html(`$${dataCita.paquete.valorAnteriorPaquete.toFixed(2)}`);
-            $('#valorAnteriorPaquete').parent().removeClass('d-none');
+            $('#porcentajeDescuento').html(`-${dataCita.paquete.porcentajeDescuento}% OFF`).removeClass('d-none');
+            $('#porcentajeDescuento').removeClass('d-none');
+            //$('#valorAnteriorPaquete').html(`$${dataCita.paquete.valorAnteriorPaquete.toFixed(2)}`);
+            valorAnteriorElem += `<p class="fs--1 fw-normal mb-0 me-2" style="color: #6E7A8C !important;"><del id="valorAnteriorPaquete">$${dataCita.paquete.valorAnteriorPaquete.toFixed(2)}</del></p>`;
         }
+
+        let elemValores = `${valorAnteriorElem}
+            <h5 class="text-primary-veris fs--20 fw-bold mb-0" id="valorTotalPaquete">$${dataCita.paquete.valorTotalPaquete.toFixed(2)}</h5>`;
+
+        $('#detalleValoresPaquete').html(elemValores)
+
         //consultarGrupoFamiliar();
         await obtenerDetallePaquetePromocional();
 

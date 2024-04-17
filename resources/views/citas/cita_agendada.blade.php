@@ -51,8 +51,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <img src="{{ asset('assets/img/svg/paquete-comprado.svg') }}"  alt="Promoción comprada">
                             </div>
                             <div class="mt-5">
-                                <a href="/mis-promociones" class="btn btn-primary-veris fs--18 line-height-24 w-75 px-4 py-3">Ir a mis promociones</a>
-                                <a href="/" class="btn btn-sm fs--18 line-height-24 py-3 w-75 border-0 text-primary-veris shadow-none">Volver al inicio</a>
+                                <a href="/mis-promociones" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2">Ir a mis promociones</a>
+                                <a href="/" class="btn btn-sm fs--18 line-height-24 px-4 py-3 w-100 w-md-75 border-0 text-primary-veris shadow-none">Volver al inicio</a>
                             </div>
                         </div>
                         <!-- Promoción tratamiento comprado -->
@@ -138,4 +138,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     });
 </script>
+<style>
+    @media (min-width: 768px) {
+        /* CUSTOM WIDTHS */
+        .w-md-75 { width: 75% !important; }
+    }
+</style>
 @endpush
