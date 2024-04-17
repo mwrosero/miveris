@@ -354,7 +354,7 @@ Mi Veris - Citas - Promociones
                         elem += `</div>
                             <div class="card-body p-3 pb-0">
                                 <h2 class="title-promocion fs--16 line-height-20 mb-2">${capitalizarCadaPalabra(value.nombrePaquete)}</h2>
-                                <h5 class="paciente-promocion fs--2 p-2 text-nowrap overflow-hidden text-truncate"><strong>Ideal para: </strong>${capitalizarCadaPalabra(value.nombrePaciente)}</h5>
+                                <h5 class="paciente-promocion fs--2 p-2 mb-2 text-nowrap overflow-hidden text-truncate"><strong>Ideal para: </strong>${capitalizarCadaPalabra(value.nombrePaciente)}</h5>
                             </div>
                             <div class="card-footer border-0 d-flex justify-content-between align-items-center p-3 pt-0">`;
                             if(value.porcentajeDescuento && value.porcentajeDescuento > 0){
