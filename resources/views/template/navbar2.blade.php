@@ -434,4 +434,10 @@
     .layout-navbar {
         height: 3.74rem !important;
     }
+
+    @media screen and (min-width: 1200px) {
+        .icon-button__badge{
+            right: 0px;
+        }
+    }
 </style>
