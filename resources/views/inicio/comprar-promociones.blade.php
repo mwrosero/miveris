@@ -325,7 +325,7 @@ Mi Veris - Citas - Promociones
                 elem += `<div nombreCategoria-rel="${capitalizarCadaPalabra(categoria.nombreCategoria)}" categoria-rel="${categoria.nemonicoCategoria}" class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
                         <img src="${categoria.urlImagenCategoria}" class="ico-categoria me-3 ico-unselected"/>
                         <img src="${categoria.urlImagenCategoriaSel}" class="ico-categoria me-3 ico-selected d-none"/>
-                        <span class="fs--16 me-3">${capitalizarCadaPalabra(categoria.nombreCategoria)}</span>
+                        <span class="fs--16 me-3 text-veris">${capitalizarCadaPalabra(categoria.nombreCategoria)}</span>
                         <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
                     </div>`
             })
