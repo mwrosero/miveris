@@ -19,15 +19,15 @@ Mi Veris - Citas - Detalle
             <div class="row g-3 d-flex justify-content-start align-items-start mx-0">
                 <div class="col-12 col-md-4 feature-img-promocion" style="height: 200px;">
                 </div>
-                <div class="col-12 offset-md-0 col-md-6 mt-3 pb-2 mb-1 px-3">
-                    <h6 class="title-promocion text-primary-veris fs--18 line-height-24 fw-medium mb-1 h-auto"></h6>
-                    <p class="fw-medium fs--2 line-height-16 mb-1 text-veris nombrePaciente"></p>
-                    <p class="fw-medium fs--2 line-height-16 mb-1 fechaValidez"></p>
+                <div class="col-12 offset-md-0 col-md-6 mt-3 pb-2 mb-1 px-3 box-detalle-promocion">
+                    {{-- <h6 class="title-promocion text-primary-veris mt-md-3 fs--18 line-height-24 fw-medium mb-1 h-auto"></h6>
+                    <p class="fs--2 line-height-16 mb-1 text-veris nombrePaciente"></p>
+                    <p class="fs--2 line-height-16 mb-1 text-veris fechaValidez d-none"></p> --}}
                 </div>
             </div>
             <div class="row g-3 box-llamada-all d-none mx-0">
                 <div class="col-12 offset-md-3 col-md-6 text-center mt-3 px-3">
-                    <div class="box-llamada d-flex justify-content-center align-items-center fs--1 line-height-16">
+                    <div class="box-llamada d-flex justify-content-center mt-md-3 align-items-center fs--1 line-height-16  mb-3">
                     </div>
                 </div>
             </div>
@@ -65,9 +65,9 @@ Mi Veris - Citas - Detalle
     document.addEventListener("DOMContentLoaded", async function () {
 
         $('.feature-img-promocion').css('background', 'url("'+dataCita.paquete.urlImagen+'") no-repeat center');
-        $('.title-promocion').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaquete));
+        /*$('.title-promocion').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaquete));
         $('.nombrePaciente').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaciente));
-        $('.fechaValidez').html(validarCaducidad())
+        $('.fechaValidez').html(validarCaducidad())*/
         //consultarGrupoFamiliar();
         await obtenerDetallePaquetePromocional();
 
@@ -88,7 +88,7 @@ Mi Veris - Citas - Detalle
         if(dataCita.paquete.esCaducada){
             elem += `<span class="text-danger">${dataCita.paquete.fechaCaducidad} | Caducado</span>`;
         }else{
-            elem += `<span class="text-primary-veris">${dataCita.paquete.fechaCaducidad}</span>`;
+            elem += `Válida hasta: <span class="text-primary-veris">${dataCita.paquete.fechaCaducidad}</span>`;
         }
         return elem;
     }
@@ -103,7 +103,10 @@ Mi Veris - Citas - Detalle
         if (data.code == 200){
             if(data.data.pendientes.length > 0){
                 $('.box-llamada').html(`<i class="fa-solid fa-circle-info text-primary-veris line-height-16 fs--16 me-2"></i><div>Para agendar tus servicios llámanos al <span>${data.data.numeroContactCenter}</span>.</div><a href="tel:+593${data.data.numeroContactCenter}" class="btn btn-sm btn-primary-veris fw-medium fs--16 line-height-16 px-3 py-2 shadow-none ms-2 d-block d-md-none" style="border-radius:8px;">Llamar</a>`);
-                $('.box-llamada-all').removeClass('d-none');
+                $('.fechaValidez, .box-llamada-all').removeClass('d-none');
+                $('.box-detalle-promocion').html(`<h6 class="title-promocion text-primary-veris mt-md-3 fs--18 line-height-24 fw-medium mb-1 h-auto">${capitalizarCadaPalabra(dataCita.paquete.nombrePaquete)}</h6>
+                    <p class="fs--2 line-height-16 mb-1 text-veris nombrePaciente">${capitalizarCadaPalabra(dataCita.paquete.nombrePaciente)}</p>
+                    <p class="fs--2 line-height-16 mb-1 text-veris fechaValidez">${validarCaducidad()}</p>`);
                 let elemPendiente = ``;
                 $('#tituloPromocionPendiente').removeClass('d-none');
                 $.each(data.data.pendientes, function(key, detalles){
@@ -123,13 +126,17 @@ Mi Veris - Citas - Detalle
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>                        
                     </div>`; 
                 })
                 $('#contenedorPromocionPendiente').html(elemPendiente);
             }else{
                 $('.contenedorPromocionPendienteSection').remove();
+                $('.box-detalle-promocion').html(`<h6 class="title-promocion text-primary-veris mt-md-3 fs--18 line-height-24 fw-medium mb-1 h-auto">${capitalizarCadaPalabra(dataCita.paquete.nombrePaquete)}</h6>
+                    <div class="d-flex justify-content-between align-items-top">
+                        <p class="fs--2 line-height-16 mb-1 text-veris nombrePaciente">${capitalizarCadaPalabra(dataCita.paquete.nombrePaciente)}</p>
+                        <img class="ms-2" src="{{ asset('assets/img/svg/golden.svg') }}" />
+                    </div>`);
             }
             if(data.data.realizados.length > 0){
                 let elemRealizado = ``;

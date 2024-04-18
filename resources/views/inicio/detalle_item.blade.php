@@ -80,17 +80,17 @@ Mi Veris - Citas - Detalle
                 </div>`;
             }else{
                 if(value.estado == "Disponible"){
-                    estado += `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2">
+                    estado += `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end">
                             <i class="fa-regular fa-calendar-check me-2"></i>
                             Disponible
                         </div>`;
                 }else if(value.estado == "Caducado"){
-                    estado += `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2">
+                    estado += `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end">
                             <img src="{{asset('assets/img/svg/fa-diamond-exclamation.svg')}}" />
                             <span style="color: #D84315;">Caducado</span>
                         </div>`;
                 }else{
-                    estado += `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2">
+                    estado += `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end">
                             <i class="fa-solid fa-check me-2 text-success"></i>
                             <span class="text-success">Atendida</span>
                         </div>`;

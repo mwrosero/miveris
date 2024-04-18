@@ -233,8 +233,9 @@ Mi Veris - Citas - Mis Promociones
         // if(parseInt({{ Session::get('userData')->numeroPaciente }}) !== paciente.numeroPaciente){
 
         // }
+        let canalOrigen = 'VER_CMV';//_canalOrigen
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=${tipoFiltro}&page=${page}&perPage=${perPage}&idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${ paciente.numeroPaciente }&estaPagado=true&verDetalle=false`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${canalOrigen}&codigoEmpresa=1&tipoFiltro=${tipoFiltro}&page=${page}&perPage=${perPage}&idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${ paciente.numeroPaciente }&estaPagado=true&verDetalle=false`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
