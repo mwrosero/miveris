@@ -295,6 +295,9 @@
             case 'PROXIMA_CITA' :
                 categoriaNotificacion = 'Agendaste una cita';
                 break;
+            case 'PAQUETE_COMPRADO':
+                categoriaNotificacion = 'Compraste una promoción';
+                break;
         }
         return categoriaNotificacion;
     }
@@ -318,6 +321,9 @@
                 break;
             case 'PROXIMA_CITA' :
                 botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-citas')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-citas" class="fs--1 text-primary-veris">Ver</div>`;
+                break;
+            case 'PAQUETE_COMPRADO':
+                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-promociones')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-promociones" class="fs--1 text-primary-veris">Ver Promoción</div>`;
                 break;
         }
         return botonNotificacion;
