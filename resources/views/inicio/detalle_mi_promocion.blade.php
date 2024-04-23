@@ -16,7 +16,7 @@ Mi Veris - Citas - Detalle
     </div>
     <section class="p-0 mb-0" style="overflow-x: hidden;">
         {{-- <div class="container"> --}}
-            <div class="row g-3 d-flex justify-content-start align-items-start mx-0 bg-white">
+            <div class="row g-3 d-flex justify-content-start align-items-start mx-0 mb-3 bg-white">
                 <div class="col-12 col-md-4 feature-img-promocion" style="height: 200px;">
                 </div>
                 <div class="col-12 offset-md-0 col-md-6 mt-3 pb-2 mb-1 px-3 box-detalle-promocion">
@@ -27,7 +27,7 @@ Mi Veris - Citas - Detalle
             </div>
             <div class="row g-3 box-llamada-all d-none mx-0">
                 <div class="col-12 offset-md-3 col-md-6 text-center mt-3 px-3">
-                    <div class="box-llamada d-flex justify-content-center mt-md-3 align-items-center fs--1 line-height-16  mb-3">
+                    <div class="box-llamada d-flex justify-content-center mt-0 align-items-center fs--1 line-height-16 mb-3">
                     </div>
                 </div>
             </div>
