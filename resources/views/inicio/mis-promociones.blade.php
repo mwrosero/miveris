@@ -25,7 +25,7 @@ Mi Veris - Citas - Mis Promociones
 </div>
 <div class="flex-grow-1 container-p-y pt-0">
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis Promociones') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis promociones') }}</h5>
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
@@ -52,7 +52,7 @@ Mi Veris - Citas - Mis Promociones
                     </button>
                 </li>
             </ul>
-            <div class="tab-content bg-transparent px-0 pt-0 pb-3 px-lg-4" id="pills-tabContent">
+            <div class="tab-content bg-transparent px-0 pt-0 pb-0 px-lg-4" id="pills-tabContent">
                 <!-- Filtro -->
                 @include('components.barraFiltro', ['context' => 'contextoAplicarFiltros'])
                 @include('components.offCanva', ['context' => 'contextoLimpiarFiltros'])
@@ -68,7 +68,7 @@ Mi Veris - Citas - Mis Promociones
         </div>
         <div class="row justify-content-center mt-2">
             <div class="col-lg-10">
-                <div class="row gy-3" id="contenedorPromociones">
+                <div class="row gy-3 mt-0" id="contenedorPromociones">
                 </div>
             </div>
         </div>
@@ -247,8 +247,8 @@ Mi Veris - Citas - Mis Promociones
             if(data.data.tienePermisoAdmin){
                 $.each(data.data.items, function(key, value){
                     if(tipoFiltro == "ASIGNADO" || tipoFiltro == "ARCHIVADAS"){
-                        elem += `<div class="col-md-6" id="promocion-${value.secuenciaPaquetePaciente}">
-                            <div class="card m-1">
+                        elem += `<div class="col-md-6 mt-0 mb-2" id="promocion-${value.secuenciaPaquetePaciente}">
+                            <div class="card m-1 mt-0 mb-0">
                                 <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
                                 </div>
                                 <div class="card-body p-3 pb-0">
@@ -273,8 +273,8 @@ Mi Veris - Citas - Mis Promociones
                             </div>
                         </div>`;
                     }else if(tipoFiltro == "REALIZADAS"){
-                        elem += `<div class="col-md-6" id="promocion-${value.secuenciaPaquetePaciente}">
-                            <div class="card m-1">
+                        elem += `<div class="col-md-6 mt-0 mb-2" id="promocion-${value.secuenciaPaquetePaciente}">
+                            <div class="card m-1 mt-0 mb-0">
                                 <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
                                 </div>
                                 <div class="card-body p-3 pb-0">
