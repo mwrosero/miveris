@@ -27,7 +27,7 @@ Mi Veris - Citas - Mis Promociones
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis promociones') }}</h5>
     </div>
-    <section class="p-3 mb-3">
+    <section class="p-3 mb-3 pt-0">
         <div class="row justify-content-center">
             <ul class="nav nav-pills justify-content-center w-auto p-1 rounded-3 invisible" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -247,7 +247,7 @@ Mi Veris - Citas - Mis Promociones
             if(data.data.tienePermisoAdmin){
                 $.each(data.data.items, function(key, value){
                     if(tipoFiltro == "ASIGNADO" || tipoFiltro == "ARCHIVADAS"){
-                        elem += `<div class="col-md-6 mt-0 mb-2" id="promocion-${value.secuenciaPaquetePaciente}">
+                        elem += `<div class="col-md-6 mt-0 mb-3" id="promocion-${value.secuenciaPaquetePaciente}">
                             <div class="card m-1 mt-0 mb-0">
                                 <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
                                 </div>
@@ -273,7 +273,7 @@ Mi Veris - Citas - Mis Promociones
                             </div>
                         </div>`;
                     }else if(tipoFiltro == "REALIZADAS"){
-                        elem += `<div class="col-md-6 mt-0 mb-2" id="promocion-${value.secuenciaPaquetePaciente}">
+                        elem += `<div class="col-md-6 mt-0 mb-3" id="promocion-${value.secuenciaPaquetePaciente}">
                             <div class="card m-1 mt-0 mb-0">
                                 <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
                                 </div>
