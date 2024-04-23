@@ -68,7 +68,7 @@ Mi Veris - Citas - Promociones
     </div>
     <section class="mb-0 p-3 pb-0">
         <div class="d-flex justify-content-between align-items-center">
-            <h5 class="fw-medium border-start-veris ps-3 fs-18">{{ __('Promociones sugeridas') }} <a href="/promociones/sugeridas" class="ms-3 fs--2"> Ver todas</a></h5>
+            <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">{{ __('Promociones sugeridas') }} <a href="/promociones/sugeridas" class="ms-3 fs--2"> Ver todas</a></h5>
         </div>
         <div class="swiper swiper-promociones-sugeridas position-relative py-3 pt-md-2 pb-md-4">
             <div class="swiper-wrapper invisible" id="list-promociones-sugeridas">
@@ -97,7 +97,7 @@ Mi Veris - Citas - Promociones
             <h5 class="fw-medium border-start-veris ps-3 fs-18">{{ __('Promociones disponibles') }}</h5>
         </div>
         <div class="d-flex justify-content-center">
-            <div class="col-12 col-md-6 mb--24">
+            <div class="col-12 col-md-6 mb-3">
                 <div class="input-group search-box">
                     <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
                     <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" />
@@ -114,8 +114,8 @@ Mi Veris - Citas - Promociones
             <div class="box-categorias-seleccionadas ms-2 mt-2 d-inline-block justify-content-start align-items-center"></div>
         </div>
     </section>
-    <section class="mb-3 p-3">
-        <div class="row justify-content-center mt-2">
+    <section class="mb-3 p-3 pt-0">
+        <div class="row justify-content-center mt-0">
             <div class="col-lg-10">
                 <div class="row gy-3" id="listado-paquetes">
                     {{-- <div class="col-md-6">
@@ -320,7 +320,8 @@ Mi Veris - Citas - Promociones
         const data = await call(args);
         
         if(data.code == 200){
-            let elem = `<h1 class="modal-title fs--20 line-height-24 my-3">Filtrar por</h1>`;
+            let elem = `<h1 class="modal-title fs--20 line-height-24 my-3">Filtrar por</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" style="position: absolute;right: 5px;top: 5px;"></button>`;
             $.each(data.data, function(key, categoria){
                 elem += `<div nombreCategoria-rel="${capitalizarCadaPalabra(categoria.nombreCategoria)}" categoria-rel="${categoria.nemonicoCategoria}" class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
                         <img src="${categoria.urlImagenCategoria}" class="ico-categoria me-3 ico-unselected"/>

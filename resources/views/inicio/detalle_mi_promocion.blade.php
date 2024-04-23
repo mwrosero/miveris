@@ -16,7 +16,7 @@ Mi Veris - Citas - Detalle
     </div>
     <section class="p-0 mb-0" style="overflow-x: hidden;">
         {{-- <div class="container"> --}}
-            <div class="row g-3 d-flex justify-content-start align-items-start mx-0">
+            <div class="row g-3 d-flex justify-content-start align-items-start mx-0 bg-white">
                 <div class="col-12 col-md-4 feature-img-promocion" style="height: 200px;">
                 </div>
                 <div class="col-12 offset-md-0 col-md-6 mt-3 pb-2 mb-1 px-3 box-detalle-promocion">

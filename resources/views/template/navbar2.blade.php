@@ -185,7 +185,7 @@
                                         </p>
                                     </div>
                                     <div class="text-end">
-                                        ${determinarBotonNotificacion(notificacion.categoria, notificacion.codigoNotificacion)}
+                                        ${determinarBotonNotificacion(notificacion.categoria, notificacion.codigoNotificacion,notificacion.numeroContactCenter)}
                                     </div>
                                 </div>
                 `;
@@ -298,12 +298,15 @@
             case 'PAQUETE_COMPRADO':
                 categoriaNotificacion = 'Compraste una promoción';
                 break;
+            case 'LLAMAR_CCE':
+                categoriaNotificacion = 'Información importante';
+                break;
         }
         return categoriaNotificacion;
     }
 
     //determinar boton notificacion
-    function determinarBotonNotificacion(categoria, codigoNotificacion){
+    function determinarBotonNotificacion(categoria, codigoNotificacion, numeroContactCenter = null){
         // console.log(2,categoria)
         let botonNotificacion = '';
         switch (categoria) {
@@ -324,6 +327,9 @@
                 break;
             case 'PAQUETE_COMPRADO':
                 botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-promociones')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-promociones" class="fs--1 text-primary-veris">Ver Promoción</div>`;
+                break;
+            case 'LLAMAR_CCE':
+                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, 'tel:+593${numeroContactCenter}')" class="btn text-primary-veris fw-medium fs--2 p-0" href="tel:+593988302580" class="fs--1 text-primary-veris">Llamar</div>`;
                 break;
         }
         return botonNotificacion;
@@ -393,7 +399,20 @@
         const data = await call(args);
         // console.log('cambiar estado notificacion', data);
         if (data.code == 200) {
-            location.href = url;
+            window.location.href = url;
+        }
+    }
+
+    async function obtenerDatosReservaDesdeNotificacion(idReferencial,idCola){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/notificaciones/datosReserva?idReferencial=${idReferencial}&idCola=${idCola}`;
+        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+        if (data.code == 200) {
+            //window.location.href = url;
         }
     }
 </script>
