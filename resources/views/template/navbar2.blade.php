@@ -1,3 +1,6 @@
+@php
+    $tokenPaquete = base64_encode(uniqid());
+@endphp
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme-veris pe-3" id="layout-navbar">
     <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none p-2 px-3 bg-dark-blue-veris">
         <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)" style="margin-bottom: 0.10rem;">
@@ -185,7 +188,7 @@
                                         </p>
                                     </div>
                                     <div class="text-end">
-                                        ${determinarBotonNotificacion(notificacion.categoria, notificacion.codigoNotificacion,notificacion.numeroContactCenter)}
+                                        ${determinarBotonNotificacion(notificacion.categoria, notificacion.codigoNotificacion,notificacion.numeroContactCenter, notificacion.datosNotificacion)}
                                     </div>
                                 </div>
                 `;
@@ -306,7 +309,7 @@
     }
 
     //determinar boton notificacion
-    function determinarBotonNotificacion(categoria, codigoNotificacion, numeroContactCenter = null){
+    function determinarBotonNotificacion(categoria, codigoNotificacion, numeroContactCenter = null, datosNotificacion){
         // console.log(2,categoria)
         let botonNotificacion = '';
         switch (categoria) {
@@ -314,22 +317,22 @@
                 botonNotificacion = ``;
                 break;
             case 'CITA_MEDICA':
-                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/citas"')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/citas" class="fs--1 text-primary-veris">Agendar cita</div>`;
+                botonNotificacion = `<div dataNotificacion-rel='${ JSON.stringify(datosNotificacion) }' onclick="actualizarEstadoNotificacion(${codigoNotificacion},'${categoria}', '/citas"')" class="btn text-primary-veris fw-medium fs--2 p-0 notificacion-${codigoNotificacion}" href="/citas" class="fs--1 text-primary-veris">Agendar cita</div>`;
                 break;
             case 'ORDEN_HC':
-                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-tratamientos')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-tratamientos" class="fs--1 text-primary-veris">Ver</div>`;
+                botonNotificacion = `<div dataNotificacion-rel='${ JSON.stringify(datosNotificacion) }' onclick="actualizarEstadoNotificacion(${codigoNotificacion},'${categoria}', '/mis-tratamientos')" class="btn text-primary-veris fw-medium fs--2 p-0 notificacion-${codigoNotificacion}" href="/mis-tratamientos" class="fs--1 text-primary-veris">Ver</div>`;
                 break;
             case 'REAGENDAR_CITA' :
-                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-citas')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-citas" class="fs--1 text-primary-veris">Reagendar</div>`;
+                botonNotificacion = `<div dataNotificacion-rel='${ JSON.stringify(datosNotificacion) }' onclick="actualizarEstadoNotificacion(${codigoNotificacion},'${categoria}', '/mis-citas')" class="btn text-primary-veris fw-medium fs--2 p-0 notificacion-${codigoNotificacion}" href="/mis-citas" class="fs--1 text-primary-veris">Reagendar</div>`;
                 break;
             case 'PROXIMA_CITA' :
-                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-citas')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-citas" class="fs--1 text-primary-veris">Ver</div>`;
+                botonNotificacion = `<div dataNotificacion-rel='${ JSON.stringify(datosNotificacion) }' onclick="actualizarEstadoNotificacion(${codigoNotificacion},'${categoria}', '/mis-citas')" class="btn text-primary-veris fw-medium fs--2 p-0 notificacion-${codigoNotificacion}" href="/mis-citas" class="fs--1 text-primary-veris">Ver</div>`;
                 break;
             case 'PAQUETE_COMPRADO':
-                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, '/mis-promociones')" class="btn text-primary-veris fw-medium fs--2 p-0" href="/mis-promociones" class="fs--1 text-primary-veris">Ver Promoción</div>`;
+                botonNotificacion = `<div dataNotificacion-rel='${ JSON.stringify(datosNotificacion) }' onclick="actualizarEstadoNotificacion(${codigoNotificacion},'${categoria}', '/mi-promocion/detalle')" class="btn text-primary-veris fw-medium fs--2 p-0 notificacion-${codigoNotificacion}" href="/mis-promociones" class="fs--1 text-primary-veris">Ver Promoción</div>`;
                 break;
             case 'LLAMAR_CCE':
-                botonNotificacion = `<div onclick="actualizarEstadoNotificacion(${codigoNotificacion}, 'tel:+593${numeroContactCenter}')" class="btn text-primary-veris fw-medium fs--2 p-0" href="tel:+593988302580" class="fs--1 text-primary-veris">Llamar</div>`;
+                botonNotificacion = `<div dataNotificacion-rel='${ JSON.stringify(datosNotificacion) }' onclick="actualizarEstadoNotificacion(${codigoNotificacion},'${categoria}', 'tel:+593${numeroContactCenter}')" class="btn text-primary-veris fw-medium fs--2 p-0 notificacion-${codigoNotificacion}" href="tel:+593988302580" class="fs--1 text-primary-veris">Llamar</div>`;
                 break;
         }
         return botonNotificacion;
@@ -387,7 +390,7 @@
         getNotificaciones();
     });
 
-    async function actualizarEstadoNotificacion(codigoNotificacion, url){
+    async function actualizarEstadoNotificacion(codigoNotificacion, categoria, url){
         let args = [];
         let canalOrigen = _canalOrigen;
         args["endpoint"] = api_url + `/${api_war}/v1/notificaciones/bandeja/leido/${codigoNotificacion}`;
@@ -399,6 +402,24 @@
         const data = await call(args);
         // console.log('cambiar estado notificacion', data);
         if (data.code == 200) {
+            if(categoria == "PAQUETE_COMPRADO"){
+                let paquete = JSON.parse($('.notificacion-'+codigoNotificacion).attr("dataNotificacion-rel"));
+                if(paquete === null){
+                    window.location.href = '/mis-promociones';
+                    return;
+                }
+                if(paquete.esCaducada == "N"){
+                    paquete.esCaducada = false;
+                }else{
+                    paquete.esCaducada = true;
+                }
+                console.log(paquete);return;
+                let data = {
+                    "paquete": paquete
+                };
+                localStorage.setItem('cita-{{ $tokenPaquete }}', JSON.stringify(data));
+                url += "/{{ $tokenPaquete }}";
+            }
             window.location.href = url;
         }
     }
