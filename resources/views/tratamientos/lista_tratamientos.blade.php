@@ -652,6 +652,7 @@ $tokenMods = base64_encode(uniqid());
         if(data.length > 0){
             idPaciente = datosTratamiento.idPaciente;
             data.forEach((tratamientos) => {
+                // console.log(tratamientos.tipoCard)
                 let elemento = `<div class="col-12">
                                     <div class="card h-100">
                                         <div class="card-body p--2">
@@ -676,8 +677,9 @@ $tokenMods = base64_encode(uniqid());
                                         </div>
                                     </div>
                                 </div>`;
-
-                divContenedor.append(elemento);
+                if(tratamientos.tipoCard != "SESION"){
+                    divContenedor.append(elemento);
+                }
             });
             // mostrar el titulo de pendientes
             document.getElementById("tituloTratamientoPendiente").style.display = "block";
@@ -717,8 +719,9 @@ $tokenMods = base64_encode(uniqid());
                                         </div>
                                     </div>
                                 </div>`;
-
-                divContenedorRealizados.append(elemento);
+                if(tratamientos.tipoCard != "SESION"){
+                    divContenedorRealizados.append(elemento);
+                }
             });
              // mostrar el titulo de realizados
             document.getElementById("tituloTratamientoRealizado").style.display = "block";
