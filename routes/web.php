@@ -104,6 +104,10 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/tratamiento/{params}', [TratamientosController::class, 'tratamientos'])
     ->name('tratamientos.lista')
     ->withoutMiddleware(['guest']);
+
+    Route::get('/detalle-sesion/{params}', [TratamientosController::class, 'detalleSesion'])
+    ->name('tratamientos.detalle_sesion')
+    ->withoutMiddleware(['guest']);
     
     // Route::get('/tratamientos', [TratamientosController::class, 'tratamientos'])->name('tratamientos.lista')->withoutMiddleware(['guest']);
     Route::get('/mis-tratamientos', [TratamientosController::class, 'misTratamientos'])->name('tratamientos')->withoutMiddleware(['guest']);

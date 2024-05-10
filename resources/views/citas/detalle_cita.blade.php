@@ -218,7 +218,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden || '';
             lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden || '';
         }
-        if(dataCita.tratamiento){
+        if(dataCita.tratamiento && !dataCita.sesion){
             if(dataCita.origen && dataCita.origen == "Listatratamientos"){
                 numeroOrden = dataCita.tratamiento.numeroOrden;
                 codigoEmpOrden = dataCita.tratamiento.codigoEmpOrden;
@@ -237,7 +237,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             cantidad = dataCita.tratamiento.cantidadIntervalosReserva
         }
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}`;
+        let argsSesion = '';
+        if(dataCita.sesion){
+            argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}`;
+        }
+
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
