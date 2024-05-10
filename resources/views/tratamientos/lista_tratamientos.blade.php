@@ -8,6 +8,7 @@ Mi Veris - Citas - tratamiento
 @section('content')
 @php
 $tokenMods = base64_encode(uniqid());
+$tokenSesion = base64_encode(uniqid());
 @endphp
 <!-- Modal embarazo -->
 <div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
@@ -363,7 +364,8 @@ $tokenMods = base64_encode(uniqid());
     // obtener tratamientos 
     async function obtenerTratamientos(){
         let args = [];
-        let canalOrigen = _canalOrigen;
+        // let canalOrigen = _canalOrigen;
+        let canalOrigen = 'APP_CMV';
         
         args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
@@ -388,6 +390,7 @@ $tokenMods = base64_encode(uniqid());
             document.getElementById("progress-circle").setAttribute("data-percentage", porcentaje);
             datosTratamiento = data.data;
 
+            //render cards
             mostrarTratamientoenDiv();
             mostrarTratamientoenDivRealizados();
             if(data.data.aplicaPromocion == 'S'){
@@ -652,7 +655,6 @@ $tokenMods = base64_encode(uniqid());
         if(data.length > 0){
             idPaciente = datosTratamiento.idPaciente;
             data.forEach((tratamientos) => {
-                // console.log(tratamientos.tipoCard)
                 let elemento = `<div class="col-12">
                                     <div class="card h-100">
                                         <div class="card-body p--2">
@@ -677,9 +679,8 @@ $tokenMods = base64_encode(uniqid());
                                         </div>
                                     </div>
                                 </div>`;
-                if(tratamientos.tipoCard != "SESION"){
-                    divContenedor.append(elemento);
-                }
+
+                divContenedor.append(elemento);
             });
             // mostrar el titulo de pendientes
             document.getElementById("tituloTratamientoPendiente").style.display = "block";
@@ -719,9 +720,8 @@ $tokenMods = base64_encode(uniqid());
                                         </div>
                                     </div>
                                 </div>`;
-                if(tratamientos.tipoCard != "SESION"){
-                    divContenedorRealizados.append(elemento);
-                }
+
+                divContenedorRealizados.append(elemento);
             });
              // mostrar el titulo de realizados
             document.getElementById("tituloTratamientoRealizado").style.display = "block";
@@ -1008,6 +1008,12 @@ $tokenMods = base64_encode(uniqid());
                     }
                     return respuestaOdontologia;
                     break;
+                case "SESION":
+                    let ruta = "/detalle-sesion/{{ $tokenSesion }}";
+                    let respuestaSesion = "";
+                    respuestaSesion += `<div url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-sesion">Ver sesión<i class="fa-solid fa-angle-right ms-2"></i></div>`;
+                    return respuestaSesion;
+                    break;
 
             }
         }
@@ -1187,6 +1193,48 @@ $tokenMods = base64_encode(uniqid());
     });
 
     // setear los valores del agendamiento en localstorage
+
+    $(document).on('click', '.btn-sesion', async function(){
+        let datosServicio = $(this).data('rel');
+        let convenio = JSON.parse($(this).attr('convenio-rel'));
+        let url = $(this).attr('url-rel');
+
+        if(datosServicio.permiteReserva == "N"){
+            $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+            $('#modalPermiteCambiar').modal('show');
+            return;
+        }
+
+        dataCita.sesion = datosServicio;
+        dataCita.convenio = convenio;
+
+        let modalidad;
+        if (datosServicio.modalidad === 'ONLINE') {
+            modalidad = 'S';
+        } else if (datosServicio.modalidad === 'PRESENCIAL') {
+            modalidad = 'N';
+        }
+
+        dataCita.online = modalidad;
+
+        dataCita.especialidad = {
+            codigoEspecialidad: datosServicio.codigoEspecialidad,
+            nombre : datosServicio.nombreServicio,
+            imagen : datosServicio.urlImagenTipoServicio,
+            esOnline : modalidad,
+            codigoServicio : datosServicio.codigoServicio,
+            codigoPrestacion : datosServicio.codigoPrestacion,
+            codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+            codigoSucursal : datosServicio.codigoSucursal,
+            origen: "Listatratamientos"
+        };
+        dataCita.origen = "Listatratamientos";
+        dataCita.convenio = ultimoTratamiento.datosConvenio;
+        dataCita.convenio.origen = "Listatratamientos";
+
+        localStorage.setItem('cita-{{ $tokenSesion }}', JSON.stringify(dataCita));
+        location = url;
+    });
 
     $(document).on('click', '.btn-agendar', async function(){
         let datosServicio = $(this).data('rel');

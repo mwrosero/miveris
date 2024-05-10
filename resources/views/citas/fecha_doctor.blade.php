@@ -604,9 +604,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.tratamiento && dataCita.tratamiento.cantidadIntervalosReserva){
             bloques = dataCita.tratamiento.cantidadIntervalosReserva
         }
+
+        let argsSesion = '';
+        if(dataCita.sesion){
+            argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}&tiempoSesion=${dataCita.detalleSesion.tiempoSesion}&tipoAtencion=${dataCita.detalleSesion.tipoAtencion}`;
+        }
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(_fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&bloques=${bloques}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(_fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&bloques=${bloques}${argsSesion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

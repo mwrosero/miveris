@@ -23,6 +23,11 @@ class TratamientosController extends Controller
                 ->with('params', $params);
     }
 
+    public function detalleSesion($params) {
+        return view('tratamientos.detalle_sesion')
+                ->with('params', $params);
+    }
+
     // Return view detalle de tratamiento
     public function detalleTratamiento($params) {
         
