@@ -37,7 +37,11 @@ Mi Veris - Sesión - Detalle
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
-        await obtenerDetalleSesion();
+        let codigoReserva = (dataCita.reservaEdit != null) ? dataCita.reservaEdit.idCita : "";
+        if(dataCita.sesion.esPagada == "S"){
+            codigoReserva = dataCita.sesion.detalleReserva.codigoMedicoReserva;
+        }
+        await obtenerDetalleSesion(codigoReserva);
         let showResultados = false;
         let elem = ``;
         $.each(dataCita.detalleSesion.detallesPrestacion, function(key, value){
@@ -70,9 +74,13 @@ Mi Veris - Sesión - Detalle
         elem += `<div class="col-12 mt-3 mb-3">
                         <div class="row">
                             <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
-                                <div class="mt-5">
-                                    <a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Agendar</a>
-                                </div>
+                                <div class="mt-5">`;
+                                if(dataCita.reservaEdit == null && dataCita.sesion.esPagada != "S"){
+                                    elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 btn-agendar ${ (dataCita.detalleSesion.habilitaBotonAgendar == 'N') ? 'disabled' : '' }">Agendar</a>`
+                                }else{
+                                    elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Cambiar fecha</a>`
+                                }
+                                elem += `</div>
                             </div>
                         </div>
                     </div>`;
@@ -83,17 +91,23 @@ Mi Veris - Sesión - Detalle
     async function obtenerDetalleSesion(codigoReserva = ''){
         let args = [];
         
-        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/consultaDetalleSesion?canalOrigen=${_canalOrigen}&idPaciente=${dataCita.tratamiento.idPaciente}&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}&codigoReserva=${codigoReserva}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/consultaDetalleSesion?canalOrigen=${_canalOrigen}&idPaciente=${dataCita.tratamiento.idPaciente || dataCita.tratamiento.paciente.numeroPaciente}&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}&codigoReserva=${codigoReserva}`;
         console.log(args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
         if(data.code = 200){
-            let elem = `<p class="fs--1 line-height-16 mb-1 text-one-line"><span class="text-primary-veris fw-medium">${data.data.nombreServicio}:</span> ${data.data.descripcion}</p>
-                    <p class="fs--2 line-height-16 mb-0"><img src="{{asset('assets/img/veris/reloj-ico.svg')}}" class="me-1" alt="duración">Duración de la sesión: <span class="fw-medium">${data.data.duracion}</span></p>`;
-            $('#detalleSesion').html(elem);
-            dataCita.detalleSesion = data.data;
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            if(data.data != null){
+                let elem = `<p class="fs--1 line-height-16 mb-1 text-one-line"><span class="text-primary-veris fw-medium">${data.data.nombreServicio}:</span> ${data.data.descripcion}</p>
+                        <p class="fs--2 line-height-16 mb-0"><img src="{{asset('assets/img/veris/reloj-ico.svg')}}" class="me-1" alt="duración">Duración de la sesión: <span class="fw-medium">${data.data.duracion}</span></p>`;
+                $('#detalleSesion').html(elem);
+                console.log(data.data.habilitaBotonAgendar)
+                dataCita.detalleSesion = data.data;
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            }else{
+                dataCita.detalleSesion.detallesPrestacion = dataCita.sesion.detallesSesion;
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            }
         }
         return data;
     }

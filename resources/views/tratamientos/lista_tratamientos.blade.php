@@ -364,8 +364,8 @@ $tokenSesion = base64_encode(uniqid());
     // obtener tratamientos 
     async function obtenerTratamientos(){
         let args = [];
-        // let canalOrigen = _canalOrigen;
-        let canalOrigen = 'APP_CMV';
+        let canalOrigen = _canalOrigen;
+        // let canalOrigen = 'APP_CMV';
         
         args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
         console.log(args["endpoint"]);
@@ -469,7 +469,7 @@ $tokenSesion = base64_encode(uniqid());
         let args = [];
         let canalOrigen = _canalOrigen
         
-        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=APP_CMV`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detalle_tratamiento_realizado?origenTransaccion=${_canalOrigen}`;
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";

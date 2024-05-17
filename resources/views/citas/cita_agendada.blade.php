@@ -109,10 +109,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     let datoReserva;
+    let imagenBase64;
     document.addEventListener("DOMContentLoaded", async function () {
         // let urlImagen = "share-img.png";
-        let imagenBase64 = await obtenerImagenCompartir();
-        datoReserva = await obtenerDatosReserva(dataCita.reserva.codigoReserva);
         // convertirImagenABase64(urlImagen, function(base64Imagen) {
         //     imagenBase64 = base64Imagen
         // });
@@ -224,6 +223,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             urlVirtual += `Link de cita virtual: <a href='${datoReserva.data.linkVideoConsulta}' target="_blank">Click aquí</a>`;
         }
         descripcionEvento += `Fecha: ${dataCita.horario.dia}\nHora: ${dataCita.horario.horaInicio}\n`+urlVirtual;
+        if(dataCita.sesion || (dataCita.reservaEdit && dataCita.reservaEdit.esSesionOdonto == "S")){
+            descripcionEvento += `Duración de la sesión: ${dataCita.detalleSesion.duracion}`;
+        }
         // descripcionEvento += `[url]https://www.veris.com.ec[/url]`;
         var ubicacionEvento = (dataCita.online == "N") ? capitalizarElemento(dataCita.central.nombreSucursal) : "";
         var fechaInicio = formatoHoraGoogle(dataCita.horario.dia2, dataCita.horario.horaInicio); // Formato ISO 8601 para la fecha de inicio del evento
@@ -249,6 +251,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     async function drawCardAgenda(){
+        imagenBase64 = await obtenerImagenCompartir();
+        datoReserva = await obtenerDatosReserva(dataCita.reserva.codigoReserva);
         let urlLocalidad = (dataCita.online == "N") ? `https://www.google.com/maps?q=${dataCita.central.latitud},${dataCita.central.longitud}` : '';
 
         let detalleAgenda = `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Especialidad:</span> ${capitalizarElemento(dataCita.especialidad.nombre)}</p>
@@ -258,6 +262,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
             detalleAgenda += `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Fecha:</span> ${dataCita.horario.dia}</p>
             <p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Hora:</span> ${dataCita.horario.horaInicio}</p>`;
+            if(dataCita.sesion || (dataCita.reservaEdit && dataCita.reservaEdit.esSesionOdonto == "S")){
+                detalleAgenda += `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Duración de la sesión:</span> ${dataCita.detalleSesion.duracion}</p>`;
+            }
 
         let urlImagen = (dataCita.online == "N") ? "{{ asset('assets/img/veris/doctora-cita.svg') }}" : "{{ asset('assets/img/svg/cita_agendada_online.svg') }}"
 
