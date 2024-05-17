@@ -450,6 +450,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             datosReserva.codigoReservaCambio = dataCita.reservaEdit.idCita;
         }
 
+        if(dataCita.sesion){
+            datosReserva.secuenciaPlanTto = dataCita.sesion.secuenciaPlanTto;
+            datosReserva.numeroSesion = dataCita.sesion.numeroSesion;
+            datosReserva.tipoAtencion = dataCita.detalleSesion.tipoAtencion;
+            datosReserva.tiempoSesion = dataCita.detalleSesion.tiempoSesion;
+            datosReserva.numeroOrden = dataCita.sesion.idOrden;
+            datosReserva.lineaDetalle = dataCita.sesion.lineaDetalleOrden
+        }
+
         args["data"] = JSON.stringify(datosReserva);
         const data = await call(args);
 
@@ -510,8 +519,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 tipoSolicitud = "LAB";
             }else{
                 //obtenerPreparacionPrevia();
-                tipoServicio= "DOMICILIO";
-                tipoSolicitud= "LAB";
+                tipoServicio = "DOMICILIO";
+                tipoSolicitud = "LAB";
             }
         }else{
             if(!dataCita.paquete){
@@ -521,7 +530,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         if(dataCita.paquete){
-            tipoServicio= "PAQUETE";
+            tipoServicio = "PAQUETE";
+        }
+
+        if(dataCita.sesion){
+            tipoServicio = "CITA_ODO";
         }
 
         //Consultar si idPaciente es del que hizo login o del beneficiario de lo que se va a pagar

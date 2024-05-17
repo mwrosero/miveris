@@ -413,8 +413,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 tipoSolicitud = "LAB";
             }else{
                 //obtenerPreparacionPrevia();
-                tipoServicio= "DOMICILIO";
-                tipoSolicitud= "LAB";
+                tipoServicio = "DOMICILIO";
+                tipoSolicitud = "LAB";
             }
         }else{
             if(!dataCita.paquete){
@@ -424,7 +424,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         if(dataCita.paquete){
-            tipoServicio= "PAQUETE";
+            tipoServicio = "PAQUETE";
+        }
+
+        if(dataCita.sesion){
+            tipoServicio = "CITA_ODO";
         }
 
         //Consultar si idPaciente es del que hizo login o del beneficiario de lo que se va a pagar

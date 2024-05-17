@@ -12,15 +12,15 @@ Mi Veris - Inicio
     <div class="modal modal-top fade" id="masOpcionesModal" tabindex="-1" aria-labelledby="masOpcionesModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <form class="modal-content rounded-4">
-                <div class="modal-header">
+                {{-- <div class="modal-header">
                     <button type="button" class="btn-close fw-medium bg-transparent me-2 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body pt-3 px-3 pb--40">
+                </div> --}}
+                <div class="modal-body pt-3 px-3 pb-3">
                     <h5 class="text-center fs--20 line-height-24 mb--32">{{ __('Más opciones') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
                             <div class="card card-border">
-                                <a class="cursor-pointer" id="cita-presencial">
+                                <a class="cursor-pointer data-popup-opciones btn-CambiarFechaCita" id="modificar-cita">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-6 col-md-6">
                                             <div class="card-body p-0 ps-2">
@@ -28,7 +28,7 @@ Mi Veris - Inicio
                                             </div>
                                         </div>
                                         <div class="col-6 col-md-auto text-end cita-presencial">
-                                            <img src="{{ asset('assets/img/card/svg/consulta_presencial.svg') }}" class="img-fluid" alt="{{ __('Cambiar fecha de la cita') }}">
+                                            <img src="{{ asset('assets/img/card/svg/cambiar_fecha_cita.svg') }}" class="img-fluid" alt="{{ __('Cambiar fecha de la cita') }}">
                                         </div>
                                     </div>
                                 </a>
@@ -36,7 +36,7 @@ Mi Veris - Inicio
                         </div>
                         <div class="col-6 col-lg-6">
                             <div class="card card-border">
-                                <a class="cursor-pointer" id="cita-virtual">
+                                <a class="cursor-pointer data-popup-opciones btn-sesion" id="detalle-sesion">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-6 col-md-6">
                                             <div class="card-body p-0 ps-2">
@@ -44,7 +44,7 @@ Mi Veris - Inicio
                                             </div>
                                         </div>
                                         <div class="col-6 col-md-auto text-end">
-                                            <img src="{{ asset('assets/img/card/svg/consulta_virtual.svg') }}" class="img-fluid" alt="{{ __('Detalle Sesión') }}">
+                                            <img src="{{ asset('assets/img/card/svg/ver_detalle_sesion.svg') }}" class="img-fluid" alt="{{ __('Detalle Sesión') }}">
                                         </div>
                                     </div>
                                 </a>
@@ -301,6 +301,85 @@ Mi Veris - Inicio
         controlVersion();
         // initializeSwiper('.swipertratamientos');
         // initializeSwiper('.swiper-proximas-citas');
+        $('body').on('click', '.btn-opciones-sesion', function(){
+            $('.data-popup-opciones').attr('data-rel', $(this).attr("data-rel"));
+            $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/citas-elegir-central-medica/{{ $tokenCita }}");
+        });
+
+        $('body').on('click', '.btn-sesion', async function(){
+            let datosServicio = $(this).data('rel');
+            let ruta = "/detalle-sesion/{{ $tokenCita }}";
+
+            let params = {}
+
+            if(datosServicio.permiteReserva == "N"){
+                $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
+
+            params.sesion = datosServicio;
+            params.convenio = {
+                "secuenciaAfiliado": datosServicio.secuenciaAfiliado,
+                "idCliente": datosServicio.idCliente,
+                "codigoConvenio": datosServicio.codigoConvenio,
+                "codigoEmpresa": datosServicio.codigoEmpresa,
+                "permitePagoLab" : datosServicio.permitePagoLab,
+                "permitePago": datosServicio.permitePagoReserva,
+                "mensajeBloqueoPago" : datosServicio.mensajeBloqueoPago,
+                "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
+                "permiteReserva": datosServicio.permitePagoReserva,
+                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,  
+            }
+
+            let modalidad;
+            if (datosServicio.modalidad === 'ONLINE') {
+                modalidad = 'S';
+            } else if (datosServicio.modalidad === 'PRESENCIAL') {
+                modalidad = 'N';
+            }
+
+            params.online = modalidad;
+
+            params.especialidad = {
+                codigoEspecialidad: datosServicio.idEspecialidad,
+                codigoPrestacion  : datosServicio.codigoPrestacion,
+                codigoServicio   : datosServicio.codigoServicio,
+                codigoTipoAtencion: datosServicio.codigoTipoAtencion,
+                esOnline : datosServicio.esVirtual,
+                nombre : datosServicio.especialidad,
+            }
+            params.paciente = {
+                "numeroIdentificacion": datosServicio.numeroIdentificacion,
+                "tipoIdentificacion": datosServicio.tipoIdentificacion,
+                "nombrePaciente": datosServicio.nombrePaciente,
+                "numeroPaciente": datosServicio.numeroPaciente
+            }
+
+            params.tratamiento = {
+                idPaciente: datosServicio.numeroPaciente,
+            }
+
+            params.reservaEdit = {
+                "estaPagada": datosServicio.estaPagada,
+                "numeroOrden": datosServicio.numeroOrden,
+                "lineaDetalleOrden": datosServicio.lineaDetalleOrden,
+                "codigoEmpresaOrden": datosServicio.codigoEmpresaOrden,
+                "idOrdenAgendable": datosServicio.idOrdenAgendable,
+                "idCita": datosServicio.idCita
+            }
+
+            params.sesion = {
+                secuenciaPlanTto: datosServicio.secuenciaPlanTto,
+                numeroSesion: datosServicio.numeroSesion
+            }
+
+            params.origen = "Listatratamientos";
+            params.convenio.origen = "Listatratamientos";
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location = ruta;
+        });
 
         $('body').on('click', '.btn-eliminar-cita', function(){
             $('#idCitaEliminar').val($(this).attr('codigoReserva-rel'));
@@ -809,6 +888,10 @@ Mi Veris - Inicio
                 ruta = "/citas-elegir-central-medica/" + tokenCita;
             }
 
+            if(citas.esSesionOdonto){
+                //console.log("AQUI ODONTO")
+            }
+
             /*
             permiteCambiar
             mensajeInformacion
@@ -874,12 +957,12 @@ Mi Veris - Inicio
                                 <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
                             ` : ''}
                             <div class="mt-auto">
-                                ${citas.permiteCambiar == "S" ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
-                                ` : `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
+                                ${(citas.permiteCambiar == "S" && citas.esSesionOdonto != "S") ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
+                                ` : (citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
                                         <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
-                                    </div>`
+                                    </div>` : `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>`
                                 }
-                                ${citas.estaPagada === "N" ? `
+                                ${ (citas.estaPagada === "N" && citas.esSesionOdonto != "S") ? `
                                 <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                 ` : ''}
                             </div>
@@ -1012,6 +1095,7 @@ Mi Veris - Inicio
             $('#modalPermiteCambiar').modal('show');
             return;
         }
+        
         if (data.estaPagada == "N"){
             let params = {}
             params.online = data.esVirtual;
@@ -1021,7 +1105,7 @@ Mi Veris - Inicio
                 codigoServicio   : data.codigoServicio,
                 codigoTipoAtencion: data.codigoTipoAtencion,
                 esOnline : data.esVirtual,
-                nombre : data.especialidad,
+                nombre : data.especialidad
             }
             params.paciente = {
                 "numeroIdentificacion": data.numeroIdentificacion,
@@ -1036,10 +1120,19 @@ Mi Veris - Inicio
                 "lineaDetalleOrden": data.lineaDetalleOrden,
                 "codigoEmpresaOrden": data.codigoEmpresaOrden,
                 "idOrdenAgendable": data.idOrdenAgendable,
-                "idCita": data.idCita
+                "idCita": data.idCita,
+            }
+            if(data.esSesionOdonto == "S"){
+                params.detalleSesion.tiempoSesion = data.tiempoSesion;
+                params.detalleSesion.duracion = data.duracion;
             }
             params.origen = "inicios";
-
+            if(data.esSesionOdonto == "S"){
+                params.detalleSesion = {
+                    tiempoSesion: data.tiempoSesion,
+                    duracion: data.duracion
+                }
+            }
             // if(datosConvenios.length == 0){
             //     params.convenio = {
             //         "permitePago": "S",
@@ -1135,7 +1228,14 @@ Mi Veris - Inicio
                 "lineaDetalleOrden": data.lineaDetalleOrden,
                 "codigoEmpresaOrden": data.codigoEmpresaOrden,
                 "idOrdenAgendable": data.idOrdenAgendable,
-                "idCita": data.idCita
+                "idCita": data.idCita,
+                "esSesionOdonto": data.esSesionOdonto
+            }
+            if(data.esSesionOdonto == "S"){
+                params.detalleSesion = {
+                    tiempoSesion: data.tiempoSesion,
+                    duracion: data.duracion
+                }
             }
             params.origen = "inicios";
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
