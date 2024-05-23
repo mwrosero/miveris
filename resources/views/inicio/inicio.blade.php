@@ -369,10 +369,10 @@ Mi Veris - Inicio
                 "idCita": datosServicio.idCita
             }
 
-            params.sesion = {
-                secuenciaPlanTto: datosServicio.secuenciaPlanTto,
-                numeroSesion: datosServicio.numeroSesion
-            }
+            // params.sesion = {
+            //     secuenciaPlanTto: datosServicio.secuenciaPlanTto,
+            //     numeroSesion: datosServicio.numeroSesion
+            // }
 
             params.origen = "Listatratamientos";
             params.convenio.origen = "Listatratamientos";
@@ -1122,13 +1122,15 @@ Mi Veris - Inicio
                 "idOrdenAgendable": data.idOrdenAgendable,
                 "idCita": data.idCita,
             }
-            if(data.esSesionOdonto == "S"){
-                params.detalleSesion.tiempoSesion = data.tiempoSesion;
-                params.detalleSesion.duracion = data.duracion;
-            }
             params.origen = "inicios";
             if(data.esSesionOdonto == "S"){
+                params.sesion = {
+                    secuenciaPlanTto: data.secuenciaPlanTto,
+                    numeroSesion: data.numeroSesion,
+                    tiempoSesion: data.tiempoSesion
+                };
                 params.detalleSesion = {
+                    tipoAtencion: data.tipoAtencion,
                     tiempoSesion: data.tiempoSesion,
                     duracion: data.duracion
                 }
@@ -1232,7 +1234,13 @@ Mi Veris - Inicio
                 "esSesionOdonto": data.esSesionOdonto
             }
             if(data.esSesionOdonto == "S"){
+                params.sesion = {
+                    secuenciaPlanTto: data.secuenciaPlanTto,
+                    numeroSesion: data.numeroSesion,
+                    tiempoSesion: data.tiempoSesion,
+                };
                 params.detalleSesion = {
+                    tipoAtencion: data.tipoAtencion,
                     tiempoSesion: data.tiempoSesion,
                     duracion: data.duracion
                 }

@@ -38,10 +38,23 @@ Mi Veris - Sesión - Detalle
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
         let codigoReserva = (dataCita.reservaEdit != null) ? dataCita.reservaEdit.idCita : "";
-        if(dataCita.sesion.esPagada == "S"){
+        if(dataCita.sesion.esPagada == "S" && dataCita.sesion.detalleReserva !== null){
             codigoReserva = dataCita.sesion.detalleReserva.codigoMedicoReserva;
         }
-        await obtenerDetalleSesion(codigoReserva);
+        console.log(codigoReserva)
+        // if((typeof dataCita.sesion.esRealizado === 'undefined' && dataCita.sesion.esRealizado != "S") || codigoReserva != ''){
+        if(dataCita.sesion.esRealizado === 'N'){
+            await obtenerDetalleSesion(codigoReserva);
+        }else{
+            dataCita.detalleSesion = {
+                detallesPrestacion: dataCita.sesion.detallesSesion
+            }
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+
+            let elem = `<p class="fs--1 line-height-16 mb-1 text-one-line"><span class="text-primary-veris fw-medium">${dataCita.sesion.nombreServicio}:</span> ${(dataCita.sesion.descripcion) ? dataCita.sesion.descripcion : ``}</p>
+                        <p class="fs--2 line-height-16 mb-0"><img src="{{asset('assets/img/veris/reloj-ico.svg')}}" class="me-1" alt="duración">Duración de la sesión: <span class="fw-medium">${(dataCita.sesion.duracion) ? dataCita.sesion.duracion : ``}</span></p>`;
+                $('#detalleSesion').html(elem);
+        }
         let showResultados = false;
         let elem = ``;
         $.each(dataCita.detalleSesion.detallesPrestacion, function(key, value){
@@ -52,7 +65,7 @@ Mi Veris - Sesión - Detalle
                     </div>`;
             }else{
                 estado += `<div style="min-width: 100px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end">
-                        <i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success">Comprada</span>
+                        ${ (dataCita.sesion.esRealizado != "S") ? `<i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success"> Comprado` : `<i class="fa-solid fa-check me-2 text-success"></i><span class="text-success"> Atendido` }</span>
                     </div>`;
             }
             elem += `<div class="col-12 mt-3 mb-3" style="border-bottom: 1px solid #CCEAFA;">
@@ -71,19 +84,21 @@ Mi Veris - Sesión - Detalle
                     </div>`;
         });
 
-        elem += `<div class="col-12 mt-3 mb-3">
-                        <div class="row">
-                            <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
-                                <div class="mt-5">`;
-                                if(dataCita.reservaEdit == null && dataCita.sesion.esPagada != "S"){
-                                    elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 btn-agendar ${ (dataCita.detalleSesion.habilitaBotonAgendar == 'N') ? 'disabled' : '' }">Agendar</a>`
-                                }else{
-                                    elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Cambiar fecha</a>`
-                                }
-                                elem += `</div>
-                            </div>
-                        </div>
-                    </div>`;
+        if(dataCita.sesion.esRealizado != "S"){
+            elem += `<div class="col-12 mt-3 mb-3">
+                <div class="row">
+                    <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        <div class="mt-5">`;
+                        if(dataCita.reservaEdit == null && dataCita.sesion.esPagada != "S"){
+                            elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 btn-agendar ${ (dataCita.detalleSesion.habilitaBotonAgendar == 'N') ? 'disabled' : '' }">Agendar</a>`
+                        }else{
+                            elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Cambiar fecha</a>`
+                        }
+                        elem += `</div>
+                    </div>
+                </div>
+            </div>`;
+        }
 
         $('#listado-detalles').html(elem);
     })
@@ -98,8 +113,8 @@ Mi Veris - Sesión - Detalle
         const data = await call(args);
         if(data.code = 200){
             if(data.data != null){
-                let elem = `<p class="fs--1 line-height-16 mb-1 text-one-line"><span class="text-primary-veris fw-medium">${data.data.nombreServicio}:</span> ${data.data.descripcion}</p>
-                        <p class="fs--2 line-height-16 mb-0"><img src="{{asset('assets/img/veris/reloj-ico.svg')}}" class="me-1" alt="duración">Duración de la sesión: <span class="fw-medium">${data.data.duracion}</span></p>`;
+                let elem = `<p class="fs--1 line-height-16 mb-1 text-one-line"><span class="text-primary-veris fw-medium">${data.data.nombreServicio}:</span> ${(data.data.descripcion) ? data.data.descripcion : ``}</p>
+                        <p class="fs--2 line-height-16 mb-0"><img src="{{asset('assets/img/veris/reloj-ico.svg')}}" class="me-1" alt="duración">Duración de la sesión: <span class="fw-medium">${(data.data.duracion) ? data.data.duracion : ``}</span></p>`;
                 $('#detalleSesion').html(elem);
                 console.log(data.data.habilitaBotonAgendar)
                 dataCita.detalleSesion = data.data;
