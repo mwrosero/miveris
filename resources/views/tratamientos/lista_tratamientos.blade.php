@@ -704,7 +704,7 @@ $tokenSesion = base64_encode(uniqid());
                                         <div class="card-body p--2">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)}</h6>
-                                                <span id="estado" class="fs--1 line-height-16 mb-1"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${ (tratamientos.tipoCard == "RECETAS") ? "Comprada" : "Atendida" }</span></span>
+                                                <span id="estado" class="fs--1 line-height-16 mb-1"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${ (tratamientos.tipoCard == "RECETAS") ? "Comprado" : "Atendida" }</span></span>
                                             </div>
                                             <div>
                                                 ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
@@ -806,7 +806,7 @@ $tokenSesion = base64_encode(uniqid());
     // determinar si es comprar o por comprar
     function determinarEstado(estado){
         if(estado == "S"){
-            return `<i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success">Comprada</span>`;
+            return `<i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success">Comprado</span>`;
         }else{
             return `<i class="fa-solid fa-circle me-2"></i>Por comprar`;
         }
@@ -1208,6 +1208,17 @@ $tokenSesion = base64_encode(uniqid());
         dataCita.sesion = datosServicio;
         dataCita.convenio = convenio;
 
+        if(datosServicio.detalleReserva !== null){
+            dataCita.reservaEdit = {
+                "estaPagada": datosServicio.esPagada,
+                "numeroOrden": datosServicio.idOrden,
+                "lineaDetalleOrden": datosServicio.lineaDetalleOrden,
+                "codigoEmpresaOrden": datosServicio.codigoEmpresa,
+                //"idOrdenAgendable": datosServicio.detalleReserva.idOrdenAgendable,
+                "idCita": datosServicio.detalleReserva.codigoReserva,
+            }
+        }
+
         let modalidad;
         if (datosServicio.modalidad === 'ONLINE') {
             modalidad = 'S';
@@ -1219,7 +1230,7 @@ $tokenSesion = base64_encode(uniqid());
 
         dataCita.especialidad = {
             codigoEspecialidad: datosServicio.codigoEspecialidad,
-            nombre : datosServicio.nombreServicio,
+            nombre : datosServicio.nombreEspecialidad,
             imagen : datosServicio.urlImagenTipoServicio,
             esOnline : modalidad,
             codigoServicio : datosServicio.codigoServicio,
@@ -1258,7 +1269,7 @@ $tokenSesion = base64_encode(uniqid());
 
         dataCita.especialidad = {
             codigoEspecialidad: datosServicio.codigoEspecialidad,
-            nombre : datosServicio.nombreServicio,
+            nombre : datosServicio.nombreEspecialidad,
             imagen : datosServicio.urlImagenTipoServicio,
             esOnline : modalidad,
             codigoServicio : datosServicio.codigoServicio,
@@ -1336,7 +1347,7 @@ $tokenSesion = base64_encode(uniqid());
 
         dataCita.especialidad = {
             codigoEspecialidad: datosServicio.codigoEspecialidad,
-            nombre : datosServicio.nombreServicio,
+            nombre : datosServicio.nombreEspecialidad,
             imagen : datosServicio.urlImagenTipoServicio,
             esOnline : modalidad,
             codigoServicio : datosServicio.codigoServicio,
@@ -1478,7 +1489,7 @@ $tokenSesion = base64_encode(uniqid());
 
         dataCita.especialidad = {
             codigoEspecialidad: datosServicio.codigoEspecialidad,
-            nombre : datosServicio.nombreServicio,
+            nombre : datosServicio.nombreEspecialidad,
             imagen : datosServicio.urlImagenTipoServicio,
             esOnline : modalidad,
             codigoServicio : datosServicio.codigoServicio,
