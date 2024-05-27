@@ -358,6 +358,7 @@ Mi Veris - Inicio
 
             params.tratamiento = {
                 idPaciente: datosServicio.numeroPaciente,
+                origen: 'INICIO',
             }
 
             params.reservaEdit = {
@@ -506,6 +507,19 @@ Mi Veris - Inicio
                 mensajeBloqueoReserva : data.mensajeBloqueoReserva,
                 permiteReserva: data.permitePagoReserva,
                 aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
+            }
+
+            if(data.esSesionOdonto == "S"){
+                params.sesion = {
+                    secuenciaPlanTto: data.secuenciaPlanTto,
+                    numeroSesion: data.numeroSesion,
+                    tiempoSesion: data.tiempoSesion
+                };
+                params.detalleSesion = {
+                    tipoAtencion: data.tipoAtencion,
+                    tiempoSesion: data.tiempoSesion,
+                    duracion: data.duracion
+                }
             }
             // if (datosConvenios.length > 0) {
             //     params.convenio = datosConvenios[0];
@@ -960,7 +974,9 @@ Mi Veris - Inicio
                                 ${(citas.permiteCambiar == "S" && citas.esSesionOdonto != "S") ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
                                 ` : (citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
                                         <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
-                                    </div>` : `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>`
+                                    </div>` : ( citas.estaPagada == "S" ) ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>` : `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
+                                        <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-sesion" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                    `
                                 }
                                 ${ (citas.estaPagada === "N" && citas.esSesionOdonto != "S") ? `
                                 <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
