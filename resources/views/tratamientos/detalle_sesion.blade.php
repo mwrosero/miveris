@@ -92,7 +92,9 @@ Mi Veris - Sesión - Detalle
                         if(dataCita.reservaEdit == null && dataCita.sesion.esPagada != "S"){
                             elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 btn-agendar ${ (dataCita.detalleSesion.habilitaBotonAgendar == 'N') ? 'disabled' : '' }">Agendar</a>`
                         }else{
-                            elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Cambiar fecha</a>`
+                            elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">
+                                ${(dataCita.sesion.esPagada == "S" && dataCita.sesion.detalleReserva === null) ? `Agendar` : `Cambiar fecha` }
+                            </a>`
                         }
                         elem += `</div>
                     </div>
