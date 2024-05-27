@@ -1270,8 +1270,32 @@ Mi Veris - Citas - Mis citas
         }
         params.origen = "inicios";
 
-        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-        location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
+        params.tratamiento = {
+            idPaciente: data.numeroPaciente,
+            origen: 'INICIO',
+        }
+
+        if(data.esSesionOdonto == "S"){
+            params.origen = "Listatratamientos";
+            params.convenio.origen = "Listatratamientos";
+            params.sesion = {
+                secuenciaPlanTto: data.secuenciaPlanTto,
+                numeroSesion: data.numeroSesion,
+                tiempoSesion: data.tiempoSesion
+            };
+            params.detalleSesion = {
+                tipoAtencion: data.tipoAtencion,
+                tiempoSesion: data.tiempoSesion,
+                duracion: data.duracion
+            }
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location.href = "/detalle-sesion/" + "{{ $tokenCita }}"
+        }else{
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
+        }
+
     });
 
 </script>
