@@ -961,12 +961,16 @@ $tokenSesion = base64_encode(uniqid());
                             
                         
                         } else if (datosServicio.permitePago == "S"){
-                            let params = {}
-                            params.idPaciente = idPaciente;
-                            params.numeroOrden = datosServicio.idOrden;
-                            params.codigoEmpresa = datosServicio.codigoEmpresa;
-                            let ulrParams = btoa(JSON.stringify(params));
-                            respuesta += `<div url-rel="/citas-laboratorio/{{$tokenMods}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
+                            if(datosServicio.esPagada == "N"){
+                                let params = {}
+                                params.idPaciente = idPaciente;
+                                params.numeroOrden = datosServicio.idOrden;
+                                params.codigoEmpresa = datosServicio.codigoEmpresa;
+                                let ulrParams = btoa(JSON.stringify(params));
+                                respuesta += `<div url-rel="/citas-laboratorio/{{$tokenMods}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'>Pagar</div>`;
+                            }else{
+                                respuesta += `<div url-rel="/citas-laboratorio/{{$tokenMods}}" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-pagar" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-rel='${JSON.stringify(datosServicio)}'><i class="fa-solid fa-circle-info me-2 line-height-20"></i>Información</div>`;
+                            }
                         }
                     } else if (estado == 'REALIZADO'){
                         console.log('estadossss2', estado);
