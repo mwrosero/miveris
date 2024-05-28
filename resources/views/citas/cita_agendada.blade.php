@@ -119,14 +119,26 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         $('body').on('click', '.btnShare', async function(){
             try {
                 let urlCita = "https://www.veris.com.ec"
-                await navigator.share({
-                    files: [
-                        new File([dataURItoBlob(imagenBase64)], 'cita.png', { type: 'image/png' })
-                    ],
-                    title: "Cita agendada",
-                    text: urlCita,
-                    url: urlCita
-                });
+                if(dataCita.online != "S"){
+                    await navigator.share({
+                        files: [
+                            new File([dataURItoBlob(imagenBase64)], 'cita.png', { type: 'image/png' })
+                        ],
+                        title: "Cita agendada",
+                        text: urlCita,
+                        url: urlCita
+                    });
+                }else{
+                    console.log(datoReserva.data.linkVideoConsulta)
+                    await navigator.share({
+                        /*files: [
+                            new File([dataURItoBlob(imagenBase64)], 'cita.png', { type: 'image/png' })
+                        ],*/
+                        title: "Cita virtual agendada",
+                        //text: datoReserva.data.linkVideoConsulta,
+                        url: datoReserva.data.linkVideoConsulta
+                    });
+                }
                 console.log('Archivo compartido correctamente');
             } catch (error) {
                 console.error('Error al compartir el archivo:', error);
@@ -212,24 +224,45 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         return data;
     }
 
+    function toGoogleCalendarFormat(date) {
+        var year = date.getUTCFullYear();
+        var month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+        var day = date.getUTCDate().toString().padStart(2, '0');
+        var hours = date.getUTCHours().toString().padStart(2, '0');
+        var minutes = date.getUTCMinutes().toString().padStart(2, '0');
+        var seconds = date.getUTCSeconds().toString().padStart(2, '0');
+        return `${year}${month}${day}T${hours}${minutes}${seconds}`;
+    }
+
     async function sincronizarCalendario(){
         // Variables del evento
         let urlVirtual = ``;
         var tituloEvento = (dataCita.online == "N") ? "Cita agendada" : "Cita virtual agendada";
         var descripcionEvento = `Especialidad: ${capitalizarElemento(dataCita.especialidad.nombre)}\nDr(a): ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}\n`;
         if(dataCita.online == "N"){
-            descripcionEvento += `Central: ${capitalizarElemento(dataCita.central.nombreSucursal)}\n`
+            descripcionEvento += `Central: ${capitalizarElemento(datoReserva.data.datosReserva.nombreSucursal)}\n`
         }else{
             urlVirtual += `Link de cita virtual: <a href='${datoReserva.data.linkVideoConsulta}' target="_blank">Click aquí</a>`;
         }
-        descripcionEvento += `Fecha: ${dataCita.horario.dia}\nHora: ${dataCita.horario.horaInicio}\n`+urlVirtual;
+        descripcionEvento += `Fecha: ${datoReserva.data.datosReserva.fecha}\nHora: ${datoReserva.data.datosReserva.hora}\n`+urlVirtual;
         if(dataCita.sesion || (dataCita.reservaEdit && dataCita.reservaEdit.esSesionOdonto == "S")){
             descripcionEvento += `Duración de la sesión: ${dataCita.detalleSesion.duracion}`;
         }
         // descripcionEvento += `[url]https://www.veris.com.ec[/url]`;
-        var ubicacionEvento = (dataCita.online == "N") ? capitalizarElemento(dataCita.central.nombreSucursal) : "";
-        var fechaInicio = formatoHoraGoogle(dataCita.horario.dia2, dataCita.horario.horaInicio); // Formato ISO 8601 para la fecha de inicio del evento
-        var fechaFin = formatoHoraGoogle(dataCita.horario.dia2, dataCita.horario.horaFin); // Formato ISO 8601 para la fecha de fin del evento
+        var ubicacionEvento = (dataCita.online == "N") ? capitalizarElemento(datoReserva.data.datosReserva.nombreSucursal) : "";
+
+
+        var fechaObj = new Date(datoReserva.data.datosReserva.fechaUtc);
+        // var fechaInicio = new Date(fechaObj).toISOString();
+        // fechaObj.setMinutes(fechaObj.getMinutes() + dataCita.sesion.tiempoSesion);
+        // var fechaFin = fechaObj.toISOString();
+        var fechaInicio = toGoogleCalendarFormat(fechaObj);
+
+        fechaObj.setMinutes(fechaObj.getMinutes() + dataCita.sesion.tiempoSesion);
+        var fechaFin = toGoogleCalendarFormat(fechaObj);
+
+        //var fechaInicio = formatoHoraGoogle(dataCita.horario.dia2, dataCita.horario.horaInicio); // Formato ISO 8601 para la fecha de inicio del evento
+        //var fechaFin = formatoHoraGoogle(dataCita.horario.dia2, dataCita.horario.horaFin); // Formato ISO 8601 para la fecha de fin del evento
 
         // Reemplaza los saltos de línea con %0A en la descripción del evento
         descripcionEvento = descripcionEvento.replace('[br]', "%3Cbr%3E");
@@ -252,16 +285,23 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function drawCardAgenda(){
         imagenBase64 = await obtenerImagenCompartir();
-        datoReserva = await obtenerDatosReserva(dataCita.reserva.codigoReserva);
-        let urlLocalidad = (dataCita.online == "N") ? `https://www.google.com/maps?q=${dataCita.central.latitud},${dataCita.central.longitud}` : '';
+        let codigoReserva;
+        if(dataCita.reserva){
+            codigoReserva = dataCita.reserva.codigoReserva;
+        }
+        if(dataCita.reservaEdit){
+            codigoReserva = dataCita.reservaEdit.idCita;
+        }
+        datoReserva = await obtenerDatosReserva(codigoReserva);
+        let urlLocalidad = (dataCita.online == "N") ? `https://www.google.com/maps?q=${datoReserva.data.datosUbicacion.latitud},${datoReserva.data.datosUbicacion.longitud}` : '';
 
         let detalleAgenda = `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Especialidad:</span> ${capitalizarElemento(dataCita.especialidad.nombre)}</p>
             <p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Dr(a):</span> ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}</p>`;
             if(dataCita.online == "N"){
-                detalleAgenda += `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Central:</span> ${capitalizarElemento(dataCita.central.nombreSucursal)}</p>`;
+                detalleAgenda += `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Central:</span> ${capitalizarElemento(datoReserva.data.datosReserva.nombreSucursal)}</p>`;
             }
-            detalleAgenda += `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Fecha:</span> ${dataCita.horario.dia}</p>
-            <p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Hora:</span> ${dataCita.horario.horaInicio}</p>`;
+            detalleAgenda += `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Fecha:</span> ${datoReserva.data.datosReserva.fecha}</p>
+            <p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Hora:</span> ${datoReserva.data.datosReserva.hora}</p>`;
             if(dataCita.sesion || (dataCita.reservaEdit && dataCita.reservaEdit.esSesionOdonto == "S")){
                 detalleAgenda += `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Duración de la sesión:</span> ${dataCita.detalleSesion.duracion}</p>`;
             }
