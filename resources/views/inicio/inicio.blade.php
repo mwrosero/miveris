@@ -332,14 +332,7 @@ Mi Veris - Inicio
                 "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,  
             }
 
-            let modalidad;
-            if (datosServicio.modalidad === 'ONLINE') {
-                modalidad = 'S';
-            } else if (datosServicio.modalidad === 'PRESENCIAL') {
-                modalidad = 'N';
-            }
-
-            params.online = modalidad;
+            params.online = datosServicio.esVirtual;
 
             params.especialidad = {
                 codigoEspecialidad: datosServicio.idEspecialidad,
