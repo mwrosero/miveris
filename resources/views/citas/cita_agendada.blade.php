@@ -251,18 +251,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         // descripcionEvento += `[url]https://www.veris.com.ec[/url]`;
         var ubicacionEvento = (dataCita.online == "N") ? capitalizarElemento(datoReserva.data.datosReserva.nombreSucursal) : "";
 
+        if( datoReserva.data.datosReserva.tiempoPorSesion !== null ){
+            var fechaObj = new Date(datoReserva.data.datosReserva.fechaUtc);
+            var fechaInicio = toGoogleCalendarFormat(fechaObj);
 
-        var fechaObj = new Date(datoReserva.data.datosReserva.fechaUtc);
-        // var fechaInicio = new Date(fechaObj).toISOString();
-        // fechaObj.setMinutes(fechaObj.getMinutes() + dataCita.sesion.tiempoSesion);
-        // var fechaFin = fechaObj.toISOString();
-        var fechaInicio = toGoogleCalendarFormat(fechaObj);
-
-        fechaObj.setMinutes(fechaObj.getMinutes() + dataCita.sesion.tiempoSesion);
-        var fechaFin = toGoogleCalendarFormat(fechaObj);
-
-        //var fechaInicio = formatoHoraGoogle(dataCita.horario.dia2, dataCita.horario.horaInicio); // Formato ISO 8601 para la fecha de inicio del evento
-        //var fechaFin = formatoHoraGoogle(dataCita.horario.dia2, dataCita.horario.horaFin); // Formato ISO 8601 para la fecha de fin del evento
+            fechaObj.setMinutes(fechaObj.getMinutes() + dataCita.sesion.tiempoSesion);
+            var fechaFin = toGoogleCalendarFormat(fechaObj);
+        }else{
+            var fechaInicio = formatoHoraGoogle(dataCita.horario.dia2, dataCita.horario.horaInicio); // Formato ISO 8601 para la fecha de inicio del evento
+            var fechaFin = formatoHoraGoogle(dataCita.horario.dia2, dataCita.horario.horaFin); // Formato ISO 8601 para la fecha de fin del evento
+        }
 
         // Reemplaza los saltos de línea con %0A en la descripción del evento
         descripcionEvento = descripcionEvento.replace('[br]', "%3Cbr%3E");
