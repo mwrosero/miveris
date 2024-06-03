@@ -125,18 +125,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             new File([dataURItoBlob(imagenBase64)], 'cita.png', { type: 'image/png' })
                         ],
                         title: "Cita agendada",
-                        text: urlCita,
-                        url: urlCita
                     });
                 }else{
                     console.log(datoReserva.data.linkVideoConsulta)
                     await navigator.share({
+                        title: "Cita virtual agendada",
+                        text: `Enviado desde Mi Veris.\nVideoconsulta de ${datoReserva.data.datosReserva.nombreEspecialidad}\nLink para recibir atención: ${datoReserva.data.linkVideoConsulta}`,
                         /*files: [
                             new File([dataURItoBlob(imagenBase64)], 'cita.png', { type: 'image/png' })
                         ],*/
-                        title: "Cita virtual agendada",
-                        //text: datoReserva.data.linkVideoConsulta,
-                        url: datoReserva.data.linkVideoConsulta
                     });
                 }
                 console.log('Archivo compartido correctamente');
