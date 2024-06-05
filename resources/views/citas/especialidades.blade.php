@@ -207,7 +207,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                             <div class="w-100">
                                                 <div class="avatar avatar-18 mx-auto mb-2">
                                                     <div class="avatar-especialidad">
-                                                        <img src="${especialidad.imagen}" alt="${especialidad.nombre}">
+                                                        <img src="${especialidad.imagen}" alt="${especialidad.nombre}" onerror="this.src='{{ asset('assets/img/svg/especialidades/medicina_general.svg') }}'">
                                                     </div>
                                                 </div>
                                                 <p class="text-veris fs--2 fw-medium text-one-line mb-0">${capitalizarCadaPalabra(especialidad.nombre)}</p>

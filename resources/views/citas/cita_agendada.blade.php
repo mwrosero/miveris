@@ -127,10 +127,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         title: "Cita agendada",
                     });
                 }else{
-                    console.log(datoReserva.data.linkVideoConsulta)
+                    var descripcionEvento = `Enviado desde Mi Veris.\nEspecialidad: ${capitalizarElemento(datoReserva.data.datosReserva.nombreEspecialidad)}\nDr(a): ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}\nFecha: ${datoReserva.data.datosReserva.fecha}\nHora: ${datoReserva.data.datosReserva.hora}\n\nLink para recibir atención: ${datoReserva.data.linkVideoConsulta}`;
                     await navigator.share({
                         title: "Cita virtual agendada",
-                        text: `Enviado desde Mi Veris.\nVideoconsulta de ${datoReserva.data.datosReserva.nombreEspecialidad}\nLink para recibir atención: ${datoReserva.data.linkVideoConsulta}`,
+                        text: descripcionEvento,
                         /*files: [
                             new File([dataURItoBlob(imagenBase64)], 'cita.png', { type: 'image/png' })
                         ],*/
