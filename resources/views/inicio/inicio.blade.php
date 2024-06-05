@@ -8,53 +8,6 @@ Mi Veris - Inicio
     // dd($tokenCita);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
-    <!-- Modal -->
-    <div class="modal modal-top fade" id="masOpcionesModal" tabindex="-1" aria-labelledby="masOpcionesModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
-            <form class="modal-content rounded-4">
-                {{-- <div class="modal-header">
-                    <button type="button" class="btn-close fw-medium bg-transparent me-2 top-50 end-0" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div> --}}
-                <div class="modal-body pt-3 px-3 pb-3">
-                    <h5 class="text-center fs--20 line-height-24 mb--32">{{ __('Más opciones') }}</h5>
-                    <div class="row gx-2 justify-content-between align-items-center">
-                        <div class="col-6 col-lg-6">
-                            <div class="card card-border">
-                                <a class="cursor-pointer data-popup-opciones btn-CambiarFechaCita" id="modificar-cita">
-                                    <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-6 col-md-6">
-                                            <div class="card-body p-0 ps-2">
-                                                <h6 class="fw-medium fs--2 mb-0">{{ __('Cambiar') }} <br> {{ __('fecha de la') }}<br> {{ __('cita') }}</h6>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-auto text-end cita-presencial">
-                                            <img src="{{ asset('assets/img/card/svg/cambiar_fecha_cita.svg') }}" class="img-fluid" alt="{{ __('Cambiar fecha de la cita') }}">
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-6 col-lg-6">
-                            <div class="card card-border">
-                                <a class="cursor-pointer data-popup-opciones btn-sesion" id="detalle-sesion">
-                                    <div class="row g-0 justify-content-between align-items-center">
-                                        <div class="col-6 col-md-6">
-                                            <div class="card-body p-0 ps-2">
-                                                <h6 class="fw-medium fs--2 mb-0">{{ __('Ver detalle') }}<br> {{ __('de la sesión') }}</h6>
-                                            </div>
-                                        </div>
-                                        <div class="col-6 col-md-auto text-end">
-                                            <img src="{{ asset('assets/img/card/svg/ver_detalle_sesion.svg') }}" class="img-fluid" alt="{{ __('Detalle Sesión') }}">
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Modal de error -->
     <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
