@@ -132,6 +132,8 @@ Mi Veris - Sesión - Detalle
                 dataCita.detalleSesion = data.data;
                 localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
             }else{
+                console.log(dataCita.sesion.detallesSesion)
+                dataCita.detalleSesion = {};
                 dataCita.detalleSesion.detallesPrestacion = dataCita.sesion.detallesSesion;
                 localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
             }
