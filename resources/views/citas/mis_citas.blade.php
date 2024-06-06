@@ -197,6 +197,7 @@ Mi Veris - Citas - Mis citas
         $('body').on('click', '.btn-opciones-sesion', function(){
             $('.data-popup-opciones').attr('data-rel', $(this).attr("data-rel"));
             $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/citas-elegir-central-medica/{{ $tokenCita }}");
+            $('.data-popup-opciones.btn-CambiarFechaCita').attr('convenio-rel', $(this).attr("convenio-rel"));
         });
 
         $('body').on('click', '.btn-sesion', async function(){
@@ -820,7 +821,7 @@ Mi Veris - Citas - Mis citas
         let url = $(this).attr('url-rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
         console.log('dataCitaa', data);
-        console.log(url)
+        console.log(convenio)
 
         if(data.permiteReserva == "N"){
             $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
