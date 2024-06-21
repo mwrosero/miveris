@@ -379,6 +379,7 @@ html:not([dir="rtl"]) .border-start-veris {
 .card-fecha-foctor {
   border-radius: 24px !important;
   background: #003B83 !important;
+  background: linear-gradient(to bottom, #003B83 70%, #f3f4f5 30%) !important;
 }
 
 .card-border {

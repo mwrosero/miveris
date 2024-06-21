@@ -71,8 +71,8 @@ Mi Veris - Citas - Selecciona tu tarjeta
                         </form>
                         <div class="row mt-3">
                             <div class="col-12">
-                                <div class="btn-master w-100 mx-auto">
-                                    <div id="btn-pagar" class="btn disabled text-white shadow-none">{{ __('Pagar') }}</div>
+                                <div class="btn-master w-100 mx-auto" id="btn-pagar" type="button">
+                                    <div class="btn disabled text-white shadow-none">{{ __('Pagar') }}</div>
                                     |
                                     <p class="btn text-white mb-0 shadow-none cursor-inherit" id="total"></p>
                                 </div>
