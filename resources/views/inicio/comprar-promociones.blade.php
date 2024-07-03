@@ -11,57 +11,57 @@ Mi Veris - Citas - Promociones
 @endphp
 {{-- Modal Categoria Promociones --}}
 <div class="modal fade" id="modalCategoriaPromociones" tabindex="-1" aria-labelledby="modalCategoriaPromociones" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-body text-center p-3 pb-0" id="lista-categorias">
-                    {{-- <h1 class="modal-title fs--20 line-height-24 my-3">Filtrar por</h1>
-                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
-                        <i class="fa-solid fa-person-dress fs--20 me-3"></i>
-                        <span class="fs--16 me-3">Mujeres</span>
-                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
-                    </div>
-                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
-                        <i class="fa-solid fa-person fs--20 me-3"></i>
-                        <span class="fs--16 me-3">Hombres</span>
-                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
-                    </div>
-                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
-                        <i class="fa-solid fa-child-reaching fs--20 me-3"></i>
-                        <span class="fs--16 me-3">Adolescentes</span>
-                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
-                    </div>
-                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
-                        <i class="fa-solid fa-baby fs--20 me-3"></i>
-                        <span class="fs--16 me-3">Niños</span>
-                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
-                    </div>
-                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
-                        <i class="fa-solid fa-person-cane fs--20 me-3"></i>
-                        <span class="fs--16 me-3">Adultos mayores</span>
-                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
-                    </div>
-                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
-                        <i class="fa-solid fa-display fs--20 me-3"></i>
-                        <span class="fs--16 me-3">Veris virtual</span>
-                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
-                    </div>
-                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
-                        <i class="fa-solid fa-tag fs--20 me-3"></i>
-                        <span class="fs--16 me-3">Promociones</span>
-                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
-                    </div>
-                    <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
-                        <i class="fa-solid fa-tooth fs--20 me-3"></i>
-                        <span class="fs--16 me-3">Odontológicos</span>
-                        <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
-                    </div> --}}
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3 pb-0" id="lista-categorias">
+                {{-- <h1 class="modal-title fs--20 line-height-24 my-3">Filtrar por</h1>
+                <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                    <i class="fa-solid fa-person-dress fs--20 me-3"></i>
+                    <span class="fs--16 me-3">Mujeres</span>
+                    <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
                 </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris btnAplicarFiltroCategorias fw-medium fs--18 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aplicar</button>
+                <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                    <i class="fa-solid fa-person fs--20 me-3"></i>
+                    <span class="fs--16 me-3">Hombres</span>
+                    <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
                 </div>
+                <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                    <i class="fa-solid fa-child-reaching fs--20 me-3"></i>
+                    <span class="fs--16 me-3">Adolescentes</span>
+                    <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                </div>
+                <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                    <i class="fa-solid fa-baby fs--20 me-3"></i>
+                    <span class="fs--16 me-3">Niños</span>
+                    <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                </div>
+                <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                    <i class="fa-solid fa-person-cane fs--20 me-3"></i>
+                    <span class="fs--16 me-3">Adultos mayores</span>
+                    <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                </div>
+                <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                    <i class="fa-solid fa-display fs--20 me-3"></i>
+                    <span class="fs--16 me-3">Veris virtual</span>
+                    <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                </div>
+                <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                    <i class="fa-solid fa-tag fs--20 me-3"></i>
+                    <span class="fs--16 me-3">Promociones</span>
+                    <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                </div>
+                <div class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                    <i class="fa-solid fa-tooth fs--20 me-3"></i>
+                    <span class="fs--16 me-3">Odontológicos</span>
+                    <i class="fa-solid fa-xmark btn-unselect ms-auto"></i>
+                </div> --}}
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris btnAplicarFiltroCategorias fw-medium fs--18 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aplicar</button>
             </div>
         </div>
     </div>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Comprar promociones') }}</h5>

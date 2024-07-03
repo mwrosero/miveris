@@ -53,6 +53,8 @@ class SeguridadesController extends Controller
     public function activarCuentaView(){
         if (Session::has('userDataTmp')) {
             return view('seguridades.activar_cuenta')
+                ->with('tipoIdentificacion',Session::get('userDataTmp')->codigoTipoIdentificacion)
+                ->with('numeroIdentificacion',Session::get('userDataTmp')->numeroIdentificacion)
                 ->with('mail',Session::get('userDataTmp')->mail);
         }else{
             return redirect('/login');
