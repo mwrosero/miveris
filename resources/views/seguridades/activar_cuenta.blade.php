@@ -10,6 +10,20 @@
 </div>
 <!-- /Logo -->
 {{-- <form id="formVerification" class="mb-3" action="/registrar" method="POST"> --}}
+<!-- Modal -->
+<div class="modal fade" id="modalAlertReenviar" tabindex="-1" aria-labelledby="modalAlertReenviarLabel">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
+                <p class="fs--1 fw-normal mb-0 text-veris" id="modalAlertMessageReenviar"></p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
 <form id="formVerification" class="mb-3" action="/activar-cuenta" method="POST">
     @csrf
     @if (session()->has('mensaje'))
@@ -39,10 +53,15 @@
 	            onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 && event.charCode <= 57"
 	            placeholder="Ingresa el código de activación"/>
 	    </div>
+	    <div class="mt-3 mb-2 text-center">
+	    	<span type="button" class="txt-veris fs-12 fw-bold btn-send">Reenviar código</span>
+	    </div>
 	    <button class="btn fs--18 fw-medium line-height-24 px-4 py-3 d-grid w-100 bg-alt rounded mt-5 mb-2 btn-confirmar" type="submit">Confirmar</button>
 	</section>
 </form>
 <script>
+	let tipoIdentificacion = {{ $tipoIdentificacion }};
+	let numeroIdentificacion = '{{ $numeroIdentificacion }}';
 	// Espera a que el DOM esté listo
 	document.addEventListener("DOMContentLoaded", async function () {
 		const form = document.getElementById("formVerification");
@@ -55,6 +74,18 @@
                 event.preventDefault(); // Evitar que el formulario se envíe si la validación falla
             }
         });
+
+        $('body').on('click','.btn-send',async function(){
+        	let data = await sendCodeAgain();
+        	console.log(data);
+            $('#modalAlertMessageReenviar').html(data.message);
+            $('#modalAlertReenviar').modal('show');
+        	/*if(data.code == 200){
+        		showMessage('success',data.message);
+        	}else{
+        		showMessage('error',data.message);
+        	}*/
+        })
 
         function validateForm(){
 			let errors = false;
@@ -77,7 +108,6 @@
             return !errors;
 		};
 	});
-
    
 </script>
 @endsection

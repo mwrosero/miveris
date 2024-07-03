@@ -425,6 +425,24 @@ async function confirmarCuenta(){
     return data;
 }
 
+async function sendCodeAgain(){
+    let args = [];
+    args["endpoint"] = api_url + `/${api_war}/v1/seguridad/reenviarCodigoActivacion`;
+    args["method"] = "POST";
+    args["showLoader"] = true;
+    args["bodyType"] = "json";
+    args["data"] = JSON.stringify({
+        "tipoIdentificacion": tipoIdentificacion,
+        "numeroIdentificacion": numeroIdentificacion,
+        "canalOrigenDigital": _canalOrigen
+    });
+    console.log(args["endpoint"]);
+    console.log(args["data"]);
+
+    const data = await call(args);
+    return data;
+}
+
 async function codigoReset(){
     let args = [];
     args["endpoint"] = api_url + `/${api_war}/v1/seguridad/codigoreset`;
