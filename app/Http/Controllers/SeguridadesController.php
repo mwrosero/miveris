@@ -82,7 +82,10 @@ class SeguridadesController extends Controller
         }else{
             $message = $response->message;
             session()->flash('alert', $message);
-            return view('seguridades.activar_cuenta');
+            return view('seguridades.activar_cuenta')
+                ->with('tipoIdentificacion',Session::get('userDataTmp')->codigoTipoIdentificacion)
+                ->with('numeroIdentificacion',Session::get('userDataTmp')->numeroIdentificacion)
+                ->with('mail',Session::get('userDataTmp')->mail);
         }
     }
 
