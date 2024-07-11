@@ -259,6 +259,128 @@ Mi Veris - Inicio
             $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/citas-elegir-central-medica/{{ $tokenCita }}");
         });
 
+        $('body').on('click', '.btn-opciones-cita', function(){
+            let datos = JSON.parse($(this).attr("data-rel"));
+            let url = `citas-elegir-central-medica`;
+            if(datos.esVirtual === "S"){
+                url = `citas-elegir-fecha-doctor`;
+            }
+
+            $('#modificar-cita-normal').removeClass('disabled-item');
+            if(datos.permiteCambiar === "N"){
+                $('#modificar-cita-normal').addClass('disabled-item');
+            }
+
+            /*$('#cambiar-modalidad').removeClass('disabled-item');
+            if(datos.habilitaCambioModalidad === "N" || datos.aplicaCambioModalidad === "N"){
+                $('#cambiar-modalidad').addClass('disabled-item');
+            }*/
+            $('#cambiar-modalidad').removeClass('disabled-item');
+            if(datos.esVirtual === "S" || datos.idTeleconsulta !== null){
+                $('#cambiar-modalidad').addClass('disabled-item');
+            }
+
+            $('.data-popup-opciones-cita').attr('data-rel', $(this).attr("data-rel"));
+            $('.data-popup-opciones-cita.btn-CambiarFechaCita').attr('url-rel', `/${url}/{{ $tokenCita }}`);
+        });
+
+        /*$('body').on('click', '.btn-cambio-modalidad', async function(){
+            let datosServicio = JSON.parse($(this).data('rel'));
+            let ruta = "/citas-revisa-tus-datos/{{ $tokenCita }}";
+            console.log(datosServicio);
+            console.log(ruta);
+            return;
+            if(datosServicio.habilitaCambioModalidad === "N" || datosServicio.aplicaCambioModalidad === "N"){
+                $('#mensajeNoPermiteCambiarModalidad').html(datosServicio.mensajeValidacion1);
+                $('#modalPermiteCambiarModalidad').modal('show');
+                return;
+            }else{
+                location.href = ruta;
+            }
+        })*/
+
+        $('body').on('click', '.btn-cambio-modalidad', async function(){
+            let datosServicio = $(this).data('rel');
+            let ruta = "/citas-revisa-tus-datos/{{ $tokenCita }}";
+
+            if(datosServicio.habilitaCambioModalidad === "N" || datosServicio.aplicaCambioModalidad === "N"){
+                $('#mensajeNoPermiteCambiarModalidad').html(datosServicio.mensajeValidacion1);
+                $('#modalPermiteCambiarModalidad').modal('show');
+                return;
+            }
+
+            let params = {}
+
+            if(datosServicio.permiteReserva == "N"){
+                $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
+
+            params.cambioModalidad = "S";
+            params.convenio = {
+                "secuenciaAfiliado": datosServicio.secuenciaAfiliado,
+                "idCliente": datosServicio.idCliente,
+                "codigoConvenio": datosServicio.codigoConvenio,
+                "codigoEmpresa": datosServicio.codigoEmpresa,
+                "permitePagoLab" : datosServicio.permitePagoLab,
+                "permitePago": datosServicio.permitePagoReserva,
+                "mensajeBloqueoPago" : datosServicio.mensajeBloqueoPago,
+                "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
+                "permiteReserva": datosServicio.permitePagoReserva,
+                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,  
+            }
+
+            params.online = datosServicio.esVirtual;
+
+            params.especialidad = {
+                codigoEspecialidad: datosServicio.idEspecialidad,
+                codigoPrestacion  : datosServicio.codigoPrestacion,
+                codigoServicio   : datosServicio.codigoServicio,
+                codigoTipoAtencion: datosServicio.codigoTipoAtencion,
+                esOnline : datosServicio.esVirtual,
+                nombre : datosServicio.especialidad,
+            }
+            params.paciente = {
+                "numeroIdentificacion": datosServicio.numeroIdentificacion,
+                "tipoIdentificacion": datosServicio.tipoIdentificacion,
+                "nombrePaciente": datosServicio.nombrePaciente,
+                "numeroPaciente": datosServicio.numeroPaciente
+            }
+
+            params.tratamiento = {
+                idPaciente: datosServicio.numeroPaciente,
+                origen: 'INICIO',
+            }
+
+            params.reservaEdit = {
+                "estaPagada": datosServicio.estaPagada,
+                "numeroOrden": datosServicio.numeroOrden,
+                "lineaDetalleOrden": datosServicio.lineaDetalleOrden,
+                "codigoEmpresaOrden": datosServicio.codigoEmpresaOrden,
+                "idOrdenAgendable": datosServicio.idOrdenAgendable,
+                "idCita": datosServicio.idCita
+            }
+
+            params.horario = {
+                "fechaReserva": datosServicio.fechaReserva,
+                "horaInicio": datosServicio.horaInicio,
+                "horaFin": datosServicio.horaFin,
+                "nombreMedico": datosServicio.medico
+            }
+
+            // params.sesion = {
+            //     secuenciaPlanTto: datosServicio.secuenciaPlanTto,
+            //     numeroSesion: datosServicio.numeroSesion
+            // }
+
+            params.origen = "INICIO";
+            params.convenio.origen = "INICIO";
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location = ruta;
+        });
+
         $('body').on('click', '.btn-sesion', async function(){
             let datosServicio = $(this).data('rel');
             let ruta = "/detalle-sesion/{{ $tokenCita }}";
@@ -408,6 +530,11 @@ Mi Veris - Inicio
                     "codigoConvenio": null,
                     "secuenciaAfiliado" : null,
                 };
+            }
+            params.horario = {
+                "dia2": datosServicio.fechaReserva,
+                "horaInicio": datosServicio.horaInicio,
+                "horaFin": datosServicio.horaFin,
             }
             params.paciente = paciente.data
             params.ordenExterna = data;
@@ -608,7 +735,7 @@ Mi Veris - Inicio
                 if((data.data.estadoPoliticas == "N") && (data.data.isPoliticasAceptadas == null || data.data.isPoliticasAceptadas == false)){
                     localStorage.setItem('politicasAbiertas', true);
                     $('#modalPPD').modal('show');
-                    // $('#politicasPPD').attr('href',politicas.linkPoliticaPrivacidad);
+                    $('#politicasPPD').attr('href',data.data.linkPoliticaPrivacidad);
                 }
                 else {
                     // localStorage.setItem('estadoPoliticas', data.data.estadoPoliticas);
@@ -917,7 +1044,7 @@ Mi Veris - Inicio
                                 <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
                             ` : ''}
                             <div class="mt-auto">
-                                ${(citas.permiteCambiar == "S" && citas.esSesionOdonto != "S") ? `<div url-rel="${ruta}" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(citas)}'>${citas.nombreBotonCambiar}</div>
+                                ${(citas.permiteCambiar == "S" && citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModalCitas" class="${(citas.estaPagada === "S" && citas.esVirtual === "N" && citas.idTeleconsulta === null) ? `btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16`: `btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none`} btn-opciones-cita" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
                                 ` : (citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
                                         <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
                                     </div>` : ( citas.estaPagada == "S" ) ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>` : `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
@@ -928,7 +1055,7 @@ Mi Veris - Inicio
                                 <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                 ` : ''}
                             </div>
-                            ${esConsultaOnline && citas.estaPagada == "S" ? `
+                            ${(esConsultaOnline || citas.idTeleconsulta !== null) && citas.estaPagada == "S" ? `
                                 <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
                             ` : ''}
                         </div>
@@ -1050,6 +1177,7 @@ Mi Veris - Inicio
         let data = $(this).data('rel');
         console.log('datasss', data);
         let url = $(this).attr('url-rel');
+        console.log(url);
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
         if(data.permiteReserva == "N"){

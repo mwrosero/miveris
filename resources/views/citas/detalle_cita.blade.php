@@ -52,7 +52,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h5 class="text-veris-many fw-medium line-height-16 m-0">{{ __('Precio') }} </h5>
                     </div>
                     <div class="card-body py-2 px-0">
-                        <div class="row gx-0 justify-content-center align-items-center box-precio">
+                        <div class="row gx-0 justify-content-center align-items-center box-precio pt-1 pb-1">
                         </div>
                     </div>
                     {{-- <div class="card-footer d-flex justify-content-between border-top p--2" id="contentLinkPago">
@@ -111,15 +111,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let codigoEspecialidad = dataCita.especialidad.codigoEspecialidad;
     let secuenciaAfiliado = dataCita.convenio.secuenciaAfiliado || '' ;
     let codigoConvenio = dataCita.convenio.codigoConvenio || '';
-    let idIntervalo = dataCita.horario.idIntervalo;
-    let porcentajeDescuentos = dataCita.horario.porcentajeDescuento;
+    //let idIntervalo = dataCita.horario.idIntervalo || '';
+    //let porcentajeDescuentos = dataCita.horario.porcentajeDescuento;
     let medPayPlan = dataCita.convenio.informacionExternaPlan;
     
     let permiteReserva = dataCita.convenio.permiteReserva;
-    let dia2 = dataCita.horario.dia2;
+    // let dia2 = dataCita.horario.dia2;
     let idCliente = dataCita.convenio.idCliente;
     let rutaImagenConvenio = dataCita.convenio.rutaImagenConvenio;
-    let horaInicio = dataCita.horario.horaInicio;
+    // let horaInicio = dataCita.horario.horaInicio;
 
     let permitePago = "S";
     if(dataCita.convenio.permitePago){
@@ -130,11 +130,22 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.reserva){
             await eliminarReserva();
         }
-        await obtenerPrecio();
-        llenarDataDetallesCitas();
+        if(dataCita.reservaEdit && dataCita.reservaEdit.estaPagada === "S"){
+            let elem = `<p class="text-primary-veris fs--16 line-height-20 fw-medium mb-1 text-center">Servicio pagado<i class="fa-solid fa-circle-check text-success ms-2"></i></p>`;
+            $('.box-precio').html(elem);
+            $('#btn-pagar').html("Continuar").removeClass('d-none');
+        }else{
+            await obtenerPrecio();
+        }
 
-        $('body').on('click', '#btn-pagar', function () {
-            reservarCita();
+        await llenarDataDetallesCitas();
+
+        $('body').on('click', '#btn-pagar', async function () {
+            if(dataCita.cambioModalidad && dataCita.cambioModalidad === "S"){
+                await cambiarModalidadCita();
+            }else{
+                reservarCita();
+            }
         });
     });
 
@@ -157,10 +168,26 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     // llenar los datos en contentDetalleCita con los datos de dataCita
-    function llenarDataDetallesCitas(){
+    async function llenarDataDetallesCitas(){
+        let sucursal;
+        let dia;
+        let horaInicio;
+        let horaFin;
+        if(dataCita.cambioModalidad && dataCita.cambioModalidad === "S"){
+            //let datosAgenda = await obtenerDatosReserva(dataCita.reservaEdit.idCita);
+            sucursal = `Veris - Virtual`;
+            dia = dataCita.horario.fechaReserva;
+            horaInicio = dataCita.horario.horaInicio;
+            horaFin = dataCita.horario.horaFin;
+        }else{
+            sucursal = dataCita.central.nombreSucursal;
+            dia = dataCita.horario.dia;
+            horaInicio = dataCita.horario.horaInicio;
+            horaFin = dataCita.horario.horaFin;
+        }
         let elem = `<p class="text-primary-veris fs--16 line-height-20 fw-medium mb-1"  id="nombreEspecialidad">${capitalizarCadaPalabra(nombreEspecialidad)}</p>`;
         if(dataCita.online == "N"){    
-            elem += `<p class="fw-medium fs--1 line-height-16 mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}</p>`;
+            elem += `<p class="fw-medium fs--1 line-height-16 mb-1">${capitalizarCadaPalabra(sucursal)}</p>`;
         }
         let nombrePaciente;
         if(dataCita.paciente.nombrePaciente){
@@ -168,7 +195,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }else{
             nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
         }
-        elem += `<p class="fs--2 line-height-16 mb-1">${capitalizarElemento(dataCita.horario.dia)} <b class="text-normal text-primary-veris fw-normal">${dataCita.horario.horaInicio} - ${dataCita.horario.horaFin} ${determinarMeridiano(horaInicio)}</b></p>
+        elem += `<p class="fs--2 line-height-16 mb-1">${capitalizarElemento(dia)} <b class="text-normal text-primary-veris fw-normal">${horaInicio} - ${horaFin} ${determinarMeridiano(horaInicio)}</b></p>
             <p class="fs--2 line-height-16 mb-1 text-capitalize">Dr(a) ${dataCita.horario.nombreMedico.toLowerCase()}</p>
             <p class="fs--2 line-height-16 mb-1 text-capitalize">${nombrePaciente.toLowerCase()}</p>`;
         if(dataCita.convenio.codigoConvenio){
@@ -247,7 +274,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["bodyType"] = "json";
         args["showLoader"] = true;
         args["data"] = JSON.stringify({
-            "fechaSeleccionada": dia2,
+            "fechaSeleccionada": dataCita.horario.dia2,
             "idCliente": idCliente,
             "estaPagada": (dataCita.reservaEdit) ? dataCita.reservaEdit.estaPagada : 'N',
             "esEmbarazada": (dataCita.estaEmbarazada) ? dataCita.estaEmbarazada : "N",
@@ -304,14 +331,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             let elemMsg = ``;
 
-            if(porcentajeDescuentos == 0 && permiteReserva == "S" && permitePago == "S" ){
+            if(dataCita.horario.porcentajeDescuento == 0 && permiteReserva == "S" && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                         <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
                         <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Puedes <b class="fw-medium text-veris">reagendar</b> tu cita las veces que necesites.</p>
                     </div>`;
             }
             //Una vez agendada la cita, no podrás cambiarla, ni solicitar su devolución debido a este descuento.
-            if(porcentajeDescuentos > 0 && permitePago == "S" ){
+            if(dataCita.horario.porcentajeDescuento > 0 && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                         <i class="fa-solid fa-circle-info text-warning fs-2 p-2 me-2"></i>
                         <p class="fs--1 line-height-16 mb-0" id="infoMessage style="color: #0A2240;">${data.data.mensajeAlerta}</p>
@@ -366,6 +393,24 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }
         return data;
+    }
+
+    async function cambiarModalidadCita(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/cambiarModalidadCita`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        let datosReserva = {
+            "codigoReserva": dataCita.reservaEdit.idCita,
+            "canalOrigen": _canalOrigen
+        }
+        args["data"] = JSON.stringify(datosReserva);
+        const data = await call(args);
+
+        if (data.code == 200){
+            location.href = '/cita-agendada/{{ $params }}';
+        }
     }
 
     async function reservarCita(){

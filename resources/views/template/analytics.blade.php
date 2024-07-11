@@ -15,3 +15,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-TDRKKB4W');</script>
 <!-- End Google Tag Manager -->
 
+<script src="https://unpkg.com/@amplitude/experiment-js-client@1.9.0/dist/experiment.umd.js"></script>
+<script>
+    // TODO: Replace DEPLOYMENT_KEY with your own deployment key.
+    // If you're using a 3rd party for analytics, configure an exposure
+    // tracking provider.
+    window.experiment = Experiment.Experiment.initializeWithAmplitudeAnalytics(
+        '{{ \App\Models\Veris::AMPLITUDE }}'
+    );
+</script>

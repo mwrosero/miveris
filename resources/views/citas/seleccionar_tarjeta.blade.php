@@ -100,7 +100,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
         await cargarListaTarjetas();
 
         $('body').on('change', 'input[name="cardWallet"]', function() {
-            $('#btn-pagar').removeClass('disabled');
+            $('#btn-pagar div').removeClass('disabled');
             let dataCard = JSON.parse($(this).attr('data-rel'))
             dataCita.tarjeta = dataCard;
         });

@@ -1589,6 +1589,14 @@ a.btn.btn-primary-veris:not([href]):hover {
   color: #0A2240;
 }
 
+.disabled-item{
+  pointer-events: none;
+}
+
+.disabled-item > * {
+  opacity: 0.35;
+}
+
 /* X-Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
   .border-lg-end {

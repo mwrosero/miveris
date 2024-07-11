@@ -863,3 +863,13 @@ async function obtenerPreparacionPrevia(codigoSolicitud){
         $('#modalPreparacionPrevia').modal("show")
     }
 }
+
+async function obtenerDatosReserva(codigoReserva){
+    let args = [];
+    args["endpoint"] = api_url + `/${api_war}/v1/agenda/reserva/${codigoReserva}?canalOrigen=${_canalOrigen}`;
+    
+    args["method"] = "GET";
+    args["showLoader"] = true;
+    const data = await call(args);
+    return data;
+}
