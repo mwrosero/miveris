@@ -64,18 +64,14 @@
             const api_url = "{{ \App\Models\Veris::BASE_URL }}";
             const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
         </script>
-        <script type="text/javascript">
-            (function(c,l,a,r,i,t,y){
-                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "lenv2pcdwb");
-        </script>
+        
+        @include('template.analytics')
     </head>
 
     <body class="bg-fondo">
         <!-- Content -->
         @yield('back-button')
+        
         <div class="container-xxl">
             <div class="authentication-wrapper authentication-basic">
                 <div class="authentication-inner">
