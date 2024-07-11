@@ -25,6 +25,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
                             </div> --}}
                         </div>
+                        
+                        {{-- Cita cambio modalidad --}}
+                        <div class="content-cambio-modalidad d-none">
+                            <div class="avatar avatar-lg mx-auto mb-4">
+                                <img src="{{asset('assets/img/svg/visto.svg')}}" alt="cita agendada">
+                            </div>
+                            <h3 class="fs--28 line-height-36 fw-medium mb-4">Éxito </h3>
+                            <p class="fs--16 line-height-20 mb-3"><b>Tu cita será</b> virtual.<br>Recuerda conectarte <b>10 minutos antes <br>de la cita.</b></p>
+                            <img src="{{ asset('assets/img/veris/cambio_modalidad_exitoso.svg') }}" alt="Cita cambiada a Virtual">
+                            <div class="mt-3">
+                                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
+                            </div>
+                        </div>
                         <!-- cita agendada online -->
                         <div class="content-online d-none">
                             <div class="avatar avatar-lg mx-auto mb-4">
@@ -160,7 +173,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 $('.content-online').html(card).removeClass('d-none');
             }else{
                 let card = await drawCardAgenda();
-                $('.content-presencial').html(card).removeClass('d-none');
+                if(dataCita.cambioModalidad && dataCita.cambioModalidad === "S"){
+                    $('.content-cambio-modalidad').removeClass('d-none');
+                }else{
+                    $('.content-presencial').html(card).removeClass('d-none');
+                }
             }
         }else{
             if(dataCita.paquete){
@@ -173,7 +190,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                     $('.content-lab-presencial').removeClass('d-none');
                 }else{
                     let card = await drawCardAgenda();
-                    $('.content-presencial').html(card).removeClass('d-none');
+                    if(dataCita.cambioModalidad && dataCita.cambioModalidad === "S"){
+                        $('.content-cambio-modalidad').removeClass('d-none');
+                    }else{
+                        $('.content-presencial').html(card).removeClass('d-none');
+                    }
                 }
             }else if(dataCita.ordenExterna){
                 if(dataCita.ordenExterna.aplicoDomicilio == "N"){
@@ -209,16 +230,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         // Combinar fecha y hora en el formato deseado
         var fechaHoraFormateada = diaFormateado + "T" + horaFormateada;
         return fechaHoraFormateada.toString();
-    }
-
-    async function obtenerDatosReserva(codigoReserva){
-        let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reserva/${codigoReserva}?canalOrigen=${_canalOrigen}`;
-        
-        args["method"] = "GET";
-        args["showLoader"] = true;
-        const data = await call(args);
-        return data;
     }
 
     function toGoogleCalendarFormat(date) {
