@@ -192,7 +192,7 @@
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="col-6 col-lg-6">
                             <div class="card card-border">
-                                <a class="cursor-pointer data-popup-opciones-cita btn-CambiarFechaCita" id="modificar-cita-normal">
+                                <a class="cursor-pointer data-popup-opciones-cita btn-CambiarFechaCita" id="modificar-cita-normal" data-bs-dismiss="modal">
                                     <div class="row g-0 justify-content-between align-items-center">
                                         <div class="col-6 col-md-6">
                                             <div class="card-body p-0 ps-2">

@@ -130,10 +130,22 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.reserva){
             await eliminarReserva();
         }
-        if(dataCita.reservaEdit && dataCita.reservaEdit.estaPagada === "S"){
+        if(dataCita.reservaEdit && dataCita.reservaEdit.estaPagada === "S" && dataCita.cambioModalidad && dataCita.cambioModalidad === "S"){
             let elem = `<p class="text-primary-veris fs--16 line-height-20 fw-medium mb-1 text-center">Servicio pagado<i class="fa-solid fa-circle-check text-success ms-2"></i></p>`;
             $('.box-precio').html(elem);
             $('#btn-pagar').html("Continuar").removeClass('d-none');
+
+            let elemMsg = ``;
+            elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2 mb-3">
+                <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
+                <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Estás modificando el canal de atención, si realizas el cambio <b class="fw-medium text-veris">tu atención será virtual.</b></p>
+            </div>`;
+            elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
+                <i class="fa-solid fa-circle-info text-warning fs-2 p-2 me-2"></i>
+                <p class="fs--1 line-height-16 mb-0" id="infoMessage style="color: #0A2240;">Esta acción no puede deshacerse</p>
+            </div>`;
+            $('#msg-cita').append(elemMsg);
+
         }else{
             await obtenerPrecio();
         }
@@ -360,7 +372,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         </div>`;
                 }
             }
-            $('#msg-cita').append(elemMsg)
+            $('#msg-cita').append(elemMsg);
             
             dataCita.precio = data.data;
             //let urlParams = btoa(JSON.stringify(params));
