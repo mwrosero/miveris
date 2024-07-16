@@ -168,7 +168,7 @@
         </div>
     </div>
 
-    <!-- Modal Permite Cambio -->
+    <!-- Modal Cambio Modalidad Error -->
     <div class="modal fade" id="modalPermiteCambiarModalidad" tabindex="-1" aria-labelledby="modalPermiteCambiarModalidadLabel" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
