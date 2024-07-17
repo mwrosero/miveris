@@ -32,7 +32,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <img src="{{asset('assets/img/svg/visto.svg')}}" alt="cita agendada">
                             </div>
                             <h3 class="fs--28 line-height-36 fw-medium mb-4">Éxito </h3>
-                            <p class="fs--16 line-height-20 mb-3"><b>Tu cita será</b> virtual.<br>Recuerda conectarte <b>10 minutos antes <br>de la cita.</b></p>
+                            <p class="fs--16 line-height-20 mb-3">Tu cita será <b>virtual</b>.<br>Recuerda conectarte <b>10 minutos antes <br>de la cita.</b></p>
                             <img src="{{ asset('assets/img/veris/cambio_modalidad_exitoso.svg') }}" alt="Cita cambiada a Virtual">
                             <div class="mt-3">
                                 <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
@@ -245,7 +245,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function sincronizarCalendario(){
         // Variables del evento
         let urlVirtual = ``;
-        var tituloEvento = (dataCita.online == "N") ? "Cita agendada" : "Cita virtual agendada";
+        var tituloEvento = "Veris | ";
+        tituloEvento += (dataCita.online == "N") ? "Cita " : "Videoconsulta ";
+        tituloEvento += dataCita.especialidad.nombre.toLowerCase();
         var descripcionEvento = `Especialidad: ${capitalizarElemento(dataCita.especialidad.nombre)}\nDr(a): ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}\n`;
         if(dataCita.online == "N"){
             descripcionEvento += `Central: ${capitalizarElemento(datoReserva.data.datosReserva.nombreSucursal)}\n`
