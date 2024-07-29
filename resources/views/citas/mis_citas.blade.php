@@ -600,7 +600,7 @@ Mi Veris - Citas - Mis citas
                             <div class="card">
                                 <div class="card-body p--2">
                                     ${esConsultaOnline ? `
-                                        <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
+                                        <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Videoconsulta</span>
                                     ` : ''}
                                     <div class="d-flex justify-content-between align-items-center">
                                         <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
@@ -659,7 +659,7 @@ Mi Veris - Citas - Mis citas
                                 <div class="card">
                                     <div class="card-body p--2">
                                         ${esConsultaOnline ? `
-                                            <span class="badge bg-label-primary text-primary-veris fs--1 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Consulta online</span>
+                                            <span class="badge bg-label-primary text-primary-veris fs--1 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Videoconsulta</span>
                                         ` : ''}
                                         <div class="d-flex justify-content-between align-items-center">
                                             <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${capitalizarElemento(citas.especialidad)}</h6>

@@ -2,16 +2,16 @@ const _canalOrigen = "MVE_CMV";
 const _plataforma = "WEB";
 const _version = "7.8.0";
 const _langDate = {
-            firstDayOfWeek: 1,
-            weekdays: {
-                shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-                longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
-            }, 
-            months: {
-                shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
-                longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            }
-        }
+    firstDayOfWeek: 1,
+    weekdays: {
+        shorthand: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+        longhand: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],         
+    }, 
+    months: {
+        shorthand: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Оct', 'Nov', 'Dic'],
+        longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    }
+}
 async function call(args){
     if(args.showLoader || args.showLoader == true){
         showLoader();
@@ -872,4 +872,27 @@ async function obtenerDatosReserva(codigoReserva){
     args["showLoader"] = true;
     const data = await call(args);
     return data;
+}
+
+function capitalizarElemento(elemento) {
+    try {
+        
+        if (!elemento) return "";
+        const texto = elemento.trim().toLowerCase();
+        
+        const palabras = texto.split(/\s+/);
+
+        for (let i = 0; i < palabras.length; i++) {
+            const palabra = palabras[i];
+            const primeraLetraMayuscula = palabra.charAt(0).toUpperCase();
+            palabras[i] = primeraLetraMayuscula + palabra.substring(1);
+            
+        }
+
+        const textoCapitalizado = palabras.join(" ");
+        return textoCapitalizado;
+    } catch (error) {
+        console.error("Error en capitalizarElemento:", error); // Log de errores
+        return elemento;
+    }
 }

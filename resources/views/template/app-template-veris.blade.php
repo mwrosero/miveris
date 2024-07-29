@@ -475,29 +475,6 @@
     <!-- Funciones de ayuda -->
     <script>
         // capializar la primera letra de cada palabra
-        function capitalizarElemento(elemento) {
-            try {
-                
-                if (!elemento) return "";
-                const texto = elemento.trim().toLowerCase();
-                
-                const palabras = texto.split(/\s+/);
-
-                for (let i = 0; i < palabras.length; i++) {
-                    const palabra = palabras[i];
-                    const primeraLetraMayuscula = palabra.charAt(0).toUpperCase();
-                    palabras[i] = primeraLetraMayuscula + palabra.substring(1);
-                    
-                }
-
-                const textoCapitalizado = palabras.join(" ");
-                return textoCapitalizado;
-            } catch (error) {
-                console.error("Error en capitalizarElemento:", error); // Log de errores
-                return elemento;
-            }
-        }
-
         function updateNavigation() {
             var totalSlides = swiperProximasCitas.slides.length - 2 * swiperProximasCitas.params.slidesPerView; // Eliminar duplicados en el bucle infinito
             if (totalSlides <= swiperProximasCitas.params.slidesPerView) {
@@ -568,24 +545,7 @@
             $("#fechaDesde").attr("autocomplete", "off");
             $("#fechaHasta").attr("autocomplete", "off");
         }
-
-
-
-        
-
     </script>
-
-
-
-    
-
-
-
-
-
-    
-
-    
     @stack('scripts')
 </body>
 

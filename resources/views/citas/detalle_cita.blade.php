@@ -192,7 +192,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             horaInicio = dataCita.horario.horaInicio;
             horaFin = dataCita.horario.horaFin;
         }else{
-            sucursal = dataCita.central.nombreSucursal;
+            if(dataCita.online == "S"){
+                sucursal = dataCita.horario.nombreSucursal;
+            }else{
+                sucursal = dataCita.central.nombreSucursal;
+            }
             dia = dataCita.horario.dia;
             horaInicio = dataCita.horario.horaInicio;
             horaFin = dataCita.horario.horaFin;
