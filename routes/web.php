@@ -11,6 +11,7 @@ use App\Http\Controllers\FamiliaAmigosController;
 use App\Http\Controllers\DoctoresFavoritosController;
 use App\Http\Controllers\HistoriaClinicaController; 
 use App\Http\Controllers\ExperienciaController;
+use App\Http\Controllers\ExternalController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,6 +40,13 @@ Route::middleware('guest')->group(function () {
     Route::get('/reestablecer-clave/{params}', [SeguridadesController::class, 'reestablecerClave'])->name('reestablecer_clave')->withoutMiddleware(['loggedUser']);
     
     Route::post('/actualizar-clave', [SeguridadesController::class, 'actualizarClave'])->name('actualizar_clave.update')->withoutMiddleware(['loggedUser']);
+
+    /*Externo*/
+    Route::prefix('external')->group(function () {
+        Route::get('/citas', [ExternalController::class, 'agendamientoCitas'])->name('embudo-agendamiento')->withoutMiddleware(['guest']);
+        Route::get('/paquetes-promocionales', [ExternalController::class, 'listadoPaquetes'])->name('listado-paquetes')->withoutMiddleware(['guest']);
+
+    });
 
 });
 

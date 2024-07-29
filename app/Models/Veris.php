@@ -20,6 +20,7 @@ class Veris extends Model
     public const ENVIRONMENT_NUVEI = "stg";
     public const TEST_ENVIRONMENT_KUSHKI = true;
     public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
+    public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
 
     //PROD
     // public const BASE_URL = 'https://api.phantomx.com.ec';
@@ -31,6 +32,7 @@ class Veris extends Model
     // public const ENVIRONMENT_NUVEI = "prod";
     // public const TEST_ENVIRONMENT_KUSHKI = false;
     // public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
+    // public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
 
     static function call(Array $config)
     {
@@ -85,7 +87,7 @@ class Veris extends Model
             curl_setopt($ch, CURLOPT_USERPWD, $config['username'].":".$config['password']);
         }
 
-        // dump($header);
+        // dd($header);
         
         // API CALL
         try{
@@ -152,6 +154,48 @@ class Veris extends Model
         $result = curl_exec($curl);*/
 
         session(['accessToken' => $result->accesToken]);
+        return $result->accesToken;
+    }
+
+    static function getTokenDigitales()
+    {
+        $token = session('accessTokenDigitales', null);
+
+        if( $token !== null ){
+            return $token;
+        }
+
+        $username = '';
+        $password = '';
+        $method = '/v1/seguridad/login?canalOrigen=MVE_CMV';
+        //dump(self::BASE_URL.$method);
+        $result = self::call([
+            'endpoint' => self::BASE_URL.$method,
+            'method'   => 'POST',
+            'username' => $username,
+            'password' => $password
+        ]);
+        /*dump(self::BASE_URL.$method);
+        dd($result);*/
+        /*$curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => self::BASE_URL.$method,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_HTTPHEADER => array(
+            'Authorization: Basic d3N3ZWJhdXJvcmE6bjNVRTYwQHMzUnYxYzEwQFczYkF1UjByYQ=='
+          ),
+        ));
+
+        $result = curl_exec($curl);*/
+
+        session(['accessTokenDigitales' => $result->accesToken]);
         return $result->accesToken;
     }
 
