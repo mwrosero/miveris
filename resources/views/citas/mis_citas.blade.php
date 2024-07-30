@@ -658,7 +658,7 @@ Mi Veris - Citas - Mis citas
                             <div class="col-12 col-md-6">
                                 <div class="card">
                                     <div class="card-body p--2">
-                                        ${esConsultaOnline ? `
+                                        ${esConsultaOnline || citas.idTeleconsulta !== null ? `
                                             <span class="badge bg-label-primary text-primary-veris fs--1 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Videoconsulta</span>
                                         ` : ''}
                                         <div class="d-flex justify-content-between align-items-center">
