@@ -1027,7 +1027,7 @@ Mi Veris - Inicio
                 elemento += `<div class="swiper-slide">
                     <div class="card h-100">
                         <div class="card-body p--2">
-                            ${esConsultaOnline ? `
+                            ${(esConsultaOnline || citas.idTeleconsulta !== null) ? `
                                 <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Videoconsulta</span>
                             ` : ''}
                             <div class="d-flex justify-content-between align-items-center">

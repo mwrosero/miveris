@@ -90,7 +90,7 @@
                     <!-- Content wrapper -->
                     <div class="content-wrapper">
                         <!-- Content -->
-                        <div class="container-xxl flex-grow-1 m-0 p-0">
+                        <div class="container-fluid flex-grow-1 m-0 p-0">
                             @yield('content')
                         </div>
                         <!-- / Content -->
