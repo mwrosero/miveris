@@ -275,7 +275,15 @@
     // funciones js
     // salir de la sesion
     $('#logout').click(function(){
-        localStorage.clear();
+        // localStorage.clear();
+        for (let i = 0; i < localStorage.length; i++) {
+            let key = localStorage.key(i);
+            if (key.startsWith('cita-')) {
+                localStorage.removeItem(key);
+                i--; // Ajustar el índice después de eliminar un elemento
+            }
+        }
+
         window.location.href = "{{ route('logout') }}";
     });
 

@@ -11,28 +11,28 @@ class Veris extends Model
 {
     use HasFactory;
     //DEV
-    public const BASE_URL = 'https://api-phantomx.veris.com.ec';
-    public const BASE_WAR = 'digitalestest';
-    public const CANAL_ORIGEN = 'MVE_CMV';
-    public const APPLICATION = 'UEhBTlRPTVhfRU1QUkVTQVJJQUw=';
-    public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
-    public const KUSHKI_MERCHANT_ID = '10000003012872942409151942277385';
-    public const ENVIRONMENT_NUVEI = "stg";
-    public const TEST_ENVIRONMENT_KUSHKI = true;
-    public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
-    public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
-
-    //PROD
-    // public const BASE_URL = 'https://api.phantomx.com.ec';
-    // public const BASE_WAR = 'digitales';
+    // public const BASE_URL = 'https://api-phantomx.veris.com.ec';
+    // public const BASE_WAR = 'digitalestest';
     // public const CANAL_ORIGEN = 'MVE_CMV';
-    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
+    // public const APPLICATION = 'UEhBTlRPTVhfRU1QUkVTQVJJQUw=';
     // public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
-    // public const KUSHKI_MERCHANT_ID = '1012311620855990918315314280226';
-    // public const ENVIRONMENT_NUVEI = "prod";
-    // public const TEST_ENVIRONMENT_KUSHKI = false;
+    // public const KUSHKI_MERCHANT_ID = '10000003012872942409151942277385';
+    // public const ENVIRONMENT_NUVEI = "stg";
+    // public const TEST_ENVIRONMENT_KUSHKI = true;
     // public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
     // public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
+
+    //PROD
+    public const BASE_URL = 'https://api.phantomx.com.ec';
+    public const BASE_WAR = 'digitales';
+    public const CANAL_ORIGEN = 'MVE_CMV';
+    public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
+    public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
+    public const KUSHKI_MERCHANT_ID = '1012311620855990918315314280226';
+    public const ENVIRONMENT_NUVEI = "prod";
+    public const TEST_ENVIRONMENT_KUSHKI = false;
+    public const AMPLITUDE = "93127ac840f734cdcc8bf469f8bc95d5";
+    public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
 
     static function call(Array $config)
     {

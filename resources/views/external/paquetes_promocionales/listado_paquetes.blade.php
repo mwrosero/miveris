@@ -140,11 +140,11 @@ Mi Veris - Planes Promociones
         // });
 
         $('body').on('click','.btn-comprar', function(){
-            let url = '/promocion/detalle/';
+            let url = '/external/paquetes-promocionales/detalle/';
             let data = {
                 "paquete": JSON.parse($(this).attr("data-rel"))
             };
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
+            localStorage.setItem('external-cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
         })
 
