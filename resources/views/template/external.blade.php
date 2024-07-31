@@ -60,7 +60,6 @@
         <script src="../../../assets/js/config.js"></script>
         {{-- <script src="../../../assets/vendor/libs/jquery/jquery.js"></script> --}}
         <script>
-            localStorage.clear();
             const api_url = "{{ \App\Models\Veris::BASE_URL }}";
             const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
             window.config = {

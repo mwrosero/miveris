@@ -60,7 +60,14 @@
         <script src="../../../assets/js/config.js"></script>
         {{-- <script src="../../../assets/vendor/libs/jquery/jquery.js"></script> --}}
         <script>
-            localStorage.clear();
+            //localStorage.clear();
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (key.startsWith('cita-')) {
+                    localStorage.removeItem(key);
+                    i--; // Ajustar el índice después de eliminar un elemento
+                }
+            }
             const api_url = "{{ \App\Models\Veris::BASE_URL }}";
             const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
         </script>

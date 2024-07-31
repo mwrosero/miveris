@@ -45,6 +45,8 @@ Route::middleware('guest')->group(function () {
     Route::prefix('external')->group(function () {
         Route::get('/citas', [ExternalController::class, 'agendamientoCitas'])->name('embudo-agendamiento')->withoutMiddleware(['guest']);
         Route::get('/paquetes-promocionales', [ExternalController::class, 'listadoPaquetes'])->name('listado-paquetes')->withoutMiddleware(['guest']);
+        Route::get('/paquetes-promocionales/detalle/{params}', [ExternalController::class, 'detallePaquete'])->name('detalle-paquete')->withoutMiddleware(['guest']);
+        Route::get('/paquetes-promocionales/asignar/{params}', [ExternalController::class, 'asignarPaquete'])->name('asignar-paquete')->withoutMiddleware(['guest']);
 
     });
 

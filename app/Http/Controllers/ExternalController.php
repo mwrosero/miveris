@@ -15,9 +15,22 @@ class ExternalController extends Controller
         return view('external.embudo_agendamiento.index_agendamiento')
             ->with('accesToken',$this->getTokenExternalDigitales());
     }
+
     public function listadoPaquetes(){
         return view('external.paquetes_promocionales.listado_paquetes')
             ->with('accesToken',$this->getTokenExternalDigitales());
+    }
+
+    public function detallePaquete($params){
+        return view('external.paquetes_promocionales.detalle_paquete')
+            ->with('accesToken',$this->getTokenExternalDigitales())
+            ->with('params',$params);
+    }
+
+    public function asignarPaquete($params){
+        return view('external.paquetes_promocionales.asignar_paquete')
+            ->with('accesToken',$this->getTokenExternalDigitales())
+            ->with('params',$params);
     }
 
     public function getTokenExternalDigitales(){
