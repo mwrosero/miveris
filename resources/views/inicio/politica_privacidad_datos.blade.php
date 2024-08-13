@@ -420,7 +420,7 @@ Mi Veris - Politica-privacidad-datos
             "segundoNombre": $('#segundoNombre').val(),
             "primerApellido": $('#prmerApellido').val(),
             "segundoApellido": $('#segundoApellido').val(),
-            "fechaNacimiento": "12/12/1990", // obtenerFechaNacimiento($('#fechaNacimiento').val()),
+            "fechaNacimiento": $('#fechaNacimiento').val(),
             "telefono": $('#telefono').val(),
             "mail": $('#correoElctronico').val(),
             "direccion": $('#direccion').val(),

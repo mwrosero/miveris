@@ -56,6 +56,7 @@ async function call(args){
             }
             return data;
         }).catch(function(error) {
+            console.log("catch error call")
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
             }

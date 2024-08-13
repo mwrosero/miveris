@@ -61,7 +61,7 @@ Mi Veris - Detalle Promoción
         // }
 
         $('body').on('click', '.btn-asignar', function(){
-            let url = '/external/paquetes-promocionales/asignar/'
+            let url = '/external/planes-promocionales/asignar/'
             localStorage.setItem('external-cita-{{ $params }}', JSON.stringify(dataCita));
             location.href = url + "{{ $params }}";
         })

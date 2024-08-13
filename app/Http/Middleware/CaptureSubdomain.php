@@ -22,8 +22,10 @@ class CaptureSubdomain
         $subdomain = explode('.', $host)[1];
         // dd($subdomain);
         // Session::put('subdomain', $subdomain);
+        Session::forget('subdomain');
         Session::put('subdomain', 'veris');
         config(['app.subdomain' => Session::get('subdomain')]);
+        // dump(Session::get('subdomain'));
         return $next($request);
     }
 }
