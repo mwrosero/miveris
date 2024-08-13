@@ -1,6 +1,6 @@
 @extends('template.external')
 @section('title')
-Mi Veris - Asignar Promoción
+Veris - Asignar Promoción
 @endsection
 @push('css')
 <!-- css -->

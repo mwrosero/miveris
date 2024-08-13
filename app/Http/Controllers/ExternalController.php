@@ -114,13 +114,20 @@ class ExternalController extends Controller
             'method'   => 'POST',
             'data'     => $data
         ]);
-        echo Veris::BASE_URL.$method;
-        dump($data);
-        dd($response_pretrx);
-
-        return view('external.pasarela.datos_facturacion')
-                ->with('paciente',$list_paciente)
-                ->with('pretransaccion',$response_pretrx);
+        // echo Veris::BASE_URL.$method;
+        // dump($data);
+        // dd($response_pretrx);
+        if($response_pretrx->code == 200){
+            return view('external.pasarela.datos_facturacion')
+                    ->with('paciente',$list_paciente)
+                    ->with('urlRetornoPago', http_build_query($urlParams))
+                    ->with('pretransaccion',$response_pretrx);
+        }else{
+            // dd(http_build_query($urlParams)); //MEJORAR
+            return view('external.pasarela.error')
+                    ->with('showButtonRePay', false)
+                    ->with('error',$response_pretrx->message);//'El servicio ya se encuentra pagado o no tiene detalles disponibles'
+        }
     }
 
     public function pagoExternoKushki($params){
@@ -159,8 +166,10 @@ class ExternalController extends Controller
         if($response->code == 200){
             return redirect('/external/payment/comprobante?'.base64_encode($dataCita->transaccionVirtual->codigoTransaccion));
         }else{
-            session()->flash('alert', $response->message);
-            return redirect('/external/payment/error/'.$params);
+            // session()->flash('alert', $response->message);
+            return redirect('/external/payment/error/'.$params)
+                    ->with('showButtonRePay', true)
+                    ->with('urlRetornoPago', $dataCita->returnUrl);
         }
     }
 
@@ -232,7 +241,12 @@ class ExternalController extends Controller
                 'method'   => 'POST',
                 'data'     => $data
             ]);
-            // dd($response);
+
+            if($response->code != 200){
+                return view('external.pasarela.error')
+                    ->with('showButtonRePay', false)
+                    ->with('error',$response->message);
+            }
 
             $method = '/facturacion/v1/pagos_electronicos/transaccion_epago/'.base64_decode($codigoEPagoNuvei);
             $list = Veris::call([

@@ -1,6 +1,6 @@
 @extends('template.external')
 @section('title')
-Mi Veris - Pago en línea
+Veris - Pago en línea
 @endsection
 @push('css')
 <!-- css -->
