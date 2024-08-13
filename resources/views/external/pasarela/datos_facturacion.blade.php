@@ -1,6 +1,6 @@
 @extends('template.external')
 @section('title')
-Mi Veris - Datos de facturación
+Veris - Datos de facturación
 @endsection
 @push('css')
 <!-- css -->
@@ -226,6 +226,7 @@ Mi Veris - Datos de facturación
 	let canalOrigen = (window.config.subdomain == "veris") ? "VER_CMV" : "VER_PMF";
 	let preTransaccion = @json($pretransaccion);
 	let dataCita = {};
+	dataCita.returnUrl = "{{ $urlRetornoPago }}"
 	dataCita.preTransaccion = preTransaccion.data;
 	console.log("{{ $paciente->data->telefonoMovil }}");
 	// dataCita.preTransaccion.codigoPreTransaccion

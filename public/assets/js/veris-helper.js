@@ -254,9 +254,31 @@ async function obtenerIdentificacion(){
     }
 }
 
-async function obtenerProvincias(){
+async function obtenerPaises(){
     let args = [];
-    args["endpoint"] = api_url + `/${api_war}/v1/seguridad/provincias?codigoPais=1`;
+    args["endpoint"] = api_url + `/${api_war}/v1/seguridad/paises`;
+    args["method"] = "GET";
+    args["dismissAlert"] = true;
+    args["showLoader"] = false;
+
+    const data = await call(args);
+    if(data.code == 200){
+        console.log('provincias', data);
+        $('#pais').empty();
+        $('#provincia').empty();
+        $('#ciudad').empty();
+        $.each(data.data, function(key, value){
+            $('#pais').append(`<option esDefault-rel='${value.esDefault}' ${ (value.esDefault) ? 'selected' : '' } value="${value.codigoPais}">${value.nombrePais}</option>`);
+        })
+        
+        return data.data;
+    }
+
+}
+
+async function obtenerProvincias(codigoPais = 1){
+    let args = [];
+    args["endpoint"] = api_url + `/${api_war}/v1/seguridad/provincias?codigoPais=${codigoPais}`;
     args["method"] = "GET";
     args["dismissAlert"] = true;
     args["showLoader"] = false;
@@ -265,22 +287,33 @@ async function obtenerProvincias(){
     if(data.code == 200){
         console.log('provincias', data);
         $('#provincia').empty();
+        let tieneProvincias = false;
         $.each(data.data, function(key, value){
-            
+            tieneProvincias = true;
             $('#provincia').append(`<option value="${value.codigoProvincia}" codigoRegion-rel="${value.codigoRegion}">${value.nombreProvincia}</option>`);
         })
+
+        if(tieneProvincias){
+            console.log('Tiene provincias');
+            $('#provincia').attr('disabled',false);
+            await obtenerCiudades(codigoPais,getInput('provincia'));
+        }else{
+            console.log('No tiene provincias');
+            $('#provincia').attr('disabled',true)
+            $('#ciudad').attr('disabled',true)
+        }
         
         return data.data;
     }
 
 }
 
-async function obtenerCiudades(codigoCiudades){
+async function obtenerCiudades(codigoPais = 1, codigoProvincia){
 
-    console.log(codigoCiudades);
+    console.log(codigoProvincia);
     let args = [];
     // args["endpoint"] = api_url + `/${api_war}/v1/seguridad/ciudades?codigoPais=1&codigoProvincia="+getInput('provincia');
-    args["endpoint"] = api_url + `/${api_war}/v1/seguridad/ciudades?codigoPais=1&codigoProvincia=${codigoCiudades}`;
+    args["endpoint"] = api_url + `/${api_war}/v1/seguridad/ciudades?codigoPais=${codigoPais}&codigoProvincia=${codigoProvincia}`;
     args["method"] = "GET";
     args["dismissAlert"] = true;
     args["showLoader"] = false;
@@ -288,9 +321,19 @@ async function obtenerCiudades(codigoCiudades){
     const data = await call(args);
     if(data.code == 200){
         $('#ciudad').empty();
+        let tieneCiudades = false;
         $.each(data.data, function(key, value){
+            tieneCiudades = true;
             $('#ciudad').append(`<option value="${value.codigoCiudad}">${value.nombreCiudad}</option>`);
         })
+
+        if(tieneCiudades){
+            console.log('Tiene ciudades');
+            $('#ciudad').attr('disabled',false);
+        }else{
+            console.log('No tiene ciudades');
+            $('#ciudad').attr('disabled',true)
+        }
 
         return data.data;
     }
@@ -398,7 +441,7 @@ async function registrarCuenta(){
         "fechaNacimiento": fechaFormateada,
         "genero": getInput('genero'),
         "telfMovil": getInput('telefono'),
-        "codPais": 1,
+        "codPais": parseInt(getInput('pais')),
         "codigoProv": parseInt(getInput('provincia')),
         "codigoCiudad": parseInt(getInput('ciudad')),
         "pass": getInput('password'),

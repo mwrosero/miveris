@@ -167,7 +167,18 @@
 	            required />
 	    </div>
 	    <div class="mb-2">
-	        <label for="provincia" class="form-label fw-medium fs--1">Provincia *</label>
+	        <label for="pais" class="form-label fw-medium fs--1">País *</label>
+	        <select class="form-select fs--1 p-3"
+	            id="pais"
+	            name="pais"
+	            autofocus
+	            required>
+	            {{-- <option disabled selected hidden>Elegir</option> --}}
+				
+	        </select>
+	    </div>
+	    <div class="mb-2">
+	        <label for="provincia" class="form-label fw-medium fs--1 label-provincia">Provincia *</label>
 	        <select class="form-select fs--1 p-3"
 	            id="provincia"
 	            name="provincia"
@@ -178,7 +189,7 @@
 	        </select>
 	    </div>
 	    <div class="mb-2">
-	        <label for="ciudad" class="form-label fw-medium fs--1">Ciudad *</label>
+	        <label for="ciudad" class="form-label fw-medium fs--1 label-ciudad">Ciudad *</label>
 	        <select class="form-select fs--1 p-3"
 	            id="ciudad"
 	            name="ciudad"
@@ -216,9 +227,10 @@
 <script>
 	document.addEventListener("DOMContentLoaded", async function () {
         await obtenerIdentificacion();
+        await obtenerPaises();
         const dataProvincia = await obtenerProvincias();
 		console.log(dataProvincia);
-		obtenerCiudades(dataProvincia[0].codigoProvincia);
+		obtenerCiudades(1, dataProvincia[0].codigoProvincia);
 
         /*$('body').on('change', '#provincia', async function(){
         	await obtenerCiudades();
@@ -232,9 +244,6 @@
     const togglePassword2 = document.getElementById('togglePassword2');
 	
 	const botonAtras = document.getElementById('botonAtras');
-
-
-
 
     togglePassword.addEventListener('click', function() {
         if (passwordInput.type === 'password') {
@@ -391,6 +400,7 @@
 			let errors = false;
             let msg = `<ul class="ms-0 text-start text-veris">`;
 			let title = 'Campos requeridos';
+			let requeridosPorPais = $('#pais option:selected').attr('esDefault-rel');
 
 			// cedula validar vacio 
 			if(campoEstaVacio(getInput('numeroIdentificacion'))){
@@ -410,13 +420,13 @@
 			    errors = true;
 			    msg += `<li class="ms-0">Campo segundo apellido es requerido</li>`;
 			}
-			if (campoEstaVacio(document.getElementById('ciudad').value)) {
-				errors = true;
-				msg += `<li class="ms-0">Campo ciudad es requerido</li>`;
-			}
-			if (campoEstaVacio(document.getElementById('provincia').value)) {
+			if (campoEstaVacio(document.getElementById('provincia').value) && requeridosPorPais == "true") {
 				errors = true;
 				msg += `<li class="ms-0">Campo provincia es requerido</li>`;
+			}
+			if (campoEstaVacio(document.getElementById('ciudad').value) && requeridosPorPais == "true") {
+				errors = true;
+				msg += `<li class="ms-0">Campo ciudad es requerido</li>`;
 			}
 			$('#modalAlertButtonCancelar').addClass('d-none');
 			$('#modalAlertButtonAccion').addClass('d-none');
@@ -480,8 +490,30 @@
 
 	// capturar codigoProvincia del select
 	$('body').on('change', '#provincia', async function(){
+		console.log('-------OBTENER CIUDADES--------');
+		let codigoPais = getInput('pais');
 		let codigoProvincia = $(this).val();
-		await obtenerCiudades(codigoProvincia);
+		await obtenerCiudades(codigoPais,codigoProvincia);
+	});
+
+	$('body').on('change', '#pais', async function(){
+		let codigoPais = $(this).val();
+		let codigoProvincia = getInput('provincia');
+        $('#ciudad').empty();
+	  	await obtenerProvincias(codigoPais);
+	  	if($('#pais option:selected').attr('esDefault-rel') != "true"){
+	  		console.log('NO REQUIRED')
+	  		$('#provincia').attr('required',false);
+	  		$('#ciudad').attr('required',false);
+			$('.label-provincia').html('Provincia');
+			$('.label-ciudad').html('Ciudad');
+	  	}else{
+	  		console.log('REQUIRED')
+	  		$('#provincia').attr('required',true);
+	  		$('#ciudad').attr('required',true);
+	  		$('.label-provincia').html('Provincia *');
+			$('.label-ciudad').html('Ciudad *');
+	  	}
 	});
 
 	// regresar al paso anterior
@@ -498,8 +530,5 @@
 		
 	}
 
-
-
-   
 </script>
 @endsection
