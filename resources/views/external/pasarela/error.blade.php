@@ -20,6 +20,9 @@ Veris - Atención
 			<div class="col-12 col-md-6 col-lg-5">
 				<div class="card bg-transparent">
 					<div class="card-body text-center">
+						<div class="card-header text-center">
+							<img class="w-50" src="{{ asset('assets/img/card/no-payment-external.svg') }}" alt="">
+						</div>
 						<div class="card-body p-0 m-0 mb-3 pt-3">
 							<h5 class="mb-0">{{ $error }}</h5>
 						</div>
