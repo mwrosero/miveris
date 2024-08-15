@@ -475,7 +475,7 @@ $( document ).ready(async function() {
 					"segundoApellido": segundoApellido,
 					"primerNombre": primerNombre,
 					"segundoNombre": segundoNombre,
-					"mail": email,
+					"mail": email.toLowerCase(),
 					"fechaNacimiento": fechNacFormated,
 					"genero": genero,
 					"telfMovil": telefono,

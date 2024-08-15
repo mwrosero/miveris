@@ -255,7 +255,8 @@ Mi Veris - Citas - Mis citas
                 "mensajeBloqueoPago" : datosServicio.mensajeBloqueoPago,
                 "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
                 "permiteReserva": datosServicio.permitePagoReserva,
-                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,  
+                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
+                "esPlanStar":  datosServicio.esPlanStar  
             }
 
             params.online = datosServicio.esVirtual;
@@ -331,7 +332,8 @@ Mi Veris - Citas - Mis citas
                 "mensajeBloqueoPago" : datosServicio.mensajeBloqueoPago,
                 "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
                 "permiteReserva": datosServicio.permitePagoReserva,
-                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,  
+                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
+                "esPlanStar":  datosServicio.esPlanStar
             }
 
             params.online = datosServicio.esVirtual;
@@ -400,7 +402,8 @@ Mi Veris - Citas - Mis citas
                     "mensajeBloqueoPago" : data.mensajeBloqueoPago,
                     "mensajeBloqueoReserva" : data.mensajeBloqueoReserva,
                     "permiteReserva": data.permitePagoReserva,
-                    "aplicaVerificacionConvenio": data.aplicaVerificacionConvenio,  
+                    "aplicaVerificacionConvenio": data.aplicaVerificacionConvenio,
+                    "esPlanStar":  data.esPlanStar
                 };
             }else{
                 params.convenio = {
@@ -646,7 +649,8 @@ Mi Veris - Citas - Mis citas
                             "mensajeBloqueoPago": citas.mensajePagoReserva,
                             "permiteReserva": citas.permiteReserva,
                             "mensajeBloqueoReserva": citas.mensajeBloqueoReserva,
-                            "aplicaVerificacionConvenio": citas.aplicaVerificacionConvenio
+                            "aplicaVerificacionConvenio": citas.aplicaVerificacionConvenio,
+                            "esPlanStar":  citas.esPlanStar
                         }
 
                         /*
@@ -978,7 +982,8 @@ Mi Veris - Citas - Mis citas
                 mensajeBloqueoPago : data.mensajeBloqueoPago,
                 mensajeBloqueoReserva : data.mensajeBloqueoReserva,
                 permiteReserva: data.permitePagoReserva,
-                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
+                esPlanStar:  data.esPlanStar
             }
 
             if(data.esSesionOdonto == "S"){
@@ -1282,7 +1287,6 @@ Mi Veris - Citas - Mis citas
                             codigoPrestacion: dataRel.prestaciones[0].codigoPrestacion,
                             codigoSucursal: dataRel.codigoSucursal,
                             origen: 'mis-citas',
-                            
                         };
                     }else{
                         params.especialidad = {
