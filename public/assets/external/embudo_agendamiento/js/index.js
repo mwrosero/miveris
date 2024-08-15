@@ -110,9 +110,31 @@ var steps = [
 		fbTrack: '<Agendamiento_Web_V2_Paso1_Usuario_registrado>'
     }
   ];
-$( document ).ready(function() {
+$( document ).ready(async function() {
 	getTiposIdentificacion();
-	getProvinciasRegistro();
+	await getPaisesRegistro();
+	await getProvinciasRegistro();
+
+	$('body').on('change', '#paisRegistro', async function(){
+		let codigoPais = $(this).val();
+		let codigoProvincia = $('#provinciaRegistro option:selected').val();
+        $('#ciudadRegistro').empty();
+	  	await getProvinciasRegistro(codigoPais);
+	  	if($('#pais option:selected').attr('esDefault-rel') != "true"){
+	  		console.log('NO REQUIRED')
+	  		$('#provinciaRegistro').removeClass('required');
+	  		$('#ciudadRegistro').removeClass('required');
+			// $('.label-provincia').html('Provincia');
+			// $('.label-ciudad').html('Ciudad');
+	  	}else{
+	  		console.log('REQUIRED')
+	  		$('#provinciaRegistro').addClass('required');
+	  		$('#ciudadRegistro').addClass('required');
+	  		// $('.label-provincia').html('Provincia *');
+			// $('.label-ciudad').html('Ciudad *');
+	  	}
+	});
+
 	getParamsNuvei();
 	$('body').on("click", '.box-central', function(){
 		$('.box-central').removeClass("colorSel");
@@ -278,7 +300,7 @@ $( document ).ready(function() {
 	//getProvinciasRegistro();
 
 	$('body').on('change', 'select#provinciaRegistro', function() {
-		console.log(0);
+		console.log('cambio de provincias');
 		getCiudadesRegistro();
 	});
 
@@ -715,6 +737,29 @@ $( document ).ready(function() {
 
 });
 
+async function getPaisesRegistro(){
+	var method = "/seguridad/paises";	
+	var settings = {
+		"url": url_services_phantomx+method,
+		"method": "GET",
+		"timeout": 0,
+		"headers": {
+			//"Authorization": "Bearer "+token
+		},
+	};
+	$.ajax(settings).done(function (response) {
+		if(response.code == 200){
+			$.each(response.data, function(key, value){
+				if(value.codigoProvincia != 25){
+					$('#paisRegistro').append(`<option esDefault-rel='${value.esDefault}' ${ (value.esDefault) ? 'selected' : '' } value="${value.codigoPais}">${value.nombrePais}</option>`);
+				}
+			});
+		}else{
+			showError('Provincias no Cargadas, por favor intente en unos momentos');
+		}
+	});
+}
+
 function pad(n){
 	return n<10 ? '0'+n : n
 }
@@ -883,40 +928,52 @@ function getTiposIdentificacion(){
 	});
 }
 
-function getProvinciasRegistro(){
+async function getProvinciasRegistro(codigoPais = 1){
 	//var method = "/MaruriWsrest/servicio/registro/obtenerprovincias";
-	var method = "/seguridad/provincias";	
-	var param = "?codigoPais=1";
+	var method = "/seguridad/provincias?codigoPais="+codigoPais;	
 	var settings = {
-		"url": url_services_phantomx+method+param,
+		"url": url_services_phantomx+method,
 		"method": "GET",
 		"timeout": 0,
 		"headers": {
 			//"Authorization": "Bearer "+token
 		},
 	};
-	console.log(url_services_phantomx+method+param);
-	$.ajax(settings).done(function (response) {
+	console.log(url_services_phantomx+method);
+	$.ajax(settings).done(async function (response) {
 		if(response.code == 200){
+			let tieneProvincias = false;
+			$('#provinciaRegistro').empty();
 			$.each(response.data, function(key, value){
 				if(value.codigoProvincia != 25){
+					tieneProvincias = true;
 					$('#provinciaRegistro').append('<option value="'+value.codigoProvincia+'" pais-rel="'+value.codigoPais+'" region-rel="'+value.codigoRegion+'">'+value.nombreProvincia+'</option>');
 				}
 			});
+
+			if(tieneProvincias){
+	            console.log('Tiene provincias');
+	            $('#provinciaRegistro').removeClass('disabled-input');
+	            await getCiudadesRegistro(codigoPais,$('#provinciaRegistro option:selected').val());
+	        }else{
+	            console.log('No tiene provincias');
+	            $('#provinciaRegistro').addClass('disabled-input')
+	            $('#ciudadRegistro').addClass('disabled-input')
+	        }
 		}else{
 			showError('Provincias no Cargadas, por favor intente en unos momentos');
 		}
 	});
 }
 
-function getCiudadesRegistro(){
+function getCiudadesRegistro(codigoPais = 1, codigoProvincia){
 	$('#ciudadRegistro').empty();
 	var idProvincia = $('#provinciaRegistro option:selected').val();
 	
 	// var method = "/MaruriWsrest/servicio/registro/obtenerciudades";
 	// var param = "?arg0=1&arg1="+idProvincia
 	var method = "/seguridad/ciudades";
-	var param = "?codigoPais=1&codigoProvincia="+idProvincia;
+	var param = "?codigoPais="+codigoPais+"&codigoProvincia="+idProvincia;
 	var settings = {
 		"url": url_services_phantomx+method+param,
 		"method": "GET",
@@ -928,9 +985,18 @@ function getCiudadesRegistro(){
 	$.ajax(settings).done(function (response) {
 		//console.log(response.data);
 		if(response.code == 200){
+			let tieneCiudades = false;
 			$.each(response.data, function(key, value){
+				tieneCiudades = true;
 				$('#ciudadRegistro').append('<option value="'+value.codigoCiudad+'">'+value.nombreCiudad+'</option>');
 			});
+			if(tieneCiudades){
+	            console.log('Tiene ciudades');
+	            $('#ciudadRegistro').removeClass('disabled-input');
+	        }else{
+	            console.log('No tiene ciudades');
+	            $('#ciudadRegistro').addClass('disabled-input')
+	        }
 		}else{
 			showError('Ciudades no Cargadas, por favor intente en unos momentos');
 		}

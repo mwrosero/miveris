@@ -108,7 +108,7 @@
                             <h4 class="subtitle mb-1">Ingresa tus datos para registrarte en el sistema.</h4>
                         </div>
                         <div class="modal-body pt-0 pb-0">
-                            <div class="form-registro">
+                            <div class="form-registro d-flex">
                                 <div class="input-field-container">
                                     <div class="form-group">
                                         <label>Número de identificación</label>
@@ -158,8 +158,6 @@
                                             <div class="line-border"></div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="input-field-container">
                                     <div class="form-group">
                                         <label>Fecha de Nacimiento</label>
                                         <div class="box-input">
@@ -168,6 +166,8 @@
                                             <div class="line-border"></div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="input-field-container">
                                     <div class="form-group">
                                         <label>Género</label>
                                         <div class="box-input">
@@ -181,10 +181,20 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <label>País</label>
+                                        <div class="box-input">
+                                            <select id="paisRegistro" name="paisRegistro" class="required">
+                                                <option value="" disabled selected hidden>Seleccionar país</option>
+                                            </select>
+                                            <div class="line"></div>
+                                            <div class="line-border"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label>Provincia</label>
                                         <div class="box-input">
                                             <select id="provinciaRegistro" name="provinciaRegistro" class="required">
-                                                <option value="" disabled selected hidden>Seleccionar Provincia</option>
+                                                <option value="" disabled selected hidden>Seleccionar provincia</option>
                                             </select>
                                             <div class="line"></div>
                                             <div class="line-border"></div>
@@ -194,7 +204,7 @@
                                         <label>Ciudad</label>
                                         <div class="box-input">
                                             <select id="ciudadRegistro" name="ciudadRegistro" class="required">
-                                                <option value="" disabled selected hidden>Seleccionar una Provincia</option>
+                                                <option value="" disabled selected hidden>Seleccionar una ciudad</option>
                                             </select>
                                             <div class="line"></div>
                                             <div class="line-border"></div>
@@ -215,7 +225,7 @@
                                             <div class="line"></div>
                                             <div class="line-border"></div>
                                         </div>
-                                    </div>
+                                    </div> 
                                 </div>
                             </div>
                         </div>
@@ -607,7 +617,7 @@
                                 </div>
                             </details>
                         </div>
-                        <div class="col-12 mb-4">
+                        <div class="col-12 mb-4 box-facturacion-validation">
                             <!-- Datos de facturación -->
                             <details open class="shadow-bg border-radius-8">
                                 <summary class="py-3 px-4">
@@ -993,7 +1003,7 @@
         function isCompleteBill(){
             var active_form = true;
             var elemIsValid = true;
-            jQuery.each(jQuery('input, select'), function(){
+            jQuery.each(jQuery('.box-facturacion-validation input, .box-facturacion-validation select'), function(){
                 var idElem = jQuery(this).attr('id');
                 if(jQuery("#"+idElem).is(":visible")){
                     switch(idElem){
@@ -1245,6 +1255,10 @@
     }
     </script>
     <style>
+        .disabled-input{
+          opacity: 0.5;
+          pointer-events: none;
+        }
         .btn-nuvei{
             background: #1068b1;
             width: 100%;
