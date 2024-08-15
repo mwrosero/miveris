@@ -437,7 +437,7 @@ async function registrarCuenta(){
         "primerApellido": getInput('primerApellido'),
         "segundoApellido": getInput('segundoApellido'),
         "primerNombre": getInput('primerNombre'),
-        "mail": getInput('mail'),
+        "mail": getInput('mail').toLowerCase(),
         "fechaNacimiento": fechaFormateada,
         "genero": getInput('genero'),
         "telfMovil": getInput('telefono'),
