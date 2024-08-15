@@ -328,7 +328,8 @@ Mi Veris - Inicio
                 "mensajeBloqueoPago" : datosServicio.mensajeBloqueoPago,
                 "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
                 "permiteReserva": datosServicio.permitePagoReserva,
-                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,  
+                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
+                "esPlanStar":  data.esPlanStar
             }
 
             params.online = datosServicio.esVirtual;
@@ -404,7 +405,8 @@ Mi Veris - Inicio
                 "mensajeBloqueoPago" : datosServicio.mensajeBloqueoPago,
                 "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
                 "permiteReserva": datosServicio.permitePagoReserva,
-                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,  
+                "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
+                "esPlanStar":  data.esPlanStar
             }
 
             params.online = datosServicio.esVirtual;
@@ -520,7 +522,8 @@ Mi Veris - Inicio
                     "mensajeBloqueoPago" : data.mensajeBloqueoPago,
                     "mensajeBloqueoReserva" : data.mensajeBloqueoReserva,
                     "permiteReserva": data.permitePagoReserva,
-                    "aplicaVerificacionConvenio": data.aplicaVerificacionConvenio,  
+                    "aplicaVerificacionConvenio": data.aplicaVerificacionConvenio,
+                    "esPlanStar":  data.esPlanStar
                 };
             }else{
                 params.convenio = {
@@ -529,6 +532,7 @@ Mi Veris - Inicio
                     "idCliente": null,
                     "codigoConvenio": null,
                     "secuenciaAfiliado" : null,
+                    "esPlanStar":  data.esPlanStar
                 };
             }
             params.horario = {
@@ -569,7 +573,6 @@ Mi Veris - Inicio
                 nombre : data.especialidad,
             }
             params.convenio = {
-                
                 secuenciaAfiliado: data.secuenciaAfiliado,
                 idCliente: data.idCliente,
                 codigoConvenio: data.codigoConvenio,
@@ -579,7 +582,8 @@ Mi Veris - Inicio
                 mensajeBloqueoPago : data.mensajeBloqueoPago,
                 mensajeBloqueoReserva : data.mensajeBloqueoReserva,
                 permiteReserva: data.permitePagoReserva,
-                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
+                esPlanStar:  data.esPlanStar
             }
 
             if(data.esSesionOdonto == "S"){
@@ -1238,7 +1242,6 @@ Mi Veris - Inicio
             //     return;
             // }
             params.convenio = {
-                
                 secuenciaAfiliado: data.secuenciaAfiliado,
                 idCliente: data.idCliente,
                 codigoConvenio: data.codigoConvenio,
@@ -1248,7 +1251,8 @@ Mi Veris - Inicio
                 mensajeBloqueoPago : data.mensajeBloqueoPago,
                 mensajeBloqueoReserva : data.mensajeBloqueoReserva,
                 permiteReserva: data.permitePagoReserva,
-                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
+                esPlanStar:  data.esPlanStar
             }
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             
@@ -1274,7 +1278,6 @@ Mi Veris - Inicio
                 nombre : data.especialidad,
             }
             params.convenio = {
-                
                 secuenciaAfiliado: data.secuenciaAfiliado,
                 idCliente: data.idCliente,
                 codigoConvenio: data.codigoConvenio,
@@ -1284,7 +1287,8 @@ Mi Veris - Inicio
                 mensajeBloqueoPago : data.mensajeBloqueoPago,
                 mensajeBloqueoReserva : data.mensajeBloqueoReserva,
                 permiteReserva: data.permitePagoReserva,
-                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,   
+                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
+                esPlanStar:  data.esPlanStar
             }
 
             // if (datosConvenios.length > 0) {

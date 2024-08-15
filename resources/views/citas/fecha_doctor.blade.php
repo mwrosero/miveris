@@ -188,6 +188,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let fechaOrdenExterna;
     let codigoZona;
 
+    let esPlanStar;
+
     let firstRender = true;
     let numeroSemanaCurso;
     let numeroMesCurso;
@@ -213,6 +215,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }else {
             codigoSucursal = ""
         }
+        esPlanStar = dataCita?.convenio.esPlanStar || 'false';
         codigoServicio = dataCita?.especialidad.codigoServicio || ' ';
         codigoPrestacion = dataCita?.especialidad.codigoPrestacion || ' ';
         nombreSucursal = dataCita?.central?.nombreSucursal || ' ';
@@ -481,7 +484,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}&esPlanStar=${esPlanStar}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -530,7 +533,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         // console.log(fechaSeleccionada);
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&esPlanStar=${esPlanStar}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -611,7 +614,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(_fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&bloques=${bloques}${argsSesion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(_fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
