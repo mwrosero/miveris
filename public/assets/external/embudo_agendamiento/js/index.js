@@ -1431,7 +1431,7 @@ function obtenerFechas(){
 	//var method = "/Verisrest/v1/externo/fechasdisponibles";
 	//var param = "?arg0="+idCentro+"&arg1="+idEspecialidad+"&arg2="+esTeleconsulta+"&arg3="+getValueFI('tipoIdentificacion')+"&arg4="+getValueFI('numeroIdentificacion');
 	var method = "/agenda/fechasdisponibles";
-	var param = "?codigoEmpresa=1&codigoSucursal="+codigoSucursalPX+"&codigoEspecialidad="+idEspecialidad+"&online="+((virtual) ? 'S' : 'N') +"&canalOrigen="+canal_origen;
+	var param = "?codigoEmpresa=1&codigoSucursal="+codigoSucursalPX+"&codigoEspecialidad="+idEspecialidad+"&online="+((virtual) ? 'S' : 'N') +"&canalOrigen="+canal_origen+"&esPlanStar="+((tieneConvenios) ? $("#convenios option:selected").attr("esPlanStar-rel") : false);
 	var settings = {
 		"url": url_services_phantomx+method+param,
 		"method": "GET",
@@ -1491,7 +1491,7 @@ function obtenerDisponibilidad(fecha){
 	
 	var method ='/agenda/medicos/disponibilidad';
 	//var param = '?codigoEmpresa=1&idPaciente=&codigoCiudad='+idCiudad+'&codigoEspecialidad='+idEspecialidad+'&online='+esTeleconsulta+'&fechaSeleccionada='+fecha+'&fechaSeleccionadaFin='+fecha+'&codigoServicio='+_codigoServicio+'&codigoPrestacion='+_idprestacion.split('-')[0]+'&codigoSucursal='+idCentro+'&canalOrigen=MVE';
-	var param = '?codigoEmpresa=1&idPaciente='+infoUsuario.numeroPaciente+'&codigoCiudad='+idCiudad+'&codigoEspecialidad='+idEspecialidad+'&online='+online+'&fechaSeleccionada='+fechaSeleccionada+'&fechaSeleccionadaFin='+fechaSeleccionada+'&canalOrigen='+canal_origen+'&codigoServicio='+codigoServicio+'&codigoPrestacion='+codigoPrestacion+'&codigoSucursal='+codigoSucursalPX;
+	var param = '?codigoEmpresa=1&idPaciente='+infoUsuario.numeroPaciente+'&codigoCiudad='+idCiudad+'&codigoEspecialidad='+idEspecialidad+'&online='+online+'&fechaSeleccionada='+fechaSeleccionada+'&fechaSeleccionadaFin='+fechaSeleccionada+'&canalOrigen='+canal_origen+'&codigoServicio='+codigoServicio+'&codigoPrestacion='+codigoPrestacion+'&codigoSucursal='+codigoSucursalPX+"&esPlanStar="+((tieneConvenios) ? $("#convenios option:selected").attr("esPlanStar-rel") : false);
 	
 	//var method = "/Verisrest/v1/externo/disponibilidad";
 	//var param = "?arg0="+idCentro+"&arg1="+idEspecialidad+"&arg3="+fecha+"&arg4="+online;
@@ -1835,7 +1835,7 @@ function obtenerConvenios(){
 				console.log(value);
 				let informacionExternaPlan = JSON.stringify(value.informacionExternaPlan);
 				console.log(informacionExternaPlan);
-				$("#convenios").append(`<option aplicaVerificacionConvenio-rel='${value.aplicaVerificacionConvenio}' idCliente-rel='${value.idCliente}' informacionExternaPlan-rel='${informacionExternaPlan}' aplicaPagoDigitalObligatorio-rel="${value.aplicaPagoDigitalObligatorio}" secuenciaAfiliado-rel="${value.secuenciaAfiliado}" permitePago-rel="${value.permitePago}" aplicaConfirmacion-rel="${value.aplicaConfirmacion}" permiteReserva-rel="${value.permiteReserva}" mensajeBloqueoReserva-rel="${value.mensajeBloqueoReserva}" aplicaCobertura-rel="${value.aplicaCobertura}" value="${value.codigoConvenio}">${value.nombreConvenio}</option>`);
+				$("#convenios").append(`<option esPlanStar-rel='${value.esPlanStar}'  aplicaVerificacionConvenio-rel='${value.aplicaVerificacionConvenio}' idCliente-rel='${value.idCliente}' informacionExternaPlan-rel='${informacionExternaPlan}' aplicaPagoDigitalObligatorio-rel="${value.aplicaPagoDigitalObligatorio}" secuenciaAfiliado-rel="${value.secuenciaAfiliado}" permitePago-rel="${value.permitePago}" aplicaConfirmacion-rel="${value.aplicaConfirmacion}" permiteReserva-rel="${value.permiteReserva}" mensajeBloqueoReserva-rel="${value.mensajeBloqueoReserva}" aplicaCobertura-rel="${value.aplicaCobertura}" value="${value.codigoConvenio}">${value.nombreConvenio}</option>`);
 			});
 			// var aplicaCobertura = $('#convenios').find('option:selected').attr('aplicaCobertura-rel');
 			// var codigoConvenio = $('#convenios').val();
@@ -1843,7 +1843,7 @@ function obtenerConvenios(){
 		}else{
 			console.log("Sin convenios");
 			let informacionExternaPlan = null;
-			$("#convenios").append('<option aplicaVerificacionConvenio-rel="N" idCliente-rel="0" informacionExternaPlan-rel="'+informacionExternaPlan+'" aplicaPagoDigitalObligatorio-rel="N" permitePago-rel="S" aplicaConfirmacion-rel="N" secuenciaAfiliado-rel="" permiteReserva-rel="S" aplicaCobertura-rel="S" value="NA">No posee convenios</option>');
+			$("#convenios").append('<option esPlanStar-rel="false" aplicaVerificacionConvenio-rel="N" idCliente-rel="0" informacionExternaPlan-rel="'+informacionExternaPlan+'" aplicaPagoDigitalObligatorio-rel="N" permitePago-rel="S" aplicaConfirmacion-rel="N" secuenciaAfiliado-rel="" permiteReserva-rel="S" aplicaCobertura-rel="S" value="NA">No posee convenios</option>');
 			tieneConvenios = false;
 			//valorizarCita('S', 'NA');
 			$("#tieneConvenio").prop('checked', false);
