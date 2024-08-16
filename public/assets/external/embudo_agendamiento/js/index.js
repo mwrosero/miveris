@@ -3200,7 +3200,7 @@ function pasarelaNuvei(){
 	    client_app_code: dataNuvei.applicationCode, // Client Credentials
 	    client_app_key: dataNuvei.applicationKey, // Client Credentials
 	    locale: 'es', // User's preferred language (es, en, pt). English will be used by default.
-	    env_mode: 'prod', // `prod`, `stg`, `local` to change environment. Default is `stg`
+	    env_mode: environment_nuvei, // `prod`, `stg`, `local` to change environment. Default is `stg`
 	    onOpen: function () {
 	    	console.log('modal open');
 	    },

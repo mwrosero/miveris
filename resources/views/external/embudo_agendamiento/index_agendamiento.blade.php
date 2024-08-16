@@ -38,6 +38,7 @@
     <script>
         const token = "{{ $accesToken }}";
         const tokenCita = "{{ $tokenCita }}";
+        const environment_nuvei = '{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}';
     </script>
     <!-- Dependencias adicionales -->
     <link rel="stylesheet" href="{{ asset('assets/external/embudo_agendamiento/css/normalize.css') }}">
