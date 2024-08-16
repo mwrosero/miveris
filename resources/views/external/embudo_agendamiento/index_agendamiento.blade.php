@@ -3,6 +3,9 @@
     Citas - Veris
 @endsection
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+@endphp
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-315657039"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -34,6 +37,7 @@
             <!-- End Facebook Pixel Code -->
     <script>
         const token = "{{ $accesToken }}";
+        const tokenCita = "{{ $tokenCita }}";
     </script>
     <!-- Dependencias adicionales -->
     <link rel="stylesheet" href="{{ asset('assets/external/embudo_agendamiento/css/normalize.css') }}">
@@ -714,8 +718,11 @@
                                                 <!-- Kushki -->
                                                 <div class="box-kushki">
                                                     <input type="hidden" class="form-control form-control-sm animated-input" name="codigoReserva" id="codigoReserva" form="kushki-pay-form"/>
-                                                    <form class="kushki-pay-form" id="kushki-pay-form" action="/procesar-pago-web/" method="POST">
+                                                    <form class="kushki-pay-form" id="kushki-pay-form" action="/external/payment/kushki/procesar/{{ $tokenCita }}" method="POST">
+                                                        @csrf
                                                     </form>
+                                                    <input type="hidden" name="tokenCita" id="tokenCita" form="kushki-pay-form">
+                                                    <input type="hidden" name="dataCita" id="dataCita" form="kushki-pay-form">
                                                 </div>
 
                                                 <!-- PTP -->
