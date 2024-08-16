@@ -434,11 +434,11 @@ $( document ).ready(async function() {
 		var fechNac = fechaNacimiento.split("-");
 		var fechNacFormated = fechNac[2]+"/"+fechNac[1]+"/"+fechNac[0];
 
-		var pais = $('#provinciaRegistro option:selected').attr("pais-rel");
+		var pais = $('#paisRegistro option:selected').val();
 		var region = $('#provinciaRegistro option:selected').attr("region-rel");
 		var msg_error = "";
 
-		if(primerApellido.length<1 || segundoApellido.length<1 || primerNombre.length<1 || segundoNombre.length<1 || telefono.length<1 || genero == null || provinciaRegistro == null || ciudadRegistro == null || tipoIdentificacionRegistro == null || fechaNacimiento==""){
+		if(primerApellido.length<1 || segundoApellido.length<1 || primerNombre.length<1 || segundoNombre.length<1 || telefono.length<1 || genero == null || (provinciaRegistro == null && $('#provinciaRegistro').hasClass('required')) || (ciudadRegistro == null && $('#ciudadRegistro').hasClass('required')) || tipoIdentificacionRegistro == null || fechaNacimiento==""){
 			flagValidation = false;
 			msg_error = msg_error + "</br>Campos incompletos.";
 		}
@@ -454,7 +454,6 @@ $( document ).ready(async function() {
 				msg_error = msg_error + "</br>Número de identificación inválida.";
 		}
 
-		hideLoader();
 
 		if(flagValidation && flagValidationEmail && flagNumeroIdentificacionRegistro){
 			//var method = "/MaruriWsrest/servicio/registro/crearusuarioveris";
@@ -521,13 +520,15 @@ $( document ).ready(async function() {
 					$(document.body).prepend('<noscript><img style="height:1px;position:absolute;z-index:-1;" src="https://ad.doubleclick.net/ddm/activity/src=11242873;type=invmedia;cat=veris0;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;tfua=;npa=;gdpr=${GDPR};gdpr_consent=${GDPR_CONSENT_755};ord=1?" width="1" height="1" alt=""/></noscript>');
 
 					$.getScript("https://secure.adnxs.com/px?id=1512371&t=1");
-
+					hideLoader();
 				}
 			}).fail(function (err) {
 				showError('Error de registro: '+err.responseJSON.message);
 				$('.btn-registrar').prop('disabled', false);
+				hideLoader();
 			});
 		}else{
+			hideLoader();
 			$('.btn-registrar').prop('disabled', false);
 			showError('Datos incorrectos: '+msg_error);
 		}
@@ -3273,7 +3274,16 @@ function createPostForm(response) {
 	// Crear el formulario
 	var $form = $('<form>', {
 		method: 'POST',
-		action: '/procesar-pago-servicios-nuvei'
+		action: '/external/payment/nuvei/procesar/'+tokenCita
+		// action: '/procesar-pago-servicios-nuvei'
+	});
+
+	var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+	var $csrfTokenInput = $('<input>', {
+	    type: 'hidden',
+	    name: '_token',
+	    value: csrfToken
 	});
 
 	var $tipoIdentificacionNuvei = $('<input>', {
