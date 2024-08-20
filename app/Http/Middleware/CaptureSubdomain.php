@@ -26,6 +26,7 @@ class CaptureSubdomain
         Session::put('subdomain', 'veris');
         config(['app.subdomain' => Session::get('subdomain')]);
         // dump(Session::get('subdomain'));
+        
         return $next($request);
     }
 }
