@@ -226,7 +226,7 @@
                                     <div class="form-group">
                                         <label>Teléfono</label>
                                         <div class="box-input">
-                                            <input type="number" id="telefono" name="telefono" class="required">
+                                            <input type="tel" id="telefono" name="telefono" class="required" onkeypress="return validarNumero(event)" oninput="limitarCaracteres(this, 10)">
                                             <div class="line"></div>
                                             <div class="line-border"></div>
                                         </div>
