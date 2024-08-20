@@ -155,14 +155,14 @@
                                             <div class="line-border"></div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label>Segundo Nombre</label>
                                         <div class="box-input">
                                             <input type="text" id="segundoNombre" name="segundoNombre" class="required">
                                             <div class="line"></div>
                                             <div class="line-border"></div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="form-group">
                                         <label>Fecha de Nacimiento</label>
                                         <div class="box-input">
