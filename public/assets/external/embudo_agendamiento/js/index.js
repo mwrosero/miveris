@@ -445,7 +445,7 @@ $( document ).ready(async function() {
 		var primerApellido = $('#primerApellido').val();
 		var segundoApellido = $('#segundoApellido').val();
 		var primerNombre = $('#primerNombre').val();
-		var segundoNombre = $('#segundoNombre').val();
+		// var segundoNombre = $('#segundoNombre').val();
 		var fechaNacimiento = $('#fechaNacimiento').val();
 		var genero = $('#genero').val();
 		var provinciaRegistro = $('#provinciaRegistro').val();
@@ -459,8 +459,8 @@ $( document ).ready(async function() {
 		var pais = $('#paisRegistro option:selected').val();
 		var region = $('#provinciaRegistro option:selected').attr("region-rel");
 		var msg_error = "";
-
-		if(primerApellido.length<1 || segundoApellido.length<1 || primerNombre.length<1 || segundoNombre.length<1 || telefono.length != 10 || genero == null || (provinciaRegistro == null && $('#provinciaRegistro').hasClass('required')) || (ciudadRegistro == null && $('#ciudadRegistro').hasClass('required')) || tipoIdentificacionRegistro == null || fechaNacimiento==""){
+		// segundoNombre.length<1 ||
+		if(primerApellido.length<1 || segundoApellido.length<1 || primerNombre.length<1 || telefono.length != 10 || genero == null || (provinciaRegistro == null && $('#provinciaRegistro').hasClass('required')) || (ciudadRegistro == null && $('#ciudadRegistro').hasClass('required')) || tipoIdentificacionRegistro == null || fechaNacimiento==""){
 			flagValidation = false;
 			
 			if(telefono.length != 10){
@@ -485,7 +485,7 @@ $( document ).ready(async function() {
 		if(flagValidation && flagValidationEmail && flagNumeroIdentificacionRegistro){
 			//var method = "/MaruriWsrest/servicio/registro/crearusuarioveris";
 			var method = "/seguridad/cuenta";
-			var param = "?arg0="+tipoIdentificacionRegistro+"&arg1="+numeroIdentificacionRegistro+"&arg2="+primerApellido+"&arg3="+segundoApellido+"&arg4="+primerNombre+"&arg5="+segundoNombre+"&arg6="+fechNacFormated+"&arg7="+email+"&arg8="+genero+"&arg9="+pais+"&arg10="+provinciaRegistro+"&arg11="+ciudadRegistro+"&arg12="+region+"&arg13="+telefono;
+			var param = "?arg0="+tipoIdentificacionRegistro+"&arg1="+numeroIdentificacionRegistro+"&arg2="+primerApellido+"&arg3="+segundoApellido+"&arg4="+primerNombre+"&arg5=&arg6="+fechNacFormated+"&arg7="+email+"&arg8="+genero+"&arg9="+pais+"&arg10="+provinciaRegistro+"&arg11="+ciudadRegistro+"&arg12="+region+"&arg13="+telefono;
 			var settings = {
 				"url": url_services_phantomx+method+param,
 				"method": "POST",
@@ -500,7 +500,7 @@ $( document ).ready(async function() {
 					"primerApellido": primerApellido,
 					"segundoApellido": segundoApellido,
 					"primerNombre": primerNombre,
-					"segundoNombre": segundoNombre,
+					// "segundoNombre": segundoNombre,
 					"mail": email.toLowerCase(),
 					"fechaNacimiento": fechNacFormated,
 					"genero": genero,
