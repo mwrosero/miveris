@@ -438,9 +438,14 @@ $( document ).ready(async function() {
 		var region = $('#provinciaRegistro option:selected').attr("region-rel");
 		var msg_error = "";
 
-		if(primerApellido.length<1 || segundoApellido.length<1 || primerNombre.length<1 || segundoNombre.length<1 || telefono.length<1 || genero == null || (provinciaRegistro == null && $('#provinciaRegistro').hasClass('required')) || (ciudadRegistro == null && $('#ciudadRegistro').hasClass('required')) || tipoIdentificacionRegistro == null || fechaNacimiento==""){
+		if(primerApellido.length<1 || segundoApellido.length<1 || primerNombre.length<1 || segundoNombre.length<1 || telefono.length != 10 || genero == null || (provinciaRegistro == null && $('#provinciaRegistro').hasClass('required')) || (ciudadRegistro == null && $('#ciudadRegistro').hasClass('required')) || tipoIdentificacionRegistro == null || fechaNacimiento==""){
 			flagValidation = false;
-			msg_error = msg_error + "</br>Campos incompletos.";
+			
+			if(telefono.length != 10){
+				msg_error = msg_error + "</br>Número de teléfono debe tener 10 dígitos.";
+			}else{
+				msg_error = msg_error + "</br>Campos incompletos.";
+			}
 		}
 
 		if(!isValidEmailAddress(email)){
@@ -478,7 +483,7 @@ $( document ).ready(async function() {
 					"fechaNacimiento": fechNacFormated,
 					"genero": genero,
 					"telfMovil": telefono,
-					"codPais": pais,
+					"codPais": parseInt(pais),
 					"codigoProv": provinciaRegistro,
 					"codigoCiudad": ciudadRegistro,
 					"canalOrigenDigital": canal_origen
