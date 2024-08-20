@@ -110,6 +110,28 @@ var steps = [
 		fbTrack: '<Agendamiento_Web_V2_Paso1_Usuario_registrado>'
     }
   ];
+
+function limitarCaracteres(input, maxCaracteres) {
+    // Obtén el valor actual del campo de entrada
+    var valor = input.value;
+
+    // Limita la longitud del valor a `maxCaracteres`
+    if (valor.length > maxCaracteres) {
+        valor = valor.slice(0, maxCaracteres);
+    }
+
+    // Establece el valor limitado en el campo de entrada
+    input.value = valor;
+}
+
+function validarNumero(event) {
+    // Verifica si el carácter es un número
+    if (event.which != 8 && event.which != 0 && (event.which < 48 || event.which > 57)) {
+        // Previene la entrada del carácter si no es un número
+        event.preventDefault();
+    }
+}
+
 $( document ).ready(async function() {
 	getTiposIdentificacion();
 	await getPaisesRegistro();
