@@ -232,7 +232,7 @@ Veris - Datos de facturación
 	// dataCita.preTransaccion.codigoPreTransaccion
 	document.addEventListener("DOMContentLoaded", async function () {
 		await consultarDatosFactura();
-
+		console.log("{{ request()->input('executionId', '') }}")
 		$('body').on('change', '#tipoIdentificacion', function(){
             if($(this).val() == '2'){
                 $('.box-ruc').addClass('d-none');
@@ -442,6 +442,7 @@ Veris - Datos de facturación
             "idNavegador": "",
             "idiomaNavegador": "",
             "navegadorUA": "",
+            "executionId": "{{ request()->input('executionId', '') }}",
             "canalOrigenDigital": canalOrigen//"VER_CMV"
         });
         const data = await call(args);
