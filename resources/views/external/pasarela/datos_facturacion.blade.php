@@ -228,6 +228,7 @@ Veris - Datos de facturación
 	let dataCita = {};
 	dataCita.returnUrl = "{{ $urlRetornoPago }}"
 	dataCita.preTransaccion = preTransaccion.data;
+	dataCita.executionId = "{{ request()->input('executionId', '') }}";
 	console.log("{{ $paciente->data->telefonoMovil }}");
 	// dataCita.preTransaccion.codigoPreTransaccion
 	document.addEventListener("DOMContentLoaded", async function () {

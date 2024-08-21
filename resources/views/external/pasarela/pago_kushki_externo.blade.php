@@ -114,6 +114,7 @@ Veris - Pago en línea
             "idNavegador": "",
             "idiomaNavegador": "",
             "navegadorUA": "",
+            "executionId": dataCita.executionId,
             "canalOrigenDigital": canalOrigen
         });
         const data = await call(args);
