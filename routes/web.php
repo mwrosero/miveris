@@ -54,6 +54,9 @@ Route::middleware('guest')->group(function () {
         Route::post('/payment/nuvei/procesar/{params}', [ExternalController::class, 'procesarExternoNuvei'])->name('procesar-pago-nuvei-externo')->withoutMiddleware(['guest']);
 
         Route::get('/payment/comprobante', [ExternalController::class, 'comprobantePago'])->name('comprobante-pago')->withoutMiddleware(['guest']);
+
+        Route::get('/farmacia/qr/', [ExternalController::class, 'loginQr'])->name('login-qr')->withoutMiddleware(['guest']);
+
     });
 
 });

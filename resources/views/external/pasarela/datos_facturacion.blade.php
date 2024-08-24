@@ -34,7 +34,7 @@ Veris - Datos de facturación
 </div>
 <!-- Modal Desgloce -->
 <div class="modal fade" id="modalDesglose" tabindex="-1" aria-labelledby="modalDesgloseModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modalDesglose-size modal-dialog-centered mx-auto">
+    <div class="modal-dialog modal-xl modalDesglose-size modal-dialog-centered mx-auto">
         <div class="modal-content">
             <div class="modal-header pt-3 pb-0 px-3">
                 <h5 class="modal-title mx-auto title-section fw-medium">Desglose de valores</h5>
@@ -69,10 +69,40 @@ Veris - Datos de facturación
         </div>
     </div>
 </div>
-<div class="d-flex justify-content-between align-items-center bg-white">
-    <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">Datos de facturación</h5>
-</div>
+{{-- <div class="d-flex justify-content-between align-items-center bg-white">
+    <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">Pago en línea</h5>
+</div> --}}
+
 <section class="p-3 mb-3">
+	@if(request()->input('tipoArticulo') == "CITA")
+	{{-- <h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue">Detalles de Agendamiento</h5> --}}
+	<div class="row justify-content-center">
+	    <div class="col-md-10 col-lg-8">
+	        <div class="card bg-transparent shadow-none">
+	            <div class="card-body p-0 pb-3 p-md-3">
+	                <div class="row g-3">
+	                    <div class="col-md-12">
+	                        <div class="row g-3">
+	                            <div class="col-12">
+	                            	<div class="card">
+					                    <div class="card-header bg-grayish-blue p--2">
+					                        <h5 class="text-veris-many fw-medium line-height-16 m-0">{{ __('Detalles de la cita') }}</h5>
+					                    </div>
+					                    <div class="card-body p--2">
+					                        <div class="" id="contentDetalleCita">
+					                        </div>
+					                    </div>
+					                </div>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	@endif
+	<h5 class="mb-3 py-2 px-3 bg-labe-grayish-blue">Datos de facturación</h5>
 	<div class="row justify-content-center">
 	    <div class="col-md-10 col-lg-8">
 	        <div class="card bg-transparent shadow-none">
@@ -208,7 +238,7 @@ Veris - Datos de facturación
 	                        </div>
 	                        <div class="row justify-content-center align-items-center">
 	                            <div class="col-12 col-md-6">
-	                                <div id="btn-ver-examenes" class="btn-master w-lg-50 mx-auto mt-2 cursor-pointer justify-content-center align-items-center d-none">
+	                                <div id="btn-ver-examenes" class="btn-master w-100 mx-auto mt-2 cursor-pointer justify-content-center align-items-center d-none">
 	                                    <div class="text-center">
 	                                        Ver exámenes a pagar
 	                                    </div>
@@ -278,7 +308,21 @@ Veris - Datos de facturación
 		// 	$('.btnNuvei').css('pointer-events','none')
 		// 	pasarelaNuvei();
 		// })
+
+		if("{{ request()->input('tipoArticulo') }}" == "ORDEN"){
+            addPrestacionesToModal();
+            $("#btn-ver-examenes").removeClass('d-none');
+        }
+
+        @if(request()->input('tipoArticulo') == "CITA")
+			llenarDataDetallesCitas()
+		@endif
 	});
+
+	function mostrarDesglose(){
+        var myModal = new bootstrap.Modal(document.getElementById('modalDesglose'));
+        myModal.show();
+    }
 
 	async function consultarDatosFactura(){
         let args = [];
@@ -443,7 +487,7 @@ Veris - Datos de facturación
             "idNavegador": "",
             "idiomaNavegador": "",
             "navegadorUA": "",
-            "executionId": "{{ request()->input('executionId', '') }}",
+            "executionId": dataCita.executionId,
             "canalOrigenDigital": canalOrigen//"VER_CMV"
         });
         const data = await call(args);
@@ -526,6 +570,23 @@ Veris - Datos de facturación
 		});
 	}
 
+	async function llenarDataDetallesCitas(){
+		let elem = ``;
+		$.each(dataCita.facturacion.detalleServicio.citas, function(key, value){
+		    elem = `<p class="text-primary-veris fs--16 line-height-20 fw-medium mb-1">${capitalizarCadaPalabra(value.especialidad)}</p>`;
+	        if(value.esTeleconsulta == "N"){    
+	            elem += `<p class="fw-medium fs--1 line-height-16 mb-1">${capitalizarCadaPalabra(value.centroMedico)}</p>`;
+	        }
+	        elem += `<p class="fs--2 line-height-16 mb-1">${value.fechaHoraCita}</b></p>
+            <p class="fs--2 line-height-16 mb-1 text-capitalize">Dr(a) ${value.doctor.toLowerCase()}</p>
+            <p class="fs--2 line-height-16 mb-1 text-capitalize">${value.nombresPaciente.toLowerCase()}</p>`;
+	        if(value.convenio != null && value.convenio != ""){
+	            elem += `<p class="fs--2 line-height-16 mb-1 text-capitalize">${ value.convenio.toLowerCase() }</p>`
+	        }
+		})
+		$('#contentDetalleCita').html(elem);
+    }
+
 	function createPostForm(response) {
 		var $form = $('<form>', {
 			method: 'POST',
@@ -601,6 +662,144 @@ Veris - Datos de facturación
 		$form.submit();
 
 	}
+
+	function addPrestacionesToModal(){
+        $('#contenidoDesglose').empty();
+        let elem;
+        if(dataCita.datosTratamiento){
+            elem = `<div class="row">
+                <div class="col-12 text-center fw-medium fs--1 mb-2">${dataCita.datosTratamiento.nombrePaciente}</div>`
+            
+            $.each(dataCita.listadoPrestaciones, function(key, value){
+                elem += `<div class="col-12 col-md-6 mb-3">
+                    <p class="text-start text-nowrap overflow-hidden text-truncate fs--2 mb-1">${value.nombrePrestacion}</p>
+                    <div class="card bg-neutral shadow-none p-2">
+                        <table class="card-body w-100">
+                            <tr class="border-bottom">
+                                <th class="fw-medium fs--2">P.V.P.</th>
+                                <th class="fw-medium fs--2">Crédito/convenio</th>
+                                <th class="fw-medium fs--2">IVA</th>
+                                <th class="fw-medium fs--2">TOTAL</th>
+                            </tr>
+                            <tr>
+                                <td class="fs--2">$${value.subtotal.toFixed(2)}</td>
+                                <td class="fs--2">$${value.cubreEmpresa.toFixed(2)}</td>
+                                <td class="fs--2">$${value.montoIva.toFixed(2)}</td>
+                                <td class="fs--2">$${value.total.toFixed(2)}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>`;
+            });
+            elem += `</div>`;
+            if(dataCita.listadoPrestaciones.length < 2){
+                $('.modalDesglose-size').removeClass('modal-lg');
+                $('.modalDesglose-size').addClass('modal-md');
+            }else{
+                $('.modalDesglose-size').removeClass('modal-md');
+                $('.modalDesglose-size').addClass('modal-lg');
+            }
+        }else{
+            if(dataCita.facturacion.detalleServicio.detallePaquetes === null){
+                $.each(dataCita.facturacion.detalleServicio.detallePacientes, function(key, value){
+                    elem = `<div class="row">
+                        <div class="col-12 text-center fw-medium fs--1 mb-2">${value.nombrePaciente}</div>`
+                    
+                    // $.each(dataCita.facturacion.detalleServicio.detalleOrdenes, function(key, value){
+                    $.each(value.detalleExamenes, function(key, value){
+                        elem += `<div class="col-12 col-md-6 mb-3">
+                            <p class="text-start text-nowrap overflow-hidden text-truncate fs--2 mb-1">${value.nombreExamen}</p>
+                            <div class="card bg-neutral shadow-none p-2">
+                                <table class="card-body w-100">
+                                    <tr class="border-bottom">
+                                        <th class="fw-medium fs--2">P.V.P.</th>
+                                        <th class="fw-medium fs--2">Crédito/convenio</th>
+                                        <th class="fw-medium fs--2">IVA</th>
+                                        <th class="fw-medium fs--2">TOTAL</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs--2">$${value.valorPaciente.toFixed(2)}</td>
+                                        <td class="fs--2">$${value.valorCubreEmpresa.toFixed(2)}</td>
+                                        <td class="fs--2">$${value.iva.toFixed(2)}</td>
+                                        <td class="fs--2">$${value.valorVenta.toFixed(2)}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>`;
+                    });
+                    elem += `</div>`;
+                })
+                if(dataCita.facturacion.detalleServicio.detalleOrdenes.length < 2){
+                    $('.modalDesglose-size').removeClass('modal-lg');
+                    $('.modalDesglose-size').addClass('modal-md');
+                }else{
+                    $('.modalDesglose-size').removeClass('modal-md');
+                    $('.modalDesglose-size').addClass('modal-lg');
+                }
+            }else{
+                elem = `<div class="row">
+                    <div class="col-12 text-center fw-medium fs--1 mb-2">Prestaciones</div>`
+                $.each(dataCita.facturacion.detalleServicio.detalleOrdenes, function(key, value){
+                    
+                    // $.each(dataCita.facturacion.detalleServicio.detalleOrdenes, function(key, value){
+                    //$.each(value.detalleExamenes, function(key, value){
+                        elem += `<div class="col-12 col-md-6 mb-3">
+                            <p class="text-start text-nowrap overflow-hidden text-truncate fs--2 mb-1">${value.nombrePrestacion}</p>
+                            <div class="card bg-neutral shadow-none p-2">
+                                <table class="card-body w-100">
+                                    <tr class="border-bottom">
+                                        <th class="fw-medium fs--2">P.V.P.</th>
+                                        <th class="fw-medium fs--2">Crédito/convenio</th>
+                                        <th class="fw-medium fs--2">IVA</th>
+                                        <th class="fw-medium fs--2">TOTAL</th>
+                                    </tr>
+                                    <tr>
+                                        <td class="fs--2">$${value.valorPaciente.toFixed(2)}</td>
+                                        <td class="fs--2">$${value.valorCubreEmpresa.toFixed(2)}</td>
+                                        <td class="fs--2">$${value.iva.toFixed(2)}</td>
+                                        <td class="fs--2">$${value.valorVenta.toFixed(2)}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>`;
+                    //});
+                })
+                elem += `</div>`;
+                if(dataCita.facturacion.detalleServicio.detalleOrdenes.length < 2){
+                    $('.modalDesglose-size').removeClass('modal-lg');
+                    $('.modalDesglose-size').addClass('modal-md');
+                }else{
+                    $('.modalDesglose-size').removeClass('modal-md');
+                    $('.modalDesglose-size').addClass('modal-lg');
+                }
+            }
+            /*elem = `<div class="row">
+                <div class="col-12 text-center fw-medium fs--1 mb-2">${dataCita.ordenExterna.pacientes[0].nombrePacienteOrden}</div>`
+            
+                elem += `<div class="col-12 mb-3">
+                    <div class="card bg-neutral shadow-none p-2">
+                        <table class="card-body w-100">
+                            <tr class="border-bottom">
+                                <th class="fw-medium fs--2 mb-2">Nro. Orden</th>
+                                <th class="fw-medium fs--2 mb-2">Detalle</th>
+                            </tr>`
+                $.each(dataCita.ordenExterna.pacientes[0].examenes, function(key, value){
+                    elem += `<tr>
+                                <td class="fs--2 pb-2">${value.numeroOrden}</td>
+                                <td class="fs--2 pb-2 text-nowrap overflow-hidden text-truncate">${value.nombreExamen}</td>
+                            </tr>`;
+                });
+                        `</table>
+                    </div>
+                </div>`;
+            elem += `</div>`;
+            if(dataCita.ordenExterna.pacientes[0].examenes.length < 2){
+                $('.modalDesglose-size').removeClass('modal-lg');
+                $('.modalDesglose-size').addClass('modal-md');
+            }*/
+        }
+        $('#contenidoDesglose').append(elem);
+    }
 
     function guardarData(){
         dataCita.datosIngresadosFactura = {            
