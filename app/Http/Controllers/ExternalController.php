@@ -213,6 +213,10 @@ class ExternalController extends Controller
         }
     }
 
+    public function loginQr(){
+        return view('external.qr_farmacia.login_qr_farmacia');
+    }
+
     public function comprobantePago(Request $request){
         $queryString = $request->getQueryString();
         $codigoEPagoNuvei = urldecode($queryString);
