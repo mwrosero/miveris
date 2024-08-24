@@ -191,7 +191,7 @@ class ExternalController extends Controller
             $data = array(
                 "tipoIdentificacion" => $urlParams['tipoIdentificacionNuvei'],
                 "numeroIdentificacion" => $urlParams['numeroIdentificacionNuvei'],
-                "codigoTransaccion" => $urlParams['canalOrigenNuvei'],
+                "codigoTransaccion" => $urlParams['codigoEPagoNuvei'],
                 "canalOrigenDigital" => $urlParams['canalOrigenNuvei'],
                 "datosNuvei" => $datosNuveiArray
             );
