@@ -213,7 +213,7 @@ Mi Veris - Politica-privacidad-datos
         }
         await obtenerDatosUsuario();
         provincias = await obtenerProvincias();
-        ciudades = await obtenerCiudades(codeprovincia);
+        ciudades = await obtenerCiudades(1,codeprovincia);
         llenarDatosUsuario(provincias, ciudades);
 
         toggleFieldsBasedOnRectificationOption();
@@ -450,8 +450,9 @@ Mi Veris - Politica-privacidad-datos
 
     // actualizar el select de ciudades cuando selecciono provincia
    $( "#provincia").change(async function () {
+        let codigoPais = getInput('pais');
         let codeprovincia = $(this).val();
-        ciudades = await obtenerCiudades(codeprovincia);
+        ciudades = await obtenerCiudades(codigoPais,codeprovincia);
         $('#ciudad').empty();
         $.each(ciudades, function (index, value) {
             $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
