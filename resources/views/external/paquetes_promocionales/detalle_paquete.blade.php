@@ -20,7 +20,8 @@ Veris - Detalle Promoción
             <div class="card bg-transparent shadow-none">
                 <div class="card-body px-0">
                     <div class="text-center mb--32">
-                        <img src="{{ asset('assets/img/svg/veris-v60.svg') }}" class="img-fluid mb-3" alt="{{ __('veris') }}">
+                        {{-- <img src="{{ asset('assets/img/svg/veris-v60.svg') }}" class="img-fluid mb-3" alt="{{ __('veris') }}"> --}}
+                        <img src="" id="img-plan" class="w-25 mb-3 d-none" alt="{{ __('veris') }}">
                         <h4 class="fs-24" id="nombrePaquete"></h4>
                     </div>
                     <p class="text-veris fs--1 fw-bold mb-2 d-none text-center" id="porcentajeDescuento"></p>
@@ -50,8 +51,8 @@ Veris - Detalle Promoción
     let local = localStorage.getItem('external-cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
+        $('#img-plan').attr('src',dataCita.paquete.urlImagen).removeClass('d-none');
         $('#nombrePaquete').html(capitalizarElemento(dataCita.paquete.nombrePaquete));
-
         $('#descripcionPaquete').html(dataCita.paquete.descripcionPaquete);
 
         // if(dataCita.paquete.idPaciente !== null){
