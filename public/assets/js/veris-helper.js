@@ -19,16 +19,29 @@ async function call(args){
     
     let requestOptions = {
         method: args.method,
-        redirect: 'follow'
+        redirect: 'follow',
+        headers: []
     };
     
     let myHeaders = new Headers();
     myHeaders.append("Accept-Language", "es");
     if(args.bodyType == "json"){
         myHeaders.append("Content-Type", "application/json");
-        //requestOptions.headers = myHeaders;
+    }
+    if(args.token){
+        console.log(args.token)
+        myHeaders.append("Authorization","Bearer "+ args.token);
+        myHeaders.append("Application", _application);
+        myHeaders.append("IdOrganizacion", _idOrganizacion);
+        // requestOptions.headers = ({
+        //     "Authorization": "Bearer "+ args.token,
+        //     "Application": _application,
+        //     "IdOrganizacion": _idOrganizacion
+        // });
     }
     requestOptions.headers = myHeaders;
+    // console.log(myHeaders);
+    console.log(requestOptions);
         
     // myHeaders.append("Application", _application);
     // myHeaders.append("IdOrganizacion", _idOrganizacion);

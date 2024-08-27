@@ -33,100 +33,150 @@ class ExternalController extends Controller
             ->with('params',$params);
     }
 
+    public function paymentServices(Request $request){
+        $urlParams = $request->all();
+        dd($urlParams['codigoPreTransaccion']);
+    }
+
     public function payment(Request $request){
         $urlParams = $request->all();
-        $method = '/'.Veris::BASE_WAR.'/v1/seguridad/cuenta?tipoIdentificacion='.$urlParams['tipoIdentificacion'].'&numeroIdentificacion='.$urlParams['numeroIdentificacion'];
 
-        $list_paciente = Veris::call([
-            'endpoint' => Veris::BASE_URL.$method,
-            'method'   => 'GET'
-        ]);
-        // dd($response->data);
-        $idPaciente = $list_paciente->data->numeroPaciente;
-        $data = array(
-            "idPaciente" => $idPaciente,
-            "codigoConvenio" =>  null,
-            "secuenciaAfiliado" =>  null,
-            "idPaciente" => null,
-            "codigoConvenio" => null,
-            "codigoSolicitud" => null
-        );
+        if ($request->has('codigoPreTransaccion')) {
+            $accessToken = $this->getTokenExternalFacturacion();
+            $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
+            // $method = '/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
+            $codigoEmpresa = 1;
+            if($request->has('codigoEmpresa')){
+                $codigoEmpresa = $urlParams['codigoEmpresa'];
+            }
+            $params = '?codigoEmpresa='.$codigoEmpresa.'&idPreTransaccion='.$_REQUEST['codigoPreTransaccion'];
+            $response = Veris::call([
+                'endpoint' => Veris::BASE_URL.$method.$params,
+                'token'    => $accessToken,
+                'method'   => 'GET'
+            ]);
+            // echo Veris::BASE_URL.$method.$params;
+            // dump($response);
 
-        switch ($urlParams['tipoArticulo']) {
-            case 'CITA':
-            case 'CITA_ODO':
-                $data["idPaciente"] = $list_paciente->data->numeroPaciente;
-                $data["tipoSolicitud"] = null;
-                $data["tipoServicio"] = $urlParams['tipoArticulo'];
-                $data["listaCitas"] = [array(
-                        "codigoReserva" => $urlParams['codArticulo']
-                    )];
-            break;
-            case 'DOM':
-                $data["idPaciente"] = $list_paciente->data->numeroPaciente;
-                $data["tipoSolicitud"] = "LAB";
-                $data["tipoServicio"] = "DOMICILIO";
-                $data["codigoSolicitud"] = $urlParams['codArticulo'];
-                $data["listaCitas"] = [];
-                $data["listaOrdenes"] = [];
-            break;
-            case 'ORDEN':
-                $data["idPaciente"] = $list_paciente->data->numeroPaciente;
-                $data["tipoSolicitud"] = null;
-                $data["tipoServicio"] = "ORDEN";
-                $data["codigoSolicitud"] = null;
-                $data["listaCitas"] = [];
-                $codigos = explode("|", $urlParams['codArticulo']);
-                $ordenes = [];
-                foreach ($codigos as $value) {
-                    array_push($ordenes, array(
-                        "numeroOrden" => $value,
-                        "lineaDetalle" =>null,
-                        "codigoEmpresa" =>null
-                    ));
-                }
-                $data["listaOrdenes"] = $ordenes;
-            break;
-            case 'PAQUETE':
-                $data["idPaciente"] = $list_paciente->data->numeroPaciente;
-                if(isset($urlParams['canalOrigen']) && $urlParams['canalOrigen'] == "WEBSITE"){
-                    $tramaPaquete = array(
-                        "codigoPaquete" => $urlParams['codArticulo']
-                    );
+            if($response->code != 200 || !isset($response->data) || $response->data->estaPagada){
+                $message = ( $response->code != 200 || !isset($response->data) ) ? (isset($response->data)) ? $response->message : "No existe información relacionada que pagar" : "El Servicio ya se encuentra pagado";
+                return view('external.pasarela.error')
+                        ->with('showButtonRePay', false)
+                        ->with('error',$message);
+            }else{
+                if(strlen($response->data->numeroIdentificacionFactura) == 10){
+                    $tipoIdentificacionFac = 2;
                 }else{
-                    $tramaPaquete = array(
-                        "codigoOrdenPaquete" => $urlParams['codArticulo']
-                    );
+                    $tipoIdentificacionFac = 1;
                 }
-                $data["tipoSolicitud"] = null;
-                $data["tipoServicio"] = $urlParams['tipoArticulo'];
-                $data["paquete"] = $tramaPaquete;
-            break;  
-            default:
-                // code...
-                break;
-        }
-        
-        $method = '/'.Veris::BASE_WAR.'/v1/facturacion/crear_pretransaccion?canalOrigen='.Veris::CANAL_ORIGEN;
+                $method = '/'.Veris::BASE_WAR.'/v1/seguridad/cuenta?tipoIdentificacion='.$tipoIdentificacionFac.'&numeroIdentificacion='.$response->data->numeroIdentificacionFactura;
 
-        $response_pretrx = Veris::call([
-            'endpoint' => Veris::BASE_URL.$method,
-            'method'   => 'POST',
-            'data'     => $data
-        ]);
-        // echo Veris::BASE_URL.$method;
-        // dump($data);
-        // dd($response_pretrx);
-        if($response_pretrx->code == 200){
-            return view('external.pasarela.datos_facturacion')
-                    ->with('paciente',$list_paciente)
-                    ->with('urlRetornoPago', http_build_query($urlParams))
-                    ->with('pretransaccion',$response_pretrx);
+                $list_paciente = Veris::call([
+                    'endpoint' => Veris::BASE_URL.$method,
+                    'method'   => 'GET'
+                ]);
+                return view('external.pasarela.pago_servicios')
+                            ->with('info',$response->data)
+                            ->with('accessToken',$accessToken)
+                            ->with('paciente',$list_paciente->data)
+                            ->with('codigoEmpresa',$codigoEmpresa);
+            }
+
         }else{
-            // dd(http_build_query($urlParams)); //MEJORAR
-            return view('external.pasarela.error')
-                    ->with('showButtonRePay', false)
-                    ->with('error',$response_pretrx->message);//'El servicio ya se encuentra pagado o no tiene detalles disponibles'
+
+            $method = '/'.Veris::BASE_WAR.'/v1/seguridad/cuenta?tipoIdentificacion='.$urlParams['tipoIdentificacion'].'&numeroIdentificacion='.$urlParams['numeroIdentificacion'];
+
+            $list_paciente = Veris::call([
+                'endpoint' => Veris::BASE_URL.$method,
+                'method'   => 'GET'
+            ]);
+            // dd($response->data);
+            $idPaciente = $list_paciente->data->numeroPaciente;
+            $data = array(
+                "idPaciente" => $idPaciente,
+                "codigoConvenio" =>  null,
+                "secuenciaAfiliado" =>  null,
+                "idPaciente" => null,
+                "codigoConvenio" => null,
+                "codigoSolicitud" => null
+            );
+
+            switch ($urlParams['tipoArticulo']) {
+                case 'CITA':
+                case 'CITA_ODO':
+                    $data["idPaciente"] = $list_paciente->data->numeroPaciente;
+                    $data["tipoSolicitud"] = null;
+                    $data["tipoServicio"] = $urlParams['tipoArticulo'];
+                    $data["listaCitas"] = [array(
+                            "codigoReserva" => $urlParams['codArticulo']
+                        )];
+                break;
+                case 'DOM':
+                    $data["idPaciente"] = $list_paciente->data->numeroPaciente;
+                    $data["tipoSolicitud"] = "LAB";
+                    $data["tipoServicio"] = "DOMICILIO";
+                    $data["codigoSolicitud"] = $urlParams['codArticulo'];
+                    $data["listaCitas"] = [];
+                    $data["listaOrdenes"] = [];
+                break;
+                case 'ORDEN':
+                    $data["idPaciente"] = $list_paciente->data->numeroPaciente;
+                    $data["tipoSolicitud"] = null;
+                    $data["tipoServicio"] = "ORDEN";
+                    $data["codigoSolicitud"] = null;
+                    $data["listaCitas"] = [];
+                    $codigos = explode("|", $urlParams['codArticulo']);
+                    $ordenes = [];
+                    foreach ($codigos as $value) {
+                        array_push($ordenes, array(
+                            "numeroOrden" => $value,
+                            "lineaDetalle" =>null,
+                            "codigoEmpresa" =>null
+                        ));
+                    }
+                    $data["listaOrdenes"] = $ordenes;
+                break;
+                case 'PAQUETE':
+                    $data["idPaciente"] = $list_paciente->data->numeroPaciente;
+                    if(isset($urlParams['canalOrigen']) && $urlParams['canalOrigen'] == "WEBSITE"){
+                        $tramaPaquete = array(
+                            "codigoPaquete" => $urlParams['codArticulo']
+                        );
+                    }else{
+                        $tramaPaquete = array(
+                            "codigoOrdenPaquete" => $urlParams['codArticulo']
+                        );
+                    }
+                    $data["tipoSolicitud"] = null;
+                    $data["tipoServicio"] = $urlParams['tipoArticulo'];
+                    $data["paquete"] = $tramaPaquete;
+                break;  
+                default:
+                    // code...
+                    break;
+            }
+            
+            $method = '/'.Veris::BASE_WAR.'/v1/facturacion/crear_pretransaccion?canalOrigen='.Veris::CANAL_ORIGEN;
+
+            $response_pretrx = Veris::call([
+                'endpoint' => Veris::BASE_URL.$method,
+                'method'   => 'POST',
+                'data'     => $data
+            ]);
+            // echo Veris::BASE_URL.$method;
+            // dump($data);
+            // dd($response_pretrx);
+            if($response_pretrx->code == 200){
+                return view('external.pasarela.datos_facturacion')
+                        ->with('paciente',$list_paciente)
+                        ->with('urlRetornoPago', http_build_query($urlParams))
+                        ->with('pretransaccion',$response_pretrx);
+            }else{
+                // dd(http_build_query($urlParams)); //MEJORAR
+                return view('external.pasarela.error')
+                        ->with('showButtonRePay', false)
+                        ->with('error',$response_pretrx->message);//'El servicio ya se encuentra pagado o no tiene detalles disponibles'
+            }
         }
     }
 
@@ -246,6 +296,9 @@ class ExternalController extends Controller
                 'data'     => $data
             ]);
 
+            // dump($data);
+            // dd($response);
+
             if($response->code != 200){
                 return view('external.pasarela.error')
                     ->with('showButtonRePay', false)
@@ -259,7 +312,6 @@ class ExternalController extends Controller
                 'method'   => 'GET'
             ]);
         }
-
         return view('external.pasarela.comprobante_pago')
             ->with('data',$list);
     }
