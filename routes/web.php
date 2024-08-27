@@ -48,6 +48,7 @@ Route::middleware('guest')->group(function () {
         Route::get('/planes-promocionales/detalle/{params}', [ExternalController::class, 'detallePaquete'])->name('detalle-paquete')->withoutMiddleware(['guest']);
         Route::get('/planes-promocionales/asignar/{params}', [ExternalController::class, 'asignarPaquete'])->name('asignar-paquete')->withoutMiddleware(['guest']);
         Route::get('/payment/', [ExternalController::class, 'payment'])->name('pago-citas')->withoutMiddleware(['guest']);
+        // Route::get('/payment/services/', [ExternalController::class, 'paymentServices'])->name('pago-servicios')->withoutMiddleware(['guest']);
         Route::get('/payment/kushki/{params}', [ExternalController::class, 'pagoExternoKushki'])->name('pago-kushki-externo')->withoutMiddleware(['guest']);
         Route::post('/payment/kushki/procesar/{params}', [ExternalController::class, 'procesarExternoKushki'])->name('procesar-pago-kushki-externo')->withoutMiddleware(['guest']);
         
