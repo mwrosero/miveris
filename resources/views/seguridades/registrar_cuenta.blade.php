@@ -166,7 +166,7 @@
 	            placeholder="Ingresa tu segundo apellido"
 	            required />
 	    </div>
-	    <div class="mb-2 d-none">
+	    <div class="mb-2">
 	        <label for="pais" class="form-label fw-medium fs--1">País *</label>
 	        <select class="form-select fs--1 p-3"
 	            id="pais"
