@@ -16,14 +16,14 @@ Veris - Despacho Farmacia
         <div class="card shadow-none">
             <div class="card-body px-0 px-md-4">
                 <div class="text-center mb-4">
-                    <img class="logo-login" src="../../../assets/img/veris/icono.svg">
+                    <img class="logo-login" src="../../../assets/img/{{ config('app.subdomain') }}/icono.svg">
                 </div>
                 <!-- /Logo -->
-                <form id="formAuthentication" class="mb-3" action="/autenticar" method="POST">
+                <form id="formAuthentication" class="mb-3" action="/external/farmacia/qr/autenticar" method="POST">
                     @csrf
-                    @if (session()->has('mensaje'))
+                    @if (session()->has('alert'))
                         <div class="alert alert-warning">
-                            {{ session('mensaje') }}
+                            {{ session('alert') }}
                         </div>
                     @endif
                     @if($errors->has('csrf_token'))

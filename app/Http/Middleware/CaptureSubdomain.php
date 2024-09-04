@@ -18,12 +18,17 @@ class CaptureSubdomain
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $ambiente = env('APP_ENV');
         $host = $request->getHost();
-        $subdomain = explode('.', $host)[1];
+        if($ambiente == 'prod'){
+            $subdomain = explode('.', $host)[1];
+        }else{
+            $subdomain = explode('.', $host)[2];
+        }
         // dd($subdomain);
-        // Session::put('subdomain', $subdomain);
         Session::forget('subdomain');
-        Session::put('subdomain', 'veris');
+        Session::put('subdomain', $subdomain);
+        // Session::put('subdomain', 'veris');
         config(['app.subdomain' => Session::get('subdomain')]);
         // dump(Session::get('subdomain'));
         

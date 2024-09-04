@@ -264,6 +264,9 @@ class ExternalController extends Controller
     }
 
     public function loginQr(){
+        if (Session::has('userDataExternal')) {
+            return redirect('/external/farmacia/qr/gestion');
+        }
         return view('external.qr_farmacia.login_qr_farmacia');
     }
 
@@ -316,6 +319,43 @@ class ExternalController extends Controller
             ->with('data',$list);
     }
 
+    public function autenticarQr(Request $request){
+        $urlParams = $request->all();
+        $accessToken = $this->getTokenExternalEpi();
+
+        $method = '/loginUser';
+        $response = Veris::call([
+            'endpoint' => Veris::URL_EPI.$method,
+            'token'    => $accessToken,
+            'method'   => 'POST',
+            'data'     => ["user"=>strtoupper($_POST['numeroIdentificacion']),"pass"=>$_POST['password']]
+        ]);
+        // dd($response);
+        
+        if($response->codigo == 0){
+            $isDespacho = false;
+            foreach ($response->lsUsuarioXRol as $key => $value) {
+                if($value->codigoRol == "DESPACHO_FARMACIA"){
+                    $isDespacho = true;
+                }
+            }
+            if($isDespacho){
+                Session::put('userDataExternal', $response->usuario);
+                return redirect('/external/farmacia/qr/gestion');
+            }else{
+                session()->flash('alert', "Rol de usuario no permitido");
+                return redirect('/external/farmacia/qr');
+            }
+        }else{
+            session()->flash('alert', "Usuario incorrecto");
+            return redirect('/external/farmacia/qr');
+        }
+    }
+    
+    public function gestionQr(){
+        dd(0);
+    }
+
     public function getTokenExternalDigitales(){
         $token = session('accessTokenDigitales', null);
 
@@ -332,6 +372,24 @@ class ExternalController extends Controller
         // dd($response->data->tokenPush);
         session(['accessTokenDigitales' => $response->data->tokenPush]);
         return $response->data->tokenPush;
+    }
+
+    public function getTokenExternalEpi(){
+        $token = session('accessTokenEpi', null);
+
+        if( $token !== null ){
+            //return $token;
+        }
+
+        $method = '/login';
+        $response = Veris::call([
+            'endpoint' => Veris::URL_EPI.$method,
+            'basic' => Veris::BASICAUTHEPI,
+            'method'   => 'POST'
+        ]);
+        // dd($response->accesToken);
+        // session(['accessTokenEpi' => $response->accesToken]);
+        return $response->accesToken;
     }
 
     public function getTokenExternalFacturacion(){
