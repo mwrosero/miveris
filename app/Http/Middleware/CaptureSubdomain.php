@@ -20,11 +20,12 @@ class CaptureSubdomain
     {
         $ambiente = env('APP_ENV');
         $host = $request->getHost();
-        if($ambiente == 'prod'){
+        $subdomain = explode('.', $host)[1];
+        /*if($ambiente == 'prod'){
             $subdomain = explode('.', $host)[1];
         }else{
             $subdomain = explode('.', $host)[2];
-        }
+        }*/
         // dd($subdomain);
         Session::forget('subdomain');
         Session::put('subdomain', $subdomain);
