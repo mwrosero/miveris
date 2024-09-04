@@ -11,34 +11,38 @@ class Veris extends Model
 {
     use HasFactory;
     //DEV
-    public const BASE_URL = 'https://api-phantomx.veris.com.ec';
-    public const BASE_WAR = 'digitalestest';
-    public const FACTURACION_WAR = 'seguridadtest';
-    public const CANAL_ORIGEN = 'MVE_CMV';
-    public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
-    public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';//365509c8-9596-4506-a5b3-487782d5876e
-    public const KUSHKI_MERCHANT_ID = '10000003012872942409151942277385';
-    public const ENVIRONMENT_NUVEI = "stg";
-    public const TEST_ENVIRONMENT_KUSHKI = true;
-    public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
-    public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
-    public const BASICAUTHFACTURACION = 'QkFDS0VORFBIQU5UT006Q2xAdmUxMjM0';
-    public const NEMONICO_FLUJO_PAGO = 'PRE_TRANSACCIONES';
+    // public const BASE_URL = 'https://api-phantomx.veris.com.ec';
+    // public const BASE_WAR = 'digitalestest';
+    // public const FACTURACION_WAR = 'seguridadtest';
+    // public const CANAL_ORIGEN = 'MVE_CMV';
+    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
+    // public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';//365509c8-9596-4506-a5b3-487782d5876e
+    // public const KUSHKI_MERCHANT_ID = '10000003012872942409151942277385';
+    // public const ENVIRONMENT_NUVEI = "stg";
+    // public const TEST_ENVIRONMENT_KUSHKI = true;
+    // public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
+    // public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
+    // public const BASICAUTHFACTURACION = 'QkFDS0VORFBIQU5UT006Q2xAdmUxMjM0';
+    // public const NEMONICO_FLUJO_PAGO = 'PRE_TRANSACCIONES';
+    // public const URL_EPI = 'http://ecstest.veris.com.ec/Verisrest/v1/formularioepi1';
+    // public const BASICAUTHEPI = 'd3Nmb3JtdWxhcmlvZXBpMTpDQVM1Nzg5Yjg2TWRyNUYwcm11bGFyMTAzcGkxKg==';
 
     //PROD
-    // public const BASE_URL = 'https://api.phantomx.com.ec';
-    // public const BASE_WAR = 'digitales';
-    // public const FACTURACION_WAR = 'seguridad';
-    // public const CANAL_ORIGEN = 'MVE_CMV';
-    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
-    // public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
-    // public const KUSHKI_MERCHANT_ID = '1012311620855990918315314280226';
-    // public const ENVIRONMENT_NUVEI = "prod";
-    // public const TEST_ENVIRONMENT_KUSHKI = false;
-    // public const AMPLITUDE = "93127ac840f734cdcc8bf469f8bc95d5";
-    // public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
-    // public const BASICAUTHFACTURACION = 'YmFja2VuZHBoYW50b206QmFja1BAbnRoMG1QQHNzMjAyMQ==';
-    // public const NEMONICO_FLUJO_PAGO = 'PRE_TRANSACCIONES';
+    public const BASE_URL = 'https://api.phantomx.com.ec';
+    public const BASE_WAR = 'digitales';
+    public const FACTURACION_WAR = 'seguridad';
+    public const CANAL_ORIGEN = 'MVE_CMV';
+    public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
+    public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
+    public const KUSHKI_MERCHANT_ID = '1012311620855990918315314280226';
+    public const ENVIRONMENT_NUVEI = "prod";
+    public const TEST_ENVIRONMENT_KUSHKI = false;
+    public const AMPLITUDE = "93127ac840f734cdcc8bf469f8bc95d5";
+    public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
+    public const BASICAUTHFACTURACION = 'YmFja2VuZHBoYW50b206QmFja1BAbnRoMG1QQHNzMjAyMQ==';
+    public const NEMONICO_FLUJO_PAGO = 'PRE_TRANSACCIONES';
+    public const URL_EPI = 'https://phantom-wsexternos.phantomx.com.ec/Verisrest/v1/formularioepi1';
+    public const BASICAUTHEPI = 'd3Nmb3JtdWxhcmlvZXBpMTpDQVM1Nzg5Yjg2TWRyNUYwcm11bGFyMTAzcGkxKg==';
 
     static function call(Array $config)
     {

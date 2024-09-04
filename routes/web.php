@@ -56,10 +56,18 @@ Route::middleware('guest')->group(function () {
 
         Route::get('/payment/comprobante', [ExternalController::class, 'comprobantePago'])->name('comprobante-pago')->withoutMiddleware(['guest']);
 
-        Route::get('/farmacia/qr/', [ExternalController::class, 'loginQr'])->name('login-qr')->withoutMiddleware(['guest']);
+        Route::get('/farmacia/qr', [ExternalController::class, 'loginQr'])->name('login-qr')->withoutMiddleware(['guest']);
+
+        Route::post('/farmacia/qr/autenticar', [ExternalController::class, 'autenticarQr'])->name('autenticar-qr')->withoutMiddleware(['externalVeris']);
 
     });
 
+});
+
+Route::group(['middleware' => ['loggedExternalUser']], function () {
+    Route::prefix('external')->group(function () {
+        Route::get('/farmacia/qr/gestion', [ExternalController::class, 'gestionQr'])->name('gestion-qr')->withoutMiddleware(['externalVeris']);
+    });
 });
 
 Route::group(['middleware' => ['loggedUser']], function () {
