@@ -51,6 +51,7 @@ Route::middleware('guest')->group(function () {
         // Route::get('/payment/services/', [ExternalController::class, 'paymentServices'])->name('pago-servicios')->withoutMiddleware(['guest']);
         Route::get('/payment/kushki/{params}', [ExternalController::class, 'pagoExternoKushki'])->name('pago-kushki-externo')->withoutMiddleware(['guest']);
         Route::post('/payment/kushki/procesar/{params}', [ExternalController::class, 'procesarExternoKushki'])->name('procesar-pago-kushki-externo')->withoutMiddleware(['guest']);
+        Route::get('/payment/error', [ExternalController::class, 'showErrorPayment'])->name('payment-error')->withoutMiddleware(['guest']);
         
         Route::post('/payment/nuvei/procesar/{params}', [ExternalController::class, 'procesarExternoNuvei'])->name('procesar-pago-nuvei-externo')->withoutMiddleware(['guest']);
 

@@ -36,6 +36,8 @@
             /></noscript>
             <!-- End Facebook Pixel Code -->
     <script>
+        const merchantId = '{{ \App\Models\Veris::KUSHKI_MERCHANT_ID }}';
+        const kushkiEnvironment = Boolean({{ \App\Models\Veris::IS_KUSHKI_TEST_ENVIRONMENT }});
         const token = "{{ $accesToken }}";
         const tokenCita = "{{ $tokenCita }}";
         const environment_nuvei = '{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}';
@@ -66,6 +68,7 @@
     <script src="{{ asset('assets/external/embudo_agendamiento/js/datepicker.es.js')}}"></script>
     <script src="{{ asset('assets/external/embudo_agendamiento/js/ruc_jquery_validator.min.js')}}"></script>
     <script src="{{ asset('assets/external/embudo_agendamiento/owlcarousel/owl.carousel.min.js')}}"></script>
+    <script src="https://cdn.kushkipagos.com/kushki-checkout.js" charset="utf-8"></script>
 
     <div class="loader-box">
         <div class="loader"></div>
@@ -722,6 +725,8 @@
                                                     <form class="kushki-pay-form" id="kushki-pay-form" action="/external/payment/kushki/procesar/{{ $tokenCita }}" method="POST">
                                                         @csrf
                                                     </form>
+                                                    <input type="hidden" name="tipoIdentificacionCita" id="tipoIdentificacionCita" form="kushki-pay-form">
+                                                    <input type="hidden" name="numeroIdentificacionCita" id="numeroIdentificacionCita" form="kushki-pay-form">
                                                     <input type="hidden" name="tokenCita" id="tokenCita" form="kushki-pay-form">
                                                     <input type="hidden" name="dataCita" id="dataCita" form="kushki-pay-form">
                                                 </div>

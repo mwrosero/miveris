@@ -77,9 +77,11 @@ Veris - Pago en línea
 												<p class="text-primary-veris fs--16 line-height-20 fw-medium mb-1">{{ $info->nombreServicio }}</p>
 												<p class="fw-medium fs--1 line-height-16 mb-1">Razón social: {{ $info->nombrePersonaFactura }}</p>
 												<p class="fs--2 line-height-16 mb-1">Cédula/RUC: {{ $info->numeroIdentificacionFactura }}</p>
+												@if($esServicioCaja)
 												@foreach ($info->serviciosNivel1 as $servicio)
 													<p class="fs--2 line-height-16 mb-1">{{ $servicio }}</p>
 												@endforeach
+												@endif
 					                        </div>
 					                    </div>
 					                </div>
@@ -299,11 +301,18 @@ Veris - Pago en línea
 	        args["data"] = JSON.stringify({
 	            "codigoEmpresa": parseInt({{ $codigoEmpresa }}),
 	            "codigoEpago": parseInt({{ $info->codigoEpago }}),
+	            @if($esServicioCaja)
 	            "nemonicoFlujoCobro": "{{ \App\Models\Veris::NEMONICO_FLUJO_PAGO }}",
+	            @else
+	            "nemonicoFlujoCobro": "{{ \App\Models\Veris::NEMONICO_FARMACIA }}",
+	            @endif
                 "metadataIdFlujoCobro": {
-                    "codigoIngresoVap": null,
+                    //"codigoIngresoVap": null,
+                    @if($esServicioCaja)
                     "idPreTransaccion": infoTransaccion.codigoPreTransaccion,
-                    "codigoSolicitudServDomicilio": null
+                    @else
+                    "codigoSolicitudServDomicilio": infoTransaccion.codigoSolicitudServDomicilio
+                    @endif
                 },
                 "datosNuvei": responseNuveiApproved
 	        });

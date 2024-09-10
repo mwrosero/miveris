@@ -12,6 +12,12 @@ use App\Models\Veris;
 class ExternalController extends Controller
 {
     public function agendamientoCitas(){
+        // return view('test');
+        // session()->flash('error', "Ningun error");
+        // session()->flash('url', "https://akold.com");
+        // return redirect()->route('payment-error');
+
+
         return view('external.embudo_agendamiento.index_agendamiento')
             ->with('accesToken',$this->getTokenExternalDigitales());
     }
@@ -40,23 +46,32 @@ class ExternalController extends Controller
 
     public function payment(Request $request){
         $urlParams = $request->all();
-
-        if ($request->has('codigoPreTransaccion')) {
+        if ($request->has('codigoPreTransaccion') || $request->has('idSolicitud')) {
+            $esServicioCaja = false;
             $accessToken = $this->getTokenExternalFacturacion();
-            $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
-            // $method = '/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
-            $codigoEmpresa = 1;
-            if($request->has('codigoEmpresa')){
-                $codigoEmpresa = $urlParams['codigoEmpresa'];
+            if($request->has('codigoPreTransaccion')){
+                $esServicioCaja = true;
+                $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
+                $codigoEmpresa = 1;
+                if($request->has('codigoEmpresa')){
+                    $codigoEmpresa = $urlParams['codigoEmpresa'];
+                }
+                $params = '?codigoEmpresa='.$codigoEmpresa.'&idPreTransaccion='.$_REQUEST['codigoPreTransaccion'];
+            }else{
+                $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/farmacia_domicilio';
+                $codigoEmpresa = 1;
+                if($request->has('codigoEmpresa')){
+                    $codigoEmpresa = $urlParams['codigoEmpresa'];
+                }
+                $params = '?codigoEmpresa='.$codigoEmpresa.'&codigoSolicitudServDomicilio='.$_REQUEST['idSolicitud'];
             }
-            $params = '?codigoEmpresa='.$codigoEmpresa.'&idPreTransaccion='.$_REQUEST['codigoPreTransaccion'];
             $response = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method.$params,
                 'token'    => $accessToken,
                 'method'   => 'GET'
             ]);
             // echo Veris::BASE_URL.$method.$params;
-            // dump($response);
+            // dd($response);
 
             if($response->code != 200 || !isset($response->data) || $response->data->estaPagada){
                 $message = ( $response->code != 200 || !isset($response->data) ) ? (isset($response->data)) ? $response->message : "No existe información relacionada que pagar" : "El Servicio ya se encuentra pagado";
@@ -75,8 +90,9 @@ class ExternalController extends Controller
                     'endpoint' => Veris::BASE_URL.$method,
                     'method'   => 'GET'
                 ]);
-                return view('external.pasarela.pago_servicios')
+                return view('external.pasarela.pago_servicios_y_farmacia')
                             ->with('info',$response->data)
+                            ->with('esServicioCaja',$esServicioCaja)
                             ->with('accessToken',$accessToken)
                             ->with('paciente',$list_paciente->data)
                             ->with('codigoEmpresa',$codigoEmpresa);
@@ -188,38 +204,108 @@ class ExternalController extends Controller
     public function procesarExternoKushki(Request $request, $params) {
         //Realizar cobro y validar para donde redireccionar
         $data = $request->all();
+        // dd($data);
         $dataCita = json_decode(utf8_encode(base64_decode(urldecode($data['dataCita']))));
         // $tokenCita = $data['tokenCita'];
+        if($dataCita == null){
+            $returnUrl = "numeroIdentificacion=".$data['numeroIdentificacionCita']."&tipoIdentificacion=".$data['tipoIdentificacionCita']."&codArticulo=".$data['codigoReserva']."&tipoArticulo=CITA";
+            $showButtonRePay = false;
+            $codigoPreTransaccion = $data['idPreTransaccion'];
+            $razonSocial = "";
+            if($data['tipoIdentificacionFact'] == 1){
+                $razonSocial = $data['primerNombreFact'];
+            }
+            $executionId = "";
+            if(isset($data['executionId'])){
+                $executionId = $data['executionId'];
+            }
+            $method = '/'.Veris::BASE_WAR.'/v1/facturacion/crear_transaccion_virtual?idPreTransaccion='.$codigoPreTransaccion;
+            $responseTV = Veris::call([
+                'endpoint' => Veris::BASE_URL.$method,
+                'data' => [
+                    "codigoUsuario" => $data['numeroIdentificacionFact'],
+                    "codigoTipoIdentificacion" => $data['tipoIdentificacionFact'],
+                    "numeroIdentificacion" => $data['numeroIdentificacionFact'],
+                    "nombreFactura" => $razonSocial,
+                    "primerNombre" => $data['primerNombreFact'],
+                    "primerApellido" => $data['primerApellidoFact'],
+                    "segundoApellido" => $data['segundoApellidoFact'],
+                    "direccionFactura" => $data['direccionFact'],
+                    "telefonoFactura" => $data['telefonoFact'],
+                    "emailFactura" => $data['mailFact'],
+                    "modeloDispositivo" => null,
+                    "versionSO" => null,
+                    "plataformaOrigen" => "WEB",
+                    "tipoBoton" => "KUSHKI",
+                    "executionId" => $executionId,
+                    "canalOrigenDigital" => Veris::CANAL_ORIGEN
+                ],
+                'method'   => 'POST'
+            ]);
 
-        $codigoPreTransaccion = $dataCita->preTransaccion->codigoPreTransaccion;
-        $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$codigoPreTransaccion;
+            if($responseTV->code == 200){
+                $codigoTransaccion = $responseTV->data->codigoTransaccion;
+                $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$codigoPreTransaccion;
+                $response = Veris::call([
+                    'endpoint' => Veris::BASE_URL.$method,
+                    'data' => [
+                        "tipoIdentificacion" => $data['tipoIdentificacionFact'],
+                        "numeroIdentificacion" => $data['tipoIdentificacionFact'],
+                        "codigoTransaccion" => $responseTV->data->codigoTransaccion,
+                        "cardToken" => $data['kushkiToken'],
+                        "suscripcionToken" => null,
+                        "nombreTarjetahabiente" => $data['primerNombreFact']." ".$data['primerApellidoFact'],
+                        "emailTarjetahabiente" => $data['mailFact'],
+                        "codigoSuscripcionTarjeta" => null,
+                        "codigoSeguridad" => null,
+                        "canalOrigenDigital" => Veris::CANAL_ORIGEN
+                    ],
+                    'method'   => 'POST'
+                ]);
+            }else{
+                return redirect()->route('payment-error')
+                    ->with('error',$responseTV->message);
+            }
+            
+        }else{
+            $codigoTransaccion = $dataCita->transaccionVirtual->codigoTransaccion;
+            $showButtonRePay = true;
+            $returnUrl = $dataCita->returnUrl;
+            $codigoPreTransaccion = $dataCita->preTransaccion->codigoPreTransaccion;
+            $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$codigoPreTransaccion;
 
-        $response = Veris::call([
-            'endpoint' => Veris::BASE_URL.$method,
-            'data' => [
-                "tipoIdentificacion" => $dataCita->facturacion->datosFactura->codigoTipoIdentificacion,
-                "numeroIdentificacion" => $dataCita->facturacion->datosFactura->codigoTipoIdentificacion,
-                "codigoTransaccion" => $dataCita->transaccionVirtual->codigoTransaccion,
-                "cardToken" => $data['kushkiToken'],
-                "suscripcionToken" => null,
-                "nombreTarjetahabiente" => $dataCita->facturacion->datosFactura->primerNombre." ".$dataCita->facturacion->datosFactura->primerApellido,
-                "emailTarjetahabiente" => $dataCita->facturacion->datosFactura->email,
-                "codigoSuscripcionTarjeta" => null,
-                "codigoSeguridad" => null,
-                "canalOrigenDigital" => Veris::CANAL_ORIGEN
-            ],
-            'method'   => 'POST'
-        ]);
+            $response = Veris::call([
+                'endpoint' => Veris::BASE_URL.$method,
+                'data' => [
+                    "tipoIdentificacion" => $dataCita->facturacion->datosFactura->codigoTipoIdentificacion,
+                    "numeroIdentificacion" => $dataCita->facturacion->datosFactura->codigoTipoIdentificacion,
+                    "codigoTransaccion" => $dataCita->transaccionVirtual->codigoTransaccion,
+                    "cardToken" => $data['kushkiToken'],
+                    "suscripcionToken" => null,
+                    "nombreTarjetahabiente" => $dataCita->facturacion->datosFactura->primerNombre." ".$dataCita->facturacion->datosFactura->primerApellido,
+                    "emailTarjetahabiente" => $dataCita->facturacion->datosFactura->email,
+                    "codigoSuscripcionTarjeta" => null,
+                    "codigoSeguridad" => null,
+                    "canalOrigenDigital" => Veris::CANAL_ORIGEN
+                ],
+                'method'   => 'POST'
+            ]);
+        }
 
-        //dd($response);
+        // dd($response);
 
         if($response->code == 200){
-            return redirect('/external/payment/comprobante?'.base64_encode($dataCita->transaccionVirtual->codigoTransaccion));
+            return redirect('/external/payment/comprobante?'.base64_encode($codigoTransaccion));
         }else{
             // session()->flash('alert', $response->message);
-            return redirect('/external/payment/error/'.$params)
+            // return redirect('/external/payment/error')
+            return redirect()->route('payment-error')
+                    ->with('error',$response->message)
                     ->with('showButtonRePay', true)
-                    ->with('urlRetornoPago', $dataCita->returnUrl);
+                    ->with('urlRetornoPago', $returnUrl);
+            // return view('external.pasarela.error')
+            //         ->with('showButtonRePay', $showButtonRePay)
+            //         ->with('urlRetornoPago', $returnUrl);
         }
     }
 
@@ -257,8 +343,11 @@ class ExternalController extends Controller
             if($list->code == 200){
                 return redirect('/external/payment/comprobante?'.base64_encode($urlParams['codigoEPagoNuvei']));
             }else{
-                session()->flash('alert', $list->message);
-                return redirect('/external/payment/error/'.$params);
+                // session()->flash('alert', $list->message);
+                // return redirect('/external/payment/error/'.$params);
+                return view('external.pasarela.error')
+                    ->with('showButtonRePay', false)
+                    ->with('error', $list->message);
             }
         }
     }
@@ -268,6 +357,10 @@ class ExternalController extends Controller
             return redirect('/external/farmacia/qr/gestion');
         }
         return view('external.qr_farmacia.login_qr_farmacia');
+    }
+
+    public function showErrorPayment(Request $request){
+        return view('external.pasarela.error');
     }
 
     public function comprobantePago(Request $request){
