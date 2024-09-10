@@ -2336,6 +2336,9 @@ function confirmarCita(){
 		
 		//if (response.data.mensaje === "Cita confirmada exitosamente") {
 		if (response.code == 200) {
+
+			$('#tipoIdentificacionCita').val(getValueFI('tipoIdentificacion'));
+			$('#numeroIdentificacionCita').val(getValueFI('numeroIdentificacion'));
 			
 			if ($('input[name="central"]:checked').attr("codigoSucursalPX-rel") == "46") {
 				hideLoader();
@@ -2924,7 +2927,7 @@ async function get_detalle_pagos() {
 				        merchant_id: merchantId,
 				        amount: response.data.totales.total,//valoresPago.valorCanalVirtual , // Monto total
 				        currency: "USD", // Codigo de moneda, por defecto "USD"
-				        inTestEnvironment:false,
+				        inTestEnvironment: kushkiEnvironment,
 				        isDeferred: true,
 				        is_subscription: false // true si se trata de una suscripcion (pago recurrente); false, si no.
 				    });
@@ -3015,7 +3018,7 @@ async function get_detalle_pagos_old() {
 		        merchant_id: merchantId,
 		        amount: valoresPago.valorTotalCopago , // Monto total
 		        currency: "USD", // C�digo de moneda, por defecto "USD"
-		        inTestEnvironment:false,
+		        inTestEnvironment: kushkiEnvironment,
 		        isDeferred: true,
 		        is_subscription: false // true si se trata de una suscripcion (pago recurrente); false, si no.
 		    });

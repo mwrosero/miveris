@@ -24,14 +24,28 @@ Veris - Atención
 							<img class="w-50" src="{{ asset('assets/img/card/no-payment-external.svg') }}" alt="">
 						</div>
 						<div class="card-body p-0 m-0 mb-3 pt-3">
-							<h5 class="mb-0">{{ $error }}</h5>
+							<h5 class="mb-0">
+								@if(isset($error))
+								    {{ $error }}
+								@elseif(session('error'))
+								    {{ session('error') }}
+								@endif
+							</h5>
 						</div>
-						@if($showButtonRePay)
-						<div class="card-footer text-muted">
-							<a href="/external/payment?{{ $urlRetornoPago }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-between align-items-center mt-3" id="btn-next">
-                                <span class="col-12 col-md-8 offset-md-2 shadow-none">Intentar pagar nuevamente</span>
-                            </a>
-						</div>
+						@if(isset($error))
+							@if($showButtonRePay)
+							<div class="card-footer text-muted">
+								<a href="/external/payment?{{ $urlRetornoPago }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-between align-items-center mt-3" id="btn-next">
+	                                <span class="col-12 col-md-8 offset-md-2 shadow-none">Intentar pagar nuevamente</span>
+	                            </a>
+							</div>
+							@endif
+						@else
+							<div class="card-footer text-muted">
+								<a href="/external/payment?{{ session('url') }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-between align-items-center mt-3" id="btn-next">
+	                                <span class="col-12 col-md-8 offset-md-2 shadow-none">Intentar pagar nuevamente</span>
+	                            </a>
+							</div>
 						@endif
 					</div>
 				</div>

@@ -67,6 +67,7 @@
 
 <body>
     @include('template.analytics-no-script');
+    {{-- @include('bot.index') --}}
     <!-- Layout wrapper -->
     
     <div class="layout-wrapper layout-content-navbar">
