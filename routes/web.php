@@ -61,6 +61,7 @@ Route::middleware('guest')->group(function () {
 
         Route::post('/farmacia/qr/autenticar', [ExternalController::class, 'autenticarQr'])->name('autenticar-qr')->withoutMiddleware(['externalVeris']);
 
+        Route::get('/bot', [ExternalController::class, 'bot'])->name('bot')->withoutMiddleware(['guest']);
     });
 
 });
