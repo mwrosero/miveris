@@ -503,4 +503,7 @@ class ExternalController extends Controller
         return $response->data->idToken;
     }
 
+    public function bot(){
+        return view('external.bot.index');
+    }
 }
