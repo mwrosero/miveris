@@ -103,12 +103,12 @@ Veris - Planes Promociones
 									                    </a>
 									                </div>
 									                <div class="swiper-slide">
-									                    <a href="{{route('promociones.promociones')}}">
+									                    <a href="#">
 									                        <div class="card">
 									                            <div class="row g-0 justify-content-between align-items-center">
 									                                <div class="col-7 col-md-7">
 									                                    <div class="card-body p-0 ps-2">
-									                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Ver promociones compradas') }}</h6>
+									                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Comprar planes promociones') }}</h6>
 									                                    </div>
 									                                </div>
 									                                <div class="col-5 col-md-auto text-end">
@@ -119,7 +119,7 @@ Veris - Planes Promociones
 									                    </a>
 									                </div>
 									                <div class="swiper-slide">
-									                    <a href="/servicio-domicilio" >
+									                    <a href="#" >
 									                        <div class="card">
 									                            <div class="row g-0 justify-content-between align-items-center">
 									                                <div class="col-7 col-md-7">
@@ -145,24 +145,16 @@ Veris - Planes Promociones
 											<p>Hola, soy Vericita. Tu asistente inteligente. En qué puedo ayudarte hoy?</p>
 											<span class="time">10:06 am</span>
 										</li>
-										<li class="sender mt-1 mb-1">
-											<p> Hey, Are you there? </p>
-											<span class="time">10:16 am</span>
-										</li>
 										<li class="reply mt-1 mb-1">
-											<p>yes!</p>
+											<p>Si, quiero agendar una cita médica</p>
 											<span class="time">10:20 am</span>
 										</li>
 										<li class="sender mt-1 mb-1">
-											<p> Hey, Are you there? </p>
+											<p>Por supuesto, ayúdame con tu número de identificación</p>
 											<span class="time">10:26 am</span>
 										</li>
-										<li class="sender mt-1 mb-1">
-											<p> Hey, Are you there? </p>
-											<span class="time">10:32 am</span>
-										</li>
 										<li class="reply mt-1 mb-1">
-											<p>How are you?</p>
+											<p>0923795888</p>
 											<span class="time">10:35 am</span>
 										</li>
 										{{-- <li>
@@ -170,12 +162,12 @@ Veris - Planes Promociones
 												<h6>Today</h6>
 											</div>
 										</li> --}}
-										<li class="reply mt-1 mb-1">
-											<p> yes, tell me</p>
+										<li class="sender mt-1 mb-1">
+											<p>Michael, cuéntame con que especialista quieres agendar</p>
 											<span class="time">10:36 am</span>
 										</li>
 										<li class="reply mt-1 mb-1">
-											<p>yes... on it</p>
+											<p>Con un traumatólogo</p>
 											<span class="time">junt now</span>
 										</li>
 
@@ -669,6 +661,10 @@ a.add img {
     font-size: 10px;
     line-height: 12px;
     font-weight: 400;
+}
+
+li.sender .time {
+	margin-left: 10px;
 }
 
 li.reply .time {
