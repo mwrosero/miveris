@@ -151,6 +151,24 @@ Veris - Planes Promociones
 	</div>
 </section>
 <script>
+	// Previene "pull-to-refresh" en navegadores móviles
+    document.addEventListener('touchstart', function (e) {
+        // Guarda la posición vertical inicial cuando se toca la pantalla
+        window.initialY = e.touches[0].clientY;
+    });
+
+    document.addEventListener('touchmove', function (e) {
+        // Calcula la diferencia entre la posición vertical actual y la inicial
+        let currentY = e.touches[0].clientY;
+        let diffY = currentY - window.initialY;
+
+        // Si estamos en la parte superior del documento (scrollTop = 0) y se está haciendo scroll hacia abajo
+        if (window.scrollY === 0 && diffY > 0) {
+            // Previene el comportamiento de "pull-to-refresh"
+            e.preventDefault();
+        }
+    }, { passive: false }); // `passive: false` es necesario para poder prevenir el comportamiento por defecto
+
 	document.addEventListener("DOMContentLoaded", async function () {
 		setTimeout(function(){
 			$('#splash').fadeOut(1000);
@@ -415,7 +433,7 @@ Veris - Planes Promociones
     border-radius: 0.3rem;
     height: 94vh;
     overflow: hidden;
-    min-height: calc(100% - 1rem);
+    min-height: calc(94vh - 1rem);
 }
 
 .chatlist {
