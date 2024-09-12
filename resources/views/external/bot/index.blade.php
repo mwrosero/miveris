@@ -199,9 +199,11 @@ Veris - Planes Promociones
 						<span class="time">${ obtenerHoraActual() }</span>
 					</li>`;
 				$('#conversacion').append(elem);
+				$('#btn-grabar').removeClass('d-none');
+				$('#btn-enviar').addClass('d-none');
 				scrollToBottom();
 			}
-			$('#prompt').val("");
+			$('#prompt').val("").change();
 		})
 
 		var swiper = new Swiper('.swiper-acceso-rapidos', {
@@ -693,7 +695,7 @@ a.add img {
     clear: both;
     content: '';
     position: absolute;
-    bottom: 15px;
+    bottom: 12px;
     right: -7px;
     width: 0;
     height: 0;
