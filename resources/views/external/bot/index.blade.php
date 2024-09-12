@@ -932,6 +932,15 @@ button:focus {
 
 
 @media (max-width: 767px) {
+	.chat-area {
+	    position: relative;
+	    width: 100%;
+	    background-color: #fff;
+	    border-radius: 0.3rem;
+	    height: 90vh;
+	    overflow: hidden;
+	    min-height: calc(90vh - 1rem);
+	}
     .chat-icon {
         display: block;
         margin-right: 5px;
