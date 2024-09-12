@@ -14,50 +14,10 @@ Veris - Planes Promociones
 <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 <div id="splash">
-	@include('external.bot.splash')
+	@include('external.bot.splash2')
 </div>
 {{-- @include('external.components.navbar') --}}
 
-<script>
-	document.addEventListener("DOMContentLoaded", async function () {
-		setTimeout(function(){
-			$('#splash').fadeOut(750);
-		}, 1250);
-
-		var swiper = new Swiper('.swiper-acceso-rapidos', {
-            // slidesPerView: 1,
-            spaceBetween: 8,
-            
-            navigation: {
-                nextEl: '.btn-next',
-                prevEl: '.btn-prev',
-            },
-            autoplay: false,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                300: {
-                    slidesPerView: 2.1,
-                    centeredSlides: false,
-                    // loop: true,
-                    spaceBetween: 4,
-                },
-                768: {
-                    slidesPerView: 2.1,
-                    // centeredSlides: true,
-                    // loop: true,
-                    // spaceBetween: 8,
-                },
-                1024: {
-                    slidesPerView: 3,
-                    // spaceBetween: 8,
-                },
-            },
-        });
-	});
-</script>
 <section class="p-2 m-2">
 	<div class="row">
 		<div class="col-12">
@@ -82,7 +42,7 @@ Veris - Planes Promociones
 							</div>
 							<div class="modal-body">
 								<div class="msg-body">
-									<div class="box-accesos row p-2">
+									<div class="box-accesos row mt-2 p-2">
 										<div class="col-12 col-md-8 offset-md-2">
 											<div class="swiper swiper-acceso-rapidos position-relative pb-2">
 									            <div class="swiper-wrapper">
@@ -140,7 +100,7 @@ Veris - Planes Promociones
 									        </div>
 									    </div>
 									</div>
-									<ul class="p-2">
+									<ul class="p-2" id="conversacion">
 										<li class="sender mt-1 mb-1">
 											<p>Hola, soy Vericita. Tu asistente inteligente. En qué puedo ayudarte hoy?</p>
 											<span class="time">10:06 am</span>
@@ -168,18 +128,18 @@ Veris - Planes Promociones
 										</li>
 										<li class="reply mt-1 mb-1">
 											<p>Con un traumatólogo</p>
-											<span class="time">junt now</span>
+											<span class="time">10:38 am</span>
 										</li>
-
 									</ul>
 								</div>
 							</div>
 							<div class="send-box">
 								<div class="chat-box-tray justify-content-between align-items-center rounded">
 									{{-- <i class="fa-solid fa-paperclip"></i> --}}
-									<input autofocus type="text" class="p-2 flex-grow-1" placeholder="Pregúntame algo...">
-									<i role="button" class="fa-solid fa-microphone ms-2 me-2"></i>
-									{{-- <i class="fa-solid fa-paper-plane ms-2 me-2"></i> --}}
+									{{-- <input autofocus type="text" class="p-2 flex-grow-1" id="prompt" placeholder="Escribe un mensaje..."> --}}
+									<textarea autofocus type="text" class="p-2 flex-grow-1 form-control auto-expand-textarea rounded" rows="1" id="prompt" placeholder="Escribe un mensaje..."></textarea>
+									<i role="button" id="btn-grabar" class="fa-solid fa-microphone ms-2 me-2"></i>
+									<i role="button" id="btn-enviar" class="fa-solid fa-paper-plane d-none ms-2 me-2"></i>
 								</div>
 							</div>
 						</div>
@@ -190,7 +150,105 @@ Veris - Planes Promociones
 		</div>
 	</div>
 </section>
+<script>
+	document.addEventListener("DOMContentLoaded", async function () {
+		setTimeout(function(){
+			$('#splash').fadeOut(1000);
+		}, 500);
+
+		$('.auto-expand-textarea').on('input', function () {
+            this.style.height = 'auto'; // Restablece la altura
+            this.style.height = (this.scrollHeight) + 'px'; // Ajusta a la altura del contenido
+        });
+
+		$('body').on('input','#prompt',function(){
+			let value = $(this).val(); // Captura el valor del input
+
+			if (value.length > 0) {
+				$('#btn-enviar').removeClass('d-none');
+				$('#btn-grabar').addClass('d-none');
+			} else {
+				$('#btn-grabar').removeClass('d-none');
+				$('#btn-enviar').addClass('d-none');
+			}
+		})
+
+		// scrollToBottom();
+		$('body').on('click', '#btn-enviar', function(){
+			if($('#prompt').val() != ""){
+				let elem = `<li class="reply mt-1 mb-1">
+						<p>${ $('#prompt').val() }</p>
+						<span class="time">${ obtenerHoraActual() }</span>
+					</li>`;
+				$('#conversacion').append(elem);
+				scrollToBottom();
+			}
+			$('#prompt').val("");
+		})
+
+		var swiper = new Swiper('.swiper-acceso-rapidos', {
+            // slidesPerView: 1,
+            spaceBetween: 8,
+            
+            navigation: {
+                nextEl: '.btn-next',
+                prevEl: '.btn-prev',
+            },
+            autoplay: false,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                300: {
+                    slidesPerView: 2.1,
+                    centeredSlides: false,
+                    // loop: true,
+                    spaceBetween: 4,
+                },
+                768: {
+                    slidesPerView: 2.1,
+                    // centeredSlides: true,
+                    // loop: true,
+                    // spaceBetween: 8,
+                },
+                1024: {
+                    slidesPerView: 3,
+                    // spaceBetween: 8,
+                },
+            },
+        });
+	});
+
+	function scrollToBottom() {
+        var modalBody = $('.modal-body'); // Selecciona el contenedor con la clase modal-body
+        modalBody.scrollTop(modalBody[0].scrollHeight); // Establece el desplazamiento hasta el fondo
+    }
+
+	function obtenerHoraActual() {
+	    const fecha = new Date();
+	    let horas = fecha.getHours();
+	    let minutos = fecha.getMinutes();
+	    const ampm = horas >= 12 ? 'pm' : 'am';
+
+	    horas = horas % 12;  // Convierte de formato de 24 horas a 12 horas
+	    horas = horas ? horas : 12;  // La hora 0 debe ser '12'
+	    minutos = minutos < 10 ? '0' + minutos : minutos;  // Asegura que los minutos siempre tengan dos dígitos
+
+	    const horaFormateada = horas + ':' + minutos + ' ' + ampm;
+	    return horaFormateada;
+	}
+
+</script>
 <style>
+	.auto-expand-textarea {
+	    border: 1px solid #ced4da; /* Estilo de input */
+	    border-radius: 0.25rem; /* Estilo de input */
+	    padding: 0.375rem 0.75rem; /* Espaciado de input */
+	    overflow: hidden; /* Ocultar barra de desplazamiento */
+	    resize: none; /* Desactivar redimensionado manual */
+	}
+
 	.profile-image {
 		width: 50px;
 		height: 50px;
@@ -230,17 +288,17 @@ Veris - Planes Promociones
 		margin-left: 7px;
 		vertical-align: middle;
 	}
-	input {
+	input, textarea {
 		border: none;
-		border-radius: 30px;
+		border-radius: 30px !important;
 		width: 80%;
 	}
-	input::placeholder {
+	input::placeholder, textarea::placeholder {
 		color: #e3e3e3;
 		font-weight: 300;
 		margin-left: 20px;
 	}
-	input:focus {
+	input:focus, textarea:focus {
 		outline: none;
 	}
 	.friend-drawer {
@@ -329,14 +387,16 @@ Veris - Planes Promociones
 		margin-top: 19px;
 		bottom: 0;
 	}
-	.chat-box-tray input {
+	.chat-box-tray input, .chat-box-tray textarea {
 		margin: 0 10px;
 		padding: 6px 2px;
 	}
 	.chat-box-tray i {
-		color: grey;
-		font-size: 25px;
+		color: #0a2240;/*grey*/
+		font-size: 20px;
 		vertical-align: middle;
+		width: 25px;
+    	text-align: right;
 	}
 	/*.chat-box-tray i:last-of-type {
 		margin-left: 15px;
