@@ -183,7 +183,7 @@ Veris - Detalle Promoción
                     <table class="table table-responsive table-borderless" id="table_prestaciones_niveles">
                         <thead>
                             <tr>
-                                <th width="30px"></th>
+                                <th width="70px"></th>
                                 <th>EXÁMENES</th>
                                 <th>COMPROBANTE DE VENTA</th>
                                 <th>ESTADO</th>
@@ -191,7 +191,7 @@ Veris - Detalle Promoción
                         </thead>
                         <tbody>
                             <tr class="header">
-                                <td type="button" width="30px"><i class="fa-solid fa-caret-down"></i></td>
+                                <td type="button" width="70px"><i class="fa-solid fa-caret-down"></i></td>
                                 <td colspan="3">Imnunología</td>
                             </tr>
                             <tr class="">
@@ -200,8 +200,14 @@ Veris - Detalle Promoción
                                 <td>0000914529704707786396</td>
                                 <td><span class="badge rounded-pill bg-secondary">En proceso</span></td>
                             </tr>
+                            <tr class="">
+                                <td></td>
+                                <td>Glucosa en sangre</td>
+                                <td>0000914529704707786396</td>
+                                <td><span class="badge rounded-pill bg-secondary">En proceso</span></td>
+                            </tr>
                             <tr class="header">
-                                <td type="button" width="30px"><i class="fa-solid fa-caret-down"></i></td>
+                                <td type="button" width="70px"><i class="fa-solid fa-caret-down"></i></td>
                                 <td colspan="3">Imnunología</td>
                             </tr>
                             <tr class="">
@@ -217,7 +223,8 @@ Veris - Detalle Promoción
         </div>
     </div>
 </section>
-<div class="modal fade" id="modalViewer" aria-labelledby="modalViewerLabel" data-bs-backdrop="static" data-bs-keyboard="true" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalViewer" aria-labelledby="modalViewerLabel" data-bs-keyboard="true" tabindex="-1" aria-hidden="true">
+    {{-- data-bs-backdrop="static" --}}
     {{-- <div class="modal-dialog modal-xl"> --}}
     <div class="modal-dialog modal-xl">
         <div class="modal-content p-2">
@@ -262,6 +269,10 @@ Veris - Detalle Promoción
 
     #canvases canvas {
         width: 100%;
+        border-bottom: 5px solid #cbcbcb75;
+    }
+    #canvases canvas:last-child{
+        border-bottom: none;
     }
 </style>
 <script>
@@ -274,7 +285,7 @@ Veris - Detalle Promoción
         // maxDate: "today"
     });
     
-    var url = "{{ asset('assets/external/resultados-laboratorio/resultado.pdf') }}";
+    var pdfUrl = "{{ asset('assets/external/resultados-laboratorio/resultado.pdf') }}";
     var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -367,7 +378,7 @@ Veris - Detalle Promoción
             });
         }
 
-        pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
             pdfDoc = pdfDoc_;
 
             const pages = parseInt(pdfDoc.numPages);
