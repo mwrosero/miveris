@@ -397,6 +397,19 @@ Veris - Detalle Promoción
 
     });
 
+        // Modificar el viewport para permitir el zoom al abrir el modal
+        document.getElementById('modalViewer').addEventListener('show.bs.modal', function () {
+            const metaViewport = document.querySelector('meta[name="viewport"]');
+            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3, user-scalable=yes');
+        });
+
+        // Restaurar el viewport original al cerrar el modal
+        document.getElementById('modalViewer').addEventListener('hidden.bs.modal', function () {
+            const metaViewport = document.querySelector('meta[name="viewport"]');
+            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no');
+        });
+
+
     function downloadPDF() {
         const link = document.createElement('a');
         link.href = pdfUrl;
