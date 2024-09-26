@@ -446,7 +446,28 @@ class ExternalController extends Controller
     }
     
     public function gestionQr(){
-        dd(0);
+        // dd(Session::get('userDataExternal'));
+        return view('external.qr_farmacia.index');
+    }
+
+    public function logoutQr(){
+        Session::flush();
+        return redirect()->route('login-qr');
+    }
+
+    public function mostrarResultadoLaboratorio($idPaciente){
+        $accessToken = "";//$this->getTokenExternalFacturacion();
+        /*$method = '/apoyosdx/v1/consultas/portal/ordenes_entrega_resultados?fechaInicio&fechaFin&idPaciente='.base64_decode($idPaciente);
+        $result = Veris::call([
+            'endpoint' => Veris::BASE_URL.$method,
+            'token'    => $accessToken,
+            'method'   => 'GET'
+        ]);
+        echo Veris::BASE_URL.$method;
+        dd($result);*/
+        return view('external.laboratorio.resultados')
+                    ->with('idPaciente', base64_decode($idPaciente))
+                    ->with('accesToken',$accessToken);
     }
 
     public function getTokenExternalDigitales(){
