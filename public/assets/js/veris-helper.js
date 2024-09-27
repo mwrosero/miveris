@@ -29,7 +29,7 @@ async function call(args){
         myHeaders.append("Content-Type", "application/json");
     }
     if(args.token){
-        console.log(args.token)
+        // console.log(args.token)
         myHeaders.append("Authorization","Bearer "+ args.token);
         myHeaders.append("Application", _application);
         myHeaders.append("IdOrganizacion", _idOrganizacion);
@@ -41,7 +41,7 @@ async function call(args){
     }
     requestOptions.headers = myHeaders;
     // console.log(myHeaders);
-    console.log(requestOptions);
+    // console.log(requestOptions);
         
     // myHeaders.append("Application", _application);
     // myHeaders.append("IdOrganizacion", _idOrganizacion);

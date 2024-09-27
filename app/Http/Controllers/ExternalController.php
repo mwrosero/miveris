@@ -456,18 +456,19 @@ class ExternalController extends Controller
     }
 
     public function mostrarResultadoLaboratorio($idPaciente){
-        $accessToken = "";//$this->getTokenExternalFacturacion();
-        /*$method = '/apoyosdx/v1/consultas/portal/ordenes_entrega_resultados?fechaInicio&fechaFin&idPaciente='.base64_decode($idPaciente);
+        $accessToken = $this->getTokenExternalFacturacion();
+        $method = '/apoyosdx/v1/consultas/portal/ordenes_entrega_resultados?fechaInicio&fechaFin&idPaciente='.base64_decode($idPaciente);
         $result = Veris::call([
             'endpoint' => Veris::BASE_URL.$method,
             'token'    => $accessToken,
             'method'   => 'GET'
         ]);
-        echo Veris::BASE_URL.$method;
-        dd($result);*/
+        // echo Veris::BASE_URL.$method;
+        // dd($result);
         return view('external.laboratorio.resultados')
                     ->with('idPaciente', base64_decode($idPaciente))
-                    ->with('accesToken',$accessToken);
+                    ->with('data', $result->data)
+                    ->with('accessToken',$accessToken);
     }
 
     public function getTokenExternalDigitales(){
