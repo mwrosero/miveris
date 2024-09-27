@@ -6,6 +6,7 @@ Veris - Resultados de Laboratorio
 <!-- css -->
 @endpush
 @section('content')
+
 <link rel="stylesheet" href="{{ asset('assets/external/resultados-laboratorio/css/flatpickr.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/swiper/swiper.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
@@ -26,15 +27,15 @@ Veris - Resultados de Laboratorio
             <div class="card rounded-0 border-0 shadow-sm">
                 <div class="card-body p-3 pb-2">
                     <div class="row">
-                        <div class="col-12 d-flex justify-content-between align-items-center mb-1">
+                        <div class="col-12 d-flex justify-content-between align-items-top mb-1">
                             {{-- <i class="fa-solid fa-user me-3 text-primary-veris"></i> --}}
-                            <span class="card-title card-g text-primary-veris fw-bold line-height-24 mb-0">Paciente:</span>
-                            <p class="flex-grow-1 card-title card-g text-primary-veris fw-bold line-height-24 ms-1 mb-0">Michael Rosero Peralta</p>
+                            <span class="card-title card-g text-primary-veris fw-bold line-height-16 mb-0">Paciente:</span>
+                            <p class="flex-grow-1 card-title card-g text-primary-veris fw-bold line-height-16 ms-1 mb-0" id="nombrePaciente">{{ $data->primerNombre ?? '' }} {{ $data->segundoNombre ?? '' }} {{ $data->primerApellido ?? '' }} {{ $data->segundoApellido ?? '' }} </p>
                         </div>
                         <div class="col-12 d-flex justify-content-between align-items-center mb-1">
                             <i class="fa-solid fa-address-card me-3"></i>
                             <span class="fw-medium fs--1 line-height-16 mb-0">Identificación:</span>
-                            <p class="flex-grow-1 fw-medium fs--1 line-height-16 mb-0 ms-1">0923796304</p>
+                            <p class="flex-grow-1 fw-medium fs--1 line-height-16 mb-0 ms-1" id="numeroIdentificacion">{{ $data->numeroIdentificacion }}</p>
                         </div>
                         <div class="col-12 d-flex justify-content-between align-items-center mb-1">
                             <i class="fa-solid fa-rectangle-list me-3"></i>
@@ -55,6 +56,7 @@ Veris - Resultados de Laboratorio
                 {{-- <p class="fs--1 line-height-16 fw-normal mb-0" id="filtroFechas">Rango de fechas</p> --}}
             </button>
         </div>
+
         <!--off canva filtro-->
         <div class="offcanvas offcanvas-end" tabindex="-1" id="filtroResultados" aria-labelledby="filtroResultadosLabel">
             <div class="offcanvas-header flex-column align-items-start p-0">
@@ -74,7 +76,7 @@ Veris - Resultados de Laboratorio
                     </div>
                     <div class="col-md-12 mb-3">
                         <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>
-                        <button class="btn text-primary w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><img src="{{asset('assets/img/svg/delete-blue.svg')}}" class="me-2" alt="limpiar filtro">Limpiar filtro</button>
+                        {{-- <button class="btn text-primary w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><img src="{{asset('assets/img/svg/delete-blue.svg')}}" class="me-2" alt="limpiar filtro">Limpiar filtro</button> --}}
                     </div>
                 </div>
             </div>
@@ -84,7 +86,7 @@ Veris - Resultados de Laboratorio
         <div class="col-12">
             <div class="swiper swiper-ordenes position-relative pb-2">
                 <div class="swiper-wrapper">
-                    <div class="swiper-slide">
+                    {{-- <div class="swiper-slide">
                         <div data-rel="" class="card p-4 orden-seleccionada" type="button">
                             <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3 d-flex justify-content-between align-items-center">N.° de Orden: 89008388 <i class="fa-regular fa-bell text-warning border-warning fw-bold fs--1"></i></p>
                             <div class="text-veris fs--2 line-height-14 mb-1">
@@ -151,7 +153,7 @@ Veris - Resultados de Laboratorio
                                 <span class="fw-bold">Laboratorio: Central</span>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
                 {{-- <button type="button" id="prevProperties" class="d-flex  mt-n4 btn btn-prev rounded-circle"></button>
                 <button type="button" id="nextProperties" class="d-flex  mt-n4 btn btn-next rounded-circle"></button> --}}
@@ -190,8 +192,8 @@ Veris - Resultados de Laboratorio
                                 <th valign="middle">N.° COMPROBANTE</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr class="header">
+                        <tbody id="content-resultados">
+                            {{-- <tr class="header">
                                 <td type="button" width="30px" class="text-center"><i class="fa-solid fa-caret-down text-primary-veris"></i></td>
                                 <td class="fw-bold text-primary-veris" colspan="3">Imnunología</td>
                             </tr>
@@ -216,7 +218,7 @@ Veris - Resultados de Laboratorio
                                 <td class="fw-bold text-veris">Biometría Hemática</td>
                                 <td><span class="badge rounded-pill w-100 bg-success">Listo</span></td>
                                 <td>0000914529704707786396</td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
                     </table>
                 </div>
@@ -277,76 +279,60 @@ Veris - Resultados de Laboratorio
     }
 </style>
 <script>
-    flatpickr("#fechaDesde", {
-        locale: _langDate,
-        // maxDate: "today"
-    });
-    flatpickr("#fechaHasta", {
-        locale: _langDate,
-        // maxDate: "today"
-    });
+    // flatpickr("#fechaDesde", {
+    //     locale: _langDate,
+    // });
+    // flatpickr("#fechaHasta", {
+    //     locale: _langDate,
+    // });
     
     var pdfUrl = "{{ asset('assets/external/resultados-laboratorio/resultado.pdf') }}";
     var pdfjsLib = window['pdfjs-dist/build/pdf'];
+    let tiempoDiasParaConsulta = {{ $data->tiempoDiasParaConsulta }};
+    let ordenesPaciente = @json($data->ordenesPaciente);
 
     document.addEventListener("DOMContentLoaded", async function () {
-        var ua = navigator.userAgent,
-        event = (ua.match(/iPad/i)) ? "touchstart" : "click";
-        if ($('.table').length > 0) {
-            $('.table .header').on(event, function() {
-                $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
-                    return this.style.display === 'table-row' ? 'none' : 'table-row';
-                });
-                $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
-                    let status = (this.style.display === 'table-row') ? 'none' : 'table-row';
-                    console.log(status);
-                });
-            });
-        }
-
-        var swiper = new Swiper('.swiper-ordenes', {
-            // slidesPerView: 3.1,
-            spaceBetween: 8,
-            navigation: {
-                nextEl: '.btn-next',
-                prevEl: '.btn-prev',
-            },
-            autoplay: false,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                300: {
-                    slidesPerView: 1.2,
-                    centeredSlides: false,
-                    // loop: true,
-                    spaceBetween: 4,
-                },
-                768: {
-                    slidesPerView: 2.1,
-                    // centeredSlides: true,
-                    // loop: true,
-                    // spaceBetween: 8,
-                },
-                1024: {
-                    slidesPerView: 3.1,
-                    // spaceBetween: 8,
-                },
-                1150: {
-                    slidesPerView: 3.5,
-                    // spaceBetween: 8,
-                },
-            },
-        });
-
         $('body').on('click', '.swiper-ordenes .swiper-slide .card', async function(){
             $('.swiper-ordenes .swiper-slide .card').removeClass('orden-seleccionada');
             $(this).addClass('orden-seleccionada');
-            await obtenerOrden($(this).attr("data-rel"))
+            await cargarDetalleOrden(JSON.parse($(this).attr("data-rel")))
         });
 
-        
+        var fechaDesde = flatpickr("#fechaDesde", {
+            locale: _langDate,
+            dateFormat: "d/m/Y",
+            onChange: function(selectedDates, dateStr, instance) {
+                // Al cambiar la fecha desde, configurar la fecha mínima para 'fecha hasta'
+                if (selectedDates.length > 0) {
+                    var maxDate = new Date(selectedDates[0]);
+                    maxDate.setDate(maxDate.getDate() + tiempoDiasParaConsulta); // 60 días a partir de 'fecha desde'
+                    
+                    // Configurar fecha mínima y máxima para 'fecha hasta'
+                    fechaHasta.set('minDate', dateStr);
+                    fechaHasta.set('maxDate', maxDate);
+                }
+            }
+        });
+
+        // Flatpickr para el input de fecha hasta
+        var fechaHasta = flatpickr("#fechaHasta", {
+            locale: _langDate,
+            dateFormat: "d/m/Y",
+            onChange: function(selectedDates, dateStr, instance) {
+                // Validar que siempre sea mayor que 'fecha desde'
+                var desdeDate = fechaDesde.selectedDates[0];
+                if (selectedDates.length > 0 && desdeDate && selectedDates[0] <= desdeDate) {
+                    alert("La fecha 'Hasta' debe ser mayor que la fecha 'Desde'.");
+                    fechaHasta.clear(); // Limpiar selección si no es válida
+                }
+            }
+        });
+
+        $('body').on('click', '#aplicarFiltros', async function(){
+            await obtenerOrdenes();
+        })
+
+        drawCardsOrdenes();
         
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.worker.js';
         var pdfDoc = null,
@@ -402,17 +388,17 @@ Veris - Resultados de Laboratorio
 
     });
 
-        // Modificar el viewport para permitir el zoom al abrir el modal
-        document.getElementById('modalViewer').addEventListener('show.bs.modal', function () {
-            const metaViewport = document.querySelector('meta[name="viewport"]');
-            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3, user-scalable=yes');
-        });
+    // Modificar el viewport para permitir el zoom al abrir el modal
+    document.getElementById('modalViewer').addEventListener('show.bs.modal', function () {
+        const metaViewport = document.querySelector('meta[name="viewport"]');
+        metaViewport.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3, user-scalable=yes');
+    });
 
-        // Restaurar el viewport original al cerrar el modal
-        document.getElementById('modalViewer').addEventListener('hidden.bs.modal', function () {
-            const metaViewport = document.querySelector('meta[name="viewport"]');
-            metaViewport.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no');
-        });
+    // Restaurar el viewport original al cerrar el modal
+    document.getElementById('modalViewer').addEventListener('hidden.bs.modal', function () {
+        const metaViewport = document.querySelector('meta[name="viewport"]');
+        metaViewport.setAttribute('content', 'width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no');
+    });
 
 
     function downloadPDF() {
@@ -422,8 +408,128 @@ Veris - Resultados de Laboratorio
         link.click();
     }
 
-    async function obtenerOrden(params){
-        console.log(params);
+    async function obtenerOrdenes(){
+        // $('#content-resultados').empty();
+        let args = [];
+        args["endpoint"] = api_url + `/apoyosdx/v1/consultas/portal/ordenes_entrega_resultados?fechaInicio=${ $('#fechaDesde').val() }&fechaFin=${ $('#fechaHasta').val() }&idPaciente={{ $idPaciente }}`;
+        args["method"] = "GET";
+        args["token"] = "{{ $accessToken }}";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+            ordenesPaciente = data.data.ordenesPaciente;
+            await drawCardsOrdenes();
+        }
+    }
+
+    async function drawCardsOrdenes(){
+        if(ordenesPaciente.length == 0){
+            return;
+        }
+        let elem = ``;
+        $.each(ordenesPaciente, function(key,value){
+            elem += `<div class="swiper-slide">
+                        <div data-rel='${ JSON.stringify(value) }' class="card p-4 orden-seleccionada" type="button">
+                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3 d-flex justify-content-between align-items-center">N.° de Orden: ${ value.codigoOrden } ${ (value.confidencialReactivo) ? `<i class="fa-regular fa-bell text-warning border-warning fw-bold fs--1"></i>`: `` }</p>
+                            <div class="text-veris fs--2 line-height-14 mb-1">
+                                <i class="fa-regular fa-calendar me-2"></i>
+                                <span class="fw-bold">Fecha de Toma: ${ value.fechaEncuestaPrevia.replace(" "," | ") }</span>
+                            </div>
+                            <div class="text-veris fs--2 line-height-14 mb-1">
+                                <i class="fa-regular fa-calendar-check me-2"></i>
+                                <span class="fw-bold">Fecha de Compromiso: ${ (value.fechaCompromisoEntrega.split(" "))[0] }</span>
+                            </div>
+                            <div class="text-veris fs--2 line-height-14 mb-1">
+                                <i class="fa-solid fa-location-dot me-2"></i>
+                                <span class="fw-bold">Laboratorio: ${ value.sucursalEncuesta }</span>
+                            </div>
+                        </div>
+                    </div>`;
+        });
+        $('.swiper-wrapper').html(elem);
+        var swiper = new Swiper('.swiper-ordenes', {
+            // slidesPerView: 3.1,
+            spaceBetween: 8,
+            navigation: {
+                nextEl: '.btn-next',
+                prevEl: '.btn-prev',
+            },
+            autoplay: false,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                300: {
+                    slidesPerView: 1.2,
+                    centeredSlides: false,
+                    // loop: true,
+                    spaceBetween: 4,
+                },
+                768: {
+                    slidesPerView: 2.1,
+                    // centeredSlides: true,
+                    // loop: true,
+                    // spaceBetween: 8,
+                },
+                1024: {
+                    slidesPerView: 3.1,
+                    // spaceBetween: 8,
+                },
+                1150: {
+                    slidesPerView: 3.5,
+                    // spaceBetween: 8,
+                },
+            },
+        });
+
+        await cargarDetalleOrden(ordenesPaciente[0]);
+    }
+
+    async function cargarDetalleOrden(orden){
+        console.log(orden);
+        $('#content-resultados').empty();
+        let args = [];
+        args["endpoint"] = api_url + `/apoyosdx/v1/consultas/portal/detalle_examenes_entrega_resultados?codigoOrden=${ orden.codigoOrden }&codigoEmpresa=${ orden.codigoEmpresa }&codigoSucursal=${ orden.codigoSucursal }&fechaEncuesta=${ orden.fechaEncuestaPrevia }`;
+        args["method"] = "GET";
+        args["token"] = "{{ $accessToken }}";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+            let elem = ``;
+            $.each(data.data, function(key, value){
+                elem += `<tr class="header">
+                            <td type="button" width="30px" class="text-center"><i class="fa-solid fa-caret-down text-primary-veris"></i></td>
+                            <td class="fw-bold text-primary-veris" colspan="3">${ value.nombreServicio }</td>
+                        </tr>`;
+                $.each(value.prestaciones, function(k,v){
+                    elem += `<tr class="">
+                                <td></td>
+                                <td class="fw-bold text-veris">${ v.nombreExamen }</td>
+                                <td><span class="badge rounded-pill w-100 bg-${ (v.estado == "LISTO") ? `success` : `warning` }">${ v.estado }</span></td>
+                                <td>${ (v.numeroFactura != null) ? v.numeroFactura : `` }</td>
+                            </tr>`;
+                })
+            })
+            $('#content-resultados').html(elem);
+
+            var ua = navigator.userAgent,
+            event = (ua.match(/iPad/i)) ? "touchstart" : "click";
+            if ($('.table').length > 0) {
+                $('.table .header').on(event, function() {
+                    console.log(8888)
+                    $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
+                        return this.style.display === 'table-row' ? 'none' : 'table-row';
+                    });
+                    $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
+                        let status = (this.style.display === 'table-row') ? 'none' : 'table-row';
+                        console.log(status);
+                    });
+                });
+            }
+        }
     }
 </script>
 @endsection
