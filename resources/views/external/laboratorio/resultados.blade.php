@@ -1,6 +1,6 @@
 @extends('template.external')
 @section('title')
-Veris - Detalle Promoción
+Veris - Resultados de Laboratorio
 @endsection
 @push('css')
 <!-- css -->
