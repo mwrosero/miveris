@@ -46,10 +46,10 @@ Veris - Detalle Promoción
             </div>  
         </div>
     </div>
-    <div class="row mb-2">
+    <div class="row mb-3">
         <div class="col-12 bg-white p-2 d-flex justify-content-between align-items-center">
-            <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24 flex-grow-1">Exámenes de Laboratorio</h5>
-            <button class="btn btn-sm btn-outline-primary-veris ms-2 px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroResultados" aria-controls="filtroResultados" >
+            <h5 class="ps-3 my-auto py-2 fs-20 fs-md-24 flex-grow-1">Exámenes de Laboratorio</h5>
+            <button class="btn btn-sm btn-outline-primary-veris ms-2 px-2 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroResultados" aria-controls="filtroResultados" >
                 {{-- <img src="{{asset('assets/img/svg/filtro.svg')}}" class="me-1" alt="filtro"> --}}
                 <i class="fa-solid fa-calendar-day ms-1 me-1 fs--1" alt="filtro"></i><small>Filtro</small>
                 {{-- <p class="fs--1 line-height-16 fw-normal mb-0" id="filtroFechas">Rango de fechas</p> --}}
@@ -160,7 +160,7 @@ Veris - Detalle Promoción
             </div>
         </div>
     </div>
-    <div class="row py-1 bg-labe-grayish-blue mt-4 mb-2 d-flex justify-content-between align-items-center">
+    <div class="row py-1 bg-labe-grayish-blue mt-2 mb-3 d-flex justify-content-between align-items-center">
         <div class="col-12 col-md-4 text-start mt-1 mb-1">
             <span class="fs--1 card-g text-veris fw-bold line-height-16">Resultados de Laboratorio: 4/10</span>
         </div>
