@@ -21,7 +21,7 @@ Veris - Detalle Promoción
     <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Exámenes de Laboratorio') }}</h5>
 </div> --}}
 <section class="p-3 mb-3">
-    <div class="row g-0">
+    <div class="row g-0 mb-3">
         <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
             <div class="card rounded-0 border-0 shadow-sm">
                 <div class="card-body p-3 pb-2">
@@ -51,7 +51,7 @@ Veris - Detalle Promoción
             <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24 flex-grow-1">Exámenes de Laboratorio</h5>
             <button class="btn btn-sm btn-outline-primary-veris ms-2 px-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#filtroResultados" aria-controls="filtroResultados" >
                 {{-- <img src="{{asset('assets/img/svg/filtro.svg')}}" class="me-1" alt="filtro"> --}}
-                <i class="fa-solid fa-calendar-day ms-1 me-1 fs--1" alt="filtro"></i>
+                <i class="fa-solid fa-calendar-day ms-1 me-1 fs--1" alt="filtro"></i><small>Filtro</small>
                 {{-- <p class="fs--1 line-height-16 fw-normal mb-0" id="filtroFechas">Rango de fechas</p> --}}
             </button>
         </div>
@@ -86,7 +86,7 @@ Veris - Detalle Promoción
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <div data-rel="" class="card p-4 orden-seleccionada" type="button">
-                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3 d-flex justify-content-between align-items-center">Nro. de Orden: 89008388 <i class="fa-regular fa-bell text-warning border-warning fw-bold fs--1"></i></p>
+                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3 d-flex justify-content-between align-items-center">N.° de Orden: 89008388 <i class="fa-regular fa-bell text-warning border-warning fw-bold fs--1"></i></p>
                             <div class="text-veris fs--2 line-height-14 mb-1">
                                 <i class="fa-regular fa-calendar me-2"></i>
                                 <span class="fw-bold">Fecha de Toma: 17-08-2024 | 07:25:00</span>
@@ -103,7 +103,7 @@ Veris - Detalle Promoción
                     </div>
                     <div class="swiper-slide">
                         <div data-rel="" class="card p-4" type="button">
-                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3">Nro. de Orden: 89008388</p>
+                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3">N.° de Orden: 89008388</p>
                             <div class="text-veris fs--2 line-height-14 mb-1">
                                 <i class="fa-regular fa-calendar me-2"></i>
                                 <span class="fw-bold">Fecha de Toma: 17-08-2024 | 07:25:00</span>
@@ -120,7 +120,7 @@ Veris - Detalle Promoción
                     </div>
                     <div class="swiper-slide">
                         <div data-rel="" class="card p-4" type="button">
-                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3">Nro. de Orden: 89008388</p>
+                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3">N.° de Orden: 89008388</p>
                             <div class="text-veris fs--2 line-height-14 mb-1">
                                 <i class="fa-regular fa-calendar me-2"></i>
                                 <span class="fw-bold">Fecha de Toma: 17-08-2024 | 07:25:00</span>
@@ -137,7 +137,7 @@ Veris - Detalle Promoción
                     </div>
                     <div class="swiper-slide">
                         <div data-rel="" class="card p-4" type="button">
-                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3">Nro. de Orden: 89008388</p>
+                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3">N.° de Orden: 89008388</p>
                             <div class="text-veris fs--2 line-height-14 mb-1">
                                 <i class="fa-regular fa-calendar me-2"></i>
                                 <span class="fw-bold">Fecha de Toma: 17-08-2024 | 07:25:00</span>
@@ -171,8 +171,8 @@ Veris - Detalle Promoción
         </div>
         <div class="col-5 col-md-4 text-start text-md-end mt-1 mb-1 text-end">
             <button class="btn btn-sm btn-primary-veris p-2 m-0 text-white" data-bs-toggle="modal" data-bs-target="#modalViewer">
+                <i class="fa-solid fa-file-pdf me-2"></i>
                 Visualizar 
-                <i class="fa-solid fa-file-pdf ms-2"></i>
             </button>
         </div>
     </div>
@@ -183,38 +183,39 @@ Veris - Detalle Promoción
                     <table class="table table-responsive table-borderless" id="table_prestaciones_niveles">
                         <thead>
                             <tr>
-                                <th width="70px"></th>
-                                <th>EXÁMENES</th>
-                                <th>COMPROBANTE DE VENTA</th>
-                                <th>ESTADO</th>
+                                {{-- <span class="d-md-none">ESTADO</span> --}}
+                                <th valign="middle" width="30px" class="text-center"></th>
+                                <th valign="middle">EXÁMENES</th>
+                                <th valign="middle">ESTADO</th>
+                                <th valign="middle">N.° COMPROBANTE</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="header">
-                                <td type="button" width="70px"><i class="fa-solid fa-caret-down"></i></td>
-                                <td colspan="3">Imnunología</td>
+                                <td type="button" width="30px" class="text-center"><i class="fa-solid fa-caret-down text-primary-veris"></i></td>
+                                <td class="fw-bold text-primary-veris" colspan="3">Imnunología</td>
                             </tr>
                             <tr class="">
                                 <td></td>
-                                <td>Biometría Hemática</td>
+                                <td class="fw-bold text-veris">Biometría Hemática</td>
+                                <td><span class="badge rounded-pill w-100 bg-warning">En proceso</span></td>
                                 <td>0000914529704707786396</td>
-                                <td><span class="badge rounded-pill bg-secondary">En proceso</span></td>
                             </tr>
                             <tr class="">
                                 <td></td>
-                                <td>Glucosa en sangre</td>
+                                <td class="fw-bold text-veris">Glucosa en sangre</td>
+                                <td><span class="badge rounded-pill w-100 bg-warning">En proceso</span></td>
                                 <td>0000914529704707786396</td>
-                                <td><span class="badge rounded-pill bg-secondary">En proceso</span></td>
                             </tr>
                             <tr class="header">
-                                <td type="button" width="70px"><i class="fa-solid fa-caret-down"></i></td>
-                                <td colspan="3">Imnunología</td>
+                                <td type="button" width="30px" class="text-center"><i class="fa-solid fa-caret-down text-primary-veris"></i></td>
+                                <td class="fw-bold text-primary-veris" colspan="3">Imnunología</td>
                             </tr>
                             <tr class="">
                                 <td></td>
-                                <td>Biometría Hemática</td>
+                                <td class="fw-bold text-veris">Biometría Hemática</td>
+                                <td><span class="badge rounded-pill w-100 bg-success">Listo</span></td>
                                 <td>0000914529704707786396</td>
-                                <td><span class="badge rounded-pill bg-success">En proceso</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -230,7 +231,7 @@ Veris - Detalle Promoción
         <div class="modal-content p-2">
             <div class="modal-header pt-2 d-flex justify-content-between align-items-center">
                 <button id="downloadBtn" class="btn btn-success p-2 fs--3" onclick="downloadPDF()">
-                    <i class="fa-solid fa-download me-2"></i> Descargar
+                    <i class="fa-solid fa-download me-1"></i> Descargar
                 </button>
                 <i type="button" class="fa-regular fa-rectangle-xmark m-2 text-primary-veris fs-24" data-bs-dismiss="modal"></i>
             </div>
@@ -295,6 +296,10 @@ Veris - Detalle Promoción
             $('.table .header').on(event, function() {
                 $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
                     return this.style.display === 'table-row' ? 'none' : 'table-row';
+                });
+                $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
+                    let status = (this.style.display === 'table-row') ? 'none' : 'table-row';
+                    console.log(status);
                 });
             });
         }
@@ -413,7 +418,7 @@ Veris - Detalle Promoción
     function downloadPDF() {
         const link = document.createElement('a');
         link.href = pdfUrl;
-        link.download = 'documento.pdf';
+        link.download = 'resultado-orden-12112.pdf';
         link.click();
     }
 
