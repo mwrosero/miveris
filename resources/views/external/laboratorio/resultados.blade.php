@@ -164,11 +164,11 @@ Veris - Resultados de Laboratorio
     </div>
     <div class="row py-1 bg-labe-grayish-blue mt-2 mb-3 d-flex justify-content-between align-items-center">
         <div class="col-12 col-md-4 text-start mt-1 mb-1">
-            <span class="fs--1 card-g text-veris fw-bold line-height-16">Resultados de Laboratorio: 4/10</span>
+            <span class="fs--1 card-g text-veris fw-bold line-height-16" id="totalResultados">Resultados de Laboratorio: </span>
         </div>
         <div class="col-7 col-md-4 text-start text-md-center mt-1 mb-1 flex-grow-1">
-            <div class="progress" style="height:25px;">
-                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+            <div class="progress" style="height:0px;">
+                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
         <div class="col-5 col-md-4 text-start text-md-end mt-1 mb-1 text-end">
@@ -497,6 +497,9 @@ Veris - Resultados de Laboratorio
         args["showLoader"] = true;
         const data = await call(args);
         console.log(data);
+        let total_prestaciones = 0;
+        let total_listas = 0;
+        let total_en_proceso = 0;
         if(data.code == 200){
             let elem = ``;
             $.each(data.data, function(key, value){
@@ -505,6 +508,12 @@ Veris - Resultados de Laboratorio
                             <td class="fw-bold text-primary-veris" colspan="3">${ value.nombreServicio }</td>
                         </tr>`;
                 $.each(value.prestaciones, function(k,v){
+                    total_prestaciones++;
+                    if(v.estado == "LISTO"){
+                        total_listas++;
+                    }else{
+                        total_en_proceso++;
+                    }
                     elem += `<tr class="">
                                 <td></td>
                                 <td class="fw-bold text-veris">${ v.nombreExamen }</td>
@@ -514,6 +523,20 @@ Veris - Resultados de Laboratorio
                 })
             })
             $('#content-resultados').html(elem);
+
+            let porcentaje = (total_listas / total_prestaciones) * 100;
+
+            $('.progress-bar').html(porcentaje.toFixed(2)+"%");
+            $('.progress-bar').css("width",porcentaje.toFixed(2)+"%");
+            $('.progress-bar').attr("aria-valuenow",porcentaje.toFixed(2));
+
+            $('#totalResultados').html(`Resultados de Laboratorio: ${ total_listas }/${ total_prestaciones }`);
+
+            if(total_listas == total_prestaciones){
+                $('.progress-bar').addClass('bg-success');
+            }else{
+                $('.progress-bar').removeClass('bg-success');
+            }
 
             var ua = navigator.userAgent,
             event = (ua.match(/iPad/i)) ? "touchstart" : "click";
