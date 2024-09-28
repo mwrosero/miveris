@@ -167,7 +167,7 @@ Veris - Resultados de Laboratorio
             <span class="fs--1 card-g text-veris fw-bold line-height-16" id="totalResultados">Resultados de Laboratorio: </span>
         </div>
         <div class="col-7 col-md-4 text-start text-md-center mt-1 mb-1 flex-grow-1">
-            <div class="progress" style="height:0px;">
+            <div class="progress" style="height:25px;">
                 <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
         </div>
