@@ -245,6 +245,21 @@ Veris - Resultados de Laboratorio
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalReactivo" tabindex="-1" aria-labelledby="modalReactivoLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
+                <p class="fs--1 fw-normal mb-0 text-veris">Esta orden contiene un exámen confidencial, por favor acercarse al laboratorio mas cercano para realizarse un exámen de verificación</p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button data-bs-dismiss="modal" type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .swiper-ordenes .btn.disabled, .swiper-ordenes .btn:disabled{
         display: none !important;
@@ -295,9 +310,15 @@ Veris - Resultados de Laboratorio
 
     document.addEventListener("DOMContentLoaded", async function () {
         $('body').on('click', '.swiper-ordenes .swiper-slide .card', async function(){
-            $('.swiper-ordenes .swiper-slide .card').removeClass('orden-seleccionada');
-            $(this).addClass('orden-seleccionada');
-            await cargarDetalleOrden(JSON.parse($(this).attr("data-rel")))
+            if ($(event.target).closest('.ico-notificacion').length === 0) {
+                $('.swiper-ordenes .swiper-slide .card').removeClass('orden-seleccionada');
+                $(this).addClass('orden-seleccionada');
+                await cargarDetalleOrden(JSON.parse($(this).attr("data-rel")))
+            }
+        });
+
+        $('body').on('click', '.ico-notificacion', function(event) {
+            event.stopPropagation(); // Detener la propagación del evento hacia el .card
         });
 
         var fechaDesde = flatpickr("#fechaDesde", {
@@ -329,7 +350,7 @@ Veris - Resultados de Laboratorio
                 // Validar que siempre sea mayor o igual que 'fecha desde'
                 var desdeDate = fechaDesde.selectedDates[0];
                 if (selectedDates.length > 0 && desdeDate && selectedDates[0] < desdeDate) {
-                    alert("La fecha 'Hasta' debe ser mayor o igual que la fecha 'Desde'.");
+                    showMessage('warning','Atención',"La fecha 'Hasta' debe ser mayor o igual que la fecha 'Desde'.");
                     
                     // Limpiar selección si no es válida y restablecer el mes al mes mínimo
                     fechaHasta.clear(); 
@@ -475,7 +496,7 @@ Veris - Resultados de Laboratorio
         $.each(ordenesPaciente, function(key,value){
             elem += `<div class="swiper-slide">
                         <div data-rel='${ JSON.stringify(value) }' class="card p-4 ${ (key == 0) ? `orden-seleccionada` : `` }" type="button">
-                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3 d-flex justify-content-between align-items-center">N.° de Orden: ${ value.codigoOrden } ${ (value.confidencialReactivo) ? `<i class="fa-regular fa-bell text-warning border-warning fw-bold fs--1"></i>`: `` }</p>
+                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3 d-flex justify-content-between align-items-center">N.° de Orden: ${ value.codigoOrden } ${ (value.confidencialReactivo) ? `<i class="fa-regular fa-bell ico-notificacion text-warning border-warning fw-bold fs--1" data-bs-toggle="modal" data-bs-target="#modalReactivo"></i>`: `` }</p>
                             <div class="text-veris fs--2 line-height-14 mb-1">
                                 <i class="fa-regular fa-calendar me-2"></i>
                                 <span class="fw-bold">Fecha de Toma: ${ value.fechaEncuestaPrevia.replace(" "," | ") }</span>
@@ -558,12 +579,21 @@ Veris - Resultados de Laboratorio
                     }else{
                         total_en_proceso++;
                     }
-                    elem += `<tr class="">
+                    if(v.esConfidencialReactivo){
+                        elem += `<tr class="">
+                                <td></td>
+                                <td class="fw-bold text-veris" colspan="">Examen confidencial <i type="button" class="fa-regular fa-bell ico-notificacion text-warning border-warning fw-bold ms-1" data-bs-toggle="modal" data-bs-target="#modalReactivo"></i></td>
+                                <td><span class="badge rounded-pill w-100 bg-${ (v.estado == "LISTO") ? `success` : `warning` }">${ v.estado }</span></td>
+                                <td>${ (v.numeroFactura != null) ? v.numeroFactura : `` }</td>
+                            </tr>`;
+                    }else{
+                        elem += `<tr class="">
                                 <td></td>
                                 <td class="fw-bold text-veris">${ v.nombreExamen }</td>
                                 <td><span class="badge rounded-pill w-100 bg-${ (v.estado == "LISTO") ? `success` : `warning` }">${ v.estado }</span></td>
                                 <td>${ (v.numeroFactura != null) ? v.numeroFactura : `` }</td>
                             </tr>`;
+                        }
                 })
             })
             $('#content-resultados').html(elem);
