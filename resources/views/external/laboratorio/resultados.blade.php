@@ -75,7 +75,7 @@ Veris - Resultados de Laboratorio
                         <input type="text" class="form-control fs--1 p-3" placeholder="Hasta la fecha" name="fechaHasta" id="fechaHasta" required />
                     </div>
                     <div class="col-md-12 mb-3">
-                        <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros">Aplicar filtros</button>
+                        <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros" data-bs-dismiss="offcanvas" aria-label="Close">Aplicar filtros</button>
                         {{-- <button class="btn text-primary w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><img src="{{asset('assets/img/svg/delete-blue.svg')}}" class="me-2" alt="limpiar filtro">Limpiar filtro</button> --}}
                     </div>
                 </div>
@@ -83,8 +83,10 @@ Veris - Resultados de Laboratorio
         </div>
     </div>
     <div class="row mb-2">
+        <div class="col-12 col-md-6 offset-md-3 no-orders text-center d-none">
+        </div>
         <div class="col-12">
-            <div class="swiper swiper-ordenes position-relative pb-2">
+            <div class="swiper swiper-ordenes position-relative pb-2 box-orders">
                 <div class="swiper-wrapper">
                     {{-- <div class="swiper-slide">
                         <div data-rel="" class="card p-4 orden-seleccionada" type="button">
@@ -162,7 +164,7 @@ Veris - Resultados de Laboratorio
             </div>
         </div>
     </div>
-    <div class="row py-1 bg-labe-grayish-blue mt-2 mb-3 d-flex justify-content-between align-items-center">
+    <div class="row py-1 bg-labe-grayish-blue mt-2 mb-3 d-flex justify-content-between align-items-center box-orders">
         <div class="col-12 col-md-4 text-start mt-1 mb-1">
             <span class="fs--1 card-g text-veris fw-bold line-height-16" id="totalResultados">Resultados de Laboratorio: </span>
         </div>
@@ -178,7 +180,7 @@ Veris - Resultados de Laboratorio
             </button>
         </div>
     </div>
-    <div class="row mb-2">
+    <div class="row mb-2 box-orders">
         <div class="col-12">
             <div class="card shadow-none">
                 <div class="card-datatable table-responsive">
@@ -311,22 +313,55 @@ Veris - Resultados de Laboratorio
                     fechaHasta.set('minDate', dateStr);
                     fechaHasta.set('maxDate', maxDate);
                 }
+            },
+            onOpen: function() {
+                // Evitar que se abra si el calendario de fechaHasta está abierto
+                if (fechaHasta.isOpen) {
+                    fechaDesde.close();
+                }
             }
         });
 
-        // Flatpickr para el input de fecha hasta
         var fechaHasta = flatpickr("#fechaHasta", {
             locale: _langDate,
             dateFormat: "d/m/Y",
             onChange: function(selectedDates, dateStr, instance) {
-                // Validar que siempre sea mayor que 'fecha desde'
+                // Validar que siempre sea mayor o igual que 'fecha desde'
                 var desdeDate = fechaDesde.selectedDates[0];
-                if (selectedDates.length > 0 && desdeDate && selectedDates[0] <= desdeDate) {
-                    alert("La fecha 'Hasta' debe ser mayor que la fecha 'Desde'.");
-                    fechaHasta.clear(); // Limpiar selección si no es válida
+                if (selectedDates.length > 0 && desdeDate && selectedDates[0] < desdeDate) {
+                    alert("La fecha 'Hasta' debe ser mayor o igual que la fecha 'Desde'.");
+                    
+                    // Limpiar selección si no es válida y restablecer el mes al mes mínimo
+                    fechaHasta.clear(); 
+
+                    // Cerrar ambos selectores de fecha para evitar que ambos se mantengan abiertos
+                    fechaDesde.close();
+                    fechaHasta.close();
+
+                    // Reabrir el calendario de 'fechaHasta' para permitir al usuario seleccionar una nueva fecha
+                    setTimeout(function() {
+                        // Reabrir el calendario
+                        fechaHasta.open();
+                        
+                        // Restablecer el mes actual o el mes mínimo
+                        if (fechaHasta.config.minDate) {
+                            // Seleccionar el mes mínimo si está definido
+                            fechaHasta.setDate(fechaHasta.config.minDate, false);
+                        } else {
+                            // Seleccionar el mes actual si no hay una fecha mínima
+                            fechaHasta.setDate(new Date(), false);
+                        }
+                    }, 100); // Pequeña espera para asegurarse de que el alert se haya cerrado antes de abrir el calendario
+                }
+            },
+            onOpen: function() {
+                // Evitar que se abra si el calendario de fechaDesde está abierto
+                if (fechaDesde.isOpen) {
+                    fechaHasta.close();
                 }
             }
         });
+
 
         $('body').on('click', '#aplicarFiltros', async function(){
             await obtenerOrdenes();
@@ -424,13 +459,22 @@ Veris - Resultados de Laboratorio
     }
 
     async function drawCardsOrdenes(){
+        $('#content-resultados').empty();
         if(ordenesPaciente.length == 0){
+            $('.no-orders').html(`<img class="w-50" src="{{ asset('assets/img/card/no-data-lab.svg') }}" alt=""><h5 class="ps-3 my-auto py-2 fs--16">No se han encontrado resultados para la búsqueda realizada en las fechas seleccionadas.</h5>`).removeClass('d-none');
+            $('.box-orders').addClass('d-none');
+            $('#content-resultados').addClass('d-none');
             return;
         }
+
+        $('.no-orders').addClass('d-none');
+        $('#content-resultados').removeClass('d-none');
+        $('.box-orders').removeClass('d-none');
+        
         let elem = ``;
         $.each(ordenesPaciente, function(key,value){
             elem += `<div class="swiper-slide">
-                        <div data-rel='${ JSON.stringify(value) }' class="card p-4 orden-seleccionada" type="button">
+                        <div data-rel='${ JSON.stringify(value) }' class="card p-4 ${ (key == 0) ? `orden-seleccionada` : `` }" type="button">
                             <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3 d-flex justify-content-between align-items-center">N.° de Orden: ${ value.codigoOrden } ${ (value.confidencialReactivo) ? `<i class="fa-regular fa-bell text-warning border-warning fw-bold fs--1"></i>`: `` }</p>
                             <div class="text-veris fs--2 line-height-14 mb-1">
                                 <i class="fa-regular fa-calendar me-2"></i>
