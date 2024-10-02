@@ -427,7 +427,9 @@ Veris - Resultados de Laboratorio
     function downloadPDF() {
         const link = document.createElement('a');
         link.href = pdfUrl;
-        link.download = 'resultado-orden-12112.pdf';
+        let ordenAttr = JSON.parse($('.orden-seleccionada').attr("data-rel"));
+        let nameFile = `resultado-orden-${ ordenAttr.codigoOrden }-${ $('.orden-seleccionada').attr("pos-rel") }.pdf;`
+        link.download = nameFile;
         link.click();
     }
 
@@ -463,7 +465,7 @@ Veris - Resultados de Laboratorio
         let elem = ``;
         $.each(ordenesPaciente, function(key,value){
             elem += `<div class="swiper-slide">
-                        <div data-rel='${ JSON.stringify(value) }' class="card p-4 ${ (key == 0) ? `orden-seleccionada` : `` }" type="button">
+                        <div data-rel='${ JSON.stringify(value) }' pos-rel='${ key }' class="card p-4 ${ (key == 0) ? `orden-seleccionada` : `` }" type="button">
                             <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3 d-flex justify-content-between align-items-center">N.° de Orden: ${ value.codigoOrden } ${ (value.confidencialReactivo) ? `<i class="fa-regular fa-bell ico-notificacion text-warning border-warning fw-bold fs--1" data-bs-toggle="modal" data-bs-target="#modalReactivo"></i>`: `` }</p>
                             <div class="text-veris fs--2 line-height-14 mb-1">
                                 <i class="fa-regular fa-calendar me-2"></i>
