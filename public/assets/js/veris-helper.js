@@ -47,7 +47,7 @@ async function call(args){
     // myHeaders.append("IdOrganizacion", _idOrganizacion);
     // myHeaders.append("Authorization","Bearer "+ _token);
 
-    if(args.method == "POST" || args.method == "PUT" || args.method == "DELETE"){
+    if(args.method == "POST" || args.method == "PUT" || args.method == "DELETE" || args.method == "GET"){
         if(args.data){
             requestOptions.body = args.data;
         }
