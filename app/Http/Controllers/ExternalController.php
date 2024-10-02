@@ -456,15 +456,15 @@ class ExternalController extends Controller
     }
 
     public function mostrarResultadoLaboratorio($idPaciente){
-        $accessToken = $this->getTokenExternalFacturacion();
+        $accessToken = $this->getTokenExternalFacturacion(Veris::CONTIENE_DESARROLLO);
         $method = '/apoyosdx/v1/consultas/portal/ordenes_entrega_resultados?fechaInicio&fechaFin&idPaciente='.base64_decode($idPaciente);
         $result = Veris::call([
             'endpoint' => Veris::BASE_URL.$method,
             'token'    => $accessToken,
-            'method'   => 'GET'
+            'method'   => 'GET',
+            'tokenDesarrollo' => Veris::CONTIENE_DESARROLLO
         ]);
-        // echo Veris::BASE_URL.$method;
-        // dd($result);
+        
         return view('external.laboratorio.resultados')
                     ->with('idPaciente', base64_decode($idPaciente))
                     ->with('data', $result->data)
@@ -507,20 +507,26 @@ class ExternalController extends Controller
         return $response->accesToken;
     }
 
-    public function getTokenExternalFacturacion(){
+    public function getTokenExternalFacturacion($esDesarrollo = false){
         $token = session('accessTokenFacturacion', null);
 
         if( $token !== null ){
             //return $token;
         }
 
-        $method = '/'.Veris::FACTURACION_WAR.'/v1/autenticacion/login';
+        if($esDesarrollo){
+            $nameWar = Veris::FACTURACION_WAR_DESA;
+        }else{
+            $nameWar = Veris::FACTURACION_WAR;
+        }
+
+        $method = '/'.$nameWar.'/v1/autenticacion/login';
         $response = Veris::call([
             'endpoint' => Veris::BASE_URL.$method,
             'basic' => Veris::BASICAUTHFACTURACION,
-            'method'   => 'POST'
+            'method'   => 'POST',
+            'tokenDesarrollo' => $esDesarrollo
         ]);
-        // dd($response);
         session(['accessTokenFacturacion' => $response->data->idToken]);
         return $response->data->idToken;
     }

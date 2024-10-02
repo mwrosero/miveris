@@ -76,7 +76,7 @@ Veris - Resultados de Laboratorio
                     </div>
                     <div class="col-md-12 mb-3">
                         <button class="btn btn-primary-veris w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="aplicarFiltros" data-context="contextoAplicarFiltros" data-bs-dismiss="offcanvas" aria-label="Close">Aplicar filtros</button>
-                        {{-- <button class="btn text-primary w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros"><img src="{{asset('assets/img/svg/delete-blue.svg')}}" class="me-2" alt="limpiar filtro">Limpiar filtro</button> --}}
+                        <button class="btn text-primary w-100 fs--18 line-height-24 mb-2 mx-0 px-4 py-3" type="button" id="btnLimpiarFiltros" data-context="contextoLimpiarFiltros" data-bs-dismiss="offcanvas" aria-label="Close"><img src="{{asset('assets/img/svg/delete-blue.svg')}}" class="me-2" alt="limpiar filtro">Limpiar filtro</button>
                     </div>
                 </div>
             </div>
@@ -231,7 +231,7 @@ Veris - Resultados de Laboratorio
 </section>
 <div class="modal fade" id="modalViewer" aria-labelledby="modalViewerLabel" data-bs-keyboard="true" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     {{-- data-bs-backdrop="static" --}}
-    {{-- <div class="modal-dialog modal-xl"> --}}
+    {{-- <div class="modal-dialog  modal-fullscreen modal-fullscreen-md-down"> --}}
     <div class="modal-dialog modal-xl">
         <div class="modal-content p-2">
             <div class="modal-header pt-2 d-flex justify-content-between align-items-center">
@@ -334,6 +334,12 @@ Veris - Resultados de Laboratorio
             }
         });
 
+        $('#btnLimpiarFiltros').on('click', async function() {
+            $("#fechaDesde").val("");
+            $("#fechaHasta").val("");
+            await obtenerOrdenes();
+        });
+
         $('body').on('click', '.ico-notificacion', function(event) {
             event.stopPropagation(); // Detener la propagación del evento hacia el .card
         });
@@ -431,6 +437,17 @@ Veris - Resultados de Laboratorio
         let nameFile = `resultado-orden-${ ordenAttr.codigoOrden }-${ $('.orden-seleccionada').attr("pos-rel") }.pdf;`
         link.download = nameFile;
         link.click();
+        trackingDownload();
+    }
+
+    async function trackingDownload(){
+        let args = [];
+        args["endpoint"] = api_url + `/apoyosdx/v1/consultas/portal/registra_descarga_informe?idGeneracionArchivo=${ idGeneracionArchivo }`;
+        args["method"] = "POST";
+        args["token"] = "{{ $accessToken }}";
+        args["bodyType"] = "json";
+        args["showLoader"] = false;
+        const data = await call(args);
     }
 
     async function obtenerOrdenes(){
@@ -473,7 +490,7 @@ Veris - Resultados de Laboratorio
                             </div>
                             <div class="text-veris fs--2 line-height-14 mb-1">
                                 <i class="fa-regular fa-calendar-check me-2"></i>
-                                <span class="fw-bold">Fecha de Compromiso: ${ (value.fechaCompromisoEntrega.split(" "))[0] }</span>
+                                <span class="fw-bold">Fecha de Compromiso: ${ value.fechaCompromisoEntrega.replace(" "," | ") }</span>
                             </div>
                             <div class="text-veris fs--2 line-height-14 mb-1">
                                 <i class="fa-solid fa-location-dot me-2"></i>
@@ -605,8 +622,9 @@ Veris - Resultados de Laboratorio
         let prestaciones = [];
         $.each(prestacionesArr, function(key, value){
             $.each(value.prestaciones, function(k, v){
-                console.log(v)
-                prestaciones.push(v);
+                if(!v.esConfidencialReactivo){
+                    prestaciones.push(v);
+                }
             })
         })
         let args = [];
@@ -628,7 +646,8 @@ Veris - Resultados de Laboratorio
         try {
             const result = await callBlobService(args);
             pdfUrl = URL.createObjectURL(result.blob);
-            //idGeneracionArchivo = result.headers.idGeneracionArchivo;
+            let headers = result.headers;
+            idGeneracionArchivo = headers.idgeneracionarchivo
             console.log(result.headers);
             await drawPdf(pdfUrl);
             // window.open(pdfUrl, '_blank');
