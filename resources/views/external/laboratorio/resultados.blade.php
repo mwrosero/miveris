@@ -14,7 +14,7 @@ Veris - Resultados de Laboratorio
 <script src="{{ asset('assets/external/resultados-laboratorio/js/flatpickr.js') }}"></script>
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.min.js"></script>
+<script type="text/javascript" src="{{ asset('assets/external/resultados-laboratorio/js/pdf.min.js') }}"></script>
 
 @include('external.components.navbar')
 
@@ -174,7 +174,8 @@ Veris - Resultados de Laboratorio
             </div>
         </div>
         <div class="col-5 col-md-4 text-start text-md-end mt-1 mb-1 text-end">
-            <button class="btn btn-sm btn-primary-veris p-2 m-0 text-white" data-bs-toggle="modal" data-bs-target="#modalViewer">
+            <button class="btn btn-sm btn-primary-veris p-2 m-0 text-white" onclick="cargarPdf()">
+                {{-- data-bs-toggle="modal" data-bs-target="#modalViewer" --}}
                 <i class="fa-solid fa-file-pdf me-2"></i>
                 Visualizar 
             </button>
@@ -228,7 +229,7 @@ Veris - Resultados de Laboratorio
         </div>
     </div>
 </section>
-<div class="modal fade" id="modalViewer" aria-labelledby="modalViewerLabel" data-bs-keyboard="true" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modalViewer" aria-labelledby="modalViewerLabel" data-bs-keyboard="true" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
     {{-- data-bs-backdrop="static" --}}
     {{-- <div class="modal-dialog modal-xl"> --}}
     <div class="modal-dialog modal-xl">
@@ -252,6 +253,20 @@ Veris - Resultados de Laboratorio
             <div class="modal-body text-center p-3">
                 <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
                 <p class="fs--1 fw-normal mb-0 text-veris">Esta orden contiene un exámen confidencial, por favor acercarse al laboratorio mas cercano para realizarse un exámen de verificación</p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button data-bs-dismiss="modal" type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="noFile" tabindex="-1" aria-labelledby="noFileLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
+                <p class="fs--1 fw-normal mb-0 text-veris">No se puede visualizar este documento.</p>
             </div>
             <div class="modal-footer pt-0 pb-3 px-3">
                 <button data-bs-dismiss="modal" type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</button>
@@ -303,10 +318,12 @@ Veris - Resultados de Laboratorio
     //     locale: _langDate,
     // });
     
-    var pdfUrl = "{{ asset('assets/external/resultados-laboratorio/resultado.pdf') }}";
+    let pdfUrl = "";
     var pdfjsLib = window['pdfjs-dist/build/pdf'];
     let tiempoDiasParaConsulta = {{ $data->tiempoDiasParaConsulta }};
     let ordenesPaciente = @json($data->ordenesPaciente);
+    let prestacionesArr = [];
+    let idGeneracionArchivo;
 
     document.addEventListener("DOMContentLoaded", async function () {
         $('body').on('click', '.swiper-ordenes .swiper-slide .card', async function(){
@@ -323,6 +340,7 @@ Veris - Resultados de Laboratorio
 
         var fechaDesde = flatpickr("#fechaDesde", {
             locale: _langDate,
+            disableMobile: "true",
             dateFormat: "d/m/Y",
             onChange: function(selectedDates, dateStr, instance) {
                 // Al cambiar la fecha desde, configurar la fecha mínima para 'fecha hasta'
@@ -345,6 +363,7 @@ Veris - Resultados de Laboratorio
 
         var fechaHasta = flatpickr("#fechaHasta", {
             locale: _langDate,
+            disableMobile: "true",
             dateFormat: "d/m/Y",
             onChange: function(selectedDates, dateStr, instance) {
                 // Validar que siempre sea mayor o igual que 'fecha desde'
@@ -389,58 +408,6 @@ Veris - Resultados de Laboratorio
         })
 
         drawCardsOrdenes();
-        
-        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.2.2/pdf.worker.js';
-        var pdfDoc = null,
-            pageNum = 1,
-            pageRendering = false,
-            pageNumPending = null,
-            scale = 10.0;
-
-        function renderPage(num, canvas) {
-            var ctx = canvas.getContext('2d');
-            pageRendering = true;
-            // Using promise to fetch the page
-            pdfDoc.getPage(num).then(function(page) {
-                var viewport = page.getViewport({scale: scale});
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-
-                // Render PDF page into canvas context
-                var renderContext = {
-                    canvasContext: ctx,
-                    viewport: viewport
-                };
-                var renderTask = page.render(renderContext);
-
-                // Wait for rendering to finish
-                renderTask.promise.then(function() {
-                    pageRendering = false;
-                    if (pageNumPending !== null) {
-                        // New page rendering is pending
-                        renderPage(pageNumPending);
-                        pageNumPending = null;
-                    }
-                });
-            });
-        }
-
-        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
-            pdfDoc = pdfDoc_;
-
-            const pages = parseInt(pdfDoc.numPages);
-
-            var canvasHtml = '';
-            for (var i = 0; i < pages; i++) {
-                canvasHtml += '<canvas id="canvas_' + i + '"></canvas>';
-            }
-
-            document.getElementById('canvases').innerHTML = canvasHtml;
-            for (var i = 0; i < pages; i++) {
-                var canvas = document.getElementById('canvas_' + i);
-                renderPage(i+1, canvas);
-            }
-        });
 
     });
 
@@ -481,6 +448,7 @@ Veris - Resultados de Laboratorio
 
     async function drawCardsOrdenes(){
         $('#content-resultados').empty();
+        prestacionesArr = [];
         if(ordenesPaciente.length == 0){
             $('.no-orders').html(`<img class="w-50" src="{{ asset('assets/img/card/no-data-lab.svg') }}" alt=""><h5 class="ps-3 my-auto py-2 fs--16">No se han encontrado resultados para la búsqueda realizada en las fechas seleccionadas.</h5>`).removeClass('d-none');
             $('.box-orders').addClass('d-none');
@@ -567,6 +535,7 @@ Veris - Resultados de Laboratorio
         let total_en_proceso = 0;
         if(data.code == 200){
             let elem = ``;
+            prestacionesArr = data.data;
             $.each(data.data, function(key, value){
                 elem += `<tr class="header">
                             <td type="button" width="30px" class="text-center"><i class="fa-solid fa-caret-down text-primary-veris"></i></td>
@@ -626,6 +595,169 @@ Veris - Resultados de Laboratorio
                     });
                 });
             }
+        }
+    }
+
+    async function cargarPdf(){
+        let ordenSeleccionada = JSON.parse($('.orden-seleccionada').attr("data-rel"));
+        let prestaciones = [];
+        $.each(prestacionesArr, function(key, value){
+            $.each(value.prestaciones, function(k, v){
+                console.log(v)
+                prestaciones.push(v);
+            })
+        })
+        let args = [];
+        args["endpoint"] = api_url + `/apoyosdx/v1/consultas/portal/genera_informe_resultados`;
+        args["method"] = "POST";
+        args["token"] = "{{ $accessToken }}";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        args["data"] = JSON.stringify({
+            "codigoOrdenApoyo": parseInt(ordenSeleccionada.codigoOrden),
+            "codigoEmpresa": parseInt(ordenSeleccionada.codigoEmpresa),
+            "codigoSucursal": parseInt(ordenSeleccionada.codigoSucursal),
+            "detalleOrden": prestaciones
+        });
+
+        // const data = await call(args);
+        // console.log(data);
+
+        try {
+            const result = await callBlobService(args);
+            pdfUrl = URL.createObjectURL(result.blob);
+            //idGeneracionArchivo = result.headers.idGeneracionArchivo;
+            console.log(result.headers);
+            await drawPdf(pdfUrl);
+            // window.open(pdfUrl, '_blank');
+            // setTimeout(() => {
+            //     URL.revokeObjectURL(pdfUrl);
+            // }, 100);
+            $('#modalViewer').modal('show');
+        } catch (error) {
+            $('#noFile').modal('show');
+            console.error('Error al obtener el PDF:', error);
+        }
+    }
+
+    async function drawPdf(pdfUrl){
+        // var pdfUrl = "{{ asset('assets/external/resultados-laboratorio/resultado.pdf') }}";
+        pdfjsLib.GlobalWorkerOptions.workerSrc = '{{ asset('assets/external/resultados-laboratorio/js/pdf.worker.js') }}';
+        var pdfDoc = null,
+            pageNum = 1,
+            pageRendering = false,
+            pageNumPending = null,
+            scale = 10.0;
+
+        function renderPage(num, canvas) {
+            var ctx = canvas.getContext('2d');
+            pageRendering = true;
+            // Using promise to fetch the page
+            pdfDoc.getPage(num).then(function(page) {
+                var viewport = page.getViewport({scale: scale});
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+
+                // Render PDF page into canvas context
+                var renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                var renderTask = page.render(renderContext);
+
+                // Wait for rendering to finish
+                renderTask.promise.then(function() {
+                    pageRendering = false;
+                    if (pageNumPending !== null) {
+                        // New page rendering is pending
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                });
+            });
+        }
+
+        pdfjsLib.getDocument(pdfUrl).promise.then(function(pdfDoc_) {
+            pdfDoc = pdfDoc_;
+
+            const pages = parseInt(pdfDoc.numPages);
+
+            var canvasHtml = '';
+            for (var i = 0; i < pages; i++) {
+                canvasHtml += '<canvas id="canvas_' + i + '"></canvas>';
+            }
+
+            document.getElementById('canvases').innerHTML = canvasHtml;
+            for (var i = 0; i < pages; i++) {
+                var canvas = document.getElementById('canvas_' + i);
+                renderPage(i+1, canvas);
+            }
+        });
+    }
+
+    async function callBlobService(args) {
+        if (args.showLoader) {
+            showLoader();
+        }
+
+        let requestOptions = {
+            method: args.method,
+            redirect: 'follow'
+        };
+        let myHeaders = new Headers();
+        if (args.bodyType === "json") {
+            myHeaders.append("Content-Type", "application/json");
+            if(args.token){
+                // console.log(args.token)
+                myHeaders.append("Authorization","Bearer "+ args.token);
+                myHeaders.append("Application", _application);
+                myHeaders.append("IdOrganizacion", _idOrganizacion);
+                // requestOptions.headers = ({
+                //     "Authorization": "Bearer "+ args.token,
+                //     "Application": _application,
+                //     "IdOrganizacion": _idOrganizacion
+                // });
+            }
+            requestOptions.headers = myHeaders;
+        }
+        if (["POST", "PUT", "DELETE"].includes(args.method) && args.data) {
+            requestOptions.body = args.data;
+        }
+
+        try {
+            const response = await fetch(args.endpoint, requestOptions);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const responseHeaders = {};
+            response.headers.forEach((value, key) => {
+                responseHeaders[key] = value;
+            });
+
+            const blob = await response.blob();
+            if (args.showLoader) {
+                hideLoader();
+            }
+
+            return {
+                blob: blob,
+                headers: responseHeaders
+            };
+
+        } catch (error) {
+            if (args.showLoader) {
+                hideLoader();
+            }
+
+            // Construye un objeto de error para devolver información relevante
+            let errorInfo = {
+                status: error.message.includes('HTTP error') ? parseInt(error.message.replace(/\D/g, '')) : 500, // Extrae el código de estado del mensaje de error, o asume 500 si no es específico
+                message: 'Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.'
+            };
+
+            return errorInfo;
         }
     }
 </script>
