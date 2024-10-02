@@ -516,17 +516,21 @@ class ExternalController extends Controller
 
         if($esDesarrollo){
             $nameWar = Veris::FACTURACION_WAR_DESA;
+            $basic = Veris::BASICAUTHFACTURACIONDESARROLLO;
         }else{
             $nameWar = Veris::FACTURACION_WAR;
+            $basic = VERIS::BASICAUTHFACTURACION;
         }
 
         $method = '/'.$nameWar.'/v1/autenticacion/login';
         $response = Veris::call([
             'endpoint' => Veris::BASE_URL.$method,
-            'basic' => Veris::BASICAUTHFACTURACION,
+            'basic' => $basic,
             'method'   => 'POST',
             'tokenDesarrollo' => $esDesarrollo
         ]);
+        // dump(Veris::BASE_URL.$method);
+        // dd($response);
         session(['accessTokenFacturacion' => $response->data->idToken]);
         return $response->data->idToken;
     }

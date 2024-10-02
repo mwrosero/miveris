@@ -25,7 +25,8 @@ class Veris extends Model
     public const TEST_ENVIRONMENT_KUSHKI = true;
     public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
     public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
-    public const BASICAUTHFACTURACION = 'YmFja2VuZHBoYW50b206QmFja1BAbnRoMG1QQHNzMjAyMQ==';//'QkFDS0VORFBIQU5UT006Q2xAdmUxMjM0';
+    public const BASICAUTHFACTURACION = 'QkFDS0VORFBIQU5UT006Q2xAdmUxMjM0';
+    public const BASICAUTHFACTURACIONDESARROLLO = 'YmFja2VuZHBoYW50b206QmFja1BAbnRoMG1QQHNzMjAyMQ==';
     public const NEMONICO_FLUJO_PAGO = 'PRE_TRANSACCIONES';
     public const NEMONICO_FARMACIA = 'FARMACIA_DOMICILIO';
     public const URL_EPI = 'http://ecstest.veris.com.ec/Verisrest/v1/formularioepi1';
