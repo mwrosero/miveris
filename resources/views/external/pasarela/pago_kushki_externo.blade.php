@@ -94,7 +94,7 @@ Veris - Pago en línea
         args["showLoader"] = true; 
         args["bodyType"] = "json"; 
         args["data"] = JSON.stringify({            
-            "codigoUsuario": "dataCita.datosIngresadosFactura.numeroIdentificacion",
+            "codigoUsuario": dataCita.datosIngresadosFactura.numeroIdentificacion,
             "codigoTipoIdentificacion": parseInt(dataCita.datosIngresadosFactura.codigoTipoIdentificacion),
             "numeroIdentificacion": dataCita.datosIngresadosFactura.numeroIdentificacion,
             "nombreFactura": dataCita.datosIngresadosFactura.nombreFactura,
@@ -131,4 +131,10 @@ Veris - Pago en línea
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>
+<style>
+    iframe {
+        width: 100% !important;!i;!;
+        max-width: 100% !important;!i;!;
+    }
+</style>
 @endsection

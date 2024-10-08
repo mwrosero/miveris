@@ -434,7 +434,7 @@ Veris - Resultados de Laboratorio
         const link = document.createElement('a');
         link.href = pdfUrl;
         let ordenAttr = JSON.parse($('.orden-seleccionada').attr("data-rel"));
-        let nameFile = `resultado-orden-${ ordenAttr.codigoOrden }-${ $('.orden-seleccionada').attr("pos-rel") }.pdf;`
+        let nameFile = `resultado-orden-${ ordenAttr.codigoOrden }-${ $('.orden-seleccionada').attr("pos-rel") }.pdf`
         link.download = nameFile;
         link.click();
         trackingDownload();
