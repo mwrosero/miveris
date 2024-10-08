@@ -129,4 +129,10 @@ Mi Veris - Citas - Información de pago
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
 </script>
+<style>
+    iframe {
+        width: 100% !important;!i;!;
+        max-width: 100% !important;!i;!;
+    }
+</style>
 @endpush
