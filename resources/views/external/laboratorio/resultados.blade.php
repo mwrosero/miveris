@@ -170,7 +170,8 @@ Veris - Resultados de Laboratorio
         </div>
         <div class="col-7 col-md-4 text-start text-md-center mt-1 mb-1 flex-grow-1">
             <div class="progress" style="height:25px;">
-                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar" id="progress-bar-avance" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                <div class="progress-bar bg-warning d-none" id="progress-bar-en-proceso" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="100" aria-valuemax="100">EN PROCESO</div>
             </div>
         </div>
         <div class="col-5 col-md-4 text-start text-md-end mt-1 mb-1 text-end">
@@ -586,18 +587,25 @@ Veris - Resultados de Laboratorio
             })
             $('#content-resultados').html(elem);
 
-            let porcentaje = (total_listas / total_prestaciones) * 100;
+            if(total_listas > 0){
+                $('#progress-bar-avance').removeClass('d-none');
+                $('#progress-bar-en-proceso').addClass('d-none');
+                let porcentaje = (total_listas / total_prestaciones) * 100;
 
-            $('.progress-bar').html(porcentaje.toFixed(2)+"%");
-            $('.progress-bar').css("width",porcentaje.toFixed(2)+"%");
-            $('.progress-bar').attr("aria-valuenow",porcentaje.toFixed(2));
+                $('#progress-bar-avance').html(porcentaje.toFixed(2)+"%");
+                $('#progress-bar-avance').css("width",porcentaje.toFixed(2)+"%");
+                $('#progress-bar-avance').attr("aria-valuenow",porcentaje.toFixed(2));
 
-            $('#totalResultados').html(`Resultados de Laboratorio: ${ total_listas }/${ total_prestaciones }`);
+                $('#totalResultados').html(`Resultados de Laboratorio: ${ total_listas }/${ total_prestaciones }`);
 
-            if(total_listas == total_prestaciones){
-                $('.progress-bar').addClass('bg-success');
+                if(total_listas == total_prestaciones){
+                    $('#progress-bar-avance').addClass('bg-success');
+                }else{
+                    $('#progress-bar-avance').removeClass('bg-success');
+                }
             }else{
-                $('.progress-bar').removeClass('bg-success');
+                $('#progress-bar-avance').addClass('d-none');
+                $('#progress-bar-en-proceso').removeClass('d-none');
             }
 
             var ua = navigator.userAgent,
