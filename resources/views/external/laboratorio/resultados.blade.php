@@ -300,7 +300,7 @@ Veris - Resultados de Laboratorio
     }
 
     .table tbody tr:not(.header) {
-        display: none;
+        display: table-row;
     }
 
     #canvases canvas {
@@ -558,7 +558,7 @@ Veris - Resultados de Laboratorio
             prestacionesArr = data.data;
             $.each(data.data, function(key, value){
                 elem += `<tr class="header">
-                            <td type="button" width="30px" class="text-center"><i class="fa-solid fa-caret-down text-primary-veris"></i></td>
+                            <td type="button" width="30px" class="text-center"><i class="fa-solid fa-caret-up text-primary-veris ico-arrow"></i></td>
                             <td class="fw-bold text-primary-veris" colspan="3">${ value.nombreServicio }</td>
                         </tr>`;
                 $.each(value.prestaciones, function(k,v){
@@ -613,7 +613,13 @@ Veris - Resultados de Laboratorio
             if ($('.table').length > 0) {
                 $('.table .header').on(event, function() {
                     console.log(8888)
+                        $(this).find('.ico-arrow').toggleClass("fa-caret-down");
                     $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
+                        if(this.style.display == ""){
+                            //$(this).find('.ico-arrow').removeClass('fa-caret-down').addClass('fa-caret-up');
+                            return 'none';
+                        }
+                        //$(this).find('.ico-arrow').removeClass('fa-caret-up').addClass('fa-caret-down');
                         return this.style.display === 'table-row' ? 'none' : 'table-row';
                     });
                     $(this).toggleClass("active", "").nextUntil('.header').css('display', function(i, v) {
