@@ -63,6 +63,7 @@ Route::middleware('guest')->group(function () {
         Route::post('/farmacia/qr/autenticar', [ExternalController::class, 'autenticarQr'])->name('autenticar-qr')->withoutMiddleware(['externalVeris']);
 
         Route::get('/bot', [ExternalController::class, 'bot'])->name('bot')->withoutMiddleware(['guest']);
+        Route::get('/call', [ExternalController::class, 'botAi'])->name('botAi')->withoutMiddleware(['guest']);
 
         Route::get('/laboratorio/resultados/{idPaciente}', [ExternalController::class, 'mostrarResultadoLaboratorio'])->name('resultado-laboratorio')->withoutMiddleware(['guest']);
     });
