@@ -49,6 +49,7 @@ class ExternalController extends Controller
         if ($request->has('codigoPreTransaccion') || $request->has('idSolicitud')) {
             $esServicioCaja = false;
             $accessToken = $this->getTokenExternalFacturacion();
+            // dd($accessToken);
             if($request->has('codigoPreTransaccion')){
                 $esServicioCaja = true;
                 $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
@@ -537,5 +538,31 @@ class ExternalController extends Controller
 
     public function bot(){
         return view('external.bot.index');
+    }
+
+    public function botAi(Request $request){
+        $data = $request->all();
+        // dd($data['message']);
+        $curl = curl_init();
+        $payload = [  "sessionId" => "12345678901234577" , "message" => $data['message'] ];
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'http://34.202.115.111:4393/api/chatbot/message',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'POST',
+          CURLOPT_POSTFIELDS => $payload,
+          CURLOPT_HTTPHEADER => array(
+            'Content-Type: application/json'
+          ),
+        ));
+
+
+        $response = curl_exec($curl);
+
     }
 }
