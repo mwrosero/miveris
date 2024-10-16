@@ -36,12 +36,14 @@ Veris - Planes Promociones
 											<p class="text-muted">Cuidarte es tan fácil.</p>
 										</div>
 									</div>
-									<img class="profile-image" src="../../assets/img/veris/isotipo.svg">
+									<button class="border-0">
+										<i class="fa-solid fa-bars fs-3"></i>
+									</button>
 								</div>
 							</div>
 							<div class="modal-body">
 								<div class="msg-body">
-									{{-- <div class="box-accesos row mt-2 p-2">
+									<div class="box-accesos row mt-2 p-2">
 										<div class="col-12 col-md-8 offset-md-2">
 											<div class="swiper swiper-acceso-rapidos position-relative pb-2">
 									            <div class="swiper-wrapper">
@@ -98,7 +100,7 @@ Veris - Planes Promociones
 									            <button type="button" id="nextProperties" class="d-flex d-none mt-n4 btn btn-next rounded-circle"></button>
 									        </div>
 									    </div>
-									</div> --}}
+									</div>
 									<ul class="p-2" id="conversacion">
 										<li class="sender mt-1 mb-1">
 											<p>Hola, soy Vericita. Tu asistente inteligente. En qué puedo ayudarte hoy?</p>

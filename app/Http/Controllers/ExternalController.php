@@ -544,10 +544,10 @@ class ExternalController extends Controller
         $data = $request->all();
         // dd($data['message']);
         $curl = curl_init();
-        $payload = [  "sessionId" => "12345678901234577" , "message" => $data['message'] ];
+        $payload = [  "sessionId" => $data['sessionId'], "canal" => "WEB", "message" => $data['message'] ];
 
         curl_setopt_array($curl, array(
-          CURLOPT_URL => 'http://34.202.115.111:4393/api/chatbot/message',
+          CURLOPT_URL => 'http://sempitecno.com:6040/api/chatbot/message',
           CURLOPT_RETURNTRANSFER => true,
           CURLOPT_ENCODING => '',
           CURLOPT_MAXREDIRS => 10,
@@ -555,7 +555,7 @@ class ExternalController extends Controller
           CURLOPT_FOLLOWLOCATION => true,
           CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
           CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS => $payload,
+          CURLOPT_POSTFIELDS => json_encode($payload),
           CURLOPT_HTTPHEADER => array(
             'Content-Type: application/json'
           ),
@@ -563,6 +563,11 @@ class ExternalController extends Controller
 
 
         $response = curl_exec($curl);
+            
+        $jsonData = json_decode($response, true); // Para un array asociativo, usa 'true'. Para un objeto, omite 'true'.
+
+        // Devolver la respuesta JSON
+        return response()->json($jsonData);
 
     }
 }
