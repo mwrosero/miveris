@@ -567,7 +567,10 @@ class ExternalController extends Controller
         $jsonData = json_decode($response, true); // Para un array asociativo, usa 'true'. Para un objeto, omite 'true'.
 
         // Devolver la respuesta JSON
-        return response()->json($jsonData);
+        return response()->json($jsonData)
+        ->header('Access-Control-Allow-Origin', '*') // Permitir solicitudes desde cualquier origen
+        ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS') // Métodos permitidos
+        ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Encabezados permitidos
 
     }
 }
