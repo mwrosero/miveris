@@ -457,7 +457,7 @@ class ExternalController extends Controller
     }
 
     public function mostrarResultadoLaboratorio($idPaciente){
-        return view('external.mantenimiento.index');
+        //return view('external.mantenimiento.index');
         $accessToken = $this->getTokenExternalFacturacion(Veris::CONTIENE_DESARROLLO);
         $method = '/apoyosdx/v1/consultas/portal/ordenes_entrega_resultados?fechaInicio&fechaFin&idPaciente='.base64_decode($idPaciente);
         $result = Veris::call([
