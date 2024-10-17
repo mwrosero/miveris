@@ -107,13 +107,18 @@ class ExternalController extends Controller
                 'endpoint' => Veris::BASE_URL.$method,
                 'method'   => 'GET'
             ]);
-            // dd($response->data);
-            $idPaciente = $list_paciente->data->numeroPaciente;
+            // dd($list_paciente);
+            $idPaciente = ($list_paciente->data !== null) ? $list_paciente->data->numeroPaciente : null;
+            if($list_paciente->data === null){
+                $list_paciente->data = new \stdClass();
+                $list_paciente->data->idPaciente = null;
+                $list_paciente->data->telefonoMovil = "";
+            }
             $data = array(
                 "idPaciente" => $idPaciente,
                 "codigoConvenio" =>  null,
                 "secuenciaAfiliado" =>  null,
-                "idPaciente" => null,
+                // "idPaciente" => null,
                 "codigoConvenio" => null,
                 "codigoSolicitud" => null
             );
@@ -121,7 +126,7 @@ class ExternalController extends Controller
             switch ($urlParams['tipoArticulo']) {
                 case 'CITA':
                 case 'CITA_ODO':
-                    $data["idPaciente"] = $list_paciente->data->numeroPaciente;
+                    $data["idPaciente"] = $idPaciente;
                     $data["tipoSolicitud"] = null;
                     $data["tipoServicio"] = $urlParams['tipoArticulo'];
                     $data["listaCitas"] = [array(
@@ -129,7 +134,7 @@ class ExternalController extends Controller
                         )];
                 break;
                 case 'DOM':
-                    $data["idPaciente"] = $list_paciente->data->numeroPaciente;
+                    $data["idPaciente"] = $idPaciente;
                     $data["tipoSolicitud"] = "LAB";
                     $data["tipoServicio"] = "DOMICILIO";
                     $data["codigoSolicitud"] = $urlParams['codArticulo'];
@@ -137,7 +142,7 @@ class ExternalController extends Controller
                     $data["listaOrdenes"] = [];
                 break;
                 case 'ORDEN':
-                    $data["idPaciente"] = $list_paciente->data->numeroPaciente;
+                    $data["idPaciente"] = $idPaciente;
                     $data["tipoSolicitud"] = null;
                     $data["tipoServicio"] = "ORDEN";
                     $data["codigoSolicitud"] = null;
@@ -154,7 +159,7 @@ class ExternalController extends Controller
                     $data["listaOrdenes"] = $ordenes;
                 break;
                 case 'PAQUETE':
-                    $data["idPaciente"] = $list_paciente->data->numeroPaciente;
+                    $data["idPaciente"] = $idPaciente;
                     if(isset($urlParams['canalOrigen']) && $urlParams['canalOrigen'] == "WEBSITE"){
                         $tramaPaquete = array(
                             "codigoPaquete" => $urlParams['codArticulo']
