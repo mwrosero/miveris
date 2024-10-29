@@ -63,10 +63,12 @@
             const api_url = "{{ \App\Models\Veris::BASE_URL }}";
             const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
             const _application = "{{ \App\Models\Veris::APPLICATION }}";
-            const _idOrganizacion = "@if (\App\Models\Veris::CONTIENE_DESARROLLO)  {{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }} @else {{ \App\Models\Veris::IDORGANIZACION }} @endif";
+            let _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACION }}";
+            // "@if (\App\Models\Veris::CONTIENE_DESARROLLO)  {{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }} @else {{ \App\Models\Veris::IDORGANIZACION }} @endif";
             // const _idOrganizacionResultadosLaboratorio = "";
             window.config = {
                 subdomain: @json(config('app.subdomain')),
+                canalOrigen: (@json(config('app.subdomain')) == "veris") ? "VER_CMV" : "VER_PMF"
             };
         </script>
         

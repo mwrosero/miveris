@@ -15,7 +15,6 @@ Veris - Resultados de Laboratorio
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 
 <script type="text/javascript" src="{{ asset('assets/external/resultados-laboratorio/js/pdf.min.js') }}"></script>
-
 @include('external.components.navbar')
 
 {{-- <div class="d-flex justify-content-between align-items-center bg-white">
@@ -104,57 +103,6 @@ Veris - Resultados de Laboratorio
                                 <span class="fw-bold">Laboratorio: Central</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div data-rel="" class="card p-4" type="button">
-                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3">N.° de Orden: 89008388</p>
-                            <div class="text-veris fs--2 line-height-14 mb-1">
-                                <i class="fa-regular fa-calendar me-2"></i>
-                                <span class="fw-bold">Fecha de Toma: 17-08-2024 | 07:25:00</span>
-                            </div>
-                            <div class="text-veris fs--2 line-height-14 mb-1">
-                                <i class="fa-regular fa-calendar-check me-2"></i>
-                                <span class="fw-bold">Fecha de Compromiso: 24/08/2024</span>
-                            </div>
-                            <div class="text-veris fs--2 line-height-14 mb-1">
-                                <i class="fa-solid fa-location-dot me-2"></i>
-                                <span class="fw-bold">Laboratorio: Central</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div data-rel="" class="card p-4" type="button">
-                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3">N.° de Orden: 89008388</p>
-                            <div class="text-veris fs--2 line-height-14 mb-1">
-                                <i class="fa-regular fa-calendar me-2"></i>
-                                <span class="fw-bold">Fecha de Toma: 17-08-2024 | 07:25:00</span>
-                            </div>
-                            <div class="text-veris fs--2 line-height-14 mb-1">
-                                <i class="fa-regular fa-calendar-check me-2"></i>
-                                <span class="fw-bold">Fecha de Compromiso: 24/08/2024</span>
-                            </div>
-                            <div class="text-veris fs--2 line-height-14 mb-1">
-                                <i class="fa-solid fa-location-dot me-2"></i>
-                                <span class="fw-bold">Laboratorio: Central</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-slide">
-                        <div data-rel="" class="card p-4" type="button">
-                            <p class="flex-grow-1 fs--1 card-g text-primary-veris fw-bold line-height-16 mb-3">N.° de Orden: 89008388</p>
-                            <div class="text-veris fs--2 line-height-14 mb-1">
-                                <i class="fa-regular fa-calendar me-2"></i>
-                                <span class="fw-bold">Fecha de Toma: 17-08-2024 | 07:25:00</span>
-                            </div>
-                            <div class="text-veris fs--2 line-height-14 mb-1">
-                                <i class="fa-regular fa-calendar-check me-2"></i>
-                                <span class="fw-bold">Fecha de Compromiso: 24/08/2024</span>
-                            </div>
-                            <div class="text-veris fs--2 line-height-14 mb-1">
-                                <i class="fa-solid fa-location-dot me-2"></i>
-                                <span class="fw-bold">Laboratorio: Central</span>
-                            </div>
-                        </div>
                     </div> --}}
                 </div>
                 {{-- <button type="button" id="prevProperties" class="d-flex  mt-n4 btn btn-prev rounded-circle"></button>
@@ -205,22 +153,6 @@ Veris - Resultados de Laboratorio
                                 <td></td>
                                 <td class="fw-bold text-veris">Biometría Hemática</td>
                                 <td><span class="badge rounded-pill w-100 bg-warning">En proceso</span></td>
-                                <td>0000914529704707786396</td>
-                            </tr>
-                            <tr class="">
-                                <td></td>
-                                <td class="fw-bold text-veris">Glucosa en sangre</td>
-                                <td><span class="badge rounded-pill w-100 bg-warning">En proceso</span></td>
-                                <td>0000914529704707786396</td>
-                            </tr>
-                            <tr class="header">
-                                <td type="button" width="30px" class="text-center"><i class="fa-solid fa-caret-down text-primary-veris"></i></td>
-                                <td class="fw-bold text-primary-veris" colspan="3">Imnunología</td>
-                            </tr>
-                            <tr class="">
-                                <td></td>
-                                <td class="fw-bold text-veris">Biometría Hemática</td>
-                                <td><span class="badge rounded-pill w-100 bg-success">Listo</span></td>
                                 <td>0000914529704707786396</td>
                             </tr> --}}
                         </tbody>
@@ -276,6 +208,22 @@ Veris - Resultados de Laboratorio
     </div>
 </div>
 
+<!-- Modal PPD -->
+<div class="modal fade" id="modalPPD" tabindex="-1" aria-labelledby="modalPPDLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3 text-center">
+                <h5 class="fs-24 line-height-28 my-3"  id="tituloInformacionCita">{{ __('Información') }}</h5>
+                <p class="fs--1 line-height-16 mb-0">Como en Veris cuidarte es tan fácil, hemos creado nuevas <a href="https://www.veris.com.ec/politicas/" id="politicasPPD" target="_blank">políticas de privacidad de datos</a></p>
+                <div class="d-flex flex-column">
+                    <button type="button" id="aceptarPDP" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 mt-2 w-100 px-4 py-3">Aceptar</button>
+                    <button type="button" class="btn btn-lg shadow-none text-primary-veris fw-medium col fs--18 line-height-24 m-0 mt-2 w-100 px-4 py-3" data-bs-dismiss="modal">Recuérdame más tarde </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .swiper-ordenes .btn.disabled, .swiper-ordenes .btn:disabled{
         display: none !important;
@@ -318,15 +266,18 @@ Veris - Resultados de Laboratorio
     // flatpickr("#fechaHasta", {
     //     locale: _langDate,
     // });
-    
+    _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }}";
     let pdfUrl = "";
     var pdfjsLib = window['pdfjs-dist/build/pdf'];
     let tiempoDiasParaConsulta = {{ $data->tiempoDiasParaConsulta }};
     let ordenesPaciente = @json($data->ordenesPaciente);
     let prestacionesArr = [];
     let idGeneracionArchivo;
+    let _ppd;
 
     document.addEventListener("DOMContentLoaded", async function () {
+        await obtenerPPD();
+        //$('#modalPPD').modal('show');
         $('body').on('click', '.swiper-ordenes .swiper-slide .card', async function(){
             if ($(event.target).closest('.ico-notificacion').length === 0) {
                 $('.swiper-ordenes .swiper-slide .card').removeClass('orden-seleccionada');
@@ -794,6 +745,45 @@ Veris - Resultados de Laboratorio
 
             return errorInfo;
         }
+    }
+
+    async function obtenerPPD(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ $data->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+
+        const data = await call(args);
+        _ppd = data.data;
+        if(data.code == 200){
+            if( data.data.estadoPoliticas == "N" || data.data.estadoPoliticas == null ){
+                $('#modalPPD').modal('show');
+            }
+        }
+    }
+
+    async function aceptarPoliticas(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ $data->numeroIdentificacion }}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+
+        args["data"] = JSON.stringify({
+
+            "aceptaPoliticas": true,
+            "versionPoliticas": _ppd.ultimaVersionPoliticas,
+            "codigoEmpresa": 1,
+            "plataforma": "WEB",
+            "versionPlataforma": "7.0.1",
+            "identificacion": "{{ $data->numeroIdentificacion }}",
+            "tipoIdentificacion": codigoTipoIdentificacion,
+            "tipoEvento": "CR",
+            "canalOrigen": _canalOrigen
+
+        });
+        const data = await call(args);
+        return data;
     }
 </script>
 @endsection

@@ -3354,6 +3354,12 @@ function createPostForm(response) {
 		value: idReservaSeparada
 	});
 
+	var $canalOrigenPost = $('<input>', {
+		type: 'text',
+		name: 'canalOrigenNuvei',
+		value: window.config.canalOrigen
+	});
+
 	// Botón de envío
 	var $submitButton = $('<input>', {
 		type: 'submit',

@@ -30,6 +30,11 @@ class CitasController extends Controller
         return view('citas.especialidades')->with('params',$params);
     }
 
+    // Return view datos de cita
+    public function datosCita($params = null) {
+        return view('citas.seleccionar_datos_cita')->with('params',$params);
+    }
+
     // Return view elegir central medica
     public function listaCentralMedica($params) {
         return view('citas.central_medica')->with('params',$params);
