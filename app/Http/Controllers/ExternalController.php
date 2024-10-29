@@ -49,7 +49,16 @@ class ExternalController extends Controller
         if ($request->has('codigoPreTransaccion') || $request->has('idSolicitud')) {
             $esServicioCaja = false;
             $accessToken = $this->getTokenExternalFacturacion();
-            // dd($accessToken);
+            //Verificar si Nuvei esta activo
+            $method = '/'.Veris::BASE_WAR.'/v1/generales/parametros';
+            $params = '?nemonico=DIG_HABILITA_NUVEI';
+            $responseNuvei = Veris::call([
+                'endpoint' => Veris::BASE_URL.$method.$params,
+                'method'   => 'GET'
+            ]);
+            // dd($responseNuvei);
+            $permiteNuvei = $responseNuvei->data->valorTexto;
+            // dd($permiteNuvei);
             if($request->has('codigoPreTransaccion')){
                 $esServicioCaja = true;
                 $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
@@ -94,6 +103,8 @@ class ExternalController extends Controller
                 return view('external.pasarela.pago_servicios_y_farmacia')
                             ->with('info',$response->data)
                             ->with('esServicioCaja',$esServicioCaja)
+                            ->with('permiteNuvei',$permiteNuvei)
+                            // ->with('permiteNuvei',"N")
                             ->with('accessToken',$accessToken)
                             ->with('paciente',$list_paciente->data)
                             ->with('codigoEmpresa',$codigoEmpresa);
@@ -187,7 +198,7 @@ class ExternalController extends Controller
             ]);
             // echo Veris::BASE_URL.$method;
             // dump($data);
-            // dd($response_pretrx);
+            // dump($response_pretrx);
             if($response_pretrx->code == 200){
                 return view('external.pasarela.datos_facturacion')
                         ->with('paciente',$list_paciente)
@@ -318,6 +329,7 @@ class ExternalController extends Controller
     public function procesarExternoNuvei(Request $request, $params) {
         //Realizar cobro y validar para donde redireccionar
         $urlParams = $request->all();
+        // dd($urlParams);
         $accessToken = $this->getTokenExternalFacturacion();
         $method = '/facturacion/v1/pagos_electronicos/transaccion_epago/'.$urlParams['codigoEPagoNuvei'];
         $response = Veris::call([

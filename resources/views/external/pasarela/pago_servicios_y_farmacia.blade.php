@@ -15,7 +15,6 @@ Veris - Pago en línea
 <link href="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.css" rel="stylesheet" type="text/css" />
 <script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script>
 @include('external.components.navbar')
-
 <!-- Modal Desgloce -->
 <div class="modal fade" id="modalDesglose" tabindex="-1" aria-labelledby="modalDesgloseModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modalDesglose-size modal-dialog-centered mx-auto">
@@ -143,14 +142,17 @@ Veris - Pago en línea
 </section>
 <script>
 	let canalOrigen = (window.config.subdomain == "veris") ? "VER_CMV" : "VER_PMF";
+	let permiteNuvei = "{{ $permiteNuvei }}";
 	let dataNuvei;
 	let referenceNuvei;
 	let infoTransaccion = @json($info);
 	let dataCita = {};
 	dataCita.executionId = "{{ request()->input('executionId', '') }}";
 	document.addEventListener("DOMContentLoaded", async function () {
+		@if($permiteNuvei == "S")
 		await obtenerCredenciales();
         await crearReferencia();
+        @endif
 
         $('body').on('change', '#checkTerminosCondicion', function(){
             if($('#checkTerminosCondicion').is(':checked')) {
@@ -162,7 +164,11 @@ Veris - Pago en línea
 
         $('body').on('click', '#btn-next', async function(){
             //validar formulario datos factura
-            await pasarelaNuvei();
+            if(permiteNuvei == "S"){
+            	await pasarelaNuvei();
+            }else{
+            	await pasarelaContingencia();
+            }
         })
 
         $('body').on('click', '#btn-ver-examenes', async function(){
@@ -196,6 +202,10 @@ Veris - Pago en línea
 			llenarDataDetallesCitas()
 		@endif
 	});
+
+	async function pasarelaContingencia(){
+		console.log("Contingencia");
+	}
 
 	async function obtenerCredenciales(){
         let args = [];
