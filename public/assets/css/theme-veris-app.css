@@ -21,6 +21,7 @@
   --bg-vris-very-pale-red: #FFE0E4;
   --bg-vris-very-pale-blue: #D6F3FF;
   --bg-vris-very-dark-blue: #0A2240;
+  --bg-vris-very-dark-blue-medium: #19408F;  
   --bg-vris-desaturated: #3D4E66;
   --bg-vris-light-grayish-green: #f1f8e2;
   --bg-vris-strong-cyan-lime-green: #00C853;
@@ -305,6 +306,10 @@ html:not([dir="rtl"]) .border-start-veris {
 
 .bg-dark-blue-veris {
   background-color: var(--bg-vris-very-dark-blue) !important;
+}
+
+.bg-dark-blue-veris-medium {
+  background-color: var(--bg-vris-very-dark-blue-medium) !important;
 }
 
 .btn-disponibilidad-medico:hover {

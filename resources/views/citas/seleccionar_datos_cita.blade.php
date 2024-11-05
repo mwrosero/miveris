@@ -7,7 +7,7 @@ Elige datos para la Cita
 <div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
         <div class="modal-content">
-            <div class="modal-body p-3">
+            <div class="modal-body p-3 pb-2">
                 <div class="text-center">
                     <div class="avatar avatar-md mx-auto mb-3">
                         <span class="avatar-initial rounded-circle bg-primary">
@@ -49,34 +49,166 @@ Elige datos para la Cita
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Datos para la cita') }}</h5>
     </div>
-    <section class="p-3 mb-3">
-        <div class="row justify-content-center">
-            <ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link px-8 px-md-5 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Presencial</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link px-8 px-md-5" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false">Virtual</button>
-                </li>
-            </ul>
-        </div>
-    </section>
-    <section class="p-3 mb-3">
-        <div class="row g-3" id="listaEspecialidades">
-            {{-- <div class="col-6 col-md-3">
-                <div class="card">
-                    <div class="card-body px-2 text-center">
-                        <a href="{{route('citas.listaCentralMedica')}}">
-                            <div class="avatar avatar-lg mx-auto">
-                                <div class="avatar-especialidad">
-                                    <img src="{{ asset('assets/img/svg/especialidades/alergologia.svg') }}" alt="especialidad">
-                                </div>
-                            </div>
-                            <p class="text-veris fs--2 fw-medium mb-0">{{ __('Alergología') }}</p>
-                        </a>
+    <section class="p-0">
+        <div class="row g-0 justify-content-center">
+            <div class="col-auto p-3 bg-dark-blue-veris-medium" style="min-width: 375px;">
+                <p class="text-white fw-medium fs--18 mt-1 mb-2">Elige la modalidad de la cita médica</p>
+                <div class="row d-flex">
+                    <div class="col-6">
+                        <button type="button" class="btn bg-white fs--18 line-height-24 m-0 p-3 w-100 border border-2 border-secondary btn-modalidad" data-rel="S">Presencial</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn bg-white fs--18 line-height-24 m-0 p-3 w-100 border border-2 border-secondary btn-modalidad" data-rel="N">Virtual</button>
                     </div>
                 </div>
-            </div> --}}
+            </div>
+        </div>
+    </section>
+    <section class="p-0">
+        <div class="row g-0 justify-content-center">
+            <div class="col-auto ps-3 pe-3" style="min-width: 375px;">
+                <p class="card-body fw-medium fs--18 mt-3 mb-3 pt-1">Elige los datos de la cita médica</p>
+                <!-- CONVENIOS -->
+                <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+                        <form class="modal-content rounded-4">
+                            <div class="modal-header d-none">
+                                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-3 pb-2">
+                                <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu convenio:') }}</h5>
+                                <div class="row gx-2 justify-content-between align-items-center">
+                                    <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer pt-0 pb-3 px-3">
+                                <button type="button" class="btn w-100 fw-medium fs--16 waves-effect line-height-20 m-0 p-3" style="color: #0071CE;" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Convenio</p>
+                <div class="mb-3">
+                    <button class="btn bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#convenioModal" id="btn-convenio" data-rel="">
+                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
+                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Convenios"> 
+                    </button>
+                </div>
+
+                <!-- CIUDAD -->
+                <div class="modal modal-top fade" id="ciudadModal" tabindex="-1" aria-labelledby="ciudadModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+                        <form class="modal-content rounded-4">
+                            <div class="modal-header d-none">
+                                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-3 pb-2">
+                                <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu ciudad:') }}</h5>
+                                <div class="row gx-2 justify-content-between align-items-center">
+                                    <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaCiudades">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer pt-0 pb-3 px-3">
+                                <button type="button" class="btn w-100 fw-medium fs--16 waves-effect line-height-20 m-0 p-3" style="color: #0071CE;" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Ciudad</p>
+                <div class="mb-3">
+                    <button class="btn bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#ciudadModal" id="btn-convenio" data-rel="">
+                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
+                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Ciudad"> 
+                    </button>
+                </div>
+
+                <!-- ESPECIALIDAD -->
+                <div class="modal modal-top fade" id="especialidadModal" tabindex="-1" aria-labelledby="especialidadModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+                        <form class="modal-content rounded-4">
+                            <div class="modal-header d-none">
+                                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-3 pb-2">
+                                <h5 class="fs--20 line-height-24 mb-2 text-center">{{ __('Elige especialidad') }}</h5>
+                                <div class="row gx-2 justify-content-between align-items-center">
+                                    <div class="col-12 mb-2 d-flex justify-content-center">
+                                        <div class="input-group search-box">
+                                            <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="http://127.0.0.1:7000/assets/img/svg/search.svg" alt="veris-especialidad"></span>
+                                            <input type="search" class="form-control bg-transparent fs--16 border-0 p-3 ps-0" name="buscar" id="buscar" placeholder="Buscar especialidad" aria-describedby="buscar">
+                                        </div>
+                                    </div>
+                                    <div class="list-group-checkable d-grid gap-2 border-0" id="listaEspecialidades">
+                                        <div class="col-12 p-2 ps-3 pe-3 rounded-3 d-flex justify-content-start align-items-center bg-white item-especialidad waves-effect shadow-item-modal cursor-pointer" type-rel="button">
+                                            <div class="avatar avatar-10 me-2">
+                                                <div class="avatar-especialidad">
+                                                    <img src="https://dikg1979lm6fy.cloudfront.net/especialidades/ico_cirugia_oncologica_v2.png" alt="CIRUGÍA ONCOLOGICA" onerror="this.src='http://127.0.0.1:7000/assets/img/svg/especialidades/medicina_general.svg'">
+                                                </div>
+                                            </div>
+                                            <p class="text-veris fs--16 fw-medium text-one-line mb-0">Cirugía Oncologica</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer pt-0 pb-3 px-3">
+                                <button type="button" class="btn w-100 fw-medium fs--16 waves-effect line-height-20 m-0 p-3" style="color: #0071CE;" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Especialidad</p>
+                <div class="mb-3">
+                    <button class="btn bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#especialidadModal" id="btn-convenio" data-rel="">
+                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
+                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
+                    </button>
+                </div>
+
+                <!-- CENTRAL MEDICA -->
+                <div class="modal modal-top fade" id="centralModal" tabindex="-1" aria-labelledby="centralModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+                        <form class="modal-content rounded-4">
+                            <div class="modal-header d-none">
+                                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-3 pb-2">
+                                <h5 class="fs--20 line-height-24 mb-3 text-center">{{ __('Elige centro médico') }}</h5>
+                                <div class="row gx-2 justify-content-between align-items-center">
+                                    <div class="list-group-checkable d-grid gap-2 border-0" id="listaEspecialidades">
+                                        <div class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica" data-central-medica="">
+                                            <div class="card-body p--2">
+                                                <div class="d-flex">
+                                                    <div class="avatar avatar-88 me-2">
+                                                        <img src="https://dikg1979lm6fy.cloudfront.net/fotosCentrales/1_46.jpg" onerror="this.src='http://127.0.0.1:7000/assets/img/svg/dummy_central.svg'" class="card-img-top" alt="VERIS URGENCIAS AMBULATORIAS">
+                                                    </div>
+                                                    <div class="col">
+                                                        <h6 class="fs--16 line-height-20 fw-medium mb-2">Veris - Juan Tanca Marengo</h6>
+                                                        <p class="fs--1 line-height-16 mb-0">Av. Juan Tanca Marengo Km 2.5</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer pt-0 pb-3 px-3">
+                                <button type="button" class="btn w-100 fw-medium fs--16 waves-effect line-height-20 m-0 p-3" style="color: #0071CE;" data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Central médica</p>
+                <div class="mb-3">
+                    <button class="btn bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#centralModal" id="btn-convenio" data-rel="">
+                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
+                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
+                    </button>
+                    <span class="mt-1 fs--2 line-height-16 text-light">Seleccionada en base a tus agendamientos anteriores</span>
+                </div>
+                <button id="btn-continuar" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5">{{ __('Continuar') }}</button>
+            </div>
         </div>
     </section>
 </div>
@@ -84,16 +216,21 @@ Elige datos para la Cita
 @push('scripts')
 <script>
     // variables globales
-    let local = localStorage.getItem('cita-{{ $params }}');
-    let dataCita = JSON.parse(local);
-    let online = dataCita.online;
-    let numeroPaciente = dataCita.paciente.numeroPaciente;
-    let convenio = dataCita.convenio.codigoConvenio || ' ';
+    // let local = localStorage.getItem('cita-{{ $params }}');
+    // let dataCita = JSON.parse(local);
+    // let online = dataCita.online;
+    // let numeroPaciente = dataCita.paciente.numeroPaciente;
+    // let convenio = dataCita.convenio.codigoConvenio || ' ';
 
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        await consultarEspecialidades();
+        // await consultarEspecialidades();
+
+        $('body').on('click', '.btn-modalidad', function(){
+            $('.btn-modalidad').addClass('bg-white').removeClass('text-white').removeClass('btn-primary-veris');
+            $(this).addClass('btn-primary-veris').addClass('text-white').removeClass('bg-white');
+        })
 
         $('body').on('click', '.item-especialidad', async function(){
             dataCita.estaEmbarazada = "N";
@@ -289,4 +426,30 @@ Elige datos para la Cita
     }
 
 </script>
+<style>
+    .btn-modalidad{
+        color: #13243F;
+    }
+
+    .text-title-select{
+        color: #6C7A8C;
+    }
+
+    .bg-white-80{
+        background: #FFFFFFCC;
+    }
+
+    .btn{
+        border-radius: 8px !important;
+    }
+
+    .cursor-pointer{
+        cursor: pointer;
+    }
+
+    .shadow-item-modal{
+        border: 1px solid #E7E9EC;
+        box-shadow: 0px 4px 8px 0px #0000001A;
+    }
+</style>
 @endpush
