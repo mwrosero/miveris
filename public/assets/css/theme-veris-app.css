@@ -1270,6 +1270,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
   /* border: 1px solid #ccc; */
   border-radius: 5px;
   padding: 16px;
+  padding: 8px;
   color: #ffffff;
 }
 
@@ -1278,6 +1279,7 @@ Due to the split circle of progress-left and progress right, we must use the ani
   justify-content: center;
   align-items: center;
   margin-bottom: 10px;
+  margin-bottom: 0px;
 }
 
 .calendar-grid {
@@ -1499,6 +1501,14 @@ a.btn.btn-primary-veris:not([href]):hover {
 /*Card Paquetes*/
 .swiper-promociones-sugeridas .card{
   box-shadow: 0px 4px 8px 0px #0000001A !important;
+}
+
+.border-box-veris{
+  border: 1px solid #E7E9EC;
+}
+
+.border-box-light-blue{
+  border: 1px solid #AFDBFC;
 }
 
 .feature-img-promocion{

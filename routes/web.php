@@ -98,6 +98,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
     
     /*NUEVO FLUJO*/
     Route::get('/seleccionar-datos-cita/{params}',[CitasController::class, 'datosCita'])->name('citas.datosCita')->withoutMiddleware(['guest']);
+    Route::get('/citas-elegir-fecha-doctor-2024/{params}',[CitasController::class, 'fechaDoctor2024'])->name('citas.fechaDoctor2024')->withoutMiddleware(['guest']);
 
     Route::get('/citas-elegir-especialidad/{params}',[CitasController::class, 'listaEspecialidades'])->name('citas.listaEspecialidades')->withoutMiddleware(['guest']);
     Route::get('/citas-elegir-central-medica/{params}',[CitasController::class, 'listaCentralMedica'])->name('citas.listaCentralMedica')->withoutMiddleware(['guest']);
