@@ -35,6 +35,12 @@ class CitasController extends Controller
         return view('citas.seleccionar_datos_cita')->with('params',$params);
     }
 
+    //
+    public function fechaDoctor2024($params = null) {
+        return view('citas.fecha_doctor_2024')->with('params',$params);
+    }
+
+
     // Return view elegir central medica
     public function listaCentralMedica($params) {
         return view('citas.central_medica')->with('params',$params);

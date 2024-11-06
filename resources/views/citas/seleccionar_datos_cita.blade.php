@@ -443,10 +443,6 @@ Elige datos para la Cita
         border-radius: 8px !important;
     }
 
-    .cursor-pointer{
-        cursor: pointer;
-    }
-
     .shadow-item-modal{
         border: 1px solid #E7E9EC;
         box-shadow: 0px 4px 8px 0px #0000001A;
