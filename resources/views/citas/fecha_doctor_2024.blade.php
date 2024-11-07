@@ -94,7 +94,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Elige fecha y doctor') }}</h5>
     </div>
-    <section class="p-0">
+    <section class="p-0 bg-dark-blue-veris-medium-sm">
         <div class="row g-0 justify-content-center">
             <div class="col-auto p-2 bg-dark-blue-veris-medium" style="min-width: 375px;">
                 <p class="text-center text-white fw-medium fs--18 line-height-24 m-1 mb-0 text-capitalize" id="month-name"></p>
@@ -125,13 +125,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <button class="nav-link ps-1 pe-1 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Todos</button>
                     </li>
                     <li class="nav-item w-50" role="presentation" data-rel="D">
-                        <button class="nav-link ps-1 pe-1" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false" tabindex="-1">Con descuento <img src="{{asset('assets/img/svg/badge-percent.svg')}}" class="ms-1" alt="Horarios con descuento"> </button>
+                        <button class="nav-link ps-1 pe-1" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false" tabindex="-1">Con descuento
+                            <svg width="18" height="17" viewBox="0 0 18 17" class="ms-1 badge-icon-selected" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.2178 8.3125C17.2178 9.50488 16.6377 10.5361 15.7031 11.1162C15.9287 12.1797 15.6387 13.3398 14.8008 14.1455C13.9951 14.9834 12.835 15.3057 11.7715 15.0801C11.1592 15.9824 10.1602 16.5625 8.96777 16.5625C7.80762 16.5625 6.77637 15.9824 6.16406 15.0801C5.10059 15.3057 3.97266 14.9834 3.13477 14.1455C2.3291 13.3398 2.00684 12.1797 2.23242 11.1162C1.33008 10.5361 0.717773 9.50488 0.717773 8.3125C0.717773 7.15234 1.33008 6.12109 2.23242 5.54102C2.00684 4.47754 2.3291 3.31738 3.13477 2.47949C3.97266 1.67383 5.13281 1.35156 6.16406 1.57715C6.77637 0.674805 7.80762 0.0625 8.96777 0.0625C10.1602 0.0625 11.1592 0.674805 11.7715 1.57715C12.835 1.35156 13.9951 1.67383 14.8008 2.47949C15.6387 3.31738 15.9287 4.47754 15.7031 5.54102C16.6055 6.12109 17.2178 7.15234 17.2178 8.3125ZM6.90527 5.21875C6.35742 5.21875 5.87402 5.70215 5.87402 6.25C5.87402 6.83008 6.35742 7.28125 6.90527 7.28125C7.48535 7.28125 7.9043 6.83008 7.9043 6.25C7.9043 5.70215 7.48535 5.21875 6.90527 5.21875ZM7.45312 10.9229L11.5781 6.79785C11.9004 6.50781 11.9004 6.02441 11.5781 5.73438C11.2881 5.41211 10.8047 5.41211 10.5146 5.73438L6.38965 9.85938C6.06738 10.1494 6.06738 10.6328 6.38965 10.9229C6.51855 11.084 6.71191 11.1484 6.9375 11.1484C7.13086 11.1484 7.32422 11.084 7.45312 10.9229ZM11.0303 11.4062C11.6104 11.4062 12.0615 10.9551 12.0615 10.375C12.0615 9.82715 11.6104 9.34375 11.0303 9.34375C10.4824 9.34375 9.99902 9.82715 9.99902 10.375C9.99902 10.9551 10.4824 11.4062 11.0303 11.4062Z" fill="#EF2E79"/></svg> </button>
                     </li>
                 </ul>
                 <div class="overflow-auto" id="listaMedicos">
-                    <div class="border-box-light-blue rounded-3 p--2">
-                        <div class="header-doctor d-flex justify-content-between align-items-start">
-                            <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url({{ asset('assets/img/svg/avatar_doctor.svg') }}) no-repeat center center;">
+                    <div class="border-box-light-blue rounded-3 p--2 mb-3">
+                        <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
+                            <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url({{ asset('assets/img/svg/avatar_doctor.svg') }}) no-repeat center center;background-size: auto;">
                             </div>
                             <div class="content-doctor ms-2 flex-grow-1">
                                 <div class="name-rate d-flex justify-content-between align-items-center mb-1">
@@ -143,12 +144,93 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </div>
                                 <p class="fs--2 line-height-16 fw-normal mb-1" style="color: #425065;">Dermatología</p>
                                 <div class="info-adicional-medico d-flex justify-content-between align-items-center">
-                                    <div class="badge rounded-3 py-1 px-2 bg-cita-atendida d-flex justify-content-between align-items-center gap-1 flex-grow-1">
+                                    <div class="badge rounded-3 py-1 px-2 bg-cita-atendida d-flex justify-content-between align-items-center gap-1 flex-grow-1 me-2">
                                         <i class="fa-solid fa-clock" style="color:#2F7833;"></i>
                                         <span class="fw-normal fs--2" style="color:#2F7833;">Te atendiste con este doctor</span>
                                     </div>
-                                    <div class="badge rounded-3 py-1 px-2 bg-fav-atendida ms-2">
+                                    <div class="badge rounded-3 py-1 px-2 bg-fav-atendida">
                                         <i class="fa-solid fs--2 fa-heart" style="color:#D84315;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dates-doctor">
+                            <p class="fs--1 line-height-16 fw-medium mb-2" style="color:#296BEF;">Horario más próximo:</p>
+                            <div class="row g-2" style="max-width:341px">
+                                <div class="col-6">
+                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor rounded-3 d-flex justify-content-center align-items-center">
+                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">09:00 - 09:20</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor box-time-doctor-with-discount position-relative rounded-3 d-flex justify-content-end align-items-center">
+                                        <div class="box-badge-discount-time position-absolute">
+                                            <span class="badge-discount-time position-absolute fs--2 fw-medium">-10%</span>
+                                        </div>
+                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">09:00 - 09:20</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor rounded-3 d-flex justify-content-center align-items-center">
+                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">09:00 - 09:20</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor-alt rounded-3 d-flex justify-content-center align-items-center">
+                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">Ver más horarios</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-box-light-blue rounded-3 p--2 mb-3">
+                        <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
+                            <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg) no-repeat center center;background-size: cover;">
+                            </div>
+                            <div class="content-doctor ms-2 flex-grow-1">
+                                <div class="name-rate d-flex justify-content-between align-items-center mb-1">
+                                    <h6 style="max-width: 200px" class="fs--16 line-height-20 fw-medium flex-grow-1 m-0">Juan Alberto Rodrigues Gonzáles</h6>
+                                    <div class="star-box text-center ms-1">
+                                        <i class="fa-solid fa-star fw-bold star-ico fs--20 d-block"></i>
+                                        <span class="fw-normal fs--3 mt-1 rate-label">4.6</span>
+                                    </div>
+                                </div>
+                                <p class="fs--2 line-height-16 fw-normal mb-1" style="color: #425065;">Dermatología</p>
+                                <div class="info-adicional-medico d-flex justify-content-between align-items-center">
+                                    <div class="badge rounded-3 py-1 px-2 bg-cita-atendida d-flex justify-content-between align-items-center gap-1 flex-grow-1 me-2">
+                                        <i class="fa-solid fa-clock" style="color:#2F7833;"></i>
+                                        <span class="fw-normal fs--2" style="color:#2F7833;">Te atendiste con este doctor</span>
+                                    </div>
+                                    <div class="badge rounded-3 py-1 px-2 bg-fav-atendida">
+                                        <i class="fa-solid fs--2 fa-heart" style="color:#D84315;"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dates-doctor">
+                            <p class="fs--1 line-height-16 fw-medium mb-2" style="color:#296BEF;">Horario más próximo:</p>
+                            <div class="row g-2" style="max-width:341px">
+                                <div class="col-6">
+                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor rounded-3 d-flex justify-content-center align-items-center">
+                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">09:00 - 09:20</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor box-time-doctor-with-discount position-relative rounded-3 d-flex justify-content-end align-items-center">
+                                        <div class="box-badge-discount-time position-absolute">
+                                            <span class="badge-discount-time position-absolute fs--2 fw-medium">-10%</span>
+                                        </div>
+                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">09:00 - 09:20</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor rounded-3 d-flex justify-content-center align-items-center">
+                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">09:00 - 09:20</span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor-alt rounded-3 d-flex justify-content-center align-items-center">
+                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">Ver más horarios</span>
                                     </div>
                                 </div>
                             </div>
@@ -159,10 +241,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         </div>
     </section>
 <style>
+    #pills-tab .active .badge-icon-selected path{
+        fill: #fff !important;
+    }
     .picture-doctor{
         width: 88px;
         height: 88px;
-        background-size: cover;
     }
     .star-ico{
         color: #FFC107;
@@ -175,6 +259,32 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
     .bg-fav-atendida{
         background: #FBE9E7;
+    }
+    .bg-time-doctor{
+        background: #EAF0FD;
+    }
+    .bg-time-doctor-alt{
+        background: #A9C4F9;
+    }
+    .box-badge-discount-time {
+        left: 0px;
+        height: 100%;
+        width: 44px;
+        background: #FFE5EF;
+        border-radius: 0px 0px 32px 0px;
+    }
+
+    .badge-discount-time {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        width: 44px;
+        margin: auto;
+        text-align: center;
+        color: #EF2E79;
     }
 </style>
 <script>
@@ -220,10 +330,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             const isToday = day.toDateString() === new Date().toDateString();
             const todayLabel = isToday ? '<div class="today-label fw-light fs--2">Hoy</div>' : '';
             const dayElement = $(`
-                <div class="day ${isToday ? 'selected-day' : ''}">
+                <div class="day p-2 fs--16 line-height-12 ${isToday ? 'selected-day' : ''}">
                     ${todayLabel}
-                    <small>${daysOfWeek[day.getDay()]}</small><br>
-                    ${day.getDate()}
+                    <span class="d-block mb-1">${daysOfWeek[day.getDay()]}</span>
+                    <span class="d-block">${day.getDate()}</span>
                 </div>`);
             weekDaysContainer.append(dayElement);
         }
@@ -972,7 +1082,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     background-color: white;
     color: #13243F;
     border-radius: 8px;
-    padding: 0.5rem;
+/*    padding: 0.5rem;*/
     text-align: center;
     width: 40px;
     cursor: pointer;
@@ -985,7 +1095,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 }
 .today-label {
   position: absolute;
-  top: -1.25rem; /* Ajusta el espacio para que se muestre encima */
+  top: -1rem; /* Ajusta el espacio para que se muestre encima */
   left: 50%;
   transform: translateX(-50%);
   color: #fff; /* Color amarillo para destacar */
