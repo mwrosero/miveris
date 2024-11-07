@@ -312,6 +312,12 @@ html:not([dir="rtl"]) .border-start-veris {
   background-color: var(--bg-vris-very-dark-blue-medium) !important;
 }
 
+@media (max-width: 576px){
+  .bg-dark-blue-veris-medium-sm{
+      background-color: var(--bg-vris-very-dark-blue-medium) !important;
+  }
+}
+
 .btn-disponibilidad-medico:hover {
   background: #CCEAFA;
 }
