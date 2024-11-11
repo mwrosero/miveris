@@ -3,6 +3,8 @@
 Elige datos para la Cita
 @endsection
 @section('content')
+<link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.css" />
+<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script>
 <!-- Modal mensaje -->
 <div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -55,10 +57,10 @@ Elige datos para la Cita
                 <p class="text-white fw-medium fs--18 mt-1 mb-2">Elige la modalidad de la cita médica</p>
                 <div class="row d-flex">
                     <div class="col-6">
-                        <button type="button" class="btn bg-white fs--18 line-height-24 m-0 p-3 w-100 border border-2 border-secondary btn-modalidad" data-rel="S">Presencial</button>
+                        <button type="button" class="btn bg-white fs--18 line-height-24 m-0 p-3 w-100 border border-2 border-secondary btn-modalidad" data-rel="N">Presencial</button>
                     </div>
                     <div class="col-6">
-                        <button type="button" class="btn bg-white fs--18 line-height-24 m-0 p-3 w-100 border border-2 border-secondary btn-modalidad" data-rel="N">Virtual</button>
+                        <button type="button" class="btn bg-white fs--18 line-height-24 m-0 p-3 w-100 border border-2 border-secondary btn-modalidad" data-rel="S">Virtual</button>
                     </div>
                 </div>
             </div>
@@ -89,9 +91,9 @@ Elige datos para la Cita
                     </div>
                 </div>
                 <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Convenio</p>
-                <div class="mb-3">
-                    <button class="btn bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#convenioModal" id="btn-convenio" data-rel="">
-                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
+                <div class="mb-3 box-btn-convenio">
+                    <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#convenioModal" id="btn-convenio" data-rel="">
+                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0"></p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Convenios"> 
                     </button>
                 </div>
@@ -116,10 +118,10 @@ Elige datos para la Cita
                         </form>
                     </div>
                 </div>
-                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Ciudad</p>
-                <div class="mb-3">
-                    <button class="btn bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#ciudadModal" id="btn-convenio" data-rel="">
-                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1 item-presencial">Ciudad</p>
+                <div class="mb-3 box-btn-ciudad item-presencial">
+                    <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#ciudadModal" id="btn-ciudad" data-rel="">
+                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0"></p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Ciudad"> 
                     </button>
                 </div>
@@ -141,7 +143,7 @@ Elige datos para la Cita
                                         </div>
                                     </div>
                                     <div class="list-group-checkable d-grid gap-2 border-0" id="listaEspecialidades">
-                                        <div class="col-12 p-2 ps-3 pe-3 rounded-3 d-flex justify-content-start align-items-center bg-white item-especialidad waves-effect shadow-item-modal cursor-pointer" type-rel="button">
+                                        <div class="col-12 p-2 ps-3 pe-3 rounded-3 d-flex justify-content-start align-items-center bg-white item-especialidad waves-effect shadow-item-modal cursor-pointer especialidad-item" type-rel="button">
                                             <div class="avatar avatar-10 me-2">
                                                 <div class="avatar-especialidad">
                                                     <img src="https://dikg1979lm6fy.cloudfront.net/especialidades/ico_cirugia_oncologica_v2.png" alt="CIRUGÍA ONCOLOGICA" onerror="this.src='http://127.0.0.1:7000/assets/img/svg/especialidades/medicina_general.svg'">
@@ -159,8 +161,8 @@ Elige datos para la Cita
                     </div>
                 </div>
                 <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Especialidad</p>
-                <div class="mb-3">
-                    <button class="btn bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#especialidadModal" id="btn-convenio" data-rel="">
+                <div class="mb-3 box-btn-especialidad">
+                    <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#especialidadModal" id="btn-especialidad" data-rel="">
                         <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
                     </button>
@@ -176,8 +178,8 @@ Elige datos para la Cita
                             <div class="modal-body p-3 pb-2">
                                 <h5 class="fs--20 line-height-24 mb-3 text-center">{{ __('Elige centro médico') }}</h5>
                                 <div class="row gx-2 justify-content-between align-items-center">
-                                    <div class="list-group-checkable d-grid gap-2 border-0" id="listaEspecialidades">
-                                        <div class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica" data-central-medica="">
+                                    <div class="list-group-checkable d-grid gap-2 border-0" id="listaCentrales">
+                                        <div class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica central-item select-item" data-central-medica="">
                                             <div class="card-body p--2">
                                                 <div class="d-flex">
                                                     <div class="avatar avatar-88 me-2">
@@ -199,10 +201,10 @@ Elige datos para la Cita
                         </form>
                     </div>
                 </div>
-                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Central médica</p>
-                <div class="mb-3">
-                    <button class="btn bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#centralModal" id="btn-convenio" data-rel="">
-                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1 item-presencial">Central médica</p>
+                <div class="mb-3 box-btn-central item-presencial">
+                    <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#centralModal" id="btn-central" data-rel="">
+                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0"></p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
                     </button>
                     <span class="mt-1 fs--2 line-height-16 text-light">Seleccionada en base a tus agendamientos anteriores</span>
@@ -216,8 +218,8 @@ Elige datos para la Cita
 @push('scripts')
 <script>
     // variables globales
-    // let local = localStorage.getItem('cita-{{ $params }}');
-    // let dataCita = JSON.parse(local);
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
     // let online = dataCita.online;
     // let numeroPaciente = dataCita.paciente.numeroPaciente;
     // let convenio = dataCita.convenio.codigoConvenio || ' ';
@@ -227,12 +229,70 @@ Elige datos para la Cita
     document.addEventListener("DOMContentLoaded", async function () {
         // await consultarEspecialidades();
 
-        $('body').on('click', '.btn-modalidad', function(){
-            $('.btn-modalidad').addClass('bg-white').removeClass('text-white').removeClass('btn-primary-veris');
-            $(this).addClass('btn-primary-veris').addClass('text-white').removeClass('bg-white');
+        if(dataCita.convenio == null){
+            await cargarConvenios();
+            await consultarCiudadesEspecialidad();
+            await consultarCentralesMedicasRecomendadas();
+        }
+
+        $('body').on('click','.btn-modalidad', function(){
+            if(dataCita.tratamiento == null && dataCita.reservaEdit == null){
+                $('#btn-convenio').removeClass('disabled');
+            }
+            $('#btn-ciudad').removeClass('disabled');
+            $('#btn-especialidad').removeClass('disabled');
+            $('#btn-central').removeClass('disabled');
+            if($(this).attr('data-rel') == "S"){
+                $('.item-presencial').addClass('d-none');
+                await validarCondicionConvenio();
+            }else{
+                $('.item-presencial').removeClass('d-none');
+            }
         })
 
-        $('body').on('click', '.item-especialidad', async function(){
+        $('body').on('click','.box-btn-convenio', function(){
+            if ($(this).find('#btn-convenio').hasClass('disabled')) {
+                showMessage('warning','Debe seleccionar una modalidad');
+                event.preventDefault(); // Evitar cualquier acción
+                return; // Salir de la función
+            }
+        })
+
+        $('body').on('click','.box-btn-ciudad', function(){
+            if ($(this).find('#btn-ciudad').hasClass('disabled')) {
+                showMessage('warning','Debe seleccionar una modalidad');
+                event.preventDefault(); // Evitar cualquier acción
+                return; // Salir de la función
+            }
+        })
+
+        $('body').on('click','.box-btn-especialidad', function(){
+            if ($(this).find('#btn-especialidad').hasClass('disabled')) {
+                showMessage('warning','Debe seleccionar una modalidad');
+                event.preventDefault(); // Evitar cualquier acción
+                return; // Salir de la función
+            }
+        })
+
+        $('body').on('click','.box-btn-central', function(){
+            if ($(this).find('#btn-central').hasClass('disabled')) {
+                showMessage('warning','Debe seleccionar una modalidad');
+                event.preventDefault(); // Evitar cualquier acción
+                return; // Salir de la función
+            }
+        })
+
+        $('body').on('click', '.btn-modalidad', function(){
+            $('.btn-modalidad').addClass('bg-white').removeClass('text-white').removeClass('btn-primary-veris').removeClass('modalidad-selected');
+            $(this).addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
+            dataCita.vua = ($('.btn-modalidad.modalidad-selected').attr('data-rel') == "N") ? true : false;
+        })
+
+        $('body').on('click', '#btn-especialidad', async function(){
+            await consultarEspecialidades(); 
+        })
+
+        /*$('body').on('click', '.item-especialidad', async function(){
             dataCita.estaEmbarazada = "N";
             let especialidad = JSON.parse($(this).attr('data-rel'));
             dataCita.especialidad = especialidad;
@@ -254,19 +314,25 @@ Elige datos para la Cita
             let estaEmbarazada = $(this).attr('respuesta-rel');
             dataCita.estaEmbarazada = estaEmbarazada;
             await consultarSiEsTratamiento($('#especialidadElegida').val());
-        })
+        })*/
 
-        $('body').on('input','#buscar', function () {
+        $('body').on('input', '#buscar', function () {
             var value = $(this).val().toLowerCase();
-            $("#listaEspecialidades .item-especialidad").filter(function () {
-                let text = $(this).text().toLowerCase();
-                if(text.indexOf(value) > -1 || value === "") {
-                    $(this).parent().removeClass("d-none");
-                }else{
-                    $(this).parent().addClass("d-none");
+            console.log("Valor de búsqueda:", value);
+            
+            $("#listaEspecialidades .item-especialidad").each(function () {
+                let text = $(this).find('p.text-veris').text().toLowerCase(); // Obtiene el texto dentro de <p>
+                console.log("Texto del elemento:", text);
+                
+                // Verificar si el texto contiene el valor de búsqueda
+                if (text.indexOf(value) > -1 || value === "") {
+                    $(this).removeClass("d-none"); // Mostrar el elemento
+                } else {
+                    $(this).addClass("d-none"); // Ocultar el elemento
                 }
             });
         });
+
 
         $('body').on('click', '#btn-si-tratamiento', async function(){
             dataCita.tratamiento = JSON.parse($(this).attr("data-rel"));
@@ -289,6 +355,150 @@ Elige datos para la Cita
             }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
         });
     });
+
+    async function cargarConvenios(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${dataCita.paciente.tipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        // llenar modal
+        if (data.code == 200){
+            drawConvenios(data.data);
+            if(data.data.length > 0){
+                //$('#btn-convenio').attr('data-rel',JSON.stringify(dataCita.convenio));
+                dataCita.convenio = data.data[0];
+                $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)}`);
+            }else{
+                dataCita.convenio = {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                }
+                $('#btn-convenio p').html(`Ninguno`);
+            }
+        }
+    }
+
+    function drawConvenios(dataConvenios){
+        let listaConvenios = $('#listaConvenios');
+        let elemento = ``;
+        listaConvenios.empty();
+        if(dataConvenios.length > 0){
+            dataConvenios.forEach((convenios) => {
+                elemento += `<div data-rel='${JSON.stringify(convenios)}' class="convenio-item mb-2">
+                <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                    <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
+                    <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                        ${capitalizarCadaPalabra(convenios.nombreConvenio)}
+                    </label> 
+                </div>
+            </div>`;
+            });
+        }
+        let sinConvenio = {
+            "permitePago": "S",
+            "permiteReserva": "S",
+            "idCliente": null,
+            "codigoConvenio": null,
+        };
+
+        elemento += `<div data-rel='${JSON.stringify(sinConvenio)}' class="convenio-item mb-2">
+            <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios0" value="">
+                <label for="listGroupCheckableRadios0" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                    Ninguno
+                </label> 
+            </div>
+        </div>`;;
+
+        listaConvenios.append(elemento); 
+    }
+
+    async function consultarCiudadesEspecialidad() {
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=true&idPaciente=${dataCita.paciente.numeroPaciente}`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        const data = await call(args);
+        // console.log(data);return;esDefault
+
+        if(data.code == 200){
+            let listaCiudades = $('#listaCiudades');
+            let elemento = ``;
+            listaCiudades.empty();
+            $.each(data.data, function(key, value){
+                elemento += `<div data-rel='${JSON.stringify(value)}' class="ciudad-item select-item mb-2">
+                    <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${value.codigoCiudad}" value="">
+                        <label for="listGroupCheckableRadios${value.codigoCiudad}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                            ${capitalizarCadaPalabra(value.nombreCiudad)}
+                        </label> 
+                    </div>
+                </div>`;
+                if(value.esDefault){
+                    $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
+                    dataCita.ciudad = value;
+                }
+            })
+            listaCiudades.append(elemento);
+            //await consultarCentralesPorCiudad();
+        }
+
+        return data;
+    }
+
+    async function consultarCentralesMedicasRecomendadas(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.numeroPaciente}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        if(data.code == 200){
+            drawCentrales(data.data);
+            if(data.data.length > 0){
+                data.central = data.data[0];
+                $('#btn-central p').html(`${capitalizarCadaPalabra(data.central.nombreSucursal)}`);
+            }
+        }
+        console.log(data);
+    }
+
+    function drawCentrales(dataCentrales){
+        let listaCentrales = $('#listaCentrales');
+        let elemento = ``;
+        listaCentrales.empty();
+        if(dataCentrales.length > 0){
+            dataCentrales.forEach((central) => {
+                elemento += `<div class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica central-item select-item" data-central-medica="">
+                    <div class="card-body p--2">
+                        <div class="d-flex">
+                            <div class="avatar avatar-88 me-2" style="background: url(${ (central.nombreFoto != null) ? central.nombreFoto : '{{ asset('assets/img/svg/especialidades/dummy_central.svg') }}' }) no-repeat center center; background-size:cover;">
+                            </div>
+                            <div class="col">
+                                <h6 class="fs--16 line-height-20 fw-medium mb-2">${capitalizarCadaPalabra(central.nombreSucursal)}</h6>
+                                <p class="fs--1 line-height-16 mb-0">${capitalizarCadaPalabra(central.direccion)}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+        }
+        listaCentrales.append(elemento); 
+    }
+
+    async function consultarCentralesMedicas(){
+        let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
+        let ciudad = dataCita.ciudad;
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+    }
 
     async function validacionConvenio(detalle){
         let especialidad = JSON.parse(detalle);
@@ -318,40 +528,24 @@ Elige datos para la Cita
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${ $('.btn-modalidad.modalidad-selected').attr('data-rel') }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log(77,data);
 
         if (data.code == 200){
             let elemento = '';
 
             if(data.data.length > 0){
-                listaEspecialidades.empty();
-
                 data.data.forEach((especialidad) => {
-                    let params = {}
-                    params.especialidad = especialidad;
-                    let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    let path_url = "citas-elegir-central-medica";
-                    if(params.online == "S"){
-                        path_url = "citas-elegir-fecha-doctor";
-                    }
-                    elemento += `<div class="col-6 col-md-3">
-                                    <div class="card item-especialidad h-100" type="button" data-rel='${ JSON.stringify(especialidad) }'>
-                                        <div class="card-body px-3 py-2 text-center">
-                                            <div class="w-100">
-                                                <div class="avatar avatar-18 mx-auto mb-2">
-                                                    <div class="avatar-especialidad">
-                                                        <img src="${especialidad.imagen}" alt="${especialidad.nombre}" onerror="this.src='{{ asset('assets/img/svg/especialidades/medicina_general.svg') }}'">
-                                                    </div>
-                                                </div>
-                                                <p class="text-veris fs--2 fw-medium text-one-line mb-0">${capitalizarCadaPalabra(especialidad.nombre)}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`;
+                    elemento += `<div data-rel='${JSON.stringify(especialidad)}' class="col-12 p-2 ps-3 pe-3 rounded-3 d-flex justify-content-start align-items-center bg-white item-especialidad waves-effect shadow-item-modal cursor-pointer especialidad-item" type-rel="button">
+                    <div class="avatar avatar-10 me-2">
+                        <div class="avatar-especialidad">
+                            <img src="${especialidad.imagen}" alt="${capitalizarCadaPalabra(especialidad.nombre)}" onerror="this.src='{{ asset('assets/img/svg/especialidades/medicina_general.svg') }}'">
+                        </div>
+                    </div>
+                    <p class="text-veris fs--16 fw-medium text-one-line mb-0">${capitalizarCadaPalabra(especialidad.nombre)}</p>
+                </div>`
                 });
                 
             } else {
@@ -446,6 +640,41 @@ Elige datos para la Cita
     .shadow-item-modal{
         border: 1px solid #E7E9EC;
         box-shadow: 0px 4px 8px 0px #0000001A;
+    }
+
+    .list-group-checkable {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .list-group-checkable::-webkit-scrollbar {
+      height: 10px;
+      width: 10px;
+    }
+    .list-group-checkable::-webkit-scrollbar-track {
+      border-radius: 5px;
+      background-color: #DFE9EB;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-track:hover {
+      background-color: #D5DEE0;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-track:active {
+      background-color: #D5DEE0;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: #0071CE;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-thumb:hover {
+      background-color: #19408F;
+    }
+
+    .list-group-checkable::-webkit-scrollbar-thumb:active {
+      background-color: #19408F;
     }
 </style>
 @endpush

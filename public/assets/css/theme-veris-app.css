@@ -465,6 +465,7 @@ h1,
   line-height: normal !important;
 }
 
+.select-item .list-group-item:hover,
 .convenio-item .list-group-item:hover,
 .convenio-ninguno .list-group-item:hover,
 .grupoFamiliar-item .list-group-item:hover {
@@ -472,6 +473,7 @@ h1,
   background: #CCEAFA;
 }
 
+.select-item .list-group-item:active,
 .convenio-item .list-group-item:active,
 .convenio-ninguno .list-group-item:active,
 .grupoFamiliar-item .list-group-item:active {

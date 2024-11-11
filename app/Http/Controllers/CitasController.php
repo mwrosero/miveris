@@ -13,7 +13,7 @@ class CitasController extends Controller
 {
     // Return view index [citas]
     public function citas() {
-        return view('citas.index');
+        return view('citas.index_2024');
     }
 
     public function agendamiento(){
@@ -22,7 +22,7 @@ class CitasController extends Controller
 
     // Return view elegir paciente
     public function listaPacientes($params) {
-        return view('citas.paciente')->with('params',$params);
+        return view('citas.paciente_2024')->with('params',$params);
     }
 
     // Return view elegir espcialidad
