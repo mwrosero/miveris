@@ -5,6 +5,21 @@ Elige datos para la Cita
 @section('content')
 <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.css" />
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script>
+<!-- Modal de error -->
+<div class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modalErrorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
+                <p class="fs--2 fw-normal" id="mensajeError"></p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal mensaje -->
 <div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -29,8 +44,8 @@ Elige datos para la Cita
     </div>
 </div>
 <div class="flex-grow-1 container-p-y pt-0">
-    <!-- Modal -->
-    <div class="modal fade" id="citaPendienteModal" tabindex="-1" aria-labelledby="citaPendienteModalLabel" aria-hidden="true">
+    <!-- Modal Tratamiento-->
+    <div class="modal fade" id="consultaTratamientoModal" tabindex="-1" aria-labelledby="consultaTratamientoModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
             <div class="modal-content">
                 <div class="modal-header border-0 d-none">
@@ -51,7 +66,7 @@ Elige datos para la Cita
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Datos para la cita') }}</h5>
     </div>
-    <section class="p-0 bg-dark-blue-veris-medium-sm">
+    <section class="p-0 bg-dark-blue-veris-medium-sm mt--40">
         <div class="row g-0 justify-content-center">
             <div class="col-auto p-3 bg-dark-blue-veris-medium" style="min-width: 375px;">
                 <p class="text-white fw-medium fs--18 mt-1 mb-2">Elige la modalidad de la cita médica</p>
@@ -90,10 +105,10 @@ Elige datos para la Cita
                         </form>
                     </div>
                 </div>
-                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Convenio</p>
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Convenio*</p>
                 <div class="mb-3 box-btn-convenio">
                     <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#convenioModal" id="btn-convenio" data-rel="">
-                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0"></p>
+                        <p class="fs--1 line-height-16 fw-medium fs--1 mb-0 text-truncate"></p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Convenios"> 
                     </button>
                 </div>
@@ -118,13 +133,14 @@ Elige datos para la Cita
                         </form>
                     </div>
                 </div>
-                <p class="text-title-select fw-medium fs--1 mt-3 mb-1 item-presencial">Ciudad</p>
-                <div class="mb-3 box-btn-ciudad item-presencial">
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1 item-presencial">Ciudad*</p>
+                <div class="mb-1 box-btn-ciudad item-presencial">
                     <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#ciudadModal" id="btn-ciudad" data-rel="">
                         <p class="fs--1 line-height-16 fw-medium fs--1 mb-0"></p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Ciudad"> 
                     </button>
                 </div>
+                <span class="mb-2 d-block fs--2 line-height-16 text-light label-sugerencia label-sugerencia-ciudad">Seleccionada en base a tus agendamientos anteriores</span>
 
                 <!-- ESPECIALIDAD -->
                 <div class="modal modal-top fade" id="especialidadModal" tabindex="-1" aria-labelledby="especialidadModalLabel" aria-hidden="true">
@@ -160,7 +176,7 @@ Elige datos para la Cita
                         </form>
                     </div>
                 </div>
-                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Especialidad</p>
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Especialidad*</p>
                 <div class="mb-3 box-btn-especialidad">
                     <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#especialidadModal" id="btn-especialidad" data-rel="">
                         <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
@@ -201,14 +217,15 @@ Elige datos para la Cita
                         </form>
                     </div>
                 </div>
-                <p class="text-title-select fw-medium fs--1 mt-3 mb-1 item-presencial">Central médica</p>
-                <div class="mb-3 box-btn-central item-presencial">
-                    <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#centralModal" id="btn-central" data-rel="">
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1 item-presencial">Central médica*</p>
+                <div class="mb-1 box-btn-central item-presencial">
+                    <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" id="btn-central" data-rel="">
+                        {{-- data-bs-toggle="modal" data-bs-target="#centralModal" --}}
                         <p class="fs--1 line-height-16 fw-medium fs--1 mb-0"></p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
                     </button>
-                    <span class="mt-1 fs--2 line-height-16 text-light">Seleccionada en base a tus agendamientos anteriores</span>
                 </div>
+                <span class="mb-2 d-block fs--2 line-height-16 text-light label-sugerencia label-sugerencia-central">Seleccionada en base a tus agendamientos anteriores</span>
                 <button id="btn-continuar" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5">{{ __('Continuar') }}</button>
             </div>
         </div>
@@ -220,39 +237,93 @@ Elige datos para la Cita
     // variables globales
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
-    // let online = dataCita.online;
-    // let numeroPaciente = dataCita.paciente.numeroPaciente;
     // let convenio = dataCita.convenio.codigoConvenio || ' ';
 
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         // await consultarEspecialidades();
-
-        if(dataCita.convenio == null){
+            delete dataCita.especialidad
+        //if(dataCita.convenio == null){
             await cargarConvenios();
-            await consultarCiudadesEspecialidad();
+            await consultarCiudades();
             await consultarCentralesMedicasRecomendadas();
-        }
+        //}
 
-        $('body').on('click','.btn-modalidad', function(){
-            if(dataCita.tratamiento == null && dataCita.reservaEdit == null){
-                $('#btn-convenio').removeClass('disabled');
+        $('body').on('click','#btn-continuar', async function(){
+            let msg = ``;
+            if(!dataCita.hasOwnProperty('online')){
+                msg += `Selecciona una modalidad<br>`;
             }
-            $('#btn-ciudad').removeClass('disabled');
-            $('#btn-especialidad').removeClass('disabled');
-            $('#btn-central').removeClass('disabled');
-            if($(this).attr('data-rel') == "S"){
-                $('.item-presencial').addClass('d-none');
-                await validarCondicionConvenio();
+            if(!dataCita.hasOwnProperty('convenio')){
+                msg += `Selecciona un convenio o Particular<br>`;
+            }
+            if(!dataCita.hasOwnProperty('convenio')){
+                msg += `Selecciona un convenio o Particular<br>`;
+            }
+            if(!dataCita.hasOwnProperty('especialidad')){
+                msg += `Selecciona una especialidad<br>`;
+            }
+            if(!dataCita.hasOwnProperty('central')){
+                msg += `Selecciona una Central Médica<br>`;
+            }
+
+            if(msg == ``){
+                let data = await validarCondicionConvenio();
+                console.log(data);
+                if(data.data.permiteReserva == "N"){
+                    $('#mensajeError').html(`${data.data.mensaje}`);
+                    $('#modalError').modal('show');
+                }else{
+                    dataCita.estaEmbarazada = "N";
+                    if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
+                        let controlEmbarazo = await validacionConvenio();
+                        if(controlEmbarazo){
+                            //$('#especialidadElegida').val($(this).attr('data-rel'))
+                            $('#modalEmbarazo').modal("show");
+                        }else{
+                            await consultarSiEsTratamiento();
+                        }
+                    }else{
+                        await consultarSiEsTratamiento();
+                    }
+                }
             }else{
-                $('.item-presencial').removeClass('d-none');
+                showMessage('warning',msg);
+            }
+        })
+
+        $('body').on('click', '.btn-respuesta-embarazo', async function(){
+            let estaEmbarazada = $(this).attr('respuesta-rel');
+            dataCita.estaEmbarazada = estaEmbarazada;
+            await consultarSiEsTratamiento();
+        })
+
+        $('body').on('click','.btn-modalidad', async function(){
+            if(!$(this).hasClass('modalidad-selected')){
+                if(dataCita.tratamiento == null && dataCita.reservaEdit == null){
+                    $('#btn-convenio').removeClass('disabled');
+                }
+                $('#btn-ciudad').removeClass('disabled');
+                $('#btn-especialidad').removeClass('disabled');
+                $('#btn-central').removeClass('disabled');
+                dataCita.online = $(this).attr('data-rel');
+                if($(this).attr('data-rel') == "S"){
+                    $('.item-presencial').addClass('d-none');
+                    await validarCondicionConvenio();
+                }else{
+                    $('.item-presencial').removeClass('d-none');
+                }
+
+                $('.btn-modalidad').addClass('bg-white').removeClass('text-white').removeClass('btn-primary-veris').removeClass('modalidad-selected');
+                $(this).addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
+                dataCita.vua = (dataCita.online == "N") ? true : false;
             }
         })
 
         $('body').on('click','.box-btn-convenio', function(){
             if ($(this).find('#btn-convenio').hasClass('disabled')) {
-                showMessage('warning','Debe seleccionar una modalidad');
+                showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
             }
@@ -260,7 +331,7 @@ Elige datos para la Cita
 
         $('body').on('click','.box-btn-ciudad', function(){
             if ($(this).find('#btn-ciudad').hasClass('disabled')) {
-                showMessage('warning','Debe seleccionar una modalidad');
+                showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
             }
@@ -268,30 +339,80 @@ Elige datos para la Cita
 
         $('body').on('click','.box-btn-especialidad', function(){
             if ($(this).find('#btn-especialidad').hasClass('disabled')) {
-                showMessage('warning','Debe seleccionar una modalidad');
+                showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
             }
         })
 
-        $('body').on('click','.box-btn-central', function(){
+        $('body').on('click','.box-btn-central', async function(){
             if ($(this).find('#btn-central').hasClass('disabled')) {
-                showMessage('warning','Debe seleccionar una modalidad');
+                showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
+            }else{
+                if(!dataCita.hasOwnProperty('especialidad')){
+                    showMessage('warning','Debes seleccionar una especialidad');
+                }else{
+                    await consultarCentralesMedicas();
+                    $('#centralModal').modal('show');
+                }
             }
-        })
-
-        $('body').on('click', '.btn-modalidad', function(){
-            $('.btn-modalidad').addClass('bg-white').removeClass('text-white').removeClass('btn-primary-veris').removeClass('modalidad-selected');
-            $(this).addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
-            dataCita.vua = ($('.btn-modalidad.modalidad-selected').attr('data-rel') == "N") ? true : false;
         })
 
         $('body').on('click', '#btn-especialidad', async function(){
             await consultarEspecialidades(); 
         })
 
+        $('body').on('click', '.convenio-item', function(){
+            let convenio = JSON.parse($(this).attr('data-rel'));
+            dataCita.convenio = convenio;
+            if(dataCita.convenio.codigoConvenio != null){
+                $('#btn-convenio p').html(`${capitalizarCadaPalabra(convenio.nombreConvenio).substring(0, 30) + '...'}`);
+            }else{
+                $('#btn-convenio p').html(`Ninguno`);
+            }
+            $('.convenio-item').removeClass('select-item-active');
+            $(this).addClass('select-item-active');
+        })
+
+        $('body').on('click', '.ciudad-item', async function(){
+            let ciudad = JSON.parse($(this).attr('data-rel'));
+            dataCita.ciudad = ciudad;
+            $('#btn-ciudad p').html(`${capitalizarCadaPalabra(ciudad.nombreCiudad)}`);
+            $('.ciudad-item').removeClass('select-item-active');
+            $(this).addClass('select-item-active');
+            $('.label-sugerencia-ciudad').hide();
+            if(dataCita.hasOwnProperty('especialidad')){
+                await consultarCentralesMedicas()
+            }
+            $('.ciudad-item').removeClass('select-item-active');
+            $(this).addClass('select-item-active');
+        })
+
+        $('body').on('click', '.especialidad-item', async function(){
+            let especialidad = JSON.parse($(this).attr('data-rel'));
+            dataCita.especialidad = especialidad;
+            $('#btn-especialidad p').html(`${capitalizarCadaPalabra(especialidad.nombre)}`);
+            $('.especialidad-item').removeClass('select-item-active');
+            $(this).addClass('select-item-active');
+            if(!dataCita.hasOwnProperty('central')){
+                await consultarCentralesMedicas();
+            }else{
+                await validarEspecialidadEnCentralSeleccionada();
+            }
+        })
+
+        $('body').on('click', '.central-item', async function(){
+            let central = JSON.parse($(this).attr('data-rel'));
+            dataCita.central = central;
+            $('#btn-central p').html(`${capitalizarCadaPalabra(central.nombreSucursal)}`);
+            $('.central-item').removeClass('select-item-active');
+            $(this).addClass('select-item-active');
+            $('.label-sugerencia-central').hide();
+        })
+
+        /*VALIDACIONES*/
         /*$('body').on('click', '.item-especialidad', async function(){
             dataCita.estaEmbarazada = "N";
             let especialidad = JSON.parse($(this).attr('data-rel'));
@@ -356,6 +477,18 @@ Elige datos para la Cita
         });
     });
 
+    async function validarCondicionConvenio(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        if(data.code == 200){
+            dataCita.validarCondicionConvenio = data.data;
+        }
+        return data;
+    }
+
     async function cargarConvenios(){
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${dataCita.paciente.tipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
@@ -365,13 +498,13 @@ Elige datos para la Cita
 
         // llenar modal
         if (data.code == 200){
-            drawConvenios(data.data);
             if(data.data.length > 0){
                 //$('#btn-convenio').attr('data-rel',JSON.stringify(dataCita.convenio));
                 dataCita.convenio = data.data[0];
-                $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)}`);
+                $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio.substring(0, 30) + '...')}`);
             }else{
                 dataCita.convenio = {
+                    "nombreConvenio": "Ninguno",
                     "permitePago": "S",
                     "permiteReserva": "S",
                     "idCliente": null,
@@ -379,6 +512,7 @@ Elige datos para la Cita
                 }
                 $('#btn-convenio p').html(`Ninguno`);
             }
+            drawConvenios(data.data);
         }
     }
 
@@ -388,7 +522,7 @@ Elige datos para la Cita
         listaConvenios.empty();
         if(dataConvenios.length > 0){
             dataConvenios.forEach((convenios) => {
-                elemento += `<div data-rel='${JSON.stringify(convenios)}' class="convenio-item mb-2">
+                elemento += `<div id="convenio-${convenios.codigoConvenio}" data-rel='${JSON.stringify(convenios)}' class="convenio-item mb-2" data-bs-dismiss="modal">
                 <div class="list-group-item rounded-3 py-2 px-3 border-0">
                     <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
                     <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
@@ -399,25 +533,31 @@ Elige datos para la Cita
             });
         }
         let sinConvenio = {
+            "nombreConvenio": "Ninguno",
             "permitePago": "S",
             "permiteReserva": "S",
             "idCliente": null,
             "codigoConvenio": null,
         };
 
-        elemento += `<div data-rel='${JSON.stringify(sinConvenio)}' class="convenio-item mb-2">
+        elemento += `<div id="convenio-${sinConvenio.codigoConvenio}" data-rel='${JSON.stringify(sinConvenio)}' class="convenio-item mb-2" data-bs-dismiss="modal">
             <div class="list-group-item rounded-3 py-2 px-3 border-0">
                 <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios0" value="">
                 <label for="listGroupCheckableRadios0" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
                     Ninguno
                 </label> 
             </div>
-        </div>`;;
+        </div>`;
 
         listaConvenios.append(elemento); 
+        console.log(7)
+        if(dataCita.hasOwnProperty('convenio')){
+            console.log(8)
+            $('#convenio-'+dataCita.convenio.codigoConvenio).addClass('select-item-active');
+        }
     }
 
-    async function consultarCiudadesEspecialidad() {
+    async function consultarCiudades() {
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=true&idPaciente=${dataCita.paciente.numeroPaciente}`;
         args["method"] = "GET";
@@ -430,7 +570,7 @@ Elige datos para la Cita
             let elemento = ``;
             listaCiudades.empty();
             $.each(data.data, function(key, value){
-                elemento += `<div data-rel='${JSON.stringify(value)}' class="ciudad-item select-item mb-2">
+                elemento += `<div id="ciudad-${value.codigoCiudad}" data-rel='${JSON.stringify(value)}' class="ciudad-item select-item mb-2" data-bs-dismiss="modal">
                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${value.codigoCiudad}" value="">
                         <label for="listGroupCheckableRadios${value.codigoCiudad}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
@@ -444,6 +584,9 @@ Elige datos para la Cita
                 }
             })
             listaCiudades.append(elemento);
+            if(dataCita.hasOwnProperty('ciudad') && data.data.length > 0){
+                $('#ciudad-'+dataCita.ciudad.codigoCiudad).addClass('select-item-active');
+            }
             //await consultarCentralesPorCiudad();
         }
 
@@ -459,11 +602,10 @@ Elige datos para la Cita
         if(data.code == 200){
             drawCentrales(data.data);
             if(data.data.length > 0){
-                data.central = data.data[0];
-                $('#btn-central p').html(`${capitalizarCadaPalabra(data.central.nombreSucursal)}`);
+                dataCita.central = data.data[0];
+                $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}`);
             }
         }
-        console.log(data);
     }
 
     function drawCentrales(dataCentrales){
@@ -472,10 +614,10 @@ Elige datos para la Cita
         listaCentrales.empty();
         if(dataCentrales.length > 0){
             dataCentrales.forEach((central) => {
-                elemento += `<div class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica central-item select-item" data-central-medica="">
+                elemento += `<div id="central-${central.codigoSucursal}" data-rel='${JSON.stringify(central)}' class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica central-item select-item" data-bs-dismiss="modal">
                     <div class="card-body p--2">
                         <div class="d-flex">
-                            <div class="avatar avatar-88 me-2" style="background: url(${ (central.nombreFoto != null) ? central.nombreFoto : '{{ asset('assets/img/svg/especialidades/dummy_central.svg') }}' }) no-repeat center center; background-size:cover;">
+                            <div class="avatar avatar-88 me-2" style="background: url(${ (central.nombreFoto != null) ? central.nombreFoto : '{{ asset('assets/img/svg/dummy_central.svg') }}' }) no-repeat center center; background-size:cover;">
                             </div>
                             <div class="col">
                                 <h6 class="fs--16 line-height-20 fw-medium mb-2">${capitalizarCadaPalabra(central.nombreSucursal)}</h6>
@@ -485,23 +627,59 @@ Elige datos para la Cita
                     </div>
                 </div>`;
             });
+        }else{
+            elemento += `<div class="card bg-transparent shadow-none">
+                <div class="card-body">
+                    <div class="text-center">
+                        <img src="{{ asset('assets/img/svg/dummy_central.svg') }}" class="img-fluid mb-3" alt="">
+                        <p class="fs--1 line-height-16 mb-0">Lo sentimos no se encontraron centros médicos disponibles para la especialidad seleccionada en ${capitalizarCadaPalabra(dataCita.ciudad.nombreCiudad)}.</p>
+                    </div>
+                </div>
+            </div>`;
         }
         listaCentrales.append(elemento); 
+        if(dataCita.hasOwnProperty('central') && dataCentrales.length > 0){
+            $('#central-'+dataCita.central.codigoSucursal).addClass('select-item-active');
+        }
     }
 
-    async function consultarCentralesMedicas(){
+    async function validarEspecialidadEnCentralSeleccionada(){
         let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = dataCita.ciudad;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        if(data.code == 200){
+            let existeSucursal = data.data.some(sucursal => sucursal.codigoSucursal === dataCita.central.codigoSucursal);
+            if(!existeSucursal){
+                $('.label-sugerencia-central').hide();
+                $('#btn-central p').html(`Seleccionar`);
+                $('#btn-central').attr('data-rel','');
+                delete dataCita.central;
+            }
+        }
+    }
+
+    async function consultarCentralesMedicas(){
+        // $('#btn-central p').html(`Seleccionar`);
+        // $('#btn-central').attr('data-rel','');
+        // delete dataCita.central;
+        let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
+        let ciudad = dataCita.ciudad;
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
         console.log(data);
+        if(data.code == 200){
+            drawCentrales(data.data);
+        }
     }
 
-    async function validacionConvenio(detalle){
-        let especialidad = JSON.parse(detalle);
+    async function validacionConvenio(){
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/comercial/validacionConvenio`;
         args["method"] = "POST";
@@ -510,8 +688,8 @@ Elige datos para la Cita
         args["dismissAlert"] = true;
         args["data"] = JSON.stringify({
             "idCliente": dataCita.convenio.idCliente,
-            "codigoEspecialidad": parseInt(especialidad.codigoEspecialidad),
-            "idPaciente": parseInt(numeroPaciente),
+            "codigoEspecialidad": parseInt(dataCita.especialidad.codigoEspecialidad),
+            "idPaciente": parseInt(dataCita.paciente.numeroPaciente),
             "codigoTipoAtencion": dataCita.especialidad.codigoTipoAtencion
         });
         const data = await call(args);
@@ -528,7 +706,7 @@ Elige datos para la Cita
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${ $('.btn-modalidad.modalidad-selected').attr('data-rel') }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${ dataCita.online }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -538,7 +716,7 @@ Elige datos para la Cita
 
             if(data.data.length > 0){
                 data.data.forEach((especialidad) => {
-                    elemento += `<div data-rel='${JSON.stringify(especialidad)}' class="col-12 p-2 ps-3 pe-3 rounded-3 d-flex justify-content-start align-items-center bg-white item-especialidad waves-effect shadow-item-modal cursor-pointer especialidad-item" type-rel="button">
+                    elemento += `<div id="especialidad-${especialidad.codigoEspecialidad}" data-rel='${JSON.stringify(especialidad)}' class="col-12 p-2 ps-3 pe-3 rounded-3 d-flex justify-content-start align-items-center bg-white item-especialidad waves-effect shadow-item-modal cursor-pointer especialidad-item" type-rel="button" data-bs-dismiss="modal">
                     <div class="avatar avatar-10 me-2">
                         <div class="avatar-especialidad">
                             <img src="${especialidad.imagen}" alt="${capitalizarCadaPalabra(especialidad.nombre)}" onerror="this.src='{{ asset('assets/img/svg/especialidades/medicina_general.svg') }}'">
@@ -547,7 +725,6 @@ Elige datos para la Cita
                     <p class="text-veris fs--16 fw-medium text-one-line mb-0">${capitalizarCadaPalabra(especialidad.nombre)}</p>
                 </div>`
                 });
-                
             } else {
                 listaEspecialidades.empty();
                 elemento += `<div class="col-12">
@@ -558,29 +735,27 @@ Elige datos para la Cita
             }
             
             listaEspecialidades.append(elemento);    
+            if(dataCita.hasOwnProperty('especialidad') && data.data.length > 0){
+                $('#especialidad-'+dataCita.especialidad.codigoEspecialidad).addClass('select-item-active');
+            }
         }
 
         return data;
     }
 
-    async function consultarSiEsTratamiento(dataEspecialidad){
-        let especialidad = JSON.parse(dataEspecialidad);
+    async function consultarSiEsTratamiento(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&idPaciente=${numeroPaciente}
-        &codigoServicio=${ especialidad.codigoServicio }&codigoPrestacion=${ especialidad.codigoPrestacion }&codigoConvenio=${ convenio }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}
+        &codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&codigoConvenio=${ (dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : '' }`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
         let params = {}
-        dataCita.especialidad = especialidad;
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
 
-        let path_url = "/citas-elegir-central-medica";
-        if(online == "S"){
-            path_url = "/citas-elegir-fecha-doctor";
-        }
+        path_url = "/citas-elegir-fecha-doctor/{{ $params }}";
         
         if (data.code == 200 && data.data != null){
             $("#btn-no-tratamiento").attr("href",path_url+"/"+ "{{ $params }}" );
@@ -589,6 +764,7 @@ Elige datos para la Cita
             $("#btn-si-tratamiento").attr("data-rel", urlParamsSi);
             $("#btn-si-tratamiento").attr("href",path_url+"/"+ "{{ $params }}" );
 
+            //dataCita.tratamiento = data.data
             $('#tratamiento-content').empty();
             
             let elem = `<div class="progress-circle mx-auto" data-percentage="${ roundToDraw(data.data.porcentajeAvanceTratamiento) }">
@@ -610,11 +786,11 @@ Elige datos para la Cita
 
             $('#tratamiento-content').append(elem);
 
-            var myModal = new bootstrap.Modal(document.getElementById('citaPendienteModal'));
+            var myModal = new bootstrap.Modal(document.getElementById('consultaTratamientoModal'));
             myModal.show();
         }else{
-            let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
-            location.href = path_url+"/"+ "{{ $params }}" ;
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            window.location.href = '/citas-elegir-fecha-doctor/{{ $params }}';
         }
 
     }

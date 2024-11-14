@@ -98,11 +98,11 @@ Route::group(['middleware' => ['loggedUser']], function () {
     
     /*NUEVO FLUJO*/
     Route::get('/seleccionar-datos-cita/{params}',[CitasController::class, 'datosCita'])->name('citas.datosCita')->withoutMiddleware(['guest']);
-    Route::get('/citas-elegir-fecha-doctor-2024/{params}',[CitasController::class, 'fechaDoctor2024'])->name('citas.fechaDoctor2024')->withoutMiddleware(['guest']);
+    Route::get('/citas-elegir-fecha-doctor/{params}',[CitasController::class, 'fechaDoctor2024'])->name('citas.fechaDoctor2024')->withoutMiddleware(['guest']);
 
     Route::get('/citas-elegir-especialidad/{params}',[CitasController::class, 'listaEspecialidades'])->name('citas.listaEspecialidades')->withoutMiddleware(['guest']);
     Route::get('/citas-elegir-central-medica/{params}',[CitasController::class, 'listaCentralMedica'])->name('citas.listaCentralMedica')->withoutMiddleware(['guest']);
-    Route::get('/citas-elegir-fecha-doctor/{params}',[CitasController::class, 'fechaDoctor'])->name('citas.fechaDoctor')->withoutMiddleware(['guest']);
+    //Route::get('/citas-elegir-fecha-doctor/{params}',[CitasController::class, 'fechaDoctor'])->name('citas.fechaDoctor')->withoutMiddleware(['guest']);
     Route::get('/citas-revisa-tus-datos/{params}',[CitasController::class, 'detalleCita'])->name('citas.detalleCita')->withoutMiddleware(['guest']);
     Route::get('/citas-datos-facturacion/{params}',[CitasController::class, 'datosFacturacion'])->name('citas.datosFacturacion')->withoutMiddleware(['guest']);
     Route::get('/citas-pago-kushki/{params}', [CitasController::class, 'pagoKushki'])->name('citas.pagoKushki')->withoutMiddleware(['guest']);
