@@ -42,7 +42,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             <div class="modal-content">
                 <div class="modal-body p-3 pb-2">
                     <h6 class="text-center fs--16 line-height-20 fw-medium mb-2">{{ __('Horarios') }}:</h6>
-                    <div id="listaHorariosMedico">
+                    <div id="listaHorariosMedico" class="row g-2">
                         {{-- <div class="card card-body rounded-3 position-relative py-2 mb-2">
                             <a href="{{route('citas.detalleCita')}}">
                                 <div class="badge-discount-top fs--3 fw-medium"><span>{{ __('-30%') }}</span></div>
@@ -100,7 +100,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <p class="text-center text-white fw-medium fs--18 line-height-24 m-1 mb-0 text-capitalize" id="month-name"></p>
                 <div class="row g-0 d-flex">
                     <div class="col-12">
-                        <div class="calendar-container p-0 mb-1 w-100">
+                        <div class="calendar-container invisible p-0 mb-1 w-100">
                             <span class="arrow mt-3" id="prev-week">
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
@@ -122,15 +122,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <p class="fs--1 mt-2 line-height-16 fw-normal mb-0" id="nombreFiltro">Filtrar por</p>
                 <ul class="nav nav-pills justify-content-center border-box-veris w-auto p-1 rounded-3 mt-2 mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item w-50" role="presentation" data-rel="T">
-                        <button class="nav-link ps-1 pe-1 active" id="pills-pendientes-tab" data-bs-toggle="pill" data-bs-target="#pills-pendientes" type="button" role="tab" aria-controls="pills-pendientes" aria-selected="true">Todos</button>
+                        <button data-rel="N" class="nav-link options-date ps-1 pe-1 active" id="pills-options-tab" data-bs-toggle="pill" data-bs-target="#pills-options" type="button" role="tab" aria-controls="pills-options" aria-selected="true">Todos</button>
                     </li>
                     <li class="nav-item w-50" role="presentation" data-rel="D">
-                        <button class="nav-link ps-1 pe-1" id="pills-realizados-tab" data-bs-toggle="pill" data-bs-target="#pills-realizados" type="button" role="tab" aria-controls="pills-realizados" aria-selected="false" tabindex="-1">Con descuento
+                        <button data-rel="S" class="nav-link options-date ps-1 pe-1" id="pills-options-descuentos-tab" data-bs-toggle="pill" data-bs-target="#pills-options-descuentos" type="button" role="tab" aria-controls="pills-options-descuentos" aria-selected="false" tabindex="-1">Con descuento
                             <svg width="18" height="17" viewBox="0 0 18 17" class="ms-1 badge-icon-selected" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.2178 8.3125C17.2178 9.50488 16.6377 10.5361 15.7031 11.1162C15.9287 12.1797 15.6387 13.3398 14.8008 14.1455C13.9951 14.9834 12.835 15.3057 11.7715 15.0801C11.1592 15.9824 10.1602 16.5625 8.96777 16.5625C7.80762 16.5625 6.77637 15.9824 6.16406 15.0801C5.10059 15.3057 3.97266 14.9834 3.13477 14.1455C2.3291 13.3398 2.00684 12.1797 2.23242 11.1162C1.33008 10.5361 0.717773 9.50488 0.717773 8.3125C0.717773 7.15234 1.33008 6.12109 2.23242 5.54102C2.00684 4.47754 2.3291 3.31738 3.13477 2.47949C3.97266 1.67383 5.13281 1.35156 6.16406 1.57715C6.77637 0.674805 7.80762 0.0625 8.96777 0.0625C10.1602 0.0625 11.1592 0.674805 11.7715 1.57715C12.835 1.35156 13.9951 1.67383 14.8008 2.47949C15.6387 3.31738 15.9287 4.47754 15.7031 5.54102C16.6055 6.12109 17.2178 7.15234 17.2178 8.3125ZM6.90527 5.21875C6.35742 5.21875 5.87402 5.70215 5.87402 6.25C5.87402 6.83008 6.35742 7.28125 6.90527 7.28125C7.48535 7.28125 7.9043 6.83008 7.9043 6.25C7.9043 5.70215 7.48535 5.21875 6.90527 5.21875ZM7.45312 10.9229L11.5781 6.79785C11.9004 6.50781 11.9004 6.02441 11.5781 5.73438C11.2881 5.41211 10.8047 5.41211 10.5146 5.73438L6.38965 9.85938C6.06738 10.1494 6.06738 10.6328 6.38965 10.9229C6.51855 11.084 6.71191 11.1484 6.9375 11.1484C7.13086 11.1484 7.32422 11.084 7.45312 10.9229ZM11.0303 11.4062C11.6104 11.4062 12.0615 10.9551 12.0615 10.375C12.0615 9.82715 11.6104 9.34375 11.0303 9.34375C10.4824 9.34375 9.99902 9.82715 9.99902 10.375C9.99902 10.9551 10.4824 11.4062 11.0303 11.4062Z" fill="#EF2E79"/></svg> </button>
                     </li>
                 </ul>
                 <div class="overflow-auto" id="listaMedicos">
-                    <div class="border-box-light-blue rounded-3 p--2 mb-3">
+                    {{-- <div class="border-box-light-blue rounded-3 p--2 mb-3">
                         <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
                             <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url({{ asset('assets/img/svg/avatar_doctor.svg') }}) no-repeat center center;background-size: auto;">
                             </div>
@@ -182,163 +182,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="border-box-light-blue rounded-3 p--2 mb-3">
-                        <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
-                            <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(https://img.freepik.com/free-photo/female-doctor-hospital-with-stethoscope_23-2148827774.jpg) no-repeat center center;background-size: cover;">
-                            </div>
-                            <div class="content-doctor ms-2 flex-grow-1">
-                                <div class="name-rate d-flex justify-content-between align-items-center mb-1">
-                                    <h6 style="max-width: 200px" class="fs--16 line-height-20 fw-medium flex-grow-1 m-0">Juan Alberto Rodrigues Gonzáles</h6>
-                                    <div class="star-box text-center ms-1">
-                                        <i class="fa-solid fa-star fw-bold star-ico fs--20 d-block"></i>
-                                        <span class="fw-normal fs--3 mt-1 rate-label">4.6</span>
-                                    </div>
-                                </div>
-                                <p class="fs--2 line-height-16 fw-normal mb-1" style="color: #425065;">Dermatología</p>
-                                <div class="info-adicional-medico d-flex justify-content-between align-items-center">
-                                    <div class="badge rounded-3 py-1 px-2 bg-cita-atendida d-flex justify-content-between align-items-center gap-1 flex-grow-1 me-2">
-                                        <i class="fa-solid fa-clock" style="color:#2F7833;"></i>
-                                        <span class="fw-normal fs--2" style="color:#2F7833;">Te atendiste con este doctor</span>
-                                    </div>
-                                    <div class="badge rounded-3 py-1 px-2 bg-fav-atendida">
-                                        <i class="fa-solid fs--2 fa-heart" style="color:#D84315;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dates-doctor">
-                            <p class="fs--1 line-height-16 fw-medium mb-2" style="color:#296BEF;">Horario más próximo:</p>
-                            <div class="row g-2" style="max-width:341px">
-                                <div class="col-6">
-                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor rounded-3 d-flex justify-content-center align-items-center">
-                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">09:00 - 09:20</span>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor box-time-doctor-with-discount position-relative rounded-3 d-flex justify-content-end align-items-center">
-                                        <div class="box-badge-discount-time position-absolute">
-                                            <span class="badge-discount-time position-absolute fs--2 fw-medium">-10%</span>
-                                        </div>
-                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">09:00 - 09:20</span>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor rounded-3 d-flex justify-content-center align-items-center">
-                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">09:00 - 09:20</span>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor-alt rounded-3 d-flex justify-content-center align-items-center">
-                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">Ver más horarios</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
     </section>
-<style>
-    #pills-tab .active .badge-icon-selected path{
-        fill: #fff !important;
-    }
-    .picture-doctor{
-        width: 88px;
-        height: 88px;
-    }
-    .star-ico{
-        color: #FFC107;
-    }
-    .rate-label{
-        color: #13243F;
-    }
-    .bg-cita-atendida{
-        background: #B9F6CA;
-    }
-    .bg-fav-atendida{
-        background: #FBE9E7;
-    }
-    .bg-time-doctor{
-        background: #EAF0FD;
-    }
-    .bg-time-doctor-alt{
-        background: #A9C4F9;
-    }
-    .box-badge-discount-time {
-        left: 0px;
-        height: 100%;
-        width: 44px;
-        background: #FFE5EF;
-        border-radius: 0px 0px 32px 0px;
-    }
-
-    .badge-discount-time {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 20px;
-        width: 44px;
-        margin: auto;
-        text-align: center;
-        color: #EF2E79;
-    }
-</style>
-<script>
-    let currentDate = new Date();
-    const daysOfWeek = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
-
-    $(document).ready(function() {
-
-        // Deshabilitar la navegación hacia atrás
-        $('#prev-week').click(function() {
-            const today = new Date();
-            if (currentDate > today) {
-                currentDate.setDate(currentDate.getDate() - 7);
-                renderWeek();
-            }
-        });
-
-        $('#next-week').click(function() {
-            currentDate.setDate(currentDate.getDate() + 7);
-            renderWeek();
-        });
-
-        $('body').on('click', '.day', function(){
-            $('.day').removeClass('selected-day');
-            $(this).addClass('selected-day');
-        })
-
-        renderWeek();
-    });
-
-    function renderWeek() {
-        const weekDaysContainer = $('#week-days');
-        weekDaysContainer.empty();
-        const firstDayOfWeek = new Date(currentDate);
-        firstDayOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
-
-        $('#month-name').text(firstDayOfWeek.toLocaleDateString('es-ES', { month: 'long' }));
-
-        for (let i = 0; i < 7; i++) {
-            const day = new Date(firstDayOfWeek);
-            day.setDate(firstDayOfWeek.getDate() + i);
-
-            const isToday = day.toDateString() === new Date().toDateString();
-            const todayLabel = isToday ? '<div class="today-label fw-light fs--2">Hoy</div>' : '';
-            const dayElement = $(`
-                <div class="day p-2 fs--16 line-height-12 ${isToday ? 'selected-day' : ''}">
-                    ${todayLabel}
-                    <span class="d-block mb-1">${daysOfWeek[day.getDay()]}</span>
-                    <span class="d-block">${day.getDate()}</span>
-                </div>`);
-            weekDaysContainer.append(dayElement);
-        }
-    }
-</script>
 
     <section class="p-3 mb-3 d-none">
         <div class="row justify-content-center">
@@ -414,8 +262,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @push('scripts')
 <script>
+    let currentDate = new Date();
+    const daysOfWeek = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
+
     // Variables globales
-    /*let local = localStorage.getItem('cita-{{ $params }}');
+    let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     let dataOrigen = dataCita?.origen;  
     let renderCalendarExternaFecha;
@@ -469,7 +320,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
     
     let _fechaSeleccionada;
-    const daysOfWeek = ["D", "L", "M", "M", "J", "V", "S"];
+    // const daysOfWeek = ["D", "L", "M", "M", "J", "V", "S"];
     const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
     const calendarGrid = document.getElementById('calendar-grid');
@@ -477,7 +328,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     const prevBtn = document.querySelector('.prev-btn');
     const nextBtn = document.querySelector('.next-btn');
 
-    let currentDate = new Date();
+    // let currentDate = new Date();
     numeroSemanaCurso = getWeekCurrent(currentDate);
     numeroMesCurso = currentDate.getMonth() + 1;
     numeroMesSeleccionado = numeroMesCurso;
@@ -485,11 +336,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
-        if (false && dataCita.origen == 'ordenExternaSolicitud') {
+        if (dataCita.origen == 'ordenExternaSolicitud') {
             //renderCalendarExterna();
             fechasDisponibles = await obtenerFechasOrdenesExternas();
-            await renderCalendar();
-            reDrawCalendar();
+            //await renderCalendar();
+            await renderWeek();
             // $('.dias-calendario').addClass('d-none');
             // $('.semana-'+numeroSemanaCurso).removeClass('d-none');
             let listaMedicos = $('#listaMedicos');
@@ -501,9 +352,56 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $('#btnAgendarOrdenExterna').removeClass('d-none');
             document.getElementById('tituloFechaDoctor').innerHTML = 'Exámenes';
         } else {
-            // await consultarFechasDisponibles();
-            // reDrawCalendar();
+            await consultarFechasDisponibles();
+            // renderWeek();
         }
+
+        // Deshabilitar la navegación hacia atrás
+        $('#prev-week').click(function() {
+            const today = new Date();
+            if (currentDate > today) {
+                currentDate.setDate(currentDate.getDate() - 7);
+                renderWeek();
+            }
+        });
+
+        $('#next-week').click(function() {
+            currentDate.setDate(currentDate.getDate() + 7);
+            renderWeek();
+        });
+
+        $('body').on('click', '.day', async function(){
+            $('.day').removeClass('selected-day');
+            $(this).addClass('selected-day');
+            let fechaSeleccionada = $(this).attr("fechaSeleccionada-rel");
+            /*if (fechasDisponibles.includes(fechaSeleccionada)) {
+                if(!$(this).hasClass('unavailable-day')){
+                    if (!dataCita.origen || dataCita.origen != 'ordenExternaSolicitud'){
+                        await consultarMedicos(fechaSeleccionada);
+                    }
+                }
+            }*/
+            if (!dataCita.origen || dataCita.origen != 'ordenExternaSolicitud'){
+                await consultarMedicos(fechaSeleccionada);
+            }
+        })
+
+        //renderWeek();
+
+        $('body').on('click','.options-date', async function(){
+            // let fechaSeleccionada = $('.selected-day').attr("fechaSeleccionada-rel");
+            await consultarMedicos();
+        })
+
+        $('body').on('click','.btn-disponibilidad-medico', function(){
+            dataCita.horario = JSON.parse($(this).attr("data-horario")); 
+            let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
+            if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
+                ruta = "/cita-urgencias-ambulatorias/" + "{{ $params }}";
+            }
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            window.location.href = ruta;
+        })
 
         $('body').on('click','.btn-disponibilidad-medico-all', function(){
             let data = $(this).attr("data-rel")
@@ -532,6 +430,52 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         });
     });
 
+    async function renderWeek() {
+        const weekDaysContainer = $('#week-days');
+        weekDaysContainer.empty();
+
+        // Obtener la fecha actual y establecerla como el primer día a mostrar
+        const firstDayOfWeek = new Date(currentDate);
+        firstDayOfWeek.setHours(0, 0, 0, 0); // Eliminamos la parte de horas para comparar solo la fecha
+
+        $('#month-name').text(firstDayOfWeek.toLocaleDateString('es-ES', { month: 'long' }));
+
+        // Generar los días de la semana a partir del día actual
+        for (let i = 0; i < 7; i++) {
+            const day = new Date(firstDayOfWeek);
+            day.setDate(firstDayOfWeek.getDate() + i); // Incrementamos para cada día
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Comparación solo de fecha
+            const isToday = day.toDateString() === today.toDateString();
+
+            // Formatear la fecha como dd/mm/yyyy para la comparación
+            const formattedDate = day.toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            // Verificar si la fecha está en fechasDisponibles
+            const isAvailable = fechasDisponibles.includes(String(formattedDate));
+            console.log(formattedDate,isAvailable);
+            const unavailableClass = '';
+            // const unavailableClass = isAvailable ? '' : 'unavailable-day';
+            const todayLabel = isToday ? '<div class="today-label fw-light fs--2">Hoy</div>' : '';
+
+            // Crear el elemento del día
+            const dayElement = $(`
+                <div fechaSeleccionada-rel='${formattedDate}' class="day p-2 fs--16 line-height-12 ${isToday ? 'selected-day' : ''} ${unavailableClass}">
+                    ${todayLabel}
+                    <span class="d-block mb-1">${daysOfWeek[day.getDay()]}</span>
+                    <span class="d-block">${day.getDate()}</span>
+                </div>
+            `);
+
+            weekDaysContainer.append(dayElement);
+        }
+        $('.calendar-container').removeClass('invisible');
+    }
+
     async function validacionFecha(){
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/comercial/validacionFecha`;
@@ -541,7 +485,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["dismissAlert"] = true;
         args["data"] = JSON.stringify({
             "idCliente": dataCita.convenio.idCliente,
-            "fechaSeleccionada": _fechaSeleccionada
+            "fechaSeleccionada": $('.selected-day').attr("fechaSeleccionada-rel")
         });
         const data = await call(args);
         console.log(data)
@@ -578,149 +522,6 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         return fechas;
     }
 
-    async function renderCalendar() {
-        // console.log('Lista de fecha: ' + fechasDisponibles); 
-        calendarGrid.innerHTML = '';
-        const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
-        const lastDayOfPreviousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
-        const lastDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
-        monthYearElement.textContent = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-
-        // Agregar los días de la semana en el encabezado
-        for (let i = 0; i < daysOfWeek.length; i++) {
-            const dayOfWeekElement = document.createElement('div');
-            dayOfWeekElement.classList.add('calendar-day', 'day-of-week', 'header');
-            dayOfWeekElement.textContent = daysOfWeek[i];
-            calendarGrid.appendChild(dayOfWeekElement);
-        }
-
-        // Llenar los días del mes anterior
-        for (let i = firstDayOfMonth - 1; i >= 0; i--) {
-            let dia = lastDayOfPreviousMonth - i;
-            let mes = ((currentDate.getMonth()) < 10) ? '0' + (currentDate.getMonth()) : (currentDate.getMonth() );
-            let fechaSeleccionada = dia +"/"+ mes +"/"+currentDate.getFullYear();
-            console.log(fechaSeleccionada)
-            let weekNumber = getWeek(fechaSeleccionada);
-            
-            const dayElement = document.createElement('div');
-            dayElement.classList.add('calendar-day', 'previous-month-day', 'dias-calendario', 'semana-'+weekNumber);
-            dayElement.textContent = lastDayOfPreviousMonth - i;
-            calendarGrid.appendChild(dayElement);
-        }
-
-        // Llenar los días del mes actual
-        for (let i = 1; i <= lastDayOfMonth; i++) {
-            const dayElement = document.createElement('div');
-            let dia = (i < 10) ? '0' + i : i;
-            let mes = ((currentDate.getMonth() + 1) < 10) ? '0' + (currentDate.getMonth() + 1) : (currentDate.getMonth() + 1);
-            let fechaSeleccionada = dia +"/"+ mes +"/"+currentDate.getFullYear();
-            let classFechaSeleccionada = dia +"_"+ mes +"_"+currentDate.getFullYear();
-            // console.log(fechaSeleccionada)
-            let weekNumber = getWeek(fechaSeleccionada);
-            dayElement.classList.add('calendar-day', 'dias-calendario', 'current-month-day', 'semana-'+weekNumber, classFechaSeleccionada);
-            dayElement.textContent = i;
-            dayElement.setAttribute('fechaSeleccionada-rel', fechaSeleccionada);
-
-            if (fechasDisponibles.length > 0 && fechaSeleccionada === fechasDisponibles[0] && firstRender) {
-                // Agregar la clase 'selected-day' a la primera fecha disponible
-                firstRender = false;
-                dayElement.classList.add('selected-day');
-                _fechaSeleccionada = fechasDisponibles[0];
-            }else{
-                $('[fechaseleccionada-rel="' + _fechaSeleccionada + '"]').addClass('selected-day');
-            }
-            
-            if (fechasDisponibles.includes(fechaSeleccionada)) {
-                // Habilitar solo para fechas disponibles
-                dayElement.addEventListener('click', async () => {
-                    if(!$('.' + classFechaSeleccionada).hasClass('unavailable-day')){
-                        // console.log(fechaSeleccionada)
-                        _fechaSeleccionada = fechaSeleccionada;
-                        // console.log('_fechaSeleccionada: ' + _fechaSeleccionada);
-                        // console.log('fechaSeleccionada: ' + fechaSeleccionada);
-                        $('.calendar-day').removeClass('selected-day');
-                        $('.' + classFechaSeleccionada).addClass('selected-day');
-                        // Aquí puedes hacer algo con la fecha seleccionada, como enviarla al servidor para la cita médica.
-                        if (!dataCita.origen || dataCita.origen != 'ordenExternaSolicitud'){
-                            await consultarMedicos(fechaSeleccionada);
-                        }
-                        calendarContainer.style.maxHeight = '135px';
-                        chevronIcon.className = 'bi bi-chevron-compact-down';
-                        reDrawCalendar();
-                    }
-                });
-            } else {
-                // Deshabilitar para fechas no disponibles
-                dayElement.classList.add('unavailable-day', 'dias-calendario');
-            }
-
-            calendarGrid.appendChild(dayElement);
-        }
-    }
-
-    /*prevBtn.addEventListener('click', async () => {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        numeroMesSeleccionado = currentDate.getMonth() + 1;
-        await renderCalendar();
-        reDrawCalendar();
-    });
-
-    nextBtn.addEventListener('click', async () => {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        numeroMesSeleccionado = currentDate.getMonth() + 1;
-        await renderCalendar();
-        reDrawCalendar();
-    });
-
-    const calendarContainer = document.querySelector('.calendar-container');
-    const toggleCalendarBtn = document.getElementById('toggle-calendar-btn');
-    const chevronIcon = document.querySelector('#toggle-calendar-btn i');
-
-    toggleCalendarBtn.addEventListener('click', () => {
-        if (calendarContainer.style.maxHeight) {
-            calendarContainer.style.maxHeight = null;
-            chevronIcon.className = 'bi bi-chevron-compact-up';
-        } else {
-            calendarContainer.style.maxHeight = '135px';
-            chevronIcon.className = 'bi bi-chevron-compact-down';
-        }
-        reDrawCalendar();
-    });*/
-
-    function reDrawCalendar(){
-        let numeroMesFechaSeleccionada = obtenerNumeroMes(_fechaSeleccionada);
-        if(calendarContainer.style.maxHeight){
-            console.log("Calendario cerrado")
-            if(numeroMesFechaSeleccionada == numeroMesSeleccionado){
-                let numeroSemanaActual = getWeek(_fechaSeleccionada);
-                $('.dias-calendario').addClass('d-none');
-                $('.semana-'+numeroSemanaActual).removeClass('d-none');
-            }else{
-                $('.dias-calendario').removeClass('d-none');
-            }
-        }else{
-            console.log("Calendario abierto")
-            $('.dias-calendario').removeClass('d-none');
-        }
-    }
-
-    function obtenerNumeroMes(fechaString) {
-        console.log(fechaString)
-        // Dividir la cadena en partes
-        var partes = fechaString.split('/');
-        
-        // Asegurarse de que hay 3 partes (día, mes, año)
-        if (partes.length !== 3) {
-            throw new Error("Formato de fecha incorrecto. Debe ser dd/mm/yyyy");
-        }
-        
-        // Obtener el mes como un número
-        var mes = parseInt(partes[1], 10);
-        
-        // Devolver el número del mes
-        return mes;
-    }
-
     async function consultarFechasDisponibles(){
         let listaEspecialidades = $('#listaEspecialidades');
         listaEspecialidades.empty();
@@ -741,12 +542,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             if(data.data.length > 0){
                 _fechaSeleccionada = fechasDisponibles[0];
-                await renderCalendar();
+                await renderWeek();
                 $('.dias-calendario').addClass('d-none');
                 $('.semana-'+numeroSemanaCurso).removeClass('d-none');
-                await consultarMedicos(fechasDisponibles[0]);
+                await consultarMedicos();
             } else {
-                await renderCalendar();
+                await renderWeek();
                 $('#titleNoDisponibilidad').html(data.message);
                 $('#sinFechaDisponibles').modal('show');
                 /* Mostrar la modal cuando No hay fecha disponibles. */
@@ -762,7 +563,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         return data;
     }
 
-    async function consultarMedicos(fechaSeleccionada){
+    async function consultarMedicos(){
+        console.log("-------------------------");
+        let fechaSeleccionada = $('.selected-day').attr("fechaSeleccionada-rel");
+        console.log("-------------------------");
+        console.log(fechaSeleccionada);
         if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
             let data = $(this).attr("data-rel");
             let necesitaValidacionFecha = await validacionFecha();
@@ -773,13 +578,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }
 
+        let soloDescuento = $('.options-date.active').attr("data-rel");
         let codigoMedico = "";
         if(dataCita.codigoMedicoFavorito){
             codigoMedico = dataCita.codigoMedicoFavorito
         }
         // console.log(fechaSeleccionada);
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&esPlanStar=${esPlanStar}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -796,28 +602,58 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let elemento = '';
             if(newArrayCard.length > 0){
                 newArrayCard.forEach((medico) => {
-                    elemento += `<div class="card shadow-none mb-3">
-                        <div class="card-body p--2">
-                            <div class="row g-2">
-                                <div class="col-3 text-center">
-                                    <img src="{{ asset('assets/img/svg/avatar_doctor.svg') }}" class="img-fluid mt-4" alt="doctor" width="48">
-                                </div>
-                                <div class="col-9">
-                                    <h6 class="fs--16 line-height-20 fw-medium mb-1">Dr(a) ${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
-                                    <p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(nombreSucursal)}</p>
-                                    <p class="fs--1 line-height-16 fw-normal mb-1" style="color: 33D4E66;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
-                                    <div class="d-flex mb-1">
-                                        <p class="fs--1 line-height-16 fw-normal mb-0 me-1" style="color: #9EA7B3;">Disponibilidad:</p>
-                                        <p class="fs--1 line-height-16 fw-normal mb-0" style="color: #0055AA;" id="disponibilidad">${medico.disponibilidad}</p>
+                    let img_doctor = (medico.imagen != null) ? medico.imagen : '{{ asset('assets/img/svg/avatar_doctor.svg') }}';
+
+                    let listadoHorarios = ``;
+                    let cantidadMaxListado = (medico.intervalos.length >= 3) ? 3 : 1;
+                    $.each(medico.intervalos, function(k,v){
+                        if(k < cantidadMaxListado){
+                            listadoHorarios += drawHorarioMedico(v);
+                        }else{
+                            return false;
+                        }
+                    })
+
+                    //${ (dataCita.online == "N") ? `<p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal) } </p>` : ``}
+
+                    let esMedicoAnterior = (medico.esMedicoAnterior == "S") ? `<div class="badge rounded-3 py-1 px-2 bg-cita-atendida d-flex justify-content-between align-items-center gap-1 ${ (medico.esFavorito == "S") ? `flex-grow-1` : `` } me-2">
+                                        <i class="fa-solid fa-clock" style="color:#2F7833;"></i>
+                                        <span class="fw-normal fs--2" style="color:#2F7833;">Te atendiste con este doctor</span>
+                                    </div>` : ``;
+                    
+                    let esFavorito = (medico.esFavorito == "S") ? `<div class="badge rounded-3 py-1 px-2 bg-fav-atendida">
+                                        <i class="fa-solid fs--2 fa-heart" style="color:#D84315;"></i>
+                                    </div>` : ``;
+
+                    elemento += `<div class="border-box-light-blue rounded-3 p--2 mb-3">
+                        <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
+                            <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(${img_doctor}) no-repeat center center;background-size: cover;">
+                            </div>
+                            <div class="content-doctor ms-2 flex-grow-1">
+                                <div class="name-rate d-flex justify-content-between align-items-start mb-1">
+                                    <h6 style="max-width: 200px" class="fs--16 line-height-20 fw-medium flex-grow-1 m-0">${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
+                                    <div class="star-box text-center ms-1">
+                                        <i class="fa-solid fa-star fw-bold star-ico fs--20 d-block"></i>
+                                        <span class="d-block fw-normal fs--3 mt-1 rate-label">5</span>
                                     </div>
-                                    <p class="fs--1 line-height-16 fw-normal mb-1" style="color: #9EA7B3;">Horarios: <b class="fw-normal" style="color: #0055AA;" id="horarios">${medico.horario}</b></p>
+                                </div>
+                                <p class="fs--2 line-height-16 fw-normal mb-1" style="color: #425065;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
+                                <div class="info-adicional-medico d-flex justify-content-between align-items-center">
+                                    ${esMedicoAnterior}
+                                    ${esFavorito}
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer text-end pt-0 pb--2 px--2">
-                            <button type="button" class="btn btn-sm btn-primary-veris btn-disponibilidad-medico-all fs--1 line-height-16 fw-medium border-0 m-0 px-3 py-2" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
-                                Elegir Cita
-                            </button>
+                        <div class="dates-doctor">
+                            <p class="fs--1 line-height-16 fw-medium mb-2" style="color:#296BEF;">Horario más próximo:</p>
+                            <div class="row g-2" style="max-width:341px">
+                                ${listadoHorarios}
+                                <div class="col-6">
+                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor-alt rounded-3 d-flex justify-content-center align-items-center btn-disponibilidad-medico-all" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
+                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">Ver más horarios</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>`;
                 })
@@ -827,11 +663,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 console.log("No hay médicosS disponibles");
                 let nohayHorarios = $('#listaMedicos');
                 let elementoHorarios = '';
+                let str = ($('.options-date.active').attr("data-rel") == "N") ? `No hay médicos disponibles este día.` : `Lo sentimos, no hay horarios con<br>descuento disponibles para este día.`;
+                let img = ($('.options-date.active').attr("data-rel") == "N") ? `{{ asset('assets/img/svg/sin_medicos.svg') }}` : `{{ asset('assets/img/svg/sin_horarios.svg') }}`;
                 elementoHorarios += `<div class="card bg-transparent shadow-none">
                                         <div class="card-body">
                                             <div class="text-center">
-                                                <img src="{{ asset('assets/img/svg/doctor_light.svg') }}" class="img-fluid mb-3" alt="">
-                                                <p class="fs--1 text-veris">No hay disponibilidad para el dia ${fechaSeleccionada}, intenta buscar con otra fecha.</p>
+                                                <p class="fw-medium fs--16 line-height-24 text-veris">${str}</p>
+                                                <img src="${img}" class="img-fluid mb-3" alt="">
                                             </div>
                                         </div>
                                     </div>`;
@@ -844,9 +682,28 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         return data;
     }
 
+    function drawHorarioMedico(horario, size = 6){        
+        if(horario.porcentajeDescuento > 0){
+            return `<div class="col-${size}">
+                <div class="cursor-pointer waves-effect btn-disponibilidad-medico p--2 px-3 w-100 bg-time-doctor box-time-doctor-with-discount position-relative rounded-3 d-flex justify-content-end align-items-center" data-horario='${JSON.stringify(horario)}'>
+                    <div class="box-badge-discount-time position-absolute">
+                        <span class="badge-discount-time position-absolute fs--2 fw-medium">-${horario.porcentajeDescuento}%</span>
+                    </div>
+                    <span class="fs--1 line-height-20 rate-label text-center mb-0">${horario.horaInicio} - ${horario.horaFin}</span>
+                </div>
+            </div>`;
+        }else{
+            return `<div class="col-${size}">
+                <div class="cursor-pointer waves-effect btn-disponibilidad-medico p--2 px-3 w-100 bg-time-doctor rounded-3 d-flex justify-content-center align-items-center" data-horario='${JSON.stringify(horario)}'>
+                    <span class="fs--1 line-height-20 rate-label text-center mb-0">${horario.horaInicio} - ${horario.horaFin}</span>
+                </div>
+            </div>`;
+        }
+    }
+
     async function consultarDisponibilidadMedico(dataMedico){
         let medico = JSON.parse(dataMedico);
-        //let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
+        let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let listaHorariosMedico = $('#listaHorariosMedico');
         listaHorariosMedico.empty();
         let bloques = '';
@@ -860,7 +717,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(_fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -871,26 +728,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             if(data.data.length > 0){
                 data.data.forEach((horario) => {
-                    let params = {};
-                    //params.medico = medico;
-                    dataCita.horario = horario;
-                    let urlParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
-                    if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
-                        ruta = "/cita-urgencias-ambulatorias/" + "{{ $params }}";
-                    }
-                    elemento += `<a href="${ruta}">
-                            <div class="card card-horario card-body rounded-3 position-relative py-3 mb-2 btn-disponibilidad-medico" data-horario='${JSON.stringify(horario)}'>
-                        `;
-                    if(horario.porcentajeDescuento > 0 && dataCita.convenio.permitePago != "N"){
-                        elemento += `<div class="badge-discount-top fs--2 line-height-16 fw-medium"><span>-${horario.porcentajeDescuento}%</span></div>`
-                    }
-                    elemento += `<p class="fs--16 line-height-20 text-primary-veris text-center mb-0">${horario.horaInicio} - ${horario.horaFin}</p>`;
-                    if(horario.porcentajeDescuento > 0 && dataCita.convenio.permitePago != "N"){
-                        elemento += `<div class="badge-discount-bottom fs--2 line-height-16 fw-medium"><span>{{ __('descuento') }}</span></div>`;
-                    }
-                    elemento += `</div>
-                        </a>`;
+                    elemento += drawHorarioMedico(horario,12);
                 })
             } else {
                 elemento += `<div class="card card-horario card-body rounded-3 position-relative py-3 mb-2>
@@ -999,7 +837,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function consultarHorasMotorizados() {
         //let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/disponibilidad?canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${_fechaSeleccionada}&codigoZona=${codigoZona}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/disponibilidad?canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${$('.selected-day').attr("fechaSeleccionada-rel")}&codigoZona=${codigoZona}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["dismissAlert"] = true;
@@ -1067,6 +905,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     display: flex;
     align-items: center;
     justify-content: space-between;
+    max-height: 66px;
 }
 .calendar-content {
     text-align: center;
@@ -1091,7 +930,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 .day.selected-day {
     background-color: #0071CE;
     color: #fff;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 .today-label {
   position: absolute;
@@ -1108,6 +947,51 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     width: 24px;
     height: 24px;
     cursor: pointer;
+}
+#pills-tab .active .badge-icon-selected path{
+    fill: #fff !important;
+}
+.picture-doctor{
+    width: 88px;
+    height: 88px;
+}
+.star-ico{
+    color: #FFC107;
+}
+.rate-label{
+    color: #13243F;
+}
+.bg-cita-atendida{
+    background: #B9F6CA;
+}
+.bg-fav-atendida{
+    background: #FBE9E7;
+}
+.bg-time-doctor{
+    background: #EAF0FD;
+}
+.bg-time-doctor-alt{
+    background: #A9C4F9;
+}
+.box-badge-discount-time {
+    left: 0px;
+    height: 100%;
+    width: 44px;
+    background: #FFE5EF;
+    border-radius: 0px 0px 32px 0px;
+}
+
+.badge-discount-time {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    width: 44px;
+    margin: auto;
+    text-align: center;
+    color: #EF2E79;
 }
 </style>
 @endpush
