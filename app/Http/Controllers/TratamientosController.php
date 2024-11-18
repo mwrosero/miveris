@@ -19,7 +19,7 @@ class TratamientosController extends Controller
 
     // Return view lista de tratamientos
     public function tratamientos($params) {
-        return view('tratamientos.lista_tratamientos')
+        return view('tratamientos.lista_tratamientos_2024')
                 ->with('params', $params);
     }
 

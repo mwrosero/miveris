@@ -242,6 +242,17 @@ Elige datos para la Cita
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+        if(dataCita.origen == "Listatratamientos"){
+            console.log(dataCita);
+            $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
+            $('.btn-modalidad').css('pointer-events','none');
+            $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio) }`)
+            $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
+            await consultarCiudades();
+            await consultarCentralesMedicasRecomendadas();
+            $('#btn-ciudad').removeClass('disabled')
+            $('#btn-central').removeClass('disabled')
+        }else{
         // await consultarEspecialidades();
             delete dataCita.especialidad
         //if(dataCita.convenio == null){
@@ -249,6 +260,7 @@ Elige datos para la Cita
             await consultarCiudades();
             await consultarCentralesMedicasRecomendadas();
         //}
+        }
 
         $('body').on('click','#btn-continuar', async function(){
             let msg = ``;
@@ -320,7 +332,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-convenio', function(){
-            if ($(this).find('#btn-convenio').hasClass('disabled')) {
+            if ($(this).find('#btn-convenio').hasClass('disabled') && dataCita.origen != "Listatratamientos") {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -328,7 +340,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-ciudad', function(){
-            if ($(this).find('#btn-ciudad').hasClass('disabled')) {
+            if ($(this).find('#btn-ciudad').hasClass('disabled') && dataCita.origen != "Listatratamientos") {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -336,7 +348,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-especialidad', function(){
-            if ($(this).find('#btn-especialidad').hasClass('disabled')) {
+            if ($(this).find('#btn-especialidad').hasClass('disabled') && dataCita.origen != "Listatratamientos") {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -383,6 +395,9 @@ Elige datos para la Cita
             $('.label-sugerencia-ciudad').hide();
             if(dataCita.hasOwnProperty('especialidad')){
                 await consultarCentralesMedicas()
+            }else{
+                $('#btn-central p').html(`Seleccionar`);
+                $('#btn-central').attr('data-rel','');
             }
             $('.ciudad-item').removeClass('select-item-active');
             $(this).addClass('select-item-active');
@@ -458,21 +473,21 @@ Elige datos para la Cita
             localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
         })
 
-        var $enlace = $('#btn-si-tratamiento');
+        // var $enlace = $('#btn-si-tratamiento');
 
-        // Maneja el evento de clic en el enlace
-        $enlace.on('click', function(event) {
-            // Previene el comportamiento predeterminado del enlace
-            event.preventDefault();
+        // // Maneja el evento de clic en el enlace
+        // $enlace.on('click', function(event) {
+        //     // Previene el comportamiento predeterminado del enlace
+        //     event.preventDefault();
 
-            // Establece un retraso de 2 segundos antes de redirigir
-            setTimeout(function() {
-                // Obtiene la URL del enlace
-                var url = $enlace.attr('href');
-                // Redirige a la URL después del retraso
-                window.location.href = url;
-            }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
-        });
+        //     // Establece un retraso de 2 segundos antes de redirigir
+        //     setTimeout(function() {
+        //         // Obtiene la URL del enlace
+        //         var url = $enlace.attr('href');
+        //         // Redirige a la URL después del retraso
+        //         window.location.href = url;
+        //     }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
+        // });
     });
 
     async function validarCondicionConvenio(){
@@ -661,6 +676,7 @@ Elige datos para la Cita
     }
 
     async function consultarCentralesMedicas(){
+        console.log('----------')
         // $('#btn-central p').html(`Seleccionar`);
         // $('#btn-central').attr('data-rel','');
         // delete dataCita.central;
@@ -742,6 +758,10 @@ Elige datos para la Cita
     }
 
     async function consultarSiEsTratamiento(){
+        if(dataCita.hasOwnProperty('tratamiento')){
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            window.location.href = '/citas-elegir-fecha-doctor/{{ $params }}';
+        }
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}
         &codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&codigoConvenio=${ (dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : '' }`;
@@ -756,11 +776,11 @@ Elige datos para la Cita
         path_url = "/citas-elegir-fecha-doctor/{{ $params }}";
         
         if (data.code == 200 && data.data != null){
-            $("#btn-no-tratamiento").attr("href",path_url+"/"+ "{{ $params }}" );
+            $("#btn-no-tratamiento").attr("href",path_url);
             params.tratamiento = data.data;
             let urlParamsSi = JSON.stringify(data.data);
             $("#btn-si-tratamiento").attr("data-rel", urlParamsSi);
-            $("#btn-si-tratamiento").attr("href",path_url+"/"+ "{{ $params }}" );
+            $("#btn-si-tratamiento").attr("href",path_url);
 
             //dataCita.tratamiento = data.data
             $('#tratamiento-content').empty();
