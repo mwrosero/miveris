@@ -405,7 +405,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         $('body').on('click','.btn-disponibilidad-medico-all', function(){
             let data = $(this).attr("data-rel")
-            consultarDisponibilidadMedico(data);
+            consultarDisponibilidadMedico(data, true);
         })
         // Listener para seleccionar un horario
         $('body').on('click', '.card-horario', function () {
@@ -683,14 +683,25 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         return data;
     }
 
-    function drawHorarioMedico(horario, size = 6){        
+    function drawHorarioMedico(horario, size = 6, isPopup = false){        
+        let aditionalClass = `box-badge-discount-time`;
+        let esAuto = ``;
+        let elem = ``;
+        if(isPopup){
+            esAuto = `mx-auto`;
+            aditionalClass = `box-badge-discount-time-popup`;
+            elem += `<div class="box-badge-discount-time-popup-label position-absolute">
+                <span class="badge-discount-time position-absolute fs--2 fw-regular">descuento</span>
+            </div>`;
+        }
         if(horario.porcentajeDescuento > 0){
             return `<div class="col-${size}">
                 <div class="cursor-pointer waves-effect btn-disponibilidad-medico p--2 px-3 w-100 bg-time-doctor box-time-doctor-with-discount position-relative rounded-3 d-flex justify-content-end align-items-center" data-horario='${JSON.stringify(horario)}'>
-                    <div class="box-badge-discount-time position-absolute">
+                    <div class="${aditionalClass} position-absolute">
                         <span class="badge-discount-time position-absolute fs--2 fw-medium">-${horario.porcentajeDescuento}%</span>
                     </div>
-                    <span class="fs--1 line-height-20 rate-label text-center mb-0">${horario.horaInicio} - ${horario.horaFin}</span>
+                    <span class="fs--1 line-height-20 rate-label text-center mb-0 ${esAuto}">${horario.horaInicio} - ${horario.horaFin}</span>
+                    ${elem}
                 </div>
             </div>`;
         }else{
@@ -702,7 +713,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     }
 
-    async function consultarDisponibilidadMedico(dataMedico){
+    async function consultarDisponibilidadMedico(dataMedico, esPopup = false){
         let medico = JSON.parse(dataMedico);
         let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let listaHorariosMedico = $('#listaHorariosMedico');
@@ -729,7 +740,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             if(data.data.length > 0){
                 data.data.forEach((horario) => {
-                    elemento += drawHorarioMedico(horario,12);
+                    elemento += drawHorarioMedico(horario,12, esPopup);
                 })
             } else {
                 elemento += `<div class="card card-horario card-body rounded-3 position-relative py-3 mb-2>
@@ -975,13 +986,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     background: #A9C4F9;
 }
 .box-badge-discount-time {
+    top: 0px;
     left: 0px;
     height: 100%;
     width: 44px;
     background: #FFE5EF;
     border-radius: 0px 0px 32px 0px;
 }
-
 .badge-discount-time {
     position: absolute;
     top: 0;
@@ -993,6 +1004,22 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     margin: auto;
     text-align: center;
     color: #EF2E79;
+}
+.box-badge-discount-time-popup {
+    top: 0px;
+    left: 0px;
+    height: 25px;
+    width: 60px;
+    background: #FFE5EF;
+    border-radius: 0px 0px 32px 0px;
+}
+.box-badge-discount-time-popup-label {
+    bottom: 0px;
+    right: 0px;
+    height: 25px;
+    width: 90px;
+    background: #FFE5EF;
+    border-radius: 32px 0px 0px 0px;
 }
 </style>
 @endpush
