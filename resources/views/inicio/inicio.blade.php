@@ -329,7 +329,7 @@ Mi Veris - Inicio
                 "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
                 "permiteReserva": datosServicio.permitePagoReserva,
                 "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
-                "esPlanStar":  data.esPlanStar
+                "esPlanStar":  datosServicio.esPlanStar
             }
 
             params.online = datosServicio.esVirtual;
@@ -406,7 +406,7 @@ Mi Veris - Inicio
                 "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
                 "permiteReserva": datosServicio.permitePagoReserva,
                 "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
-                "esPlanStar":  data.esPlanStar
+                "esPlanStar":  datosServicio.esPlanStar
             }
 
             params.online = datosServicio.esVirtual;

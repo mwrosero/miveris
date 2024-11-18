@@ -252,11 +252,9 @@ Elige datos para la Cita
 
         $('body').on('click','#btn-continuar', async function(){
             let msg = ``;
+
             if(!dataCita.hasOwnProperty('online')){
                 msg += `Selecciona una modalidad<br>`;
-            }
-            if(!dataCita.hasOwnProperty('convenio')){
-                msg += `Selecciona un convenio o Particular<br>`;
             }
             if(!dataCita.hasOwnProperty('convenio')){
                 msg += `Selecciona un convenio o Particular<br>`;
@@ -264,7 +262,7 @@ Elige datos para la Cita
             if(!dataCita.hasOwnProperty('especialidad')){
                 msg += `Selecciona una especialidad<br>`;
             }
-            if(!dataCita.hasOwnProperty('central')){
+            if(!dataCita.hasOwnProperty('central') && dataCita.online == "N"){
                 msg += `Selecciona una Central Médica<br>`;
             }
 
