@@ -627,7 +627,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
                     elemento += `<div class="border-box-light-blue rounded-3 p--2 mb-3">
                         <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
-                            <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(${img_doctor}) no-repeat center center;background-size: cover;">
+                            <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(${img_doctor}) no-repeat top center;background-size: cover;">
                             </div>
                             <div class="content-doctor ms-2 flex-grow-1">
                                 <div class="name-rate d-flex justify-content-between align-items-start mb-1">
