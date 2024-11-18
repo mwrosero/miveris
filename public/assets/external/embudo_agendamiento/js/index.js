@@ -1827,6 +1827,7 @@ quoteAppointment = (insuranceCompanies) => {
 */
 
 function obtenerConvenios(){
+	showLoader()
 	$('#convenios').empty();
 	var msg_convenios = "NOS ESTAMOS COMUNICANDO CON TU ASEGURADORA, EL PROCESO PUEDE TARDAR UNOS MINUTOS";
 	var idEspecialidad = getValueFIByName('especialidad');
@@ -1885,6 +1886,7 @@ function obtenerConvenios(){
 			showError("No tiene convenios disponibles.");
 		}
 		$.toast().reset('all');
+		hideLoader();
 	});
 
 }

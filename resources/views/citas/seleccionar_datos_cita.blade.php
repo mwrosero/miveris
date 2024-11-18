@@ -154,7 +154,7 @@ Elige datos para la Cita
                                 <div class="row gx-2 justify-content-between align-items-center">
                                     <div class="col-12 mb-2 d-flex justify-content-center">
                                         <div class="input-group search-box">
-                                            <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="http://127.0.0.1:7000/assets/img/svg/search.svg" alt="veris-especialidad"></span>
+                                            <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-especialidad"></span>
                                             <input type="search" class="form-control bg-transparent fs--16 border-0 p-3 ps-0" name="buscar" id="buscar" placeholder="Buscar especialidad" aria-describedby="buscar">
                                         </div>
                                     </div>
