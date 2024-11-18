@@ -634,9 +634,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     <h6 style="max-width: 200px" class="fs--16 line-height-20 fw-medium flex-grow-1 m-0">${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
                                     <div class="star-box text-center ms-1">
                                         <i class="fa-solid fa-star fw-bold star-ico fs--20 d-block"></i>
-                                        <span class="d-block fw-normal fs--3 mt-1 rate-label">5</span>
+                                        <span class="d-block fw-normal fs--3 mt-1 rate-label">5.0</span>
                                     </div>
                                 </div>
+                                ${ (dataCita.online == "N") ? `<p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal) } </p>` : ``}
                                 <p class="fs--2 line-height-16 fw-normal mb-1" style="color: #425065;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
                                 <div class="info-adicional-medico d-flex justify-content-between align-items-center">
                                     ${esMedicoAnterior}
