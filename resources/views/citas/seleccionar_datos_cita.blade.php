@@ -140,7 +140,7 @@ Elige datos para la Cita
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Ciudad"> 
                     </button>
                 </div>
-                <span class="mb-2 d-block fs--2 line-height-16 text-light label-sugerencia label-sugerencia-ciudad">Seleccionada en base a tus agendamientos anteriores</span>
+                <span class="mb-2 d-block fs--2 line-height-16 text-light d-none label-sugerencia label-sugerencia-ciudad">Seleccionada en base a tus agendamientos anteriores</span>
 
                 <!-- ESPECIALIDAD -->
                 <div class="modal modal-top fade" id="especialidadModal" tabindex="-1" aria-labelledby="especialidadModalLabel" aria-hidden="true">
@@ -225,8 +225,8 @@ Elige datos para la Cita
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
                     </button>
                 </div>
-                <span class="mb-2 d-block fs--2 line-height-16 text-light label-sugerencia label-sugerencia-central">Seleccionada en base a tus agendamientos anteriores</span>
-                <button id="btn-continuar" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5">{{ __('Continuar') }}</button>
+                <span class="mb-2 d-block fs--2 line-height-16 text-light d-none label-sugerencia label-sugerencia-central">Seleccionada en base a tus agendamientos anteriores</span>
+                <button id="btn-continuar" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 mt-2">{{ __('Continuar') }}</button>
             </div>
         </div>
     </section>
@@ -248,6 +248,7 @@ Elige datos para la Cita
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         if(dataCita.origen == "Listatratamientos"){
+            $('.label-sugerencia').addClass('d-none');
             console.log(dataCita);
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
             $('.btn-modalidad').css('pointer-events','none');
@@ -259,6 +260,7 @@ Elige datos para la Cita
             $('#btn-ciudad').removeClass('disabled')
             $('#btn-central').removeClass('disabled')
         }else if(dataCita.hasOwnProperty('reservaEdit')){
+            $('.label-sugerencia').addClass('d-none');
             console.log(dataCita);
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
             $('.btn-modalidad').css('pointer-events','none');
@@ -271,6 +273,7 @@ Elige datos para la Cita
             await consultarCiudades();
             await validarEspecialidadEnCentralSeleccionada();
         }else{
+            $('.label-sugerencia').removeClass('d-none');
         // await consultarEspecialidades();
             delete dataCita.especialidad
         //if(dataCita.convenio == null){
