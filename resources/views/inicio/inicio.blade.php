@@ -256,12 +256,12 @@ Mi Veris - Inicio
         // initializeSwiper('.swiper-proximas-citas');
         $('body').on('click', '.btn-opciones-sesion', function(){
             $('.data-popup-opciones').attr('data-rel', $(this).attr("data-rel"));
-            $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/citas-elegir-central-medica/{{ $tokenCita }}");
+            $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/seleccionar-datos-cita/{{ $tokenCita }}");
         });
 
         $('body').on('click', '.btn-opciones-cita', function(){
             let datos = JSON.parse($(this).attr("data-rel"));
-            let url = `citas-elegir-central-medica`;
+            let url = `seleccionar-datos-cita`;
             if(datos.esVirtual === "S"){
                 url = `citas-elegir-fecha-doctor`;
             }
@@ -976,7 +976,7 @@ Mi Veris - Inicio
             let ruta = "/citas-elegir-fecha-doctor/" + tokenCita;
 
             if (citas.esVirtual !== "S") {
-                ruta = "/citas-elegir-central-medica/" + tokenCita;
+                ruta = "/seleccionar-datos-cita/" + tokenCita;
             }
 
             if(citas.esSesionOdonto){
@@ -1208,6 +1208,16 @@ Mi Veris - Inicio
                 "numeroPaciente": data.numeroPaciente
             }
 
+            params.central = {
+                "codigoSucursal": data.codigoSucursal,
+                "nombreSucursal": data.sucursal
+            }
+            params.ciudad = {
+                "codigoPais": data.idPais,
+                "codigoProvincia": data.idProvincia,
+                "codigoCiudad": data.idCiudad
+            }
+
             params.reservaEdit = {
                 "estaPagada": data.estaPagada,
                 "numeroOrden": data.numeroOrden,
@@ -1316,6 +1326,16 @@ Mi Veris - Inicio
                 "tipoIdentificacion": data.tipoIdentificacion,
                 "nombrePaciente": data.nombrePaciente,
                 "numeroPaciente": data.numeroPaciente
+            }
+
+            params.central = {
+                "codigoSucursal": data.codigoSucursal,
+                "nombreSucursal": data.sucursal
+            }
+            params.ciudad = {
+                "codigoPais": data.idPais,
+                "codigoProvincia": data.idProvincia,
+                "codigoCiudad": data.idCiudad
             }
 
             params.reservaEdit = {
