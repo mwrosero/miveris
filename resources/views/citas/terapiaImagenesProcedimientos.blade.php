@@ -382,7 +382,7 @@ Mi Veris - Citas - {{ $titulo }}
                 window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
             } else {
                 // ir a central medica
-                window.location.href = '/citas-elegir-central-medica/{{ $tokenCita }}';
+                window.location.href = '/seleccionar-datos-cita/{{ $tokenCita }}';
             }
             
         });
@@ -1007,7 +1007,7 @@ Mi Veris - Citas - {{ $titulo }}
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
                                     if(datosServicio.modalidad == 'PRESENCIAL'){
-                                        let ruta = '/citas-elegir-central-medica/';
+                                        let ruta = '/seleccionar-datos-cita/';
                                         let urlCompleta = ruta + "{{ $tokenCita }}"
                                         respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-agendar" convenio-rel='${JSON.stringify(convenio)}' data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
                                     } else {
@@ -1031,7 +1031,7 @@ Mi Veris - Citas - {{ $titulo }}
                     } else if (datosServicio.estado == 'AGENDADO'){
                         let ruta = "/citas-elegir-fecha-doctor/{{ $tokenCita }}";
                         if (datosServicio.modalidad == "PRESENCIAL") {
-                            ruta = "/citas-elegir-central-medica/{{ $tokenCita }}";
+                            ruta = "/seleccionar-datos-cita/{{ $tokenCita }}";
                         }
                         if(datosServicio.detalleReserva !== null && datosServicio.detalleReserva.habilitaBotonCambio == 'S'){
                             if(datosServicio.esPagada == "N"){
