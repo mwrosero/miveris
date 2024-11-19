@@ -250,6 +250,7 @@ Elige datos para la Cita
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
             await consultarCiudades();
             await consultarCentralesMedicasRecomendadas();
+            await validarEspecialidadEnCentralSeleccionada();
             $('#btn-ciudad').removeClass('disabled')
             $('#btn-central').removeClass('disabled')
         }else if(dataCita.hasOwnProperty('reservaEdit')){
