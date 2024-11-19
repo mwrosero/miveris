@@ -237,6 +237,11 @@ Elige datos para la Cita
     // variables globales
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    if(dataCita.hasOwnProperty('convenio')){
+        if(dataCita.convenio.nombreConvenio == undefined){
+            dataCita.convenio.nombreConvenio = "Ninguno";
+        }
+    }
     // let convenio = dataCita.convenio.codigoConvenio || ' ';
 
 
@@ -264,6 +269,7 @@ Elige datos para la Cita
             $('#btn-ciudad').removeClass('disabled')
             $('#btn-central').removeClass('disabled')
             await consultarCiudades();
+            await validarEspecialidadEnCentralSeleccionada();
         }else{
         // await consultarEspecialidades();
             delete dataCita.especialidad

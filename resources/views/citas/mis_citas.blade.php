@@ -196,13 +196,13 @@ Mi Veris - Citas - Mis citas
 
         $('body').on('click', '.btn-opciones-sesion', function(){
             $('.data-popup-opciones').attr('data-rel', $(this).attr("data-rel"));
-            $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/citas-elegir-central-medica/{{ $tokenCita }}");
+            $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/seleccionar-datos-cita/{{ $tokenCita }}");
             $('.data-popup-opciones.btn-CambiarFechaCita').attr('convenio-rel', $(this).attr("convenio-rel"));
         });
 
         $('body').on('click', '.btn-opciones-cita', function(){
             let datos = JSON.parse($(this).attr("data-rel"));
-            let url = `citas-elegir-central-medica`;
+            let url = `seleccionar-datos-cita`;
             if(datos.esVirtual === "S"){
                 url = `citas-elegir-fecha-doctor`;
             }
@@ -514,7 +514,7 @@ Mi Veris - Citas - Mis citas
                         if (historial.esVirtual == "S") {
                             ruta = "/citas-elegir-fecha-doctor/" + "{{ $tokenCita }}" 
                         } else {
-                            ruta = "/citas-elegir-central-medica/" + "{{ $tokenCita }}"
+                            ruta = "/seleccionar-datos-cita/" + "{{ $tokenCita }}"
                         }
 
                     let element = `<div class="col-12 col-md-6">
@@ -634,7 +634,7 @@ Mi Veris - Citas - Mis citas
                         let ruta = "/citas-elegir-fecha-doctor/" + tokenCita;
 
                         if (citas.esVirtual !== "S") {
-                            ruta = "/citas-elegir-central-medica/" + tokenCita;
+                            ruta = "/seleccionar-datos-cita/" + tokenCita;
                         }
 
                         let convenio = {
@@ -960,6 +960,15 @@ Mi Veris - Citas - Mis citas
                 "nombrePaciente": data.nombrePaciente,
                 "numeroPaciente": data.numeroPaciente
             }
+            params.central = {
+                "codigoSucursal": data.codigoSucursal,
+                "nombreSucursal": data.sucursal
+            }
+            params.ciudad = {
+                "codigoPais": data.idPais,
+                "codigoProvincia": data.idProvincia,
+                "codigoCiudad": data.idCiudad
+            }
 
             params.origen = 'mis-citas';
 
@@ -1027,6 +1036,16 @@ Mi Veris - Citas - Mis citas
                 "tipoIdentificacion": data.tipoIdentificacion,
                 "nombrePaciente": data.nombrePaciente,
                 "numeroPaciente": data.numeroPaciente
+            }
+
+            params.central = {
+                "codigoSucursal": data.codigoSucursal,
+                "nombreSucursal": data.sucursal
+            }
+            params.ciudad = {
+                "codigoPais": data.idPais,
+                "codigoProvincia": data.idProvincia,
+                "codigoCiudad": data.idCiudad
             }
 
             params.convenio = convenio;
