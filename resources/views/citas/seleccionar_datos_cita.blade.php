@@ -252,6 +252,17 @@ Elige datos para la Cita
             await consultarCentralesMedicasRecomendadas();
             $('#btn-ciudad').removeClass('disabled')
             $('#btn-central').removeClass('disabled')
+        }else if(dataCita.hasOwnProperty('reservaEdit')){
+            console.log(dataCita);
+            $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
+            $('.btn-modalidad').css('pointer-events','none');
+            $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio) }`)
+            $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
+            // await consultarCentralesMedicasRecomendadas();
+            $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal) }`)
+            $('#btn-ciudad').removeClass('disabled')
+            $('#btn-central').removeClass('disabled')
+            await consultarCiudades();
         }else{
         // await consultarEspecialidades();
             delete dataCita.especialidad
@@ -332,7 +343,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-convenio', function(){
-            if ($(this).find('#btn-convenio').hasClass('disabled') && dataCita.origen != "Listatratamientos") {
+            if ($(this).find('#btn-convenio').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit')) {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -340,7 +351,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-ciudad', function(){
-            if ($(this).find('#btn-ciudad').hasClass('disabled') && dataCita.origen != "Listatratamientos") {
+            if ($(this).find('#btn-ciudad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit')) {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -348,7 +359,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-especialidad', function(){
-            if ($(this).find('#btn-especialidad').hasClass('disabled') && dataCita.origen != "Listatratamientos") {
+            if ($(this).find('#btn-especialidad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit')) {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -582,7 +593,12 @@ Elige datos para la Cita
             let elemento = ``;
             listaCiudades.empty();
             $.each(data.data, function(key, value){
-                elemento += `<div id="ciudad-${value.codigoCiudad}" data-rel='${JSON.stringify(value)}' class="ciudad-item select-item mb-2" data-bs-dismiss="modal">
+                let selected =  ``;
+                if(dataCita.hasOwnProperty('reservaEdit') && value.codigoCiudad == dataCita.ciudad.codigoCiudad ){
+                    selected = `select-item-active`;
+                    $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
+                }
+                elemento += `<div id="ciudad-${value.codigoCiudad}" data-rel='${JSON.stringify(value)}' class="ciudad-item select-item ${selected} mb-2" data-bs-dismiss="modal">
                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${value.codigoCiudad}" value="">
                         <label for="listGroupCheckableRadios${value.codigoCiudad}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
@@ -590,7 +606,7 @@ Elige datos para la Cita
                         </label> 
                     </div>
                 </div>`;
-                if(value.esDefault){
+                if(value.esDefault && !dataCita.hasOwnProperty('reservaEdit')){
                     $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
                     dataCita.ciudad = value;
                 }

@@ -1430,9 +1430,17 @@ $tokenSesion = base64_encode(uniqid());
             "numeroIdentificacion": data.numeroIdentificacion,
             "tipoIdentificacion": data.tipoIdentificacion,
             "nombrePaciente": data.nombrePaciente,
-            "numeroPaciente": data.numeroPaciente
+            "numeroPaciente": data.pacPacNumero
         }
-
+        params.central = {
+            "codigoSucursal": data.detalleReserva.codigoSucursal,
+            "nombreSucursal": data.detalleReserva.nombreSucursal
+        }
+        params.ciudad = {
+            "codigoPais": data.idPais,
+            "codigoProvincia": data.idProvincia,
+            "codigoCiudad": data.idCiudad
+        }
         params.reservaEdit = {
             "estaPagada": data.esPagada,
             "numeroOrden": (data.numeroOrden) ? data.numeroOrden : data.idOrden,
