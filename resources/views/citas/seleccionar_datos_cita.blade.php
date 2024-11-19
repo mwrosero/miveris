@@ -393,11 +393,10 @@ Elige datos para la Cita
             $('.ciudad-item').removeClass('select-item-active');
             $(this).addClass('select-item-active');
             $('.label-sugerencia-ciudad').hide();
+            $('#btn-central p').html(`Seleccionar`);
+            $('#btn-central').attr('data-rel','');
             if(dataCita.hasOwnProperty('especialidad')){
                 await consultarCentralesMedicas()
-            }else{
-                $('#btn-central p').html(`Seleccionar`);
-                $('#btn-central').attr('data-rel','');
             }
             $('.ciudad-item').removeClass('select-item-active');
             $(this).addClass('select-item-active');
