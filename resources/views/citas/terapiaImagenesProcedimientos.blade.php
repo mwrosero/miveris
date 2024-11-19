@@ -459,7 +459,17 @@ Mi Veris - Citas - {{ $titulo }}
                 "numeroIdentificacion": data.numeroIdentificacion,
                 "tipoIdentificacion": data.tipoIdentificacion,
                 "nombrePaciente": data.nombrePaciente,
-                "numeroPaciente": data.numeroPaciente
+                "numeroPaciente": data.pacPacNumero
+            }
+
+            params.central = {
+                "codigoSucursal": data.detalleReserva.codigoSucursal,
+                "nombreSucursal": data.detalleReserva.nombreSucursal
+            }
+            params.ciudad = {
+                "codigoPais": data.idPais,
+                "codigoProvincia": data.idProvincia,
+                "codigoCiudad": data.idCiudad
             }
 
             params.reservaEdit = {
@@ -983,6 +993,7 @@ Mi Veris - Citas - {{ $titulo }}
 
     // determinar condiciones de los botones 
     function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
+        // console.log(datosServicio, estado, datosTratamiento)
         // console.log(datosServicio)
         // console.log(datosTratamiento)
         let services = datosServicio;
@@ -998,8 +1009,10 @@ Mi Veris - Citas - {{ $titulo }}
                         tratamiento: datosTratamiento
                     };
                     let convenio = datosTratamiento.datosConvenio;
+
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
                         respuestaAgenda += ` <button type="button" class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
+                        //
                         if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
                             respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Información</button>`;
@@ -1029,6 +1042,7 @@ Mi Veris - Citas - {{ $titulo }}
                         respuestaAgenda = ``;
                         respuestaAgenda += ` <button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal"> Ver orden</button>`;  
                     } else if (datosServicio.estado == 'AGENDADO'){
+                        console.log(datosServicio);
                         let ruta = "/citas-elegir-fecha-doctor/{{ $tokenCita }}";
                         if (datosServicio.modalidad == "PRESENCIAL") {
                             ruta = "/seleccionar-datos-cita/{{ $tokenCita }}";
