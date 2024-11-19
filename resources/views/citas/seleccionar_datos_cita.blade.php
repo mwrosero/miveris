@@ -655,7 +655,7 @@ Elige datos para la Cita
                 elemento += `<div id="central-${central.codigoSucursal}" data-rel='${JSON.stringify(central)}' class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica central-item select-item" data-bs-dismiss="modal">
                     <div class="card-body p--2">
                         <div class="d-flex">
-                            <div class="avatar avatar-88 me-2" style="background: url(${ (central.nombreFoto != null) ? central.nombreFoto : '{{ asset('assets/img/svg/dummy_central.svg') }}' }) no-repeat center center; background-size:cover;">
+                            <div class="avatar avatar-88 me-2" style="background: url(${ (central.nombre_foto != null) ? central.nombre_foto : '{{ asset('assets/img/svg/dummy_central.svg') }}' }) no-repeat center center; background-size:cover;">
                             </div>
                             <div class="col">
                                 <h6 class="fs--16 line-height-20 fw-medium mb-2">${capitalizarCadaPalabra(central.nombreSucursal)}</h6>
