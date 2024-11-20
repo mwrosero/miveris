@@ -408,7 +408,11 @@ Mi Veris - Inicio
                 "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
                 "esPlanStar":  datosServicio.esPlanStar
             }
-
+            params.ciudad = {
+                "codigoPais": datosServicio.idPais,
+                "codigoProvincia": datosServicio.idProvincia,
+                "codigoCiudad": datosServicio.idCiudad
+            }
             params.online = datosServicio.esVirtual;
 
             params.especialidad = {

@@ -272,6 +272,15 @@ Elige datos para la Cita
             $('#btn-central').removeClass('disabled')
             await consultarCiudades();
             await validarEspecialidadEnCentralSeleccionada();
+        }else if(dataCita.origen == "mis-citas"){
+            $('.label-sugerencia').addClass('d-none');
+            $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
+            $('.btn-modalidad').css('pointer-events','none');
+            $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
+            $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal) }`)
+            await cargarConvenios();
+            await consultarCiudades();
+            $('#btn-convenio').removeClass('disabled')
         }else{
             $('.label-sugerencia').removeClass('d-none');
         // await consultarEspecialidades();
@@ -604,7 +613,7 @@ Elige datos para la Cita
             listaCiudades.empty();
             $.each(data.data, function(key, value){
                 let selected =  ``;
-                if(dataCita.hasOwnProperty('reservaEdit') && value.codigoCiudad == dataCita.ciudad.codigoCiudad ){
+                if((dataCita.hasOwnProperty('reservaEdit') || dataCita.origen == "mis-citas" ) && value.codigoCiudad == dataCita.ciudad.codigoCiudad ){
                     selected = `select-item-active`;
                     $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
                 }
@@ -616,7 +625,7 @@ Elige datos para la Cita
                         </label> 
                     </div>
                 </div>`;
-                if(value.esDefault && !dataCita.hasOwnProperty('reservaEdit')){
+                if(value.esDefault && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas"){
                     $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
                     dataCita.ciudad = value;
                 }
