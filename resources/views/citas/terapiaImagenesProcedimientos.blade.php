@@ -348,7 +348,6 @@ Mi Veris - Citas - {{ $titulo }}
         $(document).on('click', '#btnAgendarCitaModal', function(){
             let datosRel = $(this).data('rel');
             let datos = datosRel.servicio;
-            console.log(datos)
             let datosConvenio = datosRel.tratamiento;
             if(datos.permiteReserva == "N"){// && datos.esPagada == "N"
                 $('#mensajeNoPermiteCambiar').html(datos.mensajeBloqueoReserva);
@@ -376,6 +375,16 @@ Mi Veris - Citas - {{ $titulo }}
                 nombre : datos.nombreServicio,
             }
             params.convenio = datosRel.tratamiento.datosConvenio;
+            params.central = {
+                "codigoSucursal": datos.codigoSucursal,
+                "nombreSucursal": datos.sucursal
+            }
+            params.ciudad = {
+                "codigoPais": datos.idPais,
+                "codigoProvincia": datos.idProvincia,
+                "codigoCiudad": datos.idCiudad
+            }
+            params.origen = "Listatratamientos";//"terapia-imagen-procedimiento";
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             if (online == 'S') {

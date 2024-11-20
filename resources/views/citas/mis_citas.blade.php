@@ -691,7 +691,7 @@ Mi Veris - Citas - Mis citas
                                             <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" convenio-rel='${JSON.stringify(convenio)}' data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                             ` : ''}
                                         </div>
-                                        ${esConsultaOnline || citas.idTeleconsulta !== null ? `
+                                        ${citas.estaPagada === "S" && (esConsultaOnline || citas.idTeleconsulta !== null) ? `
                                             <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
                                         ` : ''}
                                     </div>

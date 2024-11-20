@@ -281,6 +281,16 @@ Elige datos para la Cita
             await cargarConvenios();
             await consultarCiudades();
             $('#btn-convenio').removeClass('disabled')
+        /*}else if(dataCita.origen == "terapia-imagen-procedimiento"){
+            $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
+            $('.btn-modalidad').css('pointer-events','none');
+            $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio) }`)
+            $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
+            await consultarCiudades();
+            await consultarCentralesMedicasRecomendadas();
+            await validarEspecialidadEnCentralSeleccionada();
+            $('#btn-ciudad').removeClass('disabled')
+            $('#btn-central').removeClass('disabled')*/
         }else{
             $('.label-sugerencia').removeClass('d-none');
         // await consultarEspecialidades();
@@ -341,6 +351,7 @@ Elige datos para la Cita
 
         $('body').on('click','.btn-modalidad', async function(){
             if(!$(this).hasClass('modalidad-selected')){
+                $('.label-sugerencia').addClass('d-none');
                 if(dataCita.tratamiento == null && dataCita.reservaEdit == null){
                     $('#btn-convenio').removeClass('disabled');
                 }
@@ -520,8 +531,12 @@ Elige datos para la Cita
     });
 
     async function validarCondicionConvenio(){
+        let paramasAditional = ``;
+        if(dataCita.hasOwnProperty('especialidad')){
+            paramasAditional += `&codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&tipoModalidad=${ (dataCita.online == "N") ? "PRESENCIAL" : "ONLINE" }`;
+        }
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}${paramasAditional}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
