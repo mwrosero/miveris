@@ -393,7 +393,7 @@ Elige datos para la Cita
             }else{
                 if(!dataCita.hasOwnProperty('especialidad')){
                     showMessage('warning','Debes seleccionar una especialidad');
-                }else{
+                }else if(dataCita.origen != 'mis-citas'){
                     await consultarCentralesMedicas();
                     $('#centralModal').modal('show');
                 }
