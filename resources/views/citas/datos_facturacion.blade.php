@@ -681,6 +681,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["method"] = "POST"; 
         args["showLoader"] = true; 
         args["bodyType"] = "json"; 
+        args["dismissAlert"] = true;
         args["data"] = JSON.stringify({            
             "codigoUsuario": "{{ Session::get('userData')->numeroIdentificacion }}",
             "codigoTipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
@@ -737,7 +738,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 }
             }
         }else{
-            alert(data.message);
+            $('#mensaje_400_same_page').html(data.message);
+            var myModal = new bootstrap.Modal(document.getElementById('modalErrorSamePage'));
+            myModal.show();
         }
     }
 
