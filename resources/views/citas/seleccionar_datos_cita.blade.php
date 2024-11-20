@@ -370,7 +370,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-ciudad', function(){
-            if ($(this).find('#btn-ciudad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit')) {
+            if ($(this).find('#btn-ciudad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas") {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -378,7 +378,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-especialidad', function(){
-            if ($(this).find('#btn-especialidad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit')) {
+            if ($(this).find('#btn-especialidad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas") {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -386,7 +386,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-central', async function(){
-            if ($(this).find('#btn-central').hasClass('disabled')) {
+            if ($(this).find('#btn-central').hasClass('disabled') && dataCita.origen != "mis-citas") {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
