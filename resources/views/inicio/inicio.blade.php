@@ -408,6 +408,10 @@ Mi Veris - Inicio
                 "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
                 "esPlanStar":  datosServicio.esPlanStar
             }
+            params.central = {
+                "codigoSucursal": datosServicio.codigoSucursal,
+                "nombreSucursal": datosServicio.sucursal
+            }
             params.ciudad = {
                 "codigoPais": datosServicio.idPais,
                 "codigoProvincia": datosServicio.idProvincia,
