@@ -90,18 +90,18 @@ Mi Veris - Sesión - Detalle
                     <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         <div class="mt-5">`;
                         if(dataCita.reservaEdit == null && dataCita.sesion.esPagada != "S"){
-                            elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 btn-agendar ${ (dataCita.detalleSesion.habilitaBotonAgendar == 'N') ? 'disabled' : '' }">Agendar</a>`;
+                            elem += `<a href="/seleccionar-datos-cita/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 btn-agendar ${ (dataCita.detalleSesion.habilitaBotonAgendar == 'N') ? 'disabled' : '' }">Agendar</a>`;
                         }else{
                             if(dataCita.tratamiento && dataCita.tratamiento.origen == "INICIO"){
                                 if(dataCita.sesion.estaPagada != "S"){
                                     elem += `<a href="/citas-datos-facturacion/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 btn-pagar">Pagar</a>`;
                                 }else{
-                                    elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">
+                                    elem += `<a href="/seleccionar-datos-cita/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">
                                     ${(dataCita.sesion.esPagada == "S" && dataCita.sesion.detalleReserva === null) ? `Agendar` : `Cambiar fecha` }
                                 </a>`;
                                 }
                             }else{
-                                elem += `<a href="/citas-elegir-central-medica/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">
+                                elem += `<a href="/seleccionar-datos-cita/{{ $params }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">
                                     ${(dataCita.sesion.esPagada == "S" && dataCita.sesion.detalleReserva === null) ? `Agendar` : `Cambiar fecha` }
                                 </a>`;
                             }

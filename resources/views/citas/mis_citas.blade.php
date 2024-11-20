@@ -1271,15 +1271,77 @@ Mi Veris - Citas - Mis citas
         if(dataRel.permiteReserva == "N"){
             return;
         }
-        console.log(dataRel);
         let dataOnline = dataRel.esVirtual;  
         let dataCodigoEspecialidad = dataRel.codigoEspecialidad;
         let args = [];
         let canalOrigen = _canalOrigen;
         let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
         let tipoIdentificacion = '{{ Session::get('userData')->codigoTipoIdentificacion }}';
-        
 
+        //citas-elegir-fecha-doctor
+        let params = {};
+                    
+        params.online = dataOnline;
+        //params.convenio = convenios;
+        //params.convenio.origen = 'mis-citas';
+        if(dataRel.prestaciones){
+            params.especialidad = {
+                codigoEspecialidad: dataRel.codigoEspecialidad,
+                nombre: dataRel.nombreEspecialidad,
+                imagen: dataRel.imagenEspecialidad,
+                codigoServicio: dataRel.prestaciones[0].codigoServicio,
+                esOnline: dataRel.esVirtual,
+                codigoPrestacion: dataRel.prestaciones[0].codigoPrestacion,
+                codigoSucursal: dataRel.codigoSucursal,
+                origen: 'mis-citas',
+            };
+        }else{
+            params.especialidad = {
+                codigoEspecialidad: dataRel.idEspecialidad,
+                nombre: dataRel.especialidad,
+                codigoServicio: dataRel.codigoServicio,
+                esOnline: dataRel.esVirtual,
+                codigoPrestacion: dataRel.codigoPrestacion,
+                codigoSucursal: dataRel.codigoSucursal,
+                origen: 'mis-citas',
+            };
+
+            params.reservaEdit = {
+                "estaPagada": dataRel.estaPagada,
+                "numeroOrden": (dataRel.numeroOrden !== null) ? dataRel.numeroOrden : '',
+                "lineaDetalleOrden": (dataRel.lineaDetalleOrden !== null) ? dataRel.lineaDetalleOrden : '',
+                "codigoEmpresaOrden": (dataRel.codigoEmpresaOrden !== null) ? dataRel.codigoEmpresaOrden : '',
+                "idOrdenAgendable": (dataRel.idOrdenAgendable !== null) ? dataRel.idOrdenAgendable : '',
+                "idCita": (dataRel.idCita !== null) ? dataRel.idCita : ''
+            }
+        }
+        params.ciudad = {
+            "codigoPais": dataRel.idPais,
+            "codigoProvincia": dataRel.idProvincia,
+            "codigoCiudad": dataRel.idCiudad
+        }
+        params.paciente = JSON.parse($('input[name="listGroupRadios"]:checked').attr("data-rel"));
+        /*params.paciente = {
+            numeroIdentificacion: '{{ Session::get('userData')->numeroIdentificacion }}',
+            tipoIdentificacion:  '{{ Session::get('userData')->codigoTipoIdentificacion }}',
+            nombrePaciente: '{{ Session::get('userData')->primerNombre }}',
+            numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
+            origen: 'mis-citas',
+        }*/
+        params.codigoMedicoFavorito = dataRel.codigoProfesional;
+        params.central = {
+            codigoEmpresa: dataRel.codigoEmpresa,
+            codigoSucursal: dataRel.codigoSucursal,
+            nombreSucursal: (dataRel.nombreSucursal) ? dataRel.nombreSucursal : dataRel.sucursal
+        }
+        params.origen = 'mis-citas';
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+        let url = `/seleccionar-datos-cita/`;
+        let ruta = url + "{{ $tokenCita }}";
+        location.href = ruta;
+        return;
+        
         args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -1342,6 +1404,9 @@ Mi Veris - Citas - Mis citas
                     }
                     params.origen = 'mis-citas';
                     localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+                    console.log(params);return;
+
                     let url = `/citas-elegir-fecha-doctor/`;
                     let ruta = url + "{{ $tokenCita }}";
                     /*elemento += `<a href="${ruta}" class="stretched-link">
