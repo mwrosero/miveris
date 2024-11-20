@@ -1185,6 +1185,7 @@ Mi Veris - Inicio
 
     // setear los valores de la cita en localstorage
     $(document).on('click', '.btn-CambiarFechaCita', async function(){
+        //alert(0);
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
         console.log('datasss', data);
@@ -1273,6 +1274,8 @@ Mi Veris - Inicio
                 esPlanStar:  data.esPlanStar
             }
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location = url;
+            return;
             
             const datosConvenioServicio = await consultarConvenios();
             console.log('datosConvenioServicio', datosConvenioServicio);
