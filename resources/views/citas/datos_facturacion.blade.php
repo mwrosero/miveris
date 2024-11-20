@@ -375,8 +375,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             dataCita.reserva = data.data;
             await crearPreTransaccion();
         }else{
-            alert(data.message);
-        }
+                        $('#mensaje_400_same_page').html(data.message);
+            var myModal = new bootstrap.Modal(document.getElementById('modalErrorSamePage'));
+            myModal.show();
+                    }
     }
 
     async function crearPreTransaccion(){
@@ -490,7 +492,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             dataCita.preTransaccion = data.data;
             await consultarDatosFactura();
         }else{
-            alert(data.message);
+            $('#mensaje_400_same_page').html(data.message);
+            var myModal = new bootstrap.Modal(document.getElementById('modalErrorSamePage'));
+            myModal.show();
         }
     }
 
@@ -508,7 +512,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             dataCita.facturacion = data.data;
             mostrarInfo();
         }else{
-            alert(data.message);
+            $('#mensaje_400_same_page').html(data.message);
+            var myModal = new bootstrap.Modal(document.getElementById('modalErrorSamePage'));
+            myModal.show();
         }
     }
 
