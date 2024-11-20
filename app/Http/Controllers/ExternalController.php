@@ -103,8 +103,8 @@ class ExternalController extends Controller
                 return view('external.pasarela.pago_servicios_y_farmacia')
                             ->with('info',$response->data)
                             ->with('esServicioCaja',$esServicioCaja)
-                            ->with('permiteNuvei',$permiteNuvei)
-                            // ->with('permiteNuvei',"N")
+                            // ->with('permiteNuvei',$permiteNuvei)
+                            ->with('permiteNuvei',"S")
                             ->with('accessToken',$accessToken)
                             ->with('paciente',$list_paciente->data)
                             ->with('codigoEmpresa',$codigoEmpresa);
