@@ -1009,6 +1009,8 @@ Mi Veris - Citas - Mis citas
             }
             
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            location = url;
+            return;
 
             const datosConvenioServicio = await consultarConveniosFecha(data.numeroIdentificacion, data.tipoIdentificacion);
             console.log(datosConvenioServicio)
