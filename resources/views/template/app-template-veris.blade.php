@@ -66,7 +66,7 @@
 </head>
 
 <body>
-    @include('template.analytics-no-script');
+    @include('template.analytics-no-script')
     {{-- @include('bot.index') --}}
     <!-- Layout wrapper -->
     
