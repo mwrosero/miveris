@@ -272,8 +272,10 @@ Mi Veris - Inicio
         $('body').on('click', '.btn-opciones-cita', function(){
             let datos = JSON.parse($(this).attr("data-rel"));
             let url = `seleccionar-datos-cita`;
-            if(datos.esVirtual === "S"){
+            if(datos.esVirtual === "S" && datos.estaPagada == "S"){
                 url = `citas-elegir-fecha-doctor`;
+            }else{
+                url = `seleccionar-datos-cita`;
             }
 
             $('#modificar-cita-normal').removeClass('disabled-item');
