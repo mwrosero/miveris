@@ -261,8 +261,8 @@ Elige datos para la Cita
             await consultarCiudades();
             await consultarCentralesMedicasRecomendadas();
             await validarEspecialidadEnCentralSeleccionada();
-            $('#btn-ciudad').removeClass('disabled')
-            $('#btn-central').removeClass('disabled')
+            $('#btn-ciudad').removeClass('disabled selectable')
+            $('#btn-central').removeClass('disabled selectable')
         }else if(dataCita.hasOwnProperty('reservaEdit')){
             console.log("------reservaEdit------");
             if(dataCita.convenio.nombreConvenio == undefined && dataCita.convenio.codigoConvenio != null){
@@ -276,12 +276,12 @@ Elige datos para la Cita
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
             // await consultarCentralesMedicasRecomendadas();
             $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal) }`)
-            $('#btn-ciudad').removeClass('disabled')
-            $('#btn-central').removeClass('disabled')
+            $('#btn-ciudad').removeClass('disabled selectable')
+            $('#btn-central').removeClass('disabled selectable')
             await consultarCiudades();
             await validarEspecialidadEnCentralSeleccionada();
             if(dataCita.reservaEdit.estaPagada == "N"){
-                $('#btn-convenio').removeClass('disabled')
+                $('#btn-convenio').removeClass('disabled selectable')
             }
         }else if(dataCita.origen == "mis-citas"){
             $('.label-sugerencia').addClass('d-none');
@@ -291,7 +291,7 @@ Elige datos para la Cita
             $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal) }`)
             await cargarConvenios();
             await consultarCiudades();
-            $('#btn-convenio').removeClass('disabled')
+            $('#btn-convenio').removeClass('disabled selectable')
         }else if(dataCita.origen == "doctorFavorito"){
             if(dataCita.online == "N"){
                 let centrales = await obtenerCiudadParaMedicoFavoritoPorCentral();
@@ -311,7 +311,7 @@ Elige datos para la Cita
             $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal) }`)
             await cargarConvenios();
             await consultarCiudades();
-            $('#btn-convenio').removeClass('disabled')
+            $('#btn-convenio').removeClass('disabled selectable')
         }else{
             $('.label-sugerencia').removeClass('d-none');
         // await consultarEspecialidades();
@@ -382,10 +382,15 @@ Elige datos para la Cita
                 dataCita.online = $(this).attr('data-rel');
                 if($(this).attr('data-rel') == "S"){
                     $('.item-presencial').addClass('d-none');
+                    delete dataCita.especialidad;
+                    $('#btn-especialidad p').html(`Seleccionar`);
+                    $('#btn-especialidad').addClass('selectable');
                     await validarCondicionConvenio();
                 }else{
                     $('.item-presencial').removeClass('d-none');
                 }
+
+                statusButtons();
 
                 $('.btn-modalidad').addClass('bg-white').removeClass('text-white').removeClass('btn-primary-veris').removeClass('modalidad-selected');
                 $(this).addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
@@ -437,6 +442,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click', '.convenio-item', function(){
+            $('#btn-convenio').removeClass(`selectable`);
             let convenio = JSON.parse($(this).attr('data-rel'));
             dataCita.convenio = convenio;
             if(dataCita.convenio.codigoConvenio != null){
@@ -449,6 +455,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click', '.ciudad-item', async function(){
+            $('#btn-ciudad').removeClass(`selectable`);
             let ciudad = JSON.parse($(this).attr('data-rel'));
             dataCita.ciudad = ciudad;
             $('#btn-ciudad p').html(`${capitalizarCadaPalabra(ciudad.nombreCiudad)}`);
@@ -456,6 +463,7 @@ Elige datos para la Cita
             $(this).addClass('select-item-active');
             $('.label-sugerencia-ciudad').hide();
             $('#btn-central p').html(`Seleccionar`);
+            $('#btn-central').addClass(`selectable`);
             $('#btn-central').attr('data-rel','');
             if(dataCita.hasOwnProperty('especialidad')){
                 await consultarCentralesMedicas()
@@ -465,6 +473,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click', '.especialidad-item', async function(){
+            $('#btn-especialidad').removeClass(`selectable`);
             let especialidad = JSON.parse($(this).attr('data-rel'));
             dataCita.especialidad = especialidad;
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(especialidad.nombre)}`);
@@ -478,6 +487,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click', '.central-item', async function(){
+            $('#btn-central').removeClass(`selectable`);
             let central = JSON.parse($(this).attr('data-rel'));
             dataCita.central = central;
             $('#btn-central p').html(`${capitalizarCadaPalabra(central.nombreSucursal)}`);
@@ -550,6 +560,12 @@ Elige datos para la Cita
         //     }, 500); // Cambia este valor (en milisegundos) para ajustar el tiempo de retraso
         // });
     });
+
+    function statusButtons() {
+        if(!dataCita.hasOwnProperty('especialidad') && !$('#btn-especialidad').hasClass('disabled')){
+            $('#btn-especialidad').addClass(`selectable`);
+        }
+    }
 
     async function validarCondicionConvenio(){
         let paramasAditional = ``;
@@ -758,6 +774,7 @@ Elige datos para la Cita
                 $('.label-sugerencia-central').hide();
                 $('#btn-central p').html(`Seleccionar`);
                 $('#btn-central').attr('data-rel','');
+                $('#btn-central').addClass(`selectable`);
                 delete dataCita.central;
             }
         }
@@ -960,7 +977,13 @@ Elige datos para la Cita
     }
     .btn.disabled {
         color: #3D4E66 !important;
-        background: #FFFFFFCC;
+        background: #E7E9EC;
+        border: 1px solid #6C7A8C !important;
+    }
+    .btn.selectable{
+        font-weight: normal !important;
+        color: #3D4E66 !important;
+        background: #fff !important;
         border: 1px solid #E7E9EC !important;
     }
 </style>
