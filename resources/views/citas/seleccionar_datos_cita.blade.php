@@ -237,6 +237,7 @@ Elige datos para la Cita
     // variables globales
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    console.log(dataCita);
     if(dataCita.hasOwnProperty('convenio')){
         if(dataCita.convenio.nombreConvenio == undefined){
             dataCita.convenio.nombreConvenio = "Ninguno";
@@ -260,6 +261,7 @@ Elige datos para la Cita
             $('#btn-ciudad').removeClass('disabled')
             $('#btn-central').removeClass('disabled')
         }else if(dataCita.hasOwnProperty('reservaEdit')){
+            console.log("------reservaEdit------");
             $('.label-sugerencia').addClass('d-none');
             console.log(dataCita);
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
@@ -714,7 +716,7 @@ Elige datos para la Cita
         args["showLoader"] = true;
         const data = await call(args);
         if(data.code == 200){
-            let existeSucursal = data.data.some(sucursal => sucursal.codigoSucursal === dataCita.central.codigoSucursal);
+            let existeSucursal = data.data.some(sucursal => parseInt(sucursal.codigoSucursal) === parseInt(dataCita.central.codigoSucursal));
             if(!existeSucursal){
                 $('.label-sugerencia-central').hide();
                 $('#btn-central p').html(`Seleccionar`);
