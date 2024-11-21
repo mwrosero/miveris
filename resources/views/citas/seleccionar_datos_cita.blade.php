@@ -277,6 +277,9 @@ Elige datos para la Cita
             $('#btn-central').removeClass('disabled')
             await consultarCiudades();
             await validarEspecialidadEnCentralSeleccionada();
+            if(dataCita.reservaEdit.estaPagada == "N"){
+                $('#btn-convenio').removeClass('disabled')
+            }
         }else if(dataCita.origen == "mis-citas"){
             $('.label-sugerencia').addClass('d-none');
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
