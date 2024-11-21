@@ -1185,6 +1185,15 @@ $tokenSesion = base64_encode(uniqid());
                 "codigoProvincia": datos.idProvincia,
                 "codigoCiudad": datos.idCiudad
             }
+
+            params.tratamiento = {
+                cantidadIntervalosReserva: datos.cantidadIntervalosReserva,
+                numeroOrden: datos.idOrden,
+                codigoEmpOrden: datos.codigoEmpresa,
+                lineaDetalle: datos.lineaDetalleOrden,
+                esPagada: datos.esPagada
+            }
+
             params.origen = "Listatratamientos";
             
             localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));

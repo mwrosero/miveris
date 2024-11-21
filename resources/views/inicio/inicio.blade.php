@@ -104,7 +104,8 @@ Mi Veris - Inicio
         <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-md-2 pb-md-4">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
-                    <a class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal">
+                    {{-- data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal" --}}
+                    <a class="cursor-pointer" id="cita-nueva">
                         <div class="card">
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-7 col-md-7">
@@ -257,6 +258,15 @@ Mi Veris - Inicio
         $('body').on('click', '.btn-opciones-sesion', function(){
             $('.data-popup-opciones').attr('data-rel', $(this).attr("data-rel"));
             $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/seleccionar-datos-cita/{{ $tokenCita }}");
+        });
+
+        $('#cita-nueva').on('click', function(){
+
+            let params = {}
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+            // redireccionar a la pagina de citas
+            window.location.href = "/citas-elegir-paciente/" + "{{ $tokenCita }}";
         });
 
         $('body').on('click', '.btn-opciones-cita', function(){
