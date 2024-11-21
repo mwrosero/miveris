@@ -73,7 +73,7 @@
     </head>
 
     <body>
-        @include('template.analytics-no-script');
+        @include('template.analytics-no-script')
         <!-- Layout wrapper -->
         <div class="layout-wrapper layout-content-navbar">
             <div class="layout-container">
