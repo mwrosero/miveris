@@ -330,7 +330,7 @@ Elige datos para la Cita
                 let data = await validarCondicionConvenio();
                 console.log(data);
                 if(data.data.permiteReserva == "N"){
-                    $('#mensajeError').html(`${data.data.mensaje}`);
+                    $('#mensajeError').html(`${data.data.mensajeReserva}`);
                     $('#modalError').modal('show');
                 }else{
                     dataCita.estaEmbarazada = "N";
