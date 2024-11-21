@@ -66,7 +66,7 @@ Elige datos para la Cita
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Datos para la cita') }}</h5>
     </div>
-    <section class="p-0 bg-dark-blue-veris-medium-sm mt--40">
+    <section class="p-0 bg-dark-blue-veris-medium-sm mt-0">
         <div class="row g-0 justify-content-center">
             <div class="col-auto p-3 bg-dark-blue-veris-medium" style="min-width: 375px;">
                 <p class="text-white fw-medium fs--18 mt-1 mb-2">Elige la modalidad de la cita médica</p>
