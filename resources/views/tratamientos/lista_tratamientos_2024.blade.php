@@ -1266,6 +1266,16 @@ $tokenSesion = base64_encode(uniqid());
         dataCita.convenio = ultimoTratamiento.datosConvenio;
         dataCita.convenio.origen = "Listatratamientos";
 
+        dataCita.central = {
+            "codigoSucursal": datosServicio.codigoSucursal,
+            "nombreSucursal": datosServicio.sucursal
+        }
+        dataCita.ciudad = {
+            "codigoPais": datosServicio.idPais,
+            "codigoProvincia": datosServicio.idProvincia,
+            "codigoCiudad": datosServicio.idCiudad
+        }
+
         localStorage.setItem('cita-{{ $tokenSesion }}', JSON.stringify(dataCita));
         location = url;
     });
