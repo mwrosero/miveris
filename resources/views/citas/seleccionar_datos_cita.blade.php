@@ -248,6 +248,9 @@ Elige datos para la Cita
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+        if(dataCita.online == "S"){
+            $('.item-presencial').addClass('d-none');
+        }
         if(dataCita.origen == "Listatratamientos"){
             $('.label-sugerencia').addClass('d-none');
             console.log(dataCita);
@@ -264,9 +267,6 @@ Elige datos para la Cita
             console.log("------reservaEdit------");
             if(dataCita.convenio.nombreConvenio == undefined && dataCita.convenio.codigoConvenio != null){
                 await cargarConvenios();
-            }
-            if(dataCita.online == "S"){
-                $('.item-presencial').addClass('d-none');
             }
             $('.label-sugerencia').addClass('d-none');
             console.log(dataCita);
@@ -292,16 +292,26 @@ Elige datos para la Cita
             await cargarConvenios();
             await consultarCiudades();
             $('#btn-convenio').removeClass('disabled')
-        /*}else if(dataCita.origen == "terapia-imagen-procedimiento"){
+        }else if(dataCita.origen == "doctorFavorito"){
+            if(dataCita.online == "N"){
+                let centrales = await obtenerCiudadParaMedicoFavoritoPorCentral();
+                console.log(centrales);
+                let buscarSucursal = centrales.filter(sucursal => parseInt(sucursal.codigoSucursal) === parseInt(dataCita.central.codigoSucursal));
+                let dataCiudad = buscarSucursal[0].codigoCiudad.split('-')
+                dataCita.ciudad = {
+                    "codigoPais": dataCiudad[0],
+                    "codigoProvincia": dataCiudad[1],
+                    "codigoCiudad": dataCiudad[2]
+                }
+            }
+            $('.label-sugerencia').addClass('d-none');
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
             $('.btn-modalidad').css('pointer-events','none');
-            $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)) }`)
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
+            $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal) }`)
+            await cargarConvenios();
             await consultarCiudades();
-            await consultarCentralesMedicasRecomendadas();
-            await validarEspecialidadEnCentralSeleccionada();
-            $('#btn-ciudad').removeClass('disabled')
-            $('#btn-central').removeClass('disabled')*/
+            $('#btn-convenio').removeClass('disabled')
         }else{
             $('.label-sugerencia').removeClass('d-none');
         // await consultarEspecialidades();
@@ -392,7 +402,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-ciudad', function(){
-            if ($(this).find('#btn-ciudad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas") {
+            if ($(this).find('#btn-ciudad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas" && dataCita.origen != "doctorFavorito") {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -400,7 +410,7 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-especialidad', function(){
-            if ($(this).find('#btn-especialidad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas") {
+            if ($(this).find('#btn-especialidad').hasClass('disabled') && dataCita.origen != "Listatratamientos" && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas" && dataCita.origen != "doctorFavorito") {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
@@ -408,14 +418,14 @@ Elige datos para la Cita
         })
 
         $('body').on('click','.box-btn-central', async function(){
-            if ($(this).find('#btn-central').hasClass('disabled') && dataCita.origen != "mis-citas") {
+            if ($(this).find('#btn-central').hasClass('disabled') && dataCita.origen != "mis-citas" && dataCita.origen != "doctorFavorito") {
                 showMessage('warning','Debes seleccionar una modalidad');
                 event.preventDefault(); // Evitar cualquier acción
                 return; // Salir de la función
             }else{
                 if(!dataCita.hasOwnProperty('especialidad')){
                     showMessage('warning','Debes seleccionar una especialidad');
-                }else if(dataCita.origen != 'mis-citas'){
+                }else if(dataCita.origen != 'mis-citas' && dataCita.origen != 'doctorFavorito'){
                     await consultarCentralesMedicas();
                     $('#centralModal').modal('show');
                 }
@@ -681,6 +691,17 @@ Elige datos para la Cita
         }
     }
 
+    async function obtenerCiudadParaMedicoFavoritoPorCentral(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        if(data.code == 200){
+            return data.data;
+        }
+    }
+
     function cutString(str){
         if(str.length > 40){
             return str.substring(0, 40) + '...'
@@ -936,6 +957,11 @@ Elige datos para la Cita
 
     .list-group-checkable::-webkit-scrollbar-thumb:active {
       background-color: #19408F;
+    }
+    .btn.disabled {
+        color: #3D4E66 !important;
+        background: #FFFFFFCC;
+        border: 1px solid #E7E9EC !important;
     }
 </style>
 @endpush
