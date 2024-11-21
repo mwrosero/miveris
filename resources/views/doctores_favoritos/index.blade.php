@@ -243,7 +243,7 @@ Mi Veris - Doctores favoritos
             $('#noDoctorFavorito').removeClass('d-none');
         }
         
-        if(data.data.length > 0){
+        if(data.data != null){
             let html = $('#doctoresFavoritos');
             const promesas = data.data.map(doctores => obtenerDisponibilidadDoctor(doctores));
             const resultados = await Promise.all(promesas);
@@ -303,6 +303,53 @@ Mi Veris - Doctores favoritos
         let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
         let tipoIdentificacion = '{{ Session::get('userData')->codigoTipoIdentificacion }}';
         
+        let params = {};
+                    
+        params.online = dataOnline;
+        //params.convenio = convenios;
+        //params.convenio.origen = 'mis-citas';
+        if(dataRel.prestaciones){
+            params.especialidad = {
+                codigoEspecialidad: dataRel.codigoEspecialidad,
+                nombre: dataRel.nombreEspecialidad,
+                imagen: dataRel.imagenEspecialidad,
+                codigoServicio: dataRel.prestaciones[0].codigoServicio,
+                esOnline: dataRel.esOnline,
+                codigoPrestacion: dataRel.prestaciones[0].codigoPrestacion,
+                codigoSucursal: dataRel.codigoSucursal,
+                origen: 'doctorFavorito',
+            };
+        }else{
+            params.especialidad = {
+                codigoEspecialidad: dataRel.codigoEspecialidad,
+                nombre: dataRel.nombreEspecialidad,
+                codigoServicio: dataRel.codigoServicio,
+                esOnline: dataRel.esOnline,
+                codigoPrestacion: dataRel.codigoPrestacion,
+                codigoSucursal: dataRel.codigoSucursal,
+                origen: 'doctorFavorito',
+            };
+        }
+        params.paciente = {
+            numeroIdentificacion: '{{ Session::get('userData')->numeroIdentificacion }}',
+            tipoIdentificacion:  '{{ Session::get('userData')->codigoTipoIdentificacion }}',
+            nombrePaciente: '{{ Session::get('userData')->primerNombre }}',
+            numeroPaciente: '{{ Session::get('userData')->numeroPaciente }}',
+            origen: 'doctorFavorito',
+        }
+        params.codigoMedicoFavorito = dataRel.codigoProfesional;
+        params.central = {
+            codigoEmpresa: dataRel.codigoEmpresa,
+            codigoSucursal: dataRel.codigoSucursal,
+            nombreSucursal: (dataRel.nombreSucursal) ? dataRel.nombreSucursal : dataRel.sucursal
+        }
+        params.origen = 'doctorFavorito';
+        localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+
+        let url = `/seleccionar-datos-cita/`;
+        let ruta = url + "{{ $tokenCita }}";
+        location.href = ruta;
+        return;
 
         args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${codigoUsuario}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S  `
         args["method"] = "GET";
