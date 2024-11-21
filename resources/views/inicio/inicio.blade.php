@@ -1188,7 +1188,7 @@ Mi Veris - Inicio
         //alert(0);
         console.log('click entro a cambiar fecha');
         let data = $(this).data('rel');
-        console.log('datasss', data);
+        // console.log('datasss', data);return;
         let url = $(this).attr('url-rel');
         console.log(url);
         // const dataConvenio = await consultarConvenios(data);
@@ -1273,6 +1273,7 @@ Mi Veris - Inicio
                 aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
                 esPlanStar:  data.esPlanStar
             }
+            // console.log(params);return;
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             location = url;
             return;
@@ -1371,6 +1372,7 @@ Mi Veris - Inicio
                 }
             }
             params.origen = "inicios";
+            // console.log(params);return;
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             location = url;
             
