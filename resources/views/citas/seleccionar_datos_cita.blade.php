@@ -822,7 +822,7 @@ Elige datos para la Cita
     }
 
     async function consultarSiEsTratamiento(){
-        if(dataCita.hasOwnProperty('tratamiento')){
+        if(dataCita.hasOwnProperty('tratamiento') || dataCita.hasOwnProperty('reservaEdit')){
             localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
             window.location.href = '/citas-elegir-fecha-doctor/{{ $params }}';
         }
