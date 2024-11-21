@@ -239,7 +239,7 @@ Elige datos para la Cita
     let dataCita = JSON.parse(local);
     console.log(dataCita);
     if(dataCita.hasOwnProperty('convenio')){
-        if(dataCita.convenio.nombreConvenio == undefined){
+        if(dataCita.convenio.nombreConvenio == undefined && (dataCita.convenio.codigoConvenio == null || dataCita.convenio.codigoConvenio == "" )){
             dataCita.convenio.nombreConvenio = "Ninguno";
         }
     }
@@ -253,7 +253,7 @@ Elige datos para la Cita
             console.log(dataCita);
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
             $('.btn-modalidad').css('pointer-events','none');
-            $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio.substring(0, 40) + '...') }`)
+            $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)) }`)
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
             await consultarCiudades();
             await consultarCentralesMedicasRecomendadas();
@@ -262,11 +262,14 @@ Elige datos para la Cita
             $('#btn-central').removeClass('disabled')
         }else if(dataCita.hasOwnProperty('reservaEdit')){
             console.log("------reservaEdit------");
+            if(dataCita.convenio.nombreConvenio == undefined && dataCita.convenio.codigoConvenio != null){
+                await cargarConvenios();
+            }
             $('.label-sugerencia').addClass('d-none');
             console.log(dataCita);
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
             $('.btn-modalidad').css('pointer-events','none');
-            $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio.substring(0, 40) + '...') }`)
+            $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)) }`)
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
             // await consultarCentralesMedicasRecomendadas();
             $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal) }`)
@@ -286,7 +289,7 @@ Elige datos para la Cita
         /*}else if(dataCita.origen == "terapia-imagen-procedimiento"){
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
             $('.btn-modalidad').css('pointer-events','none');
-            $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio.substring(0, 40) + '...') }`)
+            $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)) }`)
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
             await consultarCiudades();
             await consultarCentralesMedicasRecomendadas();
@@ -421,7 +424,7 @@ Elige datos para la Cita
             let convenio = JSON.parse($(this).attr('data-rel'));
             dataCita.convenio = convenio;
             if(dataCita.convenio.codigoConvenio != null){
-                $('#btn-convenio p').html(`${capitalizarCadaPalabra(convenio.nombreConvenio).substring(0, 40) + '...'}`);
+                $('#btn-convenio p').html(`${capitalizarCadaPalabra(convenio.nombreConvenio)}`);
             }else{
                 $('#btn-convenio p').html(`Ninguno`);
             }
@@ -560,7 +563,7 @@ Elige datos para la Cita
             if(data.data.length > 0){
                 //$('#btn-convenio').attr('data-rel',JSON.stringify(dataCita.convenio));
                 dataCita.convenio = data.data[0];
-                $('#btn-convenio p').html(`${capitalizarCadaPalabra(dataCita.convenio.nombreConvenio.substring(0, 40) + '...')}`);
+                $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio))}`);
             }else{
                 dataCita.convenio = {
                     "nombreConvenio": "Ninguno",
@@ -670,6 +673,13 @@ Elige datos para la Cita
                 $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}`);
             }
         }
+    }
+
+    function cutString(str){
+        if(str.length > 40){
+            return str.substring(0, 40) + '...'
+        }
+        return str;
     }
 
     function drawCentrales(dataCentrales){
