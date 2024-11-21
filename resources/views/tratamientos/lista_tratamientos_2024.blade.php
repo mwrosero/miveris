@@ -1176,7 +1176,17 @@ $tokenSesion = base64_encode(uniqid());
             }
             // params.convenio = datosServicio.datosConvenio;
             params.convenio = datosServicio.datosConvenio;
-
+            params.central = {
+                "codigoSucursal": datos.codigoSucursal,
+                "nombreSucursal": datos.nombreSucursal
+            }
+            params.ciudad = {
+                "codigoPais": datos.idPais,
+                "codigoProvincia": datos.idProvincia,
+                "codigoCiudad": datos.idCiudad
+            }
+            params.origen = "Listatratamientos";
+            
             localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(params));
             if (online == 'S') {
                 window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenMods }}';
