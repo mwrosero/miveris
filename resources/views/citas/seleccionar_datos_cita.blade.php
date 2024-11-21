@@ -265,6 +265,9 @@ Elige datos para la Cita
             if(dataCita.convenio.nombreConvenio == undefined && dataCita.convenio.codigoConvenio != null){
                 await cargarConvenios();
             }
+            if(dataCita.online == "S"){
+                $('.item-presencial').addClass('d-none');
+            }
             $('.label-sugerencia').addClass('d-none');
             console.log(dataCita);
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
