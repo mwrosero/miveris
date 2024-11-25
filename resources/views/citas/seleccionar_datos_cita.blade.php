@@ -294,15 +294,17 @@ Elige datos para la Cita
             $('#btn-convenio').removeClass('disabled selectable')
         }else if(dataCita.origen == "doctorFavorito"){
             if(dataCita.online == "N"){
-                let centrales = await obtenerCiudadParaMedicoFavoritoPorCentral();
-                console.log(centrales);
-                let buscarSucursal = centrales.filter(sucursal => parseInt(sucursal.codigoSucursal) === parseInt(dataCita.central.codigoSucursal));
-                let dataCiudad = buscarSucursal[0].codigoCiudad.split('-')
-                dataCita.ciudad = {
-                    "codigoPais": dataCiudad[0],
-                    "codigoProvincia": dataCiudad[1],
-                    "codigoCiudad": dataCiudad[2]
-                }
+                // let centrales = await obtenerCiudadParaMedicoFavoritoPorCentral();
+                // console.log(centrales);
+                // let buscarSucursal = centrales.filter(sucursal => parseInt(sucursal.codigoSucursal) === parseInt(dataCita.central.codigoSucursal));
+                // console.log(buscarSucursal);
+                // let dataCiudad = buscarSucursal[0].codigoCiudad.split('-')
+                // console.log(dataCiudad);
+                // dataCita.ciudad = {
+                //     "codigoPais": parseInt(dataCiudad[0]),
+                //     "codigoProvincia": parseInt(dataCiudad[1]),
+                //     "codigoCiudad": parseInt(dataCiudad[2])
+                // }
             }
             $('.label-sugerencia').addClass('d-none');
             $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
@@ -665,7 +667,7 @@ Elige datos para la Cita
             listaCiudades.empty();
             $.each(data.data, function(key, value){
                 let selected =  ``;
-                if((dataCita.hasOwnProperty('reservaEdit') || dataCita.origen == "mis-citas" ) && value.codigoCiudad == dataCita.ciudad.codigoCiudad ){
+                if((dataCita.hasOwnProperty('reservaEdit') || dataCita.origen == "mis-citas" || dataCita.origen == "doctorFavorito" ) && value.codigoCiudad == dataCita.ciudad.codigoCiudad ){
                     selected = `select-item-active`;
                     $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
                 }
@@ -677,7 +679,7 @@ Elige datos para la Cita
                         </label> 
                     </div>
                 </div>`;
-                if(value.esDefault && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas"){
+                if(value.esDefault && !dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "mis-citas" && dataCita.origen != "doctorFavorito"){
                     $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
                     dataCita.ciudad = value;
                 }
