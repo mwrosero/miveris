@@ -338,6 +338,11 @@ Mi Veris - Doctores favoritos
             origen: 'doctorFavorito',
         }
         params.codigoMedicoFavorito = dataRel.codigoProfesional;
+        params.ciudad = {
+            "codigoPais": dataRel.idPais,
+            "codigoProvincia": dataRel.idProvincia,
+            "codigoCiudad": dataRel.idCiudad
+        }
         params.central = {
             codigoEmpresa: dataRel.codigoEmpresa,
             codigoSucursal: dataRel.codigoSucursal,

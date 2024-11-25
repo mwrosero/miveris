@@ -118,9 +118,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     </section>
     <section class="p-0">
         <div class="row g-0 justify-content-center">
-            <div class="col-auto ps-3 pe-3" style="min-width: 375px;">
-                <p class="fs--1 mt-2 line-height-16 fw-normal mb-0" id="nombreFiltro">Filtrar por</p>
-                <ul class="nav nav-pills justify-content-center border-box-veris w-auto p-1 rounded-3 mt-2 mb-3" id="pills-tab" role="tablist">
+            <div class="col-auto ps-3 pe-3" style="min-width: 375px; max-width: 407px;">
+                <p class="fs--1 mt-2 line-height-16 fw-normal mb-0 d-none" id="nombreFiltro">Filtrar por</p>
+                <ul class="nav nav-pills d-none justify-content-center border-box-veris w-auto p-1 rounded-3 mt-2 mb-3" id="pills-tab" role="tablist">
                     <li class="nav-item w-50" role="presentation" data-rel="T">
                         <button data-rel="N" class="nav-link options-date ps-1 pe-1 active" id="pills-options-tab" data-bs-toggle="pill" data-bs-target="#pills-options" type="button" role="tab" aria-controls="pills-options" aria-selected="true">Todos</button>
                     </li>
@@ -336,6 +336,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
+        if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
+            $('#nombreFiltro').addClass('d-none');
+            $('#pills-tab').addClass('d-none');
+        }else{
+            $('#nombreFiltro').removeClass('d-none');
+            $('#pills-tab').removeClass('d-none');
+        }
         if (dataCita.origen == 'ordenExternaSolicitud') {
             //renderCalendarExterna();
             fechasDisponibles = await obtenerFechasOrdenesExternas();
@@ -604,59 +611,86 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 newArrayCard.forEach((medico) => {
                     let img_doctor = (medico.imagen != null) ? medico.imagen : '{{ asset('assets/img/svg/avatar_doctor.svg') }}';
 
-                    let listadoHorarios = ``;
-                    let cantidadMaxListado = (medico.intervalos.length >= 3) ? 3 : 1;
-                    $.each(medico.intervalos, function(k,v){
-                        if(k < cantidadMaxListado){
-                            listadoHorarios += drawHorarioMedico(v);
-                        }else{
-                            return false;
-                        }
-                    })
-
-                    //${ (dataCita.online == "N") ? `<p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal) } </p>` : ``}
-
-                    let esMedicoAnterior = (medico.esMedicoAnterior == "S") ? `<div class="badge rounded-3 py-1 px-2 bg-cita-atendida d-flex justify-content-between align-items-center gap-1 ${ (medico.esFavorito == "S") ? `flex-grow-1` : `` } me-2">
-                                        <i class="fa-solid fa-clock" style="color:#2F7833;"></i>
-                                        <span class="fw-normal fs--2" style="color:#2F7833;">Te atendiste con este doctor</span>
-                                    </div>` : ``;
-                    
-                    let esFavorito = (medico.esFavorito == "S") ? `<div class="badge rounded-3 py-1 px-2 bg-fav-atendida">
-                                        <i class="fa-solid fs--2 fa-heart" style="color:#D84315;"></i>
-                                    </div>` : ``;
-
-                    elemento += `<div class="border-box-light-blue rounded-3 p--2 mb-3">
-                        <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
-                            <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(${img_doctor}) no-repeat top center;background-size: cover;">
-                            </div>
-                            <div class="content-doctor ms-2 flex-grow-1">
-                                <div class="name-rate d-flex justify-content-between align-items-start mb-1">
-                                    <h6 style="max-width: 200px" class="fs--16 line-height-20 fw-medium flex-grow-1 m-0">${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
-                                    <div class="star-box text-center ms-1">
-                                        <i class="fa-solid fa-star fw-bold star-ico fs--20 d-block"></i>
-                                        <span class="d-block fw-normal fs--3 mt-1 rate-label">5.0</span>
+                    if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
+                        elemento += `<div class="card shadow-none mt-3">
+                            <div class="card-body p--2">
+                                <div class="row g-2">
+                                    <div class="col-3 text-center">
+                                        <img src="{{ asset('assets/img/svg/avatar_doctor.svg') }}" class="img-fluid mt-4" alt="doctor" width="48">
                                     </div>
-                                </div>
-                                ${ (dataCita.online == "N") ? `<p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal) } </p>` : ``}
-                                <p class="fs--2 line-height-16 fw-normal mb-1" style="color: #425065;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
-                                <div class="info-adicional-medico d-flex justify-content-between align-items-center">
-                                    ${esMedicoAnterior}
-                                    ${esFavorito}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dates-doctor">
-                            <p class="fs--1 line-height-16 fw-medium mb-2" style="color:#296BEF;">Horario más próximo:</p>
-                            <div class="row g-2" style="max-width:341px">
-                                ${listadoHorarios}
-                                <div class="col-6">
-                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor-alt rounded-3 d-flex justify-content-center align-items-center btn-disponibilidad-medico-all" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
-                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">Ver más horarios</span>
+                                    <div class="col-9">
+                                        <h6 class="fs--16 line-height-20 fw-medium mb-1">Dr(a) ${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
+                                        <p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(nombreSucursal)}</p>
+                                        <p class="fs--1 line-height-16 fw-normal mb-1" style="color: 33D4E66;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
+                                        <div class="d-flex mb-1">
+                                            <p class="fs--1 line-height-16 fw-normal mb-0 me-1" style="color: #9EA7B3;">Disponibilidad:</p>
+                                            <p class="fs--1 line-height-16 fw-normal mb-0" style="color: #0055AA;" id="disponibilidad">${medico.disponibilidad}</p>
+                                        </div>
+                                        <p class="fs--1 line-height-16 fw-normal mb-1" style="color: #9EA7B3;">Horarios: <b class="fw-normal" style="color: #0055AA;" id="horarios">${medico.horario}</b></p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>`;
+                            <div class="card-footer text-end pt-0 pb--2 px--2">
+                                <button type="button" class="btn btn-sm btn-primary-veris btn-disponibilidad-medico-all fs--1 line-height-16 fw-medium border-0 m-0 px-3 py-2" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
+                                    Elegir Cita
+                                </button>
+                            </div>
+                        </div>`;
+                    }else{
+                        let listadoHorarios = ``;
+                        let cantidadMaxListado = (medico.intervalos.length >= 3) ? 3 : 1;
+                        $.each(medico.intervalos, function(k,v){
+                            if(k < cantidadMaxListado){
+                                listadoHorarios += drawHorarioMedico(v);
+                            }else{
+                                return false;
+                            }
+                        })
+
+                        //${ (dataCita.online == "N") ? `<p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal) } </p>` : ``}
+
+                        let esMedicoAnterior = (medico.esMedicoAnterior == "S") ? `<div class="badge rounded-3 py-1 px-2 bg-cita-atendida d-flex justify-content-between align-items-center gap-1 ${ (medico.esFavorito == "S") ? `flex-grow-1` : `` } me-2">
+                                            <i class="fa-solid fa-clock" style="color:#2F7833;"></i>
+                                            <span class="fw-normal fs--2" style="color:#2F7833;">Te atendiste con este doctor</span>
+                                        </div>` : ``;
+                        
+                        let esFavorito = (medico.esFavorito == "S") ? `<div class="badge rounded-3 py-1 px-2 bg-fav-atendida">
+                                            <i class="fa-solid fs--2 fa-heart" style="color:#D84315;"></i>
+                                        </div>` : ``;
+
+                        elemento += `<div class="border-box-light-blue rounded-3 p--2 mb-3">
+                            <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
+                                <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(${img_doctor}) no-repeat top center;background-size: cover;">
+                                </div>
+                                <div class="content-doctor ms-2 flex-grow-1">
+                                    <div class="name-rate d-flex justify-content-between align-items-start mb-1">
+                                        <h6 style="max-width: 200px" class="fs--16 line-height-20 fw-medium flex-grow-1 m-0">${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
+                                        <div class="star-box text-center ms-1">
+                                            <i class="fa-solid fa-star fw-bold star-ico fs--20 d-block"></i>
+                                            <span class="d-block fw-normal fs--3 mt-1 rate-label">5.0</span>
+                                        </div>
+                                    </div>
+                                    ${ (dataCita.online == "N") ? `<p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal) } </p>` : ``}
+                                    <p class="fs--2 line-height-16 fw-normal mb-1" style="color: #425065;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
+                                    <div class="info-adicional-medico d-flex justify-content-between align-items-center">
+                                        ${esMedicoAnterior}
+                                        ${esFavorito}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dates-doctor">
+                                <p class="fs--1 line-height-16 fw-medium mb-2" style="color:#296BEF;">Horario más próximo:</p>
+                                <div class="row g-2" style="max-width:341px">
+                                    ${listadoHorarios}
+                                    <div class="col-6">
+                                        <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor-alt rounded-3 d-flex justify-content-center align-items-center btn-disponibilidad-medico-all" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
+                                            <span class="fs--1 line-height-20 rate-label text-center mb-0">Ver más horarios</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    }
                 })
             }else{
 
@@ -694,6 +728,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <span class="badge-discount-time position-absolute fs--2 fw-regular">descuento</span>
             </div>`;
         }
+
         if(horario.porcentajeDescuento > 0){
             return `<div class="col-${size}">
                 <div class="cursor-pointer waves-effect btn-disponibilidad-medico p--2 px-3 w-100 bg-time-doctor box-time-doctor-with-discount position-relative rounded-3 d-flex justify-content-end align-items-center" data-horario='${JSON.stringify(horario)}'>
