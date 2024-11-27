@@ -558,6 +558,10 @@ class ExternalController extends Controller
         return view('external.bot.index');
     }
 
+    public function devoluciones(){
+        return view('external.financiero.devoluciones');
+    }
+
     public function botAi(Request $request){
         $data = $request->all();
         // dd($data['message']);
