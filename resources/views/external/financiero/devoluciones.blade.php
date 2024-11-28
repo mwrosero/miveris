@@ -221,6 +221,9 @@ Veris - Devoluciones
 	.border-error{
 		border: 1px solid #D84315
 	}
+	.select2-selection__rendered{
+		font-size: 0.875rem !important;
+	}
 </style>
 <script>
 	let dataDevolucion = {};
@@ -403,7 +406,7 @@ Veris - Devoluciones
 	}
 
 	async function validarDatosNC(){
-		if($('#cedula').val() != dataDevolucion.comprobante.numeroIdentificacionPersonaFactura ||
+		if($('#numeroIdentificacion').val() != dataDevolucion.comprobante.numeroIdentificacionPersonaFactura ||
 			$('#nombres').val() == "" ||
 			$('#numeroCuenta').val() == "" ||
 			$('.btn-tipo.active').attr('data-rel') == undefined ||
