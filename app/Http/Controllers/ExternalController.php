@@ -559,7 +559,9 @@ class ExternalController extends Controller
     }
 
     public function devoluciones(){
-        return view('external.financiero.devoluciones');
+        $accessToken = $this->getTokenExternalFacturacion();
+        return view('external.financiero.devoluciones')
+                ->with('accessToken',$accessToken);
     }
 
     public function botAi(Request $request){
