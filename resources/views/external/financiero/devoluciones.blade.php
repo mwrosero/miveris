@@ -369,7 +369,7 @@ Veris - Devoluciones
         	"nemonicoCanalFacturacion": "IVR",
         	"secuenciaUsuarioAutorizacion": dataDevolucion.parametros.secuenciaUsuario,
         	"codigoMotivo": dataDevolucion.parametros.codigoMotivo,
-        	"observacionMotivo": "ANULACIONES CON DEVOLUCIONES BANCARIAS AUTOMATICAS",
+        	"observacionMotivo": dataDevolucion.parametros.observacionMotivo,
         	"tipoDevolucion": "TRANSFERENCIA_AUTOMATICA",
         	"caja": dataDevolucion.parametros.caja,
         	"numeroOrden": dataDevolucion.comprobante.numeroOrden,
@@ -388,7 +388,8 @@ Veris - Devoluciones
         }
 
         args["data"] = JSON.stringify(payload);
-
+        args["bodyType"] = "json";
+        
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
