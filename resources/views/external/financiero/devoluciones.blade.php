@@ -79,6 +79,10 @@ Veris - Devoluciones
     		</div>
     		<div class="col-12 mt-3 box-step step-2 d-none">
     			<div class="w-100 rounded-3 p-2 p-md-4 bg-blue-sky">
+	    			<div class="rounded-3 mb-3 w-100 w-md-50 bg-green d-flex justify-content-start align-items-start p-3">
+						<i class="fa-solid fa-circle-check me-2 text-green"></i>
+						<p class="mb-0 fs-12 line-height-14">La factura se validó con éxito.</p>
+					</div>
     				<p class="fw-bold text-veris">Datos bancarios</p>
     				<div class="mt-3 rounded-3 w-100 w-md-50 bg-white d-flex justify-content-between align-items-start p-3">
     					<i class="fa-solid fa-circle-info mt-1 me-2 txt-veris"></i>
@@ -216,6 +220,9 @@ Veris - Devoluciones
 	}
 	.border-error{
 		border: 1px solid #D84315
+	}
+	.select2-selection__rendered{
+		font-size: 0.875rem !important;
 	}
 </style>
 <script>
@@ -399,7 +406,7 @@ Veris - Devoluciones
 	}
 
 	async function validarDatosNC(){
-		if($('#cedula').val() != dataDevolucion.comprobante.numeroIdentificacionPersonaFactura ||
+		if($('#numeroIdentificacion').val() != dataDevolucion.comprobante.numeroIdentificacionPersonaFactura ||
 			$('#nombres').val() == "" ||
 			$('#numeroCuenta').val() == "" ||
 			$('.btn-tipo.active').attr('data-rel') == undefined ||
