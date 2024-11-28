@@ -27,7 +27,7 @@ Veris - Devoluciones
     		</div>
     		<div class="col-6 col-md-3 text-center p-3">
     			<span class="d-flex align-items-center justify-content-center step step-2-number mx-auto p-2 mb-2 fs-20">2</span>
-    			<p class="fs--1 line-height-16 fw-normal mb-1 fw-medium label-step-2">Validación de factura</p>
+    			<p class="fs--1 line-height-16 fw-normal mb-1 fw-medium label-step-2">Datos bancarios</p>
     			<p class="fs--3 line-height-12 fw-normal mb-0">Llena el formulario con los<br>datos bancarios solicitados.</p>
     		</div>
     		<div class="col-6 col-md-3 text-center p-3">
@@ -60,11 +60,19 @@ Veris - Devoluciones
     				</div>
     				<p class="fs--2 fw-bold text-veris mt-3">Número de Factura<span class="text-danger">*</span></p>
     				<div class="d-flex mt-3 align-items-center justify-content-between">
-    					<input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" id="first-input">
+    					<input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="first-input">
     					<i class="fa-solid fa-minus txt-veris fw-bold mx-1 mx-md-3"></i>
-    					<input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" id="medium-input">
+    					<input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="medium-input">
     					<i class="fa-solid fa-minus txt-veris fw-bold mx-1 mx-md-3"></i>
-    					<input type="text" maxlength="9" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" id="last-input">
+    					<input type="text" maxlength="9" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="last-input">
+    				</div>
+    				<div class="row d-none box-errors-step-1">
+    					<div class="col-12">
+    						<div class="mt-3 rounded-3 w-100 w-md-50 bg-error border-error d-flex justify-content-between align-items-start p-3">
+		    					<i class="fa-solid fa-circle-info mt-1 me-2 text-danger"></i>
+		    					<p class="mb-0 fs-12 line-height-14 text-veris fw-medium" id="msg-error-step-1"></p>
+		    				</div>
+    					</div>
     				</div>
     				<button class="btn fs-14 fw-medium line-height-16 p-2 d-grid w-100 bg-veris rounded next-button mt-3 mb-3" id="btn-validar" type="button">Validar Factura</button>
     			</div>
@@ -77,8 +85,8 @@ Veris - Devoluciones
     					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Por favor ingresa los datos de la cuenta bancaria,</span> <span class="txt-veris fw-medium">para poder efectuar la devolución.</span> Asegúrate que los datos de la factura coincidan con los mismos datos, nombre-apellido y cédula, del propietario de la cuenta bancaria.</p>
     				</div>
     				<div class="w-100 mt-3">
-    					<label for="cedula" class="form-label fw-medium fs--1">No. Cédula o Pasaporte del Titular de la Cuenta<span class="text-danger">*</span></label>
-    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="cedula">
+    					<label for="numeroIdentificacion" class="form-label fw-medium fs--1">No. Cédula o Pasaporte del Titular de la Cuenta<span class="text-danger">*</span></label>
+    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="numeroIdentificacion">
     				</div>
     				<div class="w-100 mt-3">
     					<label for="nombres" class="form-label fw-medium fs--1">Nombre y apellido del Titular de la Cuenta<span class="text-danger">*</span></label>
@@ -86,30 +94,40 @@ Veris - Devoluciones
     				</div>
     				<div class="w-100 mt-3">
     					<label for="institucion" class="form-label fw-medium fs--1">Institución Bancaria<span class="text-danger">*</span></label>
-    					<select type="text" class="select2 w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="nombres">
-    						<option value="Bolivariano">Bolivariano</option>
+    					<select type="text" class="select2 w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="institucion">
+    						{{-- <option value="Bolivariano">Bolivariano</option>
     						<option value="Guayaquil">Guayaquil</option>
-    						<option value="Produbanco">Produbanco</option>
+    						<option value="Produbanco">Produbanco</option> --}}
     					</select>
     				</div>
     				<div class="w-100 mt-3">
     					<label for="numeroCuenta" class="form-label fw-medium fs--1">Número de Cuenta<span class="text-danger">*</span></label>
-    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="numeroCuenta">
+    					<input type="text" maxlength="20" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="numeroCuenta" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off">
     				</div>
     				<div class="w-100 mt-3">
     					<label class="form-label fw-medium fs--1">Tipo de Cuenta<span class="text-danger">*</span></label>
-    					<div class="d-flex justify-content-start align-items-center">
-    						<button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 active position-relative waves-effect me-3" data-rel="A">
+    					<div class="d-flex justify-content-start align-items-center" id="listTiposCuenta">
+    						{{-- <button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 active position-relative waves-effect me-3" data-rel="1">
     							<i class="fa-solid fa-money-bill me-2"></i>Corriente
     						</button>
-    						<button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 position-relative waves-effect" data-rel="A">
+    						<button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 position-relative waves-effect" data-rel="2">
     							<i class="fa-solid fa-piggy-bank me-2"></i>Ahorros
-    						</button>
+    						</button> --}}
     					</div>
     				</div>
     				<div class="w-100 mt-3">
     					<label for="email" class="form-label fw-medium fs--1">Correo electrónico<span class="text-danger">*</span></label>
     					<input type="email" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="email">
+    				</div>
+    				<div class="row d-none box-errors-step-2">
+    					<div class="col-12">
+    						<div class="mt-3 rounded-3 w-100 w-md-50 bg-error border-error d-flex justify-content-between align-items-start p-3">
+		    					<i class="fa-solid fa-circle-info mt-1 me-2 text-danger"></i>
+		    					<p class="mb-0 fs-12 line-height-14" id="msg-error-step-2">
+		    						<span class="text-veris fw-medium">Hubo un inconveniente con uno de los campos del formulario,</span> por favor revisa el bien la información o completa todos los campos requeridos que hagan falta.
+		    					</p>
+		    				</div>
+    					</div>
     				</div>
     				<button class="btn fs-14 fw-medium line-height-16 p-2 d-grid w-100 bg-veris rounded next-button mt-3 mb-3" id="btn-enviar" type="button">Enviar</button>
     			</div>
@@ -118,12 +136,16 @@ Veris - Devoluciones
     			<div class="w-100 rounded-3 p-2 p-md-4 bg-blue-sky">
     				<div class="rounded-3 w-100 w-md-50 bg-green d-flex justify-content-start align-items-start p-3">
     					<i class="fa-solid fa-circle-check me-2 text-green"></i>
-    					<p class="mb-0 fs-12 line-height-14">Formulario enviado con éxito.</p>
+    					<p class="mb-0 fs-12 line-height-14">Solicitud enviada con éxito.</p>
     				</div>
     				<div class="mt-3 rounded-3 w-100 w-md-50 bg-white d-flex justify-content-start align-items-start p-3">
     					<i class="fa-solid fa-circle-info me-2 txt-veris"></i>
-    					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Pronto te notificaremos vía whatsapp o mail, </span> <span class="txt-veris fw-medium">que tu devolución esta efectuada con éxito.</span></p>
+    					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Revisa tu correo electrónico </span> <span class="txt-veris fw-medium">para que puedas darle seguimiento</span> a tu solicitud.</p>
     				</div>
+    				{{-- <div class="mt-3 rounded-3 w-100 w-md-50 bg-white d-flex justify-content-start align-items-start p-3">
+    					<i class="fa-solid fa-circle-info me-2 txt-veris"></i>
+    					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Pronto te notificaremos vía whatsapp o mail, </span> <span class="txt-veris fw-medium">que tu devolución esta efectuada con éxito.</span></p>
+    				</div> --}}
     			</div>
     		</div>
     	</div>
@@ -189,9 +211,20 @@ Veris - Devoluciones
 	.text-green{
 		color: #00C853;
 	}
+	.bg-error{
+		background: #FBE9E7;
+	}
+	.border-error{
+		border: 1px solid #D84315
+	}
 </style>
 <script>
+	let dataDevolucion = {};
 	document.addEventListener("DOMContentLoaded", async function () {
+		await cargarInstitucionesBancarias();
+		await cargarTiposCuenta();
+		await parametrosDevoluciones();
+
 		$('.select2').select2({
   			placeholder: 'Elegir'
 		});
@@ -201,26 +234,182 @@ Veris - Devoluciones
 			$(this).addClass('active');
 		})
 
-		$('body').on('click', '#btn-validar', function(){
-			$('.box-step').addClass('d-none');
-			$('.step-2').removeClass('d-none');
-			$('.progress-bar').css('width','50%');
-			$('.progress-bar').attr('aria-valuenow','50');
-			$('.label-porcentaje').html(`50%`);
-			$('.label-step-2').addClass('txt-veris');
-			$('.step-2-number').addClass('active');
+		$('body').on('click', '#btn-validar', async function(){
+        	$('.box-errors-step-1').addClass('d-none');
+			$('#msg-error-step-1').html(``);
+			await validarComprobante();
 		})
 
-		$('body').on('click', '#btn-enviar', function(){
-			$('.box-step').addClass('d-none');
+		$('body').on('click', '#btn-enviar', async function(){
+			$('.box-errors-step-2').addClass('d-none');
+			// $('#msg-error-step-2').html(``);
+			let puedeCrearNC = await validarDatosNC();
+			if(puedeCrearNC){
+				await solicitarNC();
+			}
+		})
+
+		$('body').on('change', '#numeroIdentificacion', function(){
+			if( parseInt($(this).val()) != parseInt(dataDevolucion.comprobante.numeroIdentificacionPersonaFactura) ){
+				$('.box-errors-step-2').removeClass('d-none');
+			}else{
+				$('.box-errors-step-2').addClass('d-none');
+			}
+		})
+
+	});
+
+	async function parametrosDevoluciones(){
+		let args = [];
+        args["endpoint"] = api_url + `/facturacion/v1/util/parametros_devoluciones_automaticas?codigoEmpresa=1`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        args["token"] = "{{ $accessToken }}";
+
+        const data = await call(args);
+        console.log(data);
+
+        if(data.code == 200){
+        	dataDevolucion.parametros = data.data
+        }
+	}
+
+	async function cargarInstitucionesBancarias(){
+		let args = [];
+        args["endpoint"] = api_url + `/general/v1/instituciones/bancarias`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        args["token"] = "{{ $accessToken }}";
+
+        const data = await call(args);
+        if(data.code == 200){
+        	let elem = ``;
+        	$.each(data.data, function(key, value){
+        		elem += `<option value="${value.codigoInstitucion}">${value.nombreComercial}</option>`;
+        	})
+        	$('#institucion').html(elem);
+        }
+	}
+
+	async function cargarTiposCuenta(){
+		let args = [];
+        args["endpoint"] = api_url + `/facturacion/v1/util/tipos_cuenta_bancaria`;
+        args["method"] = "GET";
+        args["showLoader"] = false;
+        args["token"] = "{{ $accessToken }}";
+
+        const data = await call(args);
+        if(data.code == 200){
+        	dataDevolucion.tiposCuenta = data.data
+        	let elem = ``;
+        	$.each(data.data, function(key, value){
+        		if(value.nombreTipoCuenta == "AHORROS"){
+        			elem += `<button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 position-relative waves-effect me-3" data-rel="${value.codigoTipoCuenta}">
+						<i class="fa-solid fa-piggy-bank me-2"></i>Ahorros
+					</button>`
+        		}else{
+        			elem += `<button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 position-relative waves-effect me-3" data-rel="${value.codigoTipoCuenta}">
+						<i class="fa-solid fa-money-bill me-2"></i>Corriente
+					</button>`;
+        		}
+        	})
+        	$('#listTiposCuenta').html(elem);
+        }
+	}
+
+	async function validarComprobante(){
+		let numeroComprobante = `${$('#first-input').val()}${$('#medium-input').val()}${$('#last-input').val()}`
+		let args = [];
+        args["endpoint"] = api_url + `/facturacion/v1/comprobantes/factura_paciente/consulta_por_anulacion/devolucion_bancaria?codigoEmpresa=1&numeroComprobante=${numeroComprobante}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        args["token"] = "{{ $accessToken }}";
+
+        const data = await call(args);
+        console.log(data);
+
+        if(data.code == 200){
+        	if(data.data.permitirDevolucionesAutomaticas){
+        		dataDevolucion.comprobante = data.data;
+        		$('.box-step').addClass('d-none');
+				$('.step-2').removeClass('d-none');
+				$('.progress-bar').css('width','50%');
+				$('.progress-bar').attr('aria-valuenow','50');
+				$('.label-porcentaje').html(`50%`);
+				$('.label-step-2').addClass('txt-veris');
+				$('.step-2-number').addClass('active');
+        	}else{
+        		let mensajes = ``;
+        		$.each(data.data.mensajeInformativo, function(k,v){
+        			mensajes += `${v} `;
+        		})
+        		$('#msg-error-step-1').html(`${mensajes}`);
+        		$('.box-errors-step-1').removeClass('d-none');
+        	}
+        }
+
+        //permitirDevolucionesAutomaticas
+	}
+
+	async function solicitarNC(){
+		let args = [];
+        args["endpoint"] = api_url + `/facturacion/v1/comprobantes/anulacion_paciente/devolucion_bancaria?codigoEmpresa=${dataDevolucion.comprobante.codigoEmpresa}`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["token"] = "{{ $accessToken }}";
+        let payload = {
+        	"secuenciaUsuario": dataDevolucion.parametros.secuenciaUsuario,
+        	"nemonicoCanalFacturacion": "IVR",
+        	"secuenciaUsuarioAutorizacion": dataDevolucion.parametros.secuenciaUsuario,
+        	"codigoMotivo": dataDevolucion.parametros.codigoMotivo,
+        	"observacionMotivo": "ANULACIONES CON DEVOLUCIONES BANCARIAS AUTOMATICAS",
+        	"tipoDevolucion": "TRANSFERENCIA_AUTOMATICA",
+        	"caja": dataDevolucion.parametros.caja,
+        	"numeroOrden": dataDevolucion.comprobante.numeroOrden,
+        	"secuenciaComprobante": dataDevolucion.comprobante.secuenciaComprobante,
+        	"detalles": dataDevolucion.comprobante.detalles,
+        	"pagos": dataDevolucion.comprobante.pagos,
+        	"datosBancarios": {
+        		"codigoTipoIdentificacionCuenta": dataDevolucion.comprobante.codigoTipoIdentificacionPersonaFactura,
+        		"numeroIdentificacionCuenta": $('#numeroIdentificacion').val(),
+        		"codigoInstitucion": parseInt($('#institucion').val()),
+        		"numeroCuenta": $('#numeroCuenta').val(),
+        		"codigoTipoCuenta": parseInt($('.btn-tipo.active').attr('data-rel')),
+        		"nombreTitularCuenta": $('#nombres').val(),
+        		"correoElectronico": $('#email').val()
+        	}
+        }
+
+        args["data"] = JSON.stringify(payload);
+
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+        	$('.box-step').addClass('d-none');
 			$('.step-3').removeClass('d-none');
 			$('.progress-bar').css('width','75%');
 			$('.progress-bar').attr('aria-valuenow','75');
 			$('.label-porcentaje').html(`75%`);
 			$('.label-step-3').addClass('txt-veris');
 			$('.step-3-number').addClass('active');
-		})
-	});
+        }else{
+        	// $('#msg-error-step-2').html(`${mensajes}`);
+        	$('.box-errors-step-2').removeClass('d-none');
+        }
+	}
+
+	async function validarDatosNC(){
+		if($('#cedula').val() != dataDevolucion.comprobante.numeroIdentificacionPersonaFactura ||
+			$('#nombres').val() == "" ||
+			$('#numeroCuenta').val() == "" ||
+			$('.btn-tipo.active').attr('data-rel') == undefined ||
+			!isValidEmailAddress($('#email').val())
+			){
+			$('.box-errors-step-2').removeClass('d-none');
+			return false;
+		}
+		return true;
+	}
 
 </script>
 @endsection

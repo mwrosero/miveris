@@ -1,0 +1,18 @@
+FACTURACION
+http://swagger.phantomx.com.s3-website-us-east-1.amazonaws.com/index.html?url=/documentacion/phantomx-facturacion.yaml#/
+
+/facturacion/v1/
+
+GET  /comprobantes/factura_paciente/consulta_por_anulacion/devolucion_bancaria
+POST /comprobantes/anulacion_paciente/devolucion_bancaria
+llamar al inicio:
+GET /util/tipos_cuenta_bancaria
+GET /util/parametros_devoluciones_automaticas
+
+GET /comprobantes/notas_creditos_x_devoluciones_bancarias
+GET /comprobantes/notas_creditos_x_devoluciones_bancarias/{secuenciaComprobante}/trazabilidad
+GENERAL
+http://swagger.phantomx.com.s3-website-us-east-1.amazonaws.com/index.html?url=/documentacion/phantomx-general.yaml#/
+
+//GET /tipos_identificacion?codigoEmpresa=1&usoTipoIdentificacion=GESTION_FACTURACION
+GET instituciones/bancarias
