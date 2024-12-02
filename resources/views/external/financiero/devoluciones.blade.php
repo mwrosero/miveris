@@ -346,10 +346,11 @@ Veris - Devoluciones
 				$('.label-step-2').addClass('txt-veris');
 				$('.step-2-number').addClass('active');
         	}else{
-        		let mensajes = ``;
+        		let mensajes = `<ul>`;
         		$.each(data.data.mensajeInformativo, function(k,v){
-        			mensajes += `${v} `;
+        			mensajes += `<li>${v}</li>`;
         		})
+        		mensajes += `</ul>`;
         		$('#msg-error-step-1').html(`${mensajes}`);
         		$('.box-errors-step-1').removeClass('d-none');
         	}

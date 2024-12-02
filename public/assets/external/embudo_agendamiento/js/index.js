@@ -1,5 +1,5 @@
 // var token;
-var url_site = "https://www.veris.com.ec";
+var url_site = "https://miveris.akold.com";
 var url_services = "https://phantom-wsexternos.phantomx.com.ec";
 var url_services_phantomx = api_url+"/"+api_war+"/v1";
 var canal_origen = (window.config.subdomain == "veris") ? "VER_CMV" : "VER_PMF";
@@ -348,13 +348,13 @@ $( document ).ready(async function() {
             });
 			if(card != "diners"){
 				//Kushki
-				var formKushkiElem = '<form id="kushki-payment-form" action="' + url_site + '/pago-online/" method="GET"><input type="hidden" name="numeroIdentificacion" value="'+getValueFI('numeroIdentificacion')+'" /><input type="hidden" name="tipoIdentificacion" value="'+getValueFI('tipoIdentificacion')+'" /><input type="hidden" name="codArticulo" value="'+idReservaSeparada+'" /><input type="hidden" name="tipoArticulo" value="CITA" /></form>';
+				var formKushkiElem = '<form id="kushki-payment-form" action="' + url_site + '/external/payment" method="GET"><input type="hidden" name="numeroIdentificacion" value="'+getValueFI('numeroIdentificacion')+'" /><input type="hidden" name="tipoIdentificacion" value="'+getValueFI('tipoIdentificacion')+'" /><input type="hidden" name="codArticulo" value="'+idReservaSeparada+'" /><input type="hidden" name="tipoArticulo" value="CITA" /></form>';
 				$('.modal-pagos .footer').append(formKushkiElem);
 				console.log('KUSHKI');
 				$('#kushki-payment-form').submit();
 			}else{
 				//Ptp
-				var formPtpElem = '<form id="diners-payment-form" action="' + url_site + '/pago-online-ptp/" method="GET"><input type="hidden" name="numeroIdentificacion" value="'+getValueFI('numeroIdentificacion')+'" /><input type="hidden" name="tipoIdentificacion" value="'+getValueFI('tipoIdentificacion')+'" /><input type="hidden" name="codArticulo" value="'+idReservaSeparada+'" /><input type="hidden" name="tipoArticulo" value="CITA" /></form>';
+				var formPtpElem = '<form id="diners-payment-form" action="' + url_site + '/external/payment" method="GET"><input type="hidden" name="numeroIdentificacion" value="'+getValueFI('numeroIdentificacion')+'" /><input type="hidden" name="tipoIdentificacion" value="'+getValueFI('tipoIdentificacion')+'" /><input type="hidden" name="codArticulo" value="'+idReservaSeparada+'" /><input type="hidden" name="tipoArticulo" value="CITA" /></form>';
 				$('.modal-pagos .footer').append(formPtpElem);
 				console.log('PTP');
 				$('#diners-payment-form').submit();
@@ -603,7 +603,7 @@ $( document ).ready(async function() {
 		console.log('He respondido la pregunta en la especialidad');
 		$('.btn-continuar-especialidad').removeClass('respuesta-seleccionada')
 		$(this).addClass('respuesta-seleccionada')
-		$('.modal-pregunta-especialidad').modal('hide');
+		$('#modal-pregunta-especialidad').modal('hide');
 		respuestaEspecialidad = $(this).attr("data-rel");
 		flagStep = true;
 
@@ -613,11 +613,11 @@ $( document ).ready(async function() {
 	});
 
 	$('.btn-entendido-validacion-fecha').click(function(){
-		$('.modal-validacion-fecha').modal('hide');
+		$('#modal-validacion-fecha').modal('hide');
 	});
 
 	$('.btn-precio-confirmacion-datos').click(function(){
-		$('.modal-precio-confirmacion-datos').modal('hide');
+		$('#modal-precio-confirmacion-datos').modal('hide');
 	});
 
 	$('body').on('change', 'input[name="ciudad"]', function() {
@@ -1349,7 +1349,7 @@ function validacionConvenio(){
 		if(response.code == 200){
 			respuestaEspecialidad = null;
 			if(response.data.requiereControlEmbarazo){
-				$('.modal-pregunta-especialidad').modal('show');
+				$('#modal-pregunta-especialidad').modal('show');
 			}else{
 				console.log(99)
 				flagStep = true;
@@ -1388,7 +1388,7 @@ function validacionFecha(fechaElegida){
 				}
 				let msg = response.data.mensajeValidacion1+"<br>"+response.data.mensajeValidacion2;
 				$('.modal-validacion-fecha .subtitle').html(msg.replace(/\*(.*?)\*/g, '<b class="text-veris">$1</b>'));
-				$('.modal-validacion-fecha').modal('show');
+				$('#modal-validacion-fecha').modal('show');
 			}else{
 				obtenerDisponibilidad(fechaElegida);
 			}
@@ -2030,7 +2030,7 @@ function valorizarCita(applyCoverage,companyId){
 				
 				let msg = response.data.mensajeValidacion;//+"<br>"+response.data.mensajeValidacion2;
 				$('.modal-validacion-condiciones-seguro .subtitle').html(msg.replace(/\*(.*?)\*/g, '<b class="text-veris">$1</b>'));
-				$('.modal-validacion-condiciones-seguro').modal('show');
+				$('#modal-validacion-condiciones-seguro').modal('show');
 			}
 			valoresPago = response.data;//.prestacionesValorizadas[0];
 			console.log(valoresPago);
@@ -2041,7 +2041,7 @@ function valorizarCita(applyCoverage,companyId){
 				if($("#convenios option:selected").attr("aplicaVerificacionConvenio-rel") == "S" && tieneConvenios){
 					let msg = response.data.mensajeValidacion;//+"<br>"+response.data.mensajeValidacion2;
 					$('.modal-precio-confirmacion-datos .subtitle').html(msg.replace(/\*(.*?)\*/g, '<b class="text-veris">$1</b>'));
-					$('.modal-precio-confirmacion-datos').modal('show');
+					$('#modal-precio-confirmacion-datos').modal('show');
 				}else{
 					showInfo(response.data.mensajeValidacion, 15000);
 				}
@@ -2437,8 +2437,8 @@ function confirmarCita(){
 				//$('a[href$="previous"]').text('Pagar Cita Médica');
 				$('a[href$="previous"]').addClass('btn-pagar');
 				$('a[href$="previous"]').attr('href','');
-				var formPtpElem = '<form id="diners-payment-form" action="' + url_site + '/pago-online-ptp/" method="GET"><input type="hidden" name="numeroIdentificacion" value="'+getValueFI('numeroIdentificacion')+'" /><input type="hidden" name="tipoIdentificacion" value="'+getValueFI('tipoIdentificacion')+'" /><input type="hidden" name="codArticulo" value="'+idReservaSeparada+'" /><input type="hidden" name="tipoArticulo" value="CITA" /></form>';
-		    	var formKushkiElem = '<form id="kushki-payment-form" action="' + url_site + '/pago-online/" method="GET"><input type="hidden" name="numeroIdentificacion" value="'+getValueFI('numeroIdentificacion')+'" /><input type="hidden" name="tipoIdentificacion" value="'+getValueFI('tipoIdentificacion')+'" /><input type="hidden" name="codArticulo" value="'+idReservaSeparada+'" /><input type="hidden" name="tipoArticulo" value="CITA" /></form>';
+				var formPtpElem = '<form id="diners-payment-form" action="' + url_site + '/external/payment" method="GET"><input type="hidden" name="numeroIdentificacion" value="'+getValueFI('numeroIdentificacion')+'" /><input type="hidden" name="tipoIdentificacion" value="'+getValueFI('tipoIdentificacion')+'" /><input type="hidden" name="codArticulo" value="'+idReservaSeparada+'" /><input type="hidden" name="tipoArticulo" value="CITA" /></form>';
+		    	var formKushkiElem = '<form id="kushki-payment-form" action="' + url_site + '/external/payment" method="GET"><input type="hidden" name="numeroIdentificacion" value="'+getValueFI('numeroIdentificacion')+'" /><input type="hidden" name="tipoIdentificacion" value="'+getValueFI('tipoIdentificacion')+'" /><input type="hidden" name="codArticulo" value="'+idReservaSeparada+'" /><input type="hidden" name="tipoArticulo" value="CITA" /></form>';
 				$('.modal-pagos .footer').append(formPtpElem);
 				$('.modal-pagos .footer').append(formKushkiElem);
 
@@ -2509,10 +2509,10 @@ function confirmarCita(){
 
 			aplicaProntoPago = response.data.aplicaProntoPago;
 			window.onbeforeunload = null;
-			let url = url_site + '/pago-online-web?numeroIdentificacion='+getValueFI('numeroIdentificacion')+'&tipoIdentificacion='+getValueFI('tipoIdentificacion')+'&codArticulo='+idReservaSeparada+'&tipoArticulo=CITA';
+			let url = url_site + '/external/payment?numeroIdentificacion='+getValueFI('numeroIdentificacion')+'&tipoIdentificacion='+getValueFI('tipoIdentificacion')+'&codArticulo='+idReservaSeparada+'&tipoArticulo=CITA';
 			
-			// https://veris.com.ec/pago-online-ptp/?numeroIdentificacion=1201263975&tipoIdentificacion=2&codArticulo=2191053439&tipoArticulo=CITA
-			// let url = url_site + '/pago-online-ptp/?numeroIdentificacion='+getValueFI('numeroIdentificacion')+'&tipoIdentificacion='+getValueFI('tipoIdentificacion')+'&codArticulo='+idReservaSeparada+'&tipoArticulo=CITA';
+			// https://veris.com.ec/external/payment?numeroIdentificacion=1201263975&tipoIdentificacion=2&codArticulo=2191053439&tipoArticulo=CITA
+			// let url = url_site + '/external/payment?numeroIdentificacion='+getValueFI('numeroIdentificacion')+'&tipoIdentificacion='+getValueFI('tipoIdentificacion')+'&codArticulo='+idReservaSeparada+'&tipoArticulo=CITA';
 			
 			if(paymentAmount > 0 || $("#convenios option:selected").attr("permitePago-rel") == "N" || aplicaProntoPago == "S"){
 				console.log("0");
@@ -3034,7 +3034,7 @@ function pagarPtp(){
 	showLoader();
 	showError("Estamos procesando su link de pago.");
 	//Quiero todos los campos de la facturacion asignados a variables
-	//https://veris.com.ec/pago-online-ptp/?numeroIdentificacion=0923796304&tipoIdentificacion=2&codArticulo=1686024939&tipoArticulo=CITA
+	//https://veris.com.ec/payment?numeroIdentificacion=0923796304&tipoIdentificacion=2&codArticulo=1686024939&tipoArticulo=CITA
 	//process-link-p2p/?tipo_identificacion=%tipo_identificacion%&identificacion=%identificacion%&tnombres=%nombre%&primer_apellido=%primer_apellido%&segundo_apellido=%segundo_apellido%&direccion=%direccion%&correo=%correo%&telefono=%telefono%&tipoP=paquete
     let url = url_site + '/process-link-p2p/?identificacion='+getValueFI('numeroIdentificacion')+'&tipo_identificacion='+getValueFI('tipoIdentificacion')+'&nombre='+getValueFI('primerNombreFact')+'&primer_apellido='+getValueFI('primerApellidoFact')+'&segundo_apellido='+getValueFI('segundoApellidoFact')+'&correo='+getValueFI('mailFact')+'&telefono='+getValueFI('telefonoFact')+'&tipo=link&tipo_articulo=CITA&codigo_articulo='+idReservaSeparada+'&canal_origen=&direccion='+removeCharacters(getValueFI('direccionFact'));
     location.href = url*/
@@ -3265,7 +3265,7 @@ function pasarelaNuvei(){
 	paymentCheckout.open({
 		user_id: String(referenceNuvei.data.codigoTransaccion),
 		user_email: infoUsuario.mail, //optional
-		user_phone: infoUsuario.telefonoMovil,//optional
+		user_phone: (infoUsuario.telefonoMovil != null) ? infoUsuario.telefonoMovil : '',//optional
 		order_description: referenceNuvei.data.reference,
 		order_amount: detallePago.data.totales.total,
 		order_vat: 0,

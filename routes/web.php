@@ -68,6 +68,7 @@ Route::middleware('guest')->group(function () {
         Route::get('/laboratorio/resultados/{idPaciente}', [ExternalController::class, 'mostrarResultadoLaboratorio'])->name('resultado-laboratorio')->withoutMiddleware(['guest']);
 
         Route::get('/financiero/devoluciones', [ExternalController::class, 'devoluciones'])->name('devoluciones')->withoutMiddleware(['guest']);
+        Route::get('/financiero/devoluciones/tracking/{numeroFactura}/{tipoIdentificacion}/{numeroIdentificacion}', [ExternalController::class, 'trackDevoluciones'])->name('trackDevoluciones')->withoutMiddleware(['guest']);
 
     });
 
