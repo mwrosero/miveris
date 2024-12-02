@@ -325,16 +325,18 @@
                 </div>
             </div> -->
             <div class="box-especialidades control-group-multiple control-group"></div>
-            <div class="modal modal-pregunta-especialidad fade">
-                <div class="modal-content">
-                    <div class="header">
-                        <h1 class="title">Información solicitada por tu aseguradora</h1>
-                        <h4 class="subtitle">¿Esta cita es por control de <b>embarazo</b>?</h4>
-                    </div>
-                    <div class="content">
-                        <div class="box-respuesta-pregunta-especialidad">
-                            <div class="btn-continuar-especialidad" data-rel="S">SI</div>
-                            <div class="btn-continuar-especialidad" data-rel="N">NO</div>
+            <div class="modal modal-pregunta-especialidad fade" id="modal-pregunta-especialidad" tabindex="-1" aria-labelledby="modal-registro-pacienteLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable mx-auto">
+                    <div class="modal-content">
+                        <div class="modal-header d-block">
+                            <h1 class="title mb-1">Información solicitada por tu aseguradora</h1>
+                            <h4 class="subtitle mb-1">¿Esta cita es por control de <b>embarazo</b>?</h4>
+                        </div>
+                        <div class="modal-body pt-0 pb-0">
+                            <div class="box-respuesta-pregunta-especialidad">
+                                <div class="btn-continuar-especialidad" data-rel="S">SI</div>
+                                <div class="btn-continuar-especialidad" data-rel="N">NO</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -377,14 +379,16 @@
             <h1 class="fs-subtitle">Especialistas disponibles</h1>
             <h4 class="subtitle">Ahora, selecciona el especialista y el horario que prefieres para tu cita.</h4>
             <div class="box-disponibilidad"></div>
-            <div class="modal modal-validacion-fecha fade">
-                <div class="modal-content">
-                    <div class="header">
-                        <h1 class="title" style="text-align: center;">Información de tu seguro</h1>
-                        <h4 class="subtitle" style="text-align: center;"></h4>
-                    </div>
-                    <div class="footer">
-                        <button class="btn-inside-modal btn-entendido-validacion-fecha">Entiendo</button>
+            <div class="modal modal-validacion-fecha fade" id="modal-validacion-fecha" tabindex="-1" aria-labelledby="modal-registro-pacienteLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable mx-auto">
+                    <div class="modal-content">
+                        <div class="modal-header d-block">
+                            <h1 class="title mb-1">Información de tu seguro</h1>
+                            <h4 class="subtitle mb-1"></h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-inside-modal btn-entendido-validacion-fecha">Entiendo</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -501,26 +505,30 @@
                 <div class="msg-info-valorizar text-info-llegada"><p class="text-info">Recuerda llegar <strong>15 minutos</strong> antes y acercarte a <strong>caja</strong> para activar tu cita.</p></div>
             </div>
 
-            <div class="modal modal-precio-confirmacion-datos">
-                <div class="modal-content">
-                    <div class="header">
-                        <h1 class="title" style="text-align: center;">Información de tu seguro</h1>
-                        <h4 class="subtitle" style="text-align: center;"></h4>
-                    </div>
-                    <div class="footer">
-                        <button class="btn-inside-modal btn-precio-confirmacion-datos">Entiendo</button>
+            <div class="modal modal-precio-confirmacion-datos fade" id="modal-precio-confirmacion-datos" tabindex="-1" aria-labelledby="modal-registro-pacienteLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable mx-auto">
+                    <div class="modal-content">
+                        <div class="modal-header d-block">
+                            <h1 class="title mb-1">Información de tu seguro</h1>
+                            <h4 class="subtitle mb-1"></h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-inside-modal btn-precio-confirmacion-datos">Entiendo</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="modal modal-validacion-condiciones-seguro fade">
-                <div class="modal-content">
-                    <div class="header">
-                        <h1 class="title" style="text-align: center;">Información de tu seguro</h1>
-                        <h4 class="subtitle" style="text-align: center;"></h4>
-                    </div>
-                    <div class="footer">
-                        <button class="btn-inside-modal btn-validacion-servicio" onclick="reloadPage()">Volver a Inicio</button>
+            <div class="modal modal-validacion-condiciones-seguro fade" id="modal-validacion-condiciones-seguro" tabindex="-1" aria-labelledby="modal-registro-pacienteLabel" aria-hidden="true">
+                <div class="modal-dialog modal-md modal-dialog-centered modal-dialog-scrollable mx-auto">
+                    <div class="modal-content">
+                        <div class="modal-header d-block">
+                            <h1 class="title mb-1">Información de tu seguro</h1>
+                            <h4 class="subtitle mb-1"></h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn-inside-modal btn-validacion-servicio" onclick="reloadPage()">Volver a Inicio</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1370,7 +1378,7 @@
         }
 
         .modal-pregunta-especialidad {
-            max-width: 350px;
+            /*max-width: 350px;*/
             text-align: center
         }
 
@@ -1382,7 +1390,7 @@
             color: #fff;
         }
         .modal-validacion-fecha, .modal-precio-confirmacion-datos, .modal-validacion-condiciones-seguro {
-            max-width: 400px;
+            /*max-width: 400px;*/
         }
 
         .btn-entendido-validacion-fecha, .btn-precio-confirmacion-datos, .btn-validacion-servicio {

@@ -564,6 +564,15 @@ class ExternalController extends Controller
                 ->with('accessToken',$accessToken);
     }
 
+    public function trackDevoluciones($numeroFactura, $tipoIdentificacion,$numeroIdentificacion){
+        $accessToken = $this->getTokenExternalFacturacion();
+        return view('external.financiero.tracking_devoluciones')
+                ->with('numeroFactura',$numeroFactura)
+                ->with('tipoIdentificacion',$tipoIdentificacion)
+                ->with('numeroIdentificacion',$numeroIdentificacion)
+                ->with('accessToken',$accessToken);
+    }
+
     public function botAi(Request $request){
         $data = $request->all();
         // dd($data['message']);
