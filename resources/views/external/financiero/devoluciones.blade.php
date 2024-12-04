@@ -60,11 +60,35 @@ Veris - Devoluciones
     				</div>
     				<p class="fs--2 fw-bold text-veris mt-3">Número de Factura<span class="text-danger">*</span></p>
     				<div class="d-flex mt-3 align-items-center justify-content-between">
-    					<input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="first-input">
+    					{{-- <input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="first-input"> --}}
+    					<input type="text" maxlength="3" 
+							class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" 
+							oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" 
+							onkeypress="return validarNumeros(event)" 
+							onblur="completarConCeros(this)" 
+							required 
+							autocomplete="off" 
+							id="first-input">
     					<i class="fa-solid fa-minus txt-veris fw-bold mx-1 mx-md-3"></i>
-    					<input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="medium-input">
+    					{{-- <input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="medium-input"> --}}
+    					<input type="text" maxlength="3" 
+							class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" 
+							oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" 
+							onkeypress="return validarNumeros(event)" 
+							onblur="completarConCeros(this)" 
+							required 
+							autocomplete="off" 
+							id="medium-input">
     					<i class="fa-solid fa-minus txt-veris fw-bold mx-1 mx-md-3"></i>
-    					<input type="text" maxlength="9" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="last-input">
+    					{{-- <input type="text" maxlength="9" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="last-input"> --}}
+    					<input type="text" maxlength="9" 
+							class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" 
+							oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" 
+							onkeypress="return validarNumeros(event)" 
+							onblur="completarConCeros(this)" 
+							required 
+							autocomplete="off" 
+							id="last-input">
     				</div>
     				<div class="row d-none box-errors-step-1">
     					<div class="col-12">
@@ -259,8 +283,10 @@ Veris - Devoluciones
 		$('body').on('change', '#numeroIdentificacion', function(){
 			if( parseInt($(this).val()) != parseInt(dataDevolucion.comprobante.numeroIdentificacionPersonaFactura) ){
 				$('.box-errors-step-2').removeClass('d-none');
+				$('#nombres').val("");
 			}else{
 				$('.box-errors-step-2').addClass('d-none');
+				$('#nombres').val(dataDevolucion.comprobante.nombrePersonaFactura);
 			}
 		})
 
@@ -346,7 +372,7 @@ Veris - Devoluciones
 				$('.label-step-2').addClass('txt-veris');
 				$('.step-2-number').addClass('active');
         	}else{
-        		let mensajes = `<ul>`;
+        		let mensajes = `<ul class="mb-0">`;
         		$.each(data.data.mensajeInformativo, function(k,v){
         			mensajes += `<li>${v}</li>`;
         		})
@@ -419,6 +445,29 @@ Veris - Devoluciones
 		}
 		return true;
 	}
+
+	// Valida que solo se puedan ingresar números
+	function validarNumeros(event) {
+	    return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) 
+	        ? null 
+	        : event.charCode >= 48 && event.charCode <= 57;
+	}
+
+	// Completa con ceros a la izquierda hasta el maxlength definido
+	function completarConCeros(input) {
+	    const maxLength = parseInt(input.getAttribute('maxlength'), 10);
+	    if (input.value.length < maxLength) {
+	        input.value = input.value.padStart(maxLength, '0');
+	    }
+	}
+
+	// Adicional: Limita caracteres a `maxlength` manualmente si es necesario (por redundancia)
+	function limitarCaracteres(input, maxLength) {
+	    if (input.value.length > maxLength) {
+	        input.value = input.value.slice(0, maxLength);
+	    }
+	}
+
 
 </script>
 @endsection
