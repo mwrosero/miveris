@@ -25,13 +25,13 @@ Veris - Devoluciones
                 <div class="row gx-2 justify-content-between align-items-center">
                 	<div class="box-datos">
                 	</div>
-                	<p class="fs--16 line-height-16 my-2">Detalles:</p>
+                	<p class="fs--16 line-height-16 my-2 text-veris fw-bold">Detalles:</p>
                     <ul class="list-group mb-0 border-0 p-0" id="listaPrestaciones">
                     </ul>
                 </div>
             </div>
             <div class="modal-footer pt-0 pb-3 px-3 border-0 d-flex justify-content-center align-items-center">
-                <button type="button" class="btn fw-normal fs--16 badge bg-menu-theme text-white m-0 px-4 py-2 fs-4 mx-2" data-bs-dismiss="modal"><i class="fa-regular fa-pen-to-square me-2"></i>Corregir</button>
+                <button type="button" class="btn fw-normal fs--16 badge bg-menu-theme text-white m-0 px-4 py-2 fs-4 mx-2" data-bs-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn fw-normal fs--16 badge bg-veris text-white m-0 px-4 py-2 fs-4 mx-2 btn-continuar-nc" data-bs-dismiss="modal"><i class="fa-regular fa-circle-check me-2"></i>Continuar</button>
             </div>
         </form>
@@ -142,7 +142,7 @@ Veris - Devoluciones
     				</div>
     				<div class="w-100 mt-3">
     					<label for="nombres" class="form-label fw-medium fs--1">Nombre y apellido del Titular de la Cuenta<span class="text-danger">*</span></label>
-    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="nombres">
+    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2 onlyLetters" required="" id="nombres">
     				</div>
     				<div class="w-100 mt-3">
     					<label for="institucion" class="form-label fw-medium fs--1">Institución Bancaria<span class="text-danger">*</span></label>
@@ -176,7 +176,7 @@ Veris - Devoluciones
     						<div class="mt-3 rounded-3 w-100 w-md-50 bg-error border-error d-flex justify-content-between align-items-start p-3">
 		    					<i class="fa-solid fa-circle-info mt-1 me-2 text-danger"></i>
 		    					<p class="mb-0 fs-12 line-height-14" id="msg-error-step-2">
-		    						<span class="text-veris fw-medium">Hubo un inconveniente con uno de los campos del formulario,</span> por favor revisa el bien la información o completa todos los campos requeridos que hagan falta.
+		    						<span class="text-veris fw-medium">Hubo un inconveniente con uno de los campos del formulario,</span> por favor revisa bien la información o completa todos los campos requeridos que hagan falta.
 		    					</p>
 		    				</div>
     					</div>
@@ -276,6 +276,10 @@ Veris - Devoluciones
         max-height: 300px;
         overflow-y: auto;
     }
+    .error-input{
+    	border: 1px solid #ff000059 !important;
+	    background: #ff00000f !important;
+	}
 </style>
 <script>
 	let dataDevolucion = {};
@@ -321,6 +325,27 @@ Veris - Devoluciones
 				$('#nombres').val(dataDevolucion.comprobante.nombrePersonaFactura);
 			}
 		})
+
+		$('.onlyLetters').on('keypress keydown', function(e) {
+	        // Permitir teclas de control como backspace, suprimir, flechas
+	        const keyCode = e.keyCode || e.which;
+	        const allowedKeys = [8, 9, 37, 39, 46]; // backspace, tab, left arrow, right arrow, delete
+
+	        // Expresión regular para letras, tildes y ñ
+	        const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]*$/;
+
+	        // Permitir teclas de control
+	        if (allowedKeys.includes(keyCode)) {
+	          	return true;
+	        }
+
+	        // Validar caracteres permitidos
+	        const char = String.fromCharCode(keyCode);
+	        if (!regex.test(char)) {
+	          	e.preventDefault();
+	          	return false;
+	        }
+	    });
 
 	});
 
@@ -489,16 +514,34 @@ Veris - Devoluciones
 	}
 
 	async function validarDatosNC(){
-		if($('#numeroIdentificacion').val() != dataDevolucion.comprobante.numeroIdentificacionPersonaFactura ||
-			$('#nombres').val() == "" ||
-			$('#numeroCuenta').val() == "" ||
-			$('.btn-tipo.active').attr('data-rel') == undefined ||
-			!isValidEmailAddress($('#email').val())
-			){
-			$('.box-errors-step-2').removeClass('d-none');
-			return false;
+		let send = true;
+		$('#numeroIdentificacion').removeClass('error-input');
+		$('#nombres').removeClass('error-input');
+		$('#numeroCuenta').removeClass('error-input');
+		$('#email').removeClass('error-input');
+		if($('#numeroIdentificacion').val() != dataDevolucion.comprobante.numeroIdentificacionPersonaFactura){
+			send = false;
+			$('#numeroIdentificacion').addClass('error-input');
 		}
-		return true;
+		if($('#nombres').val() == ""){
+			send = false;
+			$('#nombres').addClass('error-input');
+		}
+		if($('#numeroCuenta').val() == ""){
+			send = false;
+			$('#numeroCuenta').addClass('error-input');
+		}
+		if($('.btn-tipo.active').attr('data-rel') == undefined){
+			send = false;
+		}
+		if(!isValidEmailAddress($('#email').val())){
+			send = false
+			$('#email').addClass('error-input');
+		}
+		if(!send){
+			$('.box-errors-step-2').removeClass('d-none');
+		}
+		return send;
 	}
 
 	// Valida que solo se puedan ingresar números
