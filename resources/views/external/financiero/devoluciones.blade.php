@@ -13,6 +13,30 @@ Veris - Devoluciones
 <link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 @include('external.components.navbar')
+{{-- Modal de verificacion --}}
+<div class="modal modal-top" id="modalVerificacion" tabindex="-1" aria-labelledby="modalVerificacionLabel">
+    <div class="modal-dialog modal-dialog-centered mx-auto">
+        <form class="modal-content rounded-8">
+            <div class="modal-header d-none">
+                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3">
+                <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Información del Comprobante') }}</h5>
+                <div class="row gx-2 justify-content-between align-items-center">
+                	<div class="box-datos">
+                	</div>
+                	<p class="fs--16 line-height-16 my-2">Detalles:</p>
+                    <ul class="list-group mb-0 border-0 p-0" id="listaPrestaciones">
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3 border-0 d-flex justify-content-center align-items-center">
+                <button type="button" class="btn fw-normal fs--16 badge bg-menu-theme text-white m-0 px-4 py-2 fs-4 mx-2" data-bs-dismiss="modal"><i class="fa-regular fa-pen-to-square me-2"></i>Corregir</button>
+                <button type="button" class="btn fw-normal fs--16 badge bg-veris text-white m-0 px-4 py-2 fs-4 mx-2 btn-continuar-nc" data-bs-dismiss="modal"><i class="fa-regular fa-circle-check me-2"></i>Continuar</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <div class="flex-grow-1 container-p-y pt-0">
     <div class="d-flex justify-content-between align-items-center bg-white">
@@ -248,6 +272,10 @@ Veris - Devoluciones
 	.select2-selection__rendered{
 		font-size: 0.875rem !important;
 	}
+	#listaPrestaciones {
+        max-height: 300px;
+        overflow-y: auto;
+    }
 </style>
 <script>
 	let dataDevolucion = {};
@@ -255,6 +283,10 @@ Veris - Devoluciones
 		await cargarInstitucionesBancarias();
 		await cargarTiposCuenta();
 		await parametrosDevoluciones();
+
+		$('body').on('click', '.btn-continuar-nc', function(){
+			datosConfirmados();
+		})
 
 		$('.select2').select2({
   			placeholder: 'Elegir'
@@ -351,6 +383,7 @@ Veris - Devoluciones
 	}
 
 	async function validarComprobante(){
+		$('.box-datos').empty();
 		let numeroComprobante = `${$('#first-input').val()}${$('#medium-input').val()}${$('#last-input').val()}`
 		let args = [];
         args["endpoint"] = api_url + `/facturacion/v1/comprobantes/factura_paciente/consulta_por_anulacion/devolucion_bancaria?codigoEmpresa=1&numeroComprobante=${numeroComprobante}`;
@@ -362,15 +395,27 @@ Veris - Devoluciones
         console.log(data);
 
         if(data.code == 200){
+        	dataDevolucion.comprobante = data.data;
         	if(data.data.permitirDevolucionesAutomaticas){
         		dataDevolucion.comprobante = data.data;
-        		$('.box-step').addClass('d-none');
-				$('.step-2').removeClass('d-none');
-				$('.progress-bar').css('width','50%');
-				$('.progress-bar').attr('aria-valuenow','50');
-				$('.label-porcentaje').html(`50%`);
-				$('.label-step-2').addClass('txt-veris');
-				$('.step-2-number').addClass('active');
+        		let elem_datos = `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Nro. Factura:</span> ${dataDevolucion.comprobante.numeroComprobante}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de emisión:</span> ${dataDevolucion.comprobante.fechaComprobante}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Identificación Factura:</span> ${dataDevolucion.comprobante.numeroIdentificacionPersonaFactura}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Nombre Factura:</span> ${dataDevolucion.comprobante.nombrePersonaFactura}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Identificación Paciente:</span> ${dataDevolucion.comprobante.numeroIdentificacionPaciente}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Nombre Paciente:</span> ${dataDevolucion.comprobante.nombrePaciente}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Total:</span> $${dataDevolucion.comprobante.totales.paciente.valorTotal}</p>`;
+	        	$('.box-datos').html(elem_datos);
+
+	        	let elem_prestaciones = ``;
+	        	$.each(dataDevolucion.comprobante.detalles, function(key,value){
+		            //let class_estado_prestacion = (value.)
+		            elem_prestaciones += `<li class="list-group-item text-veris border-0 mb-1 py-0 fs-14 line-height-14 text-start">
+		                — ${ value.nombrePrestacion }
+		                </li>`
+		        })
+		        $('#listaPrestaciones').html(elem_prestaciones);
+		        $('#modalVerificacion').modal('show');
         	}else{
         		let mensajes = `<ul class="mb-0">`;
         		$.each(data.data.mensajeInformativo, function(k,v){
@@ -383,6 +428,16 @@ Veris - Devoluciones
         }
 
         //permitirDevolucionesAutomaticas
+	}
+
+	function datosConfirmados(){
+		$('.box-step').addClass('d-none');
+		$('.step-2').removeClass('d-none');
+		$('.progress-bar').css('width','50%');
+		$('.progress-bar').attr('aria-valuenow','50');
+		$('.label-porcentaje').html(`50%`);
+		$('.label-step-2').addClass('txt-veris');
+		$('.step-2-number').addClass('active');
 	}
 
 	async function solicitarNC(){
