@@ -32,33 +32,33 @@
         rel="stylesheet" />
 
         <!-- Icons -->
-        <link rel="stylesheet" href="../../../assets/vendor/fonts/fontawesome.css" />
-        <link rel="stylesheet" href="../../../assets/vendor/fonts/tabler-icons.css" />
-        <link rel="stylesheet" href="../../../assets/vendor/fonts/flag-icons.css" />
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/fonts/fontawesome.css" />
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/fonts/tabler-icons.css" />
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/fonts/flag-icons.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
 
         <!-- Core CSS -->
-        <link rel="stylesheet" href="../../../assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
-        <link rel="stylesheet" href="../../../assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
-        <link rel="stylesheet" href="../../../assets/vendor/css/pages/page-auth.css" />
-        <link rel="stylesheet" href="../../../assets/css/demo.css" />
-        <link rel="stylesheet" href="../../../assets/css/style.css" />
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/css/pages/page-auth.css" />
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/demo.css" />
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/css/style.css" />
 
         <!-- Vendors CSS -->
         
-        <link rel="stylesheet" href="../../../assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
+        <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
         <link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.css" />
 
         <!-- Page CSS -->
-        <script src="../../../assets/vendor/js/helpers.js"></script>
+        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/js/helpers.js"></script>
         <!-- Helpers -->
 
         <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
         <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-        {{-- <script src="../../../assets/vendor/js/template-customizer.js"></script> --}}
+        {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/js/template-customizer.js"></script> --}}
         <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-        <script src="../../../assets/js/config.js"></script>
-        {{-- <script src="../../../assets/vendor/libs/jquery/jquery.js"></script> --}}
+        <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/config.js"></script>
+        {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/jquery/jquery.js"></script> --}}
         <script>
             const api_url = "{{ \App\Models\Veris::BASE_URL }}";
             const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
@@ -136,30 +136,30 @@
       <!-- Core JS -->
       <!-- build:js assets/vendor/js/core.js -->
 
-      <script src="../../../assets/vendor/libs/popper/popper.js"></script>
-      <script src="../../../assets/vendor/js/bootstrap.js"></script>
-      <script src="../../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-      <script src="../../../assets/vendor/libs/node-waves/node-waves.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/popper/popper.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/js/bootstrap.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/node-waves/node-waves.js"></script>
       <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/block-ui/block-ui.js"></script>
 
-      <script src="../../../assets/vendor/libs/hammer/hammer.js"></script>
-      <script src="../../../assets/vendor/libs/i18n/i18n.js"></script>
-      <script src="../../../assets/vendor/libs/typeahead-js/typeahead.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/hammer/hammer.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/i18n/i18n.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/typeahead-js/typeahead.js"></script>
 
-      <script src="../../../assets/vendor/js/menu.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/js/menu.js"></script>
       <!-- endbuild -->
 
       <!-- Vendors JS -->
-      <script src="../../../assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
-      <script src="../../../assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/formvalidation/dist/js/FormValidation.min.js"></script>
+      <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/formvalidation/dist/js/plugins/Bootstrap5.min.js"></script>
       <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script>
-      <!--<script src="../../../assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>-->
+      <!--<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/formvalidation/dist/js/plugins/AutoFocus.min.js"></script>-->
 
       <!-- Main JS -->
-      {{-- <script src="../../../assets/js/main.js"></script> --}}
+      {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/main.js"></script> --}}
 
       <!-- Page JS -->
-      {{-- <script src="../../../assets/js/pages-auth.js"></script> --}}
+      {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/pages-auth.js"></script> --}}
       {{-- <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script> --}}
 
         @if (session()->has('alert'))
