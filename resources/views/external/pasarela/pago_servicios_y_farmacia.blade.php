@@ -276,8 +276,8 @@ Veris - Pago en línea
 
 		paymentCheckout.open({
 			user_id: String("{{ $info->codigoEpago }}"),
-			user_email: "{{ $paciente->mail }}", //optional
-			user_phone: "{{ $paciente->telefonoMovil }}",//optional
+			user_email: "{{ $paciente->mail ?? '' }}", //optional
+			user_phone: "{{ $paciente->telefonoMovil ?? '' }}",//optional
 			order_description: referenceNuvei.data.reference,
 			order_amount: {{ $info->valor }},
 			order_vat: 0,
