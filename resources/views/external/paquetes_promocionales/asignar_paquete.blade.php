@@ -157,7 +157,8 @@ Veris - Asignar Promoción
             let codigoReserva = data.data.numeroOrden;
             let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }&canalOrigen=APP_WEB`;
             // let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }`;
-            location.href = url;
+            // location.href = url;
+            console.log(url);
             return;
         }
     }

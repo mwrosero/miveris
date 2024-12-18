@@ -821,5 +821,8 @@ Veris - Datos de facturación
 	#layout-navbar{
 		z-index: 9 !important;
 	}
+	.payment-checkout-modal {
+	    overflow-y: auto !important;
+	}
 </style>
 @endsection

@@ -953,3 +953,9 @@ function capitalizarElemento(elemento) {
         return elemento;
     }
 }
+
+document.addEventListener("DOMContentLoaded", async function () {
+    $('input[type=number]').on('wheel', function(e) {
+        e.preventDefault(); // Previene la acción por defecto del scroll
+    });
+});

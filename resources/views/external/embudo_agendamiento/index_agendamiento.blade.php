@@ -556,7 +556,7 @@
                     </div>
                     <div class="col-12 box-check">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="nombreTipoObjetoCheck" id="nombreTipoObjetoCheck" required>
+                            <input class="form-check-input" type="checkbox" name="nombreTipoObjetoCheck" id="nombreTipoObjetoCheck" required style="float: inherit;">
                             <label class="form-check-label" for="invalidCheck">
                                 Confirmo que tengo un caso de atención inmediata
                             </label>
@@ -891,6 +891,18 @@
         <script>
        
         jQuery(document).ready(function() {
+
+            const terminos = document.getElementById('terminos');
+
+            terminos.addEventListener('change', function() {
+                const btnEnviar = document.getElementById('btnNuvei');
+
+                if (terminos.checked) {
+                    btnEnviar.classList.remove('disabled-btn');
+                } else {
+                    btnEnviar.classList.add('disabled-btn');
+                }
+            })
 
             jQuery('body').on('keypress','#numeroIdentificacionFact',function (evt) {
                 evt = (evt) ? evt : window.event;
@@ -1276,6 +1288,11 @@
     }
     </script>
     <style>
+        .disabled-btn {
+            pointer-events: none;
+            opacity: 1;
+            background: silver !important;!i;!;!;
+        }
         .disabled-input{
           opacity: 0.5;
           pointer-events: none;
