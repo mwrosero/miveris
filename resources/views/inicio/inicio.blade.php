@@ -105,7 +105,7 @@ Mi Veris - Inicio
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     {{-- data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal" --}}
-                    <a class="cursor-pointer" id="cita-nueva">
+                    <a class="cursor-pointer d-block" id="cita-nueva">
                         <div class="card">
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-7 col-md-7">

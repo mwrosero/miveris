@@ -103,8 +103,8 @@ class ExternalController extends Controller
                 return view('external.pasarela.pago_servicios_y_farmacia')
                             ->with('info',$response->data)
                             ->with('esServicioCaja',$esServicioCaja)
-                            // ->with('permiteNuvei',$permiteNuvei)
-                            ->with('permiteNuvei',"S")
+                            ->with('permiteNuvei',$permiteNuvei)
+                            // ->with('permiteNuvei',"S")
                             ->with('accessToken',$accessToken)
                             ->with('paciente',$list_paciente->data)
                             ->with('codigoEmpresa',$codigoEmpresa);
@@ -281,7 +281,9 @@ class ExternalController extends Controller
                 ]);
             }else{
                 return redirect()->route('payment-error')
-                    ->with('error',$responseTV->message);
+                    ->with('error',$response->message)
+                    ->with('showButtonRePay', true)
+                    ->with('urlRetornoPago', $returnUrl);
             }
             
         }else{
@@ -316,6 +318,7 @@ class ExternalController extends Controller
         }else{
             // session()->flash('alert', $response->message);
             // return redirect('/external/payment/error')
+            // dd($returnUrl);
             return redirect()->route('payment-error')
                     ->with('error',$response->message)
                     ->with('showButtonRePay', true)
@@ -378,6 +381,7 @@ class ExternalController extends Controller
     }
 
     public function showErrorPayment(Request $request){
+        // $queryString = $request->getQueryString();
         return view('external.pasarela.error');
     }
 

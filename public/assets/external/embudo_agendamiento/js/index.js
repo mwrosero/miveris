@@ -1423,10 +1423,10 @@ function obtenerCentralMedica(){
 		$.each(response.data, function(key, value){
 			let img_centroMedico  = '';
 			if (value.nombre_foto != null) {
-				img_centroMedico = "<img src='"+value.nombre_foto+"' onerror='imgError(this)' class='img-fluid w-50' alt='"+value.nombreSucursal+"'>";
+				img_centroMedico = "<img src='"+value.nombre_foto+"' onerror='imgError(this)' width='64' height='64' alt='"+value.nombreSucursal+"'>";
 				// img_centroMedico  = "<img src='"+value.nombre_foto+"' onerror='imgError(this)' class='img-fluid' style='border-radius: 10px;'>";
 			}else{
-				img_centroMedico  = "<img src='/assets/img/veris/avatar_central_medica.png' alt='doctor parami' class='img-fluid w-50' style='border-radius: 10px;'>";
+				img_centroMedico  = "<img src='/assets/img/veris/avatar_central_medica.png' alt='doctor parami' width='64' height='64' style='border-radius: 10px;'>";
 			}
 			let textUrgencias = '';
 			if (value.codigoSucursal == "46") {
