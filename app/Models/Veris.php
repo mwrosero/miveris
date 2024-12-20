@@ -16,10 +16,13 @@ class Veris extends Model
     public const FACTURACION_WAR = 'seguridadtest';
     public const FACTURACION_WAR_DESA = 'seguridad';
     public const CANAL_ORIGEN = 'MVE_CMV';
+    public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';    
     public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
     public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';
     public const IDORGANIZACIONRESULTADOSLAB = '365509c8-9596-4506-a5b3-487782d5876e';
+    public const URL_KUSHKI = 'https://api.kushkipagos.com';
     public const KUSHKI_MERCHANT_ID = '10000003012872942409151942277385';
+    public const KUSHKI_PRIVATE_MERCHANT_ID = '1012311620856084913415314280226';
     public const IS_KUSHKI_TEST_ENVIRONMENT = true;
     public const ENVIRONMENT_NUVEI = "stg";
     public const TEST_ENVIRONMENT_KUSHKI = true;
@@ -38,10 +41,13 @@ class Veris extends Model
     // public const BASE_WAR = 'digitales';
     // public const FACTURACION_WAR = 'seguridad';
     // public const CANAL_ORIGEN = 'MVE_CMV';
+    // public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';
     // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
     // public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
     // public const IDORGANIZACIONRESULTADOSLAB = '365509c8-9596-4506-a5b3-487782d5876e';
+    // public const URL_KUSHKI = 'https://api.kushkipagos.com';
     // public const KUSHKI_MERCHANT_ID = '1012311620855990918315314280226';
+    // public const KUSHKI_PRIVATE_MERCHANT_ID = '10000003012852139010151942277385';
     // public const IS_KUSHKI_TEST_ENVIRONMENT = false;
     // public const ENVIRONMENT_NUVEI = "prod";
     // public const TEST_ENVIRONMENT_KUSHKI = false;
@@ -76,6 +82,10 @@ class Veris extends Model
             $header[] = 'idOrganizacion: ' . self::IDORGANIZACIONRESULTADOSLAB;
         }else{
             $header[] = 'idOrganizacion: ' . self::IDORGANIZACION;
+        }
+
+        if(isset($config['tokenKushki']) && $config['tokenKushki']){
+            $header[] = 'Private-Merchant-Id: ' . self::KUSHKI_PRIVATE_MERCHANT_ID;
         }
 
         // AUTH
@@ -119,6 +129,15 @@ class Veris extends Model
             $result = curl_exec ($ch);
             $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close ($ch);
+            //Para pagos con kushki
+            if(isset($config['tokenKushki']) && $config['tokenKushki']){
+                $response = [
+                    'data' => gettype($result) === 'string' ? json_decode($result, true) : $result,
+                    'status_code' => $status_code,
+                ];
+
+                return $response;
+            }
         }
         catch(\Exception $e){
             $result = [ 'error' => 'Falla en la llamada', ];

@@ -204,6 +204,11 @@ Veris - Pago en línea
 	});
 
 	async function pasarelaContingencia(){
+		dataCita.infoTransaccion = infoTransaccion;
+		localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+		let ruta = `/external/payment/kushki/{{ $tokenCita }}`;
+        console.log(ruta);
+        window.location.href = ruta;
 		console.log("Contingencia");
 	}
 

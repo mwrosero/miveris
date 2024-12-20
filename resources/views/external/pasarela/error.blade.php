@@ -35,15 +35,15 @@ Veris - Atención
 						@if(isset($error))
 							@if($showButtonRePay)
 							<div class="card-footer text-muted">
-								<a href="/external/payment?{{ $urlRetornoPago }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-between align-items-center mt-3" id="btn-next">
-	                                <span class="col-12 col-md-8 offset-md-2 shadow-none">Intentar pagar nuevamente</span>
+								<a href="/external/payment?{!! $urlRetornoPago !!}" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-between align-items-center mt-3" id="btn-next">
+	                                <span class="col-12 shadow-none">Intentar pagar nuevamente</span>
 	                            </a>
 							</div>
 							@endif
 						@else
 							<div class="card-footer text-muted">
 								<a href="/external/payment?{{ session('url') }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-between align-items-center mt-3" id="btn-next">
-	                                <span class="col-12 col-md-8 offset-md-2 shadow-none">Intentar pagar nuevamente</span>
+	                                <span class="col-12 shadow-none">Intentar pagar nuevamente</span>
 	                            </a>
 							</div>
 						@endif
