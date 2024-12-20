@@ -259,6 +259,7 @@ class ExternalController extends Controller
                 ],
                 'method'   => 'POST'
             ]);
+            // dd($responseTV);
 
             if($responseTV->code == 200){
                 $codigoTransaccion = $responseTV->data->codigoTransaccion;
@@ -285,7 +286,7 @@ class ExternalController extends Controller
                     ->with('showButtonRePay', true)
                     ->with('urlRetornoPago', $returnUrl);*/
                 return redirect()->route('payment-error', [
-                    'error' => $response->message,
+                    'error' => $responseTV->message,
                     'showButtonRePay' => true,
                     'urlRetornoPago' => $returnUrl,
                 ]);
