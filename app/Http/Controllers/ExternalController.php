@@ -104,8 +104,8 @@ class ExternalController extends Controller
                 return view('external.pasarela.pago_servicios_y_farmacia')
                             ->with('info',$response->data)
                             ->with('esServicioCaja',$esServicioCaja)
-                            // ->with('permiteNuvei',$permiteNuvei)
-                            ->with('permiteNuvei',"N")
+                            ->with('permiteNuvei',$permiteNuvei)
+                            // ->with('permiteNuvei',"N")
                             ->with('accessToken',$accessToken)
                             ->with('paciente',$list_paciente->data)
                             ->with('codigoEmpresa',$codigoEmpresa);
@@ -292,8 +292,9 @@ class ExternalController extends Controller
             }
             
         }else{
+            // dd($dataCita);
             if(isset($dataCita->infoTransaccion)){
-                $codigoTransaccion = $dataCita->infoTransaccion->codigoPreTransaccion;
+                // $codigoTransaccion = $dataCita->infoTransaccion->codigoPreTransaccion;
                 $accessToken = $this->getTokenExternalFacturacion();
                 if(isset($dataCita->infoTransaccion->codigoPreTransaccion)){
                     $nemonicoFlujoCobro = Veris::NEMONICO_FLUJO_PAGO;
@@ -311,7 +312,8 @@ class ExternalController extends Controller
                     if($request->has('codigoEmpresa')){
                         $codigoEmpresa = $urlParams['codigoEmpresa'];
                     }
-                    $params = '?codigoEmpresa='.$codigoEmpresa.'&codigoSolicitudServDomicilio='.$dataCita->infoTransaccion->idSolicitud;
+
+                    $params = '?codigoEmpresa='.$codigoEmpresa.'&codigoSolicitudServDomicilio='.$dataCita->infoTransaccion->codigoSolicitudServDomicilio;
                 }
                 $response = Veris::call([
                     'endpoint' => Veris::BASE_URL.$method.$params,
@@ -334,7 +336,8 @@ class ExternalController extends Controller
                     $ice = 0;
 
                     $monto = array("subtotalIva"=>$subtotalIva,"subtotalIva0"=>$subtotalIva0,"ice"=>$ice,"iva"=>$iva,"currency"=>"USD");
-                    $metadata = array("codigoPreTransaccion"=>$dataCita->infoTransaccion->codigoPreTransaccion,"codigoEpago"=>$dataCita->infoTransaccion->codigoEpago);
+                    $idPreTransaccionMeta = (isset($dataCita->infoTransaccion->codigoPreTransaccion)) ? $dataCita->infoTransaccion->codigoPreTransaccion : $dataCita->infoTransaccion->codigoSolicitudServDomicilio;
+                    $metadata = array("codigoPreTransaccion"=>$idPreTransaccionMeta,"codigoEpago"=>$dataCita->infoTransaccion->codigoEpago);
 
                     if($meses > 0){
                         $deferred = array("graceMonths"=>"00","creditType"=>$data['kushkiDeferredType'],"months"=>$meses);

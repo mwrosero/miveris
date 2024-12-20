@@ -899,7 +899,9 @@
 
                 if (terminos.checked) {
                     btnEnviar.classList.remove('disabled-btn');
+                    $('.box-no-nuvei').css('pointer-events','auto');
                 } else {
+                    $('.box-no-nuvei').css('pointer-events','none');
                     btnEnviar.classList.add('disabled-btn');
                 }
             })
