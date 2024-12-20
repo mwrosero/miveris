@@ -99,6 +99,9 @@ Veris - Asignar Promoción
         </div>
     </div>
 </section>
+@component('components.modal', ['id' => 'modalAlert', 'title' => 'Error', 'message' => session('alert')])
+    <button type="button" class="btn btn-primary">Aceptar</button>
+@endcomponent
 
 <script>
     let local = localStorage.getItem('external-cita-{{ $params }}');
@@ -157,13 +160,58 @@ Veris - Asignar Promoción
             let codigoReserva = data.data.numeroOrden;
             let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }&canalOrigen=APP_WEB`;
             // let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }`;
-            // location.href = url;
+            location.href = url;
             console.log(url);
             return;
         }
     }
 
+    async function validateForm(){
+        let errors = false;
+        let title = 'Campos requeridos';
+        let msg = `<ul class="ms-0 text-start text-veris" id="itemsMsg">`;
+        if(getInput('primerApellido') == ""){
+            errors = true;
+            msg += `<li class="ms-0">Campo primer apellido es requerido</li>`;
+        }
+        if(getInput('segundoApellido') == ""){
+            errors = true;
+            msg += `<li class="ms-0">Campo segundo apellido es requerido</li>`;
+        }
+        if(getInput('primerNombre') == ""){
+            errors = true;
+            msg += `<li class="ms-0">Campo primer nombre es requerido</li>`;
+        }
+        if(getInput('numeroIdentificacion') == ""){
+            errors = true;
+            msg += `<li class="ms-0">Campo Número de documento es requerido</li>`;
+        }else if(parseInt(getInput('tipoIdentificacion')) == 2){
+            if(!esValidaCedula(getInput('numeroIdentificacion').toString())){
+                errors = true;
+                msg += `<li class="ms-0">La cédula ingresada no es correcta</li>`;
+            }
+        }
+        if(getInput('fechaNacimiento') == ""){
+            errors = true;
+            msg += `<li class="ms-0">Campo fecha de nacimiento es requerido</li>`;
+        }
+        msg += `</ul>`;
+
+        if(!errors){
+            return true
+        }else{
+            $('#modalAlertTitle').html(title);
+            $('#modalAlertMessage').html(msg);
+            $('#modalAlert').modal('show');
+            return false;
+        }
+    }
+
     async function crearUsuarioPaquete(){
+        let validarForm = await validateForm();
+        if(!validarForm){
+            return;
+        }
         let f_n = $('#fechaNacimiento').val().split('-');
         let fechaNacimiento = f_n[2]+'/'+f_n[1]+'/'+f_n[0];
         let tipoIdentificacion = $('#tipoIdentificacion').val();

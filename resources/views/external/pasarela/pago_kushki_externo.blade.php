@@ -73,19 +73,33 @@ Veris - Pago en línea
         $('#tokenCita').val("{{ $params }}");
 
         $('body').on('click', '#btn-pago-p2p', async function(){
-            await pagarPtp();
+            if(dataCita.hasOwnProperty("infoTransaccion")){
+                await pagarPtpServiciosYFarmacia();
+            }else{
+                await pagarPtp();
+            }
         })
         
+        let valorPago;
+        if(dataCita.hasOwnProperty("infoTransaccion")){
+            valorPago = dataCita.infoTransaccion.valor;
+        }else{
+            valorPago = dataCita.facturacion.totales.total;
+        }
         kushki = new KushkiCheckout({
             form: "kushki-pay-form",
             merchant_id: "{{ \App\Models\Veris::KUSHKI_MERCHANT_ID }}",
-            amount: dataCita.facturacion.totales.total,//valoresPago.valorCanalVirtual , // Monto total
+            amount: valorPago,//valoresPago.valorCanalVirtual , // Monto total
             currency: "USD", // Codigo de moneda, por defecto "USD"
             inTestEnvironment:Boolean({{ \App\Models\Veris::TEST_ENVIRONMENT_KUSHKI }}),
             isDeferred: true,
             is_subscription: false // true si se trata de una suscripcion (pago recurrente); false, si no.
         });
     });
+
+    async function pagarPtpServiciosYFarmacia(){
+        console.log(9)
+    }
 
     async function pagarPtp(){
         let args = [];
