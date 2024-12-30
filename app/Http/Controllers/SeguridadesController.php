@@ -31,7 +31,7 @@ class SeguridadesController extends Controller
                 ])->post(Veris::BASE_URL.$method);
         
         $response = json_decode($res->body());
-
+        // dd($response);
         if($response->code == 200){
             if (!is_null($response->data->codigoActivacion)) {
                 Session::put('userDataTmp', $response->data);
