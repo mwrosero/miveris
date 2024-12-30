@@ -22,7 +22,7 @@ class Veris extends Model
     public const IDORGANIZACIONRESULTADOSLAB = '365509c8-9596-4506-a5b3-487782d5876e';
     public const URL_KUSHKI = 'https://api.kushkipagos.com';
     public const KUSHKI_MERCHANT_ID = '10000003012872942409151942277385';
-    public const KUSHKI_PRIVATE_MERCHANT_ID = '1012311620856084913415314280226';
+    public const KUSHKI_PRIVATE_MERCHANT_ID = '10000003012852139010151942277385';
     public const IS_KUSHKI_TEST_ENVIRONMENT = true;
     public const ENVIRONMENT_NUVEI = "stg";
     public const TEST_ENVIRONMENT_KUSHKI = true;
@@ -47,7 +47,7 @@ class Veris extends Model
     // public const IDORGANIZACIONRESULTADOSLAB = '365509c8-9596-4506-a5b3-487782d5876e';
     // public const URL_KUSHKI = 'https://api.kushkipagos.com';
     // public const KUSHKI_MERCHANT_ID = '1012311620855990918315314280226';
-    // public const KUSHKI_PRIVATE_MERCHANT_ID = '10000003012852139010151942277385';
+    // public const KUSHKI_PRIVATE_MERCHANT_ID = '1012311620856084913415314280226';
     // public const IS_KUSHKI_TEST_ENVIRONMENT = false;
     // public const ENVIRONMENT_NUVEI = "prod";
     // public const TEST_ENVIRONMENT_KUSHKI = false;
