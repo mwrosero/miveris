@@ -292,74 +292,32 @@ class ExternalController extends Controller
                 ]);
             }
         }else if(isset($dataCita->datosIngresadosFactura) && !empty($dataCita->datosIngresadosFactura)){
-            dump($dataCita);
-            dd(0);
-            $returnUrl = "numeroIdentificacion=".$data['numeroIdentificacionCita']."&tipoIdentificacion=".$data['tipoIdentificacionCita']."&codArticulo=".$data['codigoReserva']."&tipoArticulo=CITA";
-            $showButtonRePay = false;
-            $codigoPreTransaccion = $data['idPreTransaccion'];
-            $razonSocial = "";
-            if($data['tipoIdentificacionFact'] == 1){
-                $razonSocial = $data['primerNombreFact'];
-            }
-            $executionId = "";
-            if(isset($data['executionId'])){
-                $executionId = $data['executionId'];
-            }
-            $method = '/'.Veris::BASE_WAR.'/v1/facturacion/crear_transaccion_virtual?idPreTransaccion='.$codigoPreTransaccion;
-            $responseTV = Veris::call([
+            $returnUrl = (isset($dataCita->returnUrl)) ? $dataCita->returnUrl : "numeroIdentificacion=".$data['numeroIdentificacionCita']."&tipoIdentificacion=".$data['tipoIdentificacionCita']."&codArticulo=".$data['codigoReserva']."&tipoArticulo=CITA";
+            $showButtonRePay = true;
+            // dd($dataCita);
+            $codigoTransaccion = $dataCita->transaccionVirtual->codigoTransaccion;
+            $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$dataCita->preTransaccion->codigoPreTransaccion;
+            $response = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
                 'data' => [
-                    "codigoUsuario" => $data['numeroIdentificacionFact'],
-                    "codigoTipoIdentificacion" => $data['tipoIdentificacionFact'],
-                    "numeroIdentificacion" => $data['numeroIdentificacionFact'],
-                    "nombreFactura" => $razonSocial,
-                    "primerNombre" => $data['primerNombreFact'],
-                    "primerApellido" => $data['primerApellidoFact'],
-                    "segundoApellido" => $data['segundoApellidoFact'],
-                    "direccionFactura" => $data['direccionFact'],
-                    "telefonoFactura" => $data['telefonoFact'],
-                    "emailFactura" => $data['mailFact'],
-                    "modeloDispositivo" => null,
-                    "versionSO" => null,
-                    "plataformaOrigen" => "WEB",
-                    "tipoBoton" => "KUSHKI",
-                    "executionId" => $executionId,
+                    "tipoIdentificacion" => $dataCita->datosIngresadosFactura->codigoTipoIdentificacion,
+                    "numeroIdentificacion" => $dataCita->datosIngresadosFactura->numeroIdentificacion,
+                    "codigoTransaccion" => $codigoTransaccion,
+                    "cardToken" => $data['kushkiToken'],
+                    "suscripcionToken" => null,
+                    "nombreTarjetahabiente" => $dataCita->datosIngresadosFactura->primerNombre." ".$dataCita->datosIngresadosFactura->primerApellido,
+                    "emailTarjetahabiente" => $dataCita->datosIngresadosFactura->emailFactura,
+                    "codigoSuscripcionTarjeta" => null,
+                    "codigoSeguridad" => null,
                     "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL
                 ],
                 'method'   => 'POST'
             ]);
-            // dd($responseTV);
-
-            if($responseTV->code == 200){
-                $codigoTransaccion = $responseTV->data->codigoTransaccion;
-                $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$codigoPreTransaccion;
-                $response = Veris::call([
-                    'endpoint' => Veris::BASE_URL.$method,
-                    'data' => [
-                        "tipoIdentificacion" => $data['tipoIdentificacionFact'],
-                        "numeroIdentificacion" => $data['tipoIdentificacionFact'],
-                        "codigoTransaccion" => $responseTV->data->codigoTransaccion,
-                        "cardToken" => $data['kushkiToken'],
-                        "suscripcionToken" => null,
-                        "nombreTarjetahabiente" => $data['primerNombreFact']." ".$data['primerApellidoFact'],
-                        "emailTarjetahabiente" => $data['mailFact'],
-                        "codigoSuscripcionTarjeta" => null,
-                        "codigoSeguridad" => null,
-                        "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL
-                    ],
-                    'method'   => 'POST'
-                ]);
-            }else{
-                /*return redirect()->route('payment-error')
-                    ->with('error',$response->message)
-                    ->with('showButtonRePay', true)
-                    ->with('urlRetornoPago', $returnUrl);*/
-                return redirect()->route('payment-error', [
-                    'error' => $responseTV->message,
-                    'showButtonRePay' => true,
-                    'urlRetornoPago' => $returnUrl,
-                ]);
-            }
+            // return redirect()->route('payment-error', [
+            //     'error' => $responseTV->message,
+            //     'showButtonRePay' => true,
+            //     'urlRetornoPago' => $returnUrl,
+            // ]);
         }else{
             // dd($dataCita);
             if(isset($dataCita->infoTransaccion)){
