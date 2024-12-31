@@ -334,6 +334,7 @@ Veris - Datos de facturación
 
         if (data.code == 200){
             dataCita.facturacion = data.data;
+            // dataCita.facturacion.datosFactura.permiteNuvei = "N";
             if(dataCita.facturacion.datosFactura.permiteNuvei == "S"){
             	$('#btn-next').addClass('btnNuvei');
             }
