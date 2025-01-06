@@ -20,7 +20,7 @@ class Veris extends Model
         public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
         public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';
         public const IDORGANIZACIONRESULTADOSLAB = '365509c8-9596-4506-a5b3-487782d5876e';
-        public const URL_KUSHKI = 'https://api.kushkipagos.com';
+        public const URL_KUSHKI = 'https://api-uat.kushkipagos.com';
         public const KUSHKI_MERCHANT_ID = '10000003012872942409151942277385';
         public const KUSHKI_PRIVATE_MERCHANT_ID = '10000003012852139010151942277385';
         public const IS_KUSHKI_TEST_ENVIRONMENT = true;
