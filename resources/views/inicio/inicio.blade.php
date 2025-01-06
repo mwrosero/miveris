@@ -102,11 +102,11 @@ Mi Veris - Inicio
             <h6 class="fw-medium border-start-veris ps-3 fs-18 mb-0">{{ __('Accesos rápidos') }}</h6>
         </div>
         <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-md-2 pb-md-4">
-            <div class="swiper-wrapper">
+            <div class="swiper-wrapper px-1">
                 <div class="swiper-slide">
                     <a href="{{route('promociones.promociones')}}">
                         <div class="card h-100 d-flex justify-content-center align-items-between border-ai">
-                            <div class="row g-0 justify-content-between align-items-center">
+                            <div class="row h-100 g-0 justify-content-between align-items-center">
                                 <div class="col-8 col-md-7">
                                     <div class="card-body p-0 ps-2">
                                         <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendamiento inteligente') }}</h6>
@@ -114,6 +114,7 @@ Mi Veris - Inicio
                                 </div>
                                 <div class="col-4 col-md-auto text-end">
                                     <img src="{{ asset('assets/img/card/svg/inteligencia_artificial.svg') }}" class="img-fluid me-2" alt=""  >
+                                    <div class="show-off"></div>
                                 </div>
                             </div>
                         </div>
@@ -180,7 +181,7 @@ Mi Veris - Inicio
             <a href="{{route('tratamientos')}}" class="fw-medium fs--2 me-1" id="verTodosTratamientos">Ver todos</a>
         </div>
         <div class="swiper swiper-tratamientos position-relative pb-4">
-            <div class="swiper-wrapper py-2" id="contenedorTratamientoHome">
+            <div class="swiper-wrapper px-1 py-2" id="contenedorTratamientoHome">
             </div>
             <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
             <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
@@ -194,7 +195,7 @@ Mi Veris - Inicio
             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
         </div>
         <div class="swiper swiper-proximas-citas position-relative py-3">
-            <div class="swiper-wrapper mb-3 mb-md-0" id=contenedorCitas>
+            <div class="swiper-wrapper px-1 mb-3 mb-md-0" id=contenedorCitas>
             </div>
             <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
             <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
@@ -208,7 +209,7 @@ Mi Veris - Inicio
             <a href="javascript:void(0)" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todos</a>
         </div>
         <div class="swiper swiper-urgencias-ambulatorias position-relative py-3">
-            <div class="swiper-wrapper" id="contenedorUrgenciasAmbulatorias">
+            <div class="swiper-wrapper px-1" id="contenedorUrgenciasAmbulatorias">
             </div>
             <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
             <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
