@@ -222,6 +222,7 @@ class ExternalController extends Controller
         //Realizar cobro y validar para donde redireccionar
         $data = $request->all();
         $dataCita = json_decode(utf8_encode(base64_decode(urldecode($data['dataCita']))));
+
         // dd($dataCita->datosIngresadosFactura);
         // $tokenCita = $data['tokenCita'];
         if($dataCita == null){
@@ -321,9 +322,12 @@ class ExternalController extends Controller
         }else{
             // dd($dataCita);
             if(isset($dataCita->infoTransaccion)){
+                $codigoTransaccion = $dataCita->infoTransaccion->codigoEpago;
+                $showButtonRePay = true;
                 // $codigoTransaccion = $dataCita->infoTransaccion->codigoPreTransaccion;
                 $accessToken = $this->getTokenExternalFacturacion();
                 if(isset($dataCita->infoTransaccion->codigoPreTransaccion)){
+                    $returnUrl = "codigoPreTransaccion=".$dataCita->infoTransaccion->codigoPreTransaccion;
                     $nemonicoFlujoCobro = Veris::NEMONICO_FLUJO_PAGO;
                     $esServicioCaja = true;
                     $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
@@ -333,6 +337,7 @@ class ExternalController extends Controller
                     }
                     $params = '?codigoEmpresa='.$codigoEmpresa.'&idPreTransaccion='.$dataCita->infoTransaccion->codigoPreTransaccion;
                 }else{
+                    $returnUrl = "idSolicitud=".$dataCita->infoTransaccion->codigoSolicitudServDomicilio;
                     $nemonicoFlujoCobro = Veris::NEMONICO_FARMACIA;
                     $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/farmacia_domicilio';
                     $codigoEmpresa = 1;
@@ -342,6 +347,7 @@ class ExternalController extends Controller
 
                     $params = '?codigoEmpresa='.$codigoEmpresa.'&codigoSolicitudServDomicilio='.$dataCita->infoTransaccion->codigoSolicitudServDomicilio;
                 }
+                // dd($returnUrl);
                 $response = Veris::call([
                     'endpoint' => Veris::BASE_URL.$method.$params,
                     'token'    => $accessToken,
@@ -384,30 +390,30 @@ class ExternalController extends Controller
                     ]);
 
                     // $listK['data']
-                    // dd($listK['status_code']);
+                    // dump($listK);
                     if($listK['status_code'] == 200 || $listK['status_code'] == 201){
-                        if(isset($listK['details']['recap'])){
-                            $recap = $listK['details']['recap'];
+                        if(isset($listK['data']['details']['recap'])){
+                            $recap = $listK['data']['details']['recap'];
                         }else{
                             $recap = 0;
                         }
-                        if(isset($listK['details']['processorName'])){
-                            $processorName = $listK['details']['processorName'];
+                        if(isset($listK['data']['details']['processorName'])){
+                            $processorName = $listK['data']['details']['processorName'];
                         }else{
                             $processorName = "-";
                         }
-                        if(isset($listK['details']['acquirerBank'])){
-                            $issuingBank = $listK['details']['acquirerBank'];
+                        if(isset($listK['data']['details']['acquirerBank'])){
+                            $issuingBank = $listK['data']['details']['acquirerBank'];
                         }else{
                             $issuingBank = "-";
                         }
-                        if(isset($listK['details']['maskedCardNumber'])){
-                            $maskedCardNumber = $listK['details']['maskedCardNumber'];
+                        if(isset($listK['data']['details']['maskedCardNumber'])){
+                            $maskedCardNumber = $listK['data']['details']['maskedCardNumber'];
                         }else{
                             $maskedCardNumber = "-";
                         }
-                        if(isset($listK['details']['cardType'])){
-                            $cardType = $listK['details']['cardType'];
+                        if(isset($listK['data']['details']['cardType'])){
+                            $cardType = $listK['data']['details']['cardType'];
                         }else{
                             $cardType = "-";
                         }
@@ -417,10 +423,10 @@ class ExternalController extends Controller
                             "codigoEpago"=> (int)$dataCita->infoTransaccion->codigoEpago, 
                             "nemonicoFlujoCobro"=> $nemonicoFlujoCobro,
                             "datoskushki"=> array(
-                                "ticketNumber"=> $listK['ticketNumber'], 
-                                "approvalCode"=> (int)$listK['details']['approvalCode'],
+                                "ticketNumber"=> $listK['data']['ticketNumber'] ?? "", 
+                                "approvalCode"=> (int)$listK['data']['details']['approvalCode'] ?? "",
                                 "recap"=> (int)$recap, 
-                                "paymentBrand"=> $listK['details']['paymentBrand'], 
+                                "paymentBrand"=> $listK['data']['details']['paymentBrand'] ?? "", 
                                 "maskedCreditCard"=> $maskedCardNumber,
                                 "processorName"=> $processorName, 
                                 "issuingBank"=> $issuingBank, 
@@ -429,32 +435,38 @@ class ExternalController extends Controller
                         );
 
                         if(isset($dataCita->infoTransaccion->codigoPreTransaccion)){
-                            array_push($dataK, array(
+                            $dataK["metadataIdFlujoCobro"] = array(
                                 "codigoIngresoVap" => null,
                                 "idPreTransaccion" => $dataCita->infoTransaccion->codigoPreTransaccion,
                                 "codigoSolicitudServDomicilio" => null
-                            ));
+                            );
                         }else{
-                            array_push($dataK, array(
+                            $dataK["metadataIdFlujoCobro"] = array(
                                 "codigoIngresoVap" => null,
                                 "idPreTransaccion" => null,
                                 "codigoSolicitudServDomicilio" => $dataCita->infoTransaccion->idSolicitud
-                            ));
+                            );
                         }
 
-                        dump($dataK);
+                        // dump($dataK);
                         $accessToken = $this->getTokenExternalFacturacion();
                         $method = '/facturacion/v1/pagos_electronicos/kushki/registrar_cobro/';
-                        $list = Veris::call([
+                        $response = Veris::call([
                             'endpoint' => Veris::BASE_URL.$method,
                             'token'    => $accessToken,
                             'method'   => 'POST',
                             'data'     => $dataK
                         ]);
-                        dd($list);
+                        // dd($list);
                     }else{
+                        // dd($listK['data']['message']);
                         // Mejora
-                        dd('Pago no realizado, mostrar error');
+                        // dd('Pago no realizado, mostrar error');
+                        return redirect()->route('payment-error', [
+                            'error' => $listK['data']['message'],
+                            'showButtonRePay' => true,
+                            'urlRetornoPago' => $returnUrl,
+                        ]);
                     }
                 }
             }else{
@@ -599,6 +611,7 @@ class ExternalController extends Controller
                 'method'   => 'GET'
             ]);
         }
+        // dd($list);
         return view('external.pasarela.comprobante_pago')
             ->with('data',$list);
     }

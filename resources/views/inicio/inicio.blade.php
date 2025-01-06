@@ -104,6 +104,22 @@ Mi Veris - Inicio
         <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-md-2 pb-md-4">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
+                    <a href="{{route('promociones.promociones')}}">
+                        <div class="card h-100 d-flex justify-content-center align-items-between border-ai">
+                            <div class="row g-0 justify-content-between align-items-center">
+                                <div class="col-8 col-md-7">
+                                    <div class="card-body p-0 ps-2">
+                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendamiento inteligente') }}</h6>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-md-auto text-end">
+                                    <img src="{{ asset('assets/img/card/svg/inteligencia_artificial.svg') }}" class="img-fluid me-2" alt=""  >
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="swiper-slide">
                     {{-- data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal" --}}
                     <a class="cursor-pointer d-block" id="cita-nueva">
                         <div class="card">
