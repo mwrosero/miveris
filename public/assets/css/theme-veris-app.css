@@ -312,34 +312,50 @@ html:not([dir="rtl"]) .border-start-veris {
   background-color: var(--bg-vris-very-dark-blue-medium) !important;
 }
 
-.border-ai{
-  --borderWidth: 3px;
+.border-ai {
   position: relative;
-  border-radius: var(--borderWidth);
+  border-radius: 8px; /* Radio del borde */
+  padding: 2px; /* Espacio interno para mostrar el borde */
+  background: linear-gradient(45deg, #296BEF, #66AAE2, #FE289A, #296BEF);
+  background-size: 300% 300%; /* Tamaño del fondo para animación */
+  animation: gradientAnimation 3s linear infinite; /* Animación */
 }
-.border-ai:after {
-  content: '';
-  position: absolute;
-  top: calc(-1 * var(--borderWidth));
-  left: calc(-1 * var(--borderWidth));
-  height: calc(100% + var(--borderWidth) * 2);
-  width: calc(100% + var(--borderWidth) * 2);
-  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
-  border-radius: calc(2 * var(--borderWidth));
-  z-index: -1;
-  animation: animatedgradient 3s ease alternate infinite;
-  background-size: 300% 300%;
+
+.border-ai > .row {
+  background: #fff; /* Fondo interno */
+  border-radius: 8px; /* Mantener el borde redondeado interno */
+  height: 97% !important;
+  width: 99% !important;
+  margin: auto;
 }
-@keyframes animatedgradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+
+@keyframes gradientAnimation {
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
+}
+
+.show-off {
+  width: 405px;
+  height: 605px;
+  position: relative;
+  top: -30px;
+  left: -40px;
+  transition: 1s;
+  transform: rotate(30deg);
+  background: linear-gradient(90deg, rgba(255,255,255, 0)50%, rgba(255,255,255,0.7)100%);
+}
+
+.show-off {
+  transform: rotate(0);
+  left: 30px;
+  top: 45px;
 }
 
 @media (max-width: 576px){

@@ -214,7 +214,9 @@ class ExternalController extends Controller
     }
 
     public function pagoExternoKushki($params){
+        $accessToken = $this->getTokenExternalFacturacion();
         return view('external.pasarela.pago_kushki_externo')
+            ->with('accessToken',$accessToken)
             ->with('params',$params);
     }
 

@@ -98,49 +98,33 @@ Veris - Pago en línea
     });
 
     async function pagarPtpServiciosYFarmacia(){
-        console.log(9)
-    }
+        $('#btn-pago-p2p').addClass('btn-p2p-disabled');
 
-    async function pagarPtp(){
+        // await updatePolitics();
+
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["endpoint"] = `${api_url}/facturacion/v1/pagos_electronicos/placetopay/crear_session`;
         args["method"] = "POST"; 
         args["showLoader"] = true; 
         args["bodyType"] = "json"; 
-        args["data"] = JSON.stringify({            
-            "codigoUsuario": dataCita.datosIngresadosFactura.numeroIdentificacion,
-            "codigoTipoIdentificacion": parseInt(dataCita.datosIngresadosFactura.codigoTipoIdentificacion),
-            "numeroIdentificacion": dataCita.datosIngresadosFactura.numeroIdentificacion,
-            "nombreFactura": dataCita.datosIngresadosFactura.nombreFactura,
-            "primerNombre": dataCita.datosIngresadosFactura.primerNombre,
-            "primerApellido": dataCita.datosIngresadosFactura.primerApellido,
-            "segundoApellido": dataCita.datosIngresadosFactura.segundoApellido,
-            "direccionFactura": dataCita.datosIngresadosFactura.direccionFactura,
-            "telefonoFactura": dataCita.datosIngresadosFactura.telefonoFactura,
-            "mailFactura": dataCita.datosIngresadosFactura.mailFactura,
-            "emailFactura": dataCita.datosIngresadosFactura.emailFactura,
-            "direccionIP": "",
-            "modeloDispositivo": "",
-            "versionSO": "",
-            "plataformaOrigen": "WEB",
-            "tipoBoton": "PTP",
-            "sistemaOperativo": "",
-            "idNavegador": "",
-            "idiomaNavegador": "",
-            "navegadorUA": "",
-            "executionId": dataCita.executionId,
-            "canalOrigenDigital": canalOrigen
+        args["token"] = "{{ $accessToken }}";
+        args["data"] = JSON.stringify({
+            "codigoEmpresa": 1,
+            "codigoEpago": parseInt(dataCita.infoTransaccion.codigoEpago)
         });
         const data = await call(args);
-        window.removeEventListener("beforeunload", beforeUnloadHandler);
-        if (data.code == 200){
-            dataCita.transaccionVirtual = data.data;
-            guardarData();
-            location.href = data.data.linkPagoPTP;
+        console.log(data);
+        
+        if (data.code == 200 && !data.data.existeTrxPendiente){
+            console.log(data.data.processUrl);
+            // location.href = data.data.processUrl;
         }else{
-            alert(data.message);
-        }
+            let msg = (data.data.existeTrxPendiente) ? data.data.mensajeTrxPendiente : data.message;
+            $('#mensaje_400').html(msg);
+            $('#modalError400').modal('show');
+        }    
     }
+
     function guardarData(){
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
     }
