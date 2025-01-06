@@ -117,7 +117,7 @@ Veris - Pago en línea
         
         if (data.code == 200 && !data.data.existeTrxPendiente){
             console.log(data.data.processUrl);
-            // location.href = data.data.processUrl;
+            location.href = data.data.processUrl;
         }else{
             let msg = (data.data.existeTrxPendiente) ? data.data.mensajeTrxPendiente : data.message;
             $('#mensaje_400').html(msg);
