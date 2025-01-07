@@ -104,7 +104,7 @@ Mi Veris - Inicio
         <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-md-2 pb-md-4">
             <div class="swiper-wrapper px-1">
                 <div class="swiper-slide">
-                    <a href="{{route('promociones.promociones')}}">
+                    <a href="{{route('citas.agendamiento-ai')}}">
                         <div class="card h-100 d-flex justify-content-center align-items-between border-ai">
                             <div class="row h-100 g-0 justify-content-between align-items-center">
                                 <div class="col-8 col-md-7">
@@ -114,7 +114,6 @@ Mi Veris - Inicio
                                 </div>
                                 <div class="col-4 col-md-auto text-end">
                                     <img src="{{ asset('assets/img/card/svg/inteligencia_artificial.svg') }}" class="img-fluid me-2" alt=""  >
-                                    <div class="show-off"></div>
                                 </div>
                             </div>
                         </div>
