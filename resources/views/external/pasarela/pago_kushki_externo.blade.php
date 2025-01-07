@@ -69,6 +69,7 @@ Veris - Pago en línea
     let dataCita = JSON.parse(local);
 
     document.addEventListener("DOMContentLoaded", async function () {
+
         $('#dataCita').val(btoa(JSON.stringify(dataCita)));
         $('#tokenCita').val("{{ $params }}");
 
@@ -96,6 +97,47 @@ Veris - Pago en línea
             is_subscription: false // true si se trata de una suscripcion (pago recurrente); false, si no.
         });
     });
+
+    async function pagarPtp(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["method"] = "POST"; 
+        args["showLoader"] = true; 
+        args["bodyType"] = "json"; 
+        args["data"] = JSON.stringify({            
+            "codigoUsuario": dataCita.datosIngresadosFactura.numeroIdentificacion,
+            "codigoTipoIdentificacion": parseInt(dataCita.datosIngresadosFactura.codigoTipoIdentificacion),
+            "numeroIdentificacion": dataCita.datosIngresadosFactura.numeroIdentificacion,
+            "nombreFactura": dataCita.datosIngresadosFactura.nombreFactura,
+            "primerNombre": dataCita.datosIngresadosFactura.primerNombre,
+            "primerApellido": dataCita.datosIngresadosFactura.primerApellido,
+            "segundoApellido": dataCita.datosIngresadosFactura.segundoApellido,
+            "direccionFactura": dataCita.datosIngresadosFactura.direccionFactura,
+            "telefonoFactura": dataCita.datosIngresadosFactura.telefonoFactura,
+            "mailFactura": dataCita.datosIngresadosFactura.mailFactura,
+            "emailFactura": dataCita.datosIngresadosFactura.emailFactura,
+            "direccionIP": "",
+            "modeloDispositivo": "",
+            "versionSO": "",
+            "plataformaOrigen": "WEB",
+            "tipoBoton": "PTP",
+            "sistemaOperativo": "",
+            "idNavegador": "",
+            "idiomaNavegador": "",
+            "navegadorUA": "",
+            "executionId": dataCita.executionId,
+            "canalOrigenDigital": canalOrigen
+        });
+        const data = await call(args);
+        window.removeEventListener("beforeunload", beforeUnloadHandler);
+        if (data.code == 200){
+            dataCita.transaccionVirtual = data.data;
+            guardarData();
+            location.href = data.data.linkPagoPTP;
+        }else{
+            alert(data.message);
+        }
+    }
 
     async function pagarPtpServiciosYFarmacia(){
         $('#btn-pago-p2p').addClass('btn-p2p-disabled');

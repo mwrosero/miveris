@@ -198,4 +198,8 @@ class CitasController extends Controller
     public function reservarVUA($params) {
         return view('citas.citas_vua')->with('params',$params);
     }
+
+    public function mostrarAgendamientoAI(){
+        return view('citas.agendamiento_ai');
+    }
 }

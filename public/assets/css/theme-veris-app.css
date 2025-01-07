@@ -318,7 +318,7 @@ html:not([dir="rtl"]) .border-start-veris {
   padding: 2px; /* Espacio interno para mostrar el borde */
   background: linear-gradient(45deg, #296BEF, #66AAE2, #FE289A, #296BEF);
   background-size: 300% 300%; /* Tamaño del fondo para animación */
-  animation: gradientAnimation 3s linear infinite; /* Animación */
+  animation: gradientAnimation 2.5s linear infinite; /* Animación */
 }
 
 .border-ai > .row {
@@ -339,23 +339,6 @@ html:not([dir="rtl"]) .border-start-veris {
   100% {
       background-position: 0% 50%;
   }
-}
-
-.show-off {
-  width: 405px;
-  height: 605px;
-  position: relative;
-  top: -30px;
-  left: -40px;
-  transition: 1s;
-  transform: rotate(30deg);
-  background: linear-gradient(90deg, rgba(255,255,255, 0)50%, rgba(255,255,255,0.7)100%);
-}
-
-.show-off {
-  transform: rotate(0);
-  left: 30px;
-  top: 45px;
 }
 
 @media (max-width: 576px){
