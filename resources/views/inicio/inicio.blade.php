@@ -103,7 +103,8 @@ Mi Veris - Inicio
         </div>
         <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-md-2 pb-md-4">
             <div class="swiper-wrapper px-1">
-                <div class="swiper-slide">
+                {{-- Inteligencia Artificial --}}
+                {{-- <div class="swiper-slide">
                     <a href="{{route('citas.agendamiento-ai')}}">
                         <div class="card h-100 d-flex justify-content-center align-items-between border-ai">
                             <div class="row h-100 g-0 justify-content-between align-items-center">
@@ -118,7 +119,7 @@ Mi Veris - Inicio
                             </div>
                         </div>
                     </a>
-                </div>
+                </div> --}}
                 <div class="swiper-slide">
                     {{-- data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal" --}}
                     <a class="cursor-pointer d-block" id="cita-nueva">
