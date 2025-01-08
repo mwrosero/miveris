@@ -747,10 +747,10 @@ class ExternalController extends Controller
     }
 
     public function devoluciones(){
-        /*$accessToken = $this->getTokenExternalFacturacion();
+        $accessToken = $this->getTokenExternalFacturacion();
         return view('external.financiero.devoluciones')
-                ->with('accessToken',$accessToken);*/
-        return view('external.mantenimiento.index');
+                ->with('accessToken',$accessToken);
+        // return view('external.mantenimiento.index');
     }
 
     public function trackDevoluciones($numeroFactura, $tipoIdentificacion,$numeroIdentificacion){
