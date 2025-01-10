@@ -72,11 +72,11 @@
             };
         </script>
         
-        @include('template.analytics')
+        @include('template.analytics-external')
     </head>
 
     <body>
-        @include('template.analytics-no-script')
+        @include('template.analytics-external-no-script')
         <!-- Layout wrapper -->
         <div class="layout-wrapper layout-navbar-full layout-horizontal layout-without-menu">
         {{-- <div class="layout-wrapper layout-content-navbar"> --}}
