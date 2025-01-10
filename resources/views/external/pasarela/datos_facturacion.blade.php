@@ -589,6 +589,9 @@ Veris - Datos de facturación
     }
 
 	function createPostForm(response) {
+		if(dataCita.hasOwnProperty('facturacion')){
+    		fbq('track', 'Purchase', {value: dataCita.facturacion.totales.total, currency: 'USD'});
+    	}
 		var $form = $('<form>', {
 			method: 'POST',
 			action: '/external/payment/nuvei/procesar/{{ $tokenCita }}'
