@@ -612,7 +612,7 @@ Veris - Resultados de Laboratorio
             const result = await callBlobService(args);
             // pdfUrl = URL.createObjectURL(result.blob);
 
-            const blobUrl = window.URL || window.webkitURL;
+            const blobUrl = URL || webkitURL;
             pdfUrl = blobUrl.createObjectURL(result.blob);
             
             let headers = result.headers;
