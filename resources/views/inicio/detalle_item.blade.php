@@ -49,6 +49,36 @@ Mi Veris - Citas - Detalle
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
+        await drawDetalles();
+
+        $('body').on('click', '.btn-agendar', async function(){
+            let detalle = JSON.parse($(this).attr('data-rel'));
+            dataCita.detalleItemPaquete = detalle;
+            dataCita.origen = "paquetes";
+            dataCita.online = dataCita.promocion.esOnline;
+            dataCita.especialidad = {
+                codigoEspecialidad: dataCita.promocion.codigoEspecialidad,
+                codigoPrestacion: dataCita.promocion.codigoPrestacion,
+                codigoServicio: dataCita.promocion.codigoServicio,
+                //codigoTipoAtencion: datosServicio.codigoTipoAtencion,
+                esOnline: dataCita.promocion.esOnline,
+                nombre: dataCita.promocion.nombreEspecialidad
+            }
+            dataCita.convenio = {
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+                "secuenciaAfiliado" : null,
+            };
+
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            showLoader();
+            window.location.href = '/seleccionar-datos-cita/{{ $params }}';
+        })
+    })
+
+    async function drawDetalles(){
         let showResultados = false;
         let elem = ``;
         $.each(dataCita.detalle, function(key, value){
@@ -130,26 +160,26 @@ Mi Veris - Citas - Detalle
         }
 
         $('#listado-detalles').html(elem);
-    })
+    }
 
     function drawBtnCardItem(detalles){
-        /*console.log(detalles);
-        let tipoAgenda = detalles.tipoAgenda;
+        console.log(detalles);
+        // "tipoAgenda": "CONSULTA_MEDICA"  o "TERAPIAS"
+        // esAgendable:True
+        // si el detalle tiene estado Disponible
+        // y detalleReserva==null
+        let tipoAgenda = dataCita.promocion.tipoAgenda;
         let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
-        let titleBtn = `Ver detalle`;
-        let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
-        let btnEnviaAgendarClass = `btn-detalle`;
-        if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable && tieneItemsSinAgendar){
-            titleBtn = `Agendar`;
-            if(detalles.detalles.length == 1){
-                let btnEnviaAgendarClass = `btn-agendar-item`;
+        let titleBtn = `Agendar`;
+        let btnEnviaAgendarClass = `btn-agendar`;
+        if(tiposAgendaPermitida.includes(tipoAgenda) && dataCita.promocion.esAgendable && detalles.estado == "Disponible"){
+            if(detalles.detalleReserva != null){
+                titleBtn = `Cambiar fecha`;
+                btnEnviaAgendarClass = `btn-CambiarFechaCita`;
             }
         }
-        return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>
+        return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" data-rel='${JSON.stringify(detalles)}'>
                 ${titleBtn}
-            </div>`;*/
-        return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none " promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles)}'>
-                Agendar
             </div>`;
     }
 

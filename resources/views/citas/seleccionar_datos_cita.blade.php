@@ -66,7 +66,7 @@ Elige datos para la Cita
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Datos para la cita') }}</h5>
     </div>
-    <section class="p-0 bg-dark-blue-veris-medium-sm mt-0">
+    <section class="p-0 bg-dark-blue-veris-medium-sm mt-0 box-contenido-seleccion invisible element-no-paquete">
         <div class="row g-0 justify-content-center">
             <div class="col-auto p-3 bg-dark-blue-veris-medium" style="min-width: 375px;">
                 <p class="text-white fw-medium fs--18 mt-1 mb-2">Elige la modalidad de la cita médica</p>
@@ -81,7 +81,7 @@ Elige datos para la Cita
             </div>
         </div>
     </section>
-    <section class="p-0">
+    <section class="p-0 box-contenido-seleccion invisible">
         <div class="row g-0 justify-content-center">
             <div class="col-auto ps-3 pe-3" style="min-width: 375px;">
                 <p class="card-body fw-medium fs--18 mt-3 mb-3 pt-1">Elige los datos de la cita médica</p>
@@ -105,8 +105,8 @@ Elige datos para la Cita
                         </form>
                     </div>
                 </div>
-                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Convenio*</p>
-                <div class="mb-3 box-btn-convenio">
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1 element-no-paquete">Convenio*</p>
+                <div class="mb-3 box-btn-convenio element-no-paquete">
                     <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#convenioModal" id="btn-convenio" data-rel="">
                         <p class="fs--1 line-height-16 fw-medium fs--1 mb-0 text-truncate"></p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Convenios"> 
@@ -176,8 +176,8 @@ Elige datos para la Cita
                         </form>
                     </div>
                 </div>
-                <p class="text-title-select fw-medium fs--1 mt-3 mb-1">Especialidad*</p>
-                <div class="mb-3 box-btn-especialidad">
+                <p class="text-title-select fw-medium fs--1 mt-3 mb-1 element-no-paquete">Especialidad*</p>
+                <div class="mb-3 box-btn-especialidad element-no-paquete">
                     <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" data-bs-toggle="modal" data-bs-target="#especialidadModal" id="btn-especialidad" data-rel="">
                         <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
                         <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
@@ -314,6 +314,17 @@ Elige datos para la Cita
             await cargarConvenios();
             await consultarCiudades();
             $('#btn-convenio').removeClass('disabled selectable')
+        }else if(dataCita.origen == "paquetes"){
+            $('.element-no-paquete').addClass('d-none');
+            $('.label-sugerencia').removeClass('d-none');
+            if(dataCita.online == "N"){
+                await consultarCiudades();
+                await consultarCentralesMedicasRecomendadas();
+            }
+            $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
+            $('.btn-modalidad').css('pointer-events','none');
+            $('#btn-ciudad').removeClass('disabled');
+            $('#btn-central').removeClass('disabled');
         }else{
             $('.label-sugerencia').removeClass('d-none');
         // await consultarEspecialidades();
@@ -324,6 +335,8 @@ Elige datos para la Cita
             await consultarCentralesMedicasRecomendadas();
         //}
         }
+
+        $('.box-contenido-seleccion').removeClass('invisible');
 
         $('body').on('click','#btn-continuar', async function(){
             let msg = ``;

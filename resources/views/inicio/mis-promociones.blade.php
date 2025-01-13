@@ -124,7 +124,8 @@ Mi Veris - Citas - Mis Promociones
         $('body').on('click','.btn-detalle', function(){
             let url = '/mi-promocion/detalle/';
             let data = {
-                "paquete": JSON.parse($(this).attr("data-rel"))
+                "paquete": JSON.parse($(this).attr("data-rel")),
+                "paciente": JSON.parse($('input[name="listGroupRadios"]:checked').attr("data-rel"))
             };
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
