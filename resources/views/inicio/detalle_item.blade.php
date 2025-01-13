@@ -97,11 +97,21 @@ Mi Veris - Citas - Detalle
                 }
                 elem += `<div class="col-12 mt-3">
                             <div class="card h-100" style="box-shadow: 0px 4px 8px 0px #0000001A;">
-                                <div class="card-body p--2 d-flex justify-content-between align-items-center">
-                                    <div class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 m-0">
-                                        ${value.nombreDetalle}
+                                <div class="card-body p--2">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 m-0">
+                                            ${value.nombreDetalle}
+                                        </div>
+                                        ${estado}
                                     </div>
-                                    ${estado}
+                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                        <div class="avatar-sm me-2">
+                                            <img src="${quitarComillas(dataCita.promocion.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                        </div>
+                                        <div>
+                                            ${ drawBtnCardItem(value) }
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>`;
@@ -121,6 +131,27 @@ Mi Veris - Citas - Detalle
 
         $('#listado-detalles').html(elem);
     })
+
+    function drawBtnCardItem(detalles){
+        /*console.log(detalles);
+        let tipoAgenda = detalles.tipoAgenda;
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
+        let titleBtn = `Ver detalle`;
+        let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
+        let btnEnviaAgendarClass = `btn-detalle`;
+        if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable && tieneItemsSinAgendar){
+            titleBtn = `Agendar`;
+            if(detalles.detalles.length == 1){
+                let btnEnviaAgendarClass = `btn-agendar-item`;
+            }
+        }
+        return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>
+                ${titleBtn}
+            </div>`;*/
+        return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none " promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles)}'>
+                Agendar
+            </div>`;
+    }
 
 </script>
 <style>
