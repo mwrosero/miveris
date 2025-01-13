@@ -610,16 +610,20 @@ Veris - Resultados de Laboratorio
 
         try {
             const result = await callBlobService(args);
-            pdfUrl = URL.createObjectURL(result.blob);
+            // pdfUrl = URL.createObjectURL(result.blob);
+
+            const blobUrl = window.URL || window.webkitURL;
+            pdfUrl = blobUrl.createObjectURL(result.blob);
+            
             let headers = result.headers;
             idGeneracionArchivo = headers.idgeneracionarchivo
             console.log(result.headers);
             await drawPdf(pdfUrl);
             // window.open(pdfUrl, '_blank');
-            // setTimeout(() => {
-            //     URL.revokeObjectURL(pdfUrl);
-            // }, 100);
             $('#modalViewer').modal('show');
+            setTimeout(() => {
+                blobUrl.revokeObjectURL(pdfUrl);
+            }, 100);
         } catch (error) {
             $('#noFile').modal('show');
             console.error('Error al obtener el PDF:', error);
@@ -633,7 +637,8 @@ Veris - Resultados de Laboratorio
             pageNum = 1,
             pageRendering = false,
             pageNumPending = null,
-            scale = 10.0;
+            scale = 1.5;
+            //scale = 10.0;
 
         function renderPage(num, canvas) {
             var ctx = canvas.getContext('2d');
