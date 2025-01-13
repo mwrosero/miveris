@@ -122,7 +122,7 @@ Mi Veris - Citas - Detalle
                                         <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                     </div>
                                     <div>
-                                        <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>Ver detalle</div>
+                                        ${ drawBtnCardItem(detalles) }
                                     </div>
                                 </div>
                             </div>
@@ -167,6 +167,34 @@ Mi Veris - Citas - Detalle
         }else{
             alert(data.message);
         }
+    }
+
+    function drawBtnCardItem(detalles){
+        console.log(detalles);
+        let tipoAgenda = detalles.tipoAgenda;
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
+        let titleBtn = `Ver detalle`;
+        let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
+        let btnEnviaAgendarClass = `btn-detalle`;
+        if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable && tieneItemsSinAgendar){
+            titleBtn = `Agendar`;
+            if(detalles.detalles.length == 1){
+                let btnEnviaAgendarClass = `btn-agendar-item`;
+            }
+        }
+        return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>
+                ${titleBtn}
+            </div>`;
+    }
+
+    function verificarItemsSinAgendar(items){
+        let tienItems = false;
+        $.each(items, function(key, value){
+            if(value.detalleReserva == null){
+                tieneItems = true;
+            }
+        })
+        return tieneItems;
     }
 </script>
 @endpush
