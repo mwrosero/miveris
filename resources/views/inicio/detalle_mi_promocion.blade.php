@@ -74,9 +74,11 @@ Mi Veris - Citas - Detalle
         $('body').on('click','.btn-detalle', function(){
             let url = '/detalle/item/';
             let data = {
+                "secuenciaPaquetePaciente": dataCita.paquete.secuenciaPaquetePaciente,
                 "detalle": JSON.parse($(this).attr("data-rel")),
                 "promocion": JSON.parse($(this).attr("promocion-rel")),
-                "nombrePaciente": dataCita.paquete.nombrePaciente
+                "nombrePaciente": dataCita.paquete.nombrePaciente,
+                "paciente": dataCita.paciente
             };
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
