@@ -1,6 +1,5 @@
 @extends('template.app-template-veris')
 @section('title')
-{{-- Detalle de promo comprada --}}
 Mi Veris - Citas - Detalle
 @endsection
 @push('css')
@@ -75,54 +74,12 @@ Mi Veris - Citas - Detalle
         $('body').on('click','.btn-detalle', function(){
             let url = '/detalle/item/';
             let data = {
-                "secuenciaPaquetePaciente": dataCita.paquete.secuenciaPaquetePaciente,
                 "detalle": JSON.parse($(this).attr("data-rel")),
-                "detalleItemPaquete": JSON.parse($(this).attr("data-rel"))[0],
                 "promocion": JSON.parse($(this).attr("promocion-rel")),
-                "nombrePaciente": dataCita.paquete.nombrePaciente,
-                "paciente": dataCita.paciente
+                "nombrePaciente": dataCita.paquete.nombrePaciente
             };
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
-        })
-
-        $('body').on('click','.btn-agendar-item', function(){
-            let promocion = JSON.parse($(this).attr("promocion-rel"));
-            let detalle = JSON.parse($(this).attr('data-rel'));
-            let url = '/seleccionar-datos-cita/';
-            if(promocion.esOnline == "S"){
-                url = '/citas-elegir-fecha-doctor/';
-            }
-
-            dataCita.secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente;
-            dataCita.nombrePaciente = dataCita.paquete.nombrePaciente;
-            dataCita.paciente = dataCita.paciente;
-            dataCita.promocion = promocion;
-            dataCita.detalle = detalle;
-            dataCita.detalleItemPaquete = detalle[0];
-            dataCita.origen = "paquetes";
-            dataCita.online = promocion.esOnline;
-            dataCita.especialidad = {
-                codigoEspecialidad: promocion.codigoEspecialidad,
-                codigoPrestacion: promocion.codigoPrestacion,
-                codigoServicio: promocion.codigoServicio,
-                //codigoTipoAtencion: datosServicio.codigoTipoAtencion,
-                esOnline: promocion.esOnline,
-                nombre: promocion.nombreEspecialidad
-            }
-            dataCita.convenio = {
-                "permitePago": "S",
-                "permiteReserva": "S",
-                "idCliente": null,
-                "codigoConvenio": null,
-                "secuenciaAfiliado" : null,
-            };
-
-            console.log(dataCita);
-            //return;
-
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
-            window.location.href = `${url}{{ $tokenCita }}`;
         })
     })
 
@@ -165,7 +122,7 @@ Mi Veris - Citas - Detalle
                                         <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                     </div>
                                     <div>
-                                        ${ drawBtnCardItem(detalles) }
+                                        <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>Ver detalle</div>
                                     </div>
                                 </div>
                             </div>
@@ -190,7 +147,7 @@ Mi Veris - Citas - Detalle
                             <div class="card-body p--2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                    <div class="ms-auto fs--2"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${detalles.estado}</span></div>
+                                    <div class="ms-auto fs--2"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span></div>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                     <div class="avatar-sm me-2">
@@ -210,36 +167,6 @@ Mi Veris - Citas - Detalle
         }else{
             alert(data.message);
         }
-    }
-
-    function drawBtnCardItem(detalles){
-        console.log(detalles);
-        let tipoAgenda = detalles.tipoAgenda;
-        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
-        let titleBtn = `Ver detalle`;
-        let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
-        let btnEnviaAgendarClass = `btn-detalle`;
-        if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable && tieneItemsSinAgendar){
-            titleBtn = `Agendar`;
-            console.log(0)
-            if(detalles.detalles.length == 1){
-                console.log(1)
-                btnEnviaAgendarClass = `btn-agendar-item`;
-            }
-        }
-        return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>
-                ${titleBtn}
-            </div>`;
-    }
-
-    function verificarItemsSinAgendar(items){
-        let tienItems = false;
-        $.each(items, function(key, value){
-            if(value.detalleReserva == null){
-                tieneItems = true;
-            }
-        })
-        return tieneItems;
     }
 </script>
 @endpush

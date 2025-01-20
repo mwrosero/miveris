@@ -1,6 +1,5 @@
 @extends('template.app-template-veris')
 @section('title')
-{{-- Detalle de promo para comprar --}}
 Mi Veris - Citas - Detalle
 @endsection
 @push('css')
