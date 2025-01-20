@@ -166,8 +166,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 location = "/";
             }
         })
-
-        if(!dataCita.paquete && !dataCita.promocion && !dataCita.datosTratamiento && !dataCita.ordenExterna){
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
+        if((!dataCita.paquete && !dataCita.promocion && !dataCita.datosTratamiento && !dataCita.ordenExterna) || (dataCita.origen == "paquetes" && tiposAgendaPermitida.includes(dataCita.promocion.tipoAgenda))){
             if(dataCita.online == "S"){
                 let card = await drawCardAgenda();
                 $('.content-online').html(card).removeClass('d-none');
@@ -325,7 +325,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 return "<br><b>" + p1 + "</b>";
                             }) }</p>
                         <p class="card-text text-veris-many line-height-16 fs--2">${datoReserva.data.mensajeInformacion2.replace(/\*(.*?)\*/g, function(match, p1) {
-                                return "<br><b>" + p1 + "</b>";
+                                // return "<br><b>" + p1 + "</b>";
+                                return " <b>" + p1 + "</b>";
                             }) }</p>
                     </div>
                     <div class="col-5 ps-2">

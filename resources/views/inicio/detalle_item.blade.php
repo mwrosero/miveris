@@ -46,8 +46,10 @@ Mi Veris - Citas - Detalle
 @endsection
 @push('scripts')
 <script>
+    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    console.log(dataCita);
     document.addEventListener("DOMContentLoaded", async function () {
         await drawDetalles();
 
@@ -72,28 +74,104 @@ Mi Veris - Citas - Detalle
                 "secuenciaAfiliado" : null,
             };
 
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            // console.log(dataCita);return;
+
+            let url = '/seleccionar-datos-cita/';
+            if(dataCita.promocion.esOnline == "S"){
+                url = '/citas-elegir-fecha-doctor/';
+            }
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
             showLoader();
-            window.location.href = '/seleccionar-datos-cita/{{ $params }}';
+            window.location.href = `${url}{{ $tokenCita }}`;
+        })
+
+        $('body').on('click', '.btn-CambiarFechaCita', async function(){
+            let detalle = JSON.parse($(this).attr('data-rel'));
+
+            let dataReserva = {
+                "detalleItemPaquete": detalle,
+                "online": dataCita.promocion.esOnline,
+                "especialidad": {
+                    codigoEspecialidad: dataCita.promocion.codigoEspecialidad,
+                    codigoPrestacion: dataCita.promocion.codigoPrestacion,
+                    codigoServicio: dataCita.promocion.codigoServicio,
+                    //codigoTipoAtencion: datosServicio.codigoTipoAtencion,
+                    esOnline: dataCita.promocion.esOnline,
+                    nombre: dataCita.promocion.nombreEspecialidad
+                },
+                "convenio": {
+                    "permitePago": "S",
+                    "permiteReserva": "S",
+                    "idCliente": null,
+                    "codigoConvenio": null,
+                    "secuenciaAfiliado" : null,
+                },
+                "paciente": {
+                    "numeroIdentificacion": dataCita.paciente.numeroIdentificacion,
+                    "tipoIdentificacion": dataCita.paciente.tipoIdentificacion,
+                    "nombrePaciente": dataCita.nombrePaciente,
+                    "numeroPaciente": dataCita.paciente.numeroPaciente
+                },
+                "central": {
+                    "codigoSucursal": dataCita.detalleItemPaquete.detalleReserva.codigoSucursal,
+                    "nombreSucursal": dataCita.detalleItemPaquete.detalleReserva.nombreSucursal
+                },
+                "ciudad": {
+                    "codigoPais": dataCita.detalleItemPaquete.detalleReserva.idCiudad,
+                    "codigoProvincia": dataCita.detalleItemPaquete.detalleReserva.idProvincia,
+                    "codigoCiudad": dataCita.detalleItemPaquete.detalleReserva.idPais
+                },
+                "reservaEdit": {
+                    "estaPagada": "S",
+                    "numeroOrden": detalle.numeroOrden,
+                    "lineaDetalleOrden": detalle.lineaDetalleOrden,
+                    "codigoEmpresaOrden": detalle.codigoEmpresaOrden,
+                    "idOrdenAgendable": '',
+                    "idCita": detalle.detalleReserva.codigoReserva,
+                    "esSesionOdonto": "N"
+                },
+                "origen": "paquetes"
+            }
+
+            // console.log(dataReserva);return;
+            
+            let url = '/seleccionar-datos-cita/';
+            if(dataCita.promocion.esOnline == "S"){
+                url = '/citas-elegir-fecha-doctor/';
+            }
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataReserva));
+            showLoader();
+            window.location.href = `${url}{{ $tokenCita }}`;
         })
     })
 
     async function drawDetalles(){
         let showResultados = false;
         let elem = ``;
+        let tipoAgenda = dataCita.promocion.tipoAgenda;
         $.each(dataCita.detalle, function(key, value){
             let estado = ``;
             if(value.estado == "Atendida"){
                 showResultados = true;
             }
-            if(value.estado == "Atendida" && dataCita.promocion.tipoServicio != "LABORATORIO"){
+            //if(value.estado == "Atendida" && dataCita.promocion.tipoServicio != "LABORATORIO"){
+            console.log(value.estado)
+            if((value.estado == "Atendida" || value.estado == "Agendada") && tiposAgendaPermitida.includes(tipoAgenda)){
+                let btnReagendar = ``;
+                if(value.estado == "Agendada"){
+                    btnReagendar += `<div>
+                        ${ drawBtnCardItem(value) }
+                    </div>`
+                }
                 elem += `<div class="col-12 mt-3">
                     <div class="card">
                         <div class="card-body p--2">
                             <div class="d-flex justify-content-between align-items-start">
                                 <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1">${capitalizarElemento(value.nombreDetalle)}</h6>
                                 <span class="text-warning-veris fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">
-                                    <i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">Atendida</span>
+                                    <i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${value.estado}</span>
                                 </span>
                             </div>
                             <h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.nombreSucursal)}</h6>
@@ -104,6 +182,7 @@ Mi Veris - Citas - Detalle
                                 <div class="avatar-sm me-2">
                                     <img src="${quitarComillas(dataCita.promocion.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                 </div>
+                                ${btnReagendar}
                             </div>
                         </div>
                     </div>
@@ -133,16 +212,18 @@ Mi Veris - Citas - Detalle
                                             ${value.nombreDetalle}
                                         </div>
                                         ${estado}
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                    </div>`;
+                                if(tiposAgendaPermitida.includes(tipoAgenda)){
+                                    elem += `<div class="d-flex justify-content-between align-items-center mt-2">
                                         <div class="avatar-sm me-2">
                                             <img src="${quitarComillas(dataCita.promocion.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                         </div>
                                         <div>
                                             ${ drawBtnCardItem(value) }
                                         </div>
-                                    </div>
-                                </div>
+                                    </div>`;
+                                }
+                                elem += `</div>
                             </div>
                         </div>`;
             }
@@ -163,18 +244,16 @@ Mi Veris - Citas - Detalle
     }
 
     function drawBtnCardItem(detalles){
-        console.log(detalles);
         // "tipoAgenda": "CONSULTA_MEDICA"  o "TERAPIAS"
         // esAgendable:True
         // si el detalle tiene estado Disponible
         // y detalleReserva==null
         let tipoAgenda = dataCita.promocion.tipoAgenda;
-        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
         let titleBtn = `Agendar`;
         let btnEnviaAgendarClass = `btn-agendar`;
-        if(tiposAgendaPermitida.includes(tipoAgenda) && dataCita.promocion.esAgendable && detalles.estado == "Disponible"){
+        if(tiposAgendaPermitida.includes(tipoAgenda) && dataCita.promocion.esAgendable && detalles.estado == "Agendada" && dataCita.detalleItemPaquete.detalleReserva != null && dataCita.detalleItemPaquete.detalleReserva.habilitaBotonCambio == "S"){
             if(detalles.detalleReserva != null){
-                titleBtn = `Cambiar fecha`;
+                titleBtn = `${dataCita.detalleItemPaquete.detalleReserva.nombreBotonCambiar}`;
                 btnEnviaAgendarClass = `btn-CambiarFechaCita`;
             }
         }
