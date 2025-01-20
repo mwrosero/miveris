@@ -336,9 +336,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
-        if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
+        if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP") || dataCita.hasOwnProperty('detalleItemPaquete')){
             $('#nombreFiltro').addClass('d-none');
             $('#pills-tab').addClass('d-none');
+            $('#listaMedicos').addClass('pt-3');
         }else{
             $('#nombreFiltro').removeClass('d-none');
             $('#pills-tab').removeClass('d-none');

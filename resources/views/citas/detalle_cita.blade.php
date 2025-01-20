@@ -44,9 +44,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Revisa tus datos') }}</h5>
     </div>
-    <section class="p-3 mb-3">
+    <section class="p-3 mb-3 invisible detalles-cita-box">
         <div class="row g-4 justify-content-center">
-            <div class="col-md-4">
+            <div class="col-md-4 box-card-precio">
                 <div class="card">
                     <div class="card-header bg-grayish-blue p--2">
                         <h5 class="text-veris-many fw-medium line-height-16 m-0">{{ __('Precio') }} </h5>
@@ -159,6 +159,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 reservarCita();
             }
         });
+
+        if(dataCita.origen == "paquetes"){
+            $('.detalles-cita-box').removeClass('invisible')
+        }
     });
 
     async function eliminarReserva(){
@@ -238,6 +242,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     // consultar grupo familiar
     async function obtenerPrecio() {
+        if(dataCita.origen == "paquetes"){
+            $('.box-card-precio').addClass('d-none');
+            $('.box-precio').html(`<div class="col-12 text-center"><h1 class="text-primary-veris fw-medium fs--36 line-height-44 mb-0" id="precioTotal">$0.00</h1>
+                </div>`);
+            $('#msg-cita').append(`<div class="d-flex justify-content-start align-items-center border-top pt--2">
+                        <i class="fa-solid fa-circle-info text-primary-veris fs-2 p-2 me-2"></i>
+                        <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">Puedes <b class="fw-medium text-veris">reagendar</b> tu cita las veces que necesites.</p>
+                    </div>`);
+            $('#btn-pagar').html("Agendar").removeClass('d-none');
+            return;
+        }
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoReserva = ''; 
@@ -441,6 +456,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             estaPagada = dataCita.reservaEdit.estaPagada;
         }
 
+        if(dataCita.origen == "paquetes"){
+            estaPagada = "S";
+            dataCita.precio = {
+                "valorCanalVirtual": 0,
+                "secuenciaTransaccion": null,
+                "valorCanalVirtual": 0,
+                "valorDescuento": 0,
+                "valor": 0,
+                "numeroAutorizacion": 0
+            }
+        }
+
         let datosReserva = {
             "numeroIdentificacion": dataCita.paciente.numeroIdentificacion,
             "tipoIdentificacion": tipoIdentificacion,
@@ -457,13 +484,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "codigoEmpresaRegistro": 1,
             "codigoSucursalRegistro": null,
             "porcentajeDescuento": dataCita.horario.porcentajeDescuento,
-            // "permitePago": dataCita.convenio.permitePago,
             "permitePago": dataCita.convenio.permitePago,
             "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
             "canalOrigen": _canalOrigen,
             "enviarLinkPago": null,
-            //"tipoProcesoVUA": "",
-            /*precio*/
             "valorizacion": dataCita.precio.valorCanalVirtual,
             /*precio o reagendamiento*/
             "secuenciaTransaccion": dataCita.precio.secuenciaTransaccion,
@@ -479,6 +503,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         /*Para reagendamiento*/
         //"codigoReservaCambio": "string",
+
+        if(dataCita.origen == "paquetes"){
+            datosReserva.secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
+            datosReserva.itemPaquete = dataCita.detalleItemPaquete.itemPaquete;
+        }
         
         if(dataCita.online == "N"){
             datosReserva.codigoSucursal = dataCita.central.codigoSucursal;

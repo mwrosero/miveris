@@ -263,7 +263,7 @@ Elige datos para la Cita
             await validarEspecialidadEnCentralSeleccionada();
             $('#btn-ciudad').removeClass('disabled selectable')
             $('#btn-central').removeClass('disabled selectable')
-        }else if(dataCita.hasOwnProperty('reservaEdit')){
+        }else if(dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "paquetes"){
             console.log("------reservaEdit------");
             if(dataCita.convenio.nombreConvenio == undefined && dataCita.convenio.codigoConvenio != null){
                 await cargarConvenios();
