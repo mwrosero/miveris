@@ -480,6 +480,7 @@ Elige datos para la Cita
             $('#btn-central p').html(`Seleccionar`);
             $('#btn-central').addClass(`selectable`);
             $('#btn-central').attr('data-rel','');
+            delete dataCita.central;
             if(dataCita.hasOwnProperty('especialidad')){
                 await consultarCentralesMedicas()
             }
