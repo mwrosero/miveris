@@ -879,7 +879,7 @@ Elige datos para la Cita
     }
 
     async function consultarSiEsTratamiento(){
-        if(dataCita.hasOwnProperty('tratamiento') || dataCita.hasOwnProperty('reservaEdit')){
+        if(dataCita.hasOwnProperty('tratamiento') || dataCita.hasOwnProperty('reservaEdit') ||  dataCita.origen == "paquetes"){
             localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
             window.location.href = '/citas-elegir-fecha-doctor/{{ $params }}';
         }
