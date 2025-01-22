@@ -46,7 +46,7 @@ Mi Veris - Citas - Detalle
 @endsection
 @push('scripts')
 <script>
-    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
+    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA"];
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     console.log(dataCita);
@@ -251,7 +251,7 @@ Mi Veris - Citas - Detalle
         let tipoAgenda = dataCita.promocion.tipoAgenda;
         let titleBtn = `Agendar`;
         let btnEnviaAgendarClass = `btn-agendar`;
-        if(tiposAgendaPermitida.includes(tipoAgenda) && dataCita.promocion.esAgendable && detalles.estado == "Agendada" && dataCita.detalleItemPaquete.detalleReserva != null && dataCita.detalleItemPaquete.detalleReserva.habilitaBotonCambio == "S"){
+        if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.estado == "Agendada" && dataCita.detalleItemPaquete.detalleReserva != null && dataCita.detalleItemPaquete.detalleReserva.habilitaBotonCambio == "S"){
             if(detalles.detalleReserva != null){
                 titleBtn = `${dataCita.detalleItemPaquete.detalleReserva.nombreBotonCambiar}`;
                 btnEnviaAgendarClass = `btn-CambiarFechaCita`;

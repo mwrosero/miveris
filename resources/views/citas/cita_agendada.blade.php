@@ -166,7 +166,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 location = "/";
             }
         })
-        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA"];
         if((!dataCita.paquete && !dataCita.promocion && !dataCita.datosTratamiento && !dataCita.ordenExterna) || (dataCita.origen == "paquetes" && tiposAgendaPermitida.includes(dataCita.promocion.tipoAgenda))){
             if(dataCita.online == "S"){
                 let card = await drawCardAgenda();

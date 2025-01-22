@@ -118,7 +118,6 @@ Mi Veris - Citas - Detalle
                 "secuenciaAfiliado" : null,
             };
 
-            console.log(dataCita);
             //return;
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
@@ -142,7 +141,7 @@ Mi Veris - Citas - Detalle
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log(data);
+        // console.log(data);
         if (data.code == 200){
             if(data.data.pendientes.length > 0){
                 $('.box-llamada').html(`<i class="fa-solid fa-circle-info text-primary-veris line-height-16 fs--16 me-2"></i><div>Para agendar tus servicios llámanos al <span>${data.data.numeroContactCenter}</span>.</div><a href="tel:+593${data.data.numeroContactCenter}" class="btn btn-sm btn-primary-veris fw-medium fs--16 line-height-16 px-3 py-2 shadow-none ms-2 d-block d-md-none" style="border-radius:8px;">Llamar</a>`);
@@ -184,13 +183,15 @@ Mi Veris - Citas - Detalle
             if(data.data.realizados.length > 0){
                 let elemRealizado = ``;
                 $('#tituloPromocionRealizado').removeClass('d-none');
-                $.each(data.data.realizados, function(key, detalles){
+                $.each(data.data.realizados, async function(key, detalles){
+                    // console.log(detalles)
+                    let estadoCard = obtenerEstadoCard(detalles);
                     elemRealizado += `<div class="col-12 col-md-6">
                         <div class="card">
                             <div class="card-body p--2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                    <div class="ms-auto fs--2"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${detalles.estado}</span></div>
+                                    ${estadoCard}
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                     <div class="avatar-sm me-2">
@@ -212,18 +213,33 @@ Mi Veris - Citas - Detalle
         }
     }
 
+    function obtenerEstadoCard(datos){
+        let elem = ``;
+        if(datos.detalles.length == 1){
+            elem += `<div class="ms-auto fs--2"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${datos.detalles[0].estado}</span></div>`
+        }else{
+            let estados = [];
+            $.each(datos.detalles, function(key, value){
+                estados.push(value.estado);
+            })
+            const uniqueEstados = [...new Set(estados)];
+            if(uniqueEstados.length == 1){
+                elem += `<div class="ms-auto fs--2"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${uniqueEstados[0]}</span></div>`
+            }
+        }
+        return elem;
+    }
+
     function drawBtnCardItem(detalles){
-        console.log(detalles);
+        // console.log(detalles);
         let tipoAgenda = detalles.tipoAgenda;
-        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIAS"];
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA"];
         let titleBtn = `Ver detalle`;
         let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
         let btnEnviaAgendarClass = `btn-detalle`;
         if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable && tieneItemsSinAgendar){
             titleBtn = `Agendar`;
-            console.log(0)
             if(detalles.detalles.length == 1){
-                console.log(1)
                 btnEnviaAgendarClass = `btn-agendar-item`;
             }
         }
