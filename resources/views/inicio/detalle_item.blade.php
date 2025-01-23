@@ -244,6 +244,9 @@ Mi Veris - Citas - Detalle
     }
 
     function drawBtnCardItem(detalles){
+        if(detalles.estado == "Caducado"){
+            return ``;
+        }
         // "tipoAgenda": "CONSULTA_MEDICA"  o "TERAPIAS"
         // esAgendable:True
         // si el detalle tiene estado Disponible
@@ -257,6 +260,7 @@ Mi Veris - Citas - Detalle
                 btnEnviaAgendarClass = `btn-CambiarFechaCita`;
             }
         }
+
         return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" data-rel='${JSON.stringify(detalles)}'>
                 ${titleBtn}
             </div>`;
