@@ -882,6 +882,7 @@ Elige datos para la Cita
         if(dataCita.hasOwnProperty('tratamiento') || dataCita.hasOwnProperty('reservaEdit') ||  dataCita.origen == "paquetes"){
             localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
             window.location.href = '/citas-elegir-fecha-doctor/{{ $params }}';
+            return;
         }
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}
