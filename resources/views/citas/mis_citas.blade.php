@@ -21,8 +21,8 @@ Mi Veris - Citas - Mis citas
                 </div>
                 <div class="modal-body p-3 text-center">
                     <img src="{{asset('assets/img/svg/gracias-ico.svg')}}" class="w-50 mx-auto">
-                    <h1 class="fs-20 fw-medium line-height-20 my-3 text-primary-veris">¡Gracias!</h1>
-                    <p class="fs--16 line-height-16 mb-3 text-veris">Ya calificaste la atención de este médico.</p>                    
+                    <h1 class="fs-20 fw-medium line-height-20 my-3 text-primary-veris title-agradecimiento">¡Gracias!</h1>
+                    <p class="fs--16 line-height-16 mb-3 text-veris subtitle-agradecimiento">Ya calificaste la atención de este médico.</p>                    
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Cerrar</button>
@@ -223,15 +223,13 @@ Mi Veris - Citas - Mis citas
 
         $('body').on('click', '.btn-calificar', async function(){
             let detalle = $(this).attr('data-rel');
-            $('.btn-enviar-calificacion').attr('data-rel',detalle)
             await validarCalificacion(JSON.parse(detalle));
         })
 
         $('body').on('click', '.btn-enviar-calificacion', async function(){
-            let detalle = JSON.parse($(this).attr('data-rel'));
             let medico = JSON.parse($(this).attr('medico-rel'));
             if($("input[name='rating']:checked").length != 0){
-                await calificarDoctor(detalle, medico);
+                await calificarDoctor(medico);
             }else{
                 alert("Debe seleccionar un nivel de calificación");
             }
@@ -488,13 +486,12 @@ Mi Veris - Citas - Mis citas
         
     });
 
-    async function calificarDoctor(detalle, medico){
+    async function calificarDoctor(medico){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/perfil/cita/calificacion`;
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/calificacion/${medico.secuenciaCalificacion}`;
         args["method"] = "PUT";
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
-            "idCita": detalle.codigoReserva,
             "observacion": getInput('comentario'),
             "puntaje": parseInt($('input[name="rating"]:checked').val()),
             "canalOrigen": _canalOrigen
@@ -504,9 +501,13 @@ Mi Veris - Citas - Mis citas
 
         //Menos para edictar reserva 
         if(data.code == 200){
-            $('#calificarModal').hide();
+            $('.title-agradecimiento').html(`¡Gracias por calificar!`);
+            $('.subtitle-agradecimiento').addClass('d-none');
+            $('#calificarModal').modal("hide");
             $('.modal-backdrop').remove();
-            await obtenerHistorialCitas()
+            $('#citaCalificadaModal').modal("show");
+            let paciente = JSON.parse($('input[name="listGroupRadios"]:checked').attr("data-rel"));
+            await obtenerHistorialCitas('','',paciente.numeroIdentificacion,paciente.esAdmin,null);
         }
     }
 
@@ -523,6 +524,8 @@ Mi Veris - Citas - Mis citas
         if(data.code == 200){
             if(data.data == null){
                 // Ya ha sido calificada
+                $('.title-agradecimiento').html(`¡Gracias!`);
+                $('.subtitle-agradecimiento').removeClass('d-none');
                 var myModal = new bootstrap.Modal(document.getElementById('citaCalificadaModal'));
                 myModal.show();
             }else{
