@@ -11,6 +11,44 @@ Mi Veris - Citas - Mis citas
     // dd($tokenCita);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
+    
+    <!-- Modal Calificar -->
+    <div class="modal modal-top fade" id="citaCalificadaModal" tabindex="-1" aria-labelledby="citaCalificadaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+            <form class="modal-content rounded-4">
+                <div class="modal-header d-none">
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3 text-center">
+                    <img src="{{asset('assets/img/svg/gracias-ico.svg')}}" class="w-50 mx-auto">
+                    <h1 class="fs-20 fw-medium line-height-20 my-3 text-primary-veris">¡Gracias!</h1>
+                    <p class="fs--16 line-height-16 mb-3 text-veris">Ya calificaste la atención de este médico.</p>                    
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Calificar -->
+    <div class="modal modal-top fade" id="calificarModal" tabindex="-1" aria-labelledby="calificarModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered mx-auto">
+            <form class="modal-content rounded-4">
+                <div class="modal-header d-none">
+                    <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-3">
+                    <h5 class="fs--20 text-center line-height-24 mt-3 mb--20">Califica tu experiencia con este médico</h5>
+                    <div class="info-doctor"></div>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-enviar-calificacion btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <!-- Modal Convenios -->
     <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -182,6 +220,22 @@ Mi Veris - Citas - Mis citas
         await obtenerCitas();
         await consultarGrupoFamiliar();
         // await consultarConvenios();
+
+        $('body').on('click', '.btn-calificar', async function(){
+            let detalle = $(this).attr('data-rel');
+            $('.btn-enviar-calificacion').attr('data-rel',detalle)
+            await validarCalificacion(JSON.parse(detalle));
+        })
+
+        $('body').on('click', '.btn-enviar-calificacion', async function(){
+            let detalle = JSON.parse($(this).attr('data-rel'));
+            let medico = JSON.parse($(this).attr('medico-rel'));
+            if($("input[name='rating']:checked").length != 0){
+                await calificarDoctor(detalle, medico);
+            }else{
+                alert("Debe seleccionar un nivel de calificación");
+            }
+        })
 
         $('body').on('click', '.btn-eliminar-cita', function(){
             $('#idCitaEliminar').val($(this).attr('codigoReserva-rel'));
@@ -434,6 +488,79 @@ Mi Veris - Citas - Mis citas
         
     });
 
+    async function calificarDoctor(detalle, medico){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/cita/calificacion`;
+        args["method"] = "PUT";
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            "idCita": detalle.codigoReserva,
+            "observacion": getInput('comentario'),
+            "puntaje": parseInt($('input[name="rating"]:checked').val()),
+            "canalOrigen": _canalOrigen
+        })
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        //Menos para edictar reserva 
+        if(data.code == 200){
+            $('#calificarModal').hide();
+            $('.modal-backdrop').remove();
+            await obtenerHistorialCitas()
+        }
+    }
+
+    async function validarCalificacion(detalle){
+        let args = [];
+        let paciente = JSON.parse($('input[name="listGroupRadios"]:checked').attr("data-rel"))
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/pedienteCalificaciones?numeroIdentificacion=${paciente.numeroIdentificacion}&secuenciaAtencion=${detalle.secuenciaAtencion}`;
+        args["method"] = "GET";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        const data = await call(args);
+
+        //Menos para edictar reserva 
+        if(data.code == 200){
+            if(data.data == null){
+                // Ya ha sido calificada
+                var myModal = new bootstrap.Modal(document.getElementById('citaCalificadaModal'));
+                myModal.show();
+            }else{
+                // Mostrar modal para calificar
+                let medico = data.data[0];
+                $('.btn-enviar-calificacion').attr('medico-rel', JSON.stringify(medico));
+                let img_doctor = (medico.fotoProfesional != null) ? medico.fotoProfesional : '{{ asset('assets/img/svg/avatar_doctor.svg') }}';
+                let elem = `<div class="picture-doctor border-box-light-blue border-3 rounded-circle mx-auto" style="background: url(${img_doctor}) no-repeat top center;background-size: cover;">
+                    </div>`;
+                elem += `<div class="bg-time-doctor p-2 mt-3 mb-1 text-center">
+                        <h6 class="fs--16 px-1 line-height-20 fw-medium m-0 mb-1">${capitalizarCadaPalabra(medico.nombreCompletoProfesional)}</h6>
+                        <p class="px-1 text-primary-veris fs--16 line-height-20 fw-medium mb-1">${capitalizarCadaPalabra(medico.nombreEspecialidad)}</p>
+                        <p class="px-1 fs--14 line-height-16 mb-1" style="color: #13243F;">${capitalizarCadaPalabra(medico.nombreSucursal)}</p>
+                        <p class="px-1 fs--2 line-height-16 mb-1">${medico.fechaReserva} <span class="text-primary-veris ms-2">${medico.horaReserva}</span></p>
+                    </div>`;
+                elem += `<div class="rating rating text-center w-100 my-3 py-2">
+                        <input id="rating-5" type="radio" name="rating" value="5"/>
+                        <label class="position-relative" for="rating-5"><i class="fas fa-3x fa-star"></i> <span class="label-excelente">Excelente</span></label>
+                        <input id="rating-4" type="radio" name="rating" value="4" />
+                        <label for="rating-4"><i class="fas fa-3x fa-star"></i></label>
+                        <input id="rating-3" type="radio" name="rating" value="3"/>
+                        <label for="rating-3"><i class="fas fa-3x fa-star"></i></label>
+                        <input id="rating-2" type="radio" name="rating" value="2"/>
+                        <label for="rating-2"><i class="fas fa-3x fa-star"></i></label>
+                        <input id="rating-1" type="radio" name="rating" value="1"/>
+                        <label class="position-relative" for="rating-1"><i class="fas fa-3x fa-star"></i> <span class="label-pesimo">Pésimo</span></label>
+                    </div>`;
+                elem += `<div class="mt-4">
+                    <p class="px-1 fs--14 line-height-16 mb-1 fw-medium" style="color: #13243F;">¿Quieres dejar un comentario?</p>
+                    <textarea id="comentario" class="form-control p-3" rows="3" style="resize: none;" placeholder="Escribe aquí..."></textarea>
+                </div>`
+                $('.info-doctor').html(elem);
+                var myModal = new bootstrap.Modal(document.getElementById('calificarModal'));
+                myModal.show();
+            }
+        }
+    }
+
     async function eliminarReserva(){
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
@@ -534,8 +661,11 @@ Mi Veris - Citas - Mis citas
                                                         <div>`
                                                     if(historial.secuenciaAtencion !== null){
                                                         element += `<button type="button" class="btn btn-sm btn-outline-primary-veris shadow-none mb-2 me-1  btnVerPdf" data-bs-toggle="offcanvas" data-bs-target="#verPdf" aria-controls="verPdf" data-rel=${btoa(JSON.stringify(historial))}><i class="bi bi-file-earmark-pdf"></i>Ver PDF</button>`;
+
+                                                        element += `<button data-rel='${JSON.stringify(historial)}' class="btn-calificar ${ (historial.permiteReserva == "S") ? `btn btn-sm btn-outline-primary-veris shadow-none mb-2` : `btn btn-sm btn-primary-veris shadow-none ms-1 mb-2`}">Calificar</button>`;
+                                                    }else{
+                                                        element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="${ (historial.permiteReserva == "S") ? `btn btn-sm btn-outline-primary-veris shadow-none mb-2` : `btn btn-sm btn-primary-veris shadow-none ms-1 mb-2`}">Calificar</a>`;
                                                     }
-                                                    element += `<a href=${quitarComillas(historial.urlEncuesta)} target="_blank" class="${ (historial.permiteReserva == "S") ? `btn btn-sm btn-outline-primary-veris shadow-none mb-2` : `btn btn-sm btn-primary-veris shadow-none ms-1 mb-2`}">Calificar</a>`;
                                                     if(historial.esImagen == "S"){
                                                         element += `<a href="/imagenes-procedimientos" class="btn btn-sm btn-primary-veris shadow-none ms-1 mb-2">Reagendar</a>`
                                                     }else{
@@ -1606,4 +1736,50 @@ Mi Veris - Citas - Mis citas
     });
 
 </script>
+<style>
+    .picture-doctor{
+        width: 150px;
+        height: 150px;
+    }
+    .bg-time-doctor{
+        background: #EAF0FD;
+    }
+    .bg-time-doctor-alt{
+        background: #A9C4F9;
+    }
+    .rating {
+        cursor: pointer;
+        direction: rtl;
+        unicode-bidi: bidi-override;
+        color: #ddd; /* Personal choice */
+    }
+    .rating input {
+        display: none;
+    }
+    .rating label{
+        cursor: pointer;
+    }
+    .rating label:hover,
+    .rating label:hover ~ label,
+    .rating input:checked + label,
+    .rating input:checked + label ~ label {
+        color: #FFC107; /* Personal color choice. Lifted from Bootstrap 4 */
+    }
+
+    .label-excelente{
+        position: absolute;
+        left: -5px;
+        bottom: -20px;
+        font-size: 12px;
+        color: #6E7A8C;
+    }
+
+    .label-pesimo{
+        position: absolute;
+        right: 5px;
+        bottom: -20px;
+        font-size: 12px;
+        color: #6E7A8C;
+    }
+</style>
 @endpush
