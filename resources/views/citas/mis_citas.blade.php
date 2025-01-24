@@ -562,6 +562,7 @@ Mi Veris - Citas - Mis citas
                     <textarea id="comentario" class="form-control p-3" rows="3" style="resize: none;" placeholder="Escribe aquí..."></textarea>
                 </div>`
                 $('.info-doctor').html(elem);
+                $('.btn-enviar-calificacion').addClass('disabled')
                 var myModal = new bootstrap.Modal(document.getElementById('calificarModal'));
                 myModal.show();
             }
