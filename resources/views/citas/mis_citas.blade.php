@@ -43,7 +43,7 @@ Mi Veris - Citas - Mis citas
                     <div class="info-doctor"></div>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-enviar-calificacion btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Enviar</button>
+                    <button type="button" class="btn disabled btn-enviar-calificacion btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Enviar</button>
                 </div>
             </form>
         </div>
@@ -224,6 +224,10 @@ Mi Veris - Citas - Mis citas
         $('body').on('click', '.btn-calificar', async function(){
             let detalle = $(this).attr('data-rel');
             await validarCalificacion(JSON.parse(detalle));
+        })
+
+        $('body').on('change', 'input[name="rating"]', async function(){
+            $('.btn-enviar-calificacion').removeClass('disabled');
         })
 
         $('body').on('click', '.btn-enviar-calificacion', async function(){
