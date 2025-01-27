@@ -160,9 +160,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         });
 
-        if(dataCita.origen == "paquetes"){
-            $('.detalles-cita-box').removeClass('invisible')
-        }
+        $('.detalles-cita-box').removeClass('invisible')
     });
 
     async function eliminarReserva(){
