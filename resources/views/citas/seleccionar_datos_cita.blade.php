@@ -610,8 +610,18 @@ Elige datos para la Cita
         if (data.code == 200){
             if(data.data.length > 0){
                 //$('#btn-convenio').attr('data-rel',JSON.stringify(dataCita.convenio));
-                dataCita.convenio = data.data[0];
-                $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio))}`);
+                if(!dataCita.hasOwnProperty('reservaEdit')){
+                    dataCita.convenio = data.data[0];
+                    $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio))}`);
+                }else{
+                    data.data.forEach((convenios) => {
+                        console.log(convenios)
+                        if(parseInt(convenios.codigoConvenio) == parseInt(dataCita.convenio.codigoConvenio)){
+                            dataCita.convenio.nombreConvenio = convenios.nombreConvenio;
+                        }
+                    })
+                    $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio))}`);
+                }
             }else{
                 dataCita.convenio = {
                     "nombreConvenio": "Ninguno",
@@ -632,6 +642,10 @@ Elige datos para la Cita
         listaConvenios.empty();
         if(dataConvenios.length > 0){
             dataConvenios.forEach((convenios) => {
+                console.log(convenios)
+                // if(parseInt(convenios.codigoConvenio) == parseInt(dataCita.convenio.codigoConvenio)){
+                //     dataCita.convenio.nombreConvenio = convenios.nombreConvenio;
+                // }
                 elemento += `<div id="convenio-${convenios.codigoConvenio}" data-rel='${JSON.stringify(convenios)}' class="convenio-item mb-2" data-bs-dismiss="modal">
                 <div class="list-group-item rounded-3 py-2 px-3 border-0">
                     <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
