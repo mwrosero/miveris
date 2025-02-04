@@ -959,3 +959,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         e.preventDefault(); // Previene la acción por defecto del scroll
     });
 });
+
+let typewriterTimeout;
+function typeWriter(txt, i = 0) {
+    let elem = document.getElementById("typewriter");
+
+    if (i === 0) {
+        clearTimeout(typewriterTimeout); // Cancela cualquier ejecución previa
+        elem.innerHTML = ""; // Limpia el contenido antes de iniciar
+    }
+
+    if (i < txt.length) {
+        elem.innerHTML += txt.charAt(i);
+        typewriterTimeout = setTimeout(() => typeWriter(txt, i + 1), 50);
+    }
+}

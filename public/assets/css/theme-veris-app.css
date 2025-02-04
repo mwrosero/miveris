@@ -38,6 +38,7 @@
   --bg-vris-strong-magenta: #C52BD2;
   --Neutral-10: #E7E9EC;
   --font: "Gotham Rounded", sans-serif;
+  --verisAi: #296BEF;
 }
 
 body {
@@ -319,6 +320,10 @@ html:not([dir="rtl"]) .border-start-veris {
   background: linear-gradient(45deg, #296BEF, #66AAE2, #FE289A, #296BEF);
   background-size: 300% 300%; /* Tamaño del fondo para animación */
   animation: gradientAnimation 2.5s linear infinite; /* Animación */
+}
+
+.text-veris-ai{
+  color: var(--verisAi) !important;
 }
 
 .border-ai > .row {
@@ -1702,6 +1707,10 @@ a.btn.btn-primary-veris:not([href]):hover {
   background: -moz-linear-gradient(transparent, transparent);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.bg-ai{
+  background: linear-gradient(0deg, #E6F1FA 0%, #CCE3F5 100%);
 }
 
 /* X-Large devices (large desktops, 1200px and up) */
