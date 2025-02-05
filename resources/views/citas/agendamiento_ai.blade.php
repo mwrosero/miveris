@@ -141,9 +141,9 @@ $tokenCitaNormal = base64_encode(uniqid());
                     <div class="row g-3 justify-content-start steps step-2 d-none">
                         <div class="col-12">
                             <div class="mb-3 box-btn-especialidad element-no-paquete">
-                                <button class="btn bg-white w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button">
+                                <button class="btn bg-white w-100 btn-sm rounded-3 waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" style="border: 1px solid #E7E9EC;box-shadow: none !important;">
                                     {{-- data-bs-toggle="modal" data-bs-target="#especialidadModal" id="btn-especialidad" data-rel="" --}}
-                                    <p class="fs--1 line-height-16 fw-medium fs--1 mb-0">Seleccionar</p>
+                                    <p class="fs--1 line-height-16 fw-normal fs--1 mb-0" style="color: #3D4E66;">Elegir especialidad</p>
                                     <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
                                 </button>
                             </div>
