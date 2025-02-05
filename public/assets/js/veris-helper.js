@@ -982,3 +982,39 @@ function typeWriter(txt, nameIdElement) {
 
     setTimeout(write, 50); // Retrasa un poco la ejecución inicial para evitar doble letra
 }
+
+function typeWriterWithStyle(txt, nameIdElement, styledWords = {}) {
+    let elem = document.getElementById(nameIdElement);
+    elem.innerHTML = ""; // Limpia el contenido antes de iniciar
+    let i = 0;
+
+    function escribir() {
+        if (i < txt.length) {
+            let char = txt[i];
+            let span = document.createElement("span");
+
+            // Detectar salto de línea y agregar un <br>
+            if (char === "\n") {
+                elem.appendChild(document.createElement("br"));
+            } else {
+                // Verificar si la palabra completa coincide con una palabra estilizada
+                let keys = Object.keys(styledWords);
+                let match = keys.find(word => txt.substring(i, i + word.length) === word);
+
+                if (match) {
+                    span.innerHTML = `<span class="${styledWords[match]}">${match}</span>`;
+                    elem.appendChild(span);
+                    i += match.length - 1; // Avanza la cantidad de caracteres de la palabra completa
+                } else {
+                    span.textContent = char;
+                    elem.appendChild(span);
+                }
+            }
+
+            i++;
+            setTimeout(escribir, 50);
+        }
+    }
+
+    escribir();
+}

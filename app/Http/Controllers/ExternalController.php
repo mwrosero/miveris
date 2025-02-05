@@ -192,11 +192,13 @@ class ExternalController extends Controller
             $method = '/'.Veris::BASE_WAR.'/v1/facturacion/crear_pretransaccion?canalOrigen='.Veris::CANAL_ORIGEN_EXTERNAL;
 
             // Pago para Digiturno
-            if(isset($data['esLinkDigiturno']) && $data['esLinkDigiturno']){
+            if(isset($urlParams['esLinkDigiturno'])){
                 $data['esLinkDigiturno'] = true;
             }else{
                 $data['esLinkDigiturno'] = false;
             }
+
+            // dd($data);
 
             $response_pretrx = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
