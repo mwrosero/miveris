@@ -75,7 +75,7 @@ $tokenCitaNormal = base64_encode(uniqid());
                     <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-3">
-                    <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu convenio:') }}</h5>
+                    <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Elige tu convenio para continuar:') }}</h5>
                     <div class="row gx-2 justify-content-between align-items-center">
                         <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
                         </div>
@@ -654,7 +654,18 @@ $tokenCitaNormal = base64_encode(uniqid());
             }
 
             // $('#box-animacion-horizontal').removeClass('d-none');
-            goTo(4, '', 'typewriter',false);
+            $('#box-animacion-horizontal').removeClass('d-none');
+            $('#typewriter').after(`<img class="ms-2 img-ai" src="{{ asset('assets/img/svg/ai-icon.svg') }}" alt="">`)
+            goTo(4, 'Citas generadas con \n inteligencia artificial \n Elegí estas citas tomando en cuenta tu interacción con Veris', 'typewriter', false);
+            typeWriterWithStyle(
+                "Citas generadas con \n inteligencia artificial \n Elegí estas citas tomando en cuenta tu interacción con Veris",
+                "typewriter",
+                { 
+                    "Citas generadas con": "fw-medium text-veris fs--16 line-height-20",
+                    "inteligencia artificial":"fw-medium text-veris fs--16 line-height-20 text-ai"
+                }
+            );
+
         }
     }
 
@@ -857,7 +868,7 @@ $tokenCitaNormal = base64_encode(uniqid());
                     elemento += `<div data-rel='${ulrParams}' class="convenio-item mb-2">
                                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
-                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                        <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-veris fs--1 line-height-16 cursor-pointer">
                                             ${capitalizarCadaPalabra(convenios.nombreConvenio)}
                                         </label> 
                                     </div>
@@ -886,7 +897,7 @@ $tokenCitaNormal = base64_encode(uniqid());
 
                 elemento += `<div class="d-block convenio-item" data-rel='${ulrParams}' id="convenioNinguno">
                                 <div class="list-group-item rounded-3 py-2 px-3 border-0">
-                                    <label class="text-primary-veris fs--1 line-height-16 cursor-pointer">
+                                    <label class="text-veris fs--1 line-height-16 cursor-pointer">
                                         Ninguno
                                     </label> 
                                 </div>
@@ -1031,6 +1042,9 @@ $tokenCitaNormal = base64_encode(uniqid());
     }
     .modalidad-selected button{
         font-weight: 700;
+        color: #296BEF;
+    }
+    .text-ai{
         color: #296BEF;
     }
     .bg-cita-atendida{
