@@ -328,7 +328,17 @@ Elige datos para la Cita
         }else{
             $('.label-sugerencia').removeClass('d-none');
         // await consultarEspecialidades();
-            delete dataCita.especialidad
+            if(dataCita.hasOwnProperty('origen') && dataCita.origen != "agendamiento-ai"){
+                delete dataCita.especialidad
+            }else{
+                $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
+                await consultarEspecialidades();
+                $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)) }`)
+                $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
+                $('#btn-ciudad').removeClass('disabled');
+                $('#btn-especialidad').removeClass('disabled');
+                $('#btn-central').removeClass('disabled');
+            }
         //if(dataCita.convenio == null){
             await cargarConvenios();
             await consultarCiudades();
