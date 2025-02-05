@@ -59,7 +59,7 @@ $tokenCitaNormal = base64_encode(uniqid());
                 </div>
                 <p class="fs--16 line-height-20 fw-medium mb-8">{{ __('¿Estas agendando por este motivo?') }}</p>
                 <button type="button" id="btn-si-tratamiento" class="btn btn-primary-veris fs--18 w-100 px-4 py-3 m-0 mb-3">{{ __('Agendar esta orden') }}</button>
-                <button type="button" id="f" class="btn btn-outline-primary-veris fs--18 w-100 px-4 py-3 m-0">{{ __('No') }}</button>
+                <button type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris fs--18 w-100 px-4 py-3 m-0">{{ __('No') }}</button>
                 {{-- <button type="button" class="btn btn-outline-primary-veris w-100 mb-3" data-bs-dismiss="modal">{{ __('No') }}</button> --}}
             </div>
         </div>
@@ -124,16 +124,14 @@ $tokenCitaNormal = base64_encode(uniqid());
                     </div>
                     <div class="row g-3 justify-content-start steps step-1" id="listaPacientes">
                         <div class="col-6 ">
-                            <div class="card h-100">
+                            <div class="card h-100 btn-add-familia cursor-pointer">
                                 <div class="card-body d-flex flex-column justify-content-center align-items-center px-3 py-2">
-                                    <a class="" href="{{route('familia')}}">
-                                        <div class="d-flex justify-content-center align-items-center mb-2">
-                                            <div class="avatar avatar-10">
-                                                <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
-                                            </div>
+                                    <div class="d-flex justify-content-center align-items-center mb-2">
+                                        <div class="avatar avatar-10">
+                                            <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
                                         </div>
-                                        <p class="text-veris fw-medium fs--2 text-center mb-0">{{ __('Agregar nuevo paciente') }}</p>
-                                    </a>
+                                    </div>
+                                    <p class="text-veris fw-medium fs--2 text-center mb-0">{{ __('Agregar nuevo paciente') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -233,6 +231,15 @@ $tokenCitaNormal = base64_encode(uniqid());
         await consultarGrupoFamiliar();
         createSwiperSlider();
         
+        $('body').on('click','.btn-add-familia', async function(){
+            $('#box-animacion-horizontal').addClass('d-none');
+            $('#typewriterVertical').empty();
+            goTo(3,'Te enviaré a la sección donde \n podrás agregar un familiar o amigo.','typewriterVertical');
+            setTimeout(function(){
+                window.location.href = '/familia-amigos';
+            }, 5000)
+        });
+
         $('body').on('click','.convenio-item', async function(){
             $('#convenioModal').modal('hide');
             reservaNoPermitida($(this).attr("data-rel"));
@@ -247,6 +254,7 @@ $tokenCitaNormal = base64_encode(uniqid());
             $('#box-animacion-horizontal').addClass('d-none');
             $('#typewriterVertical').empty();
             goTo(3,'Ahora estoy buscando las mejores \n opciones...','typewriterVertical');
+            $('#consultaTratamientoModal').modal('hide');
             await obtenerCitasSugeridas();
         })
 
@@ -262,11 +270,12 @@ $tokenCitaNormal = base64_encode(uniqid());
         $('body').on('click', '.btn-respuesta-embarazo', async function(){
             let estaEmbarazada = $(this).attr('respuesta-rel');
             dataCita.estaEmbarazada = estaEmbarazada;
+            await consultarSiEsTratamiento();
             
-            $('#box-animacion-horizontal').addClass('d-none');
-            $('#typewriterVertical').empty();
-            goTo(3,'Ahora estoy buscando las mejores \n opciones...','typewriterVertical');
-            await obtenerCitasSugeridas();
+            // $('#box-animacion-horizontal').addClass('d-none');
+            // $('#typewriterVertical').empty();
+            // goTo(3,'Ahora estoy buscando las mejores \n opciones...','typewriterVertical');
+            // await obtenerCitasSugeridas();
         })
 
         $('body').on('click', '.especialidad-item', async function(){
@@ -318,12 +327,16 @@ $tokenCitaNormal = base64_encode(uniqid());
             if(modalidad == "S"){
                 console.log("Validar");
                 let data = await validarCondicionConvenio();
+                console.log(111)
                 if(data.data.permiteReserva == "N"){
+                    dataCita.online = "N";
                     $('#mensajeError').html(`${data.data.mensajeReserva}`);
                     $('#modalError').modal('show');
+                    console.log(222)
                     return;
                 }
             }
+            console.log(333)
 
             $('#listadoSugerencias').empty();
             let newArrayCard = grouped[modalidad].slice(0,2);
@@ -341,6 +354,7 @@ $tokenCitaNormal = base64_encode(uniqid());
             if(!$(this).parent().hasClass('modalidad-selected')){
                 $('.btn-modalidad').parent().removeClass('modalidad-selected');
                 $(this).parent().addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
+                console.log(444)
             }
         })
 
@@ -393,6 +407,8 @@ $tokenCitaNormal = base64_encode(uniqid());
                 "codigoTipoAtencion": especialidad.codigoTipoAtencion,
                 "esOdonto": especialidad.esOdonto
             }
+
+            dataCita.origen = "agendamiento-ai";
 
             localStorage.setItem('cita-{{ $tokenCitaNormal }}', JSON.stringify(dataCita));
             window.location.href = "/seleccionar-datos-cita/" + "{{ $tokenCitaNormal }}";
@@ -618,6 +634,11 @@ $tokenCitaNormal = base64_encode(uniqid());
         }
 
         let aplicaOnline = (dataCita.especialidad.modalidadPrestacionAgenda.online != null) ? "S" : "N";
+
+        if(aplicaOnline == "N"){
+            $('.box-modalidad-presencial').removeClass('col-6').addClass('col-12');
+            $('.box-modalidad-online').addClass('d-none');
+        }
 
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/disponibilidadSugerida?canalOrigen=${_canalOrigen}&codigoEmpresa=1&idPaciente=${dataCita.paciente.numeroPaciente}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&aplicaOnline=${aplicaOnline}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&esPlanStar=${esPlanStar}`;
         args["method"] = "GET";
