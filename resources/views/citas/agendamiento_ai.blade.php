@@ -5,7 +5,67 @@ Elige Paciente
 @section('content')
 @php
 $tokenCita = base64_encode(uniqid());
+$tokenCitaNormal = base64_encode(uniqid());
 @endphp
+
+<!-- Modal de error -->
+<div class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modalErrorLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs-5 fw-medium mb-3">Veris</h1>
+                <p class="fs--2 fw-normal" id="mensajeError"></p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Entiendo</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal mensaje -->
+<div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3 pb-2">
+                <div class="text-center">
+                    <div class="avatar avatar-md mx-auto mb-3">
+                        <span class="avatar-initial rounded-circle bg-primary">
+                            <i class="fa-solid fa-info fs-2"></i>
+                        </span>
+                    </div>
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Información solicitada por tu aseguradora</h1>
+                    <p class="fs--1 fw-normal mb-3 mx-3 line-height-16">¿Esta cita es por control de <b>embarazo</b>?</p>
+                    <input type="hidden" id="especialidadElegida">
+                </div>
+                <div class="d-flex">
+                    <div respuesta-rel="S" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 me-3 btn-respuesta-embarazo">SI</div>
+                    <div respuesta-rel="N" data-bs-dismiss="modal" class="btn btn-sm btn-outline-primary-veris waves-effect w-50 m-0 px-4 py-3 btn-respuesta-embarazo">NO</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Tratamiento-->
+<div class="modal fade" id="consultaTratamientoModal" tabindex="-1" aria-labelledby="consultaTratamientoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="modal-header border-0 d-none">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-3">
+                <h5 class="fw-medium line-height-24 mb-8">Tienes una <b class="fw-medium text-primary-veris">{{ __('cita pendiente') }}</b> {{ __('de esta especialidad en tu tratamiento de') }}:</h5>
+                <div class="border rounded-3 mb-8 p--2" id="tratamiento-content">
+                </div>
+                <p class="fs--16 line-height-20 fw-medium mb-8">{{ __('¿Estas agendando por este motivo?') }}</p>
+                <button type="button" id="btn-si-tratamiento" class="btn btn-primary-veris fs--18 w-100 px-4 py-3 m-0 mb-3">{{ __('Agendar esta orden') }}</button>
+                <button type="button" id="f" class="btn btn-outline-primary-veris fs--18 w-100 px-4 py-3 m-0">{{ __('No') }}</button>
+                {{-- <button type="button" class="btn btn-outline-primary-veris w-100 mb-3" data-bs-dismiss="modal">{{ __('No') }}</button> --}}
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
@@ -50,11 +110,13 @@ $tokenCita = base64_encode(uniqid());
         <div class="container mb-4">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-6 col-lg-5 mt-3">
-                    <div class="row g-3 justify-content-start mb-3">
+                    <div class="row g-3 justify-content-start mb-3" id="box-animacion-horizontal">
                         <div class="col-12">
                             <div class="card h-100 border-ai">
                                 <div class="card-body d-flex justify-content-between align-items-center px-3 py-2 bg-white rounded-3" style="min-height:100px;">
-                                    <img src="{{ asset('assets/img/svg/vericita.svg') }}" class="w-25 me-3" alt="" style="min-height:84px;">
+                                    <div class="me-3 animated-svg-container">
+                                        <img src="{{ asset('assets/img/svg/vericita.svg') }}" class="w-100 img-ai" alt="">
+                                    </div>
                                     <h6 class="fw-medium flex-grow-1 fs--1 mb-0 text-veris-ai" id="typewriter"></h6>
                                 </div>
                             </div>
@@ -100,7 +162,19 @@ $tokenCita = base64_encode(uniqid());
                             </div>
                         </div>
                     </div>
-                    <div class="row g-3 justify-content-start steps step-3 mb-3 d-none">
+                    <div class="row g-3 pt-5 justify-content-start steps step-3 mb-3 d-none">
+                        <div class="col-12 mt-5">
+                            <div class="row g-3 justify-content-start">
+                                <div class="col-12 pt-5 text-center">
+                                    <div class="animated-svg-container mb-5" style="width:150px;height:150px;">
+                                        <img src="{{ asset('assets/img/svg/vericita.svg') }}" class="mx-auto mb-5 img-ai" alt="" style="width:150px;height:150px;">
+                                    </div>
+                                    <h6 class="fw-medium fs--1 mb-0 text-veris-ai w-75 mx-auto" id="typewriterVertical"></h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-3 justify-content-start steps step-4 mb-3 d-none">
                         <div class="col-12 mb-3">
                             <div class="row border-modalidades">
                                 <div class="col-6 mx-0 box-modalidad box-modalidad-presencial modalidad-selected">
@@ -111,41 +185,29 @@ $tokenCita = base64_encode(uniqid());
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-10 col-xl-8">
+                    <div class="row g-3 justify-content-start steps step-4 mb-3 d-none">
                         <div class="col-12">
                             <div class="swiper swiper-horarios position-relative py-3 pt-md-2 pb-md-4">
-                                <div class="swiper-wrapper px-1">
-                                    <div class="swiper-slide">
-                                        asdasd
-                                    </div>
-                                    <div class="swiper-slide">
-                                        asdasd
-                                    </div>
+                                <div class="swiper-wrapper px-0" id="listadoSugerencias">
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-5 mt-3">
+                    <div class="row g-3 justify-content-start steps step-4 mb-3 d-none">
+                        <div class="col-12">
+                            <button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3 mb-3 btn-mas-sugerencias">Ver más sugerencias <img class="ms-2" src="{{ asset('assets/img/svg/ai-bn-icon.svg') }}" alt=""></button>
+                            <button type="button" class="btn bg-white text-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3 mb-3 btn-seleccionar-datos">Prefiero elegir los datos</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    {{-- <section class="p-3 mb-3">
-        <div class="row g-3" id="listaPacientes">
-            <div class="col-12 col-md-6">
-                <div class="card h-100">
-                    <div class="card-body d-flex flex-column justify-content-center align-items-center px-3 py-2">
-                        <a class="" href="{{route('familia')}}">
-                            <div class="d-flex justify-content-center align-items-center mb-2">
-                                <div class="avatar avatar-10">
-                                    <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
-                                </div>
-                            </div>
-                            <p class="text-veris fw-medium fs--2 text-center mb-0">{{ __('Agregar nuevo paciente') }}</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --}}
 </div>
 @endsection
 @push('scripts')
@@ -156,41 +218,89 @@ $tokenCita = base64_encode(uniqid());
     let local = localStorage.getItem('cita-{{ $tokenCita }}');
     let dataCita = {};//JSON.parse(local);
     dataCita.online = "N";
+    dataCita.estaEmbarazada = "N";
     let online = dataCita?.online;
     let ordenExterna = dataCita?.ordenExterna;
     let dataPaciente;
     
 
     // llamada al dom 
+    let swiper; 
+    let estaEscribiendo = false;
     document.addEventListener("DOMContentLoaded", async function () {
-        await consultarGrupoFamiliar();
-        $('body').on('click','.convenio-item', function(){
-            reservaNoPermitida($(this).attr("url-rel"), $(this).attr("data-rel"));
-        })
-        
         $('#typewriter').empty();
-        typeWriter('Por favor elige para quién es \n la cita médica.');
+        typeWriter('Por favor elige para quién es \n la cita médica.','typewriter');
+        await consultarGrupoFamiliar();
+        createSwiperSlider();
+        
+        $('body').on('click','.convenio-item', async function(){
+            $('#convenioModal').modal('hide');
+            reservaNoPermitida($(this).attr("data-rel"));
+        });
 
         $('body').on('click','.box-btn-especialidad', async function(){
             $(this).addClass('d-none');
             await consultarEspecialidades()
         })
 
+        $('body').on('click', '#btn-no-tratamiento', async function(){
+            $('#box-animacion-horizontal').addClass('d-none');
+            $('#typewriterVertical').empty();
+            goTo(3,'Ahora estoy buscando las mejores \n opciones...','typewriterVertical');
+            await obtenerCitasSugeridas();
+        })
+
+        $('body').on('click', '#btn-si-tratamiento', async function(){
+            dataCita.tratamiento = JSON.parse($(this).attr("data-rel"));
+            $('#box-animacion-horizontal').addClass('d-none');
+            $('#typewriterVertical').empty();
+            goTo(3,'Ahora estoy buscando las mejores \n opciones...','typewriterVertical');
+            await obtenerCitasSugeridas();
+        })
+
+        $('body').on('click', '.btn-respuesta-embarazo', async function(){
+            let estaEmbarazada = $(this).attr('respuesta-rel');
+            dataCita.estaEmbarazada = estaEmbarazada;
+            
+            $('#box-animacion-horizontal').addClass('d-none');
+            $('#typewriterVertical').empty();
+            goTo(3,'Ahora estoy buscando las mejores \n opciones...','typewriterVertical');
+            await obtenerCitasSugeridas();
+        })
+
         $('body').on('click', '.especialidad-item', async function(){
             let especialidad = JSON.parse($(this).attr('data-rel'));
             dataCita.especialidad = especialidad;
-            await drawTabs();
-            goTo(3,'Ahora estoy buscando las mejores opciones...');
-            await obtenerCitasSugeridas();
+
+            let data = await validarCondicionConvenio();
+            if(data.data.permiteReserva == "N"){
+                $('#mensajeError').html(`${data.data.mensajeReserva}`);
+                $('#modalError').modal('show');
+                return;
+            }else{
+                dataCita.estaEmbarazada = "N";
+                if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
+                    let controlEmbarazo = await validacionConvenio();
+                    if(controlEmbarazo){
+                        //$('#especialidadElegida').val($(this).attr('data-rel'))
+                        $('#modalEmbarazo').modal("show");
+                    }else{
+                        await consultarSiEsTratamiento();
+                    }
+                }else{
+                    await consultarSiEsTratamiento();
+                }
+            }
+
         })
 
         $('body').on('input', '#buscar', function () {
             var value = $(this).val().toLowerCase();
-            console.log("Valor de búsqueda:", value);
+            // console.log("Valor de búsqueda:", value);
             
             $("#listaEspecialidades .item-especialidad").each(function () {
                 let text = $(this).find('p.text-veris').text().toLowerCase(); // Obtiene el texto dentro de <p>
-                console.log("Texto del elemento:", text);
+                // console.log("Texto del elemento:", text);
                 
                 // Verificar si el texto contiene el valor de búsqueda
                 if (text.indexOf(value) > -1 || value === "") {
@@ -202,13 +312,239 @@ $tokenCita = base64_encode(uniqid());
         });
 
         $('body').on('click','.btn-modalidad', async function(){
+            let modalidad = $(this).attr('data-rel')
+            dataCita.online = modalidad;
+            $('#listadoSugerencias').empty();
+            if(modalidad == "S"){
+                console.log("Validar");
+                let data = await validarCondicionConvenio();
+                if(data.data.permiteReserva == "N"){
+                    $('#mensajeError').html(`${data.data.mensajeReserva}`);
+                    $('#modalError').modal('show');
+                    return;
+                }
+            }
+            
+            let newArrayCard = grouped[modalidad].slice(0,2);
+            let elemento = '';
+            // let qty = 
+            if(newArrayCard.length > 0){
+                newArrayCard.forEach((medico) => {
+                    elemento += drawCardMedico(medico);
+                })
+                
+                $('#listadoSugerencias').html(`${elemento}`);
+                swiper.update()
+            }
+
             if(!$(this).parent().hasClass('modalidad-selected')){
                 $('.btn-modalidad').parent().removeClass('modalidad-selected');
                 $(this).parent().addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
             }
         })
 
-        var swiper = new Swiper('.swiper-horarios', {
+        $('body').on('click','.btn-mas-sugerencias', async function(){
+            let modalidad = $('.btn-modalidad').attr('data-rel');
+            let totalObj = grouped[modalidad].length;
+            let totalSlides = swiper.slides.length;
+            if(totalObj > totalSlides){
+                let newArrayCard = grouped[modalidad].slice(totalSlides,totalSlides+2);
+                let elemento = '';
+                // let qty = 
+                if(newArrayCard.length > 0){
+                    newArrayCard.forEach((medico) => {
+                        elemento += drawCardMedico(medico);
+                    })
+                    
+                    $('#listadoSugerencias').append(`${elemento}`);
+                    swiper.update()
+                        setTimeout(() => {
+                        let totalSlides = swiper.slides.length; // Contar slides
+                        let penultimateIndex = totalSlides - 2; // Índice del penúltimo slide
+
+                        if (penultimateIndex >= 0) {
+                            swiper.slideTo(penultimateIndex, 500); // Ir al penúltimo slide en 500ms
+                        }
+                    }, 100); // Pequeño delay para asegurar la actualización
+                }
+            }else{
+                console.log('Límite')
+                $('#box-animacion-horizontal').addClass('d-none');
+                $('#typewriterVertical').empty();
+                goTo(3,'En este momento no puedo encontrar lo que buscas.\n\nPara poder agendar tu cita da clic en continuar e ingresa los datos','typewriterVertical');
+            }
+
+        })
+
+        $('body').on('click','.btn-seleccionar-datos', async function(){
+            let especialidad = dataCita.especialidad;
+
+            dataCita.especialidad = {
+                "codigoEspecialidad": especialidad.codigoEspecialidad,
+                "nombre": especialidad.nombreEspecialidad,
+                "imagen": especialidad.nombreEspecialidad,
+                "esOnline": dataCita.online,
+                "codigoServicio": (dataCita.online == "S") ? especialidad.modalidadPrestacionAgenda.online.codigoServicio : especialidad.modalidadPrestacionAgenda.presencial.codigoServicio,
+                "codigoPrestacion": (dataCita.online == "S") ? especialidad.modalidadPrestacionAgenda.online.codigoPrestacion : especialidad.modalidadPrestacionAgenda.presencial.codigoPrestacion,
+                "codigoTipoAtencion": especialidad.codigoTipoAtencion,
+                "esOdonto": especialidad.esOdonto
+            }
+
+            localStorage.setItem('cita-{{ $tokenCitaNormal }}', JSON.stringify(dataCita));
+            window.location.href = "/seleccionar-datos-cita/" + "{{ $tokenCitaNormal }}";
+
+            // localStorage.setItem('cita-{{ $tokenCitaNormal }}', JSON.stringify(params));
+            // window.location.href = "/citas-elegir-paciente/" + "{{ $tokenCitaNormal }}";
+        })
+
+        $('body').on('click','.btn-elegir', async function(){
+            let detalles = JSON.parse($(this).attr("data-rel"));
+            console.log(detalles);
+            dataCita.horario = {
+                "idIntervalo": detalles.idIntervalo,
+                "horaInicio": detalles.horaInicio,
+                "horaFin": detalles.horaFin,
+                "idMedico": detalles.idMedico,
+                "nombreMedico": detalles.nombreMedico,
+                "dia": detalles.dia,
+                "dia2": detalles.dia2,
+                "nombreSucursal": detalles.nombreSucursal,
+                "idSurcursal": detalles.idSurcursal,
+                "porcentajeDescuento": detalles.porcentajeDescuento,
+                "textoPorcentaje": detalles.textoPorcentaje,
+                "mensajePricing": detalles.mensajePricing
+            }
+
+            dataCita.central = {
+                "nombreSucursal": detalles.nombreSucursal,
+                "codigoSucursal": detalles.idSurcursal
+            }
+
+            let especialidad = dataCita.especialidad;
+
+            dataCita.especialidad = {
+                "codigoEspecialidad": especialidad.codigoEspecialidad,
+                "nombre": especialidad.nombreEspecialidad,
+                "imagen": especialidad.nombreEspecialidad,
+                "esOnline": dataCita.online,
+                "codigoServicio": (dataCita.online == "S") ? especialidad.modalidadPrestacionAgenda.online.codigoServicio : especialidad.modalidadPrestacionAgenda.presencial.codigoServicio,
+                "codigoPrestacion": (dataCita.online == "S") ? especialidad.modalidadPrestacionAgenda.online.codigoPrestacion : especialidad.modalidadPrestacionAgenda.presencial.codigoPrestacion,
+                "codigoTipoAtencion": especialidad.codigoTipoAtencion,
+                "esOdonto": especialidad.esOdonto
+            }
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+            window.location.href = "/citas-revisa-tus-datos/" + "{{ $tokenCita }}";
+
+        })
+        
+    });
+
+    function goTo(stepNumber, legend, idElem, showLegend = true){
+        $('.steps').addClass('d-none');
+        $('#typewriter').empty();
+        if(showLegend){
+            typeWriter(legend,idElem)
+        }
+        $('.step-'+stepNumber).removeClass('d-none');
+    }
+
+    async function validacionConvenio(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validacionConvenio`;
+        args["method"] = "POST";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        args["dismissAlert"] = true;
+        args["data"] = JSON.stringify({
+            "idCliente": dataCita.convenio.idCliente,
+            "codigoEspecialidad": parseInt(dataCita.especialidad.codigoEspecialidad),
+            "idPaciente": parseInt(dataCita.paciente.numeroPaciente),
+            "codigoTipoAtencion": dataCita.especialidad.codigoTipoAtencion
+        });
+        const data = await call(args);
+        
+        if(data.code == 200){
+            return data.data.requiereControlEmbarazo;
+        }else{
+            return false;
+        }
+    }
+
+    async function consultarSiEsTratamiento(){
+        let codigoServicio = dataCita.especialidad.modalidadPrestacionAgenda.presencial.codigoServicio;
+        let codigoPrestacion = dataCita.especialidad.modalidadPrestacionAgenda.presencial.codigoPrestacion;
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}
+        &codigoServicio=${ codigoServicio }&codigoPrestacion=${ codigoPrestacion }&codigoConvenio=${ (dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : '' }`;
+        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        let params = {}
+        
+        if (data.code == 200 && data.data != null){
+            params.tratamiento = data.data;
+            let urlParamsSi = JSON.stringify(data.data);
+            $("#btn-si-tratamiento").attr("data-rel", urlParamsSi);
+
+            $('#tratamiento-content').empty();
+            
+            let elem = `<div class="progress-circle mx-auto" data-percentage="${ roundToDraw(data.data.porcentajeAvanceTratamiento) }">
+                <span class="progress-left">
+                    <span class="progress-bar"></span>
+                </span>
+                <span class="progress-right">
+                    <span class="progress-bar"></span>
+                </span>
+                <div class="progress-value">
+                    <div>
+                        <span><i class="bi bi-check2 success"></i></span>
+                        <p class="fs--2 mb-0">${data.data.totalTratamientoRealizados}/${data.data.totalTratamientoEnviados}</p>
+                    </div>
+                </div>
+            </div>
+            <h5 class="card-title h6 fw-medium mb-2 text-primary-veris">${capitalizarCadaPalabra(data.data.nombreEspecialidad)}</h5>
+            <p class="fs--2 mb-0">{{ __('Tratamiento enviado') }}: <b class="fw-normal text-primary-veris" id="fechaCitaPendiente">${ data.data.fechaTratamiento }</b></p>`;
+
+            $('#tratamiento-content').append(elem);
+
+            var myModal = new bootstrap.Modal(document.getElementById('consultaTratamientoModal'));
+            myModal.show();
+        }else{
+            $('#box-animacion-horizontal').addClass('d-none');
+            $('#typewriterVertical').empty();
+            goTo(3,'Ahora estoy buscando las mejores \n opciones...','typewriterVertical');
+            await obtenerCitasSugeridas();
+        }
+
+    }
+
+    async function validarCondicionConvenio(){
+        let paramasAditional = ``;
+        if(dataCita.hasOwnProperty('especialidad')){
+            let codigoServicio = dataCita.especialidad.modalidadPrestacionAgenda.presencial.codigoServicio;
+            let codigoPrestacion = dataCita.especialidad.modalidadPrestacionAgenda.presencial.codigoPrestacion;
+            if($('.modalidad-selected button').attr('data-rel') == "S"){
+                codigoServicio = dataCita.especialidad.modalidadPrestacionAgenda.online.codigoServicio;
+                codigoPrestacion = dataCita.especialidad.modalidadPrestacionAgenda.online.codigoPrestacion;
+            }
+            paramasAditional += `&codigoServicio=${ codigoServicio }&codigoPrestacion=${ codigoPrestacion }&tipoModalidad=${ (dataCita.online == "N") ? "PRESENCIAL" : "ONLINE" }`;
+        }
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}${paramasAditional}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        if(data.code == 200){
+            dataCita.validarCondicionConvenio = data.data;
+        }
+        return data;
+    }
+    
+    // swiper.update()
+    function createSwiperSlider(){
+        swiper = new Swiper('.swiper-horarios', {
             // slidesPerView: 1,
             spaceBetween: 8,
             navigation: {
@@ -239,26 +575,19 @@ $tokenCita = base64_encode(uniqid());
                 },
             },
         });
-
-    });
-
-    function goTo(stepNumber, legend){
-        $('.steps').addClass('d-none');
-        $('#typewriter').empty();
-        typeWriter(legend)
-        $('.step-'+stepNumber).removeClass('d-none');
     }
 
-    async function drawTabs(){
-        $.each(dataCita.especialidad.modalidadPrestacionAgenda, function(key, value){
-            if(value != null){
+    // async function drawTabs(){
+    //     $.each(dataCita.especialidad.modalidadPrestacionAgenda, function(key, value){
+    //         if(value != null){
                 
-            }
-        })
-    }
+    //         }
+    //     })
+    // }
 
     let grouped = [];
     async function obtenerCitasSugeridas(){
+        $('#listadoSugerencias').empty();
         let fechaSeleccionada;
         if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
             let necesitaValidacionFecha = await validacionFecha();
@@ -286,72 +615,84 @@ $tokenCita = base64_encode(uniqid());
 
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/disponibilidadSugerida?canalOrigen=${_canalOrigen}&codigoEmpresa=1&idPaciente=${dataCita.paciente.numeroPaciente}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&aplicaOnline=S&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&esPlanStar=${esPlanStar}`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
         const data = await call(args);
         console.log(data);
         if (data.code == 200){
-            grouped = data.reduce((acc, item) => {
+            grouped = data.data.reduce((acc, item) => {
                 acc[item.esOnline] = acc[item.esOnline] || [];
                 acc[item.esOnline].push(item);
                 return acc;
             }, {});
+
+            let newArrayCardByModalidad = (dataCita.online == "S") ? grouped['S'] : grouped['N'];
+            let newArrayCard = newArrayCardByModalidad.slice(0,2);
             let elemento = '';
+            // let qty = 
             if(newArrayCard.length > 0){
                 newArrayCard.forEach((medico) => {
-                    let img_doctor = (medico.imagen != null) ? medico.imagen : '{{ asset('assets/img/svg/avatar_doctor.svg') }}';
-                    let listadoHorarios = ``;
-                    let cantidadMaxListado = (medico.intervalos.length >= 3) ? 3 : 1;
-                    $.each(medico.intervalos, function(k,v){
-                        if(k < cantidadMaxListado){
-                            listadoHorarios += drawHorarioMedico(v);
-                        }else{
-                            return false;
-                        }
-                    })
-
-                    //${ (dataCita.online == "N") ? `<p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal) } </p>` : ``}
-
-                    let esMedicoAnterior = (medico.esMedicoAnterior == "S") ? `<div class="badge rounded-3 py-1 px-2 bg-cita-atendida d-flex justify-content-between align-items-center gap-1 ${ (medico.esFavorito == "S") ? `flex-grow-1` : `` } me-2">
-                                        <i class="fa-solid fa-clock" style="color:#2F7833;"></i>
-                                        <span class="fw-normal fs--2" style="color:#2F7833;">Te atendiste con este doctor</span>
-                                    </div>` : ``;
-                    
-                    let esFavorito = (medico.esFavorito == "S") ? `<div class="badge rounded-3 py-1 px-2 bg-fav-atendida">
-                                        <i class="fa-solid fs--2 fa-heart" style="color:#D84315;"></i>
-                                    </div>` : ``;
-
-                    elemento += `<div class="border-box-light-blue rounded-3 p--2 mb-3">
-                        <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
-                            <div class="picture-doctor border-box-light-blue border-3 rounded-circle" style="background: url(${img_doctor}) no-repeat top center;background-size: cover;">
-                            </div>
-                            <div class="content-doctor ms-2 flex-grow-1">
-                                <div class="name-rate d-flex justify-content-between align-items-start mb-1">
-                                    <h6 class="fs--16 line-height-20 fw-medium flex-grow-1 m-0 flex-grow-1">${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
-                                </div>
-                                ${ (dataCita.online == "N") ? `<p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal) } </p>` : ``}
-                                <p class="fs--2 line-height-16 fw-normal mb-1" style="color: #425065;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
-                                <div class="info-adicional-medico d-flex justify-content-between align-items-center">
-                                    ${esMedicoAnterior}
-                                    ${esFavorito}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="dates-doctor">
-                            <p class="fs--1 line-height-16 fw-medium mb-2" style="color:#296BEF;">Horario más próximo:</p>
-                            <div class="row g-2" style="max-width:341px">
-                                ${listadoHorarios}
-                                <div class="col-6">
-                                    <div class="cursor-pointer waves-effect p--2 px-3 w-100 bg-time-doctor-alt rounded-3 d-flex justify-content-center align-items-center btn-disponibilidad-medico-all" data-bs-toggle="modal" data-bs-target="#elegirHorarioModal" data-rel='${JSON.stringify(medico)}'>
-                                        <span class="fs--1 line-height-20 rate-label text-center mb-0">Ver más horarios</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
+                    elemento += drawCardMedico(medico);
                 })
+                
+                $('#listadoSugerencias').html(`${elemento}`);
+                swiper.update()
             }
+
+            // $('#box-animacion-horizontal').removeClass('d-none');
+            goTo(4, '', 'typewriter',false);
         }
     }
+
+    function drawCardMedico(medico){
+        // ${ (medico.esFavorito == "S") ? `flex-grow-1` : `` }
+        let esMedicoAnterior = (medico.esMedicoAnterior == "S") ? `<div class="badge rounded-3 p-2 bg-cita-atendida d-flex justify-content-start align-items-center gap-1 me-2">
+                <i class="fa-solid fa-clock" style="color:#2F7833;"></i>
+                <span class="fw-normal fs--2" style="color:#2F7833;">Te atendiste con este doctor</span>
+            </div>` : ``;
+
+        let esFavorito = (medico.esFavorito == "S") ? `<div class="badge rounded-3 p-2 bg-fav-atendida">
+                <i class="fa-solid fs--2 fa-heart" style="color:#D84315;"></i>
+            </div>` : ``;
+
+        return `<div class="swiper-slide border-ai border-ai-thin">
+            <div class="bg-white rounded-3 p--2">
+                <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
+                    <div class="content-doctor ms-2 flex-grow-1">
+                        <div class="name-rate d-flex justify-content-between align-items-start mb-1">
+                            <h6 class="fs--1 line-height-16 fw-medium flex-grow-1 m-0 flex-grow-1 text-primary-veris">${capitalizarCadaPalabra(dataCita.especialidad.nombreEspecialidad)}</h6>
+                        </div>
+                        ${ (dataCita.online == "N") ? `<p class="fs--2 line-height-16 fw-medium mb-1 text-veris">${capitalizarCadaPalabra(medico.nombreSucursal) } </p>` : ``}
+                        <p class="fs--2 line-height-16 fw-normal mb-1 text-veris">${formatDate(medico.dia2)} <span class="text-primary-veris ms-2">${medico.horaInicio} ${determinarMeridiano(medico.horaInicio)}</span</p>
+                        <p class="fs--2 line-height-16 fw-normal mb-1 text-veris">Dr(a) ${capitalizarCadaPalabra(medico.nombreMedico)}</p>
+                        <p class="fs--2 line-height-16 fw-normal mb-1 text-veris" style="color: #3B4E66;">${capitalizarCadaPalabra(dataCita.paciente.primerNombre)} ${capitalizarCadaPalabra(dataCita.paciente.segundoNombre)} ${capitalizarCadaPalabra(dataCita.paciente.primerApellido)} ${capitalizarCadaPalabra(dataCita.paciente.segundoApellido)}</p>
+                        <div class="info-adicional-medico d-flex justify-content-start align-items-center">
+                            ${esMedicoAnterior}
+                            ${esFavorito}
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 d-flex justify-content-between align-items-center">
+                    <img width="32px" class="me-2" src="${medico.urlIconoConsulta}"/>
+                    <div class="btn btn-primary-veris m-0 px-3 py-2 fs--1 fw-medium ms-auto btn-elegir" data-rel='${JSON.stringify(medico)}'>
+                    Elegir
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+
+    function formatDate(dateString) {
+        // Separar la fecha en día, mes y año
+        let [day, month, year] = dateString.split('/');
+
+        // Crear un objeto Date (restamos 1 al mes porque en JS los meses van de 0 a 11)
+        let date = new Date(year, month - 1, day);
+
+        // Formatear la fecha en el formato deseado
+        let options = { month: 'short', day: '2-digit', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    }
+
 
     async function validacionFecha(){
         let args = [];
@@ -492,23 +833,8 @@ $tokenCita = base64_encode(uniqid());
                     params.convenio = convenios;
                     params.paciente = dataRel;
 
-                    let ruta = '';
-                    if (ordenExterna == 'S') {
-                        if(online == 'S'){
-                            ruta = `/registrar-orden-externa-ubicacion/{{ $tokenCita }}`;                       
-                        }else{
-                            ruta = `/registrar-orden-externa/{{ $tokenCita }}`;
-                        }
-                    }
-                    else {
-                        ruta = `/citas-elegir-especialidad/{{ $tokenCita }}`;
-                    }
-                    
-                    if(convenios.permiteReserva == "N"){
-                        ruta = `#`;
-                    }
                     let ulrParams = encodeURIComponent(btoa(JSON.stringify(params)));
-                    elemento += `<div data-rel='${ulrParams}' url-rel="${ruta}" class="convenio-item mb-2" data-bs-dismiss="modal">
+                    elemento += `<div data-rel='${ulrParams}' class="convenio-item mb-2">
                                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
                                         <label for="listGroupCheckableRadios${convenios.codigoConvenio}" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
@@ -538,13 +864,13 @@ $tokenCita = base64_encode(uniqid());
                     }
                 }
 
-                elemento += `<a href="${ruta}" class="d-block convenio-ninguno" data-rel='${ulrParams}' id="convenioNinguno">
+                elemento += `<div class="d-block convenio-item" data-rel='${ulrParams}' id="convenioNinguno">
                                 <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                     <label class="text-primary-veris fs--1 line-height-16 cursor-pointer">
                                         Ninguno
                                     </label> 
                                 </div>
-                            </a>`;
+                            </div>`;
 
                 listaConvenios.append(elemento); 
                 
@@ -552,6 +878,8 @@ $tokenCita = base64_encode(uniqid());
                 $('#convenioModal').modal('show');
                 
             } else {
+                console.log(77)
+                goTo(2, 'Perfecto, ahora dime en que \n especialidad quieres \n atenderte', 'typewriter');
 
                 let params = {}
                 dataCita.online = online;
@@ -581,7 +909,6 @@ $tokenCita = base64_encode(uniqid());
 
                 //window.location.href = ruta;
                 // alert(0)
-                goTo(2, 'Perfecto, ahora dime en que \n especialidad quieres \n atenderte');
             }              
         }
 
@@ -621,7 +948,7 @@ $tokenCita = base64_encode(uniqid());
         listaPacientes.append(elemento);
     }
 
-    async function reservaNoPermitida(url, data ){
+    async function reservaNoPermitida( data ){
         let convenio = JSON.parse(atob(decodeURIComponent(data)));
         console.log("convenio", convenio);
         $('#noPermiteReservaMsg').html(convenio.convenio.mensajeBloqueoReserva)
@@ -633,9 +960,9 @@ $tokenCita = base64_encode(uniqid());
 
             // Guardar el objeto actualizado en localStorage
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
-
+            console.log(99)
+            goTo(2, 'Perfecto, ahora dime en que \n especialidad quieres \n atenderte', 'typewriter');
             // location.href = url;
-            goTo(2, 'Perfecto, ahora dime en que \n especialidad quieres \n atenderte');
         }else{
             $('#convenioModal').modal('hide');
             var myModal = new bootstrap.Modal(document.getElementById('noPermiteReserva'));
@@ -685,6 +1012,84 @@ $tokenCita = base64_encode(uniqid());
     .modalidad-selected button{
         font-weight: 700;
         color: #296BEF;
+    }
+    .bg-cita-atendida{
+        background: #B9F6CA;
+    }
+    .bg-fav-atendida{
+        background: #FBE9E7;
+    }
+    .swiper-slide:first-child > div {
+        margin-right: 0.5px;
+    }
+
+    .animated-svg-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .animated-svg-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(53.36% 53.36% at 26.21% 29.37%, 
+            #003AAF 4.6%, 
+            rgba(41, 107, 239, 0.8) 50.1%, 
+            rgba(254, 40, 154, 0.6) 100%);
+        border-radius: 50%;
+        /*filter: blur(5px);*/
+        filter: blur(5px) brightness(1.3) contrast(1.8);
+        animation: rotateBackground 1s linear infinite;
+
+    }
+
+    @keyframes rotateBackground {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /*.animated-svg-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(53.36% 53.36% at 26.21% 29.37%, 
+            #003AAF 4.6%, 
+            rgba(41, 107, 239, 0.8) 50.1%, 
+            rgba(254, 40, 154, 0.6) 100%);
+        border-radius: 50%;
+        filter: blur(10px);
+        opacity: 0.8;
+        animation: rotateBackground 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes rotateBackground {
+        0% {
+            transform: rotate(0deg) scale(1);
+            opacity: 0.8;
+        }
+        50% {
+            transform: rotate(180deg) scale(1.1);
+            opacity: 0.9;
+        }
+        100% {
+            transform: rotate(360deg) scale(1);
+            opacity: 1;
+        }
+    }*/
+
+    .img-ai {
+        position: relative;
+        z-index: 1; /* Asegura que el SVG quede por encima del fondo */
     }
 
     /* Estilo de la barra de desplazamiento */
