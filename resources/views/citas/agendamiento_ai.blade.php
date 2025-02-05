@@ -589,14 +589,14 @@ $tokenCitaNormal = base64_encode(uniqid());
     async function obtenerCitasSugeridas(){
         $('#listadoSugerencias').empty();
         let fechaSeleccionada;
-        if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
-            let necesitaValidacionFecha = await validacionFecha();
-            console.log(necesitaValidacionFecha)
-            if(necesitaValidacionFecha){
-                $('#listaMedicos').empty();
-                return;
-            }
-        }
+        // if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
+        //     let necesitaValidacionFecha = await validacionFecha();
+        //     console.log(necesitaValidacionFecha)
+        //     if(necesitaValidacionFecha){
+        //         $('#listaMedicos').empty();
+        //         return;
+        //     }
+        // }
 
         let soloDescuento = $('.options-date.active').attr("data-rel");
         let codigoMedico = "";
