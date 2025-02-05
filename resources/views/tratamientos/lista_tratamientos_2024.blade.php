@@ -787,6 +787,9 @@ $tokenSesion = base64_encode(uniqid());
 
     // determinar fechas caducadas
     function determinarFechasCaducadas(datos, datosTratamiento){ 
+        // console.log(datos);
+        // console.log(datosTratamiento);
+        if(datos.detalleReserva == null) return ``;
         let dataFechas = ``;
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
             
