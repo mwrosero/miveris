@@ -165,7 +165,7 @@ $tokenCitaNormal = base64_encode(uniqid());
                     <div class="row g-3 pt-5 justify-content-start steps step-3 mb-3 d-none">
                         <div class="col-12 mt-5">
                             <div class="row g-3 justify-content-start">
-                                <div class="col-12 pt-5 text-center">
+                                <div class="col-12 pt-3 text-center">
                                     <div class="animated-svg-container mb-5" style="width:150px;height:150px;">
                                         <img src="{{ asset('assets/img/svg/vericita.svg') }}" class="mx-auto mb-5 img-ai" alt="" style="width:150px;height:150px;">
                                     </div>
@@ -373,6 +373,9 @@ $tokenCitaNormal = base64_encode(uniqid());
                 $('#box-animacion-horizontal').addClass('d-none');
                 $('#typewriterVertical').empty();
                 goTo(3,'En este momento no puedo encontrar lo que buscas.\n\nPara poder agendar tu cita da clic en continuar e ingresa los datos','typewriterVertical');
+                setTimeout(function(){
+                    $('#typewriterVertical').after(`<button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3 mt-3 btn-seleccionar-datos">Continuar</button>`)
+                },7000);
             }
 
         })
@@ -622,6 +625,15 @@ $tokenCitaNormal = base64_encode(uniqid());
         const data = await call(args);
         console.log(data);
         if (data.code == 200){
+            if(data.data == null){
+                $('#box-animacion-horizontal').addClass('d-none');
+                $('#typewriterVertical').empty();
+                goTo(3,'En este momento no puedo encontrar lo que buscas.\n\nPara poder agendar tu cita da clic en continuar e ingresa los datos','typewriterVertical');
+                setTimeout(function(){
+                    $('#typewriterVertical').after(`<button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3 mt-3 btn-seleccionar-datos">Continuar</button>`)
+                },7000);
+                return;
+            }
             grouped = data.data.reduce((acc, item) => {
                 acc[item.esOnline] = acc[item.esOnline] || [];
                 acc[item.esOnline].push(item);
@@ -667,7 +679,7 @@ $tokenCitaNormal = base64_encode(uniqid());
                         ${ (dataCita.online == "N") ? `<p class="fs--2 line-height-16 fw-medium mb-1 text-veris">${capitalizarCadaPalabra(medico.nombreSucursal) } </p>` : ``}
                         <p class="fs--2 line-height-16 fw-normal mb-1 text-veris">${formatDate(medico.dia2)} <span class="text-primary-veris ms-2">${medico.horaInicio} ${determinarMeridiano(medico.horaInicio)}</span</p>
                         <p class="fs--2 line-height-16 fw-normal mb-1 text-veris">Dr(a) ${capitalizarCadaPalabra(medico.nombreMedico)}</p>
-                        <p class="fs--2 line-height-16 fw-normal mb-1 text-veris" style="color: #3B4E66;">${capitalizarCadaPalabra(dataCita.paciente.primerNombre)} ${capitalizarCadaPalabra(dataCita.paciente.segundoNombre)} ${capitalizarCadaPalabra(dataCita.paciente.primerApellido)} ${capitalizarCadaPalabra(dataCita.paciente.segundoApellido)}</p>
+                        <p class="fs--2 line-height-16 fw-normal mb-1 text-veris" style="color: #3B4E66;">${ capitalizarCadaPalabra(concatenarNombres(dataCita.paciente.primerNombre, dataCita.paciente.segundoNombre, dataCita.paciente.primerApellido, dataCita.paciente.segundoNombre)) }</p>
                         <div class="info-adicional-medico d-flex justify-content-start align-items-center">
                             ${esMedicoAnterior}
                             ${esFavorito}
@@ -696,6 +708,11 @@ $tokenCitaNormal = base64_encode(uniqid());
         return date.toLocaleDateString('en-US', options);
     }
 
+    function concatenarNombres(primerNombre, segundoNombre, primerApellido, segundoApellido) {
+        return [primerNombre, segundoNombre, primerApellido, segundoApellido]
+            .filter(nombre => nombre && nombre.trim() !== "") // Filtra nulos, vacíos y espacios
+            .join(" "); // Une con espacio
+    }
 
     async function validacionFecha(){
         let args = [];
