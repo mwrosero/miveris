@@ -960,17 +960,25 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 });
 
-let typewriterTimeout;
-function typeWriter(txt, i = 0) {
-    let elem = document.getElementById("typewriter");
+function typeWriter(txt, nameIdElement) {
+    let elem = document.getElementById(nameIdElement);
+    if (!elem || elem.dataset.typing === "true") return; // Evita ejecuciones múltiples
 
-    if (i === 0) {
-        clearTimeout(typewriterTimeout); // Cancela cualquier ejecución previa
-        elem.innerHTML = ""; // Limpia el contenido antes de iniciar
+    elem.dataset.typing = "true"; // Indica que está escribiendo
+    elem.innerHTML = ""; // Limpia antes de escribir
+
+    let i = 0;
+
+    function write() {
+        if (i < txt.length) {
+            let char = txt[i] === '\n' ? '<br>' : txt[i]; // Maneja saltos de línea
+            elem.innerHTML += char;
+            i++; // Incrementa correctamente
+            setTimeout(write, 50);
+        } else {
+            elem.dataset.typing = "false"; // Indica que terminó
+        }
     }
 
-    if (i < txt.length) {
-        elem.innerHTML += txt.charAt(i);
-        typewriterTimeout = setTimeout(() => typeWriter(txt, i + 1), 50);
-    }
+    setTimeout(write, 50); // Retrasa un poco la ejecución inicial para evitar doble letra
 }

@@ -322,6 +322,10 @@ html:not([dir="rtl"]) .border-start-veris {
   animation: gradientAnimation 2.5s linear infinite; /* Animación */
 }
 
+.border-ai-thin{
+  padding: 0.5px;
+}
+
 .text-veris-ai{
   color: var(--verisAi) !important;
 }
