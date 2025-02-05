@@ -255,6 +255,7 @@ $tokenCitaNormal = base64_encode(uniqid());
             $('#box-animacion-horizontal').addClass('d-none');
             $('#typewriterVertical').empty();
             goTo(3,'Ahora estoy buscando las mejores \n opciones...','typewriterVertical');
+            $('#consultaTratamientoModal').modal('hide');
             await obtenerCitasSugeridas();
         })
 
@@ -314,7 +315,6 @@ $tokenCitaNormal = base64_encode(uniqid());
         $('body').on('click','.btn-modalidad', async function(){
             let modalidad = $(this).attr('data-rel')
             dataCita.online = modalidad;
-            $('#listadoSugerencias').empty();
             if(modalidad == "S"){
                 console.log("Validar");
                 let data = await validarCondicionConvenio();
@@ -324,7 +324,8 @@ $tokenCitaNormal = base64_encode(uniqid());
                     return;
                 }
             }
-            
+
+            $('#listadoSugerencias').empty();
             let newArrayCard = grouped[modalidad].slice(0,2);
             let elemento = '';
             // let qty = 
@@ -613,7 +614,9 @@ $tokenCitaNormal = base64_encode(uniqid());
             let codigoPrestacion = dataCita.especialidad.modalidadPrestacionAgenda.online.codigoPrestacion;
         }
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/disponibilidadSugerida?canalOrigen=${_canalOrigen}&codigoEmpresa=1&idPaciente=${dataCita.paciente.numeroPaciente}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&aplicaOnline=S&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&esPlanStar=${esPlanStar}`;
+        let aplicaOnline = (dataCita.especialidad.modalidadPrestacionAgenda.online != null) ? "S" : "N";
+
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/disponibilidadSugerida?canalOrigen=${_canalOrigen}&codigoEmpresa=1&idPaciente=${dataCita.paciente.numeroPaciente}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&aplicaOnline=${aplicaOnline}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&esPlanStar=${esPlanStar}`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const data = await call(args);
