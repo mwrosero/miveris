@@ -323,8 +323,9 @@ html:not([dir="rtl"]) .border-start-veris {
 }
 
 .border-ai-thin{
-  padding: 0.5px;
-  padding-left: 1px;
+  /*padding: 0.5px;
+  padding-left: 1px;*/
+  padding: 1px;
 }
 
 .text-veris-ai{
