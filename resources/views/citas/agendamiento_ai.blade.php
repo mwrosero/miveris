@@ -941,7 +941,7 @@ $tokenCitaNormal = base64_encode(uniqid());
                 
             } else {
                 console.log(77)
-                goTo(2, 'Perfecto, ahora dime en que \n especialidad quieres \n atenderte', 'typewriter');
+                goTo(2, 'Perfecto, ahora dime en qué \n especialidad quieres \n atenderte', 'typewriter');
 
                 let params = {}
                 dataCita.online = online;
@@ -1023,7 +1023,7 @@ $tokenCitaNormal = base64_encode(uniqid());
             // Guardar el objeto actualizado en localStorage
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
             console.log(99)
-            goTo(2, 'Perfecto, ahora dime en que \n especialidad quieres \n atenderte', 'typewriter');
+            goTo(2, 'Perfecto, ahora dime en qué \n especialidad quieres \n atenderte', 'typewriter');
             // location.href = url;
         }else{
             $('#convenioModal').modal('hide');
