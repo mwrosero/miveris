@@ -868,6 +868,13 @@ $tokenCitaNormal = base64_encode(uniqid());
         let telefono;
         let correo;
 
+        if(dataRel.aplicaFlujoIA == "N"){
+            dataCita.paciente = dataRel;
+            localStorage.setItem('cita-{{ $tokenCitaNormal }}', JSON.stringify(dataCita));
+            window.location.href = "/seleccionar-datos-cita/" + "{{ $tokenCitaNormal }}";
+            return;
+        }
+
         if(dataRel != ""){
             codigoUsuario = dataRel.numeroIdentificacion;
             tipoIdentificacion = dataRel.tipoIdentificacion;
