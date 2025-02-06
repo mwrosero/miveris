@@ -225,6 +225,7 @@ $tokenCitaNormal = base64_encode(uniqid());
     // llamada al dom 
     let swiper; 
     let estaEscribiendo = false;
+    let swipeCreado = false;
     document.addEventListener("DOMContentLoaded", async function () {
         $('#typewriter').empty();
         typeWriter('Por favor elige para quién es \n la cita médica.','typewriter');
@@ -232,8 +233,7 @@ $tokenCitaNormal = base64_encode(uniqid());
         setTimeout(async function(){
             await consultarGrupoFamiliar();
             $('.step-1').removeClass('d-none');
-            createSwiperSlider();
-        }, 3500 );
+        }, 3000 );
         
         $('body').on('click','.btn-add-familia', async function(){
             $('#box-animacion-horizontal').addClass('d-none');
@@ -570,6 +570,7 @@ $tokenCitaNormal = base64_encode(uniqid());
     function createSwiperSlider(){
         swiper = new Swiper('.swiper-horarios', {
             // slidesPerView: 1,
+            // autoHeight: true,
             spaceBetween: 8,
             navigation: {
                 nextEl: '.btn-next',
@@ -675,7 +676,12 @@ $tokenCitaNormal = base64_encode(uniqid());
                 })
                 
                 $('#listadoSugerencias').html(`${elemento}`);
-                swiper.update()
+                if(!swipeCreado){
+                    swipeCreado = true;
+                    createSwiperSlider();
+                }else{
+                    swiper.update()
+                }
             }
 
             // $('#box-animacion-horizontal').removeClass('d-none');
@@ -705,9 +711,9 @@ $tokenCitaNormal = base64_encode(uniqid());
                 <i class="fa-solid fs--2 fa-heart" style="color:#D84315;"></i>
             </div>` : ``;
 
-        return `<div class="swiper-slide border-ai border-ai-thin">
-            <div class="bg-white rounded-3 p--2">
-                <div class="header-doctor d-flex justify-content-between align-items-start mb-3">
+        return `<div class="swiper-slide border-ai border-ai-thin h-100">
+            <div class="bg-white rounded-3 p--2 h-100 d-flex flex-fill flex-column">
+                <div class="header-doctor d-flex justify-content-between align-items-start mb-3 flex-fill">
                     <div class="content-doctor ms-2 flex-grow-1">
                         <div class="name-rate d-flex justify-content-between align-items-start mb-1">
                             <h6 class="fs--1 line-height-16 fw-medium flex-grow-1 m-0 flex-grow-1 text-primary-veris">${capitalizarCadaPalabra(dataCita.especialidad.nombreEspecialidad)}</h6>
@@ -824,7 +830,7 @@ $tokenCitaNormal = base64_encode(uniqid());
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}&incluyeUsuarioSesion=S`
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
         const data = await call(args);
         
         if(data.code == 200){

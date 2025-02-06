@@ -327,10 +327,13 @@ Elige datos para la Cita
             $('#btn-central').removeClass('disabled');
         }else{
             $('.label-sugerencia').removeClass('d-none');
-        // await consultarEspecialidades();
-            if(dataCita.hasOwnProperty('origen') && dataCita.origen != "agendamiento-ai"){
+            // await consultarEspecialidades();
+            console.log(dataCita)
+            if(dataCita.origen != "agendamiento-ai"){
+                console.log(0)
                 delete dataCita.especialidad
             }else{
+                console.log(1)
                 $('.btn-modalidad[data-rel="'+dataCita.online+'"]').addClass('btn-primary-veris').addClass('modalidad-selected').addClass('text-white').removeClass('bg-white');
                 await consultarEspecialidades();
                 $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)) }`)
@@ -623,7 +626,7 @@ Elige datos para la Cita
             if(data.data.length > 0){
                 //$('#btn-convenio').attr('data-rel',JSON.stringify(dataCita.convenio));
                 if(!dataCita.hasOwnProperty('reservaEdit')){
-                    if(dataCita.hasOwnProperty('origen') && dataCita.origen != "agendamiento-ai"){
+                    if(dataCita.origen != "agendamiento-ai"){
                         dataCita.convenio = data.data[0];
                     }
                     $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio))}`);
