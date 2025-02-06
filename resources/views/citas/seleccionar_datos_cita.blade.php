@@ -338,6 +338,7 @@ Elige datos para la Cita
                 $('#btn-ciudad').removeClass('disabled');
                 $('#btn-especialidad').removeClass('disabled');
                 $('#btn-central').removeClass('disabled');
+                $('#btn-convenio').removeClass('disabled');
             }
         //if(dataCita.convenio == null){
             await cargarConvenios();
@@ -610,6 +611,7 @@ Elige datos para la Cita
     }
 
     async function cargarConvenios(){
+        //return;
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${dataCita.paciente.tipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
         args["method"] = "GET";
@@ -621,12 +623,15 @@ Elige datos para la Cita
             if(data.data.length > 0){
                 //$('#btn-convenio').attr('data-rel',JSON.stringify(dataCita.convenio));
                 if(!dataCita.hasOwnProperty('reservaEdit')){
-                    dataCita.convenio = data.data[0];
+                    if(dataCita.hasOwnProperty('origen') && dataCita.origen != "agendamiento-ai"){
+                        dataCita.convenio = data.data[0];
+                    }
                     $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio))}`);
                 }else{
                     data.data.forEach((convenios) => {
                         console.log(convenios)
                         if(parseInt(convenios.codigoConvenio) == parseInt(dataCita.convenio.codigoConvenio)){
+                            console.log(888)
                             dataCita.convenio.nombreConvenio = convenios.nombreConvenio;
                         }
                     })
