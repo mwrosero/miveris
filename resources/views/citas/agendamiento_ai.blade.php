@@ -122,7 +122,7 @@ $tokenCitaNormal = base64_encode(uniqid());
                             </div>
                         </div>
                     </div>
-                    <div class="row g-3 justify-content-start steps step-1" id="listaPacientes">
+                    <div class="row g-3 justify-content-start steps step-1 d-none" id="listaPacientes">
                         <div class="col-6 ">
                             <div class="card h-100 btn-add-familia cursor-pointer">
                                 <div class="card-body d-flex flex-column justify-content-center align-items-center px-3 py-2">
@@ -228,8 +228,12 @@ $tokenCitaNormal = base64_encode(uniqid());
     document.addEventListener("DOMContentLoaded", async function () {
         $('#typewriter').empty();
         typeWriter('Por favor elige para quién es \n la cita médica.','typewriter');
-        await consultarGrupoFamiliar();
-        createSwiperSlider();
+        
+        setTimeout(async function(){
+            await consultarGrupoFamiliar();
+            $('.step-1').removeClass('d-none');
+            createSwiperSlider();
+        }, 3500 );
         
         $('body').on('click','.btn-add-familia', async function(){
             $('#box-animacion-horizontal').addClass('d-none');
