@@ -110,7 +110,7 @@ $tokenCitaNormal = base64_encode(uniqid());
         <div class="container mb-4">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-6 col-lg-5 mt-3">
-                    <div class="row g-3 justify-content-start mb-3" id="box-animacion-horizontal">
+                    <div class="row g-3 justify-content-start mb-3 d-none" id="box-animacion-horizontal">
                         <div class="col-12">
                             <div class="card h-100 border-ai">
                                 <div class="card-body d-flex justify-content-between align-items-center px-3 py-2 bg-white rounded-3" style="min-height:100px;">
@@ -123,18 +123,6 @@ $tokenCitaNormal = base64_encode(uniqid());
                         </div>
                     </div>
                     <div class="row g-3 justify-content-start steps step-1 d-none" id="listaPacientes">
-                        <div class="col-6 ">
-                            <div class="card h-100 btn-add-familia cursor-pointer">
-                                <div class="card-body d-flex flex-column justify-content-center align-items-center px-3 py-2">
-                                    <div class="d-flex justify-content-center align-items-center mb-2">
-                                        <div class="avatar avatar-10">
-                                            <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
-                                        </div>
-                                    </div>
-                                    <p class="text-veris fw-medium fs--2 text-center mb-0">{{ __('Agregar nuevo paciente') }}</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="row g-3 justify-content-start steps step-2 d-none">
                         <div class="col-12">
@@ -227,13 +215,18 @@ $tokenCitaNormal = base64_encode(uniqid());
     let estaEscribiendo = false;
     let swipeCreado = false;
     document.addEventListener("DOMContentLoaded", async function () {
-        $('#typewriter').empty();
-        typeWriter('Por favor elige para quién es \n la cita médica.','typewriter');
-        
-        setTimeout(async function(){
-            await consultarGrupoFamiliar();
-            $('.step-1').removeClass('d-none');
-        }, 3000 );
+        $('#box-animacion-horizontal').addClass('d-none');
+        $('#typewriterVertical').empty();
+        goTo(3,'Hola, {{ Session::get('userData')->nombre }} aquí VeriCita \n tu asistente virtual.','typewriterVertical');
+        setTimeout(function(){
+            $('#typewriter').empty();
+            $('#box-animacion-horizontal').removeClass('d-none');
+            goTo(1,'Por favor elige para quién es \n la cita médica.','typewriter');
+            // typeWriter('Por favor elige para quién es \n la cita médica.','typewriter');
+            setTimeout(async function(){
+                await consultarGrupoFamiliar();
+            },1500);
+        }, 4000)
         
         $('body').on('click','.btn-add-familia', async function(){
             $('#box-animacion-horizontal').addClass('d-none');
@@ -989,7 +982,18 @@ $tokenCitaNormal = base64_encode(uniqid());
 
         let listaPacientes = $('#listaPacientes');
         
-        let elemento = '';
+        let elemento = `<div class="col-6 ">
+                <div class="card h-100 btn-add-familia cursor-pointer">
+                    <div class="card-body d-flex flex-column justify-content-center align-items-center px-3 py-2">
+                        <div class="d-flex justify-content-center align-items-center mb-2">
+                            <div class="avatar avatar-10">
+                                <span class="avatar-initial rounded-circle bg-soft-blue"><i class="fa-solid fa-plus"></i></span>
+                            </div>
+                        </div>
+                        <p class="text-veris fw-medium fs--2 text-center mb-0">{{ __('Agregar nuevo paciente') }}</p>
+                    </div>
+                </div>
+            </div>`;
 
         if(familiar != null){
             familiar.forEach((pacientes) => {
