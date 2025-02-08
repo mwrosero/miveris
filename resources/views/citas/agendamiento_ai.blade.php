@@ -356,7 +356,7 @@ $tokenCitaNormal = base64_encode(uniqid());
         })
 
         $('body').on('click','.btn-mas-sugerencias', async function(){
-            let modalidad = $('.btn-modalidad').attr('data-rel');
+            let modalidad = $('.modalidad-selected .btn-modalidad').attr('data-rel');
             let totalObj = grouped[modalidad].length;
             let totalSlides = swiper.slides.length;
             if(totalObj > totalSlides){
@@ -659,7 +659,19 @@ $tokenCitaNormal = base64_encode(uniqid());
                 return acc;
             }, {});
 
-            let newArrayCardByModalidad = (dataCita.online == "S") ? grouped['S'] : grouped['N'];
+            let tieneCitasPresenciales = (grouped['N'] !== undefined) ? true : false;
+            let tieneCitasVirtuales = (grouped['S'] !== undefined) ? true : false;
+            let newArrayCardByModalidad = [];
+            if(tieneCitasPresenciales){
+                newArrayCardByModalidad = (dataCita.online == "S") ? grouped['S'] : grouped['N'];
+            }else{
+                newArrayCardByModalidad = grouped['S'];
+                $('.box-modalidad').removeClass('modalidad-selected');
+                $('.box-modalidad-online').addClass('modalidad-selected');
+                
+                $('.box-modalidad-online').removeClass('col-6').addClass('col-12');
+                $('.box-modalidad-presencial').addClass('d-none');
+            }
             let newArrayCard = newArrayCardByModalidad.slice(0,2);
             let elemento = '';
             // let qty = 
@@ -714,7 +726,7 @@ $tokenCitaNormal = base64_encode(uniqid());
                         ${ (dataCita.online == "N") ? `<p class="fs--2 line-height-16 fw-medium mb-1 text-veris">${capitalizarCadaPalabra(medico.nombreSucursal) } </p>` : ``}
                         <p class="fs--2 line-height-16 fw-normal mb-1 text-veris">${formatDate(medico.dia2)} <span class="text-primary-veris ms-2">${medico.horaInicio} ${determinarMeridiano(medico.horaInicio)}</span</p>
                         <p class="fs--2 line-height-16 fw-normal mb-1 text-veris">Dr(a) ${capitalizarCadaPalabra(medico.nombreMedico)}</p>
-                        <p class="fs--2 line-height-16 fw-normal mb-1 text-veris" style="color: #3B4E66;">${ capitalizarCadaPalabra(concatenarNombres(dataCita.paciente.primerNombre, dataCita.paciente.segundoNombre, dataCita.paciente.primerApellido, dataCita.paciente.segundoNombre)) }</p>
+                        <p class="fs--2 line-height-16 fw-normal mb-1 text-veris" style="color: #3B4E66;">${ capitalizarCadaPalabra(concatenarNombres(dataCita.paciente.primerNombre, dataCita.paciente.segundoNombre, dataCita.paciente.primerApellido, dataCita.paciente.segundoApellido)) }</p>
                         <div class="info-adicional-medico d-flex justify-content-start align-items-center">
                             ${esMedicoAnterior}
                             ${esFavorito}
