@@ -473,7 +473,7 @@ Veris - Devoluciones
         args["token"] = "{{ $accessToken }}";
         let payload = {
         	"secuenciaUsuario": dataDevolucion.parametros.secuenciaUsuario,
-        	"nemonicoCanalFacturacion": "IVR",
+        	"nemonicoCanalFacturacion": "{{ $canalOrigen }}",
         	"secuenciaUsuarioAutorizacion": dataDevolucion.parametros.secuenciaUsuario,
         	"codigoMotivo": dataDevolucion.parametros.codigoMotivo,
         	"observacionMotivo": dataDevolucion.parametros.observacionMotivo,
