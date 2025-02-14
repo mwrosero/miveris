@@ -33,6 +33,14 @@ class ExternalController extends Controller
             ->with('params',$params);
     }
 
+    public function detallePaquetePorId(Request $request){
+        $urlParams = $request->all();
+        $idPaquete = $urlParams['id'];
+        return view('external.paquetes_promocionales.detalle_paquete_id')
+            ->with('accesToken',$this->getTokenExternalFacturacion())
+            ->with('idPaquete', $idPaquete);
+    }
+
     public function asignarPaquete($params){
         return view('external.paquetes_promocionales.asignar_paquete')
             ->with('accesToken',$this->getTokenExternalDigitales())
@@ -755,9 +763,12 @@ class ExternalController extends Controller
         return view('external.bot.index');
     }
 
-    public function devoluciones(){
+    public function devoluciones(Request $request){
+        $data = $request->all();
         $accessToken = $this->getTokenExternalFacturacion();
+        $canalOrigen = (isset($data['canalOrigen'])) ? $data['canalOrigen'] : 'IVR';
         return view('external.financiero.devoluciones')
+                ->with('canalOrigen',$canalOrigen)
                 ->with('accessToken',$accessToken);
         // return view('external.mantenimiento.index');
     }

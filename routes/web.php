@@ -46,6 +46,7 @@ Route::middleware('guest')->group(function () {
         Route::get('/citas', [ExternalController::class, 'agendamientoCitas'])->name('embudo-agendamiento')->withoutMiddleware(['guest']);
         Route::get('/planes-promocionales', [ExternalController::class, 'listadoPaquetes'])->name('listado-paquetes')->withoutMiddleware(['guest']);
         Route::get('/planes-promocionales/detalle/{params}', [ExternalController::class, 'detallePaquete'])->name('detalle-paquete')->withoutMiddleware(['guest']);
+        Route::get('/planes-promocionales/detalle', [ExternalController::class, 'detallePaquetePorId'])->name('detalle-paquete-id')->withoutMiddleware(['guest']);
         Route::get('/planes-promocionales/asignar/{params}', [ExternalController::class, 'asignarPaquete'])->name('asignar-paquete')->withoutMiddleware(['guest']);
         Route::get('/payment/', [ExternalController::class, 'payment'])->name('pago-citas')->withoutMiddleware(['guest']);
         // Route::get('/payment/services/', [ExternalController::class, 'paymentServices'])->name('pago-servicios')->withoutMiddleware(['guest']);
