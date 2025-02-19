@@ -633,7 +633,7 @@ $tokenCitaNormal = base64_encode(uniqid());
 
         let aplicaOnline = (dataCita.especialidad.modalidadPrestacionAgenda.online != null) ? "S" : "N";
 
-        if(aplicaOnline == "N"){
+        if(aplicaOnline == "N" || dataCita.hasOwnProperty('tratamiento')){
             $('.box-modalidad-presencial').removeClass('col-6').addClass('col-12');
             $('.box-modalidad-online').addClass('d-none');
         }

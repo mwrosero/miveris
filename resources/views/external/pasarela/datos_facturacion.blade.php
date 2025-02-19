@@ -319,29 +319,69 @@ Veris - Datos de facturación
 		@endif
 
 		$('body').on('input', '#numeroIdentificacionTH', function(){
+			let tipo = $('#tipoIdentificacionTH option:selected').val();
 	        let valor = $(this).val();
 	        $('.invalid-feedback-th').addClass('d-none')
 	        // Permite solo números (elimina letras y caracteres especiales)
-	        valor = valor.replace(/\D/g, "");
-	        $(this).val(valor);
+	        // valor = valor.replace(/\D/g, "");
+	        // $(this).val(valor);
 
 	        // Verifica si tiene exactamente 10 dígitos
-	        if (valor.length > 9) {
-	            $('.btn-validar-antifraude').removeClass('disabled')
-	        } else {
-	            $('.btn-validar-antifraude').addClass('disabled')
-	        }
+	        if(tipo == '2'){
+		        if (valor.length > 9) {
+		            $('.btn-validar-antifraude').removeClass('disabled')
+		        } else {
+		            $('.btn-validar-antifraude').addClass('disabled')
+		        }
+		    }else{
+		    	if (valor.length < 3) {
+		    		$('.btn-validar-antifraude').addClass('disabled')
+		    	} else {
+		            $('.btn-validar-antifraude').removeClass('disabled')
+		        }
+		    }
 	    });
 
+	    $('body').on('change', '#tipoIdentificacionTH', async function(){
+			let tipo = $('#tipoIdentificacionTH option:selected').val();
+			if(tipo == '3'){
+				$('.btn-validar-antifraude').removeClass('disabled')
+				$('#numeroIdentificacionTH').attr('type','text');
+			}else{
+				$('#numeroIdentificacionTH').attr('type','number');
+			}
+		})
+
+		// $('body').on('click', '.btn-validar-antifraude', async function(){
+		// 	let cedula = $('#numeroIdentificacionTH').val();
+		// 	if(esValidaCedula(cedula)){
+		// 		$('.invalid-feedback-th').addClass('d-none')
+		// 		$('#modalAntifraude').modal('hide');
+		// 		await crearTransaccionVirtual();
+		// 	}else{
+		// 		$('.invalid-feedback-th').removeClass('d-none')
+		// 	}
+		// })
 
 		$('body').on('click', '.btn-validar-antifraude', async function(){
-			let cedula = $('#numeroIdentificacionTH').val();
-			if(esValidaCedula(cedula)){
-				$('.invalid-feedback-th').addClass('d-none')
-				$('#modalAntifraude').modal('hide');
-				await crearTransaccionVirtual();
+			let tipo = $('#tipoIdentificacionTH option:selected').val();
+			let identificacion = $('#numeroIdentificacionTH').val();
+			if(tipo == '2'){
+				if(esValidaCedula(identificacion)){
+					$('.invalid-feedback-th').addClass('d-none')
+					$('#modalAntifraude').modal('hide');
+					await crearTransaccionVirtual();
+				}else{
+					$('.invalid-feedback-th').removeClass('d-none')
+				}
 			}else{
-				$('.invalid-feedback-th').removeClass('d-none')
+				if(identificacion.length < 3){
+					$('.invalid-feedback-th').removeClass('d-none')
+				}else{
+					$('.invalid-feedback-th').addClass('d-none')
+					$('#modalAntifraude').modal('hide');
+					await crearTransaccionVirtual();
+				}
 			}
 		})
 	});

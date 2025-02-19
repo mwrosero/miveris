@@ -1879,6 +1879,58 @@ h4.msg_dscto_label-style{
     background: #f0f0f0;
 }
 
+.modal-pregunta-antifraude .title {
+    color: var(--bg-blue-dark);
+    font-size: 24px;
+    -webkit-text-fill-color: inherit;
+}
+
+.modal-pregunta-antifraude {
+/*    max-width: 370px;*/
+    text-align: center
+}
+
+.modal-pregunta-antifraude .subtitle {
+    font-size: 14px !important;
+}
+
+.box-input-antifraude {
+    width: 100%;
+}
+
+.box-input-antifraude label {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0px !important;
+    font-weight: 700;
+}
+
+.box-input-antifraude input {
+    width: 100% !important;
+    text-align: left;
+    border: 1px solid #000 !important;
+    padding: 10px 0px;
+    margin: 0 !important;
+}
+
+#numeroIdentificacionTH {
+    text-align: center;
+    font-size: 16px;
+}
+
+.btn-continuar-antifraude {
+    background: #0071ce;
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.d-none {
+    display: none;
+}
+
 /******************R E S P O N S I V E***********************/
 
 @media (min-width: 1200px) {
