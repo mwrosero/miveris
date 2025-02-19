@@ -95,6 +95,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/promocion/detalle/{params}', [DashboardController::class, 'promocionDetalle'])->name('promociones.promocionDetalle')->withoutMiddleware(['guest']);
     Route::get('/mi-promocion/detalle/{params}', [DashboardController::class, 'miPromocionDetalle'])->name('promociones.miPromocionDetalle')->withoutMiddleware(['guest']);
     Route::get('/detalle/item/{params}', [DashboardController::class, 'detalleItem'])->name('promociones.detalleItem')->withoutMiddleware(['guest']);
+    Route::get('/detalle/item/preparacion-previa/{params}', [DashboardController::class, 'detalleItemPreparacionPrevia'])->name('promociones.detalleItemPreparacionPrevia')->withoutMiddleware(['guest']);
 
     #Citas
     //Route::get('/agendamiento', [CitasController::class, 'agendamiento'])->name('agendamiento')->withoutMiddleware(['guest']);

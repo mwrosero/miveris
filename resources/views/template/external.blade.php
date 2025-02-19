@@ -133,6 +133,30 @@
             </div>
         </div>
 
+        <!-- Modal Antifraude -->
+        <div class="modal fade" id="modalAntifraude" tabindex="-1" aria-labelledby="modalAntifraudeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+                <div class="modal-content">
+                    <div class="modal-header pt-3 pb-0 px-3">
+                        <h5 class="modal-title mx-auto title-section fw-medium">Validación del sitema antifraude</h5>
+                    </div>
+                    <div class="modal-body text-center p-3">
+                        <span class="fs--14 line-height-16">Ingresa el número de identificación del tarjetahabiente.</span>
+                        <div class="w-100 mt-4 text-start">
+                            <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de identificación *</label>
+                            <input type="number" class="form-control fs--1 p-3" name="numeroIdentificacionTH" id="numeroIdentificacionTH" placeholder="0999999999" required />
+                            <div class="invalid-feedback-th text-danger d-none">
+                                Ingrese un numero de identificacion válido.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer pt-0 pb-3 px-3">
+                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 m-0 btn-validar-antifraude disabled">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
       <!-- Core JS -->
       <!-- build:js assets/vendor/js/core.js -->
 

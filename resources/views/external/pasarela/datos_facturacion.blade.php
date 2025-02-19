@@ -317,6 +317,33 @@ Veris - Datos de facturación
         @if(request()->input('tipoArticulo') == "CITA")
 			llenarDataDetallesCitas()
 		@endif
+
+		$('body').on('input', '#numeroIdentificacionTH', function(){
+	        let valor = $(this).val();
+	        $('.invalid-feedback-th').addClass('d-none')
+	        // Permite solo números (elimina letras y caracteres especiales)
+	        valor = valor.replace(/\D/g, "");
+	        $(this).val(valor);
+
+	        // Verifica si tiene exactamente 10 dígitos
+	        if (valor.length > 9) {
+	            $('.btn-validar-antifraude').removeClass('disabled')
+	        } else {
+	            $('.btn-validar-antifraude').addClass('disabled')
+	        }
+	    });
+
+
+		$('body').on('click', '.btn-validar-antifraude', async function(){
+			let cedula = $('#numeroIdentificacionTH').val();
+			if(esValidaCedula(cedula)){
+				$('.invalid-feedback-th').addClass('d-none')
+				$('#modalAntifraude').modal('hide');
+				await crearTransaccionVirtual();
+			}else{
+				$('.invalid-feedback-th').removeClass('d-none')
+			}
+		})
 	});
 
 	function mostrarDesglose(){
@@ -446,7 +473,11 @@ Veris - Datos de facturación
             var myModal = new bootstrap.Modal(document.getElementById('modalRequeridos'));
             myModal.show();
         }else{
-        	await crearTransaccionVirtual();
+        	if(dataCita.facturacion.datosFactura.permiteNuvei != "S"){
+        		await crearTransaccionVirtual();
+        	}else{
+        		$('#modalAntifraude').modal('show');
+        	}
         }
     }
 
@@ -559,7 +590,7 @@ Veris - Datos de facturación
 		});
 
 		paymentCheckout.open({
-			user_id: String(dataCita.transaccionVirtual.codigoTransaccion),
+			user_id: String($('#numeroIdentificacionTH').val()),
 			user_email: getInput('mail'), //optional
 			user_phone: "{{ $paciente->data->telefonoMovil }}",//optional
 			order_description: dataCita.transaccionVirtual.reference,

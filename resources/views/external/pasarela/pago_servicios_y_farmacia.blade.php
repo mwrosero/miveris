@@ -165,7 +165,8 @@ Veris - Pago en línea
         $('body').on('click', '#btn-next', async function(){
             //validar formulario datos factura
             if(permiteNuvei == "S"){
-            	await pasarelaNuvei();
+            	// await pasarelaNuvei();
+            	$('#modalAntifraude').modal('show');
             }else{
             	await pasarelaContingencia();
             }
@@ -201,6 +202,33 @@ Veris - Pago en línea
         @if(request()->input('tipoArticulo') == "CITA")
 			llenarDataDetallesCitas()
 		@endif
+
+		$('body').on('input', '#numeroIdentificacionTH', function(){
+	        let valor = $(this).val();
+	        $('.invalid-feedback-th').addClass('d-none')
+	        // Permite solo números (elimina letras y caracteres especiales)
+	        valor = valor.replace(/\D/g, "");
+	        $(this).val(valor);
+
+	        // Verifica si tiene exactamente 10 dígitos
+	        if (valor.length > 9) {
+	            $('.btn-validar-antifraude').removeClass('disabled')
+	        } else {
+	            $('.btn-validar-antifraude').addClass('disabled')
+	        }
+	    });
+
+
+		$('body').on('click', '.btn-validar-antifraude', async function(){
+			let cedula = $('#numeroIdentificacionTH').val();
+			if(esValidaCedula(cedula)){
+				$('.invalid-feedback-th').addClass('d-none')
+				$('#modalAntifraude').modal('hide');
+				await pasarelaNuvei();
+			}else{
+				$('.invalid-feedback-th').removeClass('d-none')
+			}
+		})
 	});
 
 	async function pasarelaContingencia(){
@@ -280,7 +308,7 @@ Veris - Pago en línea
 		});
 
 		paymentCheckout.open({
-			user_id: String("{{ $info->codigoEpago }}"),
+			user_id: String($('#numeroIdentificacionTH').val()),
 			user_email: "{{ $paciente->mail ?? '' }}", //optional
 			user_phone: "{{ $paciente->telefonoMovil ?? '' }}",//optional
 			order_description: referenceNuvei.data.reference,
