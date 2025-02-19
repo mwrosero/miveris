@@ -577,6 +577,48 @@
             <!--i class="far fa-check-circle fa-fw fa-3x"></i-->
         </h2>
         <section>
+            <div class="modal modal-pregunta-antifraude fade" id="modal-pregunta-antifraude" tabindex="-1" aria-labelledby="modal-registro-pacienteLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+                    <div class="modal-content">
+                        <div class="modal-header d-block">
+                            <h1 class="title mb-1">Validación del sitema antifraude</h1>
+                            <h4 class="subtitle mb-1">Ingresa el número de identificación del tarjetahabiente.</h4>
+                        </div>
+                        <div class="modal-body pt-0 pb-0">
+                            <div class="box-input-antifraude">
+                                <label for="numeroIdentificacionTH" class="form-label">
+                                    <small>Número de Identificaci&oacute;n <span class="text-danger">*</span></small>
+                                </label>
+                                <input type="text" class="form-control form-control-sm animated-input" name="numeroIdentificacionTH" id="numeroIdentificacionTH" form="kushki-pay-form"/>
+                                <div class="invalid-feedback-th d-none">Ingrese un numero de identificacion válido.</div>
+                            </div>
+                            <div class="box-respuesta-pregunta-antifraude mb-3">
+                                <div class="btn-continuar-antifraude">ENVIAR</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{-- <div class="modal modal-pregunta-antifraude fade">
+                <div class="modal-content">
+                    <div class="header">
+                        <h1 class="title">Validación del sitema antifraude</h1>
+                        <h4 class="subtitle">Ingresa el número de identificación del tarjetahabiente.</h4>
+                    </div>
+                    <div class="content">
+                        <div class="box-input-antifraude">
+                            <label for="numeroIdentificacionTH" class="form-label">
+                                <small>Número de Identificaci&oacute;n <span class="text-danger">*</span></small>
+                            </label>
+                            <input type="text" class="form-control form-control-sm animated-input" name="numeroIdentificacionTH" id="numeroIdentificacionTH" form="kushki-pay-form"/>
+                            <div class="invalid-feedback-th d-none">Ingrese un numero de identificacion válido.</div>
+                        </div>
+                        <div class="box-respuesta-pregunta-antifraude">
+                            <div class="btn-continuar-antifraude">ENVIAR</div>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
             <h3 class="title title-confirmacion titulo-pasarela" style="text-align: center;">Cita agendada</h3>
             <h5 class="msg-after-excento"></h5>
             <div class="box-finalizar-flow" style="text-align: center;">
