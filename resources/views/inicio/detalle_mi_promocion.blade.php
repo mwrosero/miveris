@@ -233,13 +233,13 @@ Mi Veris - Citas - Detalle
     function drawBtnCardItem(detalles){
         // console.log(detalles);
         let tipoAgenda = detalles.tipoAgenda;
-        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA"];
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
         let titleBtn = `Ver detalle`;
         let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
         let btnEnviaAgendarClass = `btn-detalle`;
         if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable && tieneItemsSinAgendar){
             titleBtn = `Agendar`;
-            if(detalles.detalles.length == 1){
+            if(detalles.detalles.length == 1 && detalles.preparacionPrevia == null){
                 btnEnviaAgendarClass = `btn-agendar-item`;
             }
         }

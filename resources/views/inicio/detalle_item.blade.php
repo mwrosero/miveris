@@ -12,7 +12,7 @@ Mi Veris - Citas - Detalle
 <div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
     <a href="javascript:history.back()" class="text-decoration-none d-block">
         <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 5px;">
-            <img src="../../assets/img/svg/atras.svg" class="cursor-pointer prev-image" alt="Atrás">
+            <img src="{{asset('assets/img/svg/atras.svg')}}" class="cursor-pointer prev-image" alt="Atrás">
             <label class="fw-medium cursor-pointer" style="color: #0A2240;font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
         </div>
     </a>
@@ -46,15 +46,40 @@ Mi Veris - Citas - Detalle
 @endsection
 @push('scripts')
 <script>
-    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA"];
+    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     console.log(dataCita);
     document.addEventListener("DOMContentLoaded", async function () {
         await drawDetalles();
 
+        $('body').on('click', '.btn-informacion', async function(){
+            dataCita.origen = "paquetes";
+            dataCita.online = dataCita.promocion.esOnline;
+            dataCita.especialidad = {
+                codigoEspecialidad: dataCita.promocion.codigoEspecialidad,
+                codigoPrestacion: dataCita.promocion.codigoPrestacion,
+                codigoServicio: dataCita.promocion.codigoServicio,
+                //codigoTipoAtencion: datosServicio.codigoTipoAtencion,
+                esOnline: dataCita.promocion.esOnline,
+                nombre: dataCita.promocion.nombreEspecialidad
+            }
+            dataCita.convenio = {
+                "permitePago": "S",
+                "permiteReserva": "S",
+                "idCliente": null,
+                "codigoConvenio": null,
+                "secuenciaAfiliado" : null,
+            };
+            let url = '/detalle/item/preparacion-previa/';
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+            showLoader();
+            window.location.href = `${url}{{ $tokenCita }}`;
+        })
+
         $('body').on('click', '.btn-agendar', async function(){
             let detalle = JSON.parse($(this).attr('data-rel'));
+
             dataCita.detalleItemPaquete = detalle;
             dataCita.origen = "paquetes";
             dataCita.online = dataCita.promocion.esOnline;
@@ -79,6 +104,10 @@ Mi Veris - Citas - Detalle
             let url = '/seleccionar-datos-cita/';
             if(dataCita.promocion.esOnline == "S"){
                 url = '/citas-elegir-fecha-doctor/';
+            }
+
+            if(dataCita.promocion.preparacionPrevia != null){
+                url = '/detalle/item/preparacion-previa/';
             }
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
@@ -238,13 +267,19 @@ Mi Veris - Citas - Detalle
             elem += `<div class="col-12 mt-3">
                         <a href="${urlResultado}" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect waves-light order-last">Ver resultados</a>
                     </div>`;
+        }else{
+            if(dataCita.promocion.tipoServicio == "LABORATORIO" && dataCita.promocion.preparacionPrevia != null){
+                elem += `<div class="col-12 mt-3">
+                        <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect btn-informacion waves-light order-last">Ver información</a>
+                    </div>`;
+            }
         }
 
         $('#listado-detalles').html(elem);
     }
 
     function drawBtnCardItem(detalles){
-        if(detalles.estado == "Caducado"){
+        if(detalles.estado == "Caducado" || !detalles.esAgendable){
             return ``;
         }
         // "tipoAgenda": "CONSULTA_MEDICA"  o "TERAPIAS"

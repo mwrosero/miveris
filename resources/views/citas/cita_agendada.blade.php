@@ -123,6 +123,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let dataCita = JSON.parse(local);
     let datoReserva;
     let imagenBase64;
+    let titleDr = `Dr(a)`;
+    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
     document.addEventListener("DOMContentLoaded", async function () {
         // let urlImagen = "share-img.png";
         // convertirImagenABase64(urlImagen, function(base64Imagen) {
@@ -140,7 +142,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         title: "Cita agendada",
                     });
                 }else{
-                    var descripcionEvento = `Enviado desde Mi Veris.\nEspecialidad: ${capitalizarElemento(datoReserva.data.datosReserva.nombreEspecialidad)}\nDr(a): ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}\nFecha: ${datoReserva.data.datosReserva.fecha}\nHora: ${datoReserva.data.datosReserva.hora}\n\nLink para recibir atención: ${datoReserva.data.linkVideoConsulta}`;
+                    var descripcionEvento = `Enviado desde Mi Veris.\nEspecialidad: ${capitalizarElemento(datoReserva.data.datosReserva.nombreEspecialidad)}\n${titleDr}: ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}\nFecha: ${datoReserva.data.datosReserva.fecha}\nHora: ${datoReserva.data.datosReserva.hora}\n\nLink para recibir atención: ${datoReserva.data.linkVideoConsulta}`;
                     await navigator.share({
                         title: "Cita virtual agendada",
                         text: descripcionEvento,
@@ -166,8 +168,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 location = "/";
             }
         })
-        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA"];
+        
         if((!dataCita.paquete && !dataCita.promocion && !dataCita.datosTratamiento && !dataCita.ordenExterna) || (dataCita.origen == "paquetes" && tiposAgendaPermitida.includes(dataCita.promocion.tipoAgenda))){
+            if(dataCita.origen == "paquetes" && tiposAgendaPermitida.includes(dataCita.promocion.tipoAgenda)){
+                if(dataCita.promocion.tipoServicio == "IMAGENES" || dataCita.promocion.tipoServicio == "PROCEDIMIENTOS"){
+                    titleDr = `Profesional`;
+                }
+            }
             if(dataCita.online == "S"){
                 let card = await drawCardAgenda();
                 $('.content-online').html(card).removeClass('d-none');
@@ -248,7 +255,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         var tituloEvento = "Veris | ";
         tituloEvento += (dataCita.online == "N") ? "Cita " : "Videoconsulta ";
         tituloEvento += dataCita.especialidad.nombre.toLowerCase();
-        var descripcionEvento = `Especialidad: ${capitalizarElemento(dataCita.especialidad.nombre)}\nDr(a): ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}\n`;
+        var descripcionEvento = `Especialidad: ${capitalizarElemento(dataCita.especialidad.nombre)}\n${titleDr}: ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}\n`;
         if(dataCita.online == "N"){
             descripcionEvento += `Central: ${capitalizarElemento(datoReserva.data.datosReserva.nombreSucursal)}\n`
         }else{
@@ -302,9 +309,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
         datoReserva = await obtenerDatosReserva(codigoReserva);
         let urlLocalidad = (dataCita.online == "N") ? `https://www.google.com/maps?q=${datoReserva.data.datosUbicacion.latitud},${datoReserva.data.datosUbicacion.longitud}` : '';
-
-        let detalleAgenda = `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Especialidad:</span> ${capitalizarElemento(dataCita.especialidad.nombre)}</p>
-            <p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Dr(a):</span> ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}</p>`;
+        let detalleAgenda = ``;
+        if(dataCita.origen == "paquetes" && tiposAgendaPermitida.includes(dataCita.promocion.tipoAgenda)){
+            if(dataCita.promocion.tipoServicio == "IMAGENES" || dataCita.promocion.tipoServicio == "PROCEDIMIENTOS"){
+                detalleAgenda += `<p class="mb-3 fs-18 line-height-20 label-status-detalle text-capitalize fw-medium">${dataCita.promocion.nombreServicio} - ${dataCita.promocion.nombreEspecialidad.toLowerCase()}</p>`;
+            }
+        }
+        detalleAgenda += `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Especialidad:</span> ${capitalizarElemento(dataCita.especialidad.nombre)}</p>
+            <p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">${titleDr}</span> ${capitalizarElemento(datoReserva.data.datosReserva.nombreProfesional)}</p>`;
             if(dataCita.online == "N"){
                 detalleAgenda += `<p class="mb-3 fs--1 label-status-detalle"><span class="fw-medium text-primary-veris">Central:</span> ${capitalizarElemento(datoReserva.data.datosReserva.nombreSucursal)}</p>`;
             }

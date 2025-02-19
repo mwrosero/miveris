@@ -3211,7 +3211,7 @@ function pagarNuvei(){
 		if(response!=null && response!='' && response!='[]'){
             if(response.code == 200){
             	referenceNuvei = response;
-            	pasarelaNuvei()
+            	pasarelaNuvei();
             }else{
             	showError(response.message);
             	hideLoader;

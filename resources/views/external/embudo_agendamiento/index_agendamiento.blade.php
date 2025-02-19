@@ -718,6 +718,18 @@
                                             <div class="info-pago-nuvei">
                                                 Total a pagar: <span class="total-pago-nuvei"></span>
                                             </div>
+                                            {{-- <div class="box-antifraude">
+                                                Validación del sitema antifraude
+                                                <p>Ingresa el número de identificación del tarjetahabiente.</p>
+                                                <div class="form-group">
+                                                    <label>Número de identificación</label>
+                                                    <div class="box-input">
+                                                        <i class="fas fa-fingerprint fa-fw"></i>
+                                                        <input type="number" id="numeroIdentificacionTH" name="numeroIdentificacionTH" class="required" value="">
+                                                        <div class="line"></div>
+                                                    </div>
+                                                </div>
+                                            </div> --}}
                                             <button id="btnNuvei">Pagar</button>
                                         </div>
                                         <div class="box-no-nuvei">
@@ -757,7 +769,7 @@
                                         <!-- Terminos y condiciones -->
                                         <div class="form-check my-4">
                                             <input class="form-check-input mx-auto" type="checkbox" id="terminos" checked style="display: inline-block;vertical-align: top;">
-                                            <label class="form-check-label f-xs text-blue" for="terminos" style="display: inline-block;width: 90%;vertical-align: middle;margin-left: 5px;">
+                                            <label class="form-check-label f-xs text-blue" for="terminos" style="display: inline-block;width: 80%;vertical-align: middle;margin-left: 10px;">
                                                 Acepto <a href="/terminos-y-condiciones" target="_blank" class="text-decoration-none text-blue fw-bold">T&eacute;rminos y condiciones</a> <span id="ppd" style="font-weight: normal;"></span>
                                             </label>
                                             <div class="invalid-feedback msg-error-terminos">Debe aceptar términos y condiciones</div>

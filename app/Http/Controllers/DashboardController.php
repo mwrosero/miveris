@@ -55,4 +55,7 @@ class DashboardController extends Controller
     public function detalleItem($params) {
         return view('inicio.detalle_item')->with('params',$params);
     }
+    public function detalleItemPreparacionPrevia($params) {
+        return view('inicio.preparacion_previa')->with('params',$params);
+    }
 }
