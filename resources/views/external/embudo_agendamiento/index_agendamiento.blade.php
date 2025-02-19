@@ -55,7 +55,7 @@
     <link rel="stylesheet" href="{{ asset('assets/external/embudo_agendamiento/css/datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/external/embudo_agendamiento/owlcarousel/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/external/embudo_agendamiento/owlcarousel/css/owl.theme.default.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/external/embudo_agendamiento/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/external/embudo_agendamiento/css/style.css?v=1.0.0') }}">
 
     <script src="{{ asset('assets/external/embudo_agendamiento/js/modernizr-2.6.2.min.js')}}"></script>
     <script src="{{ asset('assets/external/embudo_agendamiento/js/jquery.cookie-1.3.1.js')}}"></script>
@@ -833,7 +833,7 @@
     <link href="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script>
     {{-- <script>var path_embudo = "<?php echo getUrlSite() ?>/wp-content/themes/xstore/embudoMedpay/"; </script> --}}
-    <script src="{{ asset('assets/external/embudo_agendamiento/js/index.js?v=1.0.0')}}"></script>
+    <script src="{{ asset('assets/external/embudo_agendamiento/js/index.js?v=1.0.2')}}"></script>
 
     <style>
             .box-no-nuvei{
