@@ -1905,7 +1905,7 @@ h4.msg_dscto_label-style{
     font-weight: 700;
 }
 
-.box-input-antifraude input {
+.box-input-antifraude input, .box-input-antifraude select {
     width: 100% !important;
     text-align: left;
     border: 1px solid #000 !important;

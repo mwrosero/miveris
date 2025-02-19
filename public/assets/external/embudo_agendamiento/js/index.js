@@ -648,8 +648,67 @@ $( document ).ready(async function() {
 		}else{
 			pasarelaNuvei();
 		}*/
-		pagarNuvei();
+		// pagarNuvei();
+		$('.modal-pregunta-antifraude').modal('show');
 	})
+
+	/*antifraude*/
+	$('body').on('input', '#numeroIdentificacionTH', function(){
+		let tipo = $('#tipoIdentificacionTH option:selected').val();
+        let valor = $(this).val();
+        $('.invalid-feedback-th').addClass('d-none')
+        // Permite solo números (elimina letras y caracteres especiales)
+        // valor = valor.replace(/\D/g, "");
+        // $(this).val(valor);
+
+        // Verifica si tiene exactamente 10 dígitos
+        if(tipo == '2'){
+	        if (valor.length > 9) {
+	            $('.btn-validar-antifraude').removeClass('disabled')
+	        } else {
+	            $('.btn-validar-antifraude').addClass('disabled')
+	        }
+	    }else{
+	    	if (valor.length < 3) {
+	    		$('.btn-validar-antifraude').addClass('disabled')
+	    	} else {
+	            $('.btn-validar-antifraude').removeClass('disabled')
+	        }
+	    }
+    });
+
+	$('body').on('change', '#tipoIdentificacionTH', async function(){
+		let tipo = $('#tipoIdentificacionTH option:selected').val();
+		if(tipo == '3'){
+			$('.btn-validar-antifraude').removeClass('disabled')
+			$('#numeroIdentificacionTH').attr('type','text');
+		}else{
+			$('#numeroIdentificacionTH').attr('type','number');
+		}
+	})
+
+	$('body').on('click', '.btn-validar-antifraude', async function(){
+		let tipo = $('#tipoIdentificacionTH option:selected').val();
+		let identificacion = $('#numeroIdentificacionTH').val();
+		if(tipo == '2'){
+			if(esValidaCedula(identificacion)){
+				$('.invalid-feedback-th').addClass('d-none')
+				$('.modal-pregunta-antifraude').modal('hide');
+				await pagarNuvei();
+			}else{
+				$('.invalid-feedback-th').removeClass('d-none')
+			}
+		}else{
+			if(identificacion.length < 3){
+				$('.invalid-feedback-th').removeClass('d-none')
+			}else{
+				$('.invalid-feedback-th').addClass('d-none')
+				$('.modal-pregunta-antifraude').modal('hide');
+				await pagarNuvei();
+			}
+		}
+	})
+	/*antifraude*/
 
 	$('#convenios').change(function(){
 		var aplicaCobertura = $(this).find('option:selected').attr('aplicaCobertura-rel');
