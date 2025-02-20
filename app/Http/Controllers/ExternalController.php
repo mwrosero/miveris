@@ -275,7 +275,8 @@ class ExternalController extends Controller
                     "plataformaOrigen" => "WEB",
                     "tipoBoton" => "KUSHKI",
                     "executionId" => $executionId,
-                    "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL
+                    "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL,
+                    "origenInvocacion" => (isset($urlParams['origenInvocacion']) && $urlParams['origenInvocacion'] == "WEB_TER_CMV") ? "TER_CMV" : Veris::CANAL_ORIGEN_EXTERNAL
                 ],
                 'method'   => 'POST'
             ]);
