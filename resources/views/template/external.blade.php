@@ -140,26 +140,22 @@
                     <div class="modal-header pt-3 pb-0 px-3">
                         <h5 class="modal-title mx-auto title-section fw-bold fs--18">Validación del sistema antifraude</h5>
                     </div>
-                    <div class="modal-body pt-0 pb-0">
-                        <div class="box-input-antifraude">
-                            <label for="numeroIdentificacionTH" class="form-label">
-                                <small>Tipo de Identificación <span class="text-danger">*</span></small>
-                            </label>
-                            <select class="form-control form-control-sm animated-input" name="tipoIdentificacionTH" id="tipoIdentificacionTH" style="padding-left: 5px;">
+                    <div class="modal-body text-center p-3">
+                        <span class="fs--14 line-height-16">Ingresa el número de identificación del tarjetahabiente.</span>
+                        <div class="w-100 mt-4 text-start">
+                            <label for="tipoIdentificacionTH" class="form-label fw-medium fs--1">Tipo de identificación *</label>
+                            <select class="form-select fs--1 p-3" name="tipoIdentificacionTH" id="tipoIdentificacionTH" required>
                                 <option value="2">Cédula</option>
                                 <option value="1">RUC</option>
-                                <option value="3">Pasaporte</option>   
+                                <option value="3">Pasaporte</option>
                             </select>
                         </div>
-                        <div class="box-input-antifraude">
-                            <label for="numeroIdentificacionTH" class="form-label">
-                                <small>Número de Identificación <span class="text-danger">*</span></small>
-                            </label>
-                            <input type="text" class="form-control form-control-sm animated-input" name="numeroIdentificacionTH" id="numeroIdentificacionTH">
-                                <div class="invalid-feedback-th d-none">Ingrese un numero de identificacion válido.</div>
-                        </div>
-                        <div class="box-respuesta-pregunta-antifraude mb-3">
-                            <div class="btn-continuar-antifraude">ENVIAR</div>
+                        <div class="w-100 mt-4 text-start">
+                            <label for="numeroIdentificacionTH" class="form-label fw-medium fs--1">Número de identificación *</label>
+                            <input type="text" class="form-control fs--1 p-3" name="numeroIdentificacionTH" id="numeroIdentificacionTH" placeholder="0999999999" required />
+                            <div class="invalid-feedback-th text-danger d-none">
+                                Ingrese un número de identificación válido.
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer pt-0 pb-3 px-3">

@@ -691,7 +691,7 @@ $( document ).ready(async function() {
 		let tipo = $('#tipoIdentificacionTH option:selected').val();
 		let identificacion = $('#numeroIdentificacionTH').val();
 		if(tipo == '2'){
-			if(esValidaCedula(identificacion)){
+			if(validarCedula(identificacion)){
 				$('.invalid-feedback-th').addClass('d-none')
 				$('.modal-pregunta-antifraude').modal('hide');
 				await pagarNuvei();
@@ -3322,7 +3322,7 @@ function pasarelaNuvei(){
 	$('.total-pago-nuvei').html('$'+detallePago.data.totales.total.toFixed(2));
 
 	paymentCheckout.open({
-		user_id: String(referenceNuvei.data.codigoTransaccion),
+		user_id: String($('#numeroIdentificacionTH').val()),
 		user_email: infoUsuario.mail, //optional
 		user_phone: (infoUsuario.telefonoMovil != null) ? infoUsuario.telefonoMovil : '',//optional
 		order_description: referenceNuvei.data.reference,
