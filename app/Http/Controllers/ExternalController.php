@@ -202,6 +202,7 @@ class ExternalController extends Controller
             // Pago para Digiturno
             if(isset($urlParams['esLinkDigiturno'])){
                 $data['esLinkDigiturno'] = true;
+                $data['macAddress'] = $urlParams['macAddress'];
             }else{
                 $data['esLinkDigiturno'] = false;
             }
