@@ -587,13 +587,23 @@
                         <div class="modal-body pt-0 pb-0">
                             <div class="box-input-antifraude">
                                 <label for="numeroIdentificacionTH" class="form-label">
-                                    <small>Número de Identificaci&oacute;n <span class="text-danger">*</span></small>
+                                    <small>Tipo de Identificación <span class="text-danger">*</span></small>
                                 </label>
-                                <input type="text" class="form-control form-control-sm animated-input" name="numeroIdentificacionTH" id="numeroIdentificacionTH" form="kushki-pay-form"/>
-                                <div class="invalid-feedback-th d-none">Ingrese un numero de identificacion válido.</div>
+                                <select class="form-control form-control-sm animated-input" name="tipoIdentificacionTH" id="tipoIdentificacionTH" style="padding-left: 5px;">
+                                    <option value="2">Cédula</option>
+                                    <option value="1">RUC</option>
+                                    <option value="3">Pasaporte</option>   
+                                </select>
+                            </div>
+                            <div class="box-input-antifraude">
+                                <label for="numeroIdentificacionTH" class="form-label">
+                                    <small>Número de Identificación <span class="text-danger">*</span></small>
+                                </label>
+                                <input type="text" class="form-control form-control-sm animated-input" name="numeroIdentificacionTH" id="numeroIdentificacionTH">
+                                    <div class="invalid-feedback-th d-none">Ingrese un numero de identificacion válido.</div>
                             </div>
                             <div class="box-respuesta-pregunta-antifraude mb-3">
-                                <div class="btn-continuar-antifraude">ENVIAR</div>
+                                <div class="btn-validar-antifraude disabled">ENVIAR</div>
                             </div>
                         </div>
                     </div>

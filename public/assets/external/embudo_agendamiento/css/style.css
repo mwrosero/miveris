@@ -1918,13 +1918,18 @@ h4.msg_dscto_label-style{
     font-size: 16px;
 }
 
-.btn-continuar-antifraude {
+.btn-validar-antifraude {
     background: #0071ce;
     color: #fff;
     padding: 10px;
     border-radius: 8px;
     margin-top: 10px;
     cursor: pointer;
+}
+
+.btn-validar-antifraude.disabled{
+    opacity: 0.8;
+    pointer-events: none;
 }
 
 .d-none {
