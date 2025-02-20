@@ -16,14 +16,14 @@ Veris - Devoluciones
 {{-- Modal de verificacion --}}
 <div class="modal modal-top" id="modalVerificacion" tabindex="-1" aria-labelledby="modalVerificacionLabel">
     <div class="modal-dialog modal-dialog-centered mx-auto">
-        <form class="modal-content rounded-8">
+        <form class="modal-content rounded-3">
             <div class="modal-header d-none">
                 <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-3">
                 <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Información del Comprobante') }}</h5>
                 <div class="row gx-2 justify-content-between align-items-center">
-                	<div class="box-datos">
+                	<div class="box-datos rounded-3">
                 	</div>
                 	<p class="fs--16 line-height-16 my-2 text-veris fw-bold">Detalles:</p>
                     <ul class="list-group mb-0 border-0 p-0" id="listaPrestaciones">
@@ -33,6 +33,28 @@ Veris - Devoluciones
             <div class="modal-footer pt-0 pb-3 px-3 border-0 d-flex justify-content-center align-items-center">
                 <button type="button" class="btn fw-normal fs--16 badge bg-menu-theme text-white m-0 px-4 py-2 fs-4 mx-2" data-bs-dismiss="modal">Cerrar</button>
                 <button type="button" class="btn fw-normal fs--16 badge bg-veris text-white m-0 px-4 py-2 fs-4 mx-2 btn-continuar-nc" data-bs-dismiss="modal"><i class="fa-regular fa-circle-check me-2"></i>Continuar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{{-- Modal de confirmacion de datos bancarios --}}
+<div class="modal modal-top" id="modalDatosBancarios" tabindex="-1" aria-labelledby="modalDatosBancariosLabel">
+    <div class="modal-dialog modal-dialog-centered mx-auto">
+        <form class="modal-content rounded-3">
+            <div class="modal-header d-none">
+                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3">
+                <h5 class="fs--20 line-height-24 mt-3 mb--20">{{ __('Confirmación de datos bancarios') }}</h5>
+                <div class="row gx-2 justify-content-between align-items-center">
+                	<div class="box-datos-bancarios rounded-3">
+                	</div>
+                </div>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3 border-0 d-flex justify-content-center align-items-center">
+                <button type="button" class="btn fw-normal fs--16 badge bg-menu-theme text-white m-0 px-4 py-2 fs-4 mx-2" data-bs-dismiss="modal">Corregir</button>
+                <button type="button" class="btn fw-normal fs--16 badge bg-veris text-white m-0 px-4 py-2 fs-4 mx-2" id="btn-confirma-enviar" data-bs-dismiss="modal"><i class="fa-regular fa-circle-check me-2"></i>Confirmar</button>
             </div>
         </form>
     </div>
@@ -80,7 +102,7 @@ Veris - Devoluciones
     				<p class="fw-bold text-veris">Formulario de devoluciones</p>
     				<div class="mt-3 rounded-3 w-100 w-md-50 bg-white d-flex justify-content-between align-items-start p-3">
     					<i class="fa-solid fa-circle-info mt-1 me-2 txt-veris"></i>
-    					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Para efectuar tu devolución con éxito,</span> <span class="txt-veris fw-medium">por favor ingresa el No. de Factura correcto.</span> Si la factura se valida, por favor ten a la mano los datos de la cuenta de banco y asegúrate que deben coincidir los datos de la factura.</p>
+    					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Para efectuar tu devolución con éxito,</span> <span class="txt-veris fw-medium">por favor ingresa el Nro. de Factura correcto.</span> Si la factura se valida, por favor ten a la mano los datos de la cuenta de banco y asegúrate que deben coincidir los datos de la factura.</p>
     				</div>
     				<p class="fs--2 fw-bold text-veris mt-3">Número de Factura<span class="text-danger">*</span></p>
     				<div class="d-flex mt-3 align-items-center justify-content-between">
@@ -137,7 +159,7 @@ Veris - Devoluciones
     					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Por favor ingresa los datos de la cuenta bancaria,</span> <span class="txt-veris fw-medium">para poder efectuar la devolución.</span> Asegúrate que los datos de la factura coincidan con los mismos datos, nombre-apellido y cédula, del propietario de la cuenta bancaria.</p>
     				</div>
     				<div class="w-100 mt-3">
-    					<label for="numeroIdentificacion" class="form-label fw-medium fs--1">No. Cédula o Pasaporte del Titular de la Cuenta<span class="text-danger">*</span></label>
+    					<label for="numeroIdentificacion" class="form-label fw-medium fs--1">Nro. Cédula o Pasaporte del Titular de la Cuenta<span class="text-danger">*</span></label>
     					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="numeroIdentificacion">
     				</div>
     				<div class="w-100 mt-3">
@@ -280,6 +302,11 @@ Veris - Devoluciones
     	border: 1px solid #ff000059 !important;
 	    background: #ff00000f !important;
 	}
+	.box-datos, .box-datos-bancarios {
+	    background: #E6F1FA;
+	    padding: 10px;
+	    border-radius: 8px;
+	}
 </style>
 <script>
 	let dataDevolucion = {};
@@ -308,6 +335,23 @@ Veris - Devoluciones
 		})
 
 		$('body').on('click', '#btn-enviar', async function(){
+			$('.box-datos-bancarios').empty()
+			let puedeCrearNC = await validarDatosNC();
+			if(puedeCrearNC){
+				let elem = `<p class="fs--16 line-height-16 my-2 text-veris fw-bold">Detalles del titular de la cuenta:</p>
+					<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Nro. identificación:</span> ${ $('#numeroIdentificacion').val() }</p>
+					<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Nombre:</span> ${ $('#nombres').val() }</p>
+					<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Institución bancaria:</span> ${ $('#institucion option:selected').html() }</p>
+					<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Tipo de cuenta:</span> ${ $('.btn-tipo.active').attr("tipo-rel") }</p>
+					<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Nro. cuenta:</span> ${ $('#numeroCuenta').val() }</p>
+					<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Correo electrónico:</span> ${ $('#email').val() }</p>
+				`;
+				$('.box-datos-bancarios').html(elem);
+				$('#modalDatosBancarios').modal('show');
+			}
+		})
+
+		$('body').on('click', '#btn-confirma-enviar', async function(){
 			$('.box-errors-step-2').addClass('d-none');
 			// $('#msg-error-step-2').html(``);
 			let puedeCrearNC = await validarDatosNC();
@@ -394,11 +438,11 @@ Veris - Devoluciones
         	let elem = ``;
         	$.each(data.data, function(key, value){
         		if(value.nombreTipoCuenta == "AHORROS"){
-        			elem += `<button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 position-relative waves-effect me-3" data-rel="${value.codigoTipoCuenta}">
+        			elem += `<button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 position-relative waves-effect me-3" data-rel="${value.codigoTipoCuenta}" tipo-rel="Ahorros">
 						<i class="fa-solid fa-piggy-bank me-2"></i>Ahorros
 					</button>`
         		}else{
-        			elem += `<button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 position-relative waves-effect me-3" data-rel="${value.codigoTipoCuenta}">
+        			elem += `<button type="button" class="btn fs--16 line-height-24 m-0 p-2 px-4 shadow-none btn-tipo rounded-3 position-relative waves-effect me-3" data-rel="${value.codigoTipoCuenta}" tipo-rel="Corriente">
 						<i class="fa-solid fa-money-bill me-2"></i>Corriente
 					</button>`;
         		}
@@ -423,13 +467,13 @@ Veris - Devoluciones
         	dataDevolucion.comprobante = data.data;
         	if(data.data.permitirDevolucionesAutomaticas){
         		dataDevolucion.comprobante = data.data;
-        		let elem_datos = `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Nro. Factura:</span> ${dataDevolucion.comprobante.numeroComprobante}</p>
-        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de emisión:</span> ${dataDevolucion.comprobante.fechaComprobante}</p>
-        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Identificación Factura:</span> ${dataDevolucion.comprobante.numeroIdentificacionPersonaFactura}</p>
-        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Nombre Factura:</span> ${dataDevolucion.comprobante.nombrePersonaFactura}</p>
-        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Identificación Paciente:</span> ${dataDevolucion.comprobante.numeroIdentificacionPaciente}</p>
-        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Nombre Paciente:</span> ${dataDevolucion.comprobante.nombrePaciente}</p>
-        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Total:</span> $${dataDevolucion.comprobante.totales.paciente.valorTotal}</p>`;
+        		let elem_datos = `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Nro. Factura:</span> ${dataDevolucion.comprobante.numeroComprobante}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Fecha de emisión:</span> ${dataDevolucion.comprobante.fechaComprobante}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Identificación Factura:</span> ${dataDevolucion.comprobante.numeroIdentificacionPersonaFactura}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Nombre Factura:</span> ${dataDevolucion.comprobante.nombrePersonaFactura}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Identificación Paciente:</span> ${dataDevolucion.comprobante.numeroIdentificacionPaciente}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Nombre Paciente:</span> ${dataDevolucion.comprobante.nombrePaciente}</p>
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Total:</span> $${dataDevolucion.comprobante.totales.paciente.valorTotal}</p>`;
 	        	$('.box-datos').html(elem_datos);
 
 	        	let elem_prestaciones = ``;

@@ -374,6 +374,14 @@ Veris - Datos de facturación
 				}else{
 					$('.invalid-feedback-th').removeClass('d-none')
 				}
+			}else if(tipo == '1'){
+				if(valor.length == 13){
+					$('.invalid-feedback-th').addClass('d-none')
+					$('#modalAntifraude').modal('hide');
+					await crearTransaccionVirtual();
+				}else{
+					$('.invalid-feedback-th').removeClass('d-none')
+				}
 			}else{
 				if(identificacion.length < 3){
 					$('.invalid-feedback-th').removeClass('d-none')

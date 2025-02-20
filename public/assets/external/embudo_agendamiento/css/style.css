@@ -1913,8 +1913,14 @@ h4.msg_dscto_label-style{
     margin: 0 !important;
 }
 
+#tipoIdentificacionTH {
+    appearance: auto; /* Restablece la apariencia predeterminada */
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+}
+
 #numeroIdentificacionTH {
-    text-align: center;
+    text-align: left;
     font-size: 16px;
 }
 
