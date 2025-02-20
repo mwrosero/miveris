@@ -190,6 +190,8 @@ Veris - Devoluciones
 		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
 		    	$('.info-step-4').html(elem);
 		    	$('.step-4').removeClass('d-none');
+	    	}else if(detalle.estadoPago == "REBOTE" && detalle.estadoTrackingDevolucion == "TRANSFERENCIA RECHAZADA"){
+	    		console.log(99999)
 	    	}else{
 	    		elem += `<h3 class="fs-18 text-veris mb-1">Estado: En Proceso</h3>`;
 		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>`;

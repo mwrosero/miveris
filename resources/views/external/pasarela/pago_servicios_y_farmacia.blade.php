@@ -248,6 +248,14 @@ Veris - Pago en línea
 				}else{
 					$('.invalid-feedback-th').removeClass('d-none')
 				}
+			}else if(tipo == '1'){
+				if(identificacion.length == 13){
+					$('.invalid-feedback-th').addClass('d-none')
+					$('#modalAntifraude').modal('hide');
+					await pasarelaNuvei();
+				}else{
+					$('.invalid-feedback-th').removeClass('d-none')
+				}
 			}else{
 				if(identificacion.length < 3){
 					$('.invalid-feedback-th').removeClass('d-none')

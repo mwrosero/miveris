@@ -581,12 +581,12 @@
                 <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
                     <div class="modal-content">
                         <div class="modal-header d-block">
-                            <h1 class="title mb-1">Validación del sitema antifraude</h1>
+                            <h1 class="title mb-1">Validación del sistema antifraude</h1>
                             <h4 class="subtitle mb-1">Ingresa el número de identificación del tarjetahabiente.</h4>
                         </div>
                         <div class="modal-body pt-0 pb-0">
                             <div class="box-input-antifraude">
-                                <label for="numeroIdentificacionTH" class="form-label">
+                                <label for="tipoIdentificacionTH" class="form-label">
                                     <small>Tipo de Identificación <span class="text-danger">*</span></small>
                                 </label>
                                 <select class="form-control form-control-sm animated-input" name="tipoIdentificacionTH" id="tipoIdentificacionTH" style="padding-left: 5px;">
@@ -599,7 +599,7 @@
                                 <label for="numeroIdentificacionTH" class="form-label">
                                     <small>Número de Identificación <span class="text-danger">*</span></small>
                                 </label>
-                                <input type="text" class="form-control form-control-sm animated-input" name="numeroIdentificacionTH" id="numeroIdentificacionTH">
+                                <input type="text" class="form-control form-control-sm animated-input" name="numeroIdentificacionTH" id="numeroIdentificacionTH" style="padding-left: 5px;">
                                     <div class="invalid-feedback-th d-none">Ingrese un numero de identificacion válido.</div>
                             </div>
                             <div class="box-respuesta-pregunta-antifraude mb-3">
