@@ -568,7 +568,8 @@ Veris - Datos de facturación
             "idiomaNavegador": "",
             "navegadorUA": "",
             "executionId": dataCita.executionId,
-            "canalOrigenDigital": canalOrigen//"VER_CMV"
+			"origenInvocacion": "{{ $origenInvocacion }}",
+            "canalOrigenDigital": canalOrigen//"VER_CMV",
         });
         const data = await call(args);
         console.log(data);

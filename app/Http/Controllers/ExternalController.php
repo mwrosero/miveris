@@ -216,10 +216,12 @@ class ExternalController extends Controller
             // echo Veris::BASE_URL.$method;
             // dump($data);
             // dump($response_pretrx);
+            
             if($response_pretrx->code == 200){
                 return view('external.pasarela.datos_facturacion')
                         ->with('paciente',$list_paciente)
                         ->with('urlRetornoPago', http_build_query($urlParams))
+                        ->with('origenInvocacion', (isset($urlParams['origenInvocacion'])) ? $urlParams['origenInvocacion'] : Veris::CANAL_ORIGEN_EXTERNAL)
                         ->with('pretransaccion',$response_pretrx);
             }else{
                 // dd(http_build_query($urlParams)); //MEJORAR
@@ -276,7 +278,7 @@ class ExternalController extends Controller
                     "tipoBoton" => "KUSHKI",
                     "executionId" => $executionId,
                     "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL,
-                    "origenInvocacion" => (isset($urlParams['origenInvocacion']) && $urlParams['origenInvocacion'] == "WEB_TER_CMV") ? "TER_CMV" : Veris::CANAL_ORIGEN_EXTERNAL
+                    "origenInvocacion" => ( isset($urlParams['origenInvocacion']) ) ? $urlParams['origenInvocacion'] : Veris::CANAL_ORIGEN_EXTERNAL
                 ],
                 'method'   => 'POST'
             ]);
