@@ -191,7 +191,7 @@ Veris - Devoluciones
 		    	$('.info-step-4').html(elem);
 		    	$('.step-4').removeClass('d-none');
 	    	}else if(detalle.estadoPago == "REBOTE" && detalle.estadoTrackingDevolucion == "TRANSFERENCIA RECHAZADA"){
-	    		console.log(99999)
+	    		elem += `<h3 class="fs-18 text-veris mb-1">Estado: Transferencia rechazada</h3>`;
 	    	}else{
 	    		elem += `<h3 class="fs-18 text-veris mb-1">Estado: En Proceso</h3>`;
 		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>`;

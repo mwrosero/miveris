@@ -233,7 +233,8 @@ Mi Veris - Citas - Detalle
     function drawBtnCardItem(detalles){
         // console.log(detalles);
         let tipoAgenda = detalles.tipoAgenda;
-        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
+        // let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA"];
         let titleBtn = `Ver detalle`;
         let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
         let btnEnviaAgendarClass = `btn-detalle`;
