@@ -14,6 +14,19 @@ Veris - Devoluciones
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 @include('external.components.navbar')
 {{-- Modal de verificacion --}}
+<div class="modal modal-top" id="modalUbicacion" tabindex="-1" aria-labelledby="modalUbicacionLabel">
+	<div class="modal-dialog modal-lg modal-dialog-centered mx-auto">
+        <div class="modal-content rounded-3">
+            <div class="modal-header">
+                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3">
+            	<img class="w-100" src="{{asset('assets/external/financiero/ejemplo.jpg')}}" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+{{-- Modal de verificacion --}}
 <div class="modal modal-top" id="modalVerificacion" tabindex="-1" aria-labelledby="modalVerificacionLabel">
     <div class="modal-dialog modal-dialog-centered mx-auto">
         <form class="modal-content rounded-3">
@@ -104,7 +117,7 @@ Veris - Devoluciones
     					<i class="fa-solid fa-circle-info mt-1 me-2 txt-veris"></i>
     					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Para efectuar tu devolución con éxito,</span> <span class="txt-veris fw-medium">por favor ingresa el Nro. de Factura correcto.</span> Si la factura se valida, por favor ten a la mano los datos de la cuenta de banco y asegúrate que deben coincidir los datos de la factura.</p>
     				</div>
-    				<p class="fs--2 fw-bold text-veris mt-3">Número de Factura<span class="text-danger">*</span></p>
+    				<p class="fs--2 fw-bold text-veris mt-3">Número de Factura<span class="text-danger">*</span> <i class="fa-solid fa-magnifying-glass ms-2 txt-veris show-image" data-bs-toggle="modal" data-bs-target="#modalUbicacion"></i></p>
     				<div class="d-flex mt-3 align-items-center justify-content-between">
     					{{-- <input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="first-input"> --}}
     					<input type="text" maxlength="3" 
@@ -306,6 +319,12 @@ Veris - Devoluciones
 	    background: #E6F1FA;
 	    padding: 10px;
 	    border-radius: 8px;
+	}
+	.show-image{
+		cursor: pointer;
+	}
+	.show-image:hover{
+		opacity: 0.8;
 	}
 </style>
 <script>
