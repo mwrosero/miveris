@@ -54,24 +54,67 @@ Veris - Devoluciones
     		<div class="col-12 mt-3 box-step step-2 d-none">
     		</div>
     		<div class="col-12 mt-3 box-step step-3 d-none">
-    			<div class="w-100 rounded-3 p-2 p-md-4 bg-blue-sky">
-    				<div class="rounded-3 w-100 w-md-50 bg-green d-flex justify-content-start align-items-start p-3">
-    					<i class="fa-solid fa-circle-check me-2 text-green"></i>
-    					<p class="mb-0 fs-12 line-height-14">Solicitud enviada con éxito.</p>
-    				</div>
-    				<div class="mt-3 rounded-3 w-100 w-md-50 bg-white d-flex justify-content-start align-items-start p-3">
-    					<i class="fa-solid fa-circle-info me-2 mt-2 txt-veris"></i>
-    					<div class="info-step-3"></div>
-    				</div>
-    				{{-- <div class="mt-3 rounded-3 w-100 w-md-50 bg-white d-flex justify-content-start align-items-start p-3">
-    					<i class="fa-solid fa-circle-info me-2 mt-2 txt-veris"></i>
-    					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Pronto te notificaremos vía whatsapp o mail, </span> <span class="txt-veris fw-medium">que tu devolución esta efectuada con éxito.</span></p>
-    				</div> --}}
-    			</div>
+    			<div class="row rounded-3 p-2 p-md-4 bg-blue-sky">
+	    			<div class="col-12 col-lg-6 mb-3">
+	    				<div class="rounded-3 w-100 bg-green d-flex justify-content-start align-items-start p-3" id="badge-info-status-3">
+	    				</div>
+	    				<div class="mt-3 rounded-3 w-100 bg-white d-flex justify-content-start align-items-start p-3">
+	    					<i class="fa-solid fa-circle-info me-2 mt-2 txt-veris"></i>
+	    					<div class="info-step-3"></div>
+	    				</div>
+	    				<div class="box-datos-antiguos">
+	    					
+	    				</div>
+	    			</div>
+	    			<div class="col-12 col-lg-6">
+	    				<p class="fw-bold text-veris">Datos bancarios</p>
+	    				<div class="mt-3 rounded-3 w-100 bg-white d-flex justify-content-between align-items-start p-3">
+	    					<i class="fa-solid fa-circle-info mt-1 me-2 txt-veris"></i>
+	    					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Por favor ingresa los datos de la cuenta bancaria,</span> <span class="txt-veris fw-medium">para poder efectuar la devolución.</span> Asegúrate que los datos de la factura coincidan con los mismos datos, nombre-apellido y cédula, del propietario de la cuenta bancaria.</p>
+	    				</div>
+	    				<div class="w-100 mt-3">
+	    					<label for="numeroIdentificacion" class="form-label fw-medium fs--1">Nro. Cédula o Pasaporte del Titular de la Cuenta<span class="text-danger">*</span></label>
+	    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="numeroIdentificacion">
+	    				</div>
+	    				<div class="w-100 mt-2">
+	    					<label for="nombres" class="form-label fw-medium fs--1">Nombre y apellido del Titular de la Cuenta<span class="text-danger">*</span></label>
+	    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2 onlyLetters" required="" id="nombres">
+	    				</div>
+	    				<div class="w-100 mt-2">
+	    					<label for="institucion" class="form-label fw-medium fs--1">Institución Bancaria<span class="text-danger">*</span></label>
+	    					<select type="text" class="select2 w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="institucion">
+	    					</select>
+	    				</div>
+	    				<div class="w-100 mt-2">
+	    					<label for="numeroCuenta" class="form-label fw-medium fs--1">Número de Cuenta<span class="text-danger">*</span></label>
+	    					<input type="text" maxlength="20" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="numeroCuenta" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off">
+	    				</div>
+	    				<div class="w-100 mt-2">
+	    					<label class="form-label fw-medium fs--1">Tipo de Cuenta<span class="text-danger">*</span></label>
+	    					<div class="d-flex justify-content-start align-items-center" id="listTiposCuenta">
+	    					</div>
+	    				</div>
+	    				<div class="w-100 mt-2">
+	    					<label for="email" class="form-label fw-medium fs--1">Correo electrónico<span class="text-danger">*</span></label>
+	    					<input type="email" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="email">
+	    				</div>
+	    				<div class="row d-none box-errors-step-2">
+	    					<div class="col-12">
+	    						<div class="mt-3 rounded-3 w-100 w-md-50 bg-error border-error d-flex justify-content-between align-items-start p-3">
+			    					<i class="fa-solid fa-circle-info mt-1 me-2 text-danger"></i>
+			    					<p class="mb-0 fs-12 line-height-14" id="msg-error-step-2">
+			    						<span class="text-veris fw-medium">Hubo un inconveniente con uno de los campos del formulario,</span> por favor revisa bien la información o completa todos los campos requeridos que hagan falta.
+			    					</p>
+			    				</div>
+	    					</div>
+	    				</div>
+	    				<button class="btn fs-14 fw-medium line-height-16 p-2 d-grid w-100 bg-veris rounded next-button mt-3 mb-3" id="btn-enviar" type="button">Enviar</button>
+	    			</div>
+	    		</div>
     		</div>
     		<div class="col-12 mt-3 box-step step-4 d-none">
     			<div class="w-100 rounded-3 p-2 p-md-4 bg-blue-sky">
-    				<div class="rounded-3 w-100 w-md-50 bg-green d-flex justify-content-start align-items-start p-3">
+    				<div class="rounded-3 w-100 w-md-50 d-flex justify-content-start align-items-start p-3">
     					<i class="fa-solid fa-circle-check me-2 text-green"></i>
     					<p class="mb-0 fs-12 line-height-14">Solicitud acreditada exitosamente.</p>
     				</div>
@@ -88,6 +131,89 @@ Veris - Devoluciones
     	</div>
     </section>
 </div>
+<script>
+	document.addEventListener("DOMContentLoaded", async function () {
+		await obtenerTracking();
+	})
+
+	async function obtenerTracking(){
+		let args = [];
+	    args["endpoint"] = api_url + `/facturacion/v1/comprobantes/notas_creditos_x_devoluciones_bancarias?codigoEmpresa=1&page=1&perPage=10&tipoNotaCredito=TODOS&tipoFiltro=NUM_PACIENTE_COMPROBANTE&codigoTipoIdentificacion={{ $tipoIdentificacion }}&numeroIdentificacion={{ $numeroIdentificacion }}&numeroComprobante={{ $numeroFactura }}`;
+	    args["method"] = "GET";
+	    args["showLoader"] = true;
+	    args["token"] = "{{ $accessToken }}";
+
+	    const data = await call(args);
+	    console.log(data);
+
+	    if(data.code == 200){
+	    	// dataDevolucion.parametros = data.data
+	    	let detalle = data.data.rows[0];
+	    	let elem = ``;
+	    	if(detalle.estadoTrackingDevolucion == "TRANSFERENCIA REALIZADA"){
+	    		$('.box-step').addClass('d-none');
+				$('.progress-bar').css('width','100%');
+				$('.progress-bar').attr('aria-valuenow','100');
+				$('.label-porcentaje').html(`100%`);
+				$('.label-step-4').addClass('txt-veris');
+				$('.step-4-number').addClass('active');
+	    		elem += `<h3 class="fs-18 text-veris mb-1">Estado: Acreditada</h3>`;
+	    		elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>`;
+		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal}</p>`;
+		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
+		    	$('.info-step-4').html(elem);
+		    	$('.step-4').removeClass('d-none');
+	    	}else if(detalle.estadoPago == "REBOTE" && detalle.estadoTrackingDevolucion == "TRANSFERENCIA RECHAZADA"){
+	    		$('#badge-info-status-3').html(`<i class="fa-solid fa-circle-info me-2 text-danger"></i>
+	    			<p class="mb-0 fs-12 line-height-14"><b>Tu solicitud no fue aprobada.</b> Por favor, revisa los detalles e inténtalo nuevamente.</p>`).addClass('bg-error border-error');
+
+	    		elem += `<h3 class="fs-18 text-veris mb-1 text-capitalize">Estado: ${ detalle.estadoTrackingDevolucion.toLowerCase() }</h3>
+		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>
+		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal}</p>
+		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
+
+		    	$('.info-step-3').html(elem);
+
+		    	$('.box-datos-antiguos').html(`<p class="fw-bold text-veris mt-3">Datos bancarios que utilizaste</p>
+					<div class="w-100 mt-1">
+    					<label class="form-label fw-medium fs--1">Nro. Cédula o Pasaporte del Titular de la Cuenta</label>
+    					<input type="text" class="w-100 text-start disabled rounded-3 form-control fs--1 p-2" readonly value="${detalle.numeroIdentificacionCuenta}">
+    				</div>
+    				<div class="w-100 mt-1">
+    					<label class="form-label fw-medium fs--1">Nombre y apellido del Titular de la Cuenta</label>
+    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2 disabled" value="${detalle.nombreTitularCuenta}" readonly>
+    				</div>
+    				<div class="w-100 mt-1">
+    					<label class="form-label fw-medium fs--1">Institución Bancaria</label>
+    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2 disabled" value="${detalle.nombreInstitucion}" readonly>
+    				</div>
+    				<div class="w-100 mt-1">
+    					<label class="form-label fw-medium fs--1">Número de Cuenta</label>
+    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2 disabled" value="${detalle.numeroCuenta}" readonly>
+    				</div>
+    				<div class="w-100 mt-1">
+    					<label class="form-label fw-medium fs--1">Tipo de Cuenta</label>
+    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2 disabled" value="${detalle.nombreTipoCuenta}" readonly>
+    				</div>
+    				<div class="w-100 mt-1">
+    					<label for="email" class="form-label fw-medium fs--1">Correo electrónico</label>
+    					<input class="w-100 text-start rounded-3 form-control fs--1 p-2 disabled" value="${detalle.correoElectronico}" readonly>
+    				</div>`);
+
+		    	$('.step-3').removeClass('d-none');
+	    	}else{
+	    		$('#badge-info-status-3').html(`<i class="fa-solid fa-circle-check me-2 text-green"></i>
+	    			<p class="mb-0 fs-12 line-height-14">Solicitud enviada con éxito.</p>`).addClass('bg-green');
+	    		elem += `<h3 class="fs-18 text-veris mb-1 text-capitalize">Estado: ${ detalle.estadoTrackingDevolucion.toLowerCase() }</h3>
+		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>
+		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal}</p>
+		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
+		    	$('.info-step-3').html(elem);
+		    	$('.step-3').removeClass('d-none');
+	    	};
+	    }
+	}
+</script>
 <style>
 	.step{
 		width: 50px;
@@ -158,49 +284,4 @@ Veris - Devoluciones
 		font-size: 0.875rem !important;
 	}
 </style>
-<script>
-	document.addEventListener("DOMContentLoaded", async function () {
-		await obtenerTracking();
-	})
-
-	async function obtenerTracking(){
-		let args = [];
-	    args["endpoint"] = api_url + `/facturacion/v1/comprobantes/notas_creditos_x_devoluciones_bancarias?codigoEmpresa=1&page=1&perPage=10&tipoNotaCredito=TODOS&tipoFiltro=NUM_PACIENTE_COMPROBANTE&codigoTipoIdentificacion={{ $tipoIdentificacion }}&numeroIdentificacion={{ $numeroIdentificacion }}&numeroComprobante={{ $numeroFactura }}`;
-	    args["method"] = "GET";
-	    args["showLoader"] = true;
-	    args["token"] = "{{ $accessToken }}";
-
-	    const data = await call(args);
-	    console.log(data);
-
-	    if(data.code == 200){
-	    	// dataDevolucion.parametros = data.data
-	    	let detalle = data.data.rows[0];
-	    	let elem = ``;
-	    	if(detalle.estadoTrackingDevolucion == "TRANSFERENCIA REALIZADA"){
-	    		$('.box-step').addClass('d-none');
-				$('.progress-bar').css('width','100%');
-				$('.progress-bar').attr('aria-valuenow','100');
-				$('.label-porcentaje').html(`100%`);
-				$('.label-step-4').addClass('txt-veris');
-				$('.step-4-number').addClass('active');
-	    		elem += `<h3 class="fs-18 text-veris mb-1">Estado: Acreditada</h3>`;
-	    		elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>`;
-		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal}</p>`;
-		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
-		    	$('.info-step-4').html(elem);
-		    	$('.step-4').removeClass('d-none');
-	    	}else if(detalle.estadoPago == "REBOTE" && detalle.estadoTrackingDevolucion == "TRANSFERENCIA RECHAZADA"){
-	    		elem += `<h3 class="fs-18 text-veris mb-1">Estado: Transferencia rechazada</h3>`;
-	    	}else{
-	    		elem += `<h3 class="fs-18 text-veris mb-1">Estado: En Proceso</h3>`;
-		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>`;
-		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal}</p>`;
-		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
-		    	$('.info-step-3').html(elem);
-		    	$('.step-3').removeClass('d-none');
-	    	};
-	    }
-	}
-</script>
 @endsection

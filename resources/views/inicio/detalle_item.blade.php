@@ -46,8 +46,7 @@ Mi Veris - Citas - Detalle
 @endsection
 @push('scripts')
 <script>
-    // let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
-    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA"];
+    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     console.log(dataCita);
@@ -108,7 +107,7 @@ Mi Veris - Citas - Detalle
             }
 
             if(dataCita.promocion.preparacionPrevia != null){
-                // url = '/detalle/item/preparacion-previa/';
+                url = '/detalle/item/preparacion-previa/';
             }
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
@@ -269,19 +268,19 @@ Mi Veris - Citas - Detalle
                         <a href="${urlResultado}" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect waves-light order-last">Ver resultados</a>
                     </div>`;
         }else{
-            // Empaquetados v2
-            // if(dataCita.promocion.tipoServicio == "LABORATORIO" && dataCita.promocion.preparacionPrevia != null){
-            //     elem += `<div class="col-12 mt-3">
-            //             <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect btn-informacion waves-light order-last">Ver información</a>
-            //         </div>`;
-            // }
+            if(dataCita.promocion.tipoServicio == "LABORATORIO" && dataCita.promocion.preparacionPrevia != null){
+                elem += `<div class="col-12 mt-3">
+                        <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect btn-informacion waves-light order-last">Ver información</a>
+                    </div>`;
+            }
         }
 
         $('#listado-detalles').html(elem);
     }
 
     function drawBtnCardItem(detalles){
-        if(detalles.estado == "Caducado" || !detalles.esAgendable){
+        console.log(detalles);
+        if(detalles.estado == "Caducado" || (detalles.hasOwnProperty('esAgendable') && !detalles.esAgendable)){
             return ``;
         }
         // "tipoAgenda": "CONSULTA_MEDICA"  o "TERAPIAS"

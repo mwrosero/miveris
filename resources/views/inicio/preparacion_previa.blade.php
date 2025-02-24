@@ -109,7 +109,7 @@ Mi Veris - Preparación previa
     	}
     	let elem = ``;
     	$.each(dataCita.promocion.preparacionPrevia, function(key, value){
-    		elem += `<li class="fs--1 line-height-16 mb-2 d-flex justify-content-start align-items-start"><i class="fa-solid fa-circle mt-1 me-2" style="font-size: 5px"></i>${value.valor}</li>`;
+    		elem += `<li class="fs--1 line-height-16 mb-2 d-flex justify-content-start align-items-start"><i class="fa-solid fa-circle mt-1 me-2" style="font-size: 5px"></i>${value.valor.charAt(0)}${value.valor.toLowerCase().substring(1)}</li>`;
     	})
     	$('#lista-preparacion').html(elem);
     }
