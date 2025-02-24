@@ -280,7 +280,7 @@ Veris - Devoluciones
 
 	async function solicitarNC(){
 		let args = [];
-        args["endpoint"] = api_url + `/facturacion/v1/comprobantes/registro_devoluciones_bancarias?accion=REGISTRO_BANCARIO_PORTAL`;
+        args["endpoint"] = api_url + `/facturacion/v1/comprobantes/registro_devoluciones_bancarias?accion=REGISTRO_BANCARIO_PORTAL&codigoEmpresa=1`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";
@@ -318,7 +318,7 @@ Veris - Devoluciones
 			</div>
 			<div class="mt-3 rounded-3 w-100 w-md-50 bg-white d-flex justify-content-start align-items-start p-3">
 				<i class="fa-solid fa-circle-info me-2 mt-1 txt-veris"></i>
-				<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Pronto te notificaremos vía whatsapp o mail, </span> <span class="txt-veris fw-medium">que tu devolución esta efectuada con éxito.</span></p>
+				<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Revisa tu correo electrónico </span> <span class="txt-veris fw-medium">para que puedas darle seguimiento</span> a tu solicitud.</p>
 			</div>
 		</div>`;
 		$('.step-3').html(elem);

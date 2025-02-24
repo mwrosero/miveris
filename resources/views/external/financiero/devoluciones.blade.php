@@ -19,9 +19,14 @@ Veris - Devoluciones
         <div class="modal-content rounded-3">
             <div class="modal-header">
                 <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="fw-bold fs--36 line-height-36 text-center mx-auto m-0">Aquí se encuentra ubicado <br> el No. de factura</h5>
             </div>
-            <div class="modal-body p-3">
-            	<img class="w-100" src="{{asset('assets/external/financiero/ejemplo.jpg')}}" alt="">
+            <div class="modal-body p-3 text-center">
+            	<img class="w-75 mx-auto" src="{{asset('assets/external/financiero/factura.png')}}" alt="">
+            	<p class="w-75 mx-auto my-3 fs--1 line-height-16 text-veris">* El documento lo puedes encontrar en tu correo bajo el nombre de “VERIS-FACTURA ELECTRÓNICA”.</p>
+            </div>
+            <div class="modal-footer text-center">
+            	<button type="button" class="btn fw-normal fs--16 badge bg-veris text-white fw-normal fs--16 badge text-white px-4 py-2 fs-4 mx-auto" data-bs-dismiss="modal">Ir atrás</button>
             </div>
         </div>
     </div>
@@ -117,7 +122,7 @@ Veris - Devoluciones
     					<i class="fa-solid fa-circle-info mt-1 me-2 txt-veris"></i>
     					<p class="mb-0 fs-12 line-height-14"><span class="text-veris fw-medium">Para efectuar tu devolución con éxito,</span> <span class="txt-veris fw-medium">por favor ingresa el Nro. de Factura correcto.</span> Si la factura se valida, por favor ten a la mano los datos de la cuenta de banco y asegúrate que deben coincidir los datos de la factura.</p>
     				</div>
-    				<p class="fs--2 fw-bold text-veris mt-3">Número de Factura<span class="text-danger">*</span> <i class="fa-solid fa-magnifying-glass ms-2 txt-veris show-image" data-bs-toggle="modal" data-bs-target="#modalUbicacion"></i></p>
+    				<p class="fs--2 fw-bold text-veris mt-3">Número de Factura<span class="text-danger">*</span> <i title="Visualiza el ejemplo para ubicar fácilmente el número de factura." class="fa-solid fa-circle-info ms-2 txt-veris show-image" data-bs-toggle="modal" data-bs-target="#modalUbicacion"></i></p>
     				<div class="d-flex mt-3 align-items-center justify-content-between">
     					{{-- <input type="text" maxlength="3" class="flex-grow-1 text-center rounded-3 form-control fs--1 p-2" oninput="limitarCaracteres(this, this.getAttribute('maxlength'))" onkeypress="return (event.charCode == 8 || event.charCode == 0 || event.charCode == 13) ? null : event.charCode >= 48 &amp;&amp; event.charCode <= 57" required="" autocomplete="off" id="first-input"> --}}
     					<input type="text" maxlength="3" 
