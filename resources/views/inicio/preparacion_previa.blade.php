@@ -32,8 +32,8 @@ Mi Veris - Preparación previa
 	                    	<p class="fs-18 line-height-24 text-start fw-medium text-veris mb-3 subtitle-preparacion"></p>
 	                    	<ul id="lista-preparacion" class="ps-0 list-unstyled">	                    		
 	                    	</ul>
-	                    	<div class="box-actions d-none">
-		                    	<div class="form-check d-flex justify-content-md-center align-items-center mb-2">
+	                    	<div class="box-actions d-none mt-5 w-100">
+		                    	<div class="form-check d-flex justify-content-md-center align-items-center mb-3 d-none">
 		                            <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
 		                            <label class="form-check-label fs--1 line-height-16" for="checkTerminosCondicion">
 		                                Leí y estoy de acuerdo con la preparación previa.
@@ -42,8 +42,8 @@ Mi Veris - Preparación previa
 		                                Debes aceptar antes de continuar
 		                            </div>
 		                        </div>
-		                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-center align-items-center disabled" id="btn-next">
-		                        	<span class="shadow-none">Continuar</span>
+		                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-center align-items-center" id="btn-next">
+		                        	<span class="shadow-none">Entendido</span>
 		                        </button>
 		                    </div>
 	                    </div>
@@ -64,11 +64,13 @@ Mi Veris - Preparación previa
     document.addEventListener("DOMContentLoaded", async function () {
     	await drawPreparacionPrevia();
     	if(dataCita.promocion.tipoServicio == "IMAGENES" || dataCita.promocion.tipoServicio == "PROCEDIMIENTOS"){
-    		$('.box-actions').addClass('fixed-bottom').removeClass('d-none');
-    		$('#btn-next').html('Continuar');
+    		// $('.box-actions').addClass('fixed-bottom').removeClass('d-none');
+    		$('.box-actions').removeClass('d-none');
+    		$('#btn-next').html('Entendido');
     	}else{
     		$('.form-check').addClass('d-none')
-    		$('.box-actions').addClass('sticky-bottom').removeClass('d-none');
+    		// $('.box-actions').addClass('sticky-bottom').removeClass('d-none');
+    		$('.box-actions').removeClass('d-none');
     		$('#btn-next').html('Entendido');
     		$('#btn-next').removeClass('disabled');
     	}
@@ -82,7 +84,9 @@ Mi Veris - Preparación previa
         });
 
         $('body').on('click', '#btn-next', async function(){
-        	if(dataCita.promocion.tipoServicio == "LABORATORIO"){
+        	window.history.back();
+        	return;
+        	/*if(dataCita.promocion.tipoServicio == "LABORATORIO"){
         		window.history.back();
         		return;
         	}
@@ -93,14 +97,15 @@ Mi Veris - Preparación previa
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
             showLoader();
-            window.location.href = `${url}{{ $tokenCita }}`;
+            window.location.href = `${url}{{ $tokenCita }}`;*/
         })
 
     })
 
     async function drawPreparacionPrevia(){
     	$('.title-preparacion').html(`${ (dataCita.promocion.tipoServicio == "LABORATORIO") ? `Información` : `Preparación previa` }`)
-    	$('.subtitle-preparacion').html(`${ (dataCita.promocion.tipoServicio == "LABORATORIO") ? `Preparación previa` : `Lee y acepta la preparación previa` }`)
+    	// $('.subtitle-preparacion').html(`${ (dataCita.promocion.tipoServicio == "LABORATORIO") ? `Preparación previa` : `Lee y acepta la preparación previa` }`)
+    	$('.subtitle-preparacion').html(`${ (dataCita.promocion.tipoServicio == "LABORATORIO") ? `Preparación previa` : `` }`)
     	if(dataCita.promocion.tipoServicio == "LABORATORIO"){
     		$('.box-content-info').prepend(`<div class="d-flex justify-content-between align-items-center p-2 mb-3 rounded-3 box-legend">
     			<i class="fa-solid fa-circle-info me-3 fs-24 text-primary-veris"></i>

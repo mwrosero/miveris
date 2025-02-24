@@ -106,9 +106,9 @@ Mi Veris - Citas - Detalle
                 url = '/citas-elegir-fecha-doctor/';
             }
 
-            if(dataCita.promocion.preparacionPrevia != null){
-                url = '/detalle/item/preparacion-previa/';
-            }
+            // if(dataCita.promocion.preparacionPrevia != null){
+            //     url = '/detalle/item/preparacion-previa/';
+            // }
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
             showLoader();
@@ -268,7 +268,7 @@ Mi Veris - Citas - Detalle
                         <a href="${urlResultado}" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect waves-light order-last">Ver resultados</a>
                     </div>`;
         }else{
-            if(dataCita.promocion.tipoServicio == "LABORATORIO" && dataCita.promocion.preparacionPrevia != null){
+            if(dataCita.promocion.tipoServicio == "LABORATORIO" || dataCita.promocion.preparacionPrevia != null){
                 elem += `<div class="col-12 mt-3">
                         <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect btn-informacion waves-light order-last">Ver información</a>
                     </div>`;
