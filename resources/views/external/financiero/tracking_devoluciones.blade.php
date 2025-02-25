@@ -90,7 +90,7 @@ Veris - Devoluciones
 	    					
 	    				</div>
 	    			</div>
-	    			<div class="col-12 col-lg-6">
+	    			<div class="col-12 col-lg-6 d-none" id="box-nuevos-datos-bancarios">
 	    				<p class="fw-bold text-veris">Datos bancarios</p>
 	    				<div class="mt-3 rounded-3 w-100 bg-white d-flex justify-content-between align-items-start p-3">
 	    					<i class="fa-solid fa-circle-info mt-1 me-2 txt-veris"></i>
@@ -221,6 +221,7 @@ Veris - Devoluciones
 		    	$('.info-step-4').html(elem);
 		    	$('.step-4').removeClass('d-none');
 	    	}else if(detalle.estadoPago == "REBOTE" && detalle.estadoTrackingDevolucion == "TRANSFERENCIA RECHAZADA"){
+	    		$('#box-nuevos-datos-bancarios').removeClass('d-none');
 	    		$('#badge-info-status-3').html(`<i class="fa-solid fa-circle-info me-2 text-danger"></i>
 	    			<p class="mb-0 fs-12 line-height-14"><b>Tu solicitud no fue aprobada.</b> Por favor, revisa los detalles e inténtalo nuevamente.</p>`).addClass('bg-error border-error');
 
@@ -268,7 +269,7 @@ Veris - Devoluciones
 	    	}else{
 	    		$('#badge-info-status-3').html(`<i class="fa-solid fa-circle-check me-2 text-green"></i>
 	    			<p class="mb-0 fs-12 line-height-14">Solicitud enviada con éxito.</p>`).addClass('bg-green');
-	    		elem += `<h3 class="fs-18 text-veris mb-1 text-capitalize">Estado: ${ detalle.estadoTrackingDevolucion.toLowerCase() }</h3>
+	    		elem += `<h3 class="fs-18 text-veris mb-1 text-capitalize">Estado: En Proceso</h3>
 		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>
 		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal}</p>
 		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
