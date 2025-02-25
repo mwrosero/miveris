@@ -120,6 +120,7 @@ Mi Veris - Citas - Detalle
 
             let dataReserva = {
                 "detalleItemPaquete": detalle,
+                "promocion": dataCita.promocion,
                 "online": dataCita.promocion.esOnline,
                 "especialidad": {
                     codigoEspecialidad: dataCita.promocion.codigoEspecialidad,
@@ -280,7 +281,8 @@ Mi Veris - Citas - Detalle
 
     function drawBtnCardItem(detalles){
         console.log(detalles);
-        if(detalles.estado == "Caducado" || (detalles.hasOwnProperty('esAgendable') && !detalles.esAgendable)){
+        console.log(999);
+        if(detalles.estado == "Caducado" || (dataCita.promocion.hasOwnProperty('esAgendable') && !dataCita.promocion.esAgendable && !detalles.hasOwnProperty('detalleReserva') && detalles.detalleReserva != null)){
             return ``;
         }
         // "tipoAgenda": "CONSULTA_MEDICA"  o "TERAPIAS"
