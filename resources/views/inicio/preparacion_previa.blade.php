@@ -33,7 +33,7 @@ Mi Veris - Preparación previa
 	                    	<ul id="lista-preparacion" class="ps-0 list-unstyled">	                    		
 	                    	</ul>
 	                    	<div class="box-actions d-none mt-5 w-100">
-		                    	<div class="form-check d-flex justify-content-md-center align-items-center mb-3 d-none">
+		                    	<div class="form-check d-flex justify-content-md-center align-items-center mb-3">
 		                            <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
 		                            <label class="form-check-label fs--1 line-height-16" for="checkTerminosCondicion">
 		                                Leí y estoy de acuerdo con la preparación previa.
@@ -42,7 +42,7 @@ Mi Veris - Preparación previa
 		                                Debes aceptar antes de continuar
 		                            </div>
 		                        </div>
-		                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-center align-items-center" id="btn-next">
+		                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 w-100 py-3 px-32 shadow-none d-flex justify-content-center align-items-center disabled" id="btn-next">
 		                        	<span class="shadow-none">Entendido</span>
 		                        </button>
 		                    </div>
@@ -66,12 +66,12 @@ Mi Veris - Preparación previa
     	if(dataCita.promocion.tipoServicio == "IMAGENES" || dataCita.promocion.tipoServicio == "PROCEDIMIENTOS"){
     		// $('.box-actions').addClass('fixed-bottom').removeClass('d-none');
     		$('.box-actions').removeClass('d-none');
-    		$('#btn-next').html('Entendido');
+    		$('#btn-next').html(`<span class="shadow-none">Continuar</span>`);
     	}else{
     		$('.form-check').addClass('d-none')
     		// $('.box-actions').addClass('sticky-bottom').removeClass('d-none');
     		$('.box-actions').removeClass('d-none');
-    		$('#btn-next').html('Entendido');
+    		$('#btn-next').html(`<span class="shadow-none">Entendido</span>`);
     		$('#btn-next').removeClass('disabled');
     	}
 
@@ -84,9 +84,9 @@ Mi Veris - Preparación previa
         });
 
         $('body').on('click', '#btn-next', async function(){
-        	window.history.back();
-        	return;
-        	/*if(dataCita.promocion.tipoServicio == "LABORATORIO"){
+        	// window.history.back();
+        	// return;
+        	if(dataCita.promocion.tipoServicio == "LABORATORIO"){
         		window.history.back();
         		return;
         	}
@@ -97,7 +97,7 @@ Mi Veris - Preparación previa
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
             showLoader();
-            window.location.href = `${url}{{ $tokenCita }}`;*/
+            window.location.href = `${url}{{ $tokenCita }}`;
         })
 
     })
