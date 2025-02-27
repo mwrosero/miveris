@@ -220,7 +220,7 @@ Veris - Devoluciones
 		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
 		    	$('.info-step-4').html(elem);
 		    	$('.step-4').removeClass('d-none');
-	    	}else if(detalle.estadoPago == "REBOTE" && detalle.estadoTrackingDevolucion == "TRANSFERENCIA RECHAZADA"){
+	    	}/*else if(detalle.estadoPago == "REBOTE" && detalle.estadoTrackingDevolucion == "TRANSFERENCIA RECHAZADA"){
 	    		$('#box-nuevos-datos-bancarios').removeClass('d-none');
 	    		$('#badge-info-status-3').html(`<i class="fa-solid fa-circle-info me-2 text-danger"></i>
 	    			<p class="mb-0 fs-12 line-height-14"><b>Tu solicitud no fue aprobada.</b> Por favor, revisa los detalles e inténtalo nuevamente.</p>`).addClass('bg-error border-error');
@@ -266,7 +266,7 @@ Veris - Devoluciones
 				});
 
 		    	$('.step-3').removeClass('d-none');
-	    	}else{
+	    	}*/else{
 	    		$('#badge-info-status-3').html(`<i class="fa-solid fa-circle-check me-2 text-green"></i>
 	    			<p class="mb-0 fs-12 line-height-14">Solicitud enviada con éxito.</p>`).addClass('bg-green');
 	    		elem += `<h3 class="fs-18 text-veris mb-1 text-capitalize">Estado: En Proceso</h3>
