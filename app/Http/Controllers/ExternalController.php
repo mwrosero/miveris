@@ -223,6 +223,7 @@ class ExternalController extends Controller
                         ->with('paciente',$list_paciente)
                         ->with('urlRetornoPago', http_build_query($urlParams))
                         ->with('origenInvocacion', (isset($urlParams['origenInvocacion'])) ? $urlParams['origenInvocacion'] : Veris::CANAL_ORIGEN_EXTERNAL)
+                        ->with('esLinkDigiturno', $data['esLinkDigiturno'])
                         ->with('pretransaccion',$response_pretrx);
             }else{
                 // dd(http_build_query($urlParams)); //MEJORAR

@@ -497,7 +497,7 @@ Veris - Devoluciones
         		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Nombre Factura:</span> ${dataDevolucion.comprobante.nombrePersonaFactura}</p>
         		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Identificación Paciente:</span> ${dataDevolucion.comprobante.numeroIdentificacionPaciente}</p>
         		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Nombre Paciente:</span> ${dataDevolucion.comprobante.nombrePaciente}</p>
-        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Total:</span> $${dataDevolucion.comprobante.totales.paciente.valorTotal}</p>`;
+        		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris fw-medium">Total:</span> $${dataDevolucion.comprobante.totales.paciente.valorTotal.toFixed(2)}</p>`;
 	        	$('.box-datos').html(elem_datos);
 
 	        	let elem_prestaciones = ``;

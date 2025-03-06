@@ -216,7 +216,7 @@ Veris - Devoluciones
 				$('.step-4-number').addClass('active');
 	    		elem += `<h3 class="fs-18 text-veris mb-1">Estado: Acreditada</h3>`;
 	    		elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>`;
-		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal}</p>`;
+		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal.toFixed(2)}</p>`;
 		    	elem += `<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
 		    	$('.info-step-4').html(elem);
 		    	$('.step-4').removeClass('d-none');
@@ -227,7 +227,7 @@ Veris - Devoluciones
 
 	    		elem += `<h3 class="fs-18 text-veris mb-1 text-capitalize">Estado: ${ detalle.estadoTrackingDevolucion.toLowerCase() }</h3>
 		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>
-		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal}</p>
+		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal.toFixed(2)}</p>
 		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
 
 		    	$('.info-step-3').html(elem);
@@ -271,7 +271,7 @@ Veris - Devoluciones
 	    			<p class="mb-0 fs-12 line-height-14">Solicitud enviada con éxito.</p>`).addClass('bg-green');
 	    		elem += `<h3 class="fs-18 text-veris mb-1 text-capitalize">Estado: En Proceso</h3>
 		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Fecha de solicitud:</span> ${detalle.notaCredito.fechaEmision}</p>
-		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal}</p>
+		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Valor:</span> $${detalle.notaCredito.valorTotal.toFixed(2)}</p>
 		    		<p class="mb-0 fs-14 line-height-14"><span class="txt-veris">Motivo:</span> ${detalle.notaCredito.descripcionMotivo}</p>`;
 		    	$('.info-step-3').html(elem);
 		    	$('.step-3').removeClass('d-none');
