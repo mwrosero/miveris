@@ -16,6 +16,25 @@ Veris - Datos de facturación
 <script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script>
 @include('external.components.navbar')
 
+<!-- Modal Error Pago Digiturno -->
+<div class="modal fade" id="modalErrorPago" tabindex="-1" aria-labelledby="modalErrorPagoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="modal-header pt-3 pb-0 px-3">
+                <h5 class="modal-title mx-auto title-section fw-medium">Transacción rechazada</h5>
+            </div>
+            <div class="modal-body text-center p-3">
+                {{-- <i class="bi bi-exclamation-triangle-fill text-primary-veris h2"></i> --}}
+                El pago no se completó correctamente. <br> Te sugerimos intentar con otra pasarela de pago.
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <a href="/external/payment/kushki/{{ $tokenCita }}" class="btn btn-lg btn-outline-primary-veris fs--18 line-height-24 py-3 w-100 m-0 mb-3">Seleccionar otra pasarela</a>
+                <div type="button" data-bs-dismiss="modal" class="btn btn-lg btn-primary-veris fs--18 line-height-24 py-3 w-100 m-0">Cerrar</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Validacion -->
 <div class="modal fade" id="modalRequeridos" tabindex="-1" aria-labelledby="modalRequeridosModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -633,7 +652,11 @@ Veris - Datos de facturación
 		        }else{
 		        	$('.btnNuvei').css('pointer-events','auto')
 		        	console.log(response);
-		        	alert("Transaciión rechazada, intenta con otra tarjeta");
+		        	@if($esLinkDigiturno)
+		        		$('#modalErrorPago').modal('show');
+		        	@else
+		        		alert("Transacción rechazada, intenta con otra tarjeta");
+		        	@endif
 		        }
 		    }
 		});
