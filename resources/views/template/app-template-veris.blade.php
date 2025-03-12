@@ -57,6 +57,7 @@
     <script>
         const api_url = "{{ \App\Models\Veris::BASE_URL }}";
         const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
+        let tipoFlujo = "";
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 
@@ -491,6 +492,13 @@
 
     <!-- Funciones de ayuda -->
     <script>
+
+        document.addEventListener("DOMContentLoaded", async function () {
+            if(typeof dataCita !== "undefined" && dataCita.hasOwnProperty('tipoFlujo')){
+                console.log(dataCita.tipoFlujo)
+                tipoFlujo = dataCita.tipoFlujo;
+            }
+        })
         // capializar la primera letra de cada palabra
         function updateNavigation() {
             var totalSlides = swiperProximasCitas.slides.length - 2 * swiperProximasCitas.params.slidesPerView; // Eliminar duplicados en el bucle infinito

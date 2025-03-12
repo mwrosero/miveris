@@ -230,6 +230,7 @@ Mi Veris - Inicio
     let datosPaciente = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
+        await controlVersion();
         var swiper = new Swiper('.swiper-acceso-rapidos', {
             // slidesPerView: 1,
             spaceBetween: 8,
@@ -269,7 +270,7 @@ Mi Veris - Inicio
         // chartProgres('#chart-progress');
         await consultarConvenios();
         await consultarDatosPaciente();
-        controlVersion();
+        
         // initializeSwiper('.swipertratamientos');
         // initializeSwiper('.swiper-proximas-citas');
         $('body').on('click', '.btn-opciones-sesion', function(){
@@ -797,6 +798,10 @@ Mi Veris - Inicio
                 args["showLoader"] = true;
         const data = await call(args);
         console.log(data)
+        if(data.code == 200){
+            // console.log(data.data.codigoRastreo)
+            localStorage.setItem('codigoRastreo', data.data.codigoRastreo);
+        }
     }
 
     //aceptar las politicas
@@ -1220,6 +1225,8 @@ Mi Veris - Inicio
         // console.log('datasss', data);return;
         let url = $(this).attr('url-rel');
         console.log(url);
+        
+        tipoFlujo = "reagenda/home";
         // const dataConvenio = await consultarConvenios(data);
         // const dataPaciente = await consultarDatosPaciente(data);
         if(data.permiteReserva == "N"){
@@ -1303,6 +1310,7 @@ Mi Veris - Inicio
                 esPlanStar:  data.esPlanStar
             }
             // console.log(params);return;
+            params.tipoFlujo = tipoFlujo;
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             location = url;
             return;
@@ -1402,6 +1410,7 @@ Mi Veris - Inicio
             }
             params.origen = "inicios";
             // console.log(params);return;
+            params.tipoFlujo = tipoFlujo;
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             location = url;
             

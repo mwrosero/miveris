@@ -137,7 +137,7 @@ Mi Veris - Doctores favoritos
     // variables globales
     let dataDoctorFavorito = [];
     
-
+    tipoFlujo = "agenda/doctorFavorito";
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerDoctorFavorito();
@@ -165,6 +165,7 @@ Mi Veris - Doctores favoritos
             let dataCita = JSON.parse(atob(decodeURIComponent($('#datosGen').val())));
             let estaEmbarazada = $(this).attr('respuesta-rel');
             dataCita.estaEmbarazada = estaEmbarazada;
+            dataCita.tipoFlujo = tipoFlujo;
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
             let url = `/citas-elegir-fecha-doctor/`;
             let ruta = url + "{{ $tokenCita }}";
@@ -206,10 +207,12 @@ Mi Veris - Doctores favoritos
                     $('#datosGen').val(data)
                     $('#modalEmbarazo').modal("show");
                 }else{
+                    dataCita.tipoFlujo = tipoFlujo;
                     localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
                     location.href = url;
                 }
             }else{
+                dataCita.tipoFlujo = tipoFlujo;
                 localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
                 location.href = url;
             }
@@ -349,6 +352,7 @@ Mi Veris - Doctores favoritos
             nombreSucursal: (dataRel.nombreSucursal) ? dataRel.nombreSucursal : dataRel.sucursal
         }
         params.origen = 'doctorFavorito';
+        params.tipoFlujo = tipoFlujo;
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
 
         let url = `/seleccionar-datos-cita/`;
@@ -397,6 +401,7 @@ Mi Veris - Doctores favoritos
                         nombreSucursal: dataRel.nombreSucursal
                     }
                     params.origen = 'doctorFavorito';
+                    params.tipoFlujo = tipoFlujo;
                     localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
                     let url = `/citas-elegir-fecha-doctor/`;
                     let ruta = url + "{{ $tokenCita }}";
@@ -509,6 +514,7 @@ Mi Veris - Doctores favoritos
                     nombreSucursal: dataRel.nombreSucursal
                 }
                 params.origen = 'doctorFavorito';
+                params.tipoFlujo = tipoFlujo;
                 localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
                 let url = `/citas-elegir-fecha-doctor/`;
                 let ruta = url + "{{ $tokenCita }}";

@@ -1075,6 +1075,8 @@ Mi Veris - Citas - Mis citas
         let convenio = JSON.parse($(this).attr('convenio-rel'));
         console.log('dataCitaa', data);
         console.log(convenio)
+        tipoFlujo = "reagenda/proximas_citas";
+
 
         if(data.permiteReserva == "N"){
             $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
@@ -1148,6 +1150,7 @@ Mi Veris - Citas - Mis citas
                 }
             }
             
+            params.tipoFlujo = tipoFlujo;
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             location = url;
             return;
@@ -1217,6 +1220,7 @@ Mi Veris - Citas - Mis citas
                 }
             }
             
+            params.tipoFlujo = tipoFlujo;
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
 
             location = url;
@@ -1391,6 +1395,9 @@ Mi Veris - Citas - Mis citas
         if(dataConvenio.permiteReserva == "S"){
             let dataCita = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
             dataCita.convenio = dataConvenio;
+            dataCita.tipoFlujo = "agenda/historial";
+            tipoFlujo = dataCita.tipoFlujo;
+
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
             location.href = url;
         }else{
@@ -1424,6 +1431,8 @@ Mi Veris - Citas - Mis citas
         let params = {};
                     
         params.online = dataOnline;
+        params.tipoFlujo = "agenda/historial";
+        tipoFlujo = params.tipoFlujo;
         //params.convenio = convenios;
         //params.convenio.origen = 'mis-citas';
         if(dataRel.prestaciones){

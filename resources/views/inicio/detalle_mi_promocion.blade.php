@@ -118,6 +118,9 @@ Mi Veris - Citas - Detalle
                 "secuenciaAfiliado" : null,
             };
 
+            dataCita.tipoFlujo = "agenda/paquetes";
+            tipoFlujo = dataCita.tipoFlujo;
+
             //return;
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));

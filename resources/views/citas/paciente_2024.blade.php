@@ -78,6 +78,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let ordenExterna = dataCita?.ordenExterna;
     let dataPaciente;
     
+    dataCita.tipoFlujo = "agenda/demanda";
+    tipoFlujo = dataCita.tipoFlujo;
 
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
