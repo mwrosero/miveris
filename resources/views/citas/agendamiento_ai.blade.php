@@ -214,6 +214,9 @@ $tokenCitaNormal = base64_encode(uniqid());
     let swiper; 
     let estaEscribiendo = false;
     let swipeCreado = false;
+    dataCita.tipoFlujo = "agenda/agendamiento_inteligente";
+    tipoFlujo = dataCita.tipoFlujo;
+
     document.addEventListener("DOMContentLoaded", async function () {
         $('#box-animacion-horizontal').addClass('d-none');
         $('#typewriterVertical').empty();

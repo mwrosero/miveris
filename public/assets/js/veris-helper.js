@@ -12,6 +12,7 @@ const _langDate = {
         longhand: ['Enero', 'Febreo', 'Мarzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
     }
 }
+
 async function call(args){
     if(args.showLoader || args.showLoader == true){
         showLoader();
@@ -33,27 +34,25 @@ async function call(args){
         myHeaders.append("Authorization","Bearer "+ args.token);
         myHeaders.append("Application", _application);
         myHeaders.append("IdOrganizacion", _idOrganizacion);
-        // requestOptions.headers = ({
-        //     "Authorization": "Bearer "+ args.token,
-        //     "Application": _application,
-        //     "IdOrganizacion": _idOrganizacion
-        // });
     }
     requestOptions.headers = myHeaders;
-    // console.log(myHeaders);
-    // console.log(requestOptions);
-        
-    // myHeaders.append("Application", _application);
-    // myHeaders.append("IdOrganizacion", _idOrganizacion);
-    // myHeaders.append("Authorization","Bearer "+ _token);
-
+    
     if(args.method == "POST" || args.method == "PUT" || args.method == "DELETE" || args.method == "GET"){
         if(args.data){
             requestOptions.body = args.data;
         }
     }
+
+    // Modificar el endpoint para agregar el query param
+    let url = new URL(args.endpoint, window.location.origin);
+    if(localStorage.getItem('codigoRastreo') !== null){
+        if(tipoFlujo != ""){
+            url.searchParams.set("codigoRastreo", localStorage.getItem('codigoRastreo'));
+            url.searchParams.set("tipoFlujo", tipoFlujo);
+        }
+    }
     
-    return fetch(args.endpoint, requestOptions)
+    return fetch(url.toString(), requestOptions)
         .then((response) => {
             return response.json();
         }).then((data) => {
@@ -72,9 +71,10 @@ async function call(args){
             console.log("catch error call")
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
+                $('.box-datos-factura').removeClass('d-none')
+                $('.box-load-pago').addClass('d-none')
             }
             throw error;
-            // toastr.error("Ha ocurrido un problema con la comunicación al servicio requerido, inténtelo en unos momentos.","ERROR");
             //console.log(error);
         });
 }

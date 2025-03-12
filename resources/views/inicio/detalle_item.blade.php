@@ -99,6 +99,9 @@ Mi Veris - Citas - Detalle
                 "secuenciaAfiliado" : null,
             };
 
+            dataCita.tipoFlujo = "agenda/paquetes";
+            tipoFlujo = dataCita.tipoFlujo;
+
             // console.log(dataCita);return;
 
             let url = '/seleccionar-datos-cita/';
@@ -161,7 +164,8 @@ Mi Veris - Citas - Detalle
                     "idCita": detalle.detalleReserva.codigoReserva,
                     "esSesionOdonto": "N"
                 },
-                "origen": "paquetes"
+                "origen": "paquetes",
+                "tipoFlujo" = "reagenda/paquetes"
             }
 
             // console.log(dataReserva);return;
