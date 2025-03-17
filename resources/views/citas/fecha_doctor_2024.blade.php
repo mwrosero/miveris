@@ -609,7 +609,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         console.log(newArrayCard)
         if (data.code == 200){
             let elemento = '';
-            if(newArrayCard.length > 0){
+            if(newArrayCard !== null && newArrayCard.length > 0){
                 newArrayCard.forEach((medico) => {
                     let img_doctor = (medico.imagen != null) ? medico.imagen : '{{ asset('assets/img/svg/avatar_doctor.svg') }}';
 
