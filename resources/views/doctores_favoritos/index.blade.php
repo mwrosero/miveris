@@ -320,6 +320,7 @@ Mi Veris - Doctores favoritos
                 esOnline: dataRel.esOnline,
                 codigoPrestacion: dataRel.prestaciones[0].codigoPrestacion,
                 codigoSucursal: dataRel.codigoSucursal,
+                requiereOrden: dataRel.requiereOrden,
                 origen: 'doctorFavorito',
             };
         }else{
@@ -330,6 +331,7 @@ Mi Veris - Doctores favoritos
                 esOnline: dataRel.esOnline,
                 codigoPrestacion: dataRel.codigoPrestacion,
                 codigoSucursal: dataRel.codigoSucursal,
+                requiereOrden: dataRel.requiereOrden,
                 origen: 'doctorFavorito',
             };
         }
@@ -384,6 +386,7 @@ Mi Veris - Doctores favoritos
                         esOnline: dataRel.esOnline,
                         codigoPrestacion: dataRel.codigoPrestacion,
                         codigoSucursal: dataRel.codigoSucursal,
+                        requiereOrden: dataRel.requiereOrden,
                         origen: 'doctorFavorito',
                         
                     };
@@ -446,6 +449,7 @@ Mi Veris - Doctores favoritos
                     esOnline: dataRel.esOnline,
                     codigoPrestacion: dataRel.codigoPrestacion,
                     codigoSucursal: dataRel.codigoSucursal,
+                    requiereOrden: dataRel.requiereOrden,
                     origen: 'doctorFavorito',
                     
                 };
@@ -497,6 +501,7 @@ Mi Veris - Doctores favoritos
                     esOnline: dataRel.esOnline,
                     codigoPrestacion: dataRel.codigoPrestacion,
                     codigoSucursal: dataRel.codigoSucursal,
+                    requiereOrden: dataRel.requiereOrden,
                     origen: 'doctorFavorito',
                     
                 };

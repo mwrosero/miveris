@@ -20,6 +20,21 @@ Elige datos para la Cita
     </div>
 </div>
 
+<!-- Modal Agenda terapia -->
+    <div class="modal fade" id="modalInfoTerapia" tabindex="-1" aria-labelledby="modalInfoTerapiaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Información</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris">Necesitas una orden médica para agendar terapia física. Agenda una cita en traumatología o fisiatría para solicitar una orden.</p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 <!-- Modal mensaje -->
 <div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -57,7 +72,7 @@ Elige datos para la Cita
                     </div>
                     <p class="fs--16 line-height-20 fw-medium mb-8">{{ __('¿Estas agendando por este motivo?') }}</p>
                     <a href="#" type="button" id="btn-si-tratamiento" class="btn btn-primary-veris fs--18 w-100 px-4 py-3 m-0 mb-3">{{ __('Agendar esta orden') }}</a>
-                    <a href="#" type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris fs--18 w-100 px-4 py-3 m-0">{{ __('No') }}</a>
+                    <a href="#" type="button" id="btn-no-tratamiento" class="btn btn-outline-primary-veris fs--18 w-100 px-4 py-3 m-0" data-bs-dismiss="modal">{{ __('No') }}</a>
                     {{-- <button type="button" class="btn btn-outline-primary-veris w-100 mb-3" data-bs-dismiss="modal">{{ __('No') }}</button> --}}
                 </div>
             </div>
@@ -248,6 +263,20 @@ Elige datos para la Cita
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+
+        $('#btn-no-tratamiento').on('click', function(event) {
+            // Reemplaza esta condición con tu validación
+            // alert(0)
+            
+            if (dataCita.especialidad.requiereOrden == "S") {
+                event.preventDefault(); // Evita que siga el link
+                $('#modalInfoTerapia').modal('show')
+            } else {
+                // Permite la navegación
+                window.location.href = $(this).attr('href');
+            }
+        });
+
         if(dataCita.online == "S"){
             $('.item-presencial').addClass('d-none');
         }
