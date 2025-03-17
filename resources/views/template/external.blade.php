@@ -66,6 +66,7 @@
             let _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACION }}";
             // "@if (\App\Models\Veris::CONTIENE_DESARROLLO)  {{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }} @else {{ \App\Models\Veris::IDORGANIZACION }} @endif";
             // const _idOrganizacionResultadosLaboratorio = "";
+            let tipoFlujo = "";
             window.config = {
                 subdomain: @json(config('app.subdomain')),
                 canalOrigen: (@json(config('app.subdomain')) == "veris") ? "VER_CMV" : "VER_PMF"
