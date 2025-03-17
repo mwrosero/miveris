@@ -98,11 +98,11 @@ Veris - Devoluciones
 	    				</div>
 	    				<div class="w-100 mt-3">
 	    					<label for="numeroIdentificacion" class="form-label fw-medium fs--1">Nro. Cédula o Pasaporte del Titular de la Cuenta<span class="text-danger">*</span></label>
-	    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="numeroIdentificacion">
+	    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2" required="" id="numeroIdentificacion" disabled readonly>
 	    				</div>
 	    				<div class="w-100 mt-2">
 	    					<label for="nombres" class="form-label fw-medium fs--1">Nombre y apellido del Titular de la Cuenta<span class="text-danger">*</span></label>
-	    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2 onlyLetters" required="" id="nombres">
+	    					<input type="text" class="w-100 text-start rounded-3 form-control fs--1 p-2 onlyLetters" required="" id="nombres" disabled readonly>
 	    				</div>
 	    				<div class="w-100 mt-2">
 	    					<label for="institucion" class="form-label fw-medium fs--1">Institución Bancaria<span class="text-danger">*</span></label>
@@ -257,6 +257,9 @@ Veris - Devoluciones
     					<label for="email" class="form-label fw-medium fs--1">Correo electrónico</label>
     					<input class="w-100 text-start rounded-3 form-control fs--1 p-2 disabled" value="${detalle.correoElectronico}" readonly>
     				</div>`);
+
+		    	$('#numeroIdentificacion').val(detalle.numeroIdentificacionCuenta);
+				$('#nombres').val(detalle.nombreTitularCuenta);
 
 		    	await cargarTiposCuenta();
 		    	await cargarInstitucionesBancarias();
