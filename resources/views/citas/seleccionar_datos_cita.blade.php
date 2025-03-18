@@ -288,8 +288,10 @@ Elige datos para la Cita
             $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)) }`)
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
             await consultarCiudades();
-            // await consultarCentralesMedicasRecomendadas();
-            // await validarEspecialidadEnCentralSeleccionada();
+            await consultarCentralesMedicasRecomendadas();
+            await validarEspecialidadEnCentralSeleccionada();
+            // await consultarCentralesMedicas();
+            // $('#btn-central p').html(`Seleccionar`);
             $('#btn-ciudad').removeClass('disabled selectable')
             $('#btn-central').removeClass('disabled selectable')
         }else if(dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "paquetes"){
@@ -770,6 +772,7 @@ Elige datos para la Cita
     }
 
     async function consultarCentralesMedicasRecomendadas(){
+        console.log(0);
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.numeroPaciente}`;
         args["method"] = "GET";
@@ -838,6 +841,7 @@ Elige datos para la Cita
     }
 
     async function validarEspecialidadEnCentralSeleccionada(){
+        console.log(9);
         let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = dataCita.ciudad;
         let args = [];
@@ -858,6 +862,7 @@ Elige datos para la Cita
     }
 
     async function consultarCentralesMedicas(){
+        console.log(2);
         console.log('----------')
         // $('#btn-central p').html(`Seleccionar`);
         // $('#btn-central').attr('data-rel','');
