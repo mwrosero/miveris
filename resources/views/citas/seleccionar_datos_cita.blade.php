@@ -288,7 +288,7 @@ Elige datos para la Cita
             $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(dataCita.convenio.nombreConvenio)) }`)
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
             await consultarCiudades();
-            await consultarCentralesMedicasRecomendadas();
+            // await consultarCentralesMedicasRecomendadas();
             await validarEspecialidadEnCentralSeleccionada();
             $('#btn-ciudad').removeClass('disabled selectable')
             $('#btn-central').removeClass('disabled selectable')
