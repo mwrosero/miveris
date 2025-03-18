@@ -770,8 +770,8 @@ class ExternalController extends Controller
 
     public function devoluciones(Request $request){
         $data = $request->all();
-        $accessToken = $this->getTokenExternalFacturacion();
-        $canalOrigen = (isset($data['canalOrigen'])) ? $data['canalOrigen'] : 'IVR';
+        $accessToken = $this->getTokenExternalFacturacion(Veris::CONTIENE_DESARROLLO);
+        $canalOrigen = (isset($data['origenInvocacion'])) ? $data['origenInvocacion'] : 'IVR';
         return view('external.financiero.devoluciones')
                 ->with('canalOrigen',$canalOrigen)
                 ->with('accessToken',$accessToken);
@@ -779,7 +779,7 @@ class ExternalController extends Controller
     }
 
     public function trackDevoluciones($numeroFactura, $tipoIdentificacion,$numeroIdentificacion){
-        $accessToken = $this->getTokenExternalFacturacion();
+        $accessToken = $this->getTokenExternalFacturacion(Veris::CONTIENE_DESARROLLO);
         return view('external.financiero.tracking_devoluciones')
                 ->with('numeroFactura',$numeroFactura)
                 ->with('tipoIdentificacion',$tipoIdentificacion)

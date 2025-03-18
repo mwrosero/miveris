@@ -156,6 +156,7 @@ Veris - Devoluciones
     </section>
 </div>
 <script>
+	_idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }}";
 	let dataDevolucion = {};
 	document.addEventListener("DOMContentLoaded", async function () {
 		await obtenerTracking();
