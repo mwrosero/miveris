@@ -289,7 +289,7 @@ Elige datos para la Cita
             $('#btn-especialidad p').html(`${capitalizarCadaPalabra(dataCita.especialidad.nombre) }`)
             await consultarCiudades();
             // await consultarCentralesMedicasRecomendadas();
-            await validarEspecialidadEnCentralSeleccionada();
+            // await validarEspecialidadEnCentralSeleccionada();
             $('#btn-ciudad').removeClass('disabled selectable')
             $('#btn-central').removeClass('disabled selectable')
         }else if(dataCita.hasOwnProperty('reservaEdit') && dataCita.origen != "paquetes"){
