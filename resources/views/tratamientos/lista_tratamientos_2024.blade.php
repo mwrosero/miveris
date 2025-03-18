@@ -291,6 +291,8 @@ $tokenSesion = base64_encode(uniqid());
     // variables globales
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    dataCita.tipoFlujo = "agenda/tratamiento";
+    tipoFlujo = dataCita.tipoFlujo;
     let codigoTratamiento = dataCita.tratamiento.codigoTratamiento;
     let porcentaje = dataCita.tratamiento.porcentajeAvanceTratamiento;
     let secuenciaAtencion = [];
@@ -1302,6 +1304,9 @@ $tokenSesion = base64_encode(uniqid());
         }
 
         dataCita.online = modalidad;
+        let tipoServicio = datosServicio.tipoServicio.toLowerCase();
+        dataCita.tipoFlujo = "agenda/tratamiento/"+tipoServicio;
+        tipoFlujo = dataCita.tipoFlujo;
 
         dataCita.especialidad = {
             codigoEspecialidad: datosServicio.codigoEspecialidad,
@@ -1380,6 +1385,9 @@ $tokenSesion = base64_encode(uniqid());
         }
 
         dataCita.online = modalidad;
+        let tipoServicio = datosServicio.tipoServicio.toLowerCase();
+        dataCita.tipoFlujo = "agenda/tratamiento/"+tipoServicio;
+        tipoFlujo = dataCita.tipoFlujo;
 
         dataCita.especialidad = {
             codigoEspecialidad: datosServicio.codigoEspecialidad,
@@ -1449,6 +1457,9 @@ $tokenSesion = base64_encode(uniqid());
         }
         
         let params = {}
+        let tipoServicio = data.tipoServicio.toLowerCase();
+        tipoFlujo = "reagenda/tratamiento/"+tipoServicio;
+        params.tipoFlujo = tipoFlujo;;
         params.online = esVirtual;
         params.especialidad = {
             codigoEspecialidad: data.codigoEspecialidad,
