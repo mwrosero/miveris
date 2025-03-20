@@ -158,7 +158,7 @@ Mi Veris - Mis Datos
         console.log(_canalOrigen);
         await obtenerDatosUsuario();
         provincias = await obtenerProvincias();
-        ciudades = await obtenerCiudades(codeprovincia);
+        ciudades = await obtenerCiudades(1, codeprovincia);
         llenarDatosUsuario(provincias, ciudades);
         var fechaActual = new Date();
         var dia = ('0' + fechaActual.getDate()).slice(-2);
@@ -322,7 +322,7 @@ Mi Veris - Mis Datos
    // actualizar el select de ciudades cuando selecciono provincia
    $( "#provincia").change(async function () {
         let codeprovincia = $(this).val();
-        ciudades = await obtenerCiudades(codeprovincia);
+        ciudades = await obtenerCiudades(1, codeprovincia);
         $('#ciudad').empty();
         $.each(ciudades, function (index, value) {
             $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');

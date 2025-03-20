@@ -625,8 +625,8 @@ Veris - Datos de facturación
 
     function pasarelaNuvei(){
 		let paymentCheckout = new PaymentCheckout.modal({
-		    client_app_code: dataCita.transaccionVirtual.applicationCode, // Client Credentials
-		    client_app_key: dataCita.transaccionVirtual.applicationKey, // Client Credentials
+		    client_app_code: dataCita.transaccionVirtual.applicationCode,
+		    client_app_key: dataCita.transaccionVirtual.applicationKey,
 		    locale: 'es', // User's preferred language (es, en, pt). English will be used by default.
 		    env_mode: '{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', // `prod`, `stg`, `local` to change environment. Default is `stg`
 		    onOpen: function () {
@@ -663,16 +663,22 @@ Veris - Datos de facturación
 		});
 
 		paymentCheckout.open({
-			user_id: String($('#numeroIdentificacionTH').val()),
-			user_email: getInput('mail'), //optional
-			user_phone: "{{ $paciente->data->telefonoMovil }}",//optional
+			reference: dataCita.transaccionVirtual.reference
+			/*user_id: String($('#numeroIdentificacionTH').val()),
+			user_email: getInput('mail'),
+			user_phone: "{{ $paciente->data->telefonoMovil }}",
 			order_description: dataCita.transaccionVirtual.reference,
 			order_amount: dataCita.facturacion.totales.total,
 			order_vat: 0,
 			order_taxable_amount: 0,
 			order_tax_percentage: 0,
-			order_reference: dataCita.transaccionVirtual.orderReference,
+			order_reference: dataCita.transaccionVirtual.orderReference,*/
 		});
+
+		window.addEventListener('popstate', function () {
+			paymentCheckout.close();
+		});
+
 	}
 
 	async function llenarDataDetallesCitas(){
