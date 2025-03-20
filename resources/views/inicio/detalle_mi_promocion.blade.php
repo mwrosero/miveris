@@ -58,8 +58,10 @@ Mi Veris - Citas - Detalle
 @endsection
 @push('scripts')
 <script>
+    tipoFlujo = "agenda/paquetes";
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    dataCita.tipoFlujo = tipoFlujo;
     if(dataCita.paquete.esCaducada){
         $('#tituloPromocionPendiente').html('Caducado');
     }
@@ -80,7 +82,8 @@ Mi Veris - Citas - Detalle
                 "detalleItemPaquete": JSON.parse($(this).attr("data-rel"))[0],
                 "promocion": JSON.parse($(this).attr("promocion-rel")),
                 "nombrePaciente": dataCita.paquete.nombrePaciente,
-                "paciente": dataCita.paciente
+                "paciente": dataCita.paciente,
+                "tipoFlujo": dataCita.tipoFlujo
             };
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
