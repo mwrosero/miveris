@@ -160,6 +160,7 @@ Veris - Asignar Promoción
             let codigoReserva = data.data.numeroOrden;
             let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }&canalOrigen=APP_WEB`;
             // let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }`;
+            fbq('track', 'AddToCart');
             location.href = url;
             console.log(url);
             return;
@@ -229,6 +230,7 @@ Veris - Asignar Promoción
         const data = await call(args);
         console.log(data);
         if(data.code == 200 || data.code == 400){
+            fbq('track', 'CompleteRegistration');
             asignarPaquete();
         }else{
             console.log("ERROR")
