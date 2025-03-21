@@ -663,8 +663,8 @@ Veris - Datos de facturación
 		});
 
 		paymentCheckout.open({
-			reference: dataCita.transaccionVirtual.reference
-			/*user_id: String($('#numeroIdentificacionTH').val()),
+			// reference: dataCita.transaccionVirtual.reference
+			user_id: String($('#numeroIdentificacionTH').val()),
 			user_email: getInput('mail'),
 			user_phone: "{{ $paciente->data->telefonoMovil }}",
 			order_description: dataCita.transaccionVirtual.reference,
@@ -672,7 +672,7 @@ Veris - Datos de facturación
 			order_vat: 0,
 			order_taxable_amount: 0,
 			order_tax_percentage: 0,
-			order_reference: dataCita.transaccionVirtual.orderReference,*/
+			order_reference: dataCita.transaccionVirtual.orderReference,
 		});
 
 		window.addEventListener('popstate', function () {
