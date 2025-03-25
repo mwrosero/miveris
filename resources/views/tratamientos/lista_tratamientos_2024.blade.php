@@ -657,32 +657,47 @@ $tokenSesion = base64_encode(uniqid());
         if(data.length > 0){
             idPaciente = datosTratamiento.idPaciente;
             data.forEach((tratamientos) => {
-                let elemento = `<div class="col-12">
-                                    <div class="card h-100">
-                                        <div class="card-body p--2">
-                                            ${determinarEsOnline(tratamientos)}
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
-                                                <span class="text-warning-veris fs--2 line-height-16 mb-1" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
-                                            </div>
-                                            ${determinarFechaCaducidadEncabezado(tratamientos, datosTratamiento)}
-                                            ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
-                                            <div class="recetaMedicaMensaje">
-                                                ${determinarMensajeRecetaMedica(tratamientos)}
-                                            </div>                                            
-                                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                                <div class="avatar avatar-sm border rounded-circle bg-very-pale-red">
-                                                    <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">
-                                                </div>
-                                                <div class="d-flex">
-                                                    ${determinarCondicionesBotones(tratamientos, estado,datosTratamiento)}
-                                                </div>
-                                            </div>
-                                        </div>
+                console.log(tratamientos.tipoServicio)
+                var elemento = ``;
+                if(tratamientos.tipoServicio == "TERAPIA_AGRUPADA"){
+                    console.log(`++++++++++`)
+                    elemento = `<div class="col-12">
+                        <div class="card h-100">
+                            <div class="card-body p--2">
+                    HOLA
+                            </div>
+                        </div>
+                    </div>`;
+                }else{
+                    console.log(`-----------`)
+                    elemento = `<div class="col-12">
+                        <div class="card h-100">
+                            <div class="card-body p--2">
+                                ${determinarEsOnline(tratamientos)}
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
+                                    <span class="text-warning-veris fs--2 line-height-16 mb-1" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
+                                </div>
+                                ${determinarFechaCaducidadEncabezado(tratamientos, datosTratamiento)}
+                                ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
+                                <div class="recetaMedicaMensaje">
+                                    ${determinarMensajeRecetaMedica(tratamientos)}
+                                </div>                                            
+                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                    <div class="avatar avatar-sm border rounded-circle bg-very-pale-red">
+                                        <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">
                                     </div>
-                                </div>`;
-
-                divContenedor.append(elemento);
+                                    <div class="d-flex">
+                                        ${determinarCondicionesBotones(tratamientos, estado,datosTratamiento)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+                if(datosTratamiento.mostrarTerapiasAgrupadas == "N"){
+                    divContenedor.append(elemento);
+                }
             });
             // mostrar el titulo de pendientes
             document.getElementById("tituloTratamientoPendiente").style.display = "block";
