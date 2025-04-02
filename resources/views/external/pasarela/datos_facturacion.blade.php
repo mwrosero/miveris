@@ -14,7 +14,8 @@ Veris - Datos de facturación
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 
 <link href="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.css" rel="stylesheet" type="text/css" />
-<script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script>
+{{-- <script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script> --}}
+<script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_3.0.0.min.js"></script>
 @include('external.components.navbar')
 
 <!-- Modal Error Pago Digiturno -->
@@ -544,7 +545,8 @@ Veris - Datos de facturación
         	if(dataCita.facturacion.datosFactura.permiteNuvei != "S"){
         		await crearTransaccionVirtual();
         	}else{
-        		$('#modalAntifraude').modal('show');
+        		// $('#modalAntifraude').modal('show');
+        		await crearTransaccionVirtual();
         	}
         }
     }
@@ -625,10 +627,17 @@ Veris - Datos de facturación
 
     function pasarelaNuvei(){
 		let paymentCheckout = new PaymentCheckout.modal({
-		    client_app_code: dataCita.transaccionVirtual.applicationCode,
-		    client_app_key: dataCita.transaccionVirtual.applicationKey,
+		    // client_app_code: dataCita.transaccionVirtual.applicationCode,
+		    // client_app_key: dataCita.transaccionVirtual.applicationKey,
 		    locale: 'es', // User's preferred language (es, en, pt). English will be used by default.
 		    env_mode: '{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', // `prod`, `stg`, `local` to change environment. Default is `stg`
+		    "conf":{
+			    "theme":{
+			        "logo": "https://cdn.paymentez.com/img/nv/nuvei_logo.png",
+			        "primary_color": "#C800A1",
+			        "secondary_color": "#C800A1"
+			    }
+			},
 		    onOpen: function () {
 		    	console.log('modal open');
 		    },
@@ -663,16 +672,16 @@ Veris - Datos de facturación
 		});
 
 		paymentCheckout.open({
-			// reference: dataCita.transaccionVirtual.reference
-			user_id: String($('#numeroIdentificacionTH').val()),
-			user_email: getInput('mail'),
-			user_phone: "{{ $paciente->data->telefonoMovil }}",
-			order_description: dataCita.transaccionVirtual.reference,
-			order_amount: dataCita.facturacion.totales.total,
-			order_vat: 0,
-			order_taxable_amount: 0,
-			order_tax_percentage: 0,
-			order_reference: dataCita.transaccionVirtual.orderReference,
+			reference: dataCita.transaccionVirtual.reference,
+			// user_id: String($('#numeroIdentificacionTH').val()),
+			// user_email: getInput('mail'),
+			// user_phone: "{{ $paciente->data->telefonoMovil }}",
+			// order_description: dataCita.transaccionVirtual.reference,
+			// order_amount: dataCita.facturacion.totales.total,
+			// order_vat: 0,
+			// order_taxable_amount: 0,
+			// order_tax_percentage: 0,
+			// order_reference: dataCita.transaccionVirtual.orderReference,
 		});
 
 		window.addEventListener('popstate', function () {

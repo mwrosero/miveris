@@ -787,6 +787,15 @@ class ExternalController extends Controller
                 ->with('accessToken',$accessToken);
     }
 
+    public function soportesPhantomX(Request $request){
+        $data = $request->all();
+        $accessToken = $this->getTokenExternalFacturacion();
+        return view('external.qr_ordenes.ordenes_paperless')
+                ->with('idPreTransaccion',$data['idPreTransaccion'])
+                ->with('codigoEmpresa',$data['codigoEmpresa'])
+                ->with('accessToken',$accessToken);
+    }
+
     public function botAi(Request $request){
         $data = $request->all();
         // dd($data['message']);
@@ -818,6 +827,5 @@ class ExternalController extends Controller
         ->header('Access-Control-Allow-Origin', '*') // Permitir solicitudes desde cualquier origen
         ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS') // Métodos permitidos
         ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Encabezados permitidos
-
     }
 }

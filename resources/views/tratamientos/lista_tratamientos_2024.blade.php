@@ -305,7 +305,7 @@ $tokenSesion = base64_encode(uniqid());
     let datosPaciente = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        console.log(9)
+        // console.log(9)
 
         await obtenerTratamientos();
         llenarPorcentajeBarra();
@@ -355,7 +355,7 @@ $tokenSesion = base64_encode(uniqid());
         document.getElementById("progress-circle").setAttribute("data-percentage", roundToDraw(porcentaje));
         // llenar el totalTratamientoEnviados y totalTratamientoRealizados
         // limpiar el contenido
-        console.log('datosTratamientoee', datosTratamiento.totalTratamientoEnviados);
+        // console.log('datosTratamientoee', datosTratamiento.totalTratamientoEnviados);
         $('#totalTratamientoEnviados').empty();
         $('#totalTratamientoRealizados').empty();
         $('#totalTratamientoEnviados').append(datosTratamiento.totalTratamientoEnviados);
@@ -370,11 +370,11 @@ $tokenSesion = base64_encode(uniqid());
         // let canalOrigen = 'APP_CMV';
         
         args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/${codigoTratamiento}?canalOrigen=${canalOrigen}`;
-        console.log(args["endpoint"]);
+        // console.log(args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        console.log('sssisis',data);
+        // console.log('sssisis',data);
         if(data.code == 200){
             secuenciaAtencion = data.data;
             ultimoTratamientoData = data.data;
@@ -525,6 +525,7 @@ $tokenSesion = base64_encode(uniqid());
 
     // descargar documento pdf
     async function descargarDocumentoPdfPrincipal(datos){
+        // console.log(datos)
         /*console.log('datosrr', datos.realizados);
         let datosFiltrados;
         if(datos.pendientes.length > 0){
@@ -657,46 +658,44 @@ $tokenSesion = base64_encode(uniqid());
         if(data.length > 0){
             idPaciente = datosTratamiento.idPaciente;
             data.forEach((tratamientos) => {
-                console.log(tratamientos.tipoServicio)
-                var elemento = ``;
-                if(tratamientos.tipoServicio == "TERAPIA_AGRUPADA"){
-                    console.log(`++++++++++`)
-                    elemento = `<div class="col-12">
-                        <div class="card h-100">
-                            <div class="card-body p--2">
-                    HOLA
-                            </div>
-                        </div>
-                    </div>`;
-                }else{
-                    console.log(`-----------`)
-                    elemento = `<div class="col-12">
-                        <div class="card h-100">
-                            <div class="card-body p--2">
-                                ${determinarEsOnline(tratamientos)}
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
-                                    <span class="text-warning-veris fs--2 line-height-16 mb-1" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
-                                </div>
-                                ${determinarFechaCaducidadEncabezado(tratamientos, datosTratamiento)}
-                                ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
-                                <div class="recetaMedicaMensaje">
-                                    ${determinarMensajeRecetaMedica(tratamientos)}
-                                </div>                                            
-                                <div class="d-flex justify-content-between align-items-center mt-2">
-                                    <div class="avatar avatar-sm border rounded-circle bg-very-pale-red">
-                                        <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">
-                                    </div>
-                                    <div class="d-flex">
-                                        ${determinarCondicionesBotones(tratamientos, estado,datosTratamiento)}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
+                // console.log(tratamientos)
+                // console.log(tratamientos.tipoAgenda)
+                let elemQtyTerapias = ``;
+                if(datosTratamiento.mostrarTerapiasAgrupadas == "S" && tratamientos.tipoCard == "AGENDA_TERAPIA"){
+                    elemQtyTerapias = `<div class="fs--2 line-height-16 w-100 my-1">Realizado: <span class="text-lime-veris">${tratamientos.cantidadRealizada}</span></div>`;
                 }
+                let elemento = `<div class="col-12">
+                    <div class="card h-100">
+                        <div class="card-body p--2">
+                            ${determinarEsOnline(tratamientos)}
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-0 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
+                                <span class="text-warning-veris fs--2 line-height-16 mb-1" id="estado">${determinarEstado(tratamientos.esPagada)}</span>
+                            </div>
+                            ${determinarFechaCaducidadEncabezado(tratamientos, datosTratamiento)}
+                            ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
+                            <div class="recetaMedicaMensaje">
+                                ${determinarMensajeRecetaMedica(tratamientos)}
+                            </div>
+                            ${ elemQtyTerapias }                                            
+                            <div class="d-flex justify-content-between align-items-center mt-2">
+                                <div class="avatar avatar-sm border rounded-circle bg-very-pale-red">
+                                    <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">
+                                </div>
+                                <div class="d-flex">
+                                    ${determinarCondicionesBotones(tratamientos, estado,datosTratamiento)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
                 if(datosTratamiento.mostrarTerapiasAgrupadas == "N"){
                     divContenedor.append(elemento);
+                }else{
+                    if(datosTratamiento.mostrarTerapiasAgrupadas == "S" && tratamientos.tipoServicio != "TERAPIA"){
+                        divContenedor.append(elemento);
+                    }
                 }
             });
             // mostrar el titulo de pendientes
@@ -709,7 +708,7 @@ $tokenSesion = base64_encode(uniqid());
     function mostrarTratamientoenDivRealizados(){
         let estado = 'REALIZADO'
         let data = datosTratamiento.realizados;
-        console.log('tratamientos realizados: ', data);
+        // console.log('tratamientos realizados: ', data);
         
         let divContenedorRealizados = $('#contenedorTratamientoRealizado');
         divContenedorRealizados.empty(); // Limpia el contenido actual
@@ -862,26 +861,39 @@ $tokenSesion = base64_encode(uniqid());
 
     // determinar condiciones de los botones 
     function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
-        // console.log(estado, datosServicio.estado, datosServicio.tipoCard)
+        if(datosServicio.tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
+            console.log(datosServicio, estado, datosTratamiento)
+            console.log(datosServicio)
+        }
         let services = datosServicio;
         if (datosServicio.length == 0) {
+            console.log(88)
             return `<div></div>`;
         } else{
+            // console.log(datosServicio.tipoAgenda)
             switch (datosServicio.tipoCard) {
                 case "AGENDA" :
+                case "AGENDA_TERAPIA" :
                     let respuestaAgenda = "";
+                    let esTerapiaAgrupada = false;
+                    let qtyMaximaAgrupado = 0;
+                    if(datosServicio.tipoCard == "AGENDA_TERAPIA"){
+                        esTerapiaAgrupada = true;
+                        qtyMaximaAgrupado = datosServicio.cantidadMaximaAgenda;
+                        // console.log(datosServicio.cantidadMaximaAgenda)
+                    }
                     // Agregar ver orden 
                     //respuestaAgenda += ` <a class="btn btn-sm text-primary-veris shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard">Ver orden</a>`;
                     if(datosServicio.estado == 'PENDIENTE_AGENDAR'){
-                        console.log(0)
                         if(datosServicio.esExterna == "N"){
                             respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                         }else{
+                            console.log(44)
                             respuestaAgenda += ` <a class="btn btn-sm fw-normal fs--1 me-1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</a>`;
                         }
                         if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}'>Información</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}'>Información</a>`;
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S' && datosServicio.esExterna == "N") {
@@ -889,7 +901,7 @@ $tokenSesion = base64_encode(uniqid());
                                     if (datosServicio.modalidad == "PRESENCIAL") {
                                         ruta = "/seleccionar-datos-cita/{{ $tokenMods }}";
                                     }
-                                    respuestaAgenda += `<div url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar">Agendar</div>`;
+                                    respuestaAgenda += `<div qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' url-rel="${ruta}" data-rel='${JSON.stringify(datosServicio)}' class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-agendar">Agendar</div>`;
                                 } else {
                                     if(datosServicio.esExterna == "N"){
                                         respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0  fw-normal fs--1 disabled" style="background-color: #F3F0F0 !important; color: darkgrey !important;">Agendar </a>`;
@@ -946,7 +958,7 @@ $tokenSesion = base64_encode(uniqid());
                     return respuestaAgenda;
                     break;
                 case "LAB":
-                    console.log('estadossss', estado);
+                    // console.log('estadossss', estado);
                     let respuesta = "";
                     if (estado == 'PENDIENTE'){
                         if(datosServicio.verResultados != "S" && datosServicio.aplicaSolicitud != "S" && datosServicio.permitePago != "S"){
@@ -993,7 +1005,7 @@ $tokenSesion = base64_encode(uniqid());
                             }
                         }
                     } else if (estado == 'REALIZADO'){
-                        console.log('estadossss2', estado);
+                        // console.log('estadossss2', estado);
                         respuesta = "";
                         respuesta += ` <button type="button" class="btn btn-sm fw-medium fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
                     
@@ -1123,7 +1135,7 @@ $tokenSesion = base64_encode(uniqid());
     $(document).on('click', '.btnVerOrden', function(){
         // llamar al servicio de detalle de receta
         let datos = $(this).data('rel');
-        console.log('datos', datos);
+        // console.log('datos', datos);
         consultarDetalleReceta(datos);
 
         // pasar data rel a modal
@@ -1134,7 +1146,7 @@ $tokenSesion = base64_encode(uniqid());
     $(document).on('click', '.btn-informacion', function(){
         let datos = JSON.parse($(this).attr('data-rel'));
         let datosTratamiento = JSON.parse($(this).attr('datosTratamiento-rel'));
-        console.log(datos)
+        // console.log(datos)
         if (datos.esCaducado === "S" && datos.esAgendable === "S") {
             // CAMBIAR TITUOLO MODAL
             $('#tituloModalInformacionCita').text('Orden expirada');
@@ -1303,7 +1315,9 @@ $tokenSesion = base64_encode(uniqid());
     $(document).on('click', '.btn-agendar', async function(){
         let datosServicio = $(this).data('rel');
         let url = $(this).attr('url-rel');
-
+        let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
+        // console.log(datosServicio.detallesServicios)
+        // return
         if(datosServicio.permiteReserva == "N"){
             $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
             $('#modalPermiteCambiar').modal('show');
@@ -1344,6 +1358,17 @@ $tokenSesion = base64_encode(uniqid());
             codigoEmpOrden: datosServicio.codigoEmpresa,
             lineaDetalle: datosServicio.lineaDetalleOrden,
             esPagada: datosServicio.esPagada
+        }
+
+        if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
+            dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
+            dataCita.detallesServicios = datosServicio.detallesServicios;
+            dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones;
+            dataCita.datosTratamiento = datosTratamiento;
+            dataCita.cantidadMaximaAgenda = parseInt($(this).attr('qty-rel'));
+            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+            location = "/agendamiento-multiple/{{ $tokenMods }}";;
+            return;
         }
 
         if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){

@@ -857,7 +857,33 @@ function determinarMeridiano(horaInicio){
     return meridiano;
 }
 
-
+const determinarFechaCaducidadEncabezadoAgendamientoMultiple = (datos, datosTratamiento) => {
+    let dataFechas = ``;
+    if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
+            
+        if (datos.esCaducado == "S") {
+            if(datos.fechaCaducidad == null){
+                dataFechas = ``;
+            } else {
+                dataFechas = `<p class="fw-normal fs--2 line-height-16 mb-1">Orden expirada: <b class="fecha-cita fw-light text-danger me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+            }
+        } else {
+            // orden valida
+            if(datos.fechaCaducidad == null){
+                
+                dataFechas = ``;
+                
+            } else {
+                dataFechas = `<p class="fw-normal fs--2 line-height-16 mb-1">Orden válida hasta: <b class="fecha-cita fw-light text-primary-veris me-2">${determinarValoresNull(datos.fechaCaducidad)}</b></p>`;
+        
+            }
+        }
+    } else {
+        dataFechas = ``;
+    }
+    
+    return dataFechas;
+};
 
 const determinarFechaCaducidadEncabezado = (datos, datosTratamiento) => {
     let dataFechas;

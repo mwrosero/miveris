@@ -70,7 +70,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h5 class="text-veris-many fw-medium line-height-16 m-0">{{ __('Detalles de la cita') }}</h5>
                     </div>
                     <div class="card-body p--2">
-                        <div class="" id="contentDetalleCita">
+                        <div class="multiple d-none" id="contentDetalleCitaMultiple"></div>
+                        <div class="unica d-none" id="contentDetalleCita">
                             {{-- <p class="text-primary-veris fw-medium mb-0" id="nombreEspecialidad"></p>
                             <p class="fw-medium fs--1 mb-0">{{ isset($data->central) ? $data->central->nombreSucursal : 'VIRTUAL' }}</p>
                             <p class="fs--2 mb-0">{{ $data->horario->dia2 }} <b class="text-normal text-primary-veris fw-normal">{{ $data->horario->horaInicio }} {{ $meridiano }}</b></p>
@@ -79,7 +80,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                             <p class="fs--2 mb-0">{{ isset($data->convenio->nombreConvenio) ? $data->convenio->nombreConvenio : '' }}</p> --}}
                         </div>
                     </div>
-                    <div class="card-footer pt-0 p--2" id="msg-cita">
+                    <div class="card-footer pt-0 p--2 d-none" id="msg-cita">
                     </div>
                 </div>
             </div>
@@ -127,6 +128,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
+        if(dataCita.hasOwnProperty('detalle_multiple')){
+            $('.multiple').removeClass('d-none');
+        }else{
+            $('.unica').removeClass('d-none');
+            $('#msg-cita').removeClass('d-none')
+        }
+
         if(dataCita.reserva){
             await eliminarReserva();
         }
@@ -150,7 +158,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             await obtenerPrecio();
         }
 
-        await llenarDataDetallesCitas();
+        if(dataCita.hasOwnProperty('detalle_multiple')){
+            await llenarDataDetallesCitasMultiples();
+        }else{
+            await llenarDataDetallesCitas();
+        }
 
         $('body').on('click', '#btn-pagar', async function () {
             if(dataCita.cambioModalidad && dataCita.cambioModalidad === "S"){
@@ -179,6 +191,48 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             guardarData();
         }
 
+    }
+
+    async function llenarDataDetallesCitasMultiples(){
+        let elem = `<div class="accordion" id="accordionPanelsStayOpenExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                Accordion Item #1
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+              <div class="accordion-body">
+                <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                Accordion Item #2
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+              <div class="accordion-body">
+                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                Accordion Item #3
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
+              <div class="accordion-body">
+                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+              </div>
+            </div>
+          </div>
+        </div>`
+        $('#contentDetalleCitaMultiple').html(elem);
     }
 
     // llenar los datos en contentDetalleCita con los datos de dataCita
@@ -370,7 +424,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(dataCita.horario.porcentajeDescuento > 0 && permitePago == "S" ){
                 elemMsg += `<div class="d-flex justify-content-start align-items-center border-top pt--2">
                         <i class="fa-solid fa-circle-info text-warning fs-2 p-2 me-2"></i>
-                        <p class="fs--1 line-height-16 mb-0" id="infoMessage style="color: #0A2240;">${data.data.mensajeAlerta}</p>
+                        <p class="fs--1 line-height-16 mb-0" id="infoMessage" style="color: #0A2240;">${data.data.mensajeAlerta}</p>
                     </div>`;
             }
             if(online == "S"){

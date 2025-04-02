@@ -22,6 +22,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         </div>
     </div>
 
+    <!-- Modal detalle agenda multiple -->
+    <div class="modal fade" id="modaDetalleAgendaMultiple" tabindex="-1" aria-labelledby="modaDetalleAgendaMultipleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3 pb-2">
+                    <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3">Terapias seleccionadas</h1>
+                    <p class="fs--16 fw-normal text-veris mb-3" id="detalleItems" ></p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal de error validacion fecha -->
     <div class="modal fade" id="modalValidacionFecha" tabindex="-1" aria-labelledby="modalValidacionFechaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -95,6 +110,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Elige fecha y doctor') }}</h5>
     </div>
     <section class="p-0 bg-dark-blue-veris-medium-sm">
+        <div class="row g-0 justify-content-center">
+            <div class="col-auto p-0 bg-transparent box-agendamiento-multiple d-none" style="min-width: 375px;">
+                <div class="w-100 p-2 d-flex justify-content-between align-items-center">
+                    <span>Terapias seleccionadas</span>
+                    <button type="button" class="text-primary-veris bg-transparent text-decoration-underline cursor-pointer border-0" data-bs-toggle="modal" data-bs-target="#modaDetalleAgendaMultiple">Ver detalle</button>
+                </div>
+                <div class="w-100 mt-0 py-3 text-center fs-18 fw-medium label-info-agenda-multiple text-capitalize bg-white"></div>
+            </div>
+        </div>
         <div class="row g-0 justify-content-center">
             <div class="col-auto p-2 bg-dark-blue-veris-medium" style="min-width: 375px;">
                 <p class="text-center text-white fw-medium fs--18 line-height-24 m-1 mb-0 text-capitalize" id="month-name"></p>
@@ -337,6 +361,33 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         // if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP") || dataCita.hasOwnProperty('detalleItemPaquete')){
+
+        if(dataCita.hasOwnProperty('items')){
+            $('.box-agendamiento-multiple').removeClass('d-none');
+            if(dataCita.hasOwnProperty('detalle_multiple')){
+                $('.label-info-agenda-multiple').html(dataCita.items[dataCita.position].nombreServicio.toLowerCase());
+            }else{
+                $('.label-info-agenda-multiple').html(dataCita.items[0].nombreServicio.toLowerCase());
+            }
+
+            let elemsDetalle = ``;
+
+            $.each(dataCita.items, function(key, value){
+                let fechaAgendada = ``;
+                if(dataCita.detalle_multiple[key] !== undefined){
+                    console.log(key)
+                    console.log(dataCita.detalle_multiple[key])
+                    fechaAgendada = `<p class="fs--1 line-height-16 fw-medium mb-0 flex-grow-1 text-end" style="color:#296BEF;">${dataCita.detalle_multiple[key].diaHora}</p>`
+                }
+                elemsDetalle += `<div class="d-flex w-100 justify-content-between align-items-center border-bottom py-2">
+                    <p class="text-capitalize mb-0">${ value.nombreServicio.toLowerCase() }</p>
+                    ${ fechaAgendada }
+                </div>`;
+            })
+
+            $('#detalleItems').html(elemsDetalle)
+        }
+
         if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP")){
             $('#nombreFiltro').addClass('d-none');
             $('#pills-tab').addClass('d-none');
@@ -402,14 +453,26 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             await consultarMedicos();
         })
 
-        $('body').on('click','.btn-disponibilidad-medico', function(){
-            dataCita.horario = JSON.parse($(this).attr("data-horario")); 
-            let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
-            if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
-                ruta = "/cita-urgencias-ambulatorias/" + "{{ $params }}";
+        $('body').on('click','.btn-disponibilidad-medico', async function(){
+            let horario = JSON.parse($(this).attr("data-horario"));
+            dataCita.horario = horario; 
+            if(dataCita.hasOwnProperty('items')){
+                if(!dataCita.hasOwnProperty('detalle_multiple')){
+                    console.log(horario)
+                    dataCita.detalle_multiple = [];
+                }
+                dataCita.detalle_multiple.push(horario);
+                await preReservar();
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                location.href = "/detalle-agenda-multiple/" + "{{ $params }}";
+            }else{
+                let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
+                if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
+                    ruta = "/cita-urgencias-ambulatorias/" + "{{ $params }}";
+                }
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                window.location.href = ruta;
             }
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-            window.location.href = ruta;
         })
 
         $('body').on('click','.btn-disponibilidad-medico-all', function(){
@@ -438,6 +501,116 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let data = await consultarHorasMotorizados();        
         });
     });
+
+    async function preReservar(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservarPrecio?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+
+        // let aplicaCredito = "N";
+        let aplicaProntoPago = "N";
+        let medPayPlan = null;
+        let esParticular = "N";
+        if(dataCita.convenio.hasOwnProperty('informacionExternaPlan')){
+            medPayPlan = dataCita.convenio.informacionExternaPlan;
+        }
+
+        if(dataCita.convenio.idCliente === null){
+            esParticular = "N";
+        }
+
+        if(dataCita.convenio){
+            // aplicaCredito = dataCita.convenio.aplicaPagoDigitalObligatorio;
+            aplicaProntoPago = dataCita.convenio.aplicaPagoDigitalObligatorio;
+        }
+
+        let tipoIdentificacion = parseInt(dataCita.paciente.tipoIdentificacion);
+        if (isNaN(tipoIdentificacion)) {
+            tipoIdentificacion = parseInt(dataCita.paciente.codigoTipoIdentificacion);
+        }
+
+        let estaPagada = dataCita.items[dataCita.position].esPagada;
+        let datosReserva = {
+            "numeroIdentificacion": dataCita.paciente.numeroIdentificacion,
+            "tipoIdentificacion": tipoIdentificacion,
+            "idIntervalos": dataCita.horario.idIntervalo,
+            "codigoEmpresa": 1,
+            "codigoEspecialidad": dataCita.especialidad.codigoEspecialidad,
+            "codigoPrestacion": dataCita.especialidad.codigoPrestacion,
+            "usuarioLogin": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "esOnline": dataCita.online,
+            "origen": 4,
+            "codigoServicio": dataCita.especialidad.codigoServicio,
+            "canalOrigenAgendamiento": "MVE",
+            "codigoEmpresaRegistro": null,
+            "codigoSucursalRegistro": null,
+            "porcentajeDescuento": dataCita.horario.porcentajeDescuento,
+            "permitePago": dataCita.convenio.permitePago,
+            "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
+            "canalOrigen": _canalOrigen,
+            "enviarLinkPago": null,
+            // "valorizacion": dataCita.precio.valorCanalVirtual,
+            /*precio o reagendamiento*/
+            // "secuenciaTransaccion": dataCita.precio.secuenciaTransaccion,
+            // "valorCita": dataCita.precio.valorCanalVirtual,
+            // "valorDescuento": dataCita.precio.valorDescuento,
+            // "valorSubtotalCita": dataCita.precio.valor,
+            // "numeroAutorizacion": dataCita.precio.numeroAutorizacion,
+            "esEmbarazada": (dataCita.estaEmbarazada) ? dataCita.estaEmbarazada : "N",
+            "fechaSeleccionada": dataCita.horario.dia2,
+            /*Si estoy modificando/tratamiento o sino N*/
+            "estaPagada": estaPagada,
+            "tipoProcesoVUA": null,
+            "medPayPlan": medPayPlan,
+            "itemPaquete": null,
+            "secTarjeta": null,
+            "secTarXPaciente": null,
+            "secuenciaPaquetePaciente": null,
+            "secuenciaTransaccion": null,
+            "esParticular": esParticular,
+            // "aplicaCredito": aplicaCredito,
+            "aplicaProntoPago": aplicaProntoPago,
+            "cantidad": dataCita.items[dataCita.position].cantidad
+        }
+
+        if(dataCita.online == "N"){
+            datosReserva.codigoSucursal = dataCita.central.codigoSucursal;
+        }  
+
+        if(dataCita.convenio.codigoConvenio){
+            // datosReserva.codigoEmpConvenio = 1;
+            datosReserva.codigoConvenio = dataCita.convenio.codigoConvenio;
+            datosReserva.idCliente = dataCita.convenio.idCliente;
+        }
+
+        if(dataCita.tratamiento){
+            if(dataCita.origen && dataCita.origen == "Listatratamientos"){
+                datosReserva.numeroOrden = dataCita.items[dataCita.position].numeroOrden;
+                datosReserva.codigoEmpOrden = dataCita.items[dataCita.position].codigoEmpresaOrden;
+                datosReserva.lineaDetalle = dataCita.items[dataCita.position].lineaDetalleOrden;
+            }
+        }
+
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify(datosReserva);
+
+        const data = await call(args);
+        console.log(data)
+        if(!dataCita.hasOwnProperty('detalle_pre_agendamiento')){
+            dataCita.detalle_pre_agendamiento = [];
+        }
+        if(data.code == 200){
+            dataCita.position = dataCita.position + 1;
+            dataCita.detalle_pre_agendamiento.push({
+               "request": datosReserva,
+               "response": data.data 
+            });
+        }else{
+            return false;
+        }
+    }
 
     async function renderWeek() {
         const weekDaysContainer = $('#week-days');
@@ -938,6 +1111,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
 </script>
 <style>
+.label-info-agenda-multiple{
+    border: 1px solid var(--bg-vris-very-dark-blue-medium);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    color: var(--bg-vris-very-dark-blue-medium);
+}
 .examenLista {
     /*width: Hug (343px);
     height: Hug (124px);*/
