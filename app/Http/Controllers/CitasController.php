@@ -105,12 +105,12 @@ class CitasController extends Controller
     public function seleccionarTarjeta($params) {
         // dd($params);
         // $params = str_replace('|', '/', $params);
-        return view('citas.seleccionar_tarjeta')->with('params',$params);;
+        return view('citas.seleccionar_tarjeta')->with('params',$params);
     }
     // Return view informacion de pago
     public function citaInformacionPago($params) {
         // $params = str_replace('|', '/', $params);
-        return view('citas.informacion_pago')->with('params',$params);;
+        return view('citas.informacion_pago')->with('params',$params);
     }
     // Return view Autenticacion Registro de tarjeta
     public function authRegistroTarjeta($params) {
@@ -201,5 +201,15 @@ class CitasController extends Controller
 
     public function mostrarAgendamientoAI(){
         return view('citas.agendamiento_ai');
+    }
+
+    public function agendamientoMultiple($params){
+        return view('citas.agendamiento_multiple')
+                    ->with('params',$params);
+    }
+
+    public function detalleAgendamientoMultiple($params){
+        return view('citas.detalle_agendamiento_multiple')
+                    ->with('params',$params);
     }
 }

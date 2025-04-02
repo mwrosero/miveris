@@ -71,6 +71,8 @@ Route::middleware('guest')->group(function () {
         Route::get('/financiero/devoluciones', [ExternalController::class, 'devoluciones'])->name('devoluciones')->withoutMiddleware(['guest']);
         Route::get('/financiero/devoluciones/tracking/{numeroFactura}/{tipoIdentificacion}/{numeroIdentificacion}', [ExternalController::class, 'trackDevoluciones'])->name('trackDevoluciones')->withoutMiddleware(['guest']);
 
+        Route::get('/phantomx/soportes', [ExternalController::class, 'soportesPhantomX'])->name('soportesPhantomX')->withoutMiddleware(['guest']);
+
     });
 
 });
@@ -103,6 +105,9 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/citas-elegir-paciente/{params}',[CitasController::class, 'listaPacientes'])->name('citas.listaPacientes')->withoutMiddleware(['guest']);
     
     Route::get('/agendamiento-ai',[CitasController::class, 'mostrarAgendamientoAI'])->name('citas.agendamiento-ai')->withoutMiddleware(['guest']);
+
+    Route::get('/agendamiento-multiple/{params}',[CitasController::class, 'agendamientoMultiple'])->name('citas.agendamientoMultiple')->withoutMiddleware(['guest']);
+    Route::get('/detalle-agenda-multiple/{params}',[CitasController::class, 'detalleAgendamientoMultiple'])->name('citas.detalleAgendamientoMultiple')->withoutMiddleware(['guest']);
 
     
     /*NUEVO FLUJO*/

@@ -327,7 +327,7 @@
         // Inicializa Swiper.js
         var swiperProximasCitas,swiperUrgenciasAmbulatorias;
         function chartProgres(elemento){
-            console.log('elemento',elemento);
+            // console.log('elemento',elemento);
 
             var swiperTratamiento = new Swiper('.swiper-tratamientos', {
                 // slidesPerView: 1,
