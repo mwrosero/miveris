@@ -296,7 +296,86 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         return meridiano;
     }
 
-    async function obtenerPrecioMultiple(){}
+    async function obtenerPrecioMultiple(){
+        let args = [];
+        let canalOrigen = _canalOrigen;
+        let codigoReserva = ''; 
+        let numeroOrden = ''; 
+        let codigoEmpOrden = '';
+        let lineaDetalle = '';
+        let aplicaCredito = 'N';
+        let aplicaProntoPago = 'S';
+
+        if(dataCita.horario.porcentajeDescuento > 0){
+            aplicaCredito = "S";
+        }
+
+        if(dataCita.convenio.aplicaProntoPago){
+            aplicaProntoPago = dataCita.convenio.aplicaProntoPago;
+        }
+
+        if(dataCita.reservaEdit){
+            codigoReserva = dataCita.reservaEdit.idCita;
+            numeroOrden = dataCita.reservaEdit.numeroOrden || '';
+            codigoEmpOrden = dataCita.reservaEdit.codigoEmpresaOrden || '';
+            lineaDetalle = dataCita.reservaEdit.lineaDetalleOrden || '';
+        }
+        if(dataCita.tratamiento && !dataCita.sesion){
+            if(dataCita.origen && dataCita.origen == "Listatratamientos"){
+                numeroOrden = dataCita.tratamiento.numeroOrden;
+                codigoEmpOrden = dataCita.tratamiento.codigoEmpOrden;
+                lineaDetalle = dataCita.tratamiento.lineaDetalle;
+            }else{
+                numeroOrden = dataCita.tratamiento.numeroOrden;
+                codigoEmpOrden = dataCita.tratamiento.codigoEmpresaOrden;
+                lineaDetalle = dataCita.tratamiento.lineaDetalleOrden;
+            }
+            
+        }
+
+        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let cantidad = '';
+        if(dataCita.tratamiento && dataCita.tratamiento.cantidadIntervalosReserva){
+            cantidad = dataCita.tratamiento.cantidadIntervalosReserva
+        }
+
+        let argsSesion = '';
+        if(dataCita.sesion){
+            argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}`;
+        }
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
+        args["method"] = "POST";
+        args["bodyType"] = "json";
+        args["showLoader"] = true;
+        let payload = [];
+        $.each(dataCita.detalles, function(key,value){
+            payload.push({
+                "idIntervalos": "string",
+                "esOnline": "string",
+                "numeroOrden": "string",
+                "lineaDetalle": "string",
+                "codEmpOrden": "string",
+                "porcentajeDescuento": "string",
+                "codigoPrestacion": 0,
+                "codigoServicio": 0,
+                "cantidad": 0,
+                "codigoReserva": 0,
+                "secuenciaTransaccion": 0,
+                "fechaSeleccionada": "string",
+                "estaPagada": "string"
+            })
+        })
+        args["data"] = JSON.stringify({
+            "fechaSeleccionada": dataCita.horario.dia2,
+            "idCliente": idCliente,
+            "estaPagada": (dataCita.reservaEdit) ? dataCita.reservaEdit.estaPagada : 'N',
+            "esEmbarazada": (dataCita.estaEmbarazada) ? dataCita.estaEmbarazada : "N",
+            "medPayPlan": medPayPlan
+        });
+        const data = await call(args);
+        if(data.code == 200){
+        }
+    }
     
     async function obtenerPrecio() {
         if(dataCita.origen == "paquetes"){

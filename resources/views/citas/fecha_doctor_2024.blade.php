@@ -22,6 +22,39 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         </div>
     </div>
 
+    <!-- Modal de error agenda multiple -->
+    <div class="modal fade" id="modalErrorAgendaMultiple" tabindex="-1" aria-labelledby="modalErrorAgendaMultipleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3 pb-2">
+                    <h1 class="modal-title fs-24 line-height-28 fw-medium mb-3">Veris</h1>
+                    <p class="fs--1 line-height-16 fw-normal text-veris mb-3" id="mensajeErrorAM" ></p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100" data-bs-dismiss="modal">Entiendo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de informativo agenda multiple mismo dia -->
+    <div class="modal fade" id="modalConsultaMismoDiaAgendaMultiple" tabindex="-1" aria-labelledby="modalConsultaMismoDiaAgendaMultipleLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3 pb-2">
+                    <h1 class="modal-title fs-24 line-height-28 fw-medium mb-3">Información</h1>
+                    <p class="fs--1 line-height-16 fw-normal text-veris mb-3">Ya tienes una cita agendada para este día. ¿Quieres agendar otra para el mismo día?</p>
+                    <input type="hidden" id="horarioElegido">
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    
+                    <div class="btn btn-lg btn-primary-veris w-100 m-0 mb-3 px-4 py-3 btn-aceptar-mismo-dia" data-bs-dismiss="modal">Sí, agendar</div>
+                    <button type="button" class="btn btn-lg btn-outline-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">Elegir otra fecha</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal detalle agenda multiple -->
     <div class="modal fade" id="modaDetalleAgendaMultiple" tabindex="-1" aria-labelledby="modaDetalleAgendaMultipleLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -457,14 +490,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             let horario = JSON.parse($(this).attr("data-horario"));
             dataCita.horario = horario; 
             if(dataCita.hasOwnProperty('items')){
-                if(!dataCita.hasOwnProperty('detalle_multiple')){
-                    console.log(horario)
-                    dataCita.detalle_multiple = [];
+                let esMismoDia = await validarMismoDia(horario);
+                if(esMismoDia){
+                    $('#horarioElegido').val($(this).attr("data-horario"))
+                    $('#modalConsultaMismoDiaAgendaMultiple').modal('show');
+                }else{
+                    await preReservar(horario);
                 }
-                dataCita.detalle_multiple.push(horario);
-                await preReservar();
-                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-                location.href = "/detalle-agenda-multiple/" + "{{ $params }}";
             }else{
                 let ruta = "/citas-revisa-tus-datos/" + "{{ $params }}";
                 if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
@@ -473,6 +505,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
                 window.location.href = ruta;
             }
+        })
+        $('body').on('click','.btn-aceptar-mismo-dia', async function(){
+            let horario = JSON.parse($('#horarioElegido').val());
+            dataCita.horario = horario;
+            await preReservar(horario);
         })
 
         $('body').on('click','.btn-disponibilidad-medico-all', function(){
@@ -502,12 +539,27 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         });
     });
 
-    async function preReservar(){
+    async function validarMismoDia(horario){
+        console.log(horario);
+        let fecha = horario.dia2;
+        // $.each(dataCita.detalle_multiple, function(key,value){
+        //     console.log(value)
+        //     if(value.dia2 == fecha){
+        //         console.log("BINGO")
+        //         return true;
+        //     }
+        // })
+        // return false;
+        return dataCita.detalle_multiple.some(item => item.dia2 === fecha);
+    }
+
+    async function preReservar(horario){
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservarPrecio?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
+        args["dismissAlert"] = true;
 
         // let aplicaCredito = "N";
         let aplicaProntoPago = "N";
@@ -598,17 +650,25 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         const data = await call(args);
         console.log(data)
-        if(!dataCita.hasOwnProperty('detalle_pre_agendamiento')){
-            dataCita.detalle_pre_agendamiento = [];
-        }
         if(data.code == 200){
+            if(!dataCita.hasOwnProperty('detalle_multiple')){
+                console.log(horario)
+                dataCita.detalle_multiple = [];
+            }
+            location.href = "/detalle-agenda-multiple/" + "{{ $params }}";
+            if(!dataCita.hasOwnProperty('detalle_pre_agendamiento')){
+                dataCita.detalle_pre_agendamiento = [];
+            }
             dataCita.position = dataCita.position + 1;
             dataCita.detalle_pre_agendamiento.push({
                "request": datosReserva,
                "response": data.data 
             });
+            dataCita.detalle_multiple.push(horario);
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
         }else{
-            return false;
+            $('#mensajeErrorAM').html(data.message)
+            $('#modalErrorAgendaMultiple').modal('show');
         }
     }
 
