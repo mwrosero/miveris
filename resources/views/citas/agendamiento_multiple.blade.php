@@ -34,7 +34,7 @@ Mi Veris - Citas - Agendamiento múltiple
                 <div class="col-12 col-md-6 col-lg-5 mt-3">
                     <div class="row justify-content-center mb-3" id="listado-detalles-por-agendar">
                         <div class="col-12 mt-3">
-                            Puedes agendar hasta <span class="maxQty"></span> terapias a la vez
+                            {{-- Puedes agendar hasta <span class="maxQty"></span> terapias a la vez --}}
                         </div>
                         {{-- <div class="col-12 my-2">
                             <div class="w-100 d-flex justify-content-between align-items-center border-bottom py-3 px-2">
@@ -212,11 +212,15 @@ Mi Veris - Citas - Agendamiento múltiple
     async function drawDetalles(){
         let showResultados = false;
         let elem = ``;
+        let tienePorAgendar = false;
         $.each(dataCita.detallesServicios, function(key, value){
             let tipoAgenda = value.tipoAgenda;
             let estado = ``;
             if(value.estado == "Atendida"){
                 showResultados = true;
+            }
+            if(value.detalleReserva === null){
+                tienePorAgendar = true;
             }
             //if(value.estado == "Atendida" && dataCita.promocion.tipoServicio != "LABORATORIO"){
             console.log(value.estado)
@@ -301,9 +305,13 @@ Mi Veris - Citas - Agendamiento múltiple
         })
         
         $('#listado-detalles').html(elem);
-        let elemMultiple = `<div class="col-12 mt-3">
-            Puedes agendar hasta ${dataCita.cantidadMaximaAgenda} terapias a la vez
-        </div>`;
+            
+        let elemMultiple = ``;
+        if(tienePorAgendar){
+            elemMultiple = `<div class="col-12 mt-3">
+                Puedes agendar hasta ${dataCita.cantidadMaximaAgenda} terapias a la vez
+            </div>`;
+        }
         $.each(dataCita.detallesServicios, function(key, value){
             if(value.detalleReserva === null){
                 elemMultiple += `<div class="col-12 my-1">
