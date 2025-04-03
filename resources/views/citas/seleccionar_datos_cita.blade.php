@@ -268,8 +268,8 @@ Elige datos para la Cita
             // Reemplaza esta condición con tu validación
             // alert(0)
             
-            //if (dataCita.especialidad.requiereOrden == "S") {
-            if (false) {
+            if (dataCita.especialidad.requiereOrden == "S") {
+            // if (false) {
                 event.preventDefault(); // Evita que siga el link
                 $('#modalInfoTerapia').modal('show')
             } else {
