@@ -374,7 +374,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
             $.each(dataCita.items, function(key, value){
                 let fechaAgendada = ``;
-                if(dataCita.detalle_multiple[key] !== undefined){
+                if(dataCita.hasOwnProperty('detalle_multiple') && dataCita.detalle_multiple[key] !== undefined){
                     console.log(key)
                     console.log(dataCita.detalle_multiple[key])
                     fechaAgendada = `<p class="fs--1 line-height-16 fw-medium mb-0 flex-grow-1 text-end" style="color:#296BEF;">${dataCita.detalle_multiple[key].diaHora}</p>`

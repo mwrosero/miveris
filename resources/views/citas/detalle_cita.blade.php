@@ -155,7 +155,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             $('#msg-cita').append(elemMsg);
 
         }else{
-            await obtenerPrecio();
+            if(dataCita.hasOwnProperty('items')){
+                await obtenerPrecioMultiple();
+            }else{
+                await obtenerPrecio();
+            }
         }
 
         if(dataCita.hasOwnProperty('detalle_multiple')){
@@ -292,7 +296,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         return meridiano;
     }
 
-    // consultar grupo familiar
+    async function obtenerPrecioMultiple(){}
+    
     async function obtenerPrecio() {
         if(dataCita.origen == "paquetes"){
             $('.box-card-precio').addClass('d-none');
