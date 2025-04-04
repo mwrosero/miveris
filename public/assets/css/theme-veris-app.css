@@ -352,6 +352,10 @@ html:not([dir="rtl"]) .border-start-veris {
   }
 }
 
+.text-veris-dark{
+  color: var(--bg-vris-very-dark-blue-medium);
+}
+
 @media (max-width: 576px){
   .bg-dark-blue-veris-medium-sm{
       background-color: var(--bg-vris-very-dark-blue-medium) !important;

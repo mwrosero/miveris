@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       breakpoints: {
         640: { slidesPerView: 1.5 },
-        1024: { slidesPerView: 4 },
-        1280: { slidesPerView: 5 }, // Dejar parcialmente visibles los laterales
+        1024: { slidesPerView: 4.5 },
+        1280: { slidesPerView: 5.5 }, // Dejar parcialmente visibles los laterales
       },
       pagination: {
         el: ".swiper-pagination",
@@ -41,31 +41,37 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Prevent Default para Drag & Drop
   ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
     uploadArea.addEventListener(eventName, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
     });
   });
 
   // Efectos Drag & Drop
   ["dragenter", "dragover"].forEach((eventName) => {
-    uploadArea.addEventListener(eventName, () =>
-      uploadArea.classList.add("dragover")
-    );
+      uploadArea.addEventListener(eventName, () => uploadArea.classList.add("dragover"));
   });
 
   ["dragleave", "drop"].forEach((eventName) => {
-    uploadArea.addEventListener(eventName, () =>
-      uploadArea.classList.remove("dragover")
-    );
+      uploadArea.addEventListener(eventName, () => uploadArea.classList.remove("dragover"));
   });
 
   // Manejadores de archivos
   uploadArea.addEventListener("drop", (e) => handleFiles(e.dataTransfer.files));
-  fileInput.addEventListener("change", () => handleFiles(fileInput.files));
-  uploadArea.addEventListener("click", () => fileInput.click());
+
+  fileInput.addEventListener("change", (e) => {
+      handleFiles(e.target.files);
+      e.stopPropagation(); // Evita que el evento se propague
+  });
+
+  // Asegurar que el click no se dispare más de una vez
+  uploadArea.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (e.target !== fileInput) {
+          fileInput.click();
+      }
+  });
 
   function handleFiles(files) {
     if (!files || files.length === 0) return;

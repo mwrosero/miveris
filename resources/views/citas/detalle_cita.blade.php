@@ -40,6 +40,38 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     </div>
 </div>
 
+{{-- Modal cuando no existen mas agendas multiples --}}
+<div class="modal fade" id="modalSinAgendaMultiple" tabindex="-1" aria-labelledby="modalSinAgendaMultipleLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3 pb-2">
+                <h1 class="modal-title fs-24 line-height-28 fw-medium mb-3">Información</h1>
+                <p class="fs--1 line-height-16 fw-normal text-veris mb-3">Eliminaste todas las terapias reservadas, no queda información para mostrar.</p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">                    
+                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100 btn-eliminar-cita" data-bs-dismiss="modal">Entiendo</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de pregunta para eliminar una cita -->
+<div class="modal fade" id="modalEliminarCitaMultiple" tabindex="-1" aria-labelledby="modalEliminarCitaMultipleLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3 pb-2">
+                <h1 class="modal-title fs-24 line-height-28 fw-medium mb-3">Eliminar Terapia</h1>
+                <p class="fs--1 line-height-16 fw-normal text-veris mb-3">¿Estás seguro de que deseas eliminar la terapia 3?</p>
+                <input type="hidden" id="indexItem">
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">                    
+                <div class="btn btn-lg btn-primary-veris w-100 m-0 mb-3 px-4 py-3 btn-eliminar-cita" data-bs-dismiss="modal">Sí, eliminar</div>
+                <button type="button" class="btn btn-lg btn-outline-primary-veris w-100 m-0 px-4 py-3" data-bs-dismiss="modal">No,cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="flex-grow-1 container-p-y pt-0">
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Revisa tus datos') }}</h5>
@@ -70,7 +102,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         <h5 class="text-veris-many fw-medium line-height-16 m-0">{{ __('Detalles de la cita') }}</h5>
                     </div>
                     <div class="card-body p--2">
-                        <div class="multiple d-none" id="contentDetalleCitaMultiple"></div>
+                        <div class="multiple d-none" id="contentDetalleCitaMultiple">
+                            <div class="d-flex justify-content-start align-items-center border-bottom pb--2 box-label-items-descuento d-none">
+                                <i class="fa-solid fa-circle-info text-pink fs-24 p-2 me-2"></i>
+                                <p class="fs--1 line-height-16 mb-0 text-veris-dark">Con <b>descuento</b>, no se puede reagendar.</p>
+                            </div>
+                            <div class="accordion" id="detalleMultiple">
+                            </div>
+                        </div>
                         <div class="unica d-none" id="contentDetalleCita">
                             {{-- <p class="text-primary-veris fw-medium mb-0" id="nombreEspecialidad"></p>
                             <p class="fw-medium fs--1 mb-0">{{ isset($data->central) ? $data->central->nombreSucursal : 'VIRTUAL' }}</p>
@@ -95,6 +134,24 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 </div>
 @endsection
 @push('scripts')
+<style>
+    .text-pink{
+        color: #EF2E79;
+    }
+    .bg-silver{
+        background: #EAF0FD;
+    }
+    .item-numeration-24{
+        width: 24px;
+        height: 24px;
+    }
+    .text-veris-dark{
+        color: #0A2240;
+    }
+    .accordion-item:last-child {
+        border: 0px !important;
+    }
+</style>
 <script>
 
     // variables globales
@@ -129,6 +186,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     document.addEventListener("DOMContentLoaded", async function () {
         if(dataCita.hasOwnProperty('detalle_multiple')){
+            $('#contentDetalleCitaMultiple').parent().addClass('py-0 px-0')
             $('.multiple').removeClass('d-none');
         }else{
             $('.unica').removeClass('d-none');
@@ -172,18 +230,90 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(dataCita.cambioModalidad && dataCita.cambioModalidad === "S"){
                 await cambiarModalidadCita();
             }else{
-                reservarCita();
+                if(dataCita.hasOwnProperty('items')){
+                    await validarPagoMultiple();
+                }else{
+                    await reservarCita();
+                }
             }
         });
 
         $('.detalles-cita-box').removeClass('invisible')
+
+        $('body').on('click', '.btn-eliminar-reserva-multiple', async function () {    
+            $('#indexItem').val($(this).attr('index-rel'));
+            $('#modalEliminarCitaMultiple').modal('show');
+        })
+
+        $('body').on('click', '.btn-eliminar-cita', async function () {
+            let indexItem = $('#indexItem').val();
+            await eliminarReserva(dataCita.detalle_pre_agendamiento[parseInt(indexItem)].response.codigoReserva)
+        })
+
+        $('body').on('click', '.btn-editar-cita', async function () {
+            let indexItem = $(this).attr('index-rel');
+            await editarReservaMultiple(indexItem, dataCita.detalle_pre_agendamiento[parseInt(indexItem)].response.codigoReserva)
+        })
+
     });
 
-    async function eliminarReserva(){
+    async function validarReservas(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/validacionReservas?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        // args["dismissAlert"] = true;
+
+        let aplicaProntoPago = 'S';
+        if(dataCita.convenio.aplicaProntoPago){
+            aplicaProntoPago = dataCita.convenio.aplicaProntoPago;
+        }
+        let citas = [];
+        $.each(dataCita.detalle_pre_agendamiento, function(key, value){
+            citas.push({
+                "codigoReserva": value.response.codigoReserva,
+                "codigoServicio": value.request.codigoServicio,
+                "codigoPrestacion": value.request.codigoPrestacion,
+                "esOnline": value.request.esOnline,
+                "porcentajeDescuento": value.request.porcentajeDescuento,
+                "valorCita": value.response.valorCanalVirtual,
+                "estaPagada": value.request.estaPagada
+            })
+        })
+        let payload = {
+            "codigoConvenio": codigoConvenio,
+            "secuenciaAfiliado": secuenciaAfiliado,
+            "aplicaProntoPago": aplicaProntoPago,
+            "permitePago": permitePago,
+            "listaCita": citas
+        }
+        args["data"] = JSON.stringify(payload);
+        const data = await call(args);
+        if(data.code == 200){
+            return data;
+        }
+    }
+
+    async function editarReservaMultiple(index, codigoReserva){
+        const data = await validarReservas();
+        console.log(data);
+        if(data.code == 200){
+            console.log(index, codigoReserva)
+            dataCita.esEdicion = true;
+            dataCita.position = index;
+            dataCita.detalleEdicion = data.data.listaCita.find(item => item.codigoReserva === parseInt(codigoReserva));
+            guardarData();
+            location.href = `/citas-elegir-fecha-doctor/{{ $params }}`;
+        }
+    }
+
+    async function eliminarReserva(codigoReserva = null){
+        let codigoReservaEliminar = (codigoReserva === null) ? dataCita.reserva.codigoReserva : codigoReserva;
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/eliminarReserva?codigoReserva=${dataCita.reserva.codigoReserva}`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/eliminarReserva?codigoReserva=${codigoReservaEliminar}`
         args["method"] = "PUT";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -191,52 +321,93 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         //Menos para edictar reserva 
         if(data.code == 200){
-            delete dataCita.reserva;
-            guardarData();
+            if(codigoReserva === null){
+                delete dataCita.reserva;
+                guardarData();
+            }else{
+                let indexItem = parseInt($('#indexItem').val());
+                console.log({indexItem})
+                $('.accordion-item-'+indexItem).remove();
+                dataCita.detalle_multiple.splice(indexItem, 1);
+                dataCita.detalle_pre_agendamiento.splice(indexItem, 1);
+                dataCita.items.splice(indexItem, 1);
+                guardarData();
+                if(dataCita.detalle_pre_agendamiento.length == 0){
+                    $('#modalSinAgendaMultiple').modal('show');
+                }
+            }
         }
 
     }
 
     async function llenarDataDetallesCitasMultiples(){
-        let elem = `<div class="accordion" id="accordionPanelsStayOpenExample">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="panelsStayOpen-headingOne">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                Accordion Item #1
-              </button>
-            </h2>
-            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-              <div class="accordion-body">
-                <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
-                Accordion Item #2
-              </button>
-            </h2>
-            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
-              <div class="accordion-body">
-                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-                Accordion Item #3
-              </button>
-            </h2>
-            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingThree">
-              <div class="accordion-body">
-                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-              </div>
-            </div>
-          </div>
-        </div>`
-        $('#contentDetalleCitaMultiple').html(elem);
+        let elem = ``;
+        let tieneDescuento = false;
+        // <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" 
+        $.each(dataCita.detalle_multiple, function(key, value){
+            let iconDescuento = ``;
+            if(value.porcentajeDescuento > 0){
+                tieneDescuento = true;
+                iconDescuento = `<i class="fa-solid fa-circle-info text-pink fs-20 p-2 me-2"></i>`
+            }
+            let nombrePaciente;
+            if(dataCita.paciente.nombrePaciente){
+            nombrePaciente = dataCita.paciente.nombrePaciente;
+            }else{
+                nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
+            }
+            elem += `<div class="accordion-item border-bottom accordion-item-${key}">
+                <h2 class="accordion-header" id="panelsStayOpen-${key}">
+                    <button class="accordion-button p-2 py-2 my-1 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse${key}" aria-expanded="false" aria-controls="panelsStayOpen-collapse${key}">
+                        <div class="w-100">
+                            <div class="d-flex justify-content-start align-items-center fs--16 line-height-16 text-capitalize text-primary-veris">
+                                <span class="p-2 d-flex justify-content-center align-items-center rounded-circle bg-silver me-2 fs--1 line-height-16 item-numeration-24">${ key+1 }</span> ${ dataCita.items[key].nombreServicio.toLowerCase() }
+                            </div>
+                            <div class="d-flex justify-content-start align-items-center fs--2 line-height-16 my-1">
+                                <span class="p-2 d-flex justify-content-center align-items-center rounded-circle bg-silver me-2 fs--1 line-height-16 item-numeration-24 invisible">${ key+1 }</span>
+                                <span class="px-2 py-1 me-2 bg-silver rounded-pill text-veris-dark fw-normal">
+                                    <i class="text-primary-veris bi bi-calendar4 me-1"></i> ${value.dia2}
+                                </span>
+                                <span class="px-2 py-1 bg-silver rounded-pill text-veris-dark fw-normal">
+                                    <i class="text-primary-veris bi bi-smartwatch me-1"></i> ${value.horaInicio} ${ determinarMeridiano(value.horaInicio) }
+                                </span>
+                                ${ iconDescuento }
+                            </div>
+                        </div>
+                    </button>
+                </h2>
+                <div id="panelsStayOpen-collapse${key}" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-${key}">
+                    <div class="accordion-body px-0">
+                        <div class="d-flex justify-content-start align-items-center fs--2 line-height-16 my-0">
+                            <span class="p-2 d-flex justify-content-center align-items-center rounded-circle bg-silver me-2 fs--1 line-height-16 item-numeration-24 invisible">${ key+1 }</span>
+                            <div class="px-2 py-1 text-veris-dark fw-normal">
+                                <p class="mb-1 line-height-16 fw-bold text-capitalize">${value.nombreSucursal.toLowerCase()}</p>
+                                <p class="mb-1 line-height-16 fw-normal text-capitalize">Terapista: ${value.nombreMedico.toLowerCase()}</p>
+                                <p class="mb-1 line-height-16 fw-normal text-capitalize">${nombrePaciente.toLowerCase()}</p>
+                                <p class="mb-1 line-height-16 fw-normal text-primary-veris">$${ dataCita.detalle_pre_agendamiento[key].response.valorCanalVirtual.toFixed(2) }</p>
+                                <div class="mt-2 d-flex justify-content-start align-items-center">
+                                    <button index-rel='${key}' class="btn btn-primary-veris px-3 py-2 border-0 text-white shadow-none fw-normal fs--1 me-2 btn-editar-cita">
+                                        <i class="fa-solid fa-pen-to-square me-1"></i>Editar cita
+                                    </button>
+                                    <button index-rel='${key}' class="btn bg-transparent  px-3 py-2 border-0 text-danger shadow-none fw-normal fs--1 btn-eliminar-reserva-multiple">
+                                        Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        })
+        if(tieneDescuento){
+            $('.box-label-items-descuento').removeClass('d-none');
+        }
+        $('#detalleMultiple').html(elem);
+        $('#btn-pagar').removeClass('d-none');
+    }
+
+    async function validarPagoMultiple(){
+
     }
 
     // llenar los datos en contentDetalleCita con los datos de dataCita
@@ -343,37 +514,77 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.sesion){
             argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}`;
         }
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/lista/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
         let payload = [];
-        $.each(dataCita.detalles, function(key,value){
+        $.each(dataCita.detalle_pre_agendamiento, function(key,value){
             payload.push({
-                "idIntervalos": "string",
-                "esOnline": "string",
-                "numeroOrden": "string",
-                "lineaDetalle": "string",
-                "codEmpOrden": "string",
-                "porcentajeDescuento": "string",
-                "codigoPrestacion": 0,
-                "codigoServicio": 0,
-                "cantidad": 0,
-                "codigoReserva": 0,
-                "secuenciaTransaccion": 0,
-                "fechaSeleccionada": "string",
-                "estaPagada": "string"
+                "idIntervalos": value.request.idIntervalos,
+                "esOnline": dataCita.online,
+                "numeroOrden": value.request.numeroOrden,
+                "lineaDetalle": value.request.lineaDetalle,
+                "codEmpOrden": value.request.codigoEmpOrden,
+                "porcentajeDescuento": value.request.porcentajeDescuento,
+                "codigoPrestacion": value.request.codigoPrestacion,
+                "codigoServicio": value.request.codigoServicio,
+                "cantidad": value.request.cantidad,
+                "codigoReserva": value.response.codigoReserva,
+                "secuenciaTransaccion": value.response.secuenciaTransaccion,
+                "fechaSeleccionada": value.request.fechaSeleccionada,
+                "estaPagada": value.request.estaPagada
             })
         })
-        args["data"] = JSON.stringify({
-            "fechaSeleccionada": dataCita.horario.dia2,
-            "idCliente": idCliente,
-            "estaPagada": (dataCita.reservaEdit) ? dataCita.reservaEdit.estaPagada : 'N',
-            "esEmbarazada": (dataCita.estaEmbarazada) ? dataCita.estaEmbarazada : "N",
-            "medPayPlan": medPayPlan
-        });
+        args["data"] = JSON.stringify(payload);
         const data = await call(args);
+        console.log(data)
         if(data.code == 200){
+            let { valor, porcentajeDescuento, valorCanalVirtual  } = data.data;
+            var porcentajeDescuentoCopago = porcentajeDescuento;
+            var subtotalCopago = valor;
+            var valorTotalCopago = valorCanalVirtual;
+            var subtotalCopagoFloat = parseFloat(valor);
+            var valorTotalCopagoFloat = parseFloat(valorCanalVirtual);
+            let params = {};
+
+            let elem = ``;
+            let descuentoLabel = ``;
+            let classNone = 'd-none';
+            if(porcentajeDescuentoCopago > 0){
+                classNone = '';
+                descuentoLabel = `*Se aplicó un ${porcentajeDescuentoCopago}% ${data.data.mensajeDescuento}`;
+            }
+
+            if(codigoConvenio){
+                console.log('subTotal', subtotalCopagoFloat, 'valorTotal', valorTotalCopagoFloat);
+                elem += `<div class="col-3 text-center">
+                            <img src="${rutaImagenConvenio}" alt="" class="img-fluid" width="86" height="">
+                        </div>
+                        <div class="col-5 text-center">`;
+
+                if(subtotalCopagoFloat > valorTotalCopagoFloat){
+                elem +=     `<p class="text-danger fs--3 line-height-16 mb-0" id="content-precioBase">Precio normal 
+                                <del class="fs--2 line-height-16" id="precioBase">$${valor.toFixed(2)}</del>
+                            </p>`;
+                }
+                        elem += `<h1 class="text-primary-veris fw-medium fs--36 line-height-44 mb-0" id="precioTotal" style="white-space: nowrap;">$${valorTotalCopago.toFixed(2)}</h1>
+                        </div>
+                        <p class="text-center text-primary-veris fw-medium fs--2 my-2 px-3 ${classNone}" id="infoDescuento">${descuentoLabel}</p>`;
+            }else{
+                elem += `<div class="col-12 text-center">`
+                if(porcentajeDescuentoCopago > 0){
+                    elem += `<p class="text-danger fs--3 line-height-16 mb-0" id="content-precioBase">Precio normal 
+                        <del class="fs--2 line-height-16" id="precioBase">$${valor.toFixed(2)}</del>
+                    </p>`;
+                }
+                elem += `<h1 class="text-primary-veris fw-medium fs--36 line-height-44 mb-0" id="precioTotal">$${valorTotalCopago.toFixed(2)}</h1>
+                </div>
+                <p class="text-center text-primary-veris fw-medium fs--2 my-2 px-3 ${classNone}" id="infoDescuento">${descuentoLabel}</p>`;
+            }
+
+
+            $('.box-precio').html(elem);
         }
     }
     
