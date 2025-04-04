@@ -61,7 +61,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-2">
                     <h1 class="modal-title fs--20 line-height-24 fw-medium mb-3">Terapias seleccionadas</h1>
-                    <p class="fs--16 fw-normal text-veris mb-3" id="detalleItems" ></p>
+                    <p class="fs--16 fw-normal text-veris mb-3" id="detalleItems"></p>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100" data-bs-dismiss="modal">Cerrar</button>
@@ -550,7 +550,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         //     }
         // })
         // return false;
-        return dataCita.detalle_multiple.some(item => item.dia2 === fecha);
+        return (dataCita.hasOwnProperty('detalle_multiple')) ? dataCita.detalle_multiple.some(item => item.dia2 === fecha) : false;
     }
 
     async function preReservar(horario){
@@ -627,6 +627,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "cantidad": dataCita.items[dataCita.position].cantidad
         }
 
+        if(dataCita.esEdicion && dataCita.detalleEdicion.estado == "Caducado"){
+            datosReserva.codigoReservaCambio = dataCita.detalleEdicion.codigoReserva;
+            datosReserva.secuenciaTransaccion = dataCita.detalle_pre_agendamiento[dataCita.position].response.secuenciaTransaccion;
+        }
+
         if(dataCita.online == "N"){
             datosReserva.codigoSucursal = dataCita.central.codigoSucursal;
         }  
@@ -651,21 +656,33 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         const data = await call(args);
         console.log(data)
         if(data.code == 200){
-            if(!dataCita.hasOwnProperty('detalle_multiple')){
-                console.log(horario)
-                dataCita.detalle_multiple = [];
+            if(dataCita.esEdicion){
+                dataCita.detalle_pre_agendamiento[dataCita.position] = {
+                   "request": datosReserva,
+                   "response": data.data 
+                };
+                dataCita.detalle_multiple[dataCita.position] = horario;
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                
+                location.href = "/citas-revisa-tus-datos/" + "{{ $params }}";
+            }else{
+                if(!dataCita.hasOwnProperty('detalle_multiple')){
+                    console.log(horario)
+                    dataCita.detalle_multiple = [];
+                }
+                if(!dataCita.hasOwnProperty('detalle_pre_agendamiento')){
+                    dataCita.detalle_pre_agendamiento = [];
+                }
+                dataCita.position = dataCita.position + 1;
+                dataCita.detalle_pre_agendamiento.push({
+                   "request": datosReserva,
+                   "response": data.data 
+                });
+                dataCita.detalle_multiple.push(horario);
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                
+                location.href = "/detalle-agenda-multiple/" + "{{ $params }}";
             }
-            location.href = "/detalle-agenda-multiple/" + "{{ $params }}";
-            if(!dataCita.hasOwnProperty('detalle_pre_agendamiento')){
-                dataCita.detalle_pre_agendamiento = [];
-            }
-            dataCita.position = dataCita.position + 1;
-            dataCita.detalle_pre_agendamiento.push({
-               "request": datosReserva,
-               "response": data.data 
-            });
-            dataCita.detalle_multiple.push(horario);
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
         }else{
             $('#mensajeErrorAM').html(data.message)
             $('#modalErrorAgendaMultiple').modal('show');

@@ -94,6 +94,8 @@ Mi Veris - Citas - Agendamiento múltiple
             if (seleccionados > maxSeleccionados) {
                 $(".atencionInmediata-input:not(:checked)").prop("disabled", true);
                 showMessage('warning','Atención','Solo puedes agendar hasta '+dataCita.cantidadMaximaAgenda+' terapias a la vez')
+                $('.btn-agendar').prop("disabled", true);
+                //$(".atencionInmediata-input").prop("disabled", true);
             } else {
                 $(".atencionInmediata-input").prop("disabled", false);
             }
