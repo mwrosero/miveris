@@ -196,11 +196,24 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 if(dataCita.datosTratamiento.tipoServicio == "LABORATORIO"){
                     $('.content-lab-presencial').removeClass('d-none');
                 }else{
-                    let card = await drawCardAgenda();
-                    if(dataCita.cambioModalidad && dataCita.cambioModalidad === "S"){
-                        $('.content-cambio-modalidad').removeClass('d-none');
+                    //
+                    if(dataCita.hasOwnProperty('detalle_pre_agendamiento')){
+                        $('.content-presencial').html(`<div class="avatar avatar-lg mx-auto mb-4">
+                                <img src="{{asset('assets/img/svg/visto.svg')}}" alt="cita agendada">
+                            </div>
+                            <h3 class="fs--28 line-height-36 fw-medium my-4">Agendamiento exitoso</h3>
+                            <p class="fs--16 line-height-20 mb-5">¡Nos vemos pronto!</p>
+                            <img src="{{ asset('assets/img/svg/agendamiento-multiple-exitoso.svg') }}" alt="cita agendada">
+                            <div class="mt-5">
+                                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Cerrar</a>
+                            </div>`).removeClass('d-none');
                     }else{
-                        $('.content-presencial').html(card).removeClass('d-none');
+                        let card = await drawCardAgenda();
+                        if(dataCita.cambioModalidad && dataCita.cambioModalidad === "S"){
+                            $('.content-cambio-modalidad').removeClass('d-none');
+                        }else{
+                            $('.content-presencial').html(card).removeClass('d-none');
+                        }
                     }
                 }
             }else if(dataCita.ordenExterna){
