@@ -1066,6 +1066,10 @@ Due to the split circle of progress-left and progress right, we must use the ani
   color: var(--bg-vris-strong-red) !important;
 }
 
+.bg-danger-veris {
+  background: var(--bg-vris-strong-red) !important;
+}
+
 .width-24 {
   min-width: 1.5rem !important;
   min-height: 1.5rem !important;

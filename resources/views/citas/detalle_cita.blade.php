@@ -136,7 +136,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @push('scripts')
 <style>
     .text-pink{
-        color: #EF2E79;
+        color: #EF2E79 !important;
     }
     .bg-silver{
         background: #EAF0FD;
@@ -150,6 +150,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
     .accordion-item:last-child {
         border: 0px !important;
+    }
+    .accordion-item.active .label-error-reserva-header{
+        display: none !important;
+    }
+    .bg-pink-light{
+        background: #FFE5EF;
     }
 </style>
 <script>
@@ -346,13 +352,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         // <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" 
         $.each(dataCita.detalle_multiple, function(key, value){
             let iconDescuento = ``;
+            let badgeDescuento = ``;
             if(value.porcentajeDescuento > 0){
                 tieneDescuento = true;
                 iconDescuento = `<i class="fa-solid fa-circle-info text-pink fs-20 p-2 me-2"></i>`
+                badgeDescuento = `<span class="px-3 py-1 ms-2 fw-medium bg-pink-light text-pink rounded-pill text-veris-dark" style="font-size:10px; line-height:12px;">
+                        -${value.porcentajeDescuento}%
+                    </span>`;
             }
             let nombrePaciente;
             if(dataCita.paciente.nombrePaciente){
-            nombrePaciente = dataCita.paciente.nombrePaciente;
+                nombrePaciente = dataCita.paciente.nombrePaciente;
             }else{
                 nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
             }
@@ -368,10 +378,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <span class="px-2 py-1 me-2 bg-silver rounded-pill text-veris-dark fw-normal">
                                     <i class="text-primary-veris bi bi-calendar4 me-1"></i> ${value.dia2}
                                 </span>
-                                <span class="px-2 py-1 bg-silver rounded-pill text-veris-dark fw-normal">
+                                <span class="px-2 py-1 bg-silver rounded-pill text-veris-dark fw-normal time-reserva-${dataCita.detalle_pre_agendamiento[key].response.codigoReserva}">
                                     <i class="text-primary-veris bi bi-smartwatch me-1"></i> ${value.horaInicio} ${ determinarMeridiano(value.horaInicio) }
                                 </span>
                                 ${ iconDescuento }
+                            </div>
+                            <div class="d-flex justify-content-start align-items-center my-0 label-error-reserva-header d-none label-error-reserva-${dataCita.detalle_pre_agendamiento[key].response.codigoReserva}">
+                                <span class="p-2 d-flex justify-content-center align-items-center rounded-circle bg-silver me-2 fs--1 line-height-16 item-numeration-24 invisible">${ key+1 }</span>
+                                <p class="mb-0 d-flex justify-content-start align-items-center fs--2 line-height-16 text-danger-veris">
+                                    <i class="fa-solid fa-circle-info me-1 p-0"></i> Este horario ya no está disponible
+                                </p>
                             </div>
                         </div>
                     </button>
@@ -384,12 +400,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <p class="mb-1 line-height-16 fw-bold text-capitalize">${value.nombreSucursal.toLowerCase()}</p>
                                 <p class="mb-1 line-height-16 fw-normal text-capitalize">Terapista: ${value.nombreMedico.toLowerCase()}</p>
                                 <p class="mb-1 line-height-16 fw-normal text-capitalize">${nombrePaciente.toLowerCase()}</p>
-                                <p class="mb-1 line-height-16 fw-normal text-primary-veris">$${ dataCita.detalle_pre_agendamiento[key].response.valorCanalVirtual.toFixed(2) }</p>
+                                <p class="mb-1 line-height-16 fw-normal text-primary-veris d-flex justify-content-start align-items-center">$${ dataCita.detalle_pre_agendamiento[key].response.valorCanalVirtual.toFixed(2) } ${badgeDescuento}</p>
+                                <p class="mb-1 d-flex justify-content-start align-items-center text-danger-veris d-none label-error-reserva-${dataCita.detalle_pre_agendamiento[key].response.codigoReserva}">
+                                    <i class="fa-solid fa-circle-info me-1 p-0"></i>Este horario ya no está disponible
+                                </p>
                                 <div class="mt-2 d-flex justify-content-start align-items-center">
                                     <button index-rel='${key}' class="btn btn-primary-veris px-3 py-2 border-0 text-white shadow-none fw-normal fs--1 me-2 btn-editar-cita">
                                         <i class="fa-solid fa-pen-to-square me-1"></i>Editar cita
                                     </button>
-                                    <button index-rel='${key}' class="btn bg-transparent  px-3 py-2 border-0 text-danger shadow-none fw-normal fs--1 btn-eliminar-reserva-multiple">
+                                    <button index-rel='${key}' class="btn bg-transparent  px-3 py-2 border-0 text-danger-veris shadow-none fw-normal fs--1 btn-eliminar-reserva-multiple">
                                         Eliminar
                                     </button>
                                 </div>
@@ -407,7 +426,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     async function validarPagoMultiple(){
-
+        const validacionReserva = await validarReservas();
+        let puedeReservar = validacionReserva.data.listaCita.find(item => item.estado !== "Disponible");
+        if(puedeReservar === undefined){
+            //Iniciar proceso de reserva
+            await crearPreTransaccion();
+        }else{
+            $.each(validacionReserva.data.listaCita, function(key, value){
+                if(value.estado !== "Disponible"){
+                    $(`.label-error-reserva-${value.codigoReserva}`).removeClass('d-none');
+                }
+            })
+        }
     }
 
     // llenar los datos en contentDetalleCita con los datos de dataCita
@@ -1024,6 +1054,18 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 dataPT.codigoSolicitud = dataCita.ordenExterna.codigoSolicitud;
             }
         }
+
+        if(dataCita.hasOwnProperty('detalle_pre_agendamiento')){
+            dataPT.listaCitas = [];
+            $.each(dataCita.detalle_pre_agendamiento, function(key, value){
+                dataPT.listaCitas.push({
+                    "codigoReserva": value.response.codigoReserva
+                })
+            })
+        }
+
+        // console.log(dataPT);
+        // return;
 
         args["data"] = JSON.stringify(dataPT);
         const data = await call(args);
