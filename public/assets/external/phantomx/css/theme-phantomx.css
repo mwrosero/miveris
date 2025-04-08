@@ -102,22 +102,23 @@ body {
 .accordion-button::after {
   margin-bottom: auto;
 }
-.accordion-button.accordion-bg-secondary {
+.accordion-button.collapsed {
   background-color: var(--phax-pale-sky-40);
   color: var(--phax-white);
 }
-.accordion-button.accordion-bg-blue {
+
+.accordion-button {
   background-color: var(--phax-bg-blue-70);
   color: var(--phax-white);
 }
 .accordion-button.accordion-bg-white {
   background-color: var(--phax-white);
 }
-.accordion-button:not(.collapsed).accordion-bg-secondary {
+.accordion-button:not(.collapsed) {
   background-color: var(--phax-pale-sky-40);
   color: var(--phax-white);
 }
-.accordion-button:not(.collapsed).accordion-bg-blue {
+.accordion-button:not(.collapsed) {
   background-color: var(--phax-bg-blue-70);
   color: var(--phax-white);
 }
@@ -135,7 +136,7 @@ body {
 .border-blue-phax{
   border-color: #0071ce !important;
 }
-.btn-light-phax {
+.accordion-button.collapsed .btn-badge-paciente {
   background-color: var(--phax-white);
   color: #687384;
   border: 1px solid var(--phax-fiord-20);
@@ -145,32 +146,32 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-.btn-light-phax:hover {
+.accordion-button.collapsed .btn-badge-paciente:hover {
   background-color: var(--phax-fiord-20);
   color: var(--phax-white);
   border-color: var(--phax-fiord-20);
 }
 
-.btn-light-phax:active {
+.accordion-button.collapsed .btn-badge-paciente:active {
   background-color: #1e2733;
   color: var(--phax-white);
   border-color: #1e2733;
 }
 
-.btn-light-phax:focus,
-.btn-light-phax:focus-visible {
+.accordion-button.collapsed .btn-badge-paciente:focus,
+.accordion-button.collapsed .btn-badge-paciente:focus-visible {
   outline: none;
   box-shadow: none;
 }
 
-.btn-light-phax:disabled {
+.accordion-button.collapsed .btn-badge-paciente:disabled {
   background-color: #e0e0e0;
   color: #a0a0a0;
   border-color: #c0c0c0;
   cursor: not-allowed;
 }
 
-.btn-success-phax {
+.accordion-button .btn-badge-paciente {
   background-color: var(--phax-forest-green-50);
   color: var(--phax-white);
   border: none;
@@ -180,8 +181,8 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-.btn-success-phax:hover,
-.btn-success-phax:active {
+.accordion-button .btn-badge-paciente:hover,
+.accordion-button .btn-badge-paciente:active {
   background-color: var(--phax-forest-green-50) !important;
   color: var(--phax-white) !important;
 }

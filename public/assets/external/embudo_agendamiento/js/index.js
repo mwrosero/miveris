@@ -648,8 +648,8 @@ $( document ).ready(async function() {
 		}else{
 			pasarelaNuvei();
 		}*/
-		// pagarNuvei();
-		$('.modal-pregunta-antifraude').modal('show');
+		pagarNuvei();
+		// $('.modal-pregunta-antifraude').modal('show');
 	})
 
 	/*antifraude*/
@@ -3296,10 +3296,17 @@ function pagarNuvei(){
 function pasarelaNuvei(){
 	hideLoader();
 	let paymentCheckout = new PaymentCheckout.modal({
-	    client_app_code: dataNuvei.applicationCode, // Client Credentials
-	    client_app_key: dataNuvei.applicationKey, // Client Credentials
+	    // client_app_code: dataNuvei.applicationCode, // Client Credentials
+	    // client_app_key: dataNuvei.applicationKey, // Client Credentials
 	    locale: 'es', // User's preferred language (es, en, pt). English will be used by default.
 	    env_mode: environment_nuvei, // `prod`, `stg`, `local` to change environment. Default is `stg`
+	    "conf":{
+		    "theme":{
+		        "logo": "https://cdn.paymentez.com/img/nv/nuvei_logo.png",
+		        "primary_color": "#C800A1",
+		        "secondary_color": "#C800A1"
+		    }
+		},
 	    onOpen: function () {
 	    	console.log('modal open');
 	    },
@@ -3330,15 +3337,16 @@ function pasarelaNuvei(){
 	$('.total-pago-nuvei').html('$'+detallePago.data.totales.total.toFixed(2));
 
 	paymentCheckout.open({
-		user_id: String($('#numeroIdentificacionTH').val()),
-		user_email: infoUsuario.mail, //optional
-		user_phone: (infoUsuario.telefonoMovil != null) ? infoUsuario.telefonoMovil : '',//optional
-		order_description: referenceNuvei.data.reference,
-		order_amount: detallePago.data.totales.total,
-		order_vat: 0,
-		order_taxable_amount: 0,
-		order_tax_percentage: 0,
-		order_reference: referenceNuvei.data.orderReference,
+		reference: referenceNuvei.data.reference,
+		// user_id: String($('#numeroIdentificacionTH').val()),
+		// user_email: infoUsuario.mail, //optional
+		// user_phone: (infoUsuario.telefonoMovil != null) ? infoUsuario.telefonoMovil : '',//optional
+		// order_description: referenceNuvei.data.reference,
+		// order_amount: detallePago.data.totales.total,
+		// order_vat: 0,
+		// order_taxable_amount: 0,
+		// order_tax_percentage: 0,
+		// order_reference: referenceNuvei.data.orderReference,
 	});
 }
 

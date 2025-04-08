@@ -1,160 +1,112 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const uploadArea = document.getElementById("uploadArea");
-  const fileInput = document.getElementById("fileInput");
-  const swiperWrapper = document.getElementById("swiperWrapper");
-  const previewModal = new bootstrap.Modal(
-    document.getElementById("previewModal")
-  );
-  const previewModalTitle = document.getElementById("previewModalTitle");
-  const previewModalBody = document.getElementById("previewModalBody");
-
-  let documentCounter = 0;
-  const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
-  let swiperInstance;
-
-  // Configuración inicial de Swiper
-  function initializeSwiper() {
-    if (swiperInstance) {
-      swiperInstance.destroy(true, true);
-    }
-    swiperInstance = new Swiper(".my-swiper", {
-      slidesPerView: 1.5,
-      spaceBetween: 30,
-      loop: false,
-      autoplay: {
-        delay: 3500,
-        disableOnInteraction: false,
-      },
-      breakpoints: {
-        640: { slidesPerView: 1.5 },
-        1024: { slidesPerView: 4.5 },
-        1280: { slidesPerView: 5.5 }, // Dejar parcialmente visibles los laterales
-      },
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-      },
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
+    document.body.addEventListener("change", function (e) {
+        if (e.target && e.target.classList.contains("file-input")) {
+            handleFileInput(e);
+        }
     });
-  }
+});
 
-  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
-    uploadArea.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-    });
-  });
+function handleFileInput(event) {
+    const input = event.target;
+    const pacienteId = input.getAttribute("data-id");
+    const files = input.files;
 
-  // Efectos Drag & Drop
-  ["dragenter", "dragover"].forEach((eventName) => {
-      uploadArea.addEventListener(eventName, () => uploadArea.classList.add("dragover"));
-  });
+    if (!pacienteId || !files.length) return;
 
-  ["dragleave", "drop"].forEach((eventName) => {
-      uploadArea.addEventListener(eventName, () => uploadArea.classList.remove("dragover"));
-  });
+    const swiperWrapper = document.getElementById(`swiperWrapper-${pacienteId}`);
+    const pagination = document.getElementById(`swiperPagination-${pacienteId}`);
+    const nextBtn = document.getElementById(`swiperNext-${pacienteId}`);
+    const prevBtn = document.getElementById(`swiperPrev-${pacienteId}`);
 
-  // Manejadores de archivos
-  uploadArea.addEventListener("drop", (e) => handleFiles(e.dataTransfer.files));
-
-  fileInput.addEventListener("change", (e) => {
-      handleFiles(e.target.files);
-      e.stopPropagation(); // Evita que el evento se propague
-  });
-
-  // Asegurar que el click no se dispare más de una vez
-  uploadArea.addEventListener("click", (e) => {
-      e.stopPropagation();
-      if (e.target !== fileInput) {
-          fileInput.click();
-      }
-  });
-
-  function handleFiles(files) {
-    if (!files || files.length === 0) return;
+    if (!swiperWrapper) return;
 
     Array.from(files).forEach((file) => {
-      if (!["application/pdf", "image/jpeg", "image/png"].includes(file.type)) {
-        alert("Solo se permiten archivos PDF, JPG y PNG");
-        return;
-      }
-      if (file.size > MAX_FILE_SIZE) {
-        alert("El tamaño máximo de archivo es 20MB");
-        return;
-      }
-      documentCounter++;
-      addDocumentCard(file, documentCounter);
+        addDocumentCard(file, swiperWrapper, pacienteId);
     });
 
-    fileInput.value = ""; // Reset input
-    initializeSwiper(); // Refrescar Swiper
-  }
+    // Mostrar controles si hay más de 1 archivo
+    if (swiperWrapper.children.length > 1) {
+        pagination.classList.remove("d-none");
+        nextBtn.classList.remove("d-none");
+        prevBtn.classList.remove("d-none");
+    }
 
-  function addDocumentCard(file) {
+    initSwiper(pacienteId);
+}
+
+function addDocumentCard(file, swiperWrapper, pacienteId) {
     const fileURL = URL.createObjectURL(file);
     const fileType = file.type;
     const slide = document.createElement("div");
+
     slide.className = "swiper-slide";
 
     const card = document.createElement("div");
     card.className = "card h-100 document-card";
 
-    // Título del archivo
     const title = document.createElement("div");
     title.className = "card-header border-0";
     title.innerHTML = `<h6 class="text-blue-70 fs-sm line-clamp-1"><span class="file-index"></span>: <b class="text-title-3">${file.name}</b></h6>`;
 
-    // Vista previa
     const preview = document.createElement("div");
     preview.className = "card-body card-preview py-0";
     if (fileType === "application/pdf") {
-      const icon = document.createElement("i");
-      icon.className = "bi bi-file-earmark-pdf pdf-icon";
-      preview.appendChild(icon);
+        const icon = document.createElement("i");
+        icon.className = "bi bi-file-earmark-pdf pdf-icon";
+        preview.appendChild(icon);
     } else {
-      const img = document.createElement("img");
-      img.src = fileURL;
-      img.className = "img-fluid";
-      img.onload = () => URL.revokeObjectURL(fileURL);
-      preview.appendChild(img);
+        const img = document.createElement("img");
+        img.src = fileURL;
+        img.className = "img-fluid";
+        img.onload = () => URL.revokeObjectURL(fileURL);
+        preview.appendChild(img);
     }
 
-    // Botón de vista previa
     const viewBtn = document.createElement("button");
     viewBtn.type = "button";
     viewBtn.className = "btn view-btn";
     viewBtn.innerHTML = '<i class="bi bi-search"></i>';
     viewBtn.addEventListener("click", () =>
-      showPreview(file, file.name, slide)
+        showPreview(file, file.name, slide)
     );
     preview.appendChild(viewBtn);
 
-    // Acciones del documento
     const actions = document.createElement("div");
     actions.className =
-      "card-footer border-0 text-center d-flex justify-content-between";
+        "card-footer border-0 text-center d-flex justify-content-between";
 
-    // Mensaje temporal "Subido con éxito"
     const successMessage = document.createElement("div");
     successMessage.className =
-      "text-success p-1 fs-sm d-flex align-items-center justify-content-start";
+        "text-success p-1 fs-sm d-flex align-items-center justify-content-start";
     successMessage.innerHTML =
-      '<i class="bi bi-check-circle me-1"></i> Subido con éxito.';
+        '<i class="bi bi-check-circle me-1"></i> Subido con éxito.';
 
     actions.appendChild(successMessage);
 
-    // Botón de eliminación
+    const uniqueId = `${pacienteId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
     deleteBtn.className = "btn delete-btn";
     deleteBtn.innerHTML = '<i class="fa-regular fa-trash-can"></i>';
     deleteBtn.addEventListener("click", () => {
-      slide.remove();
-      updateDocumentIndexes();
-      initializeSwiper();
+        slide.remove();
+        $(`.${uniqueId}`).remove();
+        updateDocumentIndexes(swiperWrapper);
+        initSwiper(pacienteId);
+        setTimeout(function(){
+            const swiperWrapper = document.querySelector(`#swiperWrapper-${pacienteId}`); 
+            const numberOfSlides = swiperWrapper.querySelectorAll('.swiper-slide').length;
+            $(`#content-soportes-${pacienteId} .file-list`).each(function(index, element) {
+                const $el = $(element);
+                
+                // Enumerar todos los elementos .fileNumber que existan dentro de este file-list
+                $el.find('.fileNumber').each(function(i) {
+                    $(this).html(`${i + 1}`);
+                });
+            });
+
+        },250)
     });
 
     actions.appendChild(deleteBtn);
@@ -164,52 +116,90 @@ document.addEventListener("DOMContentLoaded", () => {
     slide.appendChild(card);
     swiperWrapper.appendChild(slide);
 
-    // Eliminar el mensaje después de 3 segundos
     setTimeout(() => {
-      successMessage.remove();
-      actions.classList.remove("justify-content-between");
-      actions.classList.add("justify-content-center");
+        successMessage.remove();
+        actions.classList.remove("justify-content-between");
+        actions.classList.add("justify-content-center");
     }, 3000);
 
-    updateDocumentIndexes();
-  }
+    updateDocumentIndexes(swiperWrapper);
+    console.log(pacienteId)
+    addInputCard(pacienteId, file, uniqueId)
+}
 
-  function showPreview(file, fileName, slide) {
-    // Obtener el índice del archivo en la lista actualizada
+function showPreview(file, fileName, slide) {
     const index = Array.from(slide.parentElement.children).reverse().indexOf(slide) + 1;
-    previewModalTitle.innerHTML = `<h6 class="text-blue-70 fs-sm line-clamp-1">Archivo ${index}: <b class="text-title-3">${fileName}</b></h6>`;
-    previewModalBody.innerHTML = "";
+    const modalTitle = document.getElementById("previewModalTitle");
+    const modalBody = document.getElementById("previewModalBody");
+
+    // modalTitle.innerHTML = `<h6 class="text-blue-70 fs-sm line-clamp-1">Archivo ${index}: <b class="text-title-3">${fileName}</b></h6>`;
+    modalTitle.innerHTML = `<h6 class="text-blue-70 fs-sm line-clamp-1"><b class="text-title-3">${fileName}</b></h6>`;
+    modalBody.innerHTML = "";
 
     if (file.type === "application/pdf") {
-      const embed = document.createElement("embed");
-      embed.src = URL.createObjectURL(file);
-      embed.type = "application/pdf";
-      embed.width = "100%";
-      embed.height = "500px";
-      previewModalBody.appendChild(embed);
+        const embed = document.createElement("embed");
+        embed.src = URL.createObjectURL(file);
+        embed.type = "application/pdf";
+        embed.width = "100%";
+        embed.height = "500px";
+        modalBody.appendChild(embed);
     } else {
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      img.className = "img-fluid";
-      previewModalBody.appendChild(img);
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(file);
+        img.className = "img-fluid";
+        modalBody.appendChild(img);
     }
 
+    const previewModal = new bootstrap.Modal(document.getElementById("previewModal"));
     previewModal.show();
-  }
+}
 
-  function updateDocumentIndexes() {
-    const slides = Array.from(
-      document.querySelectorAll(".swiper-slide")
-    ).reverse(); // Orden descendente
+function updateDocumentIndexes(swiperWrapper) {
+    const slides = Array.from(swiperWrapper.querySelectorAll(".swiper-slide")).reverse();
     slides.forEach((slide, i) => {
-      const index = i + 1; // Numeración descendente
-      const title = slide.querySelector(".card-header h6");
-      if (title) {
-        const fileName = title.querySelector("b").textContent;
-        title.innerHTML = `<h6 class="text-blue-70 fs-sm line-clamp-1">Archivo ${index}: <b class="text-title-3">${fileName}</b></h6>`;
-      }
+        const index = i + 1;
+        const title = slide.querySelector(".card-header h6");
+        if (title) {
+            const fileName = title.querySelector("b").textContent;
+            title.innerHTML = `<h6 class="text-blue-70 fs-sm line-clamp-1">Archivo ${index}: <b class="text-title-3">${fileName}</b></h6>`;
+        }
     });
-  }
+}
 
-  initializeSwiper();
-});
+function initSwiper(pacienteId) {
+    const swiperContainer = document.getElementById(`swiper-${pacienteId}`);
+    if (!swiperContainer) return;
+
+    if (swiperContainer.swiper) {
+        swiperContainer.swiper.destroy(true, true);
+    }
+
+    new Swiper(swiperContainer, {
+        loop: false,
+        slidesPerView: 1.5,
+        spaceBetween: 30,
+        autoplay: {
+            delay: 3500,
+            disableOnInteraction: false,
+        },
+        navigation: {
+            nextEl: `#swiperNext-${pacienteId}`,
+            prevEl: `#swiperPrev-${pacienteId}`,
+        },
+        pagination: {
+            el: `#swiperPagination-${pacienteId}`,
+            clickable: true,
+        },
+        breakpoints: {
+            640: {
+                slidesPerView: 1.5,
+            },
+            1024: {
+                slidesPerView: 4.5,
+            },
+            1280: {
+                slidesPerView: 5.5,
+            },
+        },
+    });
+}

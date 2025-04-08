@@ -13,7 +13,8 @@ Veris - Pago en línea
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 
 <link href="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.css" rel="stylesheet" type="text/css" />
-<script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script>
+{{-- <script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script> --}}
+<script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_3.0.0.min.js"></script>
 @include('external.components.navbar')
 <!-- Modal Desgloce -->
 <div class="modal fade" id="modalDesglose" tabindex="-1" aria-labelledby="modalDesgloseModalLabel" aria-hidden="true">
@@ -165,8 +166,8 @@ Veris - Pago en línea
         $('body').on('click', '#btn-next', async function(){
             //validar formulario datos factura
             if(permiteNuvei == "S"){
-            	// await pasarelaNuvei();
-            	$('#modalAntifraude').modal('show');
+            	await pasarelaNuvei();
+            	// $('#modalAntifraude').modal('show');
             }else{
             	await pasarelaContingencia();
             }
@@ -311,10 +312,17 @@ Veris - Pago en línea
 
     function pasarelaNuvei(){
 		let paymentCheckout = new PaymentCheckout.modal({
-		    client_app_code: dataNuvei.applicationCode, // Client Credentials
-		    client_app_key: dataNuvei.applicationKey, // Client Credentials
+		    // client_app_code: dataNuvei.applicationCode, // Client Credentials
+		    // client_app_key: dataNuvei.applicationKey, // Client Credentials
 		    locale: 'es', // User's preferred language (es, en, pt). English will be used by default.
 		    env_mode: '{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}', // `prod`, `stg`, `local` to change environment. Default is `stg`
+		    "conf":{
+			    "theme":{
+			        "logo": "https://cdn.paymentez.com/img/nv/nuvei_logo.png",
+			        "primary_color": "#C800A1",
+			        "secondary_color": "#C800A1"
+			    }
+			},
 		    onOpen: function () {
 		    	console.log('modal open');
 		    },
@@ -345,15 +353,16 @@ Veris - Pago en línea
 		});
 
 		paymentCheckout.open({
-			user_id: String($('#numeroIdentificacionTH').val()),
-			user_email: "{{ $paciente->mail ?? '' }}", //optional
-			user_phone: "{{ $paciente->telefonoMovil ?? '' }}",//optional
-			order_description: referenceNuvei.data.reference,
-			order_amount: {{ $info->valor }},
-			order_vat: 0,
-			order_taxable_amount: 0,
-			order_tax_percentage: 0,
-			order_reference: referenceNuvei.data.orderReference,
+			reference: referenceNuvei.data.reference,
+			// user_id: String($('#numeroIdentificacionTH').val()),
+			// user_email: "{{ $paciente->mail ?? '' }}", //optional
+			// user_phone: "{{ $paciente->telefonoMovil ?? '' }}",//optional
+			// order_description: referenceNuvei.data.reference,
+			// order_amount: {{ $info->valor }},
+			// order_vat: 0,
+			// order_taxable_amount: 0,
+			// order_tax_percentage: 0,
+			// order_reference: referenceNuvei.data.orderReference,
 		});
 	}
 
