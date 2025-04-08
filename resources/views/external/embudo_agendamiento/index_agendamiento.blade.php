@@ -841,9 +841,10 @@
     </div>
 
     <link href="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script>
+    {{-- <script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script> --}}
+    <script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_3.0.0.min.js"></script>
     {{-- <script>var path_embudo = "<?php echo getUrlSite() ?>/wp-content/themes/xstore/embudoMedpay/"; </script> --}}
-    <script src="{{ asset('assets/external/embudo_agendamiento/js/index.js?v=1.0.2')}}"></script>
+    <script src="{{ asset('assets/external/embudo_agendamiento/js/index.js?v=1.0.3')}}"></script>
 
     <style>
             .box-no-nuvei{
