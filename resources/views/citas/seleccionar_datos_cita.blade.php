@@ -323,6 +323,7 @@ Elige datos para la Cita
             $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal) }`)
             await cargarConvenios();
             await consultarCiudades();
+            await consultarEspecialidades();
             $('#btn-convenio').removeClass('disabled selectable')
         }else if(dataCita.origen == "doctorFavorito"){
             if(dataCita.online == "N"){
@@ -747,7 +748,7 @@ Elige datos para la Cita
                 let selected =  ``;
                 if((dataCita.hasOwnProperty('reservaEdit') || dataCita.origen == "mis-citas" || dataCita.origen == "doctorFavorito" ) && value.codigoCiudad == dataCita.ciudad.codigoCiudad ){
                     selected = `select-item-active`;
-                    $('#btn-ciudad p').html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
+                    $("#btn-ciudad p").html(`${capitalizarCadaPalabra(value.nombreCiudad)}`);
                 }
                 elemento += `<div id="ciudad-${value.codigoCiudad}" data-rel='${JSON.stringify(value)}' class="ciudad-item select-item ${selected} mb-2" data-bs-dismiss="modal">
                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
@@ -939,6 +940,8 @@ Elige datos para la Cita
             listaEspecialidades.append(elemento);    
             if(dataCita.hasOwnProperty('especialidad') && data.data.length > 0){
                 $('#especialidad-'+dataCita.especialidad.codigoEspecialidad).addClass('select-item-active');
+                let resultado = data.data.find(e => e.codigoEspecialidad === dataCita.especialidad.codigoEspecialidad);
+                dataCita.especialidad.requiereOrden = resultado.requiereOrden;
             }
         }
 
