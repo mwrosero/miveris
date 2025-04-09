@@ -28,7 +28,11 @@ async function call(args){
     myHeaders.append("Accept-Language", "es");
     if(args.bodyType == "json"){
         myHeaders.append("Content-Type", "application/json");
+    }else if (args.bodyType !== "formdata") {
+        // Solo agregas Content-Type si NO es FormData
+        myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     }
+    
     if(args.token){
         myHeaders.append("Authorization","Bearer "+ args.token);
         myHeaders.append("Application", _application);
