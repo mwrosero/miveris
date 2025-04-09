@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="{{ asset('assets/external/phantomx/css/theme-phantomx.css?v=1.0')}}">
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 <body>
     <!-- Preview Modal -->
@@ -111,7 +113,7 @@
                 $btn.prop('disabled', true);
                 $btn.text('Subiendo...');
 
-                await initProcessUpload();
+                await uploadSoportes();
 
             })
         })
@@ -320,8 +322,8 @@
                 const numberOfSlides = swiperWrapper.querySelectorAll('.swiper-slide').length;
 
                 let elem = `<div class="file-item d-flex align-items-center fw-bold mb-2 ${uniqueId}">
-                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}" convenio-rel='${convenio ?? ''}'>
-                    <label class="form-check-label" for="file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}">
+                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${numberOfSlides}" convenio-rel='${convenio ?? ''}' data-index="${(numberOfSlides-1)}">
+                    <label class="form-check-label" for="file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${numberOfSlides}">
                         <span class="text-blue-70">Archivo <b class="fileNumber">${numberOfSlides}</b>:</span> ${fileDetail.name}
                     </label>
                 </div>`;                
@@ -331,7 +333,7 @@
         }
 
         async function uploadSoportes(){
-            $(`.content-soportes-box .file-list`).each(function(index, element) {
+            $(`.content-soportes-box .file-list`).each(async function(index, element) {
                 const $fileList = $(element); // convierte el DOM element en objeto jQuery
 
                 const notEmpty = $fileList.html().trim() !== '';
@@ -342,9 +344,124 @@
                     const idAgrupacion = $fileList.attr('idAgrupacion-rel');
                     const nombreServicioNivel1 = $fileList.attr('nombreServicioNivel1-rel');
                     const type = $fileList.attr('type-rel');
-                    console.log(idPaciente,idAgrupacion,nombreServicioNivel1);
+                    const fileInput = $(`#uploadArea-${idPaciente}`).find('input[type="file"]')[0];
+                    const allFiles = fileInput.files;
+                    const checkedIndexes = $fileList.find('input[type="checkbox"]:checked').map(function () {
+                        return parseInt($(this).data('index'));
+                    }).get();
+
+                    const selectedFiles = checkedIndexes.map(i => allFiles[i]);
+                    console.log(`Archivos seleccionados para paciente ${idPaciente}:`, selectedFiles);
+                    let detallesAgrupacion = [];
+                    let count = 1;
+                    for(const file of selectedFiles){
+                        try{
+                            let upload = await uploadFile(file, count);
+                            count++;
+                            if(upload.code == 200){
+                                detallesAgrupacion.push({
+                                    "codigoSoporteOrden": upload.data.codigoSoporteOrden,
+                                    // "_id": generateUUIDv4()
+                                })
+                            }
+                        }catch(error) {
+                            $('.btn-subir').prop('disabled', false).html("Subir")
+                            alert(`Error al subir el archivo ${file.name}:`, error);
+                        }
+                    }
+                    await asociarSoportes(detallesAgrupacion, idPaciente, idAgrupacion, type)
+                    $('.btn-subir').prop('disabled', false).html("Subir")
                 }
 
+            });
+        }
+
+        async function asociarSoportes(detallesAgrupacion, idPaciente, idAgrupacion, tipoSoporte){
+            console.log(detallesAgrupacion, idPaciente, idAgrupacion, tipoSoporte)
+            let args = [];
+            args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes/asociar_det_agrup_pre_trans`;
+            args["method"] = "PUT";
+            args["token"] = "{{ $accessToken }}";
+            args["bodyType"] = "json";
+            args["data"] = JSON.stringify({
+                "codigoEmpresa": {{ $codigoEmpresa }},
+                "idPreTransaccion": {{ $idPreTransaccion }},
+                "idAgrupacion": parseInt(idAgrupacion),
+                "tipoSoporte": tipoSoporte,
+                "detallesAgrupacion": detallesAgrupacion
+            })
+            args["showLoader"] = true;
+            const data = await call(args);
+            console.log(data)
+            if(data.code == 200){
+                alert("Archivos guardados")
+            }else{
+                console.log(error)
+            }
+        }
+
+        async function uploadFile(file, orden){
+            let finalFile;
+            // Si ya es PDF, lo enviamos tal cual
+            if (file.type === "application/pdf") {
+                finalFile = file;
+            } else if (file.type === "image/jpeg" || file.type === "image/png") {
+                // Convertir imagen a base64
+                const imageDataURL = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+
+                // Crear PDF con jsPDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF();
+                pdf.addImage(imageDataURL, 'JPEG', 10, 10, 180, 160);
+
+                // Convertir a blob
+                finalFile = pdf.output('blob');
+
+                // Le damos un nombre al archivo
+                finalFile = new File([finalFile], "convertido.pdf", { type: "application/pdf" });
+            } else {
+                alert("Formato de archivo no permitido. Solo se aceptan PDF o imágenes JPG/PNG.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("documento", finalFile);
+
+            let args = [];
+            args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes?codigoEmpresa={{ $codigoEmpresa }}&orden=${orden}`;
+            args["method"] = "POST";
+            args["token"] = "{{ $accessToken }}";
+            args["showLoader"] = true;
+            args["data"] = formData;
+            args["bodyType"] = "formdata"; 
+            const data = await call(args);
+            console.log(data)
+            if(data.code == 200){
+                return data;
+            }else{
+                console.log(error)
+            }
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function generateUUIDv4() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                const r = (Math.random() * 16) | 0; // Genera un número aleatorio entre 0 y 15
+                const v = c === 'x' ? r : (r & 0x3) | 0x8; // Asegura que el formato cumple con UUID v4
+                return v.toString(16); // Convierte el número a hexadecimal
             });
         }
 
