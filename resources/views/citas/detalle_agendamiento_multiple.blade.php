@@ -83,24 +83,6 @@ Mi Veris - Citas - Detalle Agendamiento múltiple
                 location.href = ruta;
             }
         })
-        
-        $(".atencionInmediata-input").on("change", function() {
-            let maxSeleccionados = 5;
-            let seleccionados = $(".atencionInmediata-input:checked").length;
-
-            if(seleccionados > 0){
-                $('.btn-agendar').prop("disabled", false);
-            }else{
-                $('.btn-agendar').prop("disabled", true);
-            }
-
-            if (seleccionados > maxSeleccionados) {
-                $(".atencionInmediata-input:not(:checked)").prop("disabled", true);
-                showMessage('warning','Atención','Solo puedes agendar hasta 5 terapias a la vez')
-            } else {
-                $(".atencionInmediata-input").prop("disabled", false);
-            }
-        });
 
         $(document).on('click', '.verOrdenCard', function(){
             let datos = $(this).data('rel');

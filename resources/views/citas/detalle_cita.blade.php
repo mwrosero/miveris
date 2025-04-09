@@ -220,6 +220,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         }else{
             if(dataCita.hasOwnProperty('items')){
+                // Por pagar
+                let text_btn = "Agendar";
+                $.each(dataCita.detalle_pre_agendamiento, function(key, value){
+                    if(value.request.estaPagada == "N" && value.request.permitePago == "S"){
+                        text_btn = "Pagar";
+                    }
+                })
+                $('#btn-pagar').html(text_btn).removeClass('d-none');
                 await obtenerPrecioMultiple();
             }else{
                 await obtenerPrecio();
@@ -334,6 +342,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 let indexItem = parseInt($('#indexItem').val());
                 console.log({indexItem})
                 $('.accordion-item-'+indexItem).remove();
+                $('#precioTotal').html(``);
                 dataCita.detalle_multiple.splice(indexItem, 1);
                 dataCita.detalle_pre_agendamiento.splice(indexItem, 1);
                 dataCita.items.splice(indexItem, 1);
@@ -428,9 +437,21 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function validarPagoMultiple(){
         const validacionReserva = await validarReservas();
         let puedeReservar = validacionReserva.data.listaCita.find(item => item.estado !== "Disponible");
+
         if(puedeReservar === undefined){
             //Iniciar proceso de reserva
-            await crearPreTransaccion();
+            let puedeCrearPreTrx = false;
+            $.each(dataCita.detalle_pre_agendamiento, function(key, value){
+                if(value.request.estaPagada == "N" && value.request.permitePago == "S"){
+                    puedeCrearPreTrx = true;
+                }
+            })
+            if(puedeCrearPreTrx){
+                await crearPreTransaccion();
+            }else{
+                guardarData();
+                location.href = '/cita-agendada/{{ $params }}';
+            }
         }else{
             $.each(validacionReserva.data.listaCita, function(key, value){
                 if(value.estado !== "Disponible"){
@@ -1058,9 +1079,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.hasOwnProperty('detalle_pre_agendamiento')){
             dataPT.listaCitas = [];
             $.each(dataCita.detalle_pre_agendamiento, function(key, value){
-                dataPT.listaCitas.push({
-                    "codigoReserva": value.response.codigoReserva
-                })
+                if(value.request.estaPagada == "N"){
+                    dataPT.listaCitas.push({
+                        "codigoReserva": value.response.codigoReserva
+                    })
+                }
             })
         }
 

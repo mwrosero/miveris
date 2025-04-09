@@ -314,11 +314,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     async function drawCardAgenda(){
         imagenBase64 = await obtenerImagenCompartir();
         let codigoReserva;
-        if(dataCita.reserva){
+        if(dataCita.hasOwnProperty('reserva')){
             codigoReserva = dataCita.reserva.codigoReserva;
         }
-        if(dataCita.reservaEdit){
+        if(dataCita.hasOwnProperty('reservaEdit')){
             codigoReserva = dataCita.reservaEdit.idCita;
+        }
+        if(dataCita.hasOwnProperty('pagoAgendamientoMultiple')){
+            codigoReserva = dataCita.pagoAgendamientoMultiple.codigoReserva;
         }
         datoReserva = await obtenerDatosReserva(codigoReserva);
         let urlLocalidad = (dataCita.online == "N") ? `https://www.google.com/maps?q=${datoReserva.data.datosUbicacion.latitud},${datoReserva.data.datosUbicacion.longitud}` : '';
@@ -395,12 +398,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
     async function obtenerImagenCompartir(){
         let codigoReserva;
-        if(dataCita.reserva){
+        if(dataCita.hasOwnProperty('reserva')){
             codigoReserva = dataCita.reserva.codigoReserva;
         }
-        if(dataCita.reservaEdit){
+        if(dataCita.hasOwnProperty('reservaEdit')){
             codigoReserva = dataCita.reservaEdit.idCita;
         }
+        if(dataCita.hasOwnProperty('pagoAgendamientoMultiple')){
+            codigoReserva = dataCita.pagoAgendamientoMultiple.codigoReserva;
+        }        
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/archivoReserva/${codigoReserva}?canalOrigen=${_canalOrigen}&tipoArchivo=JPG`;
         

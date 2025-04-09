@@ -191,7 +191,11 @@ Mi Veris - Citas - Detalle
                 showResultados = true;
             }
             //if(value.estado == "Atendida" && dataCita.promocion.tipoServicio != "LABORATORIO"){
-            console.log(value.estado)
+            {{-- console.log(value.estado) --}}
+            let classAgendable = ``;
+            if(!dataCita.promocion.esAgendable){
+                classAgendable = `d-none`;
+            }
             if((value.estado == "Atendida" || value.estado == "Agendada") && tiposAgendaPermitida.includes(tipoAgenda)){
                 let btnReagendar = ``;
                 if(value.estado == "Agendada"){
@@ -247,7 +251,7 @@ Mi Veris - Citas - Detalle
                                         </div>
                                         ${estado}
                                     </div>`;
-                                if(tiposAgendaPermitida.includes(tipoAgenda)){
+                                if(tiposAgendaPermitida.includes(tipoAgenda) && dataCita.promocion.esAgendable == "S"){
                                     elem += `<div class="d-flex justify-content-between align-items-center mt-2">
                                         <div class="avatar-sm me-2">
                                             <img src="${quitarComillas(dataCita.promocion.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
@@ -286,7 +290,7 @@ Mi Veris - Citas - Detalle
     function drawBtnCardItem(detalles){
         console.log(detalles);
         console.log(999);
-        if(detalles.estado == "Caducado" || (dataCita.promocion.hasOwnProperty('esAgendable') && !dataCita.promocion.esAgendable && !detalles.hasOwnProperty('detalleReserva') && detalles.detalleReserva != null)){
+        if(detalles.estado == "Caducado" || !dataCita.promocion.esAgendable || (dataCita.promocion.hasOwnProperty('esAgendable') && !dataCita.promocion.esAgendable && !detalles.hasOwnProperty('detalleReserva') && detalles.detalleReserva != null)){
             return ``;
         }
         // "tipoAgenda": "CONSULTA_MEDICA"  o "TERAPIAS"

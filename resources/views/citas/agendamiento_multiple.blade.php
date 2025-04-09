@@ -63,7 +63,7 @@ Mi Veris - Citas - Agendamiento múltiple
                     </div> --}}
                     <div class="row justify-content-center">
                         <div class="col-12 mt-3">
-                            <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect btn-agendar waves-light" disabled>Agendar</a>
+                            <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect btn-agendar waves-light d-none" disabled>Agendar</a>
                         </div>
                     </div>
                 </div>
@@ -77,9 +77,15 @@ Mi Veris - Citas - Agendamiento múltiple
     let tiposAgendaPermitida = ["TERAPIA_FISICA"];
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    let mensajeBloqueoReserva = ``;
     tipoFlujo = dataCita.tipoFlujo;
     document.addEventListener("DOMContentLoaded", async function () {
-        await drawDetalles();
+        if(dataCita.hasOwnProperty('detalle_agendamiento_multiple_atendido')){
+            await drawDetallesAtendidos();
+        }else{
+            $('.btn-agendar').removeClass('d-none')
+            await drawDetalles();
+        }
 
         $(".atencionInmediata-input").on("change", function() {
             let maxSeleccionados = dataCita.cantidadMaximaAgenda;
@@ -91,10 +97,10 @@ Mi Veris - Citas - Agendamiento múltiple
                 $('.btn-agendar').prop("disabled", true);
             }
 
-            if (seleccionados > maxSeleccionados) {
+            if (seleccionados >= maxSeleccionados) {
                 $(".atencionInmediata-input:not(:checked)").prop("disabled", true);
-                showMessage('warning','Atención','Solo puedes agendar hasta '+dataCita.cantidadMaximaAgenda+' terapias a la vez')
-                $('.btn-agendar').prop("disabled", true);
+                {{-- showMessage('warning','Atención','Solo puedes agendar hasta '+dataCita.cantidadMaximaAgenda+' terapias a la vez') --}}
+                // $('.btn-agendar').prop("disabled", true);
                 //$(".atencionInmediata-input").prop("disabled", true);
             } else {
                 $(".atencionInmediata-input").prop("disabled", false);
@@ -132,7 +138,13 @@ Mi Veris - Citas - Agendamiento múltiple
 
         $('body').on('click', '.btn-agendar', async function(){
             let items = await obtenerDataRelSeleccionados();
+            let permiteReserva = await vaidarSiPuedeReservar(items)
             // let detalle = JSON.parse($(this).attr('data-rel'));
+            if(!permiteReserva){
+                $('#mensajeNoPermiteCambiar').html(mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
             dataCita.items = items;
             dataCita.position = 0;
             dataCita.esEdicion = false;
@@ -140,68 +152,145 @@ Mi Veris - Citas - Agendamiento múltiple
             window.location.href = `/seleccionar-datos-cita/{{ $tokenCita }}`;
         })
 
-        $('body').on('click', '.btn-CambiarFechaCita', async function(){
-            let detalle = JSON.parse($(this).attr('data-rel'));
+        $('body').on('click', '.btn-pagar', function(){
+            let datosServicio = JSON.parse($(this).attr('data-rel'));
+            let convenio = dataCita.convenio;
 
-            let dataReserva = {
-                "detalleItemPaquete": detalle,
-                "promocion": dataCita.promocion,
-                "online": dataCita.promocion.esOnline,
-                "especialidad": {
-                    codigoEspecialidad: dataCita.promocion.codigoEspecialidad,
-                    codigoPrestacion: dataCita.promocion.codigoPrestacion,
-                    codigoServicio: dataCita.promocion.codigoServicio,
-                    //codigoTipoAtencion: datosServicio.codigoTipoAtencion,
-                    esOnline: dataCita.promocion.esOnline,
-                    nombre: dataCita.promocion.nombreEspecialidad
-                },
-                "convenio": {
-                    "permitePago": "S",
-                    "permiteReserva": "S",
-                    "idCliente": null,
-                    "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                },
-                "paciente": {
-                    "numeroIdentificacion": dataCita.paciente.numeroIdentificacion,
-                    "tipoIdentificacion": dataCita.paciente.tipoIdentificacion,
-                    "nombrePaciente": dataCita.nombrePaciente,
-                    "numeroPaciente": dataCita.paciente.numeroPaciente
-                },
-                "central": {
-                    "codigoSucursal": dataCita.detalleItemPaquete.detalleReserva.codigoSucursal,
-                    "nombreSucursal": dataCita.detalleItemPaquete.detalleReserva.nombreSucursal
-                },
-                "ciudad": {
-                    "codigoPais": dataCita.detalleItemPaquete.detalleReserva.idCiudad,
-                    "codigoProvincia": dataCita.detalleItemPaquete.detalleReserva.idProvincia,
-                    "codigoCiudad": dataCita.detalleItemPaquete.detalleReserva.idPais
-                },
-                "reservaEdit": {
-                    "estaPagada": "S",
-                    "numeroOrden": detalle.numeroOrden,
-                    "lineaDetalleOrden": detalle.lineaDetalleOrden,
-                    "codigoEmpresaOrden": detalle.codigoEmpresaOrden,
-                    "idOrdenAgendable": '',
-                    "idCita": detalle.detalleReserva.codigoReserva,
-                    "esSesionOdonto": "N"
-                },
-                "origen": "paquetes",
-                // "tipoFlujo" = "reagenda/paquetes"
+            if(datosServicio.esPagada && datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL"){
+                $('#mensajeNoPermiteCambiar').html(datosServicio.mensaje);
+                $('#modalPermiteCambiar').modal('show');
+                return;
             }
 
-            // console.log(dataReserva);return;
+            if(datosServicio.permitePago == "N" && datosServicio.tipoCard != "LAB"){
+                $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
+                console.log(datosServicio.mensajeBloqueoPago)
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }else if(datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL" && datosServicio.permitePago == "N"){
+                $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoPago);
+                console.log(datosServicio.mensajeBloqueoPago)
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
+            // console.log(datosServicio);return;
+            let modalidad;
+            if (datosServicio.modalidad === 'ONLINE') {
+                modalidad = 'S';
+            } else if (datosServicio.modalidad === 'PRESENCIAL') {
+                modalidad = 'N';
+            }
+
+            dataCita.online = modalidad;
+            let tipoServicio = datosServicio.tipoServicio.toLowerCase();
+            dataCita.tipoFlujo = "agenda/tratamiento/"+tipoServicio;
+            tipoFlujo = dataCita.tipoFlujo;
+
+            dataCita.especialidad = {
+                codigoEspecialidad: datosServicio.codigoEspecialidad,
+                nombre : datosServicio.nombreEspecialidad,
+                imagen : datosServicio.urlImagenTipoServicio,
+                esOnline : modalidad,
+                codigoServicio : datosServicio.codigoServicio,
+                codigoPrestacion : datosServicio.codigoPrestacion,
+                codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+                codigoSucursal : datosServicio.codigoSucursal,
+                origen: "Listatratamientos"
+            };
+            dataCita.convenio = convenio;
+            dataCita.convenio.origen = "Listatratamientos";
+            dataCita.datosTratamiento = datosServicio;
+            dataCita.datosTratamiento.origen = "Listatratamientos";
+            console.log(dataCita)
+
+            dataCita.pagoAgendamientoMultiple = {
+                "codigoReserva": data.detalleReserva.codigoReserva
+            }
+
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+            url = '/citas-datos-facturacion/';
+            showLoader();
+            window.location.href = `${url}{{ $tokenCita }}`;
+        });
+
+        $('body').on('click', '.btn-CambiarFechaCita', async function(){
+            let data = JSON.parse($(this).attr('data-rel'));
+            let convenio = dataCita.convenio;
+            {{-- console.log(detalle); --}}
+
+            if(data.permiteReserva == "N" && data.esPagada != "S"){
+                $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
+
+            // const dataConvenio = await consultarConvenios(data);
+            // const dataPaciente = await consultarDatosPaciente(data);
+            let esVirtual = "N";
+            if(data.modalidad != "PRESENCIAL"){
+                esVirtual = "S";
+            }
+            
+            let params = {}
+            let tipoServicio = data.tipoServicio.toLowerCase();
+            tipoFlujo = "reagenda/tratamiento/"+tipoServicio;
+            params.tipoFlujo = tipoFlujo;;
+            params.online = esVirtual;
+            params.especialidad = {
+                codigoEspecialidad: data.codigoEspecialidad,
+                codigoPrestacion  : data.codigoPrestacion,
+                codigoServicio   : data.codigoServicio,
+                codigoTipoAtencion: data.codigoTipoAtencion,
+                esOnline : esVirtual,
+                nombre : data.nombreEspecialidad,
+            }
+            params.paciente = {
+                "numeroIdentificacion": data.numeroIdentificacion,
+                "tipoIdentificacion": data.tipoIdentificacion,
+                "nombrePaciente": data.nombrePaciente,
+                "numeroPaciente": data.pacPacNumero
+            }
+            params.central = {
+                "codigoSucursal": data.detalleReserva.codigoSucursal,
+                "nombreSucursal": data.detalleReserva.nombreSucursal
+            }
+            params.ciudad = {
+                "codigoPais": data.idPais,
+                "codigoProvincia": data.idProvincia,
+                "codigoCiudad": data.idCiudad
+            }
+            params.reservaEdit = {
+                "estaPagada": data.esPagada,
+                "numeroOrden": (data.numeroOrden) ? data.numeroOrden : data.idOrden,
+                "lineaDetalleOrden": data.lineaDetalleOrden,
+                "codigoEmpresaOrden": (data.codigoEmpresaOrden) ? data.codigoEmpresaOrden : data.codigoEmpresa,
+                "idOrdenAgendable": data.idOrdenAgendable,
+                "idCita": data.detalleReserva.codigoReserva
+            }
+            params.origen = "inicios";
+            params.convenio = convenio;
+            
             
             let url = '/seleccionar-datos-cita/';
-            if(dataCita.promocion.esOnline == "S"){
+            if(esVirtual == "S"){
                 url = '/citas-elegir-fecha-doctor/';
             }
-
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataReserva));
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
             showLoader();
             window.location.href = `${url}{{ $tokenCita }}`;
         })
     })
+
+    async function vaidarSiPuedeReservar(items){
+        let puede = true;
+        $.each(items, function(key, value){
+          if(value.permiteReserva == "N"){
+                mensajeBloqueoReserva = value.mensajeBloqueoReserva;
+                puede = false;
+            }
+        })
+        return puede;
+    }
 
     async function obtenerDataRelSeleccionados() {
         let seleccionados = $(".atencionInmediata-input:checked").map(function() {
@@ -209,6 +298,42 @@ Mi Veris - Citas - Agendamiento múltiple
         }).get(); // Convierte el resultado en un array
 
         return seleccionados;
+    }
+
+    async function drawDetallesAtendidos(){
+        $('.btn-agendar').addClass('d-none')
+        let elem = ``;
+        $.each(dataCita.detallesServicios, function(key, value){
+            if(dataCita.paciente.nombrePaciente){
+                nombrePaciente = dataCita.paciente.nombrePaciente;
+            }else{
+                nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
+            }
+            elem += `<div class="col-12 mt-3">
+                <div class="card">
+                    <div class="card-body p--2">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1">${capitalizarElemento(value.nombreDetalle)}</h6>
+                            <div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end">
+                                <i class="fa-solid fa-check me-2 text-success"></i>
+                                <span class="text-success">Atendida</span>
+                            </div>
+                        </div>
+                        <h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.nombreSucursal)}</h6>
+                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.fechaReserva)} <b class="hora-cita fw-normal text-primary-veris">${value.detalleReserva.horaReserva}</b></p>
+                        <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(value.detalleReserva.nombreMedicoReserva)}</p>
+                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(nombrePaciente)}</p>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <div class="avatar-sm me-2">
+                                <img src="${quitarComillas(value.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                            </div>
+                            <a class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+            $('#listado-detalles-por-agendar').html(elem);
+        })
     }
 
     async function drawDetalles(){
@@ -225,7 +350,7 @@ Mi Veris - Citas - Agendamiento múltiple
                 tienePorAgendar = true;
             }
             //if(value.estado == "Atendida" && dataCita.promocion.tipoServicio != "LABORATORIO"){
-            console.log(value.estado)
+            {{-- console.log(value.estado) --}}
             if((value.estado == "Atendida" || value.estado == "Agendada")){
                 let btnReagendar = ``;
                 if(value.estado == "Agendada"){
@@ -239,14 +364,22 @@ Mi Veris - Citas - Agendamiento múltiple
                     nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
                 }
 
+                let estadoReserva = `<span class="fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">
+                        <i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success">Comprado</span>
+                    </span>`
+                
+                if(value.esPagada == "N"){
+                    estadoReserva = `<span class="fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">
+                        <i class="fa-solid fa-circle me-2 text-warning-veris"></i><span class="text-warning-veris">Por comprar</span>
+                    </span>`
+                }
+
                 elem += `<div class="col-12 mt-3">
                     <div class="card">
                         <div class="card-body p--2">
                             <div class="d-flex justify-content-between align-items-start">
                                 <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1">${capitalizarElemento(value.nombreDetalle)}</h6>
-                                <span class="text-warning-veris fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">
-                                    <i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${value.estado}</span>
-                                </span>
+                                ${ estadoReserva }
                             </div>
                             ${determinarFechaCaducidadEncabezadoAgendamientoMultiple(value, dataCita.datosTratamiento)}
                             <h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.nombreSucursal)}</h6>
@@ -316,6 +449,16 @@ Mi Veris - Citas - Agendamiento múltiple
         }
         $.each(dataCita.detallesServicios, function(key, value){
             if(value.detalleReserva === null){
+                let iconStatusTiempo = `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end">
+                            <i class="fa-regular fa-calendar-check me-2"></i>
+                            Disponible
+                        </div>`;
+                if(value.esCaducado == "S"){
+                    iconStatusTiempo = `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end text-danger fw-medium">
+                            <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                            Caducado
+                        </div>`;
+                }
                 elemMultiple += `<div class="col-12 my-1">
                     <div class="w-100 d-flex justify-content-between align-items-center border-bottom py-3 px-2">
                         <div class="form-check d-flex justify-content-start align-items-center">
@@ -324,10 +467,7 @@ Mi Veris - Citas - Agendamiento múltiple
                                 ${value.nombreServicio.toLowerCase()}
                             </label>
                         </div>
-                        <div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end">
-                            <i class="fa-regular fa-calendar-check me-2"></i>
-                            Disponible
-                        </div>
+                        ${iconStatusTiempo}
                     </div>
                 </div>`
             }
@@ -336,8 +476,8 @@ Mi Veris - Citas - Agendamiento múltiple
     }
 
     function drawBtnCardItem(detalles){
-        console.log(detalles);
-        console.log(999);
+        {{-- console.log(detalles); --}}
+        {{-- console.log(999); --}}
         if(detalles.estado == "Caducado" || (detalles.hasOwnProperty('esAgendable') && !detalles.esAgendable && !detalles.hasOwnProperty('detalleReserva') && detalles.detalleReserva != null)){
             return ``;
         }
@@ -355,11 +495,19 @@ Mi Veris - Citas - Agendamiento múltiple
             }
         }
 
-        let btnOrden = `<a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard me-2" data-rel='${JSON.stringify(detalles)}'>Ver orden</a>`;
+        if(detalles.esPagada == "S"){
+            let btnOrden = `<a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard me-2" data-rel='${JSON.stringify(detalles)}'>Ver orden</a>`;
 
-        return `${btnOrden} <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" data-rel='${JSON.stringify(detalles)}'>
-                ${titleBtn}
-            </div>`;
+            return `${btnOrden} <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" data-rel='${JSON.stringify(detalles)}'>
+                    ${titleBtn}
+                </div>`;
+        }else{
+            let btnPagar = `<a class="btn btn-sm btn-primary-veris fw-medium fs--1 px-3 py-2 border-0 text-white shadow-none btn-pagar me-2" data-rel='${JSON.stringify(detalles)}'>Pagar</a>`;
+
+            return `<div class="btn btn-sm fw-normal text-primary-veris fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" data-rel='${JSON.stringify(detalles)}'>
+                    ${titleBtn}
+                </div> ${btnPagar}`;
+        }
     }
 
     async function descargarDocumentoPdf(datos){

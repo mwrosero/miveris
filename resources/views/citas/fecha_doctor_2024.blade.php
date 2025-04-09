@@ -1315,5 +1315,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     background: #FFE5EF;
     border-radius: 32px 0px 0px 0px;
 }
+#modalConsultaMismoDiaAgendaMultiple     {
+    z-index: 99999 !important;
+}
 </style>
 @endpush

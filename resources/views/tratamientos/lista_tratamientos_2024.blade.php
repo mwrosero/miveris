@@ -207,7 +207,7 @@ $tokenSesion = base64_encode(uniqid());
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs--20 line-height-24 my-3">{{ __('Información') }}</h1>
+                    <h1 class="modal-title fs--20 line-height-24 my-3" id="tituloModalInformacionCita">{{ __('Información') }}</h1>
                     <p class="fs--1 fw-normal mb-0 text-veris" id = "mensajeInformacionCita"></p>
                 </div>
                 <div id="footerInformacionCita">
@@ -309,6 +309,16 @@ $tokenSesion = base64_encode(uniqid());
 
         await obtenerTratamientos();
         llenarPorcentajeBarra();
+
+        $('body').on('click', '.btn-detalle-multiple-atendido', function(){
+            {{-- let tratamiento = JSON.parse($(this).attr('datosTratamiento-rel')); --}}
+            let detalle = JSON.parse($(this).attr('data-rel'));
+            dataCita.detalle_agendamiento_multiple_atendido = true;
+            dataCita.detallesServicios = detalle.detallesServicios;
+            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+            location = "/agendamiento-multiple/{{ $tokenMods }}";;
+            return;
+        })
 
         // var $enlace = $('.btn-agendar');
 
@@ -737,7 +747,15 @@ $tokenSesion = base64_encode(uniqid());
                                     </div>
                                 </div>`;
 
-                divContenedorRealizados.append(elemento);
+                if(datosTratamiento.mostrarTerapiasAgrupadas == "N"){
+                    divContenedorRealizados.append(elemento);
+                }else{
+                    if(datosTratamiento.mostrarTerapiasAgrupadas == "S" && tratamientos.tipoServicio != "TERAPIA"){
+                        divContenedorRealizados.append(elemento);
+                    }
+                }
+
+                {{-- divContenedorRealizados.append(elemento); --}}
             });
              // mostrar el titulo de realizados
             document.getElementById("tituloTratamientoRealizado").style.display = "block";
@@ -893,7 +911,7 @@ $tokenSesion = base64_encode(uniqid());
                         }
                         if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
                             // mostrar boton de informacion que llama al modal de informacion
-                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosServicio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}'>Información</a>`;
+                            respuestaAgenda += `<a href="#" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-informacion" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' data-rel='${JSON.stringify(datosServicio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}'>Información</a>`;
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S' && datosServicio.esExterna == "N") {
@@ -909,7 +927,8 @@ $tokenSesion = base64_encode(uniqid());
                                 }
                             } else {
                                 // abrir modal no permite reserva
-                                respuestaAgenda += `<button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</button>`;
+                                // respuestaAgenda += `<button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none" data-bs-toggle="modal" data-bs-target="#mensajeNoPermiteReservaModal">Agendar</button>`;
+                                respuestaAgenda += `<button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris btn-agendar shadow-none" esTerapiAgrupada-rel='${esTerapiaAgrupada}' qty-rel='${qtyMaximaAgrupado}' data-rel='${JSON.stringify(datosServicio)}'>Agendar</button>`;
                             }
                         }
                     } else if (datosServicio.estado == 'AGENDADO'){
@@ -953,7 +972,13 @@ $tokenSesion = base64_encode(uniqid());
                     }else if (datosServicio.estado == 'ATENDIDO'){
                         // mostrar boton de ver orden
                         respuestaAgenda = ``;
-                        respuestaAgenda += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`; 
+                        console.log(datosServicio.tipoServicio)
+                        if(datosServicio.tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
+                            respuestaAgenda += `<button type="button" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>
+                                <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none btn-detalle-multiple-atendido" data-rel='${JSON.stringify(datosServicio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}'>Ver detalle</button>`; 
+                        }else{
+                            respuestaAgenda += ` <button type="button" class="btn btn-sm fs--1 px-3 py-2 border-0 btn-primary-veris shadow-none verOrdenCard" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`; 
+                        }
                     } 
                     return respuestaAgenda;
                     break;
@@ -1142,11 +1167,68 @@ $tokenSesion = base64_encode(uniqid());
         $('#detalleRecetaMedica').attr('data-rel', JSON.stringify(datos));
     });
 
+
     // boton informacion
     $(document).on('click', '.btn-informacion', function(){
         let datos = JSON.parse($(this).attr('data-rel'));
         let datosTratamiento = JSON.parse($(this).attr('datosTratamiento-rel'));
-        // console.log(datos)
+        if(datosTratamiento.mostrarTerapiasAgrupadas == "S" && datos.tipoCard == "AGENDA_TERAPIA" && datos.esCaducado == "N"){
+            let datosServicio = datos;
+            let esTerapiaAgrupada = true;
+            // console.log(datosServicio.detallesServicios)
+            // return
+            {{-- if(datosServicio.permiteReserva == "N"){
+                $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            } --}}
+            console.log('datosServicio', datosServicio);
+            let modalidad;
+            if (datosServicio.modalidad === 'ONLINE') {
+                modalidad = 'S';
+            } else if (datosServicio.modalidad === 'PRESENCIAL') {
+                modalidad = 'N';
+            }
+
+            dataCita.online = modalidad;
+            let tipoServicio = datosServicio.tipoServicio.toLowerCase();
+            dataCita.tipoFlujo = "agenda/tratamiento/"+tipoServicio;
+            tipoFlujo = dataCita.tipoFlujo;
+
+            dataCita.especialidad = {
+                codigoEspecialidad: datosServicio.codigoEspecialidad,
+                nombre : datosServicio.nombreEspecialidad,
+                imagen : datosServicio.urlImagenTipoServicio,
+                esOnline : modalidad,
+                codigoServicio : datosServicio.codigoServicio,
+                codigoPrestacion : datosServicio.codigoPrestacion,
+                codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+                codigoSucursal : datosServicio.codigoSucursal,
+                origen: "Listatratamientos"
+            };
+            dataCita.origen = "Listatratamientos";
+            dataCita.convenio = ultimoTratamiento.datosConvenio;
+            dataCita.convenio.origen = "Listatratamientos";
+
+            dataCita.tratamiento = {
+                cantidadIntervalosReserva: datosServicio.cantidadIntervalosReserva,
+                numeroOrden: datosServicio.idOrden,
+                codigoEmpOrden: datosServicio.codigoEmpresa,
+                lineaDetalle: datosServicio.lineaDetalleOrden,
+                esPagada: datosServicio.esPagada
+            }
+
+            dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
+            dataCita.detallesServicios = datosServicio.detallesServicios;
+            dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones;
+            dataCita.datosTratamiento = datosTratamiento;
+            dataCita.cantidadMaximaAgenda = parseInt($(this).attr('qty-rel'));
+            localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+            location = "/agendamiento-multiple/{{ $tokenMods }}";;
+            return;
+        }else{
+            $("#informacionCitaModal").modal('show');
+        }
         if (datos.esCaducado === "S" && datos.esAgendable === "S") {
             // CAMBIAR TITUOLO MODAL
             $('#tituloModalInformacionCita').text('Orden expirada');
@@ -1154,11 +1236,21 @@ $tokenSesion = base64_encode(uniqid());
             // limpiar footer
             $('#footerInformacionCita').empty();
             // agregar boton agendar y salir
+            let ruta = "/citas-elegir-fecha-doctor/{{ $tokenMods }}";
+            if (datos.modalidad == "PRESENCIAL") {
+                ruta = "/seleccionar-datos-cita/{{ $tokenMods }}";
+            }
+            let esTerapiaAgrupada = false;
+            let qtyMaximaAgrupado = 0;
+            if(datos.tipoCard == "AGENDA_TERAPIA"){
+                esTerapiaAgrupada = true;
+                qtyMaximaAgrupado = datos.cantidadMaximaAgenda;
+            }
             $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" datosTratamiento-rel='${JSON.stringify(datosTratamiento)}' data-rel='${JSON.stringify(datos)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3 btn-agendar" data-bs-dismiss="modal" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' url-rel="${ruta}" data-rel='${JSON.stringify(datos)}' id="btnAgendarCitaModal__BK">{{ __('Agendar') }}</button>
                 </div>
                 <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
+                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 text-primary-veris px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
                 </div>`);
         } else if(datos.esAgendable === "N") {
                 $('#tituloModalInformacionCita').text('Información');
@@ -1318,7 +1410,13 @@ $tokenSesion = base64_encode(uniqid());
         let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
         // console.log(datosServicio.detallesServicios)
         // return
-        if(datosServicio.permiteReserva == "N"){
+        if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
+            esTerapiaAgrupada = true;
+        }else{
+            esTerapiaAgrupada = false;
+        }
+
+        if(datosServicio.permiteReserva == "N" && !esTerapiaAgrupada){
             $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
             $('#modalPermiteCambiar').modal('show');
             return;
@@ -1360,7 +1458,7 @@ $tokenSesion = base64_encode(uniqid());
             esPagada: datosServicio.esPagada
         }
 
-        if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
+        if(esTerapiaAgrupada){
             dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
             dataCita.detallesServicios = datosServicio.detallesServicios;
             dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones;
