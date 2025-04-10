@@ -288,7 +288,7 @@
                                             <p class="mb-0">Sube un archivo o </p>
                                             <p class="mb-0">tómale una foto al archivo.</p>
                                         </div>
-                                        <input type="file" accept=".pdf,.jpg,.jpeg,.png" multiple class="file-input" data-id="${value.paciente.idPaciente}">
+                                        <input type="file" accept=".pdf,.jpg,.jpeg,.png" id="file-${value.paciente.idPaciente}" multiple class="file-input" data-id="${value.paciente.idPaciente}">
                                     </div>
                                 </div>
                             </div>
