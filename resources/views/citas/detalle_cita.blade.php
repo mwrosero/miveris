@@ -49,7 +49,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 <p class="fs--1 line-height-16 fw-normal text-veris mb-3">Eliminaste todas las terapias reservadas, no queda información para mostrar.</p>
             </div>
             <div class="modal-footer pt-0 pb-3 px-3">                    
-                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100 btn-eliminar-cita" data-bs-dismiss="modal">Entiendo</a>
+                <a href="/" class="btn btn-primary-veris fs--18 line-height-24 m-0 px-4 py-3 w-100 btn-eliminar-cita">Entiendo</a>
             </div>
         </div>
     </div>
@@ -342,13 +342,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 let indexItem = parseInt($('#indexItem').val());
                 console.log({indexItem})
                 $('.accordion-item-'+indexItem).remove();
-                $('#precioTotal').html(``);
                 dataCita.detalle_multiple.splice(indexItem, 1);
                 dataCita.detalle_pre_agendamiento.splice(indexItem, 1);
                 dataCita.items.splice(indexItem, 1);
                 guardarData();
                 if(dataCita.detalle_pre_agendamiento.length == 0){
+                    $('#precioTotal').html(``);
+                    $('#detalleMultiple').html(``);
+                    
                     $('#modalSinAgendaMultiple').modal('show');
+                }else{
+                    $('.box-buttons-multiple').each(function(key, value) {
+                        // Dentro de cada .box-buttons-multiple busca el botón
+                        $(this).find('button').attr('index-rel', key );
+                    });
                 }
             }
         }
@@ -413,7 +420,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <p class="mb-1 d-flex justify-content-start align-items-center text-danger-veris d-none label-error-reserva-${dataCita.detalle_pre_agendamiento[key].response.codigoReserva}">
                                     <i class="fa-solid fa-circle-info me-1 p-0"></i>Este horario ya no está disponible
                                 </p>
-                                <div class="mt-2 d-flex justify-content-start align-items-center">
+                                <div class="mt-2 d-flex justify-content-start align-items-center box-buttons-multiple">
                                     <button index-rel='${key}' class="btn btn-primary-veris px-3 py-2 border-0 text-white shadow-none fw-normal fs--1 me-2 btn-editar-cita">
                                         <i class="fa-solid fa-pen-to-square me-1"></i>Editar cita
                                     </button>

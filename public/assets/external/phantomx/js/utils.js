@@ -169,7 +169,7 @@ function showPreview(file, fileName, slide) {
 }
 
 function updateDocumentIndexes(swiperWrapper) {
-    const slides = Array.from(swiperWrapper.querySelectorAll(".swiper-slide")).reverse();
+    const slides = Array.from(swiperWrapper.querySelectorAll(".swiper-slide"));//.reverse();
     slides.forEach((slide, i) => {
         const index = i + 1;
         const title = slide.querySelector(".card-header h6");

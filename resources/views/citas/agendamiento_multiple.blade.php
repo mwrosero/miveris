@@ -204,7 +204,7 @@ Mi Veris - Citas - Agendamiento múltiple
             console.log(dataCita)
 
             dataCita.pagoAgendamientoMultiple = {
-                "codigoReserva": data.detalleReserva.codigoReserva
+                "codigoReserva": datosServicio.detalleReserva.codigoReserva
             }
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
@@ -364,9 +364,17 @@ Mi Veris - Citas - Agendamiento múltiple
                     nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
                 }
 
+                console.log(value)
                 let estadoReserva = `<span class="fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">
                         <i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success">Comprado</span>
                     </span>`
+
+                if(value.estado == "Atendida"){
+                    estadoReserva = `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end">
+                            <i class="fa-solid fa-check me-2 text-success"></i>
+                            <span class="text-success">Atendida</span>
+                        </div>`;
+                }
                 
                 if(value.esPagada == "N"){
                     estadoReserva = `<span class="fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">

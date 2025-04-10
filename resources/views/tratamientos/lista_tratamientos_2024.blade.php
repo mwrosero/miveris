@@ -724,17 +724,21 @@ $tokenSesion = base64_encode(uniqid());
         divContenedorRealizados.empty(); // Limpia el contenido actual
         if(data.length > 0){
             data.forEach((tratamientos) =>{
-
+                let elemQtyTerapias = ``;
+                if(datosTratamiento.mostrarTerapiasAgrupadas == "S" && tratamientos.tipoCard == "AGENDA_TERAPIA"){
+                    elemQtyTerapias = `<div class="fs--2 line-height-16 w-100 my-1">Realizado: <span class="text-lime-veris">${tratamientos.cantidadRealizada}</span></div>`;
+                }
                 let elemento = `<div class="col-12">
                                     <div class="card h-100">
                                         <div class="card-body p--2">
                                             <div class="d-flex justify-content-between align-items-center">
-                                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)}</h6>
+                                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-0 text-one-line">${capitalizarCadaPalabra(tratamientos.nombreServicio)} </h6>
                                                 <span id="estado" class="fs--1 line-height-16 mb-1"><i class="fa-solid fa-check me-2 text-success"></i><span class="text-success">${ (tratamientos.tipoCard == "RECETAS") ? "Comprado" : "Atendida" }</span></span>
                                             </div>
                                             <div>
                                                 ${determinarFechasCaducadas(tratamientos, datosTratamiento)}
                                             </div>
+                                            ${elemQtyTerapias}
                                             <div class="d-flex justify-content-between align-items-center mt-2">
                                                 <div class="avatar avatar-sm border rounded-circle bg-very-pale-red">
                                                     <img class="rounded-circle" src="${quitarComillas(tratamientos.urlImagenTipoServicio)}" alt="receta medica">

@@ -199,7 +199,7 @@
             })
             if(elem_seguros.length > 0){
                 box_elem_seguros = `<div class="row">
-                    <div class="text-start">
+                    <div class="text-start alert-blue-phax mb-3">
                         <h3 class="fw-semibold text-title-2 my-3">
                             Soporte por autorización 
                             <button type="button" class="btn btn-sm border border-blue-phax rounded-3 text-blue"><i class="fa-solid fa-rotate"></i></button>
@@ -211,8 +211,8 @@
 
             if(elem_ordenes.length > 0){
                 box_elem_ordenes = `<div class="row">
-                    <div class="text-start">
-                        <h3 class="fw-semibold text-title-2">
+                    <div class="text-start alert-blue-phax mb-3">
+                        <h3 class="fw-semibold text-title-2 my-3">
                             Ordenes externas `;
                 if(elem_seguros.length == 0){
                     box_elem_ordenes += `<button type="button" class="btn btn-sm border border-blue-phax rounded-3 text-blue"><i class="fa-solid fa-rotate"></i></button>`;
@@ -310,7 +310,10 @@
 
         async function addInputCard(idPaciente, fileDetail, uniqueId) {
             console.log(fileDetail);
-    
+
+            const swiperWrapper = document.querySelector(`#swiperWrapper-${idPaciente}`); 
+            const numberOfSlides = swiperWrapper.querySelectorAll('.swiper-slide').length;
+
             $(`#content-soportes-${idPaciente} .file-list`).each(function(index, element) {
                 const $el = $(element);
                 const convenio = $el.attr('convenio-rel');
@@ -318,19 +321,19 @@
                 const codigoServicioNivel1 = $el.attr('codigoServicioNivel1-rel');
                 const type = $el.attr('type-rel');
 
-                const swiperWrapper = document.querySelector(`#swiperWrapper-${idPaciente}`); 
-                const numberOfSlides = swiperWrapper.querySelectorAll('.swiper-slide').length;
+                const inputId = `file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${numberOfSlides}-${index}`;
 
                 let elem = `<div class="file-item d-flex align-items-center fw-bold mb-2 ${uniqueId}">
-                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${numberOfSlides}" convenio-rel='${convenio ?? ''}' data-index="${(numberOfSlides-1)}">
-                    <label class="form-check-label" for="file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${numberOfSlides}">
+                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel='${convenio ?? ''}' data-index="${(numberOfSlides - 1)}">
+                    <label class="form-check-label" for="${inputId}">
                         <span class="text-blue-70">Archivo <b class="fileNumber">${numberOfSlides}</b>:</span> ${fileDetail.name}
                     </label>
                 </div>`;                
-                
-                $el.append(elem); // <- usamos $el directamente
+
+                $el.append(elem);
             });
         }
+
 
         async function uploadSoportes(){
             let hasFiles = false;
@@ -368,7 +371,7 @@
                             }
                         }catch(error) {
                             $('.btn-subir').prop('disabled', false).html("Subir")
-                            alert(`Error al subir el archivo ${file.name}:`, error);
+                            console.log(error)
                         }
                     }
                     await asociarSoportes(detallesAgrupacion, idPaciente, idAgrupacion, type)
@@ -399,19 +402,20 @@
             const data = await call(args);
             console.log(data)
             if(data.code == 200){
-                alert("Archivos guardados")
+                //alert("Archivos guardados")
+                $(`.swiper-wrapper`).empty();
+                $(`.file-list`).empty();
             }else{
                 console.log(error)
             }
         }
 
-        async function uploadFile(file, orden){
+        async function uploadFile(file, orden) {
             let finalFile;
-            // Si ya es PDF, lo enviamos tal cual
+
             if (file.type === "application/pdf") {
                 finalFile = file;
             } else if (file.type === "image/jpeg" || file.type === "image/png") {
-                // Convertir imagen a base64
                 const imageDataURL = await new Promise((resolve, reject) => {
                     const reader = new FileReader();
                     reader.onload = () => resolve(reader.result);
@@ -419,23 +423,33 @@
                     reader.readAsDataURL(file);
                 });
 
-                // Crear PDF con jsPDF
                 const { jsPDF } = window.jspdf;
-                {{-- const pdf = new jsPDF();
-                pdf.addImage(imageDataURL, 'JPEG', 10, 10, 180, 160); --}}
-
                 const pdf = new jsPDF({
-                    orientation: 'portrait', // o 'landscape'
-                    unit: 'mm',               // milímetros
-                    format: 'a4'              // tamaño de página
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
                 });
 
-                pdf.addImage(imageDataURL, 'JPEG', 10, 10, 180, 160);
+                const props = pdf.getImageProperties(imageDataURL);
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 10;
 
-                // Convertir a blob
+                let imgWidth = pageWidth - margin * 2;
+                let imgHeight = (props.height * imgWidth) / props.width;
+
+                if (imgHeight > pageHeight - margin * 2) {
+                    imgHeight = pageHeight - margin * 2;
+                    imgWidth = (props.width * imgHeight) / props.height;
+                }
+
+                const x = (pageWidth - imgWidth) / 2;
+                const y = (pageHeight - imgHeight) / 2;
+
+                pdf.addImage(imageDataURL, props.fileType, x, y, imgWidth, imgHeight);
+
+                // Convertir a blob y renombrar
                 finalFile = pdf.output('blob');
-
-                // Le damos un nombre al archivo
                 finalFile = new File([finalFile], "convertido.pdf", { type: "application/pdf" });
             } else {
                 alert("Formato de archivo no permitido. Solo se aceptan PDF o imágenes JPG/PNG.");
@@ -451,15 +465,21 @@
             args["token"] = "{{ $accessToken }}";
             args["showLoader"] = true;
             args["data"] = formData;
-            args["bodyType"] = "formdata"; 
-            const data = await call(args);
-            console.log(data)
-            if(data.code == 200){
-                return data;
-            }else{
-                console.log(error)
+            args["bodyType"] = "formdata";
+
+            try {
+                const data = await call(args);
+                console.log(data);
+                if (data.code == 200) {
+                    return data;
+                } else {
+                    console.log("Error en respuesta:", data);
+                }
+            } catch (error) {
+                console.error("Error en uploadFile:", error);
             }
         }
+
 
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
