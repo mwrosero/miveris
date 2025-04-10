@@ -137,6 +137,10 @@ $( document ).ready(async function() {
 	await getPaisesRegistro();
 	await getProvinciasRegistro();
 
+	$('body').on('click', '.requiereOrden', async function(){
+		showError("Necesitas una orden médica para agendar terapia física. Agenda una cita en traumatología o fisiatría para solicitar una orden.");
+	})
+
 	$('body').on('change', '#paisRegistro', async function(){
 		let codigoPais = $(this).val();
 		let codigoProvincia = $('#provinciaRegistro option:selected').val();
@@ -1385,7 +1389,13 @@ function obtenerEspecialidades(){
 	$.ajax(settings).done(function (response) {
 		//hideLoader();
 		$.each(response.data, function(key, value){
-			var radioBtn = '<label class="control control-radio">'+value.nombre+'<input type="radio" name="especialidad" codigoTipoAtencion-rel="'+value.codigoTipoAtencion+'" codigoEmpresa-rel="'+value.codigoEmpresa+'" codigoPrestacion-rel="'+value.codigoPrestacion+'" codigoServicio-rel="'+value.codigoServicio+'" nombreEspecialidad-rel="'+value.nombre+'" value="'+value.codigoEspecialidad+'" /><div class="control_indicator"></div>';
+			let attrDisabled = ``;
+			let classDisabled = ``;
+			if(value.requiereOrden == "S"){
+				attrDisabled = `disabled`;
+				classDisabled = `requiereOrden`
+			}
+			var radioBtn = '<label class="control control-radio '+classDisabled+'">'+value.nombre+'<input '+attrDisabled+' type="radio" name="especialidad" codigoTipoAtencion-rel="'+value.codigoTipoAtencion+'" codigoEmpresa-rel="'+value.codigoEmpresa+'" codigoPrestacion-rel="'+value.codigoPrestacion+'" codigoServicio-rel="'+value.codigoServicio+'" nombreEspecialidad-rel="'+value.nombre+'" value="'+value.codigoEspecialidad+'" /><div class="control_indicator"></div>';
     		$('.box-especialidades').append(radioBtn);
 		});			
 	});
