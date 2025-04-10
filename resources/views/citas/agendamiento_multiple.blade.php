@@ -327,7 +327,7 @@ Mi Veris - Citas - Agendamiento múltiple
                             <div class="avatar-sm me-2">
                                 <img src="${quitarComillas(value.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                             </div>
-                            <a class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>
+                            <a class="btn btn-sm btn-primary-veris fw-medium verOrdenCard fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>
                         </div>
                     </div>
                 </div>
@@ -374,6 +374,7 @@ Mi Veris - Citas - Agendamiento múltiple
                             <i class="fa-solid fa-check me-2 text-success"></i>
                             <span class="text-success">Atendida</span>
                         </div>`;
+                    btnReagendar = `<a class="btn btn-sm btn-primary-veris verOrdenCard fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>`;
                 }
                 
                 if(value.esPagada == "N"){
