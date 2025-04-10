@@ -20,8 +20,8 @@ function handleFileInput(event) {
 
     if (!swiperWrapper) return;
 
-    Array.from(files).forEach((file) => {
-        addDocumentCard(file, swiperWrapper, pacienteId);
+    Array.from(files).forEach((file, index) => {
+        addDocumentCard(file, swiperWrapper, pacienteId, index);
     });
 
     // Mostrar controles si hay más de 1 archivo
@@ -34,12 +34,13 @@ function handleFileInput(event) {
     initSwiper(pacienteId);
 }
 
-function addDocumentCard(file, swiperWrapper, pacienteId) {
+function addDocumentCard(file, swiperWrapper, pacienteId, index) {
     const fileURL = URL.createObjectURL(file);
     const fileType = file.type;
     const slide = document.createElement("div");
 
     slide.className = "swiper-slide";
+    slide.setAttribute("data-file-index", index); 
 
     const card = document.createElement("div");
     card.className = "card h-100 document-card";
@@ -95,7 +96,7 @@ function addDocumentCard(file, swiperWrapper, pacienteId) {
         updateDocumentIndexes(swiperWrapper);
         initSwiper(pacienteId);
         setTimeout(function(){
-            const swiperWrapper = document.querySelector(`#swiperWrapper-${pacienteId}`); 
+            const swiperWrapper = document.querySelector(`#swiperWrapper-${pacienteId}`);
             const numberOfSlides = swiperWrapper.querySelectorAll('.swiper-slide').length;
             $(`#content-soportes-${pacienteId} .file-list`).each(function(index, element) {
                 const $el = $(element);
@@ -105,7 +106,20 @@ function addDocumentCard(file, swiperWrapper, pacienteId) {
                     $(this).html(`${i + 1}`);
                 });
             });
+            const fileInput = $('#file-'+pacienteId)[0]; // 'input' directamente con [0]
 
+            // El índice del archivo a eliminar (por ejemplo, el archivo en el índice 1)
+            const indexToRemove = parseInt(slide.getAttribute("data-file-index"));
+
+            // Crea una nueva lista de archivos sin el archivo en el índice 'indexToRemove'
+            const newFiles = Array.from(fileInput.files).filter((_, index) => index !== indexToRemove);
+
+            // Asigna los archivos restantes al input file
+            const dataTransfer = new DataTransfer();
+            newFiles.forEach(file => dataTransfer.items.add(file)); // Agrega los archivos restantes al DataTransfer
+
+            // Actualiza el input file con la nueva lista de archivos
+            fileInput.files = dataTransfer.files;
         },250)
     });
 
