@@ -333,12 +333,14 @@
         }
 
         async function uploadSoportes(){
+            let hasFiles = false;
             $(`.content-soportes-box .file-list`).each(async function(index, element) {
                 const $fileList = $(element); // convierte el DOM element en objeto jQuery
 
                 const notEmpty = $fileList.html().trim() !== '';
                 const hasCheckboxChecked = $fileList.find('input[type="checkbox"]').is(':checked');
                 if (notEmpty && hasCheckboxChecked) {
+                    hasFiles = true;
                     const $fileList = $(element);
                     const idPaciente = $fileList.attr('idPaciente-rel');
                     const idAgrupacion = $fileList.attr('idAgrupacion-rel');
@@ -374,6 +376,9 @@
                 }
 
             });
+            if(!hasFiles){
+                $('.btn-subir').prop('disabled', false).html("Subir")
+            }
         }
 
         async function asociarSoportes(detallesAgrupacion, idPaciente, idAgrupacion, tipoSoporte){
