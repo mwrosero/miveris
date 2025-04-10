@@ -719,7 +719,7 @@ $tokenSesion = base64_encode(uniqid());
         let estado = 'REALIZADO'
         let data = datosTratamiento.realizados;
         // console.log('tratamientos realizados: ', data);
-        
+        let mostrarRealizadas = false;
         let divContenedorRealizados = $('#contenedorTratamientoRealizado');
         divContenedorRealizados.empty(); // Limpia el contenido actual
         if(data.length > 0){
@@ -753,8 +753,10 @@ $tokenSesion = base64_encode(uniqid());
 
                 if(datosTratamiento.mostrarTerapiasAgrupadas == "N"){
                     divContenedorRealizados.append(elemento);
+                    mostrarRealizadas = true;
                 }else{
                     if(datosTratamiento.mostrarTerapiasAgrupadas == "S" && tratamientos.tipoServicio != "TERAPIA"){
+                        mostrarRealizadas = true;
                         divContenedorRealizados.append(elemento);
                     }
                 }
@@ -762,7 +764,9 @@ $tokenSesion = base64_encode(uniqid());
                 {{-- divContenedorRealizados.append(elemento); --}}
             });
              // mostrar el titulo de realizados
-            document.getElementById("tituloTratamientoRealizado").style.display = "block";
+            if(mostrarRealizadas){
+                document.getElementById("tituloTratamientoRealizado").style.display = "block";
+            }
             // chartProgres("#progress-circle");
         }
     }

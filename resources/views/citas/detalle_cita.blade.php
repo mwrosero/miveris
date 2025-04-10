@@ -356,6 +356,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         // Dentro de cada .box-buttons-multiple busca el botón
                         $(this).find('button').attr('index-rel', key );
                     });
+                    await obtenerPrecioMultiple();
                 }
             }
         }
