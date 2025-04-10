@@ -416,7 +416,15 @@
 
                 // Crear PDF con jsPDF
                 const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF();
+                {{-- const pdf = new jsPDF();
+                pdf.addImage(imageDataURL, 'JPEG', 10, 10, 180, 160); --}}
+
+                const pdf = new jsPDF({
+                    orientation: 'portrait', // o 'landscape'
+                    unit: 'mm',               // milímetros
+                    format: 'a4'              // tamaño de página
+                });
+
                 pdf.addImage(imageDataURL, 'JPEG', 10, 10, 180, 160);
 
                 // Convertir a blob
