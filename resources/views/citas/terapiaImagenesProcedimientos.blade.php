@@ -750,6 +750,7 @@ Mi Veris - Citas - {{ $titulo }}
 
                             let elementos = ''; // Definir la variable fuera del bucle
                             data.data.items.forEach((laboratorio) => {
+                                console.log(laboratorio)
                                 elementos += `<div class="col-12 mb-4">
                                                 <div class="card rounded-0">
                                                     <div class="card-body py-2 px-3">
@@ -769,27 +770,30 @@ Mi Veris - Citas - {{ $titulo }}
                                                         `;
                             
                                 laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                    elementos += `<div class="col-12 col-md-6">
-                                                    <div class="card">
-                                                        <div class="card-body p--2">
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                                <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada , estado)}</span>
-                                                            </div>
-                                                            ${determinarFechaCaducidadEncabezado(detalles, laboratorio)}
-                                                            ${determinarFechasCaducadas(detalles, laboratorio)}
-                                                        <div class="d-flex justify-content-between align-items-center mt-2">
-                                                                <div class="avatar-sm me-2">
-                                                                    <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
-                                                                </div>
-                                                                <div>
-                                                                    ${determinarCondicionesBotones(detalles, estado, laboratorio)}
-                                                                </div>
-                                                            </div>
+                                    console.log(detalles.detallesServicios)
+                                    if(detalles.detallesServicios === null){
+                                        elementos += `<div class="col-12 col-md-6">
+                                            <div class="card">
+                                                <div class="card-body p--2">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                        <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada , estado)}</span>
+                                                    </div>
+                                                    ${determinarFechaCaducidadEncabezado(detalles, laboratorio)}
+                                                    ${determinarFechasCaducadas(detalles, laboratorio)}
+                                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                                        <div class="avatar-sm me-2">
+                                                            <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                        </div>
+                                                        <div>
+                                                            ${determinarCondicionesBotones(detalles, estado, laboratorio)}
                                                         </div>
                                                     </div>
-                                                    
-                                                </div>`;                        
+                                                </div>
+                                            </div>
+                                            
+                                        </div>`;
+                                    }
                                 });
                                 elementos += `
                                                 </div>
@@ -855,26 +859,27 @@ Mi Veris - Citas - {{ $titulo }}
                                                         `;
                             
                                 laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                    elementos += `<div class="col-12 col-md-6">
-                                                    <div class="card">
-                                                        <div class="card-body p--2">
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
-                                                                <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada, estado)}</span>
-                                                            </div>
-                                                            ${determinarFechasCaducadas(detalles, laboratorio)}
-                                                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                                                <div class="avatar-sm me-2">
-                                                                    <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
-                                                                </div>
-                                                                <div>
-                                                                    ${determinarCondicionesBotones(detalles, estado, laboratorio)} 
-                                                                </div>
-                                                            </div>
+                                    if(detalles.detallesServicios === null){
+                                        elementos += `<div class="col-12 col-md-6">
+                                            <div class="card">
+                                                <div class="card-body p--2">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
+                                                        <span class="text-warning-veris fs--2 line-height-16 mb-1">${determinarEstado(detalles.esPagada, estado)}</span>
+                                                    </div>
+                                                    ${determinarFechasCaducadas(detalles, laboratorio)}
+                                                    <div class="d-flex justify-content-between align-items-center mt-2">
+                                                        <div class="avatar-sm me-2">
+                                                            <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                                        </div>
+                                                        <div>
+                                                            ${determinarCondicionesBotones(detalles, estado, laboratorio)} 
                                                         </div>
                                                     </div>
                                                 </div>
-                                                    `;                        
+                                            </div>
+                                        </div>`;  
+                                    }                      
                                 });
                                 elementos += `
                                                 </div>
@@ -971,12 +976,17 @@ Mi Veris - Citas - {{ $titulo }}
     // funciones js 
     // determinar fechas caducadas
     function determinarFechasCaducadas(datos, datosTratamiento){ 
+        console.log(datos, datosTratamiento)
         let dataFechas = ``;
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
             
             if (datos.estado == "AGENDADO" || datos.estado == "ATENDIDO") {
+                let labelFecha = ``;
+                if(datos.detalleReserva !== null){
+                    labelFecha = `<p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.detalleReserva.fechaReserva)} <b class="hora-cita fw-normal text-primary-veris">${datos.detalleReserva.horaReserva}</b></p>`;
+                }
                 dataFechas = `<h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(datos.nombreSucursal)}</h6>
-                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(datos.detalleReserva.fechaReserva)} <b class="hora-cita fw-normal text-primary-veris">${datos.detalleReserva.horaReserva}</b></p>
+                            ${labelFecha}
                             <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(datos.nombreMedicoAtencion)}</p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarCadaPalabra(datos.nombrePaciente)}</p> `;
             }
