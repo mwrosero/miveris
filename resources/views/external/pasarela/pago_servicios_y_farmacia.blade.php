@@ -167,7 +167,7 @@ Veris - Pago en línea
             //validar formulario datos factura
             if(permiteNuvei == "S"){
             	await pasarelaNuvei();
-            	// $('#modalAntifraude').modal('show');
+            	// $('#modalAntifraude').modal('show'); 
             }else{
             	await pasarelaContingencia();
             }
