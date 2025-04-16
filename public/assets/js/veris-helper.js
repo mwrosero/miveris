@@ -58,7 +58,22 @@ async function call(args){
     
     return fetch(url.toString(), requestOptions)
         .then((response) => {
-            return response.json();
+            if(args.responseType && args.responseType == "blob"){
+                return response.blob();
+            }else{
+                return response.json();
+            }
+            /*switch (args.responseType) {
+                case 'blob':
+                    return response.blob();
+                case 'text':
+                    return response.text();
+                case 'arrayBuffer':
+                    return response.arrayBuffer();
+                default:
+                    return response.json();
+            }
+            return response.json();*/
         }).then((data) => {
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
@@ -73,6 +88,9 @@ async function call(args){
             return data;
         }).catch(function(error) {
             console.log("catch error call")
+            if(args.isPhantomX){
+                $('.btn-subir').prop('disabled', false).html("Subir");
+            }
             if(args.showLoader || args.showLoader == true){
                 hideLoader();
                 $('.box-datos-factura').removeClass('d-none')
