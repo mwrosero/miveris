@@ -72,6 +72,9 @@ Route::middleware('guest')->group(function () {
         Route::get('/financiero/devoluciones/tracking/{numeroFactura}/{tipoIdentificacion}/{numeroIdentificacion}', [ExternalController::class, 'trackDevoluciones'])->name('trackDevoluciones')->withoutMiddleware(['guest']);
 
         Route::get('/phantomx/soportes', [ExternalController::class, 'soportesPhantomX'])->name('soportesPhantomX')->withoutMiddleware(['guest']);
+        
+        // Nuevo embudo
+        Route::get('/agendamiento', [ExternalController::class, 'nuevoAgendamientoCitas'])->name('nuevo-embudo-agendamiento')->withoutMiddleware(['guest']);
 
     });
 

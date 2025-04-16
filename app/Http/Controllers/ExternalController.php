@@ -22,6 +22,17 @@ class ExternalController extends Controller
             ->with('accesToken',$this->getTokenExternalDigitales());
     }
 
+    public function nuevoAgendamientoCitas(){
+        // return view('test');
+        // session()->flash('error', "Ningun error");
+        // session()->flash('url', "https://akold.com");
+        // return redirect()->route('payment-error');
+
+
+        return view('external.agendamiento_2025.agendamiento_cita')
+            ->with('accesToken',$this->getTokenExternalDigitales());
+    }
+
     public function listadoPaquetes(){
         return view('external.paquetes_promocionales.listado_paquetes')
             ->with('accesToken',$this->getTokenExternalDigitales());
