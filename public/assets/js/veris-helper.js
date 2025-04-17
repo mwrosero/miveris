@@ -85,6 +85,7 @@ async function call(args){
                 myModal.show();
                 return;
             }
+            
             return data;
         }).catch(function(error) {
             console.log("catch error call")

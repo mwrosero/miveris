@@ -86,6 +86,7 @@
     <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/block-ui/block-ui.js"></script>
     <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/external/phantomx/js/utils.js?v=1.0.1"></script>
     <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/external/resultados-laboratorio/js/pdf.min.js') }}"></script>
     <script>
         const api_url = "{{ \App\Models\Veris::BASE_URL }}";
         const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
@@ -133,7 +134,11 @@
             
             $('body').on('click', '.view-file', async function(){
                 let detalle = JSON.parse($(this).attr('data-rel'));
-                await mostrarPdfSoporteOnline(detalle);
+                if(isIOS()){
+                    await mostrarPdfSoporteOnlineIos(detalle);
+                }else{
+                    await mostrarPdfSoporteOnline(detalle);
+                }
             })
 
             $('body').on('click', '.btn-eliminar-soporte', async function(){
@@ -158,6 +163,10 @@
             })
 
         })
+
+        function isIOS() {
+            return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        }
 
         async function deleteSoporte(detalle){
             let args = [];
@@ -214,6 +223,88 @@
             modalElement.addEventListener("hidden.bs.modal", () => {
                 URL.revokeObjectURL(fileURL);
             }, { once: true });
+        }
+
+        async function mostrarPdfSoporteOnlineIos(detalle) {
+            let args = [];
+            args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes/${ detalle.codigoSoporteOrden }`;
+            args["method"] = "GET";
+            args["token"] = "{{ $accessToken }}";
+            args["isPhantomX"] = true;
+            args["responseType"] = "blob";
+            args["showLoader"] = true;
+
+            try {
+                const data = await call(args);
+
+                const pdfBlob = new Blob([data], { type: 'application/pdf' });
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+
+                const modalTitle = document.getElementById("previewModalTitle");
+                const modalBody = document.getElementById("previewModalBody");
+
+                modalTitle.innerHTML = `
+                    <h6 class="text-blue-70 fs-sm line-clamp-1">
+                        <b class="text-title-3">Soporte.pdf</b>
+                    </h6>`;
+
+                modalBody.innerHTML = `<div id="previewModalBody"></div>`;
+
+                await drawPdf(pdfUrl);
+
+                const previewModal = new bootstrap.Modal(document.getElementById("previewModal"));
+                previewModal.show();
+
+                const modalElement = document.getElementById("previewModal");
+                modalElement.addEventListener("hidden.bs.modal", () => {
+                    URL.revokeObjectURL(pdfUrl);
+                }, { once: true });
+
+            } catch (error) {
+                console.error('Error al obtener el PDF:', error);
+                document.getElementById("previewModalBody").innerHTML = '<p class="text-danger">No se pudo cargar el PDF.</p>';
+                const previewModal = new bootstrap.Modal(document.getElementById("previewModal"));
+                previewModal.show();
+            }
+        }
+
+
+        async function drawPdf(pdfUrl){
+            pdfjsLib.GlobalWorkerOptions.workerSrc = '{{ asset('assets/external/resultados-laboratorio/js/pdf.worker.js') }}';
+
+            let pdfDoc = null;
+            let scale = 1.5;
+
+            function renderPage(num, canvas) {
+                let ctx = canvas.getContext('2d');
+                pdfDoc.getPage(num).then(function(page) {
+                    let viewport = page.getViewport({ scale });
+                    canvas.width = viewport.width;
+                    canvas.height = viewport.height;
+
+                    let renderContext = {
+                        canvasContext: ctx,
+                        viewport
+                    };
+
+                    page.render(renderContext);
+                });
+            }
+
+            pdfDoc = await pdfjsLib.getDocument(pdfUrl).promise;
+            const pages = pdfDoc.numPages;
+
+            let canvasHtml = '';
+            for (let i = 0; i < pages; i++) {
+                canvasHtml += `<canvas class="mb-3 w-100 border" id="canvas_${i}"></canvas>`;
+            }
+
+            document.getElementById('previewModalBody').innerHTML = canvasHtml;
+
+            for (let i = 0; i < pages; i++) {
+                let canvas = document.getElementById(`canvas_${i}`);
+                renderPage(i + 1, canvas);
+            }
         }
 
 
