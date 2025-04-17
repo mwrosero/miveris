@@ -674,8 +674,6 @@
                     console.log("✔️ IDs seleccionados:", selectedIds);
                     console.log("📂 Archivos encontrados:", selectedFiles);
 
-
-
                     {{-- console.log("Files reales en input:", allFiles);
                     console.log("Nombres seleccionados por checkbox:", checkedFileNames);
                     console.log("Archivos encontrados en filter:", selectedFiles); --}}
@@ -739,6 +737,16 @@
             if(detallesAgrupacion.length == 0){
                 console.log("No existe data para agrupar")
             }
+            const vistos = new Set();
+            const uniqueDetallesAgrupacion = detallesAgrupacion.filter(item => {
+                if (vistos.has(item.codigoSoporteOrden)) {
+                    return false;
+                } else {
+                    vistos.add(item.codigoSoporteOrden);
+                    return true;
+                }
+            });
+
             let args = [];
             args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes/asociar_det_agrup_pre_trans`;
             args["method"] = "PUT";
@@ -750,7 +758,7 @@
                 "idPreTransaccion": {{ $idPreTransaccion }},
                 "idAgrupacion": parseInt(idAgrupacion),
                 "tipoSoporte": tipoSoporte,
-                "detallesAgrupacion": detallesAgrupacion
+                "detallesAgrupacion": uniqueDetallesAgrupacion
             })
             args["showLoader"] = true;
             const data = await call(args);
