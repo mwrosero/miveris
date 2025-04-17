@@ -799,13 +799,13 @@ class ExternalController extends Controller
     }
 
     public function soportesPhantomX(Request $request){
-        return view('external.mantenimiento.index');
-        // $data = $request->all();
-        // $accessToken = $this->getTokenExternalFacturacion();
-        // return view('external.qr_ordenes.ordenes_paperless')
-        //         ->with('idPreTransaccion',$data['idPreTransaccion'])
-        //         ->with('codigoEmpresa',$data['codigoEmpresa'])
-        //         ->with('accessToken',$accessToken);
+        // return view('external.mantenimiento.index');
+        $data = $request->all();
+        $accessToken = $this->getTokenExternalFacturacion();
+        return view('external.qr_ordenes.ordenes_paperless')
+                ->with('idPreTransaccion',$data['idPreTransaccion'])
+                ->with('codigoEmpresa',$data['codigoEmpresa'])
+                ->with('accessToken',$accessToken);
     }
 
     public function botAi(Request $request){
