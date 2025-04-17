@@ -137,7 +137,7 @@
                 if(isIOS()){
                     await mostrarPdfSoporteOnlineIos(detalle);
                 }else{
-                    await mostrarPdfSoporteOnlineIos(detalle);
+                    await mostrarPdfSoporteOnline(detalle);
                 }
             })
 
@@ -243,7 +243,6 @@
                 const data = await call(args);
                 const pdfBlob = new Blob([data], { type: 'application/pdf' });
                 const pdfUrl = URL.createObjectURL(pdfBlob);
-                asign.read();
 
                 modalTitle.innerHTML = `
                     <h6 class="text-blue-70 fs-sm line-clamp-1">
