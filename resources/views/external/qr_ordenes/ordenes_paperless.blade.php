@@ -401,7 +401,7 @@
                     const inputId = `file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${slideIndex + 1}-${index}`;
 
                     const elem = `<div class="file-item d-flex align-items-center fw-bold mb-2 ${uniqueId}">
-                        <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel="${convenio ?? ''}" data-index="${slideIndex}">
+                        <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel="${convenio ?? ''}" data-index="${slideIndex}" data-file-name="${fileName}">
                         <label class="form-check-label" for="${inputId}">
                             <span class="text-blue-70">Archivo <b class="fileNumber">${slideIndex + 1}</b>:</span> ${fileName}
                         </label>
@@ -625,7 +625,7 @@
                 const inputId = `file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${numberOfSlides}-${index}`;
 
                 let elem = `<div class="file-item d-flex align-items-center fw-bold mb-2 ${uniqueId}">
-                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel='${convenio ?? ''}' data-index="${(numberOfSlides - 1)}">
+                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel='${convenio ?? ''}' data-index="${(numberOfSlides - 1)}" data-file-name="${fileDetail.name}" >
                     <label class="form-check-label" for="${inputId}">
                         <span class="text-blue-70">Archivo <b class="fileNumber">${numberOfSlides}</b>:</span> ${fileDetail.name}
                     </label>
@@ -662,12 +662,19 @@
                     hasFiles = true;
                     const fileInput = $(`#uploadArea-${idPaciente}`).find('input[type="file"]')[0];
                     const allFiles = fileInput.files;
-                    const checkedIndexes = $fileList.find('input[type="checkbox"]:checked').map(function () {
+                    {{-- const checkedIndexes = $fileList.find('input[type="checkbox"]:checked').map(function () {
                         return parseInt($(this).data('index'));
                     }).get();
+                    const selectedFiles = checkedIndexes.map(i => allFiles[i]); --}}
 
-                    const selectedFiles = checkedIndexes.map(i => allFiles[i]);
-                    console.log(`Archivos seleccionados para paciente ${idPaciente}:`, selectedFiles);
+                    const checkedFileNames = $fileList.find('input[type="checkbox"]:checked').map(function () {
+                        return $(this).data('file-name');
+                    }).get();
+                    const selectedFiles = Array.from(allFiles).filter(file => checkedFileNames.includes(file.name));
+
+                    console.log("Files reales en input:", allFiles);
+                    console.log("Nombres seleccionados por checkbox:", checkedFileNames);
+                    console.log("Archivos encontrados en filter:", selectedFiles);
 
                     let detallesAgrupacion = [];
                     let count = 1;
