@@ -137,7 +137,7 @@
                 if(isIOS()){
                     await mostrarPdfSoporteOnlineIos(detalle);
                 }else{
-                    await mostrarPdfSoporteOnline(detalle);
+                    await mostrarPdfSoporteOnlineIos(detalle);
                 }
             })
 
@@ -234,30 +234,26 @@
             args["responseType"] = "blob";
             args["showLoader"] = true;
 
-            let pdfBlob = null;
-            let pdfUrl = null;
+            const modalTitle = document.getElementById("previewModalTitle");
+            const modalBody = document.getElementById("previewModalBody");
+            const modalElement = document.getElementById("previewModal");
+            const previewModal = new bootstrap.Modal(modalElement);
 
             try {
                 const data = await call(args);
-                pdfBlob = new Blob([data], { type: 'application/pdf' });
-                pdfUrl = URL.createObjectURL(pdfBlob);
-
-                const modalTitle = document.getElementById("previewModalTitle");
-                const modalBody = document.getElementById("previewModalBody");
+                const pdfBlob = new Blob([data], { type: 'application/pdf' });
+                const pdfUrl = URL.createObjectURL(pdfBlob);
+                asign.read();
 
                 modalTitle.innerHTML = `
                     <h6 class="text-blue-70 fs-sm line-clamp-1">
                         <b class="text-title-3">Soporte.pdf</b>
                     </h6>`;
-
                 modalBody.innerHTML = `<div id="canvases"></div>`;
 
                 await drawPdf(pdfUrl);
-
-                const previewModal = new bootstrap.Modal(document.getElementById("previewModal"));
                 previewModal.show();
 
-                const modalElement = document.getElementById("previewModal");
                 modalElement.addEventListener("hidden.bs.modal", () => {
                     URL.revokeObjectURL(pdfUrl);
                 }, { once: true });
@@ -265,21 +261,44 @@
             } catch (error) {
                 console.error('Error al obtener o renderizar el PDF:', error);
 
-                if (!pdfUrl && pdfBlob) {
-                    pdfUrl = URL.createObjectURL(pdfBlob);
+                // Intentamos hacer una segunda llamada simple para recuperar el blob
+                try {
+                    const response = await fetch(api_url + `/facturacion/v1/soportes_ordenes/${ detalle.codigoSoporteOrden }`, {
+                        method: "GET",
+                        headers: {
+                            Authorization: "Bearer {{ $accessToken }}",
+                            Application: _application,
+                            IdOrganizacion: _idOrganizacion
+                        }
+                    });
+                    if (!response.ok) throw new Error("No se pudo descargar el PDF");
+
+                    const fallbackBlob = await response.blob();
+                    const fallbackUrl = URL.createObjectURL(fallbackBlob);
+
+                    modalTitle.innerHTML = `<h6 class="text-blue-70 fs-sm">Soporte.pdf</h6>`;
+                    modalBody.innerHTML = `
+                        <div class="alert alert-warning text-center">
+                            No pudimos mostrar el PDF en esta vista.<br>
+                            <a href="${fallbackUrl}" download="Soporte.pdf" class="btn btn-primary mt-2">
+                                Abrir PDF en una nueva pestaña
+                            </a>
+                        </div>`;
+                    previewModal.show();
+
+                    modalElement.addEventListener("hidden.bs.modal", () => {
+                        URL.revokeObjectURL(fallbackUrl);
+                    }, { once: true });
+
+                } catch (fetchError) {
+                    console.error("Error al obtener el PDF para fallback:", fetchError);
+                    modalTitle.innerHTML = `<h6 class="text-blue-70 fs-sm">Error</h6>`;
+                    modalBody.innerHTML = `
+                        <div class="alert alert-danger text-center">
+                            No se pudo cargar el archivo PDF.
+                        </div>`;
+                    previewModal.show();
                 }
-
-                const modalBody = document.getElementById("previewModalBody");
-                modalBody.innerHTML = `
-                    <div class="alert alert-warning text-center">
-                        No pudimos mostrar el PDF en esta vista.<br>
-                        <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary mt-2">
-                            Abrir PDF en una nueva pestaña
-                        </a>
-                    </div>`;
-
-                const previewModal = new bootstrap.Modal(document.getElementById("previewModal"));
-                previewModal.show();
             }
         }
 
