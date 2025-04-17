@@ -380,37 +380,29 @@
 
             const slides = swiperWrapper.querySelectorAll(".swiper-slide");
 
-            // Limpiar los inputs existentes
             $(`#content-soportes-${idPaciente} .file-list`).each(function () {
                 $(this).empty();
             });
 
             slides.forEach((slide, slideIndex) => {
-                // Obtener nombre real del archivo
-                let fileName = `Archivo ${slideIndex + 1}`;
-                const label = slide.querySelector("label");
+                const fileName = slide.querySelector("b")?.textContent?.trim() || `Archivo ${slideIndex + 1}`;
+                const uniqueId = slide.getAttribute("data-id-unico");
+                if (!uniqueId) return;
 
-                if (label) {
-                    const span = label.querySelector("span");
-                    if (span && span.nextSibling && span.nextSibling.nodeType === Node.TEXT_NODE) {
-                        fileName = span.nextSibling.textContent.trim();
-                    }
-                }
-
-                const uniqueId = slide.querySelector(".file-item")?.classList[1] || `file-${idPaciente}-${slideIndex}`;
-
-                // Redibujar inputs en cada lista correspondiente
                 $(`#content-soportes-${idPaciente} .file-list`).each(function (index, element) {
                     const $el = $(element);
                     const convenio = $el.attr('convenio-rel');
                     const idAgrupacion = $el.attr('idAgrupacion-rel');
                     const codigoServicioNivel1 = $el.attr('codigoServicioNivel1-rel');
                     const type = $el.attr('type-rel');
-
                     const inputId = `file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${slideIndex + 1}-${index}`;
 
                     const elem = `<div class="file-item d-flex align-items-center fw-bold mb-2 ${uniqueId}">
-                        <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel="${convenio ?? ''}" data-index="${slideIndex}" data-file-name="${fileName}">
+                        <input type="checkbox" class="form-check-input fs-4 m-0 me-2"
+                            id="${inputId}"
+                            convenio-rel="${convenio ?? ''}"
+                            data-id-unico="${uniqueId}"
+                            data-file-name="${fileName}">
                         <label class="form-check-label" for="${inputId}">
                             <span class="text-blue-70">Archivo <b class="fileNumber">${slideIndex + 1}</b>:</span> ${fileName}
                         </label>
@@ -633,11 +625,12 @@
                 const inputId = `file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${numberOfSlides}-${index}`;
 
                 let elem = `<div class="file-item d-flex align-items-center fw-bold mb-2 ${uniqueId}">
-                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel='${convenio ?? ''}' data-index="${(numberOfSlides - 1)}" data-file-name="${fileDetail.name}" >
+                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel='${convenio ?? ''}' data-index="${(numberOfSlides - 1)}" data-file-name="${fileDetail.name}" data-id-unico="${uniqueId}">
                     <label class="form-check-label" for="${inputId}">
                         <span class="text-blue-70">Archivo <b class="fileNumber">${numberOfSlides}</b>:</span> ${fileDetail.name}
                     </label>
-                </div>`;                
+                </div>`;
+                console.log(`🧷 Creando checkbox con ID único: ${uniqueId}`);        
 
                 $el.append(elem);
             });
@@ -670,11 +663,17 @@
                     hasFiles = true;
                     const fileInput = $(`#uploadArea-${idPaciente}`).find('input[type="file"]')[0];
                     const allFiles = archivosPorPaciente[idPaciente] || [];
-                    const selectedFileNames = $fileList.find('input[type="checkbox"]:checked').map(function () {
-                        return $(this).data('file-name');
+                    const selectedIds = $fileList.find('input[type="checkbox"]:checked').map(function () {
+                        return $(this).data('id-unico');
                     }).get();
 
-                    const selectedFiles = allFiles.filter(file => selectedFileNames.includes(file.name));
+                    const selectedFiles = (archivosPorPaciente[idPaciente] || [])
+                        .filter(f => selectedIds.includes(f.id))
+                        .map(f => f.file);
+
+                    console.log("✔️ IDs seleccionados:", selectedIds);
+                    console.log("📂 Archivos encontrados:", selectedFiles);
+
 
 
                     {{-- console.log("Files reales en input:", allFiles);
@@ -712,10 +711,8 @@
                         // console.log("tiene soportes")
                         // console.log(soportesPrevios)
                         hasFiles = true;
-                        $.each(soportesPrevios, function (k1, v1) {
-                            detallesAgrupacion.push({
-                                "codigoSoporteOrden": soportesPrevios.codigoSoporteOrden,
-                            });
+                        detallesAgrupacion.push({
+                            "codigoSoporteOrden": soportesPrevios.codigoSoporteOrden,
                         });
                         await asociarSoportes(detallesAgrupacion, idPaciente, idAgrupacion, type);
                         $('.btn-subir').prop('disabled', false).html("Subir");
