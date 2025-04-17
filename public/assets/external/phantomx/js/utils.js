@@ -1,3 +1,5 @@
+const archivosPorPaciente = {};
+
 document.addEventListener("DOMContentLoaded", () => {
     document.body.addEventListener("change", function (e) {
         if (e.target && e.target.classList.contains("file-input")) {
@@ -11,6 +13,10 @@ function handleFileInput(event) {
     const pacienteId = input.getAttribute("data-id");
     const files = input.files;
 
+    if (!archivosPorPaciente[pacienteId]) {
+        archivosPorPaciente[pacienteId] = [];
+    }
+
     if (!pacienteId || !files.length) return;
 
     const swiperWrapper = document.getElementById(`swiperWrapper-${pacienteId}`);
@@ -21,7 +27,8 @@ function handleFileInput(event) {
     if (!swiperWrapper) return;
 
     Array.from(files).forEach((file, index) => {
-        addDocumentCard(file, swiperWrapper, pacienteId, index);
+        archivosPorPaciente[pacienteId].push(file);
+        addDocumentCard(file, swiperWrapper, pacienteId, archivosPorPaciente[pacienteId].length - 1);
     });
 
     // Mostrar controles si hay más de 1 archivo

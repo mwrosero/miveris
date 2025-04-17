@@ -386,9 +386,18 @@
             });
 
             slides.forEach((slide, slideIndex) => {
-                const cardHeader = slide.querySelector(".card-header h6");
-                const fileName = cardHeader ? cardHeader.querySelector("b")?.textContent : `Archivo ${slideIndex + 1}`;
-                const uniqueId = slide.querySelector(".file-item")?.classList[1] || `file-${idPaciente}-${slideIndex}`; // intenta recuperar el id único o crea uno nuevo
+                // Obtener nombre real del archivo
+                let fileName = `Archivo ${slideIndex + 1}`;
+                const label = slide.querySelector("label");
+
+                if (label) {
+                    const span = label.querySelector("span");
+                    if (span && span.nextSibling && span.nextSibling.nodeType === Node.TEXT_NODE) {
+                        fileName = span.nextSibling.textContent.trim();
+                    }
+                }
+
+                const uniqueId = slide.querySelector(".file-item")?.classList[1] || `file-${idPaciente}-${slideIndex}`;
 
                 // Redibujar inputs en cada lista correspondiente
                 $(`#content-soportes-${idPaciente} .file-list`).each(function (index, element) {
@@ -401,7 +410,7 @@
                     const inputId = `file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${slideIndex + 1}-${index}`;
 
                     const elem = `<div class="file-item d-flex align-items-center fw-bold mb-2 ${uniqueId}">
-                        <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel="${convenio ?? ''}" data-index="${slideIndex}">
+                        <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel="${convenio ?? ''}" data-index="${slideIndex}" data-file-name="${fileName}">
                         <label class="form-check-label" for="${inputId}">
                             <span class="text-blue-70">Archivo <b class="fileNumber">${slideIndex + 1}</b>:</span> ${fileName}
                         </label>
@@ -411,7 +420,6 @@
                 });
             });
         }
-
 
         async function drawSoportes(data, idPaciente){
             let elem = ``;
@@ -625,7 +633,7 @@
                 const inputId = `file-${type}-${idPaciente}-${idAgrupacion}-${codigoServicioNivel1}-${numberOfSlides}-${index}`;
 
                 let elem = `<div class="file-item d-flex align-items-center fw-bold mb-2 ${uniqueId}">
-                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel='${convenio ?? ''}' data-index="${(numberOfSlides - 1)}">
+                    <input type="checkbox" class="form-check-input fs-4 m-0 me-2" id="${inputId}" convenio-rel='${convenio ?? ''}' data-index="${(numberOfSlides - 1)}" data-file-name="${fileDetail.name}" >
                     <label class="form-check-label" for="${inputId}">
                         <span class="text-blue-70">Archivo <b class="fileNumber">${numberOfSlides}</b>:</span> ${fileDetail.name}
                     </label>
@@ -651,23 +659,27 @@
                 const idAgrupacion = $fileList.attr('idAgrupacion-rel');
                 const type = $fileList.attr('type-rel');
 
-                // console.log("Paciente:", idPaciente);
-                // console.log("Tiene contenido HTML:", notEmpty);
-                // console.log("Checkbox checked:", hasCheckboxChecked);
-                // console.log("Checkbox encontrados:", $fileList.find('input[type="checkbox"]').length);
-                // console.log("Contenido actual del file-list:", $fileList.html());
+                {{-- console.log("Paciente:", idPaciente);
+                console.log("Tiene contenido HTML:", notEmpty);
+                console.log("Checkbox checked:", hasCheckboxChecked);
+                console.log("Checkbox encontrados:", $fileList.find('input[type="checkbox"]').length);
+                console.log("Contenido actual del file-list:", $fileList.html()); --}}
 
                 if (notEmpty && hasCheckboxChecked) {
-                    // console.log("tiene archivos")
+                    console.log("tiene archivos")
                     hasFiles = true;
                     const fileInput = $(`#uploadArea-${idPaciente}`).find('input[type="file"]')[0];
-                    const allFiles = fileInput.files;
-                    const checkedIndexes = $fileList.find('input[type="checkbox"]:checked').map(function () {
-                        return parseInt($(this).data('index'));
+                    const allFiles = archivosPorPaciente[idPaciente] || [];
+                    const selectedFileNames = $fileList.find('input[type="checkbox"]:checked').map(function () {
+                        return $(this).data('file-name');
                     }).get();
 
-                    const selectedFiles = checkedIndexes.map(i => allFiles[i]);
-                    // console.log(`Archivos seleccionados para paciente ${idPaciente}:`, selectedFiles);
+                    const selectedFiles = allFiles.filter(file => selectedFileNames.includes(file.name));
+
+
+                    {{-- console.log("Files reales en input:", allFiles);
+                    console.log("Nombres seleccionados por checkbox:", checkedFileNames);
+                    console.log("Archivos encontrados en filter:", selectedFiles); --}}
 
                     let detallesAgrupacion = [];
                     let count = 1;
@@ -694,7 +706,7 @@
                     await asociarSoportes(detallesAgrupacion, idPaciente, idAgrupacion, type);
                     $('.btn-subir').prop('disabled', false).html("Subir");
                 } else {
-                    // console.log("no tiene archivos")
+                    console.log("no tiene archivos")
                     let detallesAgrupacion = [];
                     if (Object.keys(soportesPrevios).length !== 0) {
                         // console.log("tiene soportes")
@@ -727,6 +739,9 @@
 
         async function asociarSoportes(detallesAgrupacion, idPaciente, idAgrupacion, tipoSoporte){
             console.log(detallesAgrupacion, idPaciente, idAgrupacion, tipoSoporte)
+            if(detallesAgrupacion.length == 0){
+                console.log("No existe data para agrupar")
+            }
             let args = [];
             args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes/asociar_det_agrup_pre_trans`;
             args["method"] = "PUT";
