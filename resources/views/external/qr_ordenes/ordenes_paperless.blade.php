@@ -234,11 +234,13 @@
             args["responseType"] = "blob";
             args["showLoader"] = true;
 
+            let pdfBlob = null;
+            let pdfUrl = null;
+
             try {
                 const data = await call(args);
-
-                const pdfBlob = new Blob([data], { type: 'application/pdf' });
-                const pdfUrl = URL.createObjectURL(pdfBlob);
+                pdfBlob = new Blob([data], { type: 'application/pdf' });
+                pdfUrl = URL.createObjectURL(pdfBlob);
 
                 const modalTitle = document.getElementById("previewModalTitle");
                 const modalBody = document.getElementById("previewModalBody");
@@ -248,7 +250,7 @@
                         <b class="text-title-3">Soporte.pdf</b>
                     </h6>`;
 
-                modalBody.innerHTML = `<div id="previewModalBody"></div>`;
+                modalBody.innerHTML = `<div id="canvases"></div>`;
 
                 await drawPdf(pdfUrl);
 
@@ -261,19 +263,26 @@
                 }, { once: true });
 
             } catch (error) {
-                console.error('Error al obtener el PDF:', error);
-                const fallbackUrl = URL.createObjectURL(pdfBlob);
-                document.getElementById("previewModalBody").innerHTML = `
+                console.error('Error al obtener o renderizar el PDF:', error);
+
+                if (!pdfUrl && pdfBlob) {
+                    pdfUrl = URL.createObjectURL(pdfBlob);
+                }
+
+                const modalBody = document.getElementById("previewModalBody");
+                modalBody.innerHTML = `
                     <div class="alert alert-warning text-center">
                         No pudimos mostrar el PDF en esta vista.<br>
-                        <a href="${fallbackUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary mt-2">
+                        <a href="${pdfUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary mt-2">
                             Abrir PDF en una nueva pestaña
                         </a>
                     </div>`;
+
                 const previewModal = new bootstrap.Modal(document.getElementById("previewModal"));
                 previewModal.show();
             }
         }
+
 
 
         async function drawPdf(pdfUrl){
