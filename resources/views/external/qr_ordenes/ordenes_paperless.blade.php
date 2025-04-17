@@ -659,30 +659,27 @@
                 const idAgrupacion = $fileList.attr('idAgrupacion-rel');
                 const type = $fileList.attr('type-rel');
 
-                console.log("Paciente:", idPaciente);
+                {{-- console.log("Paciente:", idPaciente);
                 console.log("Tiene contenido HTML:", notEmpty);
                 console.log("Checkbox checked:", hasCheckboxChecked);
                 console.log("Checkbox encontrados:", $fileList.find('input[type="checkbox"]').length);
-                console.log("Contenido actual del file-list:", $fileList.html());
+                console.log("Contenido actual del file-list:", $fileList.html()); --}}
 
                 if (notEmpty && hasCheckboxChecked) {
                     console.log("tiene archivos")
                     hasFiles = true;
                     const fileInput = $(`#uploadArea-${idPaciente}`).find('input[type="file"]')[0];
-                    const allFiles = fileInput.files;
-                    {{-- const checkedIndexes = $fileList.find('input[type="checkbox"]:checked').map(function () {
-                        return parseInt($(this).data('index'));
-                    }).get();
-                    const selectedFiles = checkedIndexes.map(i => allFiles[i]); --}}
-
-                    const checkedFileNames = $fileList.find('input[type="checkbox"]:checked').map(function () {
+                    const allFiles = archivosPorPaciente[idPaciente] || [];
+                    const selectedFileNames = $fileList.find('input[type="checkbox"]:checked').map(function () {
                         return $(this).data('file-name');
                     }).get();
-                    const selectedFiles = Array.from(allFiles).filter(file => checkedFileNames.includes(file.name));
 
-                    console.log("Files reales en input:", allFiles);
+                    const selectedFiles = allFiles.filter(file => selectedFileNames.includes(file.name));
+
+
+                    {{-- console.log("Files reales en input:", allFiles);
                     console.log("Nombres seleccionados por checkbox:", checkedFileNames);
-                    console.log("Archivos encontrados en filter:", selectedFiles);
+                    console.log("Archivos encontrados en filter:", selectedFiles); --}}
 
                     let detallesAgrupacion = [];
                     let count = 1;
