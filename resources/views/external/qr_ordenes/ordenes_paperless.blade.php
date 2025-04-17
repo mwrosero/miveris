@@ -386,9 +386,18 @@
             });
 
             slides.forEach((slide, slideIndex) => {
-                const cardHeader = slide.querySelector(".card-header h6");
-                const fileName = cardHeader ? cardHeader.querySelector("b")?.textContent : `Archivo ${slideIndex + 1}`;
-                const uniqueId = slide.querySelector(".file-item")?.classList[1] || `file-${idPaciente}-${slideIndex}`; // intenta recuperar el id único o crea uno nuevo
+                // Obtener nombre real del archivo
+                let fileName = `Archivo ${slideIndex + 1}`;
+                const label = slide.querySelector("label");
+
+                if (label) {
+                    const span = label.querySelector("span");
+                    if (span && span.nextSibling && span.nextSibling.nodeType === Node.TEXT_NODE) {
+                        fileName = span.nextSibling.textContent.trim();
+                    }
+                }
+
+                const uniqueId = slide.querySelector(".file-item")?.classList[1] || `file-${idPaciente}-${slideIndex}`;
 
                 // Redibujar inputs en cada lista correspondiente
                 $(`#content-soportes-${idPaciente} .file-list`).each(function (index, element) {
@@ -411,7 +420,6 @@
                 });
             });
         }
-
 
         async function drawSoportes(data, idPaciente){
             let elem = ``;
