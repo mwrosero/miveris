@@ -467,22 +467,28 @@ async function registrarCuenta(){
     let fechaParts = getInput('fechaNacimiento').split('-');
     let fechaFormateada = fechaParts[2] + '/' + fechaParts[1] + '/' + fechaParts[0];
 
-    args["data"] = JSON.stringify({
+    let payload = {
         "tipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
         "numeroIdentificacion": getInput('numeroIdentificacion'),
         "primerApellido": getInput('primerApellido'),
-        "segundoApellido": getInput('segundoApellido'),
+        // "segundoApellido": getInput('segundoApellido'),
         "primerNombre": getInput('primerNombre'),
         "mail": getInput('mail').toLowerCase(),
         "fechaNacimiento": fechaFormateada,
         "genero": getInput('genero'),
         "telfMovil": getInput('telefono'),
-        "codPais": parseInt(getInput('pais')),
-        "codigoProv": parseInt(getInput('provincia')),
-        "codigoCiudad": parseInt(getInput('ciudad')),
+        // "codPais": parseInt(getInput('pais')),
+        // "codigoProv": parseInt(getInput('provincia')),
+        // "codigoCiudad": parseInt(getInput('ciudad')),
         "pass": getInput('password'),
         "canalOrigenDigital": _canalOrigen
-    });
+    }
+
+    if(parseInt(getInput('tipoIdentificacion')) == 3){
+        payload.codPais = parseInt(getInput('pais'));
+    }
+
+    args["data"] = JSON.stringify(payload);
 
     const data = await call(args);
     return data;
