@@ -667,7 +667,7 @@
                     }).get();
 
                     const selectedFiles = checkedIndexes.map(i => allFiles[i]);
-                    // console.log(`Archivos seleccionados para paciente ${idPaciente}:`, selectedFiles);
+                    console.log(`Archivos seleccionados para paciente ${idPaciente}:`, selectedFiles);
 
                     let detallesAgrupacion = [];
                     let count = 1;
