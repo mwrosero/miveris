@@ -262,7 +262,14 @@
 
             } catch (error) {
                 console.error('Error al obtener el PDF:', error);
-                document.getElementById("previewModalBody").innerHTML = '<p class="text-danger">No se pudo cargar el PDF.</p>';
+                const fallbackUrl = URL.createObjectURL(pdfBlob);
+                document.getElementById("previewModalBody").innerHTML = `
+                    <div class="alert alert-warning text-center">
+                        No pudimos mostrar el PDF en esta vista.<br>
+                        <a href="${fallbackUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary mt-2">
+                            Abrir PDF en una nueva pestaña
+                        </a>
+                    </div>`;
                 const previewModal = new bootstrap.Modal(document.getElementById("previewModal"));
                 previewModal.show();
             }
