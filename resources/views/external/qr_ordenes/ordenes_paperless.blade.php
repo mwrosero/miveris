@@ -651,14 +651,14 @@
                 const idAgrupacion = $fileList.attr('idAgrupacion-rel');
                 const type = $fileList.attr('type-rel');
 
-                // console.log("Paciente:", idPaciente);
-                // console.log("Tiene contenido HTML:", notEmpty);
-                // console.log("Checkbox checked:", hasCheckboxChecked);
-                // console.log("Checkbox encontrados:", $fileList.find('input[type="checkbox"]').length);
-                // console.log("Contenido actual del file-list:", $fileList.html());
+                console.log("Paciente:", idPaciente);
+                console.log("Tiene contenido HTML:", notEmpty);
+                console.log("Checkbox checked:", hasCheckboxChecked);
+                console.log("Checkbox encontrados:", $fileList.find('input[type="checkbox"]').length);
+                console.log("Contenido actual del file-list:", $fileList.html());
 
                 if (notEmpty && hasCheckboxChecked) {
-                    // console.log("tiene archivos")
+                    console.log("tiene archivos")
                     hasFiles = true;
                     const fileInput = $(`#uploadArea-${idPaciente}`).find('input[type="file"]')[0];
                     const allFiles = fileInput.files;
@@ -694,7 +694,7 @@
                     await asociarSoportes(detallesAgrupacion, idPaciente, idAgrupacion, type);
                     $('.btn-subir').prop('disabled', false).html("Subir");
                 } else {
-                    // console.log("no tiene archivos")
+                    console.log("no tiene archivos")
                     let detallesAgrupacion = [];
                     if (Object.keys(soportesPrevios).length !== 0) {
                         // console.log("tiene soportes")
@@ -727,6 +727,9 @@
 
         async function asociarSoportes(detallesAgrupacion, idPaciente, idAgrupacion, tipoSoporte){
             console.log(detallesAgrupacion, idPaciente, idAgrupacion, tipoSoporte)
+            if(detallesAgrupacion.length == 0){
+                console.log("No existe data para agrupar")
+            }
             let args = [];
             args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes/asociar_det_agrup_pre_trans`;
             args["method"] = "PUT";
