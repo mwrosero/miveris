@@ -118,7 +118,7 @@
                 let hasFiles = await uploadSoportes();
                 console.log("Carga terminada");
                 if(hasFiles){
-                    alert("Documentos subidos exitosamente");
+                    alert("Documentos subidos exitosamente.");
                     $(`.swiper-wrapper`).empty();
                     $(`.file-list`).empty();
                     await getData("reload")
