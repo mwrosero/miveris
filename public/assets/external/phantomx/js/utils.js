@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-function handleFileInput(event) {
+function bkhandleFileInput(event) {
     const input = event.target;
     const pacienteId = input.getAttribute("data-id");
     const files = input.files;
@@ -27,8 +27,15 @@ function handleFileInput(event) {
     if (!swiperWrapper) return;
 
     Array.from(files).forEach((file, index) => {
-        archivosPorPaciente[pacienteId].push(file);
-        addDocumentCard(file, swiperWrapper, pacienteId, archivosPorPaciente[pacienteId].length - 1);
+        const idUnico = `${pacienteId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    
+        archivosPorPaciente[pacienteId].push({
+            id: idUnico,
+            file: file,
+            name: file.name,
+        });
+
+        addDocumentCard(file, swiperWrapper, pacienteId, idUnico);
     });
 
     // Mostrar controles si hay más de 1 archivo
@@ -41,7 +48,45 @@ function handleFileInput(event) {
     initSwiper(pacienteId);
 }
 
-function addDocumentCard(file, swiperWrapper, pacienteId, index) {
+function handleFileInput(event) {
+    const input = event.target;
+    const pacienteId = input.getAttribute("data-id");
+    const files = input.files;
+
+    if (!pacienteId || !files.length) return;
+
+    const swiperWrapper = document.getElementById(`swiperWrapper-${pacienteId}`);
+    const pagination = document.getElementById(`swiperPagination-${pacienteId}`);
+    const nextBtn = document.getElementById(`swiperNext-${pacienteId}`);
+    const prevBtn = document.getElementById(`swiperPrev-${pacienteId}`);
+    if (!swiperWrapper) return;
+
+    if (!archivosPorPaciente[pacienteId]) {
+        archivosPorPaciente[pacienteId] = [];
+    }
+
+    let count = 0;
+    Array.from(files).forEach((file) => {
+        const uniqueId = `${pacienteId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        console.log(uniqueId)
+        archivosPorPaciente[pacienteId].push({ id: uniqueId, file, name: file.name });
+
+        addDocumentCard(file, swiperWrapper, pacienteId, count, uniqueId);
+        count++;
+    });
+
+    if (swiperWrapper.children.length > 1) {
+        pagination.classList.remove("d-none");
+        nextBtn.classList.remove("d-none");
+        prevBtn.classList.remove("d-none");
+    }
+
+    initSwiper(pacienteId);
+}
+
+
+function addDocumentCard(file, swiperWrapper, pacienteId, index, uniqueId) {
+    console.log({uniqueId})
     const fileURL = URL.createObjectURL(file);
     const fileType = file.type;
     const slide = document.createElement("div");
@@ -91,7 +136,9 @@ function addDocumentCard(file, swiperWrapper, pacienteId, index) {
 
     actions.appendChild(successMessage);
 
-    const uniqueId = `${pacienteId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    // const uniqueId = `${pacienteId}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    slide.setAttribute("data-id-unico", uniqueId);
+    console.log(`🧷 Creando setAttribute con ID único: ${uniqueId}`);
 
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
@@ -147,6 +194,28 @@ function addDocumentCard(file, swiperWrapper, pacienteId, index) {
     console.log(pacienteId)
     addInputCard(pacienteId, file, uniqueId)
 }
+
+function sincronizarArchivosPaciente(pacienteId) {
+    const slides = document.querySelectorAll(`#swiperWrapper-${pacienteId} .swiper-slide`);
+
+    if (!slides.length || !archivosPorPaciente[pacienteId]) return;
+
+    const idsVisibles = Array.from(slides).map(slide => {
+        return slide.getAttribute("data-id-unico") ||
+               slide.querySelector(".file-item")?.classList[1] || null;
+    }).filter(id => id !== null);
+
+    const archivosActuales = archivosPorPaciente[pacienteId];
+
+    const nuevosArchivos = idsVisibles
+        .map(id => archivosActuales.find(a => a.id === id))
+        .filter(a => a !== undefined);
+
+    archivosPorPaciente[pacienteId] = nuevosArchivos;
+
+    console.log(`[Sync] Archivos sincronizados para paciente ${pacienteId}:`, nuevosArchivos);
+}
+
 
 function showPreview(file, fileName, slide) {
     const index = Array.from(slide.parentElement.children).reverse().indexOf(slide) + 1;

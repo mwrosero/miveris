@@ -17,7 +17,8 @@ Veris - Citas
         <div class="container mb-4">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-6 col-lg-5 mt-3">
-                	<h5 class="ps-3 my-auto py-3 fs-20 line-height-24 text-primary-veris fw-bold">{{ __('Registrar paciente') }}</h5>
+                	<h5 class="my-auto py-2 fs-20 line-height-24 text-primary-veris fw-bold">{{ __('Registrar paciente') }}</h5>
+                	<p class="fs-18 line-height-20 mb-4">Ingresa el número de identificación del paciente</p>
 				    <div class="mb-2">
 				        <label for="tipoIdentificacion" class="form-label fw-medium fs--1">Tipo de identificación *</label>
 				        <select class="form-select fs--1 p-3"
