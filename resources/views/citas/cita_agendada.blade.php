@@ -124,7 +124,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     let datoReserva;
     let imagenBase64;
     let titleDr = `Dr(a)`;
-    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
+    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS","TERAPIA_FISICA_AGRUPADA"];
     document.addEventListener("DOMContentLoaded", async function () {
         // let urlImagen = "share-img.png";
         // convertirImagenABase64(urlImagen, function(base64Imagen) {
