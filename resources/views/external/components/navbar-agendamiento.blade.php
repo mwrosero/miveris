@@ -1,6 +1,16 @@
 <nav class="layout-navbar navbar navbar-expand-xl align-items-center bg-navbar-theme-agendamiento pe-3 shadow-none" id="layout-navbar">
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <!-- Logo veris -->
+        @if (!empty($showInfo) && $showInfo)
+        <div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center; position: absolute;">
+            <a href="javascript:history.back()" class="text-decoration-none d-block btn-atras-embudo">
+                <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 5px;">
+                    <img src="{{asset('assets/img/svg/atras.svg')}}" class="cursor-pointer prev-image" alt="Atrás">
+                    <label class="fw-medium cursor-pointer" style="color: #0A2240;font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
+                </div>
+            </a>
+        </div>
+        @endif
         <div class="navbar-brand mx-auto">
             <img src="{{ asset('assets/img/'.config('app.subdomain').'/logo-'.config('app.subdomain').'-color-portrait.svg') }}" class="ml-lg-12" alt="veris" width="84">
         </div>        

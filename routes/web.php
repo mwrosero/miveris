@@ -75,6 +75,10 @@ Route::middleware('guest')->group(function () {
         
         // Nuevo embudo
         Route::get('/agendamiento', [ExternalController::class, 'nuevoAgendamientoCitas'])->name('nuevo-embudo-agendamiento')->withoutMiddleware(['guest']);
+        Route::get('/agendamiento/registro/{params}', [ExternalController::class, 'registroNuevoAgendamientoCitas'])->name('registro-embudo-agendamiento')->withoutMiddleware(['guest']);
+        Route::get('/agendamiento/seleccionar-datos-cita/{params}', [ExternalController::class, 'datosCitaNuevoAgendamientoCitas'])->name('datos-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
+        Route::get('/agendamiento/seleccionar-fecha/{params}', [ExternalController::class, 'fechaNuevoAgendamientoCitas'])->name('fecha-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
+        Route::get('/agendamiento/detalle-cita/{params}', [ExternalController::class, 'detalleCitaNuevoAgendamientoCitas'])->name('detalle-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
 
     });
 
@@ -106,6 +110,8 @@ Route::group(['middleware' => ['loggedUser']], function () {
     //Route::get('/agendamiento', [CitasController::class, 'agendamiento'])->name('agendamiento')->withoutMiddleware(['guest']);
     Route::get('/citas', [CitasController::class, 'citas'])->name('citas')->withoutMiddleware(['guest']);
     Route::get('/citas-elegir-paciente/{params}',[CitasController::class, 'listaPacientes'])->name('citas.listaPacientes')->withoutMiddleware(['guest']);
+    Route::get('/citas-elegir-paciente-orden-externa/{params}',[CitasController::class, 'listaPacientesOE'])->name('citas.listaPacientesOE')->withoutMiddleware(['guest']);
+
     
     Route::get('/agendamiento-ai',[CitasController::class, 'mostrarAgendamientoAI'])->name('citas.agendamiento-ai')->withoutMiddleware(['guest']);
 
