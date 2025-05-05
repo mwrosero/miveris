@@ -422,7 +422,8 @@ Veris - Datos de facturación
 		let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ request()->query('numeroIdentificacion') }}?codigoEmpresa=1&plataforma=WEB&version=7.0.1`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
+        args["dismissAlert"] = true;
         const data = await call(args);
         console.log(data);
         if(data.code == 200){
