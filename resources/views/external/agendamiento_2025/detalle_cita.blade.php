@@ -184,6 +184,10 @@ Veris - Detalle de Citas
         permitePago = dataCita.convenio.permitePago;
     }
 
+    if(permitePago == "S"){
+        $('#btn-pagar').html('Pagar');
+    }
+
     document.addEventListener("DOMContentLoaded", async function () {
         if(dataCita.hasOwnProperty('detalle_multiple')){
             $('#contentDetalleCitaMultiple').parent().addClass('py-0 px-0')
@@ -493,7 +497,12 @@ Veris - Detalle de Citas
         if(dataCita.paciente.nombrePaciente){
             nombrePaciente = dataCita.paciente.nombrePaciente;
         }else{
-            nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
+            nombrePaciente = [
+                dataCita.paciente.primerNombre,
+                dataCita.paciente.primerApellido,
+                dataCita.paciente.segundoApellido
+            ].filter(v => v).join(' ');
+            {{-- nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`; --}}
         }
         elem += `<p class="fs--2 line-height-16 mb-1">${capitalizarElemento(dia)} <b class="text-normal text-primary-veris fw-normal">${horaInicio} - ${horaFin} ${determinarMeridiano(horaInicio)}</b></p>
             <p class="fs--2 line-height-16 mb-1 text-capitalize">Dr(a) ${dataCita.horario.nombreMedico.toLowerCase()}</p>
