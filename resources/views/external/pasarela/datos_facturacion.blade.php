@@ -233,7 +233,7 @@ Veris - Datos de facturación
 	                    <div class="col-12 text-center mt-4">
 	                        <div class="form-check d-flex justify-content-md-center align-items-center">
 	                            <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
-	                            <label class="form-check-label fs--1 fw-medium line-height-16" for="checkTerminosCondicion">
+	                            <label class="form-check-label text-start fs--1 fw-medium line-height-16 label-terminos" for="checkTerminosCondicion">
 	                                Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank" class="">Términos y condiciones</a> 
 	                                <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
 	                            </label>
@@ -277,6 +277,8 @@ Veris - Datos de facturación
 	let canalOrigen = (window.config.subdomain == "veris") ? "VER_CMV" : "VER_PMF";
 	let preTransaccion = @json($pretransaccion);
 	let dataCita = {};
+	let ppd = false;
+	let politics;
 	dataCita.returnUrl = "{{ $urlRetornoPago }}"
 	dataCita.preTransaccion = preTransaccion.data;
 	dataCita.executionId = "{{ request()->input('executionId', '') }}";
@@ -284,6 +286,7 @@ Veris - Datos de facturación
 	// dataCita.preTransaccion.codigoPreTransaccion
 	document.addEventListener("DOMContentLoaded", async function () {
 		await consultarDatosFactura();
+		await obtenerPoliticas();
 		console.log("{{ request()->input('executionId', '') }}")
 		$('body').on('change', '#tipoIdentificacion', function(){
             if($(this).val() == '2'){
@@ -414,6 +417,46 @@ Veris - Datos de facturación
 			}
 		})
 	});
+
+	async function obtenerPoliticas(){
+		let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ request()->query('numeroIdentificacion') }}?codigoEmpresa=1&plataforma=WEB&version=7.0.1`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+        	if(data.data.estadoPoliticas == "N"){
+        		politics = data;
+        		ppd = true;
+        		$('.label-terminos').html(`Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank" class="">Términos y condiciones</a> 
+	                <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span><br> y <a href="${data.data.linkPoliticaPrivacidad}" target="_blank">${data.data.leyendaPoliticas}</a>`)
+        	}
+        }
+	}
+
+	async function actualizarPoliticas(){
+		let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ request()->query('numeroIdentificacion') }}`;
+        args["method"] = "POST";
+        args["showLoader"] = true; 
+        args["bodyType"] = "json"; 
+        args["dismissAlert"] = true;
+        args["data"] = JSON.stringify({
+            "numeroIdentificacion": {{ request()->query('numeroIdentificacion') }},
+            "aceptaPoliticas": $('#checkTerminosCondicion').prop('checked'),
+            "versionPoliticas": politics.data.ultimaVersionPoliticas,
+            "codigoEmpresa": 1,
+            "plataforma": "WEB",
+            "versionPlataforma": "7.0.1",
+            "canalOrigen": canalOrigen,
+            "tipoEvento": "CR" //Opcional
+        })
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+        return data;
+	}
 
 	function mostrarDesglose(){
         var myModal = new bootstrap.Modal(document.getElementById('modalDesglose'));
@@ -611,6 +654,9 @@ Veris - Datos de facturación
                 $('#btn-seleccionar-tarjeta').attr("href",`/citas-seleccionar-tarjeta/{{ $tokenCita }}`)
                 $('#btn-agregar-tarjeta').attr("href",`/citas-informacion-pago/{{ $tokenCita }}`)
             }else{
+            	if(ppd){
+	        		await actualizarPoliticas();
+	        	}
                 if(tipoBoton == "KUSHKI"){
                     // let ulrParams = btoa(JSON.stringify(dataCita));
                     let ruta = `/external/payment/kushki/{{ $tokenCita }}`;
@@ -645,13 +691,16 @@ Veris - Datos de facturación
 		    	console.log('modal closed');
 		    	$('.btnNuvei').css('pointer-events','auto')
 		    },
-		    onResponse: function (response) {
+		    onResponse: async function (response) {
 				console.log('modal response');
 		        //document.getElementById('response').innerHTML = JSON.stringify(response);
 		        if(response.transaction.status == "success" && response.transaction.status_detail == 3){
 		        	console.log(JSON.stringify(response));
 		        	console.log("Inicio Enviando formulario de pago TC");
 		        	$('.btnNuvei').hide();
+		        	if(ppd){
+		        		await actualizarPoliticas();
+		        	}
 		        	createPostForm(response);
 		        	$('.btnNuvei').hide();
 		        	showLoader();
