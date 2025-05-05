@@ -26,7 +26,8 @@ class CitasController extends Controller
     }
 
     public function listaPacientesOE($params) {
-        return view('citas.paciente')->with('params',$params);
+        return view('citas.paciente_2024')->with('params',$params);
+        // return view('citas.paciente')->with('params',$params);
     }
 
     // Return view elegir espcialidad
