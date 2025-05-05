@@ -49,6 +49,10 @@ class ExternalController extends Controller
         return view('external.agendamiento_2025.detalle_cita')->with('params',$params);
     }
 
+    public function CitaAgendadaNuevoAgendamientoCitas($params){
+        return view('external.agendamiento_2025.cita_agendada')->with('params',$params);
+    }
+
     public function listadoPaquetes(){
         return view('external.paquetes_promocionales.listado_paquetes')
             ->with('accesToken',$this->getTokenExternalDigitales());

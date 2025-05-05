@@ -55,7 +55,7 @@ Veris - Registrar cuenta
 					            name="genero"
 					            autofocus
 					            required>
-					            {{-- <option disabled selected hidden>Elegir</option> --}}
+					            <option value="" disabled selected hidden>Elige el género del paciente</option>
 					            <option value="M">Masculino</option>
 					            <option value="F">Femenino</option>
 					        </select>
@@ -108,7 +108,7 @@ Veris - Registrar cuenta
 
 	document.addEventListener("DOMContentLoaded", async function () {
         await obtenerIdentificacion();
-        await obtenerPaises();
+        await obtenerPaises(true);
 
         if(dataCita.registro.tipoIdentificacion == 3){
         	$('.form-pais').removeClass('d-none');
@@ -205,7 +205,7 @@ Veris - Registrar cuenta
 	        "fechaNacimiento": fechaFormateada,
 	        "genero": getInput('genero'),
 	        "telfMovil": getInput('telefono'),
-	        "canalOrigenDigital": _canalOrigen
+	        "canalOrigenDigital": window.config.canalOrigen
 	    }
 
 	    if(parseInt(dataCita.registro.tipoIdentificacion) == 3){
@@ -240,6 +240,34 @@ Veris - Registrar cuenta
 	    	showMessage('error', 'Atención', data.message);
 	    }
     }
-
 </script>
+<style>
+	input:placeholder-shown,
+	select:invalid{
+	  border: 1px solid #E7E9EC !important;
+	  background: #FFFFFFCC !important;
+	  color: #3D4E66 !important;
+	}
+
+	input:not(:placeholder-shown),
+	input:focus,
+	select:valid{
+	  border: 1px solid #0071CE !important;
+	  color: #0071CE !important;
+	  background: #FFFFFFCC !important;
+	}
+
+	input:not(:placeholder-shown),
+	select:valid{
+	  font-weight: 500 !important;
+	}
+
+	select{
+		background-color: #fff;
+	    background-image: url(data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='%236f6b7d' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M5 7.5L10 12.5L15 7.5' stroke='white' stroke-opacity='0.2' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E) !important;
+	    background-repeat: no-repeat !important;
+	    background-position: right 0.875rem center !important;
+	    background-size: 22px 20px !important;
+	}
+</style>
 @endsection

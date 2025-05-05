@@ -10,7 +10,7 @@ Veris - Cita agendada
 
 @include('external.components.navbar-agendamiento', ['showInfo' => false])
 
-<div class="flex-grow-1 container-p-y pt-0">
+<div class="flex-grow-1 container-p-y pt-0 mt-2">
     <section class="p-0">
         <div class="row g-0 justify-content-center">
             <div class="col-md-5">
@@ -37,7 +37,7 @@ Veris - Cita agendada
                             <h3 class="fs--28 line-height-36 fw-medium mb-4">Éxito </h3>
                             <p class="fs--16 line-height-20 mb-3">Tu cita será <b>virtual</b>.<br>Recuerda conectarte <b>10 minutos antes <br>de la cita.</b></p>
                             <img src="{{ asset('assets/img/veris/cambio_modalidad_exitoso.svg') }}" alt="Cita cambiada a Virtual">
-                            <div class="mt-3">
+                            <div class="mt-3 d-none">
                                 <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>
@@ -66,7 +66,7 @@ Veris - Cita agendada
                             <div class="d-flex justify-content-center align-items-center">
                                 <img src="{{ asset('assets/img/svg/paquete-comprado.svg') }}"  alt="Promoción comprada">
                             </div>
-                            <div class="mt-5">
+                            <div class="mt-5 d-none">
                                 <a href="/mis-promociones" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2">Ir a mis promociones</a>
                                 <a href="/" class="btn btn-sm fs--18 line-height-24 px-4 py-3 w-100 w-md-75 border-0 text-primary-veris shadow-none">Volver al inicio</a>
                             </div>
@@ -81,7 +81,7 @@ Veris - Cita agendada
                             <div class="d-flex justify-content-center align-items-center">
                                 <img src="{{ asset('assets/img/svg/cita_agendada_online.svg') }}"  alt="cita agendada">
                             </div>
-                            <div class="mt-5">
+                            <div class="mt-5 d-none">
                                 <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>
@@ -95,7 +95,7 @@ Veris - Cita agendada
                             <div class="d-flex justify-content-center align-items-center">
                                 <img src="{{ asset('assets/img/svg/lab_presencial.svg') }}"  alt="cita agendada">
                             </div>
-                            <div class="mt-5">
+                            <div class="mt-5 d-none">
                                 <a href="/" class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>
@@ -109,7 +109,7 @@ Veris - Cita agendada
                             <div class="d-flex justify-content-center align-items-center">
                                 <img src="{{ asset('assets/img/svg/lab_domicilio.svg') }}"  alt="cita agendada">
                             </div>
-                            <div class="mt-5">
+                            <div class="mt-5 d-none">
                                 <a href="/" class="btn btn-primary-veris fs--18 line-height-24 fw-medium w-100 px-4 py-3">Volver al inicio</a>
                             </div>
                         </div>
@@ -119,8 +119,7 @@ Veris - Cita agendada
         </div>
     </section>
 </div>
-@endsection
-@push('scripts')
+
 <script>
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
@@ -393,7 +392,7 @@ Veris - Cita agendada
                 </div>
             </div>
         </div>`;
-        elem += `<div class="mt-4">
+        elem += `<div class="mt-4 d-none">
                     <div class="btn btn-primary-veris fs--18 line-height-24 w-100 px-4 py-3 btn-link-home">Volver al inicio</div>
                 </div>`;
         return elem;
@@ -411,7 +410,7 @@ Veris - Cita agendada
             codigoReserva = dataCita.pagoAgendamientoMultiple.codigoReserva;
         }        
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/archivoReserva/${codigoReserva}?canalOrigen=${_canalOrigen}&tipoArchivo=JPG`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/archivoReserva/${codigoReserva}?canalOrigen=${window.config.canalOrigen}&tipoArchivo=JPG`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -439,4 +438,4 @@ Veris - Cita agendada
         .w-md-75 { width: 75% !important; }
     }
 </style>
-@endpush
+@endsection

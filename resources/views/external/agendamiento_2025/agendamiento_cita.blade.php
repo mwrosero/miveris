@@ -112,4 +112,24 @@ Veris - Citas
 	    }
     }
 </script>
+<style>
+	input:placeholder-shown,
+	select:invalid{
+	  border: 1px solid #E7E9EC !important;
+	  background: #FFFFFFCC !important;
+	  color: #3D4E66 !important;
+	}
+
+	input:not(:placeholder-shown),
+	input:focus,
+	select:valid{
+	  border: 1px solid #0071CE !important;
+	  color: #0071CE !important;
+	}
+
+	input:not(:placeholder-shown),
+	select:valid{
+	  font-weight: 500 !important;
+	}
+</style>
 @endsection

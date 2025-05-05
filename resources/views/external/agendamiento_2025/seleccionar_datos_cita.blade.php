@@ -86,7 +86,7 @@ Veris - Elige datos para la Cita
     <section class="p-0">
         <div class="row g-0 justify-content-center">
             <div class="col-auto px-0" style="min-width: 375px;">
-                <h5 class="my-auto py-2 pt-4 fs-20 line-height-24 text-primary-veris fw-bold label-nombre-paciente">Paciente: </h5>
+                <h5 class="my-auto py-2 pt-4 fs-20 line-height-24 text-primary-veris fw-bold label-nombre-paciente text-capitalize">Paciente: </h5>
                 <p class="fs-18 line-height-20 mb-3">Ingresa los datos para la cita</p>
             </div>
         </div>
@@ -258,10 +258,9 @@ Veris - Elige datos para la Cita
 </div>
 <script>
     // variables globales
-    let _canalOrigenEmbudo = 'VER_CMV'
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
-    $('.label-nombre-paciente').html(`Paciente: ${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}`)
+    $('.label-nombre-paciente').html(`Paciente: ${dataCita.paciente.primerNombre.toLowerCase()} ${dataCita.paciente.primerApellido.toLowerCase()}`)
     console.log(dataCita);
     if(dataCita.hasOwnProperty('convenio')){
         if(dataCita.convenio.nombreConvenio == undefined && (dataCita.convenio.codigoConvenio == null || dataCita.convenio.codigoConvenio == "" )){
@@ -273,6 +272,9 @@ Veris - Elige datos para la Cita
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+        if(dataCita.hasOwnProperty('tratamiento')){
+            delete dataCita.tratamiento;
+        }
         let urlAnterior = document.referrer;
         if(urlAnterior.includes("/registro/")){
             console.log('Redireccionar inicio')
@@ -651,7 +653,7 @@ Veris - Elige datos para la Cita
             paramasAditional += `&codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&tipoModalidad=${ (dataCita.online == "N") ? "PRESENCIAL" : "ONLINE" }`;
         }
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigenEmbudo}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}${paramasAditional}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${window.config.canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}${paramasAditional}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -664,7 +666,7 @@ Veris - Elige datos para la Cita
     async function cargarConvenios(){
         //return;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigenEmbudo}&tipoIdentificacion=${dataCita.paciente.codigoTipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${dataCita.paciente.codigoTipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -749,7 +751,7 @@ Veris - Elige datos para la Cita
 
     async function consultarCiudades() {
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/ciudades?canalOrigen=${_canalOrigenEmbudo}&codigoEmpresa=1&excluyeVirtual=true&idPaciente=${dataCita.paciente.numeroPaciente}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/ciudades?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&excluyeVirtual=true&idPaciente=${dataCita.paciente.numeroPaciente}`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const data = await call(args);
@@ -791,7 +793,7 @@ Veris - Elige datos para la Cita
     async function consultarCentralesMedicasRecomendadas(){
         console.log(0);
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigenEmbudo}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.numeroPaciente}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.numeroPaciente}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -806,7 +808,7 @@ Veris - Elige datos para la Cita
 
     async function obtenerCiudadParaMedicoFavoritoPorCentral(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigenEmbudo}&codigoEmpresa=1`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -862,7 +864,7 @@ Veris - Elige datos para la Cita
         let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = dataCita.ciudad;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigenEmbudo}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -887,7 +889,7 @@ Veris - Elige datos para la Cita
         let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = dataCita.ciudad;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigenEmbudo}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -924,7 +926,7 @@ Veris - Elige datos para la Cita
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/especialidades?canalOrigen=${_canalOrigenEmbudo}&codigoEmpresa=1&online=${ dataCita.online }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/especialidades?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${ dataCita.online }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -970,12 +972,13 @@ Veris - Elige datos para la Cita
             return;
         }
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigenEmbudo}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}
         &codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&codigoConvenio=${ (dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : '' }`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
+        {{-- console.log(data);return; --}}
         let params = {}
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
@@ -1014,8 +1017,12 @@ Veris - Elige datos para la Cita
             var myModal = new bootstrap.Modal(document.getElementById('consultaTratamientoModal'));
             myModal.show();
         }else{
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-            window.location.href = '/external/agendamiento/seleccionar-fecha/{{ $params }}';
+            if(dataCita.especialidad.requiereOrden != "S"){
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                window.location.href = '/external/agendamiento/seleccionar-fecha/{{ $params }}';
+            }else{
+                $('#modalInfoTerapia').modal('show')
+            }
         }
 
     }

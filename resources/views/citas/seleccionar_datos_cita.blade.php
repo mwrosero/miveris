@@ -999,8 +999,12 @@ Elige datos para la Cita
             var myModal = new bootstrap.Modal(document.getElementById('consultaTratamientoModal'));
             myModal.show();
         }else{
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-            window.location.href = '/citas-elegir-fecha-doctor/{{ $params }}';
+            if(dataCita.especialidad.requiereOrden != "S"){
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                window.location.href = '/external/agendamiento/seleccionar-fecha/{{ $params }}';
+            }else{
+                $('#modalInfoTerapia').modal('show')
+            }
         }
 
     }

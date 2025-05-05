@@ -65,7 +65,7 @@ Veris - Detalle de Citas
     <section class="p-0">
         <div class="row g-0">
             <div class="col-12 col-md-8 offset-md-2 px-0" style="min-width: 375px;">
-                <h5 class="my-auto py-2 pt-4 fs-20 ps-3 line-height-24 text-primary-veris fw-bold label-nombre-paciente">Paciente: </h5>
+                <h5 class="my-auto py-2 pt-4 fs-20 ps-3 line-height-24 text-primary-veris fw-bold label-nombre-paciente text-capitalize">Paciente: </h5>
                 <p class="fs-18 line-height-20 ps-3 mb-0">Revisa tus datos</p>
             </div>
         </div>
@@ -121,7 +121,7 @@ Veris - Detalle de Citas
         <div class="row justify-content-center">
             <div class="col-12 col-md-4 text-center mt-5">
                 {{-- <a href="#" id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100">{{ __('Pagar') }}</a> --}}
-                <button id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100 px-4 py-3 fs-5">{{ __('Pagar') }}</button>
+                <button id="btn-pagar" class="btn btn-lg btn-primary-veris d-none w-100 px-4 py-3 fs-5">{{ __('Continuar') }}</button>
             </div>
         </div>
     </section>
@@ -157,7 +157,7 @@ Veris - Detalle de Citas
 
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
-    $('.label-nombre-paciente').html(`Paciente: ${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}`)
+    $('.label-nombre-paciente').html(`Paciente: ${dataCita.paciente.primerNombre.toLowerCase()} ${dataCita.paciente.primerApellido.toLowerCase()}`)
     let online = dataCita?.online;
     let nombreEspecialidad = capitalizarCadaPalabra(dataCita.especialidad.nombre);
     var tipoIdentificacion = parseInt(dataCita.paciente.tipoIdentificacion);
@@ -267,7 +267,7 @@ Veris - Detalle de Citas
 
     async function validarReservas(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/validacionReservas?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/validacionReservas?canalOrigen=${window.config.canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -319,7 +319,7 @@ Veris - Detalle de Citas
     async function eliminarReserva(codigoReserva = null){
         let codigoReservaEliminar = (codigoReserva === null) ? dataCita.reserva.codigoReserva : codigoReserva;
         let args = [];
-        let canalOrigen = _canalOrigen
+        let canalOrigen = window.config.canalOrigen
         let codigoUsuario = dataCita.paciente.numeroIdentificacion;
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/eliminarReserva?codigoReserva=${codigoReservaEliminar}`
         args["method"] = "PUT";
@@ -522,7 +522,7 @@ Veris - Detalle de Citas
 
     async function obtenerPrecioMultiple(){
         let args = [];
-        let canalOrigen = _canalOrigen;
+        let canalOrigen = window.config.canalOrigen;
         let codigoReserva = ''; 
         let numeroOrden = ''; 
         let codigoEmpOrden = '';
@@ -654,7 +654,7 @@ Veris - Detalle de Citas
             return;
         }
         let args = [];
-        let canalOrigen = _canalOrigen
+        let canalOrigen = window.config.canalOrigen
         let codigoReserva = ''; 
         let numeroOrden = ''; 
         let codigoEmpOrden = '';
@@ -834,7 +834,7 @@ Veris - Detalle de Citas
         args["bodyType"] = "json";
         let datosReserva = {
             "codigoReserva": dataCita.reservaEdit.idCita,
-            "canalOrigen": _canalOrigen
+            "canalOrigen": window.config.canalOrigen
         }
         args["data"] = JSON.stringify(datosReserva);
         const data = await call(args);
@@ -846,7 +846,7 @@ Veris - Detalle de Citas
 
     async function reservarCita(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservar?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservar?canalOrigen=${window.config.canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -886,7 +886,7 @@ Veris - Detalle de Citas
             "porcentajeDescuento": dataCita.horario.porcentajeDescuento,
             "permitePago": dataCita.convenio.permitePago,
             "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
-            "canalOrigen": _canalOrigen,
+            "canalOrigen": window.config.canalOrigen,
             "enviarLinkPago": null,
             "valorizacion": dataCita.precio.valorCanalVirtual,
             /*precio o reagendamiento*/
@@ -970,7 +970,7 @@ Veris - Detalle de Citas
                 https://api-phantomx.veris.com.ec/${api_war}/v1/agenda/validarPermitePago?canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
                 */
                 // await crearPreTransaccion()
-                location.href = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA`;
+                location.href = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
             }else{
                 location.href = '/external/agendamiento/cita-agendada/{{ $params }}';
             }
@@ -983,7 +983,7 @@ Veris - Detalle de Citas
 
     async function crearPreTransaccion(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_pretransaccion?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_pretransaccion?canalOrigen=${window.config.canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";

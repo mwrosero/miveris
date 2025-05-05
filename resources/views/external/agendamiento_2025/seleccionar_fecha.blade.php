@@ -146,7 +146,7 @@ Veris - Elige fecha y doctor
     <section class="p-0">
         <div class="row g-0 justify-content-center">
             <div class="col-auto px-0" style="min-width: 375px;">
-                <h5 class="my-auto py-2 pt-4 fs-20 line-height-24 text-primary-veris fw-bold label-nombre-paciente">Paciente: </h5>
+                <h5 class="my-auto py-2 pt-4 fs-20 line-height-24 text-primary-veris fw-bold label-nombre-paciente text-capitalize">Paciente: </h5>
                 <p class="fs-18 line-height-20 mb-3">Elige fecha, doctor y hora</p>
             </div>
         </div>
@@ -332,7 +332,7 @@ Veris - Elige fecha y doctor
     // Variables globales
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
-    $('.label-nombre-paciente').html(`Paciente: ${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}`)
+    $('.label-nombre-paciente').html(`Paciente: ${dataCita.paciente.primerNombre.toLowerCase()} ${dataCita.paciente.primerApellido.toLowerCase()}`)
     let dataOrigen = dataCita?.origen;  
     let renderCalendarExternaFecha;
     let pacienteExternaSolicitud;
@@ -562,7 +562,7 @@ Veris - Elige fecha y doctor
 
     async function preReservar(horario){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservarPrecio?canalOrigen=${_canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservarPrecio?canalOrigen=${window.config.canalOrigen}&plataforma=WEB&version=1.0.0&aplicaNuevoControl=false`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
@@ -608,7 +608,7 @@ Veris - Elige fecha y doctor
             "porcentajeDescuento": dataCita.horario.porcentajeDescuento,
             "permitePago": dataCita.convenio.permitePago,
             "secuenciaAfiliado": dataCita.convenio.secuenciaAfiliado,
-            "canalOrigen": _canalOrigen,
+            "canalOrigen": window.config.canalOrigen,
             "enviarLinkPago": null,
             // "valorizacion": dataCita.precio.valorCanalVirtual,
             /*precio o reagendamiento*/
@@ -797,7 +797,7 @@ Veris - Elige fecha y doctor
         }
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/fechasdisponibles?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}&esPlanStar=${esPlanStar}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/fechasdisponibles?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&idMedico=${codigoMedico}&esPlanStar=${esPlanStar}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -851,7 +851,7 @@ Veris - Elige fecha y doctor
         }
         // console.log(fechaSeleccionada);
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -1024,7 +1024,7 @@ Veris - Elige fecha y doctor
         }
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -1102,7 +1102,7 @@ Veris - Elige fecha y doctor
 
     async function obtenerPreparacionPrevia(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${_canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/preparacionPrevia?canalOrigen=${window.config.canalOrigen}&codigoSolicitud=${ dataCita.ordenExterna.codigoSolicitud }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -1144,7 +1144,7 @@ Veris - Elige fecha y doctor
     async function consultarHorasMotorizados() {
         //let fechaSeleccionada = $('.selected-day').attr('fechaSeleccionada-rel');
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/disponibilidad?canalOrigen=${_canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${$('.selected-day').attr("fechaSeleccionada-rel")}&codigoZona=${codigoZona}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/domicilio/laboratorio/disponibilidad?canalOrigen=${window.config.canalOrigen}&codigoSolicitud=${codigoSolicitud}&latitud=${latitud}&longitud=${longitud}&fecha=${$('.selected-day').attr("fechaSeleccionada-rel")}&codigoZona=${codigoZona}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["dismissAlert"] = true;

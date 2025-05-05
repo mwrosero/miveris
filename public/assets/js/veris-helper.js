@@ -290,7 +290,7 @@ async function obtenerIdentificacion(){
     }
 }
 
-async function obtenerPaises(){
+async function obtenerPaises(includePlaceholder = null){
     let args = [];
     args["endpoint"] = api_url + `/${api_war}/v1/seguridad/paises`;
     args["method"] = "GET";
@@ -303,6 +303,10 @@ async function obtenerPaises(){
         $('#pais').empty();
         $('#provincia').empty();
         $('#ciudad').empty();
+        
+        if(includePlaceholder !== null && includePlaceholder){ 
+            $('#pais').append(`<option value="" disabled selected hidden>Elige el país</option>`);
+        }
         $.each(data.data, function(key, value){
             $('#pais').append(`<option esDefault-rel='${value.esDefault}' ${ (value.esDefault) ? 'selected' : '' } value="${value.codigoPais}">${value.nombrePais}</option>`);
         })
