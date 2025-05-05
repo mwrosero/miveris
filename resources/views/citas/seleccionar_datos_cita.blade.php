@@ -508,7 +508,7 @@ Elige datos para la Cita
             let convenio = JSON.parse($(this).attr('data-rel'));
             dataCita.convenio = convenio;
             if(dataCita.convenio.codigoConvenio != null){
-                $('#btn-convenio p').html(`${capitalizarCadaPalabra(convenio.nombreConvenio)}`);
+                $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(convenio.nombreConvenio))}`);
             }else{
                 $('#btn-convenio p').html(`Ninguno`);
             }

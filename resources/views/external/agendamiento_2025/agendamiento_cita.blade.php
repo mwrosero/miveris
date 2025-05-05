@@ -127,6 +127,15 @@ Veris - Citas
 	  color: #0071CE !important;
 	}
 
+	input:-webkit-autofill {
+		border: 1px solid #0071CE !important;
+		color: #0071CE !important;
+		font-weight: 500 !important;
+		-webkit-text-fill-color: #0071CE !important;
+		transition: background-color 9999s ease-in-out 0s; /* Hack para evitar el fondo amarillo */
+		background: #FFFFFFCC !important;
+	}
+
 	input:not(:placeholder-shown),
 	select:valid{
 	  font-weight: 500 !important;

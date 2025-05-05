@@ -443,7 +443,7 @@ Veris - Datos de facturación
         args["bodyType"] = "json"; 
         args["dismissAlert"] = true;
         args["data"] = JSON.stringify({
-            "numeroIdentificacion": {{ request()->query('numeroIdentificacion') }},
+            "numeroIdentificacion": `{{ request()->query('numeroIdentificacion') }}`,
             "aceptaPoliticas": $('#checkTerminosCondicion').prop('checked'),
             "versionPoliticas": politics.data.ultimaVersionPoliticas,
             "codigoEmpresa": 1,
@@ -485,7 +485,9 @@ Veris - Datos de facturación
 
     function mostrarInfo(){
         /*Datos de Facturación*/
-        $('#tipoIdentificacion').val(dataCita.facturacion.datosFactura.codigoTipoIdentificacion).trigger('change');
+        if(parseInt({{ request()->query('tipoIdentificacion') }}) != 3){
+        	$('#tipoIdentificacion').val(dataCita.facturacion.datosFactura.codigoTipoIdentificacion).trigger('change');
+        }
         $('#numeroIdentificacion').val(dataCita.facturacion.datosFactura.codigoUsuario);
         $('#nombre').val(dataCita.facturacion.datosFactura.nombreCliente);
         $('#primerNombre').val(dataCita.facturacion.datosFactura.primerNombre);
@@ -498,7 +500,7 @@ Veris - Datos de facturación
         if(dataCita.facturacion.datosFactura.codigoTipoIdentificacion == 2){
             $('.box-ruc').addClass('d-none');
             $('.box-no-ruc').removeClass('d-none');
-        }else{
+        }else if(dataCita.facturacion.datosFactura.codigoTipoIdentificacion == 1){
             $('.box-no-ruc').addClass('d-none');
             $('.box-ruc').removeClass('d-none');
         }
