@@ -251,7 +251,7 @@ Veris - Elige datos para la Cita
                     </button>
                 </div>
                 <span class="mb-2 d-block fs--2 line-height-16 text-light d-none label-sugerencia label-sugerencia-central">Seleccionada en base a tus agendamientos anteriores</span>
-                <button id="btn-continuar" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 mt-2">{{ __('Continuar') }}</button>
+                <button id="btn-continuar" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 mt-2">{{ __('Continuar') }}<i class="fa-solid fa-chevron-right ms-2"></i></button>
             </div>
         </div>
     </section>
@@ -525,7 +525,7 @@ Veris - Elige datos para la Cita
             let convenio = JSON.parse($(this).attr('data-rel'));
             dataCita.convenio = convenio;
             if(dataCita.convenio.codigoConvenio != null){
-                $('#btn-convenio p').html(`${capitalizarCadaPalabra(convenio.nombreConvenio)}`);
+                $('#btn-convenio p').html(`${cutString(capitalizarCadaPalabra(convenio.nombreConvenio))}`);
             }else{
                 $('#btn-convenio p').html(`Ninguno`);
             }
