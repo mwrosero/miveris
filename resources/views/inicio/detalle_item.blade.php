@@ -46,7 +46,7 @@ Mi Veris - Citas - Detalle
 @endsection
 @push('scripts')
 <script>
-    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
+    let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS","TERAPIA_FISICA_AGRUPADA"];
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     console.log(dataCita);
@@ -196,6 +196,7 @@ Mi Veris - Citas - Detalle
             if(!dataCita.promocion.esAgendable){
                 classAgendable = `d-none`;
             }
+            console.log(value.estado, tipoAgenda)
             if((value.estado == "Atendida" || value.estado == "Agendada") && tiposAgendaPermitida.includes(tipoAgenda)){
                 let btnReagendar = ``;
                 if(value.estado == "Agendada"){
@@ -251,7 +252,8 @@ Mi Veris - Citas - Detalle
                                         </div>
                                         ${estado}
                                     </div>`;
-                                if(tiposAgendaPermitida.includes(tipoAgenda) && dataCita.promocion.esAgendable == "S"){
+                                console.log(tipoAgenda)
+                                if(tiposAgendaPermitida.includes(tipoAgenda) && (dataCita.promocion.esAgendable == true || dataCita.promocion.esAgendable == "S")){
                                     elem += `<div class="d-flex justify-content-between align-items-center mt-2">
                                         <div class="avatar-sm me-2">
                                             <img src="${quitarComillas(dataCita.promocion.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">

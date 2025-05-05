@@ -33,6 +33,26 @@ class ExternalController extends Controller
             ->with('accesToken',$this->getTokenExternalDigitales());
     }
 
+    public function registroNuevoAgendamientoCitas($params){
+        return view('external.agendamiento_2025.registrar_cuenta')->with('params',$params);
+    }
+    
+    public function datosCitaNuevoAgendamientoCitas($params){
+        return view('external.agendamiento_2025.seleccionar_datos_cita')->with('params',$params);
+    }
+
+    public function fechaNuevoAgendamientoCitas($params){
+        return view('external.agendamiento_2025.seleccionar_fecha')->with('params',$params);
+    }
+
+    public function detalleCitaNuevoAgendamientoCitas($params){
+        return view('external.agendamiento_2025.detalle_cita')->with('params',$params);
+    }
+
+    public function CitaAgendadaNuevoAgendamientoCitas($params){
+        return view('external.agendamiento_2025.cita_agendada')->with('params',$params);
+    }
+
     public function listadoPaquetes(){
         return view('external.paquetes_promocionales.listado_paquetes')
             ->with('accesToken',$this->getTokenExternalDigitales());

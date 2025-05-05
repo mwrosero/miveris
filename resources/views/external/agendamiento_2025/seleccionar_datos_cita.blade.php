@@ -1,10 +1,15 @@
-@extends('template.app-template-veris')
+@extends('template.external')
 @section('title')
-Elige datos para la Cita
+Veris - Elige datos para la Cita
 @endsection
 @section('content')
-<link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.css" />
-<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
+<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
+
+@include('external.components.navbar-agendamiento', ['showInfo' => true])
+
 <!-- Modal de error -->
 <div class="modal fade" id="modalError" tabindex="-1" aria-labelledby="modalErrorLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -78,10 +83,15 @@ Elige datos para la Cita
             </div>
         </div>
     </div>
-    <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Datos para la cita') }}</h5>
-    </div>
-    <section class="p-0 bg-dark-blue-veris-medium-sm mt-0 box-contenido-seleccion invisible element-no-paquete">
+    <section class="p-0">
+        <div class="row g-0 justify-content-center">
+            <div class="col-auto px-0" style="min-width: 375px;">
+                <h5 class="my-auto py-2 pt-4 fs-20 line-height-24 text-primary-veris fw-bold label-nombre-paciente text-capitalize">Paciente: </h5>
+                <p class="fs-18 line-height-20 mb-3">Ingresa los datos para la cita</p>
+            </div>
+        </div>
+    </section>
+    <section class="p-0 bg-dark-blue-veris-medium-sm mt-0 box-contenido-seleccion element-no-paquete">
         <div class="row g-0 justify-content-center">
             <div class="col-auto p-3 bg-dark-blue-veris-medium" style="min-width: 375px;">
                 <p class="text-white fw-medium fs--18 mt-1 mb-2">Elige la modalidad de la cita médica</p>
@@ -96,7 +106,7 @@ Elige datos para la Cita
             </div>
         </div>
     </section>
-    <section class="p-0 box-contenido-seleccion invisible">
+    <section class="p-0 box-contenido-seleccion">
         <div class="row g-0 justify-content-center">
             <div class="col-auto ps-3 pe-3" style="min-width: 375px;">
                 <p class="card-body fw-medium fs--18 mt-3 mb-3 pt-1">Elige los datos de la cita médica</p>
@@ -177,7 +187,7 @@ Elige datos para la Cita
                                         <div class="col-12 p-2 ps-3 pe-3 rounded-3 d-flex justify-content-start align-items-center bg-white item-especialidad waves-effect shadow-item-modal cursor-pointer especialidad-item" type-rel="button">
                                             <div class="avatar avatar-10 me-2">
                                                 <div class="avatar-especialidad">
-                                                    <img src="https://dikg1979lm6fy.cloudfront.net/especialidades/ico_cirugia_oncologica_v2.png" alt="CIRUGÍA ONCOLOGICA" onerror="this.src='http://127.0.0.1:7000/assets/img/svg/especialidades/medicina_general.svg'">
+                                                    <!--img src="https://dikg1979lm6fy.cloudfront.net/especialidades/ico_cirugia_oncologica_v2.png" alt="CIRUGÍA ONCOLOGICA" onerror="this.src='http://127.0.0.1:7000/assets/img/svg/especialidades/medicina_general.svg'"-->
                                                 </div>
                                             </div>
                                             <p class="text-veris fs--16 fw-medium text-one-line mb-0">Cirugía Oncologica</p>
@@ -214,7 +224,7 @@ Elige datos para la Cita
                                             <div class="card-body p--2">
                                                 <div class="d-flex">
                                                     <div class="avatar avatar-88 me-2">
-                                                        <img src="https://dikg1979lm6fy.cloudfront.net/fotosCentrales/1_46.jpg" onerror="this.src='http://127.0.0.1:7000/assets/img/svg/dummy_central.svg'" class="card-img-top" alt="VERIS URGENCIAS AMBULATORIAS">
+                                                        <!--img src="https://dikg1979lm6fy.cloudfront.net/fotosCentrales/1_46.jpg" onerror="this.src='http://127.0.0.1:7000/assets/img/svg/dummy_central.svg'" class="card-img-top" alt="VERIS URGENCIAS AMBULATORIAS"-->
                                                     </div>
                                                     <div class="col">
                                                         <h6 class="fs--16 line-height-20 fw-medium mb-2">Veris - Juan Tanca Marengo</h6>
@@ -246,12 +256,11 @@ Elige datos para la Cita
         </div>
     </section>
 </div>
-@endsection
-@push('scripts')
 <script>
     // variables globales
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    $('.label-nombre-paciente').html(`Paciente: ${dataCita.paciente.primerNombre.toLowerCase()} ${dataCita.paciente.primerApellido.toLowerCase()}`)
     console.log(dataCita);
     if(dataCita.hasOwnProperty('convenio')){
         if(dataCita.convenio.nombreConvenio == undefined && (dataCita.convenio.codigoConvenio == null || dataCita.convenio.codigoConvenio == "" )){
@@ -263,7 +272,15 @@ Elige datos para la Cita
 
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-
+        if(dataCita.hasOwnProperty('tratamiento')){
+            delete dataCita.tratamiento;
+        }
+        let urlAnterior = document.referrer;
+        if(urlAnterior.includes("/registro/")){
+            console.log('Redireccionar inicio')
+            $('.btn-atras-embudo').attr('href','/external/agendamiento');
+        }
+        
         $('#btn-no-tratamiento').on('click', function(event) {
             // Reemplaza esta condición con tu validación
             // alert(0)
@@ -636,7 +653,7 @@ Elige datos para la Cita
             paramasAditional += `&codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&tipoModalidad=${ (dataCita.online == "N") ? "PRESENCIAL" : "ONLINE" }`;
         }
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}${paramasAditional}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${window.config.canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}${paramasAditional}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -649,7 +666,7 @@ Elige datos para la Cita
     async function cargarConvenios(){
         //return;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${dataCita.paciente.tipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${dataCita.paciente.codigoTipoIdentificacion}&numeroIdentificacion=${dataCita.paciente.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&excluyeNinguno=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -734,7 +751,7 @@ Elige datos para la Cita
 
     async function consultarCiudades() {
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/ciudades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&excluyeVirtual=true&idPaciente=${dataCita.paciente.numeroPaciente}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/ciudades?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&excluyeVirtual=true&idPaciente=${dataCita.paciente.numeroPaciente}`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const data = await call(args);
@@ -776,7 +793,7 @@ Elige datos para la Cita
     async function consultarCentralesMedicasRecomendadas(){
         console.log(0);
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.numeroPaciente}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.numeroPaciente}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -791,7 +808,7 @@ Elige datos para la Cita
 
     async function obtenerCiudadParaMedicoFavoritoPorCentral(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -847,7 +864,7 @@ Elige datos para la Cita
         let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = dataCita.ciudad;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -872,7 +889,7 @@ Elige datos para la Cita
         let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = dataCita.ciudad;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${_canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&codigoPais=${dataCita.ciudad.codigoPais}&codigoProvincia=${dataCita.ciudad.codigoProvincia}&codigoCiudad=${dataCita.ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -909,7 +926,7 @@ Elige datos para la Cita
         listaEspecialidades.empty();
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/especialidades?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${ dataCita.online }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/especialidades?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${ dataCita.online }`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -951,21 +968,22 @@ Elige datos para la Cita
     async function consultarSiEsTratamiento(){
         if(dataCita.hasOwnProperty('tratamiento') || dataCita.hasOwnProperty('reservaEdit') ||  dataCita.origen == "paquetes"){
             localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-            window.location.href = '/citas-elegir-fecha-doctor/{{ $params }}';
+            window.location.href = '/external/agendamiento/seleccionar-fecha/{{ $params }}';
             return;
         }
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}
         &codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&codigoConvenio=${ (dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : '' }`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
+        {{-- console.log(data);return; --}}
         let params = {}
 
         localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
 
-        path_url = "/citas-elegir-fecha-doctor/{{ $params }}";
+        path_url = "/external/agendamiento/seleccionar-fecha/{{ $params }}";
         
         if (data.code == 200 && data.data != null){
             $("#btn-no-tratamiento").attr("href",path_url);
@@ -1035,6 +1053,7 @@ Elige datos para la Cita
     .list-group-checkable {
         max-height: 500px;
         overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .list-group-checkable::-webkit-scrollbar {
@@ -1078,4 +1097,4 @@ Elige datos para la Cita
         border: 1px solid #E7E9EC !important;
     }
 </style>
-@endpush
+@endsection

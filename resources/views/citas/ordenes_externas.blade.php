@@ -462,7 +462,7 @@ Mi Veris - Órdenes externas
 
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
                     
-        let url = `/citas-elegir-paciente/`
+        let url = `/citas-elegir-paciente-orden-externa/`
         // recireccionar a registrar orden externa
         window.location.href = url + "{{ $tokenCita }}";
     });
@@ -474,8 +474,8 @@ Mi Veris - Órdenes externas
         params.ordenExterna = 'S';
         
         localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-        // window.location.href = `/citas-elegir-paciente/${ulrParams}`;
-        window.location.href = `/citas-elegir-paciente/{{ $tokenCita }}`;
+        // window.location.href = `/citas-elegir-paciente-orden-externa/${ulrParams}`;
+        window.location.href = `/citas-elegir-paciente-orden-externa/{{ $tokenCita }}`;
     });
 
     // determinar botones pagar o solicitar
