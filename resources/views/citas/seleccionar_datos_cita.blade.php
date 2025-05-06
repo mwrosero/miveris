@@ -1001,7 +1001,7 @@ Elige datos para la Cita
         }else{
             if(dataCita.especialidad.requiereOrden != "S"){
                 localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-                window.location.href = '/external/agendamiento/seleccionar-fecha/{{ $params }}';
+                window.location.href = '/citas-elegir-fecha-doctor/{{ $params }}';
             }else{
                 $('#modalInfoTerapia').modal('show')
             }
