@@ -507,7 +507,7 @@ Veris - Elige fecha y doctor
             }else{
                 let ruta = "/external/agendamiento/detalle-cita/" + "{{ $params }}";
                 if(dataCita.central && dataCita.central.codigoTipoSucursal == "CAP"){
-                    ruta = "/cita-urgencias-ambulatorias/" + "{{ $params }}";
+                    ruta = "/external/agendamiento/cita-urgencias-ambulatorias/" + "{{ $params }}";
                 }
                 localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
                 window.location.href = ruta;
