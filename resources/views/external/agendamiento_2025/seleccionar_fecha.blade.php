@@ -940,11 +940,20 @@ Veris - Elige fecha y doctor
         args["showLoader"] = true;
         const data = await call(args);
         console.log(data);
-        let horarios = data.data[0].intervalos;
+        let horarios = (data.data.length > 0) ? data.data[0].intervalos : [];
         let elem = ``;
         let size = 12;
         if(horarios.length == 0 || horarios === null){
             //empty space
+            let img = ($('.options-date.active').attr("data-rel") == "N") ? `{{ asset('assets/img/svg/sin_medicos.svg') }}` : `{{ asset('assets/img/svg/sin_horarios.svg') }}`;
+            elem += `<div class="card bg-transparent shadow-none">
+                                    <div class="card-body">
+                        <div class="text-center">
+                            <p class="fw-medium fs--16 line-height-24 text-veris">No hay médicos disponibles este día</p>
+                            <img src="${img}" class="img-fluid mb-3" alt="">
+                        </div>
+                    </div>
+                </div>`;
         }else{
             $.each(horarios, function(key, horario){
                 if(horario.porcentajeDescuento > 0 ){
