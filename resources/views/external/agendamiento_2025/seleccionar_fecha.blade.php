@@ -151,7 +151,7 @@ Veris - Elige fecha y doctor
             </div>
         </div>
     </section>
-    <section class="p-0 bg-dark-blue-veris-medium-sm">
+    <section class="p-0 bg-dark-blue-veris-medium-sm box-calendar-vua-parent">
         <div class="row g-0 justify-content-center">
             <div class="col-auto p-0 bg-transparent box-agendamiento-multiple d-none" style="min-width: 375px;">
                 <div class="w-100 p-2 d-flex justify-content-between align-items-center">
@@ -432,6 +432,7 @@ Veris - Elige fecha y doctor
         // if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP") || dataCita.hasOwnProperty('detalleItemPaquete')){
         if(dataCita.vua){
             $('.label-fecha-title').html(`Elige fecha y hora`).addClass('d-none');
+            $('.box-calendar-vua-parent').removeClass('bg-dark-blue-veris-medium-sm');
             $('.box-calendar-vua').removeClass('d-none');
 
             function formatDate(date) {
