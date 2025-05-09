@@ -147,7 +147,7 @@ Veris - Elige fecha y doctor
         <div class="row g-0 justify-content-center">
             <div class="col-auto px-0" style="min-width: 375px;">
                 <h5 class="my-auto py-2 pt-4 fs-20 line-height-24 text-primary-veris fw-bold label-nombre-paciente text-capitalize">Paciente: </h5>
-                <p class="fs-18 line-height-20 mb-3">Elige fecha, doctor y hora</p>
+                <p class="fs-18 line-height-20 mb-3 label-fecha-title"></p>
             </div>
         </div>
     </section>
@@ -161,7 +161,26 @@ Veris - Elige fecha y doctor
                 <div class="w-100 mt-0 py-3 text-center fs-18 fw-medium label-info-agenda-multiple text-capitalize bg-white"></div>
             </div>
         </div>
-        <div class="row g-0 justify-content-center">
+        <div class="row g-0 justify-content-center d-none box-calendar-vua">
+            <div class="col-auto p-2 px-0" style="min-width: 375px;">
+                <p class="text-start fs--18 line-height-24 m-1 mx-0 mb-1 text-capitalize">Fecha</p>
+                <div class="row g-2 d-flex justify-content-around align-items-center py-1" id="fechasVua">
+                    {{-- <div class="col box-date shadow bg-white rounded-3 mx-1 border bg-dark-blue-veris-medium text-white">
+                        <div class="w-100 p-2 py-3 text-center" type="button">
+                            <p class="mb-0 fs--16 line-height-20">Hoy</p>
+                            <p class="mb-0 fs--16 line-height-20">16/12/2025</p>
+                        </div>
+                    </div>
+                    <div class="col box-date shadow bg-white rounded-3 mx-1 border text-veris-many">
+                        <div class="w-100 p-2 py-3 text-center" type="button">
+                            <p class="mb-0 fs--16 line-height-20">Mañana</p>
+                            <p class="mb-0 fs--16 line-height-20">17/12/2025</p>
+                        </div>
+                    </div> --}}
+                </div>
+            </div>
+        </div>
+        <div class="row g-0 justify-content-center d-none box-calendar">
             <div class="col-auto p-2 bg-dark-blue-veris-medium" style="min-width: 375px;">
                 <p class="text-center text-white fw-medium fs--18 line-height-24 m-1 mb-0 text-capitalize" id="month-name"></p>
                 <div class="row g-0 d-flex">
@@ -182,7 +201,16 @@ Veris - Elige fecha y doctor
             </div>
         </div>
     </section>
-    <section class="p-0">
+    <section class="p-0 d-none box-calendar-vua">
+        <div class="row g-0 justify-content-center">
+            <div class="col-auto px-0" style="min-width: 375px; max-width: 407px;">
+                <p class="text-start fs--18 line-height-24 m-1 mx-0 mb-1 text-capitalize">Horarios</p>
+                <div class="overflow-auto" id="listaMedicosVua">
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="p-0 d-none box-calendar">
         <div class="row g-0 justify-content-center">
             <div class="col-auto ps-3 pe-3" style="min-width: 375px; max-width: 407px;">
                 <p class="fs--1 mt-2 line-height-16 fw-normal mb-0 d-none" id="nombreFiltro">Filtrar por</p>
@@ -402,6 +430,56 @@ Veris - Elige fecha y doctor
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         // if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP") || dataCita.hasOwnProperty('detalleItemPaquete')){
+        if(dataCita.vua){
+            $('.label-fecha-title').html(`Elige fecha y hora`).addClass('d-none');
+            $('.box-calendar-vua').removeClass('d-none');
+
+            function formatDate(date) {
+                let dd = String(date.getDate()).padStart(2, '0');
+                let mm = String(date.getMonth() + 1).padStart(2, '0'); // Los meses empiezan desde 0
+                let yyyy = date.getFullYear();
+                return `${dd}/${mm}/${yyyy}`;
+            }
+
+            // Obtener fecha actual
+            let today = new Date();
+            let tomorrow = new Date();
+            tomorrow.setDate(today.getDate() + 1);
+
+            // Formatear
+            let todayFormatted = formatDate(today);
+            let tomorrowFormatted = formatDate(tomorrow);
+            console.log(todayFormatted,tomorrowFormatted)
+
+            let elem = `<div class="col box-date shadow bg-white rounded-3 mx-1 border bg-dark-blue-veris-medium text-white selected-day" fechaSeleccionada-rel='${todayFormatted}'>
+                    <div class="w-100 p-2 py-3 text-center" type="button">
+                        <p class="mb-0 fs--16 line-height-20">Hoy</p>
+                        <p class="mb-0 fs--16 line-height-20">${todayFormatted}</p>
+                    </div>
+                </div>
+                <div class="col box-date shadow bg-white rounded-3 mx-1 border text-veris-many" fechaSeleccionada-rel='${tomorrowFormatted}'>
+                    <div class="w-100 p-2 py-3 text-center" type="button">
+                        <p class="mb-0 fs--16 line-height-20">Mañana</p>
+                        <p class="mb-0 fs--16 line-height-20">${tomorrowFormatted}</p>
+                    </div>
+                </div>`;
+
+            // Ejemplo con jQuery: insertar en elementos
+            $('#fechasVua').html(elem);
+
+            await consultarMedicosVua();
+
+        }else{
+            $('.label-fecha-title').html(`Elige fecha, doctor y hora`);
+            $('.box-calendar').removeClass('d-none');
+        }
+
+        $('body').on('click', '.box-date', async function(){
+            $('.box-date').removeClass('selected-day')
+            $(this).addClass('selected-day')
+            await consultarMedicosVua();
+        })
+
         if(dataCita.hasOwnProperty('items')){
             $('.box-agendamiento-multiple').removeClass('d-none');
             if(dataCita.hasOwnProperty('detalle_multiple')){
@@ -455,6 +533,11 @@ Veris - Elige fecha y doctor
             await consultarFechasDisponibles();
             // renderWeek();
         }
+
+        $('body').on('click', '.box-date', async function(){
+            $('.box-date').removeClass('bg-dark-blue-veris-medium text-white');
+            $(this).addClass('bg-dark-blue-veris-medium text-white').removeClass('text-veris-many');
+        })
 
         // Deshabilitar la navegación hacia atrás
         $('#prev-week').click(function() {
@@ -789,6 +872,9 @@ Veris - Elige fecha y doctor
     }
 
     async function consultarFechasDisponibles(){
+        if(dataCita.vua){
+            return;
+        }
         let listaEspecialidades = $('#listaEspecialidades');
         listaEspecialidades.empty();
         let codigoMedico = "";
@@ -829,11 +915,62 @@ Veris - Elige fecha y doctor
         return data;
     }
 
-    async function consultarMedicos(){
-        console.log("-------------------------");
+    async function consultarMedicosVua(){
         let fechaSeleccionada = $('.selected-day').attr("fechaSeleccionada-rel");
-        console.log("-------------------------");
-        console.log(fechaSeleccionada);
+        if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
+            let data = $(this).attr("data-rel");
+            let necesitaValidacionFecha = await validacionFecha();
+            console.log(necesitaValidacionFecha)
+            if(necesitaValidacionFecha){
+                $('#listaMedicos').empty();
+                return;
+            }
+        }
+
+        let soloDescuento = $('.options-date.active').attr("data-rel");
+        let codigoMedico = "";
+        if(dataCita.codigoMedicoFavorito){
+            codigoMedico = dataCita.codigoMedicoFavorito
+        }
+        // console.log(fechaSeleccionada);
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+        let horarios = data.data[0].intervalos;
+        let elem = ``;
+        let size = 12;
+        if(horarios.length == 0 || horarios === null){
+            //empty space
+        }else{
+            $.each(horarios, function(key, horario){
+                if(horario.porcentajeDescuento > 0 ){
+                    elem += `<div class="col-${size} mb-1 p-1">
+                        <div class="cursor-pointer rounded-3 bg-white waves-effect btn-disponibilidad-medico p--2 px-3 w-100 box-time-doctor-with-discount position-relative rounded-3 d-flex justify-content-end align-items-center" data-horario='${JSON.stringify(horario)}' style='box-shadow: 0px 0px 8px 0px #0000001A;'>
+                            <div class="${aditionalClass} position-absolute">
+                                <span class="badge-discount-time position-absolute fs--2 fw-medium">-${horario.porcentajeDescuento}%</span>
+                            </div>
+                            <span class="fs--1 line-height-20 rate-label text-center mb-0 text-veris-many ${esAuto}">${horario.horaInicio} - ${horario.horaFin}</span>
+                            ${elem}
+                        </div>
+                    </div>`;
+                }else{
+                    elem += `<div class="col-${size} mb-1 p-1">
+                        <div class="cursor-pointer rounded-3 bg-white waves-effect btn-disponibilidad-medico p--2 px-3 w-100 rounded-3 d-flex justify-content-center align-items-center" data-horario='${JSON.stringify(horario)}' style='box-shadow: 0px 0px 8px 0px #0000001A;'>
+                            <span class="fs--1 line-height-20 rate-label text-center mb-0 text-veris-many">${horario.horaInicio} - ${horario.horaFin}</span>
+                        </div>
+                    </div>`;
+                }
+            })
+        }
+
+        $('#listaMedicosVua').html(elem);
+    }
+
+    async function consultarMedicos(){
+        let fechaSeleccionada = $('.selected-day').attr("fechaSeleccionada-rel");
         if(dataCita.convenio.aplicaVerificacionConvenio && dataCita.convenio.aplicaVerificacionConvenio == "S"){
             let data = $(this).attr("data-rel");
             let necesitaValidacionFecha = await validacionFecha();
