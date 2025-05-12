@@ -79,7 +79,11 @@ Mi Veris - Citas - Agendamiento múltiple
     let dataCita = JSON.parse(local);
     let mensajeBloqueoReserva = ``;
     tipoFlujo = dataCita.tipoFlujo;
+    let classEsOrdenTratamiento = ``;
     document.addEventListener("DOMContentLoaded", async function () {
+        if(!dataCita.hasOwnProperty('secuenciaAtencion')){
+            classEsOrdenTratamiento = `d-none`;
+        }
         if(dataCita.hasOwnProperty('detalle_agendamiento_multiple_atendido')){
             await drawDetallesAtendidos();
         }else{
@@ -327,7 +331,7 @@ Mi Veris - Citas - Agendamiento múltiple
                             <div class="avatar-sm me-2">
                                 <img src="${quitarComillas(value.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                             </div>
-                            <a class="btn btn-sm btn-primary-veris fw-medium verOrdenCard fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>
+                            <a class="btn btn-sm btn-primary-veris fw-medium verOrdenCard ${classEsOrdenTratamiento} fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>
                         </div>
                     </div>
                 </div>
@@ -374,7 +378,7 @@ Mi Veris - Citas - Agendamiento múltiple
                             <i class="fa-solid fa-check me-2 text-success"></i>
                             <span class="text-success">Atendida</span>
                         </div>`;
-                    btnReagendar = `<a class="btn btn-sm btn-primary-veris verOrdenCard fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>`;
+                    btnReagendar = `<a class="btn btn-sm btn-primary-veris verOrdenCard ${classEsOrdenTratamiento} fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>`;
                 }
                 
                 if(value.esPagada == "N"){
@@ -505,7 +509,7 @@ Mi Veris - Citas - Agendamiento múltiple
         }
 
         if(detalles.esPagada == "S"){
-            let btnOrden = `<a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard me-2" data-rel='${JSON.stringify(detalles)}'>Ver orden</a>`;
+            let btnOrden = `<a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard ${classEsOrdenTratamiento} me-2" data-rel='${JSON.stringify(detalles)}'>Ver orden</a>`;
 
             return `${btnOrden} <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" data-rel='${JSON.stringify(detalles)}'>
                     ${titleBtn}

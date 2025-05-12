@@ -7,6 +7,7 @@ Mi Veris - Citas - {{ $titulo }}
 @endpush
 @section('content')
 @php
+    $tokenMods = base64_encode(uniqid());
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
@@ -400,6 +401,15 @@ Mi Veris - Citas - {{ $titulo }}
         $(document).on('click', '.btn-agendar', function(){
             let datosServicio = $(this).data('rel');
             let convenio = JSON.parse($(this).attr('convenio-rel'));
+            let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
+            let datosTratamiento;
+            
+            if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
+                esTerapiaAgrupada = true;
+                datosTratamiento = JSON.parse($(this).attr('datosTratamiento-rel'));
+            }else{
+                esTerapiaAgrupada = false;
+            }
             // console.log('datosServicio', datosServicio);
 
             let modalidad;
@@ -434,6 +444,17 @@ Mi Veris - Citas - {{ $titulo }}
             dataCita.tratamiento.numeroOrden = datosServicio.idOrden;
             dataCita.tratamiento.codigoEmpOrden = datosServicio.codigoEmpresa;
             dataCita.tratamiento.lineaDetalle = datosServicio.lineaDetalleOrden;
+
+            if(esTerapiaAgrupada){
+                dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
+                dataCita.detallesServicios = datosServicio.detallesServicios;
+                dataCita.secuenciaAtencion = datosTratamiento.secuenciaAtenciones;
+                dataCita.datosTratamiento = datosTratamiento;
+                dataCita.cantidadMaximaAgenda = parseInt(datosServicio.cantidadMaximaAgenda);
+                localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+                location = "/agendamiento-multiple/{{ $tokenMods }}";
+                return;
+            }
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
         });
@@ -720,6 +741,8 @@ Mi Veris - Citas - {{ $titulo }}
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
+        // console.log(data.data);
+
         if (!pacienteSeleccionado) {
             data.data.tienePermisoAdmin = true;
         }
@@ -750,7 +773,7 @@ Mi Veris - Citas - {{ $titulo }}
 
                             let elementos = ''; // Definir la variable fuera del bucle
                             data.data.items.forEach((laboratorio) => {
-                                console.log(laboratorio)
+                                // console.log(laboratorio)
                                 elementos += `<div class="col-12 mb-4">
                                                 <div class="card rounded-0">
                                                     <div class="card-body py-2 px-3">
@@ -768,11 +791,13 @@ Mi Veris - Citas - {{ $titulo }}
                                                     <div class="row g-3 cardTratamientoLaboratorio">
                                                         <!-- items -->
                                                         `;
-                            
                                 laboratorio.detallesTratamiento.forEach((detalles) =>{
-                                    console.log(detalles.detallesServicios)
-                                    if(detalles.detallesServicios === null){
-                                        elementos += `<div class="col-12 col-md-6">
+                                    let elemQtyTerapias = ``;
+                                    if(laboratorio.mostrarTerapiasAgrupadas == "S" && detalles.tipoCard == "AGENDA_TERAPIA"){
+                                        elemQtyTerapias = `<div class="fs--2 line-height-16 w-100 my-1">Realizado: <span class="text-lime-veris">${detalles.cantidadRealizada}</span></div>`;
+                                    }
+                                    //if(detalles.detallesServicios === null){
+                                        let elem_tmp = `<div class="col-12 col-md-6">
                                             <div class="card">
                                                 <div class="card-body p--2">
                                                     <div class="d-flex justify-content-between align-items-center">
@@ -781,7 +806,8 @@ Mi Veris - Citas - {{ $titulo }}
                                                     </div>
                                                     ${determinarFechaCaducidadEncabezado(detalles, laboratorio)}
                                                     ${determinarFechasCaducadas(detalles, laboratorio)}
-                                                <div class="d-flex justify-content-between align-items-center mt-2">
+                                                    ${ elemQtyTerapias }
+                                                    <div class="d-flex justify-content-between align-items-center mt-2">
                                                         <div class="avatar-sm me-2">
                                                             <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                                         </div>
@@ -791,8 +817,13 @@ Mi Veris - Citas - {{ $titulo }}
                                                     </div>
                                                 </div>
                                             </div>
-                                            
                                         </div>`;
+                                    if(laboratorio.mostrarTerapiasAgrupadas === "N"){
+                                        elementos += elem_tmp;
+                                    }else{
+                                        if(detalles.tipoCard == "AGENDA_TERAPIA"){
+                                            elementos = elem_tmp;
+                                        }
                                     }
                                 });
                                 elementos += `
@@ -976,7 +1007,7 @@ Mi Veris - Citas - {{ $titulo }}
     // funciones js 
     // determinar fechas caducadas
     function determinarFechasCaducadas(datos, datosTratamiento){ 
-        console.log(datos, datosTratamiento)
+        // console.log(datos, datosTratamiento)
         let dataFechas = ``;
         if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
             
@@ -1012,7 +1043,7 @@ Mi Veris - Citas - {{ $titulo }}
 
     // determinar condiciones de los botones 
     function determinarCondicionesBotones(datosServicio, estado, datosTratamiento){
-        // console.log(datosServicio, estado, datosTratamiento)
+        // console.log(datosServicio.tipoCard)
         // console.log(datosServicio)
         // console.log(datosTratamiento)
         let services = datosServicio;
@@ -1020,7 +1051,12 @@ Mi Veris - Citas - {{ $titulo }}
             return `<div></div>`;
         } else {
             switch (datosServicio.tipoCard) {
+                case "AGENDA_TERAPIA":
                 case "AGENDA" :
+                    let esTerapiaAgrupada = false;
+                    if(datosServicio.tipoCard == "AGENDA_TERAPIA"){
+                        esTerapiaAgrupada = true;
+                    }
                     let respuestaAgenda = "";
                     // Agregar ver orden 
                     let datosCombinados = {
@@ -1040,8 +1076,13 @@ Mi Veris - Citas - {{ $titulo }}
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
                                     if(datosServicio.modalidad == 'PRESENCIAL'){
                                         let ruta = '/seleccionar-datos-cita/';
+                                        if(esTerapiaAgrupada){
+                                            ruta = "/agendamiento-multiple/{{ $tokenMods }}";
+                                        }
                                         let urlCompleta = ruta + "{{ $tokenCita }}"
-                                        respuestaAgenda += `<a href="${urlCompleta}" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-agendar" convenio-rel='${JSON.stringify(convenio)}' data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
+                                        // console.log("//////////////")
+                                        // console.log(datosTratamiento)
+                                        respuestaAgenda += `<a href="${urlCompleta}" esTerapiAgrupada-rel='${esTerapiaAgrupada}' class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-agendar" convenio-rel='${JSON.stringify(convenio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}' data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;
                                     } else {
                                         let ruta = '/citas-elegir-fecha-doctor/';
                                         let urlCompleta = ruta + "{{ $tokenCita }}"

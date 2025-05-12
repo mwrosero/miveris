@@ -8,6 +8,7 @@ Mi Veris - Citas - Detalle
 @endpush
 @section('content')
 @php
+    $tokenMods = base64_encode(uniqid());
     $tokenCita = base64_encode(uniqid());
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
@@ -92,6 +93,17 @@ Mi Veris - Citas - Detalle
         $('body').on('click','.btn-agendar-item', function(){
             let promocion = JSON.parse($(this).attr("promocion-rel"));
             let detalle = JSON.parse($(this).attr('data-rel'));
+            let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
+            {{-- console.log(promocion);
+            console.log(detalle);
+            return; --}}
+            let cantidadMaximaAgenda = promocion.cantidadMaximaAgenda
+            if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
+                esTerapiaAgrupada = true;
+            }else{
+                esTerapiaAgrupada = false;
+            }
+
             let url = '/seleccionar-datos-cita/';
             if(promocion.esOnline == "S"){
                 url = '/citas-elegir-fecha-doctor/';
@@ -123,6 +135,23 @@ Mi Veris - Citas - Detalle
 
             dataCita.tipoFlujo = "agenda/paquetes";
             tipoFlujo = dataCita.tipoFlujo;
+
+            if(esTerapiaAgrupada){
+                detalle.forEach(item => {
+                    item.lineaDetalleTratamiento = item.itemPaquete?.lineaDetalle || null;
+                    item.nombreServicio = item.nombreDetalle;
+                });
+                {{-- console.log(detalle);return; --}}
+
+                dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
+                dataCita.detallesServicios = detalle;
+                {{-- dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones; --}}
+                dataCita.datosTratamiento = promocion;
+                dataCita.cantidadMaximaAgenda = cantidadMaximaAgenda;
+                localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+                location = "/agendamiento-multiple/{{ $tokenMods }}";;
+                return;
+            }
 
             //return;
 
@@ -237,20 +266,24 @@ Mi Veris - Citas - Detalle
     }
 
     function drawBtnCardItem(detalles){
-        // console.log(detalles);
+        console.log(detalles);
         let tipoAgenda = detalles.tipoAgenda;
         // let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","IMAGENES","PROCEDIMIENTOS"];
-        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA"];
+        let tiposAgendaPermitida = ["CONSULTA_MEDICA","TERAPIA_FISICA","TERAPIA_FISICA_AGRUPADA"];
         let titleBtn = `Ver detalle`;
         let tieneItemsSinAgendar = verificarItemsSinAgendar(detalles.detalles);
         let btnEnviaAgendarClass = `btn-detalle`;
         if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.esAgendable && tieneItemsSinAgendar){
             titleBtn = `Agendar`;
-            if(detalles.detalles.length == 1 && detalles.preparacionPrevia == null){
+            if((detalles.detalles.length == 1 && detalles.preparacionPrevia == null) || tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
                 btnEnviaAgendarClass = `btn-agendar-item`;
             }
         }
-        return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>
+        let esTerapiaAgrupada = false
+        if(tipoAgenda == "TERAPIA_FISICA_AGRUPADA"){
+            esTerapiaAgrupada = true;
+        }
+        return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" esTerapiAgrupada-rel='${esTerapiaAgrupada}' promocion-rel='${JSON.stringify(detalles)}' data-rel='${JSON.stringify(detalles.detalles)}'>
                 ${titleBtn}
             </div>`;
     }
