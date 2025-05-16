@@ -387,6 +387,15 @@ Mi Veris - Citas - Agendamiento múltiple
                     </span>`
                 }
 
+                let urlAvatar = value.urlImagenTipoServicio;
+                let caducidadAgendamiento = ``;
+                if(!dataCita.hasOwnProperty('promocion')){
+                    caducidadAgendamiento = determinarFechaCaducidadEncabezadoAgendamientoMultiple(value, dataCita.datosTratamiento)
+
+                }else{
+                    urlAvatar = dataCita.promocion.urlImagenTipoServicio
+                }
+
                 elem += `<div class="col-12 mt-3">
                     <div class="card">
                         <div class="card-body p--2">
@@ -394,14 +403,14 @@ Mi Veris - Citas - Agendamiento múltiple
                                 <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1">${capitalizarElemento(value.nombreDetalle)}</h6>
                                 ${ estadoReserva }
                             </div>
-                            ${determinarFechaCaducidadEncabezadoAgendamientoMultiple(value, dataCita.datosTratamiento)}
+                            ${caducidadAgendamiento}
                             <h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.nombreSucursal)}</h6>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.fechaReserva)} <b class="hora-cita fw-normal text-primary-veris">${value.detalleReserva.horaReserva}</b></p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(value.detalleReserva.nombreMedicoReserva)}</p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(nombrePaciente)}</p>
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <div class="avatar-sm me-2">
-                                    <img src="${quitarComillas(value.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                    <img src="${quitarComillas(urlAvatar)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                 </div>
                                 ${btnReagendar}
                             </div>
@@ -472,11 +481,12 @@ Mi Veris - Citas - Agendamiento múltiple
                             Caducado
                         </div>`;
                 }
+                let identifier = (dataCita.hasOwnProperty('secuenciaAtencion')) ? value.lineaDetalleTratamiento : key;
                 elemMultiple += `<div class="col-12 my-1">
                     <div class="w-100 d-flex justify-content-between align-items-center border-bottom py-3 px-2">
                         <div class="form-check d-flex justify-content-start align-items-center">
-                            <input class="form-check-input atencionInmediata-input me-2 mb-1 width-24" type="checkbox" value="" id="item-${value.lineaDetalleTratamiento}" data-rel='${JSON.stringify(value)}'>
-                            <label class="text-primary-veris form-check-label fs--1 line-height-16 text-capitalize" for="item-${value.lineaDetalleTratamiento}">
+                            <input class="form-check-input atencionInmediata-input me-2 mb-1 width-24" type="checkbox" value="" id="item-${identifier}" data-rel='${JSON.stringify(value)}'>
+                            <label class="text-primary-veris form-check-label fs--1 line-height-16 text-capitalize" for="item-${identifier}">
                                 ${value.nombreServicio.toLowerCase()}
                             </label>
                         </div>

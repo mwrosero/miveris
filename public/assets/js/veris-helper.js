@@ -891,6 +891,7 @@ function determinarMeridiano(horaInicio){
 }
 
 const determinarFechaCaducidadEncabezadoAgendamientoMultiple = (datos, datosTratamiento) => {
+    // console.log(datos, datosTratamiento)
     let dataFechas = ``;
     if (Object.keys(datosTratamiento.datosConvenio).length > 0) {
             

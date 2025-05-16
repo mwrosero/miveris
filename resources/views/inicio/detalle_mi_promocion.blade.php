@@ -180,13 +180,19 @@ Mi Veris - Citas - Detalle
         if (data.code == 200){
             if(data.data.pendientes.length > 0){
                 $('.box-llamada').html(`<i class="fa-solid fa-circle-info text-primary-veris line-height-16 fs--16 me-2"></i><div>Para agendar tus servicios llámanos al <span>${data.data.numeroContactCenter}</span>.</div><a href="tel:+593${data.data.numeroContactCenter}" class="btn btn-sm btn-primary-veris fw-medium fs--16 line-height-16 px-3 py-2 shadow-none ms-2 d-block d-md-none" style="border-radius:8px;">Llamar</a>`);
-                $('.fechaValidez, .box-llamada-all').removeClass('d-none');
+                $('.fechaValidez').removeClass('d-none');
+                
                 $('.box-detalle-promocion').html(`<h6 class="title-promocion text-primary-veris mt-md-3 fs--18 line-height-24 fw-medium mb-1 h-auto">${capitalizarCadaPalabra(dataCita.paquete.nombrePaquete)}</h6>
                     <p class="fs--2 line-height-16 mb-1 text-veris nombrePaciente">${capitalizarCadaPalabra(dataCita.paquete.nombrePaciente)}</p>
                     <p class="fs--2 line-height-16 mb-1 text-veris fechaValidez">${validarCaducidad()}</p>`);
                 let elemPendiente = ``;
                 $('#tituloPromocionPendiente').removeClass('d-none');
+                let mostrarBoxLlamada = true;
                 $.each(data.data.pendientes, function(key, detalles){
+                    console.log(detalles)
+                    if(detalles.esAgendable){
+                        mostrarBoxLlamada = false;
+                    }
                     elemPendiente += `<div class="col-12 col-md-6">
                         <div class="card">
                             <div class="card-body p--2">
@@ -206,6 +212,9 @@ Mi Veris - Citas - Detalle
                         </div>                        
                     </div>`; 
                 })
+                if(mostrarBoxLlamada){
+                    $('.box-llamada-all').removeClass('d-none');
+                }
                 $('#contenedorPromocionPendiente').html(elemPendiente);
             }else{
                 $('.contenedorPromocionPendienteSection').remove();
