@@ -830,7 +830,11 @@ Veris - Elige datos para la Cita
         listaCentrales.empty();
         if(dataCentrales.length > 0){
             dataCentrales.forEach((central) => {
-                elemento += `<div id="central-${central.codigoSucursal}" data-rel='${JSON.stringify(central)}' class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica central-item select-item" data-bs-dismiss="modal">
+                let classDisabled = ``;
+                if(central.sucursalSinAgenda !== null && central.sucursalSinAgenda){
+                    classDisabled = `box-disabled`;
+                }
+                elemento += `<div id="central-${central.codigoSucursal}" data-rel='${JSON.stringify(central)}' class="card h-100 card-central-medica waves-effect shadow-item-modal cursor-pointer item-central-medica central-item select-item ${classDisabled}" data-bs-dismiss="modal">
                     <div class="card-body p--2">
                         <div class="d-flex">
                             <div class="avatar avatar-88 me-2" style="background: url(${ (central.nombre_foto != null) ? central.nombre_foto : '{{ asset('assets/img/svg/dummy_central.svg') }}' }) no-repeat center center; background-size:cover;">
@@ -1095,6 +1099,12 @@ Veris - Elige datos para la Cita
         color: #3D4E66 !important;
         background: #fff !important;
         border: 1px solid #E7E9EC !important;
+    }
+    .box-disabled{
+        opacity: 0.75;
+        background: #e6e6e6;
+        filter: grayscale(0.5);
+        pointer-events: none;
     }
 </style>
 @endsection

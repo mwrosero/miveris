@@ -79,7 +79,11 @@ Mi Veris - Citas - Agendamiento múltiple
     let dataCita = JSON.parse(local);
     let mensajeBloqueoReserva = ``;
     tipoFlujo = dataCita.tipoFlujo;
+    let classEsOrdenTratamiento = ``;
     document.addEventListener("DOMContentLoaded", async function () {
+        if(!dataCita.hasOwnProperty('secuenciaAtencion')){
+            classEsOrdenTratamiento = `d-none`;
+        }
         if(dataCita.hasOwnProperty('detalle_agendamiento_multiple_atendido')){
             await drawDetallesAtendidos();
         }else{
@@ -327,7 +331,7 @@ Mi Veris - Citas - Agendamiento múltiple
                             <div class="avatar-sm me-2">
                                 <img src="${quitarComillas(value.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                             </div>
-                            <a class="btn btn-sm btn-primary-veris fw-medium verOrdenCard fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>
+                            <a class="btn btn-sm btn-primary-veris fw-medium verOrdenCard ${classEsOrdenTratamiento} fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>
                         </div>
                     </div>
                 </div>
@@ -374,13 +378,22 @@ Mi Veris - Citas - Agendamiento múltiple
                             <i class="fa-solid fa-check me-2 text-success"></i>
                             <span class="text-success">Atendida</span>
                         </div>`;
-                    btnReagendar = `<a class="btn btn-sm btn-primary-veris verOrdenCard fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>`;
+                    btnReagendar = `<a class="btn btn-sm btn-primary-veris verOrdenCard ${classEsOrdenTratamiento} fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(value)}'>Ver orden</a>`;
                 }
                 
                 if(value.esPagada == "N"){
                     estadoReserva = `<span class="fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">
                         <i class="fa-solid fa-circle me-2 text-warning-veris"></i><span class="text-warning-veris">Por comprar</span>
                     </span>`
+                }
+
+                let urlAvatar = value.urlImagenTipoServicio;
+                let caducidadAgendamiento = ``;
+                if(!dataCita.hasOwnProperty('promocion')){
+                    caducidadAgendamiento = determinarFechaCaducidadEncabezadoAgendamientoMultiple(value, dataCita.datosTratamiento)
+
+                }else{
+                    urlAvatar = dataCita.promocion.urlImagenTipoServicio
                 }
 
                 elem += `<div class="col-12 mt-3">
@@ -390,14 +403,14 @@ Mi Veris - Citas - Agendamiento múltiple
                                 <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1">${capitalizarElemento(value.nombreDetalle)}</h6>
                                 ${ estadoReserva }
                             </div>
-                            ${determinarFechaCaducidadEncabezadoAgendamientoMultiple(value, dataCita.datosTratamiento)}
+                            ${caducidadAgendamiento}
                             <h6 class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.nombreSucursal)}</h6>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(value.detalleReserva.fechaReserva)} <b class="hora-cita fw-normal text-primary-veris">${value.detalleReserva.horaReserva}</b></p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a): ${capitalizarElemento(value.detalleReserva.nombreMedicoReserva)}</p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(nombrePaciente)}</p>
                             <div class="d-flex justify-content-between align-items-center mt-2">
                                 <div class="avatar-sm me-2">
-                                    <img src="${quitarComillas(value.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
+                                    <img src="${quitarComillas(urlAvatar)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">
                                 </div>
                                 ${btnReagendar}
                             </div>
@@ -468,11 +481,12 @@ Mi Veris - Citas - Agendamiento múltiple
                             Caducado
                         </div>`;
                 }
+                let identifier = (dataCita.hasOwnProperty('secuenciaAtencion')) ? value.lineaDetalleTratamiento : key;
                 elemMultiple += `<div class="col-12 my-1">
                     <div class="w-100 d-flex justify-content-between align-items-center border-bottom py-3 px-2">
                         <div class="form-check d-flex justify-content-start align-items-center">
-                            <input class="form-check-input atencionInmediata-input me-2 mb-1 width-24" type="checkbox" value="" id="item-${value.lineaDetalleTratamiento}" data-rel='${JSON.stringify(value)}'>
-                            <label class="text-primary-veris form-check-label fs--1 line-height-16 text-capitalize" for="item-${value.lineaDetalleTratamiento}">
+                            <input class="form-check-input atencionInmediata-input me-2 mb-1 width-24" type="checkbox" value="" id="item-${identifier}" data-rel='${JSON.stringify(value)}'>
+                            <label class="text-primary-veris form-check-label fs--1 line-height-16 text-capitalize" for="item-${identifier}">
                                 ${value.nombreServicio.toLowerCase()}
                             </label>
                         </div>
@@ -505,7 +519,7 @@ Mi Veris - Citas - Agendamiento múltiple
         }
 
         if(detalles.esPagada == "S"){
-            let btnOrden = `<a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard me-2" data-rel='${JSON.stringify(detalles)}'>Ver orden</a>`;
+            let btnOrden = `<a class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none verOrdenCard ${classEsOrdenTratamiento} me-2" data-rel='${JSON.stringify(detalles)}'>Ver orden</a>`;
 
             return `${btnOrden} <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none ${btnEnviaAgendarClass}" data-rel='${JSON.stringify(detalles)}'>
                     ${titleBtn}

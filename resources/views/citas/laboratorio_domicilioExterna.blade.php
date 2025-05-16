@@ -93,7 +93,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
 @endsection
 @push('scripts')
 <script async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAloQFSTL3pjmkGL9FKCZ3l67rLZpVS6aA&libraries=places&callback=initMap" async defer>
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvKhNY5DAACMCU8gAY1AbJiaqg3bTo2jc&libraries=places&callback=initMap" async defer>
 </script>
 
 <script>

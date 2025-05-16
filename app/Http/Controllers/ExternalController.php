@@ -45,6 +45,10 @@ class ExternalController extends Controller
         return view('external.agendamiento_2025.seleccionar_fecha')->with('params',$params);
     }
 
+    public function VuaNuevoAgendamientoCitas($params){
+        return view('external.agendamiento_2025.citas_vua')->with('params',$params);
+    }
+
     public function detalleCitaNuevoAgendamientoCitas($params){
         return view('external.agendamiento_2025.detalle_cita')->with('params',$params);
     }

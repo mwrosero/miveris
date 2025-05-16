@@ -845,9 +845,6 @@ $tokenSesion = base64_encode(uniqid());
         return dataFechas;
     }
 
-
-
-
     // determinar si es comprar o por comprar
     function determinarEstado(estado){
         if(estado == "S"){
@@ -1473,7 +1470,7 @@ $tokenSesion = base64_encode(uniqid());
             dataCita.datosTratamiento = datosTratamiento;
             dataCita.cantidadMaximaAgenda = parseInt($(this).attr('qty-rel'));
             localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
-            location = "/agendamiento-multiple/{{ $tokenMods }}";;
+            location = "/agendamiento-multiple/{{ $tokenMods }}";
             return;
         }
 
