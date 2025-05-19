@@ -430,7 +430,7 @@ Veris - Elige fecha y doctor
     // llamada al dom 
     document.addEventListener("DOMContentLoaded", async function () {
         // if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP") || dataCita.hasOwnProperty('detalleItemPaquete')){
-        if(dataCita.vua){
+        if(dataCita.central.codigoTipoSucursal == "CAP"){
             $('.label-fecha-title').html(`Elige fecha y hora`).addClass('d-none');
             $('.box-calendar-vua-parent').removeClass('bg-dark-blue-veris-medium-sm');
             $('.box-calendar-vua').removeClass('d-none');
@@ -873,7 +873,7 @@ Veris - Elige fecha y doctor
     }
 
     async function consultarFechasDisponibles(){
-        if(dataCita.vua){
+        if(dataCita.central.codigoTipoSucursal == "CAP"){
             return;
         }
         let listaEspecialidades = $('#listaEspecialidades');
