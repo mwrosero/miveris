@@ -1085,7 +1085,7 @@ $(document).ready(function() {
         localStorage.setItem('sessionTime', new Date().getTime());
     }
 
-    setInterval(checkAndUpdateToken, 15 * 60 * 1000);
+    setInterval(checkAndUpdateToken, 10 * 60 * 1000);
 
 });
 
@@ -1099,7 +1099,7 @@ function checkAndUpdateToken() {
     var sessionTime = localStorage.getItem('sessionTime');
     
     // Verificar si existe una sesión y ha transcurrido al menos 25 minutos
-    if (sessionTime && new Date().getTime() - sessionTime >= 15 * 60 * 1000) {
+    if (sessionTime && new Date().getTime() - sessionTime >= 10 * 60 * 1000) {
         // Actualizar el token
         updateToken();
         // Reiniciar la hora de sesión
