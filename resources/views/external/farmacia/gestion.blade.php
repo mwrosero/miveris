@@ -309,7 +309,7 @@
 	        args["dismissAlert"] = true;
 	        const data = await call(args);
 	        if(data.code == 200){
-	        	$('#confirmacionTitle').html(data.message);
+	        	{{-- $('#confirmacionTitle').html(data.message); --}}
 	        	$('#confirmacion').modal('show')
 	        }else{
 	        	showMsg(data.message, 'error');
