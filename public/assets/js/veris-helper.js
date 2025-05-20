@@ -1120,7 +1120,7 @@ async function updateToken() {
     console.log(data);
     if(!data || data.code != 200){
         //showMessage("warning","Atención",data.message);
-        logout();
+        window.location.href = "/external/farmacia/logout";
     }else{
         _token = data.idToken;
     }
