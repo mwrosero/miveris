@@ -36,8 +36,8 @@
 
 </head>
 <body>
-    <!-- Preview Modal -->
-    <div class="modal fade" id="confirmacion" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="confirmacion" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+    {{-- <div class="modal fade" id="confirmacion" data-bs-backdrop="static" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true"> --}}
         <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header justify-content-center">
@@ -67,9 +67,12 @@
         <div class="container-fluid bg-green py-2">
         	<div class="row d-flex justify-content-between">
         		<div class="col-auto text-white">Gestión de Picking - Farmacia</div>
-        		<a href="/external/farmacia/logout" class="col-auto text-white text-decoration-none btn-cerrar" type="button">
-        			Cerrar sesión
-        		</a>
+        		<div class="col-auto text-white">
+        			Hola {{ session('userData')->codigoUsuario }}, 
+        			<a href="/external/farmacia/logout" class="text-white text-decoration-none btn-cerrar" type="button">
+        				Cerrar sesión
+        			</a>
+        		</div>
         	</div>
         </div>
     </header>
@@ -99,7 +102,7 @@
         	</div>
         	<div class="row d-none row-table-gestion mx-0">
         		<div class="col-12 col-md-4 offset-md-4 mt-3">
-        			<input type="text" id="strBarCodes" class="form-control" placeholder="Códigos de Barra">
+        			<input type="text" id="strBarCodes" class="form-control" placeholder="Ingresar Códigos de Barra">
         		</div>
         		<div class="col-12 col-md-10 offset-md-1">
         			<table class="table w-100 mt-3">
@@ -196,6 +199,18 @@
         			await buscarSolicitud(numeroSolicitud);
         		}
         	})
+
+        	$('#numeroSolicitud').on('keypress', async function(e) {
+			    if (e.which === 13) {
+			        e.preventDefault();
+			        let numeroSolicitud = getInput('numeroSolicitud');
+	        		if(numeroSolicitud == ''){
+	        			showMsg('Ingrese número de solicitud.', 'error');
+	        		}else{
+	        			await buscarSolicitud(numeroSolicitud);
+	        		}
+			    }
+			});
 
         	$('body').on('click', '.btn-generar', async function(){
         		let hasErrors = false;
@@ -294,7 +309,8 @@
 	        args["dismissAlert"] = true;
 	        const data = await call(args);
 	        if(data.code == 200){
-	        	data.message;
+	        	$('#confirmacionTitle').html(data.message);
+	        	$('#confirmacion').modal('show')
 	        }else{
 	        	showMsg(data.message, 'error');
 	        }
