@@ -833,6 +833,9 @@ class ExternalController extends Controller
     }
 
     public function loginFarmaciaPickingView(){
+        if(Session::has('userData')) {
+            return redirect('/external/farmacia/gestion');
+        }
         return view('external.farmacia.login');
     }
 
@@ -903,6 +906,9 @@ class ExternalController extends Controller
     }
 
     public function gestionFarmaciaPickingView(){
+        if(!Session::has('userData')) {
+            return redirect('/external/farmacia/login');
+        }
         $accessToken = $this->getTokenExternalFacturacion();
         return view('external.farmacia.gestion')
                 ->with('accessToken',$accessToken);
