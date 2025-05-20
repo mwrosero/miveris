@@ -909,7 +909,10 @@ class ExternalController extends Controller
         if(!Session::has('userData')) {
             return redirect('/external/farmacia/login');
         }
-        $accessToken = $this->getTokenExternalFacturacion();
+        $this->refreshToken();
+        // $accessToken = $this->getTokenExternalFacturacion();
+        $accessToken = Session::get('accessToken');
+
         return view('external.farmacia.gestion')
                 ->with('accessToken',$accessToken);
     }

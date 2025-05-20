@@ -165,7 +165,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/block-ui/block-ui.js"></script>
     <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/external/phantomx/js/utils.js?v=1.0.3"></script>
-    <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
+    <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.0"></script>
     <script type="text/javascript" src="{{ asset('assets/external/resultados-laboratorio/js/pdf.min.js') }}"></script>
     <script>
     	let objeto = @json(session('roles'));
@@ -365,7 +365,7 @@
     				let codigos = [];
     				let iconCompleted = `<i class="fa-solid fa-circle-check text-success"></i>`
     				if(aplicaPistoleo){
-    					iconBarCode = `<i class="fa-solid fa-barcode"></i>`;
+    					iconBarCode = `<i class="fa-solid fa-barcode"></i><i class="fa-solid fa-barcode"></i>`;
     					isRequired = `required`;
     					codigos = v.codigoBarras;
     					iconCompleted = `<i class="fa-solid fa-triangle-exclamation text-danger"></i>`;
@@ -379,7 +379,7 @@
         						<td class="d-none ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}">
         							<input type="text" class="form-control" class="input-codigo" ${isRequired} codigos-rel='${JSON.stringify(codigos)}' codigoServicio-rel='${v.codigoServicio}' codigoPrestacion-rel='${v.codigoPrestacion}'>
         						</td>
-        						<td class="${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}">${v.nombrePrestacion}</td>
+        						<td class="${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}"><small class="fw-bold">${v.codigoPrestacion}</small> - ${v.nombrePrestacion}</td>
         						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}">${v.cantidad}</td>
         						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}" id="icon-status-${v.codigoServicio}-${v.codigoPrestacion}">${iconCompleted}</td>
         					</tr>`;
