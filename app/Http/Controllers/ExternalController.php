@@ -832,6 +832,113 @@ class ExternalController extends Controller
                 ->with('accessToken',$accessToken);
     }
 
+    public function loginFarmaciaPickingView(){
+        return view('external.farmacia.login');
+    }
+
+    public function loginFarmaciaPickingAction(Request $request){
+        $data = $request->all();
+        $user = strtoupper($data['numeroIdentificacion']);
+        $password = $data['password'];
+
+
+        $method = '/'.Veris::FACTURACION_WAR.'/v1/autenticacion/login';
+        $res =  Http::withOptions([
+                    'verify' => false, // Desactivar verificación de certificados
+                ])->withHeaders([
+                    'Application' => Veris::APPLICATION_FARMACIA,
+                    'Authorization' => 'Basic '.base64_encode(strtoupper($user) .":". $password),
+                ])->post(Veris::BASE_URL.$method);
+        
+        $response = json_decode($res->body());
+
+        if($response->code == 200){
+            switch($response->data->estadoUsuario) {
+                case 'CONFIRMED':
+
+                    $method = '/'.Veris::FACTURACION_WAR.'/v1/usuarios/'.$response->data->secuenciaUsuario.'?tipoSucursal=TODOS';
+                    $dataRoles = Veris::call([
+                        'endpoint' => Veris::BASE_URL.$method,
+                        'method'   => 'GET',
+                        'application' => Veris::APPLICATION_FARMACIA,
+                        'token'    => $response->data->idToken,
+                        'data'     => $data
+                    ]);
+                    $roles = collect($dataRoles->data->roles); // $tuArray es el array que muestras
+
+                    $existe = $roles->contains(function ($item) {
+                        return $item->codigoRol == 1121 && trim($item->nombreRol) == 'GUIA DE DESPACHO USUARIO2';
+                    });
+                    // dump($existe);
+
+                    if ($existe){
+                        Session::put('userData', $response->data);
+                        Session::put('accessToken', $response->data->idToken);
+                        // dd($response->data->secuenciaUsuario);
+                        Session::put('roles', $dataRoles->data);
+                        return redirect('/external/farmacia/gestion');
+                    }else{
+                        $message = "Usuario no dispone del ROL requerido.";
+                    }
+                break;
+                case 'FORCE_CHANGE_PASSWORD':
+                    $message = "Usuario nuevo que ingresa una clave temporal";
+                break;
+                case 'CHANGE_PASSWORD':
+                    $message = "Usuario debe cambiar su clave porque ha pasado 'x' tiempo desde el último cambio";
+                break;
+                case 'RESET_REQUIRED':
+                    $message = "7702057701963";
+                break;
+            }
+        }else{
+            $message = $response->message;
+        }
+
+        if(isset($message)){
+            session()->flash('mensaje', $message);
+            session()->flash('user', strtoupper($user));
+            return redirect('/external/farmacia/login');
+        }
+    }
+
+    public function gestionFarmaciaPickingView(){
+        $accessToken = $this->getTokenExternalFacturacion();
+        return view('external.farmacia.gestion')
+                ->with('accessToken',$accessToken);
+    }
+
+    public function gestionFarmaciaPickingLogout(){
+        Session::flush();
+        return redirect()->route('login-farmacia-picking-view');
+    }
+
+    public function refreshToken(){
+        $info = Session::get('userData');
+        // dd($info->refreshToken);
+        
+        $method = '/'.Veris::FACTURACION_WAR.'/v1/autenticacion/refresh_token';
+        $response = Veris::call([
+            'endpoint'  => Veris::BASE_URL.$method,
+            'data'      => ["refreshToken" => $info->refreshToken],
+            'method'    => 'POST',
+            'application' => Veris::APPLICATION_FARMACIA
+        ]);
+
+        Session::put('accessToken', $response->data->idToken);
+
+        $msg = [
+            "code" => $response->code,
+            "message" => $response->code
+        ];
+
+        if($response->code == 200){
+            $msg["idToken"] = $response->data->idToken;
+        }
+
+        return response()->json($msg);
+    }
+
     public function botAi(Request $request){
         $data = $request->all();
         // dd($data['message']);

@@ -81,6 +81,13 @@ Route::middleware('guest')->group(function () {
         Route::get('/agendamiento/cita-urgencias-ambulatorias/{params}', [ExternalController::class, 'VuaNuevoAgendamientoCitas'])->name('cita-vua-embudo-agendamiento')->withoutMiddleware(['guest']);
         Route::get('/agendamiento/detalle-cita/{params}', [ExternalController::class, 'detalleCitaNuevoAgendamientoCitas'])->name('detalle-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
         Route::get('/agendamiento/cita-agendada/{params}', [ExternalController::class, 'CitaAgendadaNuevoAgendamientoCitas'])->name('cita-agendada-embudo-agendamiento')->withoutMiddleware(['guest']);
+        
+        Route::get('/farmacia/login', [ExternalController::class, 'loginFarmaciaPickingView'])->name('login-farmacia-picking-view')->withoutMiddleware(['guest']);
+        Route::get('/farmacia/gestion', [ExternalController::class, 'gestionFarmaciaPickingView'])->name('gestion-farmacia-picking-view')->withoutMiddleware(['guest']);
+        Route::post('/farmacia/login', [ExternalController::class, 'loginFarmaciaPickingAction'])->name('login-farmacia-picking-action')->withoutMiddleware(['guest']);
+        Route::get('/farmacia/logout', [ExternalController::class, 'gestionFarmaciaPickingLogout'])->name('gestion-farmacia-picking-logout')->withoutMiddleware(['guest']);
+
+        Route::get('/refreshToken', [ExternalController::class, 'refreshToken'])->name('refreshToken')->withoutMiddleware(['guest']);
 
     });
 

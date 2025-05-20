@@ -650,6 +650,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }
 
+        if(dataCita.origen == "paquetes"){
+            datosReserva.secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
+            datosReserva.itemPaquete = dataCita.detalleItemPaquete.itemPaquete;
+            // if(dataCita.tratamiento){
+                /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
+                // datosReserva.numeroOrden = dataCita.detalleItemPaquete.numeroOrden;
+                datosReserva.codigoEmpOrden = dataCita.detalleItemPaquete.codigoEmpresaOrden;
+                // datosReserva.lineaDetalle = dataCita.detalleItemPaquete.lineaDetalleOrden;
+            // }
+        }
+
         args["bodyType"] = "json";
         args["data"] = JSON.stringify(datosReserva);
 
