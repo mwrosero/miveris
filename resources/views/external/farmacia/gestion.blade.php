@@ -79,7 +79,7 @@
     <main>
         <section class="container-fluid px-0 mb-5">
             <div class="row my-4 d-flex justify-content-center align-items-center g-3 px-0 mx-0">
-            	<div class="col-auto text-center">
+            	<div class="col-auto text-center d-none">
             		<select id="sucursal" class="form-select fs--1 p-3 py-2 pe-5 text-capitalize" title="Central de Picking">
             		</select>
             	</div>
@@ -148,7 +148,7 @@
             </div>
         </div>
         <!-- Footer -->
-        <footer class="bg-footer py-4">
+        <footer class="bg-footer py-4 d-none">
             <div class="container-fluid px-3 px-lg-5">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="font-gotham fw-semibold">© 2025 Phantom X. Todos los derechos reservados.</div>
@@ -300,7 +300,8 @@
 
 		async function generarPicking(){
 			let args = [];
-			args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1&codigoSucursal=${getInput('sucursal')}`;
+            // args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1&codigoSucursal=${getInput('sucursal')}`;
+			args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1`;
 	        args["method"] = "POST";
 	        args["showLoader"] = true;
 	        args["token"] = _token;
@@ -448,6 +449,18 @@
         .td-required-empty{
         	background: #f500000f !important;
         }
+        html, body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
+    }
     </style>
 </body>
 
