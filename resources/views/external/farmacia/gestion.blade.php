@@ -249,7 +249,7 @@
 
 			            if (codigosRel.includes(valorIngresado)) {
 			                $(this).removeClass('is-invalid').addClass('is-valid');
-			                $(`#icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`);
+			                $(`.icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`);
 			                $(`.td-${codigoServicio}-${codigoPrestacion}`).removeClass(`td-required-empty`);
 			                $('#strBarCodes').val("");
 			                showMsg('Prestación registrada para Picking.', 'success');
@@ -273,7 +273,7 @@
 		            
 		            if (codigosRel.includes(valorIngresado)) {
 		                $(this).removeClass('is-invalid').addClass('is-valid');
-		                $(`#icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`);
+		                $(`.icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`);
 		                $('#strBarCodes').val("");
 		                showMsg('Prestación registrada para Picking.','success');
 		            } else {
@@ -289,10 +289,10 @@
 		        let codigoServicio = $(this).attr('codigoServicio-rel');
 				let codigoPrestacion = $(this).attr('codigoPrestacion-rel');
 		        if (codigosRel.includes(valorIngresado)) {
-		        	$(`#icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`)
+		        	$(`.icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`)
 		            $(this).removeClass('is-invalid').addClass('is-valid');
 		        } else {
-		        	$(`#icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-triangle-exclamation text-danger"></i>`)
+		        	$(`.icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-triangle-exclamation text-danger"></i>`)
 		            $(this).removeClass('is-valid').addClass('is-invalid');
 		        }
 		    }); --}}
@@ -382,7 +382,7 @@
         						</td>
         						<td class="${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}"><small class="fw-bold">${v.codigoPrestacion}</small> - ${v.nombrePrestacion}</td>
         						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}">${v.cantidad}</td>
-        						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}" id="icon-status-${v.codigoServicio}-${v.codigoPrestacion}">${iconCompleted}</td>
+        						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion} icon-status-${v.codigoServicio}-${v.codigoPrestacion}">${iconCompleted}</td>
         					</tr>`;
     			})
         	})
