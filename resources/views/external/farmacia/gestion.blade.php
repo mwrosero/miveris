@@ -79,7 +79,7 @@
     <main>
         <section class="container-fluid px-0 mb-5">
             <div class="row my-4 d-flex justify-content-center align-items-center g-3 px-0 mx-0">
-            	<div class="col-auto text-center">
+            	<div class="col-auto text-center d-none">
             		<select id="sucursal" class="form-select fs--1 p-3 py-2 pe-5 text-capitalize" title="Central de Picking">
             		</select>
             	</div>
@@ -148,7 +148,7 @@
             </div>
         </div>
         <!-- Footer -->
-        <footer class="bg-footer py-4">
+        <footer class="bg-footer py-4 d-none">
             <div class="container-fluid px-3 px-lg-5">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="font-gotham fw-semibold">© 2025 Phantom X. Todos los derechos reservados.</div>
@@ -215,10 +215,10 @@
         	$('body').on('click', '.btn-generar', async function(){
         		let hasErrors = false;
         		let msg_error = `<ul>`;
-        		if(getInput('sucursal') === ''){
-        			hasErrors = true;
-        			msg_error += `<li>Debe seleccionar una Sucursal para hacer el Picking.</li>`;
-        		}
+        		// if(getInput('sucursal') === ''){
+        		// 	hasErrors = true;
+        		// 	msg_error += `<li>Debe seleccionar una Sucursal para hacer el Picking.</li>`;
+        		// }
 
         		if($('.table td.td-required-empty').length > 0){
         			hasErrors = true;
@@ -249,7 +249,7 @@
 
 			            if (codigosRel.includes(valorIngresado)) {
 			                $(this).removeClass('is-invalid').addClass('is-valid');
-			                $(`#icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`);
+			                $(`.icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`);
 			                $(`.td-${codigoServicio}-${codigoPrestacion}`).removeClass(`td-required-empty`);
 			                $('#strBarCodes').val("");
 			                showMsg('Prestación registrada para Picking.', 'success');
@@ -273,7 +273,7 @@
 		            
 		            if (codigosRel.includes(valorIngresado)) {
 		                $(this).removeClass('is-invalid').addClass('is-valid');
-		                $(`#icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`);
+		                $(`.icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`);
 		                $('#strBarCodes').val("");
 		                showMsg('Prestación registrada para Picking.','success');
 		            } else {
@@ -289,10 +289,10 @@
 		        let codigoServicio = $(this).attr('codigoServicio-rel');
 				let codigoPrestacion = $(this).attr('codigoPrestacion-rel');
 		        if (codigosRel.includes(valorIngresado)) {
-		        	$(`#icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`)
+		        	$(`.icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-circle-check text-success"></i>`)
 		            $(this).removeClass('is-invalid').addClass('is-valid');
 		        } else {
-		        	$(`#icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-triangle-exclamation text-danger"></i>`)
+		        	$(`.icon-status-${codigoServicio}-${codigoPrestacion}`).html(`<i class="fa-solid fa-triangle-exclamation text-danger"></i>`)
 		            $(this).removeClass('is-valid').addClass('is-invalid');
 		        }
 		    }); --}}
@@ -300,7 +300,8 @@
 
 		async function generarPicking(){
 			let args = [];
-			args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1&codigoSucursal=${getInput('sucursal')}`;
+            // args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1&codigoSucursal=${getInput('sucursal')}`;
+			args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1`;
 	        args["method"] = "POST";
 	        args["showLoader"] = true;
 	        args["token"] = _token;
@@ -381,7 +382,7 @@
         						</td>
         						<td class="${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}"><small class="fw-bold">${v.codigoPrestacion}</small> - ${v.nombrePrestacion}</td>
         						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}">${v.cantidad}</td>
-        						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}" id="icon-status-${v.codigoServicio}-${v.codigoPrestacion}">${iconCompleted}</td>
+        						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion} icon-status-${v.codigoServicio}-${v.codigoPrestacion}">${iconCompleted}</td>
         					</tr>`;
     			})
         	})
@@ -448,6 +449,18 @@
         .td-required-empty{
         	background: #f500000f !important;
         }
+        html, body {
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
+    }
     </style>
 </body>
 

@@ -6,7 +6,7 @@
 @section('content')
 <!-- Logo -->
 <div class="text-center mb-4">
-    <img class="logo-login" src="../../assets/img/veris/icono.svg">
+    <img class="logo-login" src="../../assets/img/veris/logo-veris-2025.svg">
 </div>
 <!-- /Logo -->
 <form id="formAuthentication" class="mb-3" action="/external/farmacia/login" method="POST">
