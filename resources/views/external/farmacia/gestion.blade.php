@@ -215,10 +215,10 @@
         	$('body').on('click', '.btn-generar', async function(){
         		let hasErrors = false;
         		let msg_error = `<ul>`;
-        		if(getInput('sucursal') === ''){
-        			hasErrors = true;
-        			msg_error += `<li>Debe seleccionar una Sucursal para hacer el Picking.</li>`;
-        		}
+        		// if(getInput('sucursal') === ''){
+        		// 	hasErrors = true;
+        		// 	msg_error += `<li>Debe seleccionar una Sucursal para hacer el Picking.</li>`;
+        		// }
 
         		if($('.table td.td-required-empty').length > 0){
         			hasErrors = true;
