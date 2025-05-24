@@ -636,8 +636,6 @@ class ExternalController extends Controller
             'token'    => $accessToken,
             'method'   => 'GET'
         ]);
-
-        //Validar code != 200
         
         if(!$list->data->estaFacturado){
             $generarBoton = true;
@@ -654,6 +652,7 @@ class ExternalController extends Controller
                 'data'     => $data
             ]);
 
+            // echo Veris::BASE_URL.$method;
             // dump($data);
             // dd($response);
 

@@ -95,12 +95,15 @@ class Veris extends Model
             $header[] = 'Private-Merchant-Id: ' . self::KUSHKI_PRIVATE_MERCHANT_ID;
         }
 
+        $tokenBearerSetted = false;
+
         // AUTH
         // if( isset($config['token']) && !isset($config['data'])){
         if( isset($config['token']) ){
             curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
             //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Authorization: Bearer ' . $config['token'] ));
             $header[] = 'Authorization: Bearer ' . $config['token'];
+            $tokenBearerSetted = true;
         }
 
         // POST DATA
@@ -112,7 +115,7 @@ class Veris extends Model
             $header[] = 'Content-Length: ' . strlen($data_serialized);
             $header[] = 'content-language: es';
             
-            if( isset($config['token']) ){
+            if( isset($config['token']) && !$tokenBearerSetted){
                 $header[] = 'Authorization: Bearer ' . $config['token'];
             }
         }
@@ -134,9 +137,25 @@ class Veris extends Model
         
         // API CALL
         try{
+            // logger()->debug('Petición API', [
+            //     'url' => $config['endpoint'],
+            //     'method' => $config['method'],
+            //     'headers' => $header,
+            //     'body' => $config['data'] ?? null,
+            // ]);
+
             $result = curl_exec ($ch);
             $status_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close ($ch);
+            // if ($status_code >= 400) {
+            //     dd([
+            //         'status' => $status_code,
+            //         'raw_response' => $result,
+            //         'json_decoded' => json_decode($result),
+            //         'json_error' => json_last_error_msg(),
+            //     ]);
+            // }
+
             //Para pagos con kushki
             if(isset($config['tokenKushki']) && $config['tokenKushki']){
                 $response = [
