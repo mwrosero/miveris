@@ -36,6 +36,7 @@ class Veris extends Model
     // public const URL_EPI = 'http://ecstest.veris.com.ec/Verisrest/v1/formularioepi1';
     // public const BASICAUTHEPI = 'd3Nmb3JtdWxhcmlvZXBpMTpDQVM1Nzg5Yjg2TWRyNUYwcm11bGFyMTAzcGkxKg==';
     // public const CONTIENE_DESARROLLO = true;
+    // public const API_KEY_GOOGLE_MAP = 'AIzaSyCvKhNY5DAACMCU8gAY1AbJiaqg3bTo2jc';
 
     //PROD
     public const BASE_URL = 'https://api.phantomx.com.ec';
@@ -61,6 +62,7 @@ class Veris extends Model
     public const URL_EPI = 'https://phantom-wsexternos.phantomx.com.ec/Verisrest/v1/formularioepi1';
     public const BASICAUTHEPI = 'd3Nmb3JtdWxhcmlvZXBpMTpDQVM1Nzg5Yjg2TWRyNUYwcm11bGFyMTAzcGkxKg==';
     public const CONTIENE_DESARROLLO = false;
+    public const API_KEY_GOOGLE_MAP = 'AIzaSyCvKhNY5DAACMCU8gAY1AbJiaqg3bTo2jc';
 
     static function call(Array $config)
     {
