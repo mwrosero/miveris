@@ -822,7 +822,18 @@ Mi Veris - Citas - {{ $titulo }}
                                         elementos += elem_tmp;
                                     }else{
                                         if(detalles.tipoCard == "AGENDA_TERAPIA"){
-                                            elementos = elem_tmp;
+                                            elementos = `<div class="col-12 mb-4">
+                                                <div class="card rounded-0">
+                                                    <div class="card-body py-2 px-3">
+                                                        <p class="fs--3 line-height-12 text-primary-veris mb-1">Tratamiento</p>
+                                                        <h6 class="text-primary-veris fs--18 line-height-24 fw-medium mb-1">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
+                                                        <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
+                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
+                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
+                                                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
+                                                    </div>
+                                                </div>
+                                            </div>`+elem_tmp;
                                         }
                                     }
                                 });

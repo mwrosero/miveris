@@ -963,6 +963,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         args["data"] = JSON.stringify(datosReserva);
         const data = await call(args);
+        return;
 
         if (data.code == 200){
             dataCita.reserva = data.data;
