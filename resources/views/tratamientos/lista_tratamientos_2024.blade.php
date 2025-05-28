@@ -315,6 +315,7 @@ $tokenSesion = base64_encode(uniqid());
             let detalle = JSON.parse($(this).attr('data-rel'));
             dataCita.detalle_agendamiento_multiple_atendido = true;
             dataCita.detallesServicios = detalle.detallesServicios;
+            dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones;
             localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
             location = "/agendamiento-multiple/{{ $tokenMods }}";;
             return;
