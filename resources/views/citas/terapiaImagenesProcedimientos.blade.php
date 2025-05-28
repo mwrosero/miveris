@@ -843,7 +843,7 @@ Mi Veris - Citas - {{ $titulo }}
 
                             let elementos = ''; // Definir la variable fuera del bucle
                             data.data.items.forEach((laboratorio) => {
-                                // console.log(laboratorio)
+                                console.log(laboratorio)
                                 elementos += `<div class="col-12 mb-4">
                                                 <div class="card rounded-0">
                                                     <div class="card-body py-2 px-3">
@@ -892,18 +892,7 @@ Mi Veris - Citas - {{ $titulo }}
                                         elementos += elem_tmp;
                                     }else{
                                         if(detalles.tipoCard == "AGENDA_TERAPIA"){
-                                            elementos = `<div class="col-12 mb-4">
-                                                <div class="card rounded-0">
-                                                    <div class="card-body py-2 px-3">
-                                                        <p class="fs--3 line-height-12 text-primary-veris mb-1">Tratamiento</p>
-                                                        <h6 class="text-primary-veris fs--18 line-height-24 fw-medium mb-1">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
-                                                        <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
-                                                    </div>
-                                                </div>
-                                            </div>`+elem_tmp;
+                                            elementos += elem_tmp;
                                         }
                                     }
                                 });
@@ -1158,7 +1147,7 @@ Mi Veris - Citas - {{ $titulo }}
                                 // console.log(datosServicio.cantidadMaximaAgenda)
                             }
                             // mostrar boton de informacion que llama al modal de informacion
-                            respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-informacion" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' data-bs-toggle="modal" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Información</button>`;
+                            respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-informacion" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' data-bs-toggle="modal" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Agendar</button>`;
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
@@ -1218,7 +1207,7 @@ Mi Veris - Citas - {{ $titulo }}
                                 }
                             } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                                 // mostrar boton de informacion
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Agendar</a>`;
                             } 
                         }
                     }

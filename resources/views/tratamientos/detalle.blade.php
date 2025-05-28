@@ -272,8 +272,25 @@ Mi Veris - Citas - tratamiento
 
         if(data.code == 200){
             dataCita.promocion = data.data;
-            return await drawServicios()            
+            if(data.data.aplicaPromocion == "S"){
+                return await drawServicios()            
+            }else{
+                return await emptySpace(data.data.mensajeAplicaPromocion);
+            }
         }
+    }
+
+    async function emptySpace(msg){
+        $('#box-detalle-promocion').removeClass('d-none');
+        $('#box-detalle-promocion').html(`<div class="card-body px-0 text-center">
+                <div class="d-block"><i class="fa-solid fs-24 fa-circle-info text-primary-veris fs-28 line-height-28"></i></div>
+                <h1 class="fs--20 line-height-24 my-2 text-center">Información</h1>
+                <p class="fs--1 fw-normal mb-0 text-veris">${msg}</p>
+                <img src="{{ asset('assets/img/svg/empty_carrito_promocion.svg') }}" class="img-fluid mt-3 mb-3" alt="">
+                <div class="p-3">
+                    <a href="/" type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 waves-effect waves-light text-center">Volver al inicio</a>
+                </div>
+            </div>`);
     }
 
     // funcion para manejar los eventos de los botones de los precios
