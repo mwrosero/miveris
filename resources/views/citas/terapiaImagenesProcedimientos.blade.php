@@ -10,6 +10,7 @@ Mi Veris - Citas - {{ $titulo }}
     $tokenMods = base64_encode(uniqid());
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
+    // dump($tokenMods);
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal no permite reserva -->
@@ -1086,11 +1087,12 @@ Mi Veris - Citas - {{ $titulo }}
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
                                     if(datosServicio.modalidad == 'PRESENCIAL'){
-                                        let ruta = '/seleccionar-datos-cita/';
+                                        let urlCompleta = '/seleccionar-datos-cita/{{ $tokenCita }}';
                                         if(esTerapiaAgrupada){
-                                            ruta = "/agendamiento-multiple/{{ $tokenMods }}";
+                                            {{-- ruta = "/agendamiento-multiple/{{ $tokenMods }}"; --}}
+                                            urlCompleta = "/agendamiento-multiple/{{ $tokenMods }}";
                                         }
-                                        let urlCompleta = ruta + "{{ $tokenCita }}"
+                                        //let urlCompleta = ruta + "{{ $tokenCita }}"
                                         // console.log("//////////////")
                                         // console.log(datosTratamiento)
                                         respuestaAgenda += `<a href="${urlCompleta}" esTerapiAgrupada-rel='${esTerapiaAgrupada}' class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-agendar" convenio-rel='${JSON.stringify(convenio)}' datosTratamiento-rel='${JSON.stringify(datosTratamiento)}' data-rel='${JSON.stringify(datosServicio)}'>Agendar</a>`;

@@ -223,12 +223,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 // Por pagar
                 let text_btn = "Agendar";
                 $.each(dataCita.detalle_pre_agendamiento, function(key, value){
-                    if(value.request.estaPagada == "N" && value.request.permitePago == "S"){
+                    if(value.request.estaPagada == "N" && value.request.permitePago == "S" && dataCita.origen !== "paquetes"){
                         text_btn = "Pagar";
                     }
                 })
                 $('#btn-pagar').html(text_btn).removeClass('d-none');
-                await obtenerPrecioMultiple();
+                if(dataCita.origen !== "paquetes"){
+                    await obtenerPrecioMultiple();
+                }else{
+                    $('.box-precio').html(`<div class="col-12 text-center"><h1 class="text-primary-veris fw-medium fs--36 line-height-44 mb-0" id="precioTotal">$0.00</h1></div>`);
+                }
             }else{
                 await obtenerPrecio();
             }
@@ -963,7 +967,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         args["data"] = JSON.stringify(datosReserva);
         const data = await call(args);
-        return;
+        {{-- return; --}}
 
         if (data.code == 200){
             dataCita.reserva = data.data;
