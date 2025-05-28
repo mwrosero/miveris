@@ -69,7 +69,7 @@ Mi Veris - Citas - Detalle
     document.addEventListener("DOMContentLoaded", async function () {
 
         $('.feature-img-promocion').css('background', 'url("'+dataCita.paquete.urlImagen+'") no-repeat center');
-        /*$('.title-promocion').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaquete));
+        /*$('.title-promocion').html(capitalizarCadaPalabra(dataCita.paquete.nombreComercialPaquete));
         $('.nombrePaciente').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaciente));
         $('.fechaValidez').html(validarCaducidad())*/
         //consultarGrupoFamiliar();
@@ -182,7 +182,7 @@ Mi Veris - Citas - Detalle
                 $('.box-llamada').html(`<i class="fa-solid fa-circle-info text-primary-veris line-height-16 fs--16 me-2"></i><div>Para agendar tus servicios llámanos al <span>${data.data.numeroContactCenter}</span>.</div><a href="tel:+593${data.data.numeroContactCenter}" class="btn btn-sm btn-primary-veris fw-medium fs--16 line-height-16 px-3 py-2 shadow-none ms-2 d-block d-md-none" style="border-radius:8px;">Llamar</a>`);
                 $('.fechaValidez').removeClass('d-none');
                 
-                $('.box-detalle-promocion').html(`<h6 class="title-promocion text-primary-veris mt-md-3 fs--18 line-height-24 fw-medium mb-1 h-auto">${capitalizarCadaPalabra(dataCita.paquete.nombrePaquete)}</h6>
+                $('.box-detalle-promocion').html(`<h6 class="title-promocion text-primary-veris mt-md-3 fs--18 line-height-24 fw-medium mb-1 h-auto">${capitalizarCadaPalabra(dataCita.paquete.nombreComercialPaquete)}</h6>
                     <p class="fs--2 line-height-16 mb-1 text-veris nombrePaciente">${capitalizarCadaPalabra(dataCita.paquete.nombrePaciente)}</p>
                     <p class="fs--2 line-height-16 mb-1 text-veris fechaValidez">${validarCaducidad()}</p>`);
                 let elemPendiente = ``;
@@ -218,7 +218,7 @@ Mi Veris - Citas - Detalle
                 $('#contenedorPromocionPendiente').html(elemPendiente);
             }else{
                 $('.contenedorPromocionPendienteSection').remove();
-                $('.box-detalle-promocion').html(`<h6 class="title-promocion text-primary-veris mt-md-3 fs--18 line-height-24 fw-medium mb-1 h-auto">${capitalizarCadaPalabra(dataCita.paquete.nombrePaquete)}</h6>
+                $('.box-detalle-promocion').html(`<h6 class="title-promocion text-primary-veris mt-md-3 fs--18 line-height-24 fw-medium mb-1 h-auto">${capitalizarCadaPalabra(dataCita.paquete.nombreComercialPaquete)}</h6>
                     <div class="d-flex justify-content-between align-items-top">
                         <p class="fs--2 line-height-16 mb-1 text-veris nombrePaciente">${capitalizarCadaPalabra(dataCita.paquete.nombrePaciente)}</p>
                         <img class="ms-2" src="{{ asset('assets/img/svg/golden.svg') }}" />
@@ -298,7 +298,7 @@ Mi Veris - Citas - Detalle
     }
 
     function verificarItemsSinAgendar(items){
-        let tienItems = false;
+        let tieneItems = false;
         $.each(items, function(key, value){
             if(value.detalleReserva == null){
                 tieneItems = true;

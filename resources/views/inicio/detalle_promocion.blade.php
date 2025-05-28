@@ -99,7 +99,7 @@ Mi Veris - Citas - Detalle
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
-        $('#nombrePaquete').html(capitalizarElemento(dataCita.paquete.nombrePaquete));
+        $('#nombrePaquete').html(capitalizarElemento(dataCita.paquete.nombreComercialPaquete));
 
         $('#descripcionPaquete').html(dataCita.paquete.descripcionPaquete);
 

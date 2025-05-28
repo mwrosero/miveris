@@ -652,14 +652,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         if(dataCita.origen == "paquetes"){
-            datosReserva.secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
-            datosReserva.itemPaquete = dataCita.detalleItemPaquete.itemPaquete;
-            // if(dataCita.tratamiento){
-                /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
-                // datosReserva.numeroOrden = dataCita.detalleItemPaquete.numeroOrden;
-                datosReserva.codigoEmpOrden = dataCita.detalleItemPaquete.codigoEmpresaOrden;
-                // datosReserva.lineaDetalle = dataCita.detalleItemPaquete.lineaDetalleOrden;
-            // }
+            if(dataCita.items[dataCita.position].hasOwnProperty('numeroOrden') && dataCita.items[dataCita.position].numeroOrden !== null){
+                datosReserva.numeroOrden = dataCita.items[dataCita.position].numeroOrden;
+                datosReserva.codigoEmpOrden = dataCita.items[dataCita.position].codigoEmpresaOrden;
+                datosReserva.lineaDetalle = dataCita.items[dataCita.position].lineaDetalleOrden;
+            }else{
+                datosReserva.secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
+                datosReserva.itemPaquete = dataCita.items[dataCita.position].numeroOrden.itemPaquete;
+                // if(dataCita.tratamiento){
+                    /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
+                    // datosReserva.numeroOrden = dataCita.detalleItemPaquete.numeroOrden;
+                    datosReserva.codigoEmpOrden = dataCita.items[dataCita.position].numeroOrden.codigoEmpresaOrden;
+                    // datosReserva.lineaDetalle = dataCita.detalleItemPaquete.lineaDetalleOrden;
+                // }
+            }
         }
 
         args["bodyType"] = "json";

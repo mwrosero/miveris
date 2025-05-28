@@ -16,6 +16,14 @@ class DashboardController extends Controller
         return view('inicio.inicio');
     }
 
+    public function miCuenta() {
+        return view('inicio.mi_cuenta');
+    }
+
+    public function misTarjetas(){
+        return view('inicio.mis_tarjetas');
+    }
+
     public function misDatos() {
         return view('inicio.mis_datos');
     }
