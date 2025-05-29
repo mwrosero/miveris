@@ -1,6 +1,6 @@
 @extends('template.app-template-veris')
 @section('title')
-Mi Veris - Citas - Selecciona tu tarjeta
+Mi Veris - Mis tarjetas
 @endsection
 @section('content')
 @php
@@ -118,12 +118,12 @@ Mi Veris - Citas - Selecciona tu tarjeta
                 elem += `<div class="col-12 text-center">
                     <h6 class="card-title text-veris fs-24 line-height-28 mb-3">No tiene tarjetas guardadas</h6>
                     <p>En esta sección podrás ver y eliminar tus tarjetas.</p>
-
+                    <img src="{{ asset('assets/img/svg/no-credit-card.svg') }}" class="img-fluid mt-3" >
                 </div>`;
             }else{
                 // $.each(data.data, function(key, value){
                 for (const value of data.data) {
-                    if(value.tipoBoton == "NUV"){
+                    {{-- if(value.tipoBoton == "NUV"){ --}}
                         count++;
                         let disabledItem = "";
                         let elemDisabledItem = "";
@@ -151,14 +151,13 @@ Mi Veris - Citas - Selecciona tu tarjeta
                                 </label>
                             </div>
                         </div>`
-                    }
+                    {{-- } --}}
                 };
             }
             if(count == 0){
                 {{-- var myModal = new bootstrap.Modal(document.getElementById('noExisteTarjeta'));
                 myModal.show(); --}}
             } 
-            console.log(elem)
             $('#listado-tarjetas').append(elem);          
         }else{
             alert(data.message);

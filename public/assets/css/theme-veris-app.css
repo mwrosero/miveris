@@ -328,6 +328,10 @@ html:not([dir="rtl"]) .border-start-veris {
   padding: 1px;
 }
 
+.bg-veris-ai{
+  background: var(--verisAi) !important;
+}
+
 .text-veris-ai{
   color: var(--verisAi) !important;
 }
@@ -1264,6 +1268,10 @@ Due to the split circle of progress-left and progress right, we must use the ani
 
 .fs-24 {
   font-size: 1.5rem;
+}
+
+.fs-32 {
+  font-size: 2rem;
 }
 
 .fs-28 {

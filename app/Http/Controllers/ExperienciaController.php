@@ -10,4 +10,8 @@ class ExperienciaController extends Controller
     public function tuExperiencia() {
         return view('experiencia.index');
     }
+
+    public function faq(){
+        return view('experiencia.faq');
+    }
 }

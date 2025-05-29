@@ -21,7 +21,7 @@ class DashboardController extends Controller
     }
 
     public function misTarjetas(){
-        return view('inicio.mis_tarjetas');
+        return view('inicio.mis-tarjetas');
     }
 
     public function misDatos() {

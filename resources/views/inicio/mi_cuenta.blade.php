@@ -1,138 +1,92 @@
 @extends('template.app-template-veris')
 @section('title')
-Mi Veris - Mis Datos
+Mi Veris - Cuenta
 @endsection
 @section('content')
+@php
+// $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
+// dd(Session::get('userData')->numeroIdentificacion);
+@endphp
 <div class="flex-grow-1 container-p-y pt-0">
-    <!-- modal datos actualizados -->
-    <div class="modal fade" id="mensajeDatosActualizados" tabindex="-1" aria-labelledby="mensajeDatosActualizadosLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+   
+
+    <!-- Modal eliminar tarjeta -->
+    <div class="modal fade" id="modalEliminarTarjeta" tabindex="-1" aria-labelledby="modalEliminarTarjetaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <div class="avatar avatar-md mx-auto my-3">
-                        <img src="{{asset('assets/img/svg/check-circle.svg')}}" alt="">
-                    </div>
-                    <p class="fs--16 line-height-20 fw-medium text-veris mb-0">Datos actualizados</p>
+                <div class="modal-body text-center p-3 pb-0">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Eliminar tarjeta</h1>
+                    <p class="fs--1 fw-normal text-veris" id="mensajeError">¿Estás seguro(a) de eliminar esta tarjeta?</p>
+                    <input type="hidden" id="idTarjetaEliminar">
                 </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris fs--18 linea-height-24 fw-medium m-0 w-100 px-4 py-3" data-bs-dismiss="modal" id="btnEntendido">Entendido</button>
+                <div class="modal-footer pt-0 pb-3 px-3 d-flex justify-content-around align-items-center">
+                    <div class="text-primary-veris fs--1 fw-medium cursor-pointer text-center" data-bs-dismiss="modal">Cancelar</div>
+                    <div class="text-primary-veris fs--1 fw-medium cursor-pointer text-center btn-confirmar-eliminar-tarjeta">Eliminar</div>
                 </div>
             </div>
         </div>
     </div>
+
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Cuenta') }}</h5>
     </div>
-    {{-- @foreach (Session::get('userData') as $key => $value)
-    <p class="ps-4 mb-1 pb-2 bg-white">{{ $key }}: {{ $value }}</p>
-    @endforeach --}}
-    <section class="p-3">
-        <div class="row g-0 justify-content-center align-items-center">
-            <div class="col-md-10 col-lg-8">
-                <div class="card bg-transparent shadow-none">
-                    <div class="card-body px-0">
-                        <form class="row g-3">
-                            @csrf
-                            <div class="col-12 justify-content-center align-items-center">
-                                <div class="d-flex justify-content-center align-items-center mb-3">
-                                    <span class="avatar avatar-xxl">
-                                        <img src="{{ asset('assets/img/avatars/avatar.svg') }}" class="avatar-img rounded-circle" alt="user">
-                                    </span>
-                                </div>
-                                <p class="user-name text-center fw-bold fs-sm mb-3">{{ Session::get('userData')->nombre }}</p>  
-                            </div>
-                            <div class="col-md-6">
-                                <div class="row g-2">
-                                    <div class="col-md-12">
-                                        <label for="nombre" class="form-label fw-medium fs--1">{{ __('Nombre') }}*</label>
-                                        <input type="text" class="form-control fs--1 p-3" name="nombre" id="nombre" required />
-                                        <div class="invalid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="primerApellido" class="form-label fw-medium fs--1">{{ __('Primer apellido') }}*</label>
-                                        <input type="text" class="form-control fs--1 p-3" name="primerApellido" id="primerApellido" required />
-                                        <div class="invalid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="segundoApellido" class="form-label fw-medium fs--1">{{ __('Segundo apellido') }}*</label>
-                                        <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" required />
-                                        <div class="invalid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="fechaNacimiento" class="form-label fw-medium fs--1">{{ __('Fecha de nacimiento') }} *</label>
-                                        <input type="date" lang="es" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" required />
-                                        <div class="invalid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="sexo" class="form-label fw-medium fs--1">{{ __('Sexo') }} *</label>
-                                        <select class="form-select fs--1 p-3" name="sexo" id="sexo" required>
-                                            <option value="M" {{ (Session::get('userData')->sexo == 'M') ? 'selected' : '' }}>Masculino</option>
-                                            <option value="F" {{ (Session::get('userData')->sexo == 'F') ? 'selected' : '' }}>Femenino</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Please select a valid state.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="row g-2">
-                                    <div class="col-md-12">
-                                        <label for="mail" class="form-label fw-medium fs--1">{{ __('Correo electrónico') }} *</label>
-                                        <input type="email" class="form-control fs--1 p-3" name="mail" id="mail" required />
-                                        <div class="invalid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="telefono" class="form-label fw-medium fs--1">{{ __('Teléfono') }} *</label>
-                                        <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono" required />
-                                        <div class="invalid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="provincia" class="form-label fw-medium fs--1">{{ __('Provincia') }} *</label>
-                                        <select class="form-select fs--1 p-3" name="provincia" id="provincia" required>
-                                            <option selected disabled value="">Selecciona uno</option>
-                                            <option>...</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Please select a valid state.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="ciudad" class="form-label fw-medium fs--1">{{ __('Ciudad') }} *</label>
-                                        <select class="form-select fs--1 p-3" name="ciudad" id="ciudad" required>
-                                            <option selected disabled value="">Selecciona uno</option>
-                                            <option>...</option>
-                                        </select>
-                                        <div class="invalid-feedback">
-                                            Please select a valid state.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <label for="direccion" class="form-label fw-medium fs--1">{{ __('Dirección') }}*</label>
-                                        <input type="text" class="form-control fs--1 p-3" name="direccion" id="direccion" value="" required />
-                                        <div class="valid-feedback">
-                                            Looks good!
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+    <section class="p-3 mb-3">
+        <div class="row">
+            <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                <div class="card bg-veris-ai shadow-none text-white">
+                    <div class="card-header p-0">
+                        <div class="avatar-xl avatar-online mt-4 mb-3 mx-auto">
+                            <img src="{{ asset('assets/img/avatars/avatar.svg') }}" width="74px" alt class="h-auto rounded-circle" />
+                        </div>
+                        <h2 class="text-white text-center fs--16 line-height-20 mb-2">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->segundoNombre }} {{ Session::get('userData')->primerApellido }}  {{ Session::get('userData')->segundoApellido }}</h2>
+                        <h2 class="text-white text-center fs--1 line-height-16">{{ Session::get('userData')->edad }} | @if(Session::get('userData')->codigoTipoIdentificacion == 2) {{ "C.I." }} @else {{ "PAS." }} @endif {{ Session::get('userData')->numeroIdentificacion }}</h2>
                     </div>
-                    <div class="card-footer row justify-content-center mt-5 px-0">
-                        <div class="col-12 col-md-6">
-                            <button class="btn btn-primary-veris fs--18 linea-height-24 fw-medium py-3 px-4 w-100" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
+                    <div class="card-body p-0 bg-white rounded-top-xl p-3">
+                        <div class="row text-veris-ai mb-3 d-flex justify-content-between align-items-center g-3">
+                            <div class="col-6">
+                                <a href="/mis-datos" class="w-100 waves-effect p-2 text-decoration-none d-block text-center bg-silver-light rounded-lg">
+                                    <i class="fa-solid fa-user mb-2 fs-32 text-veris-ai"></i>
+                                    <p class="fs--1 fw-normal mb-0">Mis datos</p>
+                                </a>
+                            </div>
+                            <div class="col-6">
+                                <a href="/mis-tarjetas" class="w-100 waves-effect p-2 text-decoration-none d-block text-center bg-silver-light rounded-lg">
+                                    <i class="fa-solid fa-credit-card mb-2 fs-32 text-veris-ai"></i>
+                                    <p class="fs--1 fw-normal mb-0">Mis tarjetas</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <img src="{{ asset('assets/img/svg/E-Wallet-amico.svg') }}" class="w-100" />
+                        </div>
+                        <div class="row mb-3 px-3">
+                            <a href="/familia-amigos-lista" class="col-12 d-flex justify-content-between align-items-center py-3 waves-effect text-decoration-none border-silver-1">
+                                <img src="{{ asset('assets/img/svg/familia-amigos.svg') }}" class="mx-3" />
+                                <div class="context-list flex-grow-1">
+                                    <p class="label-status-detalle fw-medium fs--1 line-height-16 mb-2">Familia y amigos</p>
+                                    <p class="fw-light label-status-detalle fs--2 line-height-16 mb-0">Agrega usuarios y administra sus citas</p>
+                                </div>
+                                <i class="fa-solid fa-angle-right mx-3"></i>
+                            </a>
+                            <a href="/administrar-seguros" class="col-12 d-flex justify-content-between align-items-center waves-effect py-3 text-decoration-none border-silver-1">
+                                <img src="{{ asset('assets/img/svg/hands-shake.svg') }}" class="mx-3" />
+                                <div class="context-list flex-grow-1">
+                                    <p class="label-status-detalle fw-medium fs--1 line-height-16 mb-2">¿Tienes seguro médico privado?</p>
+                                    <p class="fw-light label-status-detalle fs--2 line-height-16 mb-0">Agrega/elimina tu seguro médico.</p>
+                                </div>
+                                <i class="fa-solid fa-angle-right mx-3"></i>
+                            </a>
+                            <a href="/faq" class="col-12 d-flex justify-content-between align-items-center waves-effect py-3 text-decoration-none border-silver-1 mb--32">
+                                <img src="{{ asset('assets/img/svg/question-icon.svg') }}" class="mx-3" />
+                                <div class="context-list flex-grow-1">
+                                    <p class="label-status-detalle fw-medium fs--1 line-height-16 mb-2">Preguntas frecuentes</p>
+                                    <p class="fw-light label-status-detalle fs--2 line-height-16 mb-0">Encuentra respuestas aquí.</p>
+                                </div>
+                                <i class="fa-solid fa-angle-right mx-3"></i>
+                            </a>                            
+                            <div class="col-12 text-center">
+                                <div type="button" class="text-danger-veris m-3 fs--18 line-height-24" data-bs-toggle="modal" data-bs-target="#logoutModal">Cerrar sesión</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,204 +96,24 @@ Mi Veris - Mis Datos
 </div>
 @endsection
 @push('scripts')
-    
 <script>
-
-    //variables globales
-    let sexo;
-    let codeprovincia;
-    let identificacion;
-    let datosUsuario = [];
-    let provincias = [];
-    let ciudades = [];
-
     document.addEventListener("DOMContentLoaded", async function () {
-        // Carga inicial de datos y configuraciones
-        console.log(_canalOrigen);
-        await obtenerDatosUsuario();
-        provincias = await obtenerProvincias();
-        ciudades = await obtenerCiudades(1, codeprovincia);
-        llenarDatosUsuario(provincias, ciudades);
-        var fechaActual = new Date();
-        var dia = ('0' + fechaActual.getDate()).slice(-2);
-        var mes = ('0' + (fechaActual.getMonth() + 1)).slice(-2);
-        var ano = fechaActual.getFullYear();
-        document.getElementById('fechaNacimiento').setAttribute('max', `${ano}-${mes}-${dia}`);
-
-        // Evento para validar el formulario completo en cada cambio
-        $('input[required], select[required]').on('blur change input', function() {
-            validarFormulario(); // Llama a validarFormulario en cada cambio
-        });
-
-        validarFormulario(); // Validación inicial después de cargar los datos
-    });
-
-    // Validar el formulario completo
-    function validarFormulario() {
-        let esValido = true;
-        $('input[required], select[required]').each(function() {
-            // Usar validarCampo para cada input/select y actualizar esValido según sea necesario
-            if (!validarCampo($(this))) {
-                esValido = false;
-            }
-        });
-        $('#btnActualizarDatosUsuario').prop('disabled', !esValido);
-    }
-
-    // Validar campo individual y mostrar mensaje de error si es necesario
-    function validarCampo(campo) {
-        campo.removeClass('is-invalid is-valid');
-        campo.next('.invalid-feedback').remove();
-        if (campo.val().trim() === '') {
-            campo.addClass('is-invalid');
-            campo.after('<div class="invalid-feedback">Este campo es obligatorio.</div>');
-            return false;
-        }
-        return true;
-    }
-
-
-
-
-
-    // boton actualizar datos usuario
-    $('#btnActualizarDatosUsuario').click(async function (e) {
-
-        console.log('click exitoso');
-        e.preventDefault();
-        console.log('click');
-        $(this).prop('disabled', true); // Disable the button
-        await actualizarDatosUsuario();
-        $(this).prop('disabled', false); // Re-enable the button
-    });
-
-
-
-
-    //funciones asyncronas
-    //obtener datos usuario
-
-    async function obtenerDatosUsuario() {
-        let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion={{Session::get('userData')->codigoTipoIdentificacion}}&numeroIdentificacion={{Session::get('userData')->numeroIdentificacion}}`;
-        console.log('args["endpoint"]',args["endpoint"]);
-        args["method"] = "GET";
-        args["showLoader"] = true;
         
-        const data = await call(args);
-        console.log('datosUsuario',data);
-        if (data.code == 200) {
-            datosUsuario = data.data;
-            sexo = data.data.sexo;
-            codeprovincia = data.data.codigoProvincia;
-            identificacion = data.data.numeroIdentificacion;
-        }
-    } 
-
-    // llenar formulario con datos del usuario
-    function llenarDatosUsuario(provincias) {
-        $('#nombre').val(capitalizarElemento(datosUsuario.nombre));
-        $('#primerApellido').val(capitalizarElemento(datosUsuario.primerApellido));
-        $('#segundoApellido').val(capitalizarElemento(datosUsuario.segundoApellido));
-        $('#fechaNacimiento').val(convertirFechaNacimiento(datosUsuario.fechaNacimiento));
-        $('#mail').val(datosUsuario.mail);
-        $('#telefono').val(datosUsuario.telefonoMovil);
-        // Llenar el select de provincia
-        // $.each(provincias, function(index, value) {
-        //     const isSelected = value.codigoProvincia == datosUsuario.codigoProvincia ? ' selected' : '';
-        //     $('#provincia').append(`<option value="${value.codigoProvincia}"${isSelected}>${capitalizarElemento(value.nombreProvincia)}</option>`);
-        // });
-        $('#provincia').val(datosUsuario.codigoProvincia)
-
-        // Llenar el select de ciudad
-        // $.each(ciudades, function(index, value) {
-        //     const isSelected = value.codigoCiudad == datosUsuario.codigoCiudad ? ' selected' : '';
-        //     $('#ciudad').append(`<option value="${value.codigoCiudad}"${isSelected}>${capitalizarElemento(value.nombreCiudad)}</option>`);
-        // });
-        $('#ciudad').val(datosUsuario.codigoCiudad)
-
-        // Otros campos
-        $('#direccion').val(capitalizarElemento(datosUsuario.direccionDomicilio));
-    
-        if (datosUsuario.sexo == 'M') {
-            $('#sexo').val('M');
-        } else {
-            $('#sexo').val('F');
-        }
-    }
-
-    //actualizar datos del usuario
-    async function actualizarDatosUsuario() {
-        // convertir fecha de nacimiento a formato dd/mm/yyyy
-        let fechaNacimiento = $('#fechaNacimiento').val();
-        let partesFecha = fechaNacimiento.split('-');
-        let fecha = partesFecha[2] + '/' + partesFecha[1] + '/' + partesFecha[0];
-       
-
-        console.log($('#direccion').val());
-        let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/perfil`
-        console.log('args["endpoint"]',args["endpoint"]);
-        args["method"] = "PUT";
-        args["showLoader"] = true;
-        args["bodyType"] = "json";
-
-        args["data"] = JSON.stringify({
-            "tipoIdentificacion": "{{ Session::get('userData')->codigoTipoIdentificacion }}",
-            "numeroIdentificacion": "{{ Session::get('userData')->numeroIdentificacion }}",
-            "primerNombre": $('#nombre').val(),
-            "primerApellido": $('#primerApellido').val(),
-            "segundoApellido": $('#segundoApellido').val(),
-            "sexo": $('#sexo').val(),
-            "mail": $('#mail').val(),
-            "telefonoMovil": $('#telefono').val(),
-            "codigoProvincia": $('#provincia').val(),
-            "codigoCiudad": $('#ciudad').val(),
-            "direccionDomicilio": $('#direccion').val(),    
-            "fechaNacimiento": fecha
-        });
-
-        console.log('args', args["data"]);
-
-        const data = await call(args);
-        console.log('actualizarDatosUsuario',data);
-        if (data.code == 200) {
-            $('#mensajeDatosActualizados').modal('show');
-        }
-
-    }
-
-
-    //funciones de ayuda
-    //convertir fecha nacimiento
-    function convertirFechaNacimiento(fechaNacimiento) {
-
-        let partesFecha = fechaNacimiento.split('/');
-        let fecha = new Date(partesFecha[2], partesFecha[1] - 1, partesFecha[0]);
-        let formattedFecha = fecha.toISOString().split('T')[0];
-
-        return formattedFecha;
-    }
-
-   // actualizar el select de ciudades cuando selecciono provincia
-   $( "#provincia").change(async function () {
-        let codeprovincia = $(this).val();
-        ciudades = await obtenerCiudades(1, codeprovincia);
-        $('#ciudad').empty();
-        $.each(ciudades, function (index, value) {
-            $('#ciudad').append('<option value="' + value.codigoCiudad + '">' + value.nombreCiudad + '</option>');
-        });
     });
-
-    
-
-
-    
-
-    
-
-
-
 </script>
-
+<style>
+    .rounded-lg{
+        border-radius: 16px;
+    }
+    .rounded-top-xl{
+        border-top-left-radius: 24px;
+        border-top-right-radius: 24px;
+    }
+    .bg-silver-light{
+        background: #EAF0FD;
+    }
+    .border-silver-1{
+        border-bottom: 1px solid #E7E9EC;
+    }
+</style>
 @endpush

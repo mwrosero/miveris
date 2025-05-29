@@ -633,6 +633,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             datosReserva.secuenciaTransaccion = dataCita.detalle_pre_agendamiento[dataCita.position].response.secuenciaTransaccion;
         }
 
+        if(dataCita.esEdicion && dataCita.detalleEdicion.estado == "Disponible"){
+            datosReserva.codigoReservaCambio = dataCita.detalleEdicion.codigoReserva;
+        }
+
         if(dataCita.online == "N"){
             datosReserva.codigoSucursal = dataCita.central.codigoSucursal;
         }  

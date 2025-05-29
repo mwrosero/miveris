@@ -15,12 +15,12 @@ class FamiliaAmigosController extends Controller
     public function familiaAmigos() {
         // $info = Session::get('userData');
         // dd($info);
-        return view('familia_amigos.index');
+        return view('familia_amigos.index_2025');
     }
 
     // Return view lista familiar y amigo agregados
     public function listaFamiliaAmigos() {
-        return view('familia_amigos.lista_familia_amigos');
+        return view('familia_amigos.lista_familia_amigos_2025');
     }
 
     // Retun view datos familiar

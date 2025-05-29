@@ -486,7 +486,8 @@
     }
 
     .layout-navbar {
-        height: 3.74rem !important;
+        {{-- height: 3.74rem !important; --}}
+        height: 58px !important;
     }
 
     @media screen and (min-width: 1200px) {

@@ -219,6 +219,9 @@ Route::group(['middleware' => ['loggedUser']], function () {
 
     #Experiencia
     Route::get('/cuentanos-tu-experiencia', [ExperienciaController::class, 'tuExperiencia'])->name('experiencia')->withoutMiddleware(['guest']);
+    
+    #FAQ
+    Route::get('/faq', [ExperienciaController::class, 'faq'])->name('faq')->withoutMiddleware(['guest']);
 
     
 });
