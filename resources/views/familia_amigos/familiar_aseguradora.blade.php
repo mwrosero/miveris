@@ -3,9 +3,6 @@
 Mi Veris - Agregar familiar o amigo
 @endsection
 @section('content')
-@php
-    $tokenCita = base64_encode(uniqid());
-@endphp
 <div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
     <a href="javascript:history.back()" class="text-decoration-none d-block">
         <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 5px;">
@@ -89,8 +86,9 @@ Mi Veris - Agregar familiar o amigo
                 <ul class="list-group bg-white rounded-0 w-100">
                     <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
                         <div class="mx-0">
-                            <h6 class="fw-medium fs--16 line-height-20 mb-1">Hola <b class="fw-medium user-auth">{{ Session::get('userData')->nombre }}</b></h6>
-                            <p class="fs--2 text-veris line-height-16 mb-0">Agrega personas a tu lista de familiares y amigos</p>
+                            <h6 class="fw-medium fs--16 line-height-20 mb-1 text-veris-ai nombreFamiliar"></h6>
+                            <p class="fs--2 text-veris line-height-16 mb-0 numeroIdentificacionFamiliar"></p>
+                            <p class="fs--2 text-veris line-height-16 mb-0 fechaNacimientoFamiliar"></p>
                         </div>
                     </li>
                 </ul>
@@ -163,20 +161,22 @@ Mi Veris - Agregar familiar o amigo
     </section>
 </div>
 @endsection
-@push('scripts')
-<script></script>
+@push('scripts')>
  
 <script>
     // variables globales
+    let local = localStorage.getItem('cita-{{ $params }}');
+    let dataCita = JSON.parse(local);
     let datostiposIdentificacion;
     let datosConsultarPersona;
     let codigoParentescoClick;
     //llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+        $('.nombreFamiliar').html(`${(dataCita.familiar.primerNombre) ?? `` } ${(dataCita.familiar.primerApellido) ?? ``} ${(dataCita.familiar.segundoApellido) ?? ``}`);
+        $('.numeroIdentificacionFamiliar').html(`<b>No. de identificación:</b> ${dataCita.familiar.numeroIdentificacion}`)
+        $('.fechaNacimientoFamiliar').html(`<b>Fecha de nacimiento:</b> ${dataCita.familiar.fechaNacimiento}`)
         await tiposIdentificacion();
-        llenarSelect();
-        
-        
+        llenarSelect();        
     });
 
     
@@ -230,8 +230,8 @@ Mi Veris - Agregar familiar o amigo
                 $("#fechaNacimientoPersona").text(datosConsultarPersona[0].fechaNacimiento); --}}
                 let dataCita = {}
                 dataCita.familiar = datosConsultarPersona[0];
-                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
-                location.href = '/agregar-convenio/{{ $tokenCita }}';
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                location.href = '/agregar-convenio/{{ $params }}';
             }
         } else if (data.code != 200) {
             $("#mensajeErrorModalLabel").html(data.message);

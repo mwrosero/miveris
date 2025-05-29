@@ -7,6 +7,14 @@ Mi Veris - Mis tarjetas
 // $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd(Session::get('userData')->numeroIdentificacion);
 @endphp
+<div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
+    <a href="javascript:history.back()" class="text-decoration-none d-block">
+        <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 5px;">
+            <img src="{{asset('assets/img/svg/atras.svg')}}" class="cursor-pointer prev-image" alt="Atrás">
+            <label class="fw-medium cursor-pointer" style="color: #0A2240;font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
+        </div>
+    </a>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
    
 

@@ -207,6 +207,8 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/familia-amigos', [FamiliaAmigosController::class, 'familiaAmigos'])->name('familia')->withoutMiddleware(['guest']);
     Route::get('/familia-amigos-lista', [FamiliaAmigosController::class, 'listaFamiliaAmigos'])->name('familia.lista')->withoutMiddleware(['guest']);
     Route::get('/datos-familiar', [FamiliaAmigosController::class, 'datosFamiliar'])->name('familia.datosFamiliar')->withoutMiddleware(['guest']);
+    Route::get('/agregar-convenio/{params}', [FamiliaAmigosController::class, 'agregarConvenio'])->name('familia.agregarConvenio')->withoutMiddleware(['guest']);
+
 
     #Doctores favoritos
     Route::get('/doctores-favoritos', [DoctoresFavoritosController::class, 'doctoresFavoritos'])->name('doctoresFavoritos')->withoutMiddleware(['guest']);

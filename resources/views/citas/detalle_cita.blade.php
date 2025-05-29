@@ -648,6 +648,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
 
             $('.box-precio').html(elem);
+            if(dataCita.origen === "paquetes"){
+                $('.box-precio').html(`<div class="col-12 text-center"><h1 class="text-primary-veris fw-medium fs--36 line-height-44 mb-0" id="precioTotal">$0.00</h1></div>`);
+            }
         }
     }
     

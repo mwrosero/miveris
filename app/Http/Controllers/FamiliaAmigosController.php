@@ -27,4 +27,8 @@ class FamiliaAmigosController extends Controller
     public function datosFamiliar() {
         return view('familia_amigos.datos_familiar');
     }
+
+    public function agregarConvenio($params) {
+        return view('familia_amigos.familiar_aseguradora')->with('params',$params);
+    }
 }
