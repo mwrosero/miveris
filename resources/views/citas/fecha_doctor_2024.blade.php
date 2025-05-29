@@ -662,11 +662,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 datosReserva.lineaDetalle = dataCita.items[dataCita.position].lineaDetalleOrden;
             }else{
                 datosReserva.secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
-                datosReserva.itemPaquete = dataCita.items[dataCita.position].numeroOrden.itemPaquete;
+                datosReserva.itemPaquete = dataCita.items[dataCita.position].itemPaquete;
                 // if(dataCita.tratamiento){
                     /*se recibe desde 3 flujos: tratamiento/re-agendamiento*/
                     // datosReserva.numeroOrden = dataCita.detalleItemPaquete.numeroOrden;
-                    datosReserva.codigoEmpOrden = dataCita.items[dataCita.position].numeroOrden.codigoEmpresaOrden;
+                    datosReserva.codigoEmpOrden = dataCita.items[dataCita.position].codigoEmpresaOrden;
                     // datosReserva.lineaDetalle = dataCita.detalleItemPaquete.lineaDetalleOrden;
                 // }
             }
