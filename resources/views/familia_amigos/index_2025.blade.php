@@ -1,8 +1,19 @@
 @extends('template.app-template-veris')
 @section('title')
-Mi Veris - Citas - Familia y amigos
+Mi Veris - Agregar familiar o amigo
 @endsection
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+@endphp
+<div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
+    <a href="javascript:history.back()" class="text-decoration-none d-block">
+        <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 5px;">
+            <img src="{{asset('assets/img/svg/atras.svg')}}" class="cursor-pointer prev-image" alt="Atrás">
+            <label class="fw-medium cursor-pointer" style="color: #0A2240;font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
+        </div>
+    </a>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal -->
     <div class="modal fade" id="parentescoFamiliarModal" tabindex="-1" aria-labelledby="parentescoFamiliarModalLabel" aria-hidden="true">
@@ -194,7 +205,7 @@ Mi Veris - Citas - Familia y amigos
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         let numeroIdentificacion = $("#numeroIdentificacion").val();
         let tipoIdentificacion = $("#tipoIdentificacion").val();
-        let datosParentezco = [];
+        let datosParentesco = [];
         console.log('tipoIdentificacion', tipoIdentificacion);
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/perfil/personas?canalOrigen=${canal}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}`;
@@ -209,14 +220,18 @@ Mi Veris - Citas - Familia y amigos
                 return;
             } else {
                 datosConsultarPersona = data.data;
-                console.log('datosConsultarPersona', datosConsultarPersona);
+                {{-- console.log('datosConsultarPersona', datosConsultarPersona);
                 $("#resultadoConsulta").show();
 
                 //llenar datos de la persona
                 $("#nombrePersona").text(revisarCamposNullUndefined(datosConsultarPersona[0].primerNombre) + " " + revisarCamposNullUndefined(datosConsultarPersona[0].segundoNombre) + " " + revisarCamposNullUndefined(datosConsultarPersona[0].primerApellido) + " " + revisarCamposNullUndefined(datosConsultarPersona[0].segundoApellido));
                 $("#numeroIdentificacionPersona").text(datosConsultarPersona[0].numeroIdentificacion);
                 $("#ciudadPersona").text(capitalizarPalabrasUnidasPorGuion(datosConsultarPersona[0].ciudad));
-                $("#fechaNacimientoPersona").text(datosConsultarPersona[0].fechaNacimiento);
+                $("#fechaNacimientoPersona").text(datosConsultarPersona[0].fechaNacimiento); --}}
+                let dataCita = {}
+                dataCita.familiar = datosConsultarPersona[0];
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+                location.href = '/agregar-convenio/{{ $tokenCita }}';
             }
         } else if (data.code != 200) {
             $("#mensajeErrorModalLabel").html(data.message);

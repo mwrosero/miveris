@@ -233,7 +233,7 @@ Mi Veris - Citas - Promociones
                                 elem += `</div>
                                 <div class="col-8 col-md-8">
                                     <div class="card-body h-100 p--2 pb-2 d-flex flex-column justify-content-center">
-                                        <h6 class="title-promocion-horizontal fs--1 line-height-16 mb-2">${capitalizarElemento(paquete.nombrePaquete)}</h6>
+                                        <h6 class="title-promocion-horizontal fs--1 line-height-16 mb-2">${capitalizarElemento(paquete.nombreComercialPaquete)}</h6>
                                         <div class="border-0 d-flex justify-content-between align-items-center">`;
                                             if(paquete.porcentajeDescuento && paquete.porcentajeDescuento > 0){
                                                 elem += `<div class="precio-anterior me-2">Antes <span class="text-decoration-line-through">$${paquete.valorAnteriorPaquete.toFixed(2)}</span>

@@ -270,6 +270,65 @@ Mi Veris - Citas - {{ $titulo }}
         $(document).on('click', '.btn-informacion', function(){
             let datosRel = $(this).data('rel');
             let datos = datosRel.servicio;
+            {{-- console.log(datosRel);return --}}
+            if(datosRel.tratamiento.mostrarTerapiasAgrupadas == "S" && datos.tipoCard == "AGENDA_TERAPIA" && datos.esCaducado == "N"){
+                let datosServicio = datos;
+                let esTerapiaAgrupada = true;
+                // console.log(datosServicio.detallesServicios)
+                // return
+                {{-- if(datosServicio.permiteReserva == "N"){
+                    $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+                    $('#modalPermiteCambiar').modal('show');
+                    return;
+                } --}}
+                console.log('datosServicio', datosServicio);
+                let modalidad;
+                if (datosServicio.modalidad === 'ONLINE') {
+                    modalidad = 'S';
+                } else if (datosServicio.modalidad === 'PRESENCIAL') {
+                    modalidad = 'N';
+                }
+
+                dataCita.online = modalidad;
+                let tipoServicio = datosServicio.tipoServicio.toLowerCase();
+                dataCita.tipoFlujo = "agenda/tratamiento/"+tipoServicio;
+                tipoFlujo = dataCita.tipoFlujo;
+
+                dataCita.especialidad = {
+                    codigoEspecialidad: datosServicio.codigoEspecialidad,
+                    nombre : datosServicio.nombreEspecialidad,
+                    imagen : datosServicio.urlImagenTipoServicio,
+                    esOnline : modalidad,
+                    codigoServicio : datosServicio.codigoServicio,
+                    codigoPrestacion : datosServicio.codigoPrestacion,
+                    codigoTipoAtencion : datosServicio.codigoTipoAtencion,
+                    codigoSucursal : datosServicio.codigoSucursal,
+                    origen: "Listatratamientos"
+                };
+                dataCita.origen = "Listatratamientos";
+                dataCita.convenio = ultimoTratamiento.datosConvenio;
+                dataCita.convenio.origen = "Listatratamientos";
+
+                dataCita.tratamiento = {
+                    cantidadIntervalosReserva: datosServicio.cantidadIntervalosReserva,
+                    numeroOrden: datosServicio.idOrden,
+                    codigoEmpOrden: datosServicio.codigoEmpresa,
+                    lineaDetalle: datosServicio.lineaDetalleOrden,
+                    esPagada: datosServicio.esPagada
+                }
+
+                dataCita.tipoFlujo = "agenda/tratamiento/terapia_agrupada";
+                dataCita.detallesServicios = datosServicio.detallesServicios;
+                dataCita.secuenciaAtencion = secuenciaAtencion.secuenciaAtenciones;
+                dataCita.datosTratamiento = datosRel.tratamiento;
+                dataCita.cantidadMaximaAgenda = parseInt($(this).attr('qty-rel'));
+                localStorage.setItem('cita-{{ $tokenMods }}', JSON.stringify(dataCita));
+                location = "/agendamiento-multiple/{{ $tokenMods }}";;
+                return;
+            }else{
+                $("#informacionCitaModal").modal('show');
+            }
+            
             if (datos.esCaducado === "S" && datos.esAgendable === "S") {
                 // CAMBIAR TITUOLO MODAL
                 $('#tituloModalInformacionCita').text('Orden expirada');
@@ -277,12 +336,22 @@ Mi Veris - Citas - {{ $titulo }}
                 // limpiar footer
                 $('#footerInformacionCita').empty();
                 // agregar boton agendar y salir
+                let ruta = "/citas-elegir-fecha-doctor/{{ $tokenMods }}";
+                if (datos.modalidad == "PRESENCIAL") {
+                    ruta = "/seleccionar-datos-cita/{{ $tokenMods }}";
+                }
+                let esTerapiaAgrupada = false;
+                let qtyMaximaAgrupado = 0;
+                if(datos.tipoCard == "AGENDA_TERAPIA"){
+                    esTerapiaAgrupada = true;
+                    qtyMaximaAgrupado = datos.cantidadMaximaAgenda;
+                }
                 $('#footerInformacionCita').append(`<div class="modal-footer pt-0 pb-3 px-3">
-                        <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" data-rel='${JSON.stringify(datosRel)}' id="btnAgendarCitaModal">{{ __('Agendar') }}</button>
-                    </div>
-                    <div class="modal-footer pt-0 pb-3 px-3">
-                        <button type="button" class="btn fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
-                    </div>`);
+                    <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3 btn-agendar" data-bs-dismiss="modal" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' url-rel="${ruta}" data-rel='${JSON.stringify(datos)}' datosTratamiento-rel='${JSON.stringify(datosRel.tratamiento)}' convenio-rel='${JSON.stringify(datosRel.tratamiento.datosConvenio)}' id="btnAgendarCitaModal__BK">{{ __('Agendar') }}</button>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button type="button" class="btn fs--18 line-height-24 m-0 w-100 text-primary-veris px-4 py-3" data-bs-dismiss="modal">{{ __('Salir') }}</button>
+                </div>`);
             } else if(datos.esAgendable === "N") {
                 $('#tituloModalInformacionCita').text('Información');
                 $('#mensajeInformacionCita').text(datos.mensaje);
@@ -399,7 +468,7 @@ Mi Veris - Citas - {{ $titulo }}
         });
 
         // boton agendar cita modal setear datos en localstorage 
-        $(document).on('click', '.btn-agendar', function(){
+        $(document).on('click', '.btn-agendar', async function(){
             let datosServicio = $(this).data('rel');
             let convenio = JSON.parse($(this).attr('convenio-rel'));
             let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
@@ -774,7 +843,7 @@ Mi Veris - Citas - {{ $titulo }}
 
                             let elementos = ''; // Definir la variable fuera del bucle
                             data.data.items.forEach((laboratorio) => {
-                                // console.log(laboratorio)
+                                console.log(laboratorio)
                                 elementos += `<div class="col-12 mb-4">
                                                 <div class="card rounded-0">
                                                     <div class="card-body py-2 px-3">
@@ -823,18 +892,7 @@ Mi Veris - Citas - {{ $titulo }}
                                         elementos += elem_tmp;
                                     }else{
                                         if(detalles.tipoCard == "AGENDA_TERAPIA"){
-                                            elementos = `<div class="col-12 mb-4">
-                                                <div class="card rounded-0">
-                                                    <div class="card-body py-2 px-3">
-                                                        <p class="fs--3 line-height-12 text-primary-veris mb-1">Tratamiento</p>
-                                                        <h6 class="text-primary-veris fs--18 line-height-24 fw-medium mb-1">${capitalizarElemento(laboratorio.nombreEspecialidad)}</h6>
-                                                        <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombrePaciente)}</p>
-                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(laboratorio.nombreMedico)}</p>
-                                                        <p class="fw-normal fs--2 line-height-16 mb-1">Tratamiento enviado: <b class="text-primary fw-normal">${laboratorio.fechaTratamiento}</b></p>
-                                                        <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(laboratorio.nombreConvenio)}</p>
-                                                    </div>
-                                                </div>
-                                            </div>`+elem_tmp;
+                                            elementos += elem_tmp;
                                         }
                                     }
                                 });
@@ -1081,8 +1139,15 @@ Mi Veris - Citas - {{ $titulo }}
                         respuestaAgenda += ` <button type="button" class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}' id="verOrdenCard" data-bs-toggle="modal" data-bs-target="#verOrdenModal">Ver orden</button>`;
                         //
                         if(datosServicio.esCaducado == 'S' || datosServicio.esAgendable == "N"){
+                            let esTerapiaAgrupada = false;
+                            let qtyMaximaAgrupado = 0;
+                            if(datosServicio.tipoCard == "AGENDA_TERAPIA"){
+                                esTerapiaAgrupada = true;
+                                qtyMaximaAgrupado = datosServicio.cantidadMaximaAgenda;
+                                // console.log(datosServicio.cantidadMaximaAgenda)
+                            }
                             // mostrar boton de informacion que llama al modal de informacion
-                            respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-informacion" data-bs-toggle="modal" data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Información</button>`;
+                            respuestaAgenda += `<button type="button" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-informacion" qty-rel='${qtyMaximaAgrupado}' esTerapiAgrupada-rel='${esTerapiaAgrupada}' data-bs-toggle="modal" convenio-rel='${JSON.stringify(datosTratamiento.datosConvenio)}' data-bs-target="#informacionCitaModal" data-rel='${JSON.stringify(datosCombinados)}'>Agendar</button>`;
                         } else {
                             if(datosServicio.permiteReserva == 'S'){
                                 if (datosServicio.habilitaBotonAgendar == 'S') {
@@ -1142,7 +1207,7 @@ Mi Veris - Citas - {{ $titulo }}
                                 }
                             } else if (datosServicio.esPagada == 'S' && datosServicio.detalleReserva.esPricing == 'S') {
                                 // mostrar boton de informacion
-                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Información</a>`;
+                                respuestaAgenda += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none" onclick="mostrarInformacion(${datosServicio.detalleReserva.mensajeInformacion})">Agendar</a>`;
                             } 
                         }
                     }

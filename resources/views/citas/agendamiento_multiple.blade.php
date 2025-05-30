@@ -220,7 +220,7 @@ Mi Veris - Citas - Agendamiento múltiple
         $('body').on('click', '.btn-CambiarFechaCita', async function(){
             let data = JSON.parse($(this).attr('data-rel'));
             let convenio = dataCita.convenio;
-            {{-- console.log(detalle); --}}
+            console.log(data);
 
             if(data.permiteReserva == "N" && data.esPagada != "S"){
                 $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
@@ -236,8 +236,14 @@ Mi Veris - Citas - Agendamiento múltiple
             }
             
             let params = {}
-            let tipoServicio = data.tipoServicio.toLowerCase();
-            tipoFlujo = "reagenda/tratamiento/"+tipoServicio;
+            let tipoServicio;
+            
+            if(data.hasOwnProperty('itemPaquete')){
+                tipoFlujo = "reagenda/paquetes/terapia";
+            }else{
+                tipoServicio = data.tipoServicio.toLowerCase();
+                tipoFlujo = "reagenda/tratamiento/"+tipoServicio;
+            }
             params.tipoFlujo = tipoFlujo;;
             params.online = esVirtual;
             params.especialidad = {
@@ -273,10 +279,30 @@ Mi Veris - Citas - Agendamiento múltiple
             }
             params.origen = "inicios";
             params.convenio = convenio;
-            
+
+            if(data.hasOwnProperty('itemPaquete')){
+                params.especialidad = dataCita.especialidad;
+                params.paciente = dataCita.paciente;
+                params.online = dataCita.online;
+                params.reservaEdit = {
+                    "estaPagada": "S",
+                    "numeroOrden": (data.numeroOrden) ? data.numeroOrden : data.idOrden,
+                    "lineaDetalleOrden": data.lineaDetalleOrden,
+                    "codigoEmpresaOrden": (data.codigoEmpresaOrden) ? data.codigoEmpresaOrden : data.codigoEmpresa,
+                    "idOrdenAgendable": data.idOrdenAgendable,
+                    "idCita": data.detalleReserva.codigoReserva
+                }
+                params.ciudad = {
+                    "codigoPais": data.detalleReserva.idPais,
+                    "codigoProvincia": data.detalleReserva.idProvincia,
+                    "codigoCiudad": data.detalleReserva.idCiudad
+                }
+            }
+
+            {{-- console.log(params);return; --}}
             
             let url = '/seleccionar-datos-cita/';
-            if(esVirtual == "S"){
+            if(params.online == "S"){
                 url = '/citas-elegir-fecha-doctor/';
             }
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
@@ -372,6 +398,12 @@ Mi Veris - Citas - Agendamiento múltiple
                 let estadoReserva = `<span class="fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">
                         <i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success">Comprado</span>
                     </span>`
+
+                if(value.hasOwnProperty('itemPaquete')){
+                    estadoReserva = `<span class="fs--2 line-height-16 mb-1 text-end" style="min-width: 90px;">
+                        <i class="fa-solid fa-circle me-2 text-success"></i><span class="text-success">Agendado</span>
+                    </span>`
+                }
 
                 if(value.estado == "Atendida"){
                     estadoReserva = `<div style="min-width: 90px;" class="label-status-detalle fs--2 line-height-16 m-0 ms-2 text-end">
@@ -499,7 +531,7 @@ Mi Veris - Citas - Agendamiento múltiple
     }
 
     function drawBtnCardItem(detalles){
-        {{-- console.log(detalles); --}}
+        console.log(detalles);
         {{-- console.log(999); --}}
         if(detalles.estado == "Caducado" || (detalles.hasOwnProperty('esAgendable') && !detalles.esAgendable && !detalles.hasOwnProperty('detalleReserva') && detalles.detalleReserva != null)){
             return ``;
@@ -516,6 +548,12 @@ Mi Veris - Citas - Agendamiento múltiple
                 titleBtn = `${detalles.detalleReserva.nombreBotonCambiar}`;
                 btnEnviaAgendarClass = `btn-CambiarFechaCita`;
             }
+        }
+
+        if(detalles.hasOwnProperty('itemPaquete')){
+            return `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-CambiarFechaCita" data-rel='${JSON.stringify(detalles)}'>
+                    ${detalles.detalleReserva.nombreBotonCambiar}
+                </div>`
         }
 
         if(detalles.esPagada == "S"){
