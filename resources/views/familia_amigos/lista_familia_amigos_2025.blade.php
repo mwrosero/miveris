@@ -3,8 +3,11 @@
 Mi Veris - Citas - Familia y amigos
 @endsection
 @section('content')
+@php
+    $tokenCita = base64_encode(uniqid());
+@endphp
 <div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
-    <a href="javascript:history.back()" class="text-decoration-none d-block">
+    <a href="/mi-cuenta" class="text-decoration-none d-block">
         <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 5px;">
             <img src="{{asset('assets/img/svg/atras.svg')}}" class="cursor-pointer prev-image" alt="Atrás">
             <label class="fw-medium cursor-pointer" style="color: #0A2240;font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
@@ -59,7 +62,7 @@ Mi Veris - Citas - Familia y amigos
     <section class="py-4 mb-3">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-5">
                     <div class="card bg-transparent shadow-none mb-4">
                         <div class="card-body p-0">
                             <div class="text-center d-none" id="noPeopleAdded">
@@ -97,7 +100,6 @@ Mi Veris - Citas - Familia y amigos
 
         $('body').on('click','#eliminarFamiliar', async function () {
             await eliminarFamiliar();
-            
         });
 
         $('body').on('click','.eliminarFamiliarBtn', async function () {
@@ -105,6 +107,15 @@ Mi Veris - Citas - Familia y amigos
             $('#idRelacion').val(idRelacion);
             let nombreFamiliar = $(this).attr('nombre-familiar');
             $('#nombreFamiliar').text(capitalizarElemento(nombreFamiliar));
+        });
+
+        $('body').on('click','.enlaceDetalles', async function () {
+            let persona = JSON.parse($(this).attr('data-rel'));
+            let url = $(this).attr('href-rel');
+            let dataCita = {}
+            dataCita.persona = persona;
+            localStorage.setItem('persona-{{ $tokenCita }}', JSON.stringify(dataCita));
+            location.href = `/datos-familiar/{{ $tokenCita }}`;
         });
         
     });
@@ -169,13 +180,13 @@ Mi Veris - Citas - Familia y amigos
                     ownMyAccount = `<span class="badge rounded-pill bg-green-light text-green line-height-12 fs--3 me-2 fw-light">Este usuario administra tu cuenta</span>`;
                 }
 
-                elem += `<label class="list-group-item border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
-                    <div class="d-flex justify-content-between align-items-center w-100 mb-2">
+                elem += `<div class="list-group-item border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
+                    <div class="d-flex justify-content-start align-items-center w-100 mb-2">
                         ${esAdminBadge}
                         ${ownMyAccount}
                     </div>
                     <div class="d-flex justify-content-between align-items-center w-100">
-                        <div class="col-auto">
+                        <div class="flex-grow-1">
                             <p class="text-veris fs--1 fw-medium line-height-16 mb-1 nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
                             <p class="fs--3 line-height-12 mb-1 parentesco">${capitalizarElemento(familiar.parentesco)}</p>
                         </div>
@@ -183,19 +194,13 @@ Mi Veris - Citas - Familia y amigos
                             <button type="button" class="btn p-0 text-danger shadow-none me-2 eliminarFamiliarBtn" data-bs-toggle="modal" data-bs-target="#eliminarFamiliarModal" idRelacion-rel="${familiar.idRelacion}" nombre-familiar="${familiar.primerNombre} ${familiar.primerApellido}">
                                 <img src="{{asset('assets/img/svg/Tacho.svg')}}" class="" alt="eliminar familiar medico">
                             </button>
-                            <a href='{{ route("familia.datosFamiliar") }}'; class="btn p-0 text-primary" id="enlaceDetalles" 
-                            onclick="localStorage.setItem('primerNombreFamiliar', '${familiar.primerNombre}');
-                            localStorage.setItem('primerApellidoFamiliar', '${familiar.primerApellido}');
-                            localStorage.setItem('codigoParentesco', '${familiar.codigoParentesco}');
-                            localStorage.setItem('administrador', '${familiar.esAdmin}');
-                            localStorage.setItem('numeroIdentificacion', '${familiar.numeroIdentificacion}');
-                            localStorage.setItem('idRelacion', '${familiar.idRelacion}');">
-                                <img src="{{asset('assets/img/svg/chevron.svg')}}" class="" alt="eliminar familiar medico">
-                            </a>
+                            <div class="btn p-0 text-primary enlaceDetalles" data-rel='${JSON.stringify(familiar)}'>
+                                <img src="{{asset('assets/img/svg/chevron.svg')}}" class="" alt="editar familiar medico">
+                            </div>
                             <input type="hidden" value="${familiar.idRelacion}" id="idRelacion">
                         </div>
                     </div>
-                </label>`;
+                </div>`;
             });
         }else{
             elem += `<p class="fs--16 text-center line-height-20 mb-4">${msg}</p>`;

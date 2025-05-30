@@ -205,7 +205,7 @@ Mi Veris - Agregar familiar o amigo
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         let numeroIdentificacion = $("#numeroIdentificacion").val();
         let tipoIdentificacion = $("#tipoIdentificacion").val();
-        let datosParentezco = [];
+        let datosParentesco = [];
         console.log('tipoIdentificacion', tipoIdentificacion);
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/perfil/personas?canalOrigen=${canal}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}`;

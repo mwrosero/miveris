@@ -15,12 +15,12 @@ class FamiliaAmigosController extends Controller
     public function familiaAmigos() {
         // $info = Session::get('userData');
         // dd($info);
-        return view('familia_amigos.index_2025');
+        return view('familia_amigos.index');
     }
 
     // Return view lista familiar y amigo agregados
     public function listaFamiliaAmigos() {
-        return view('familia_amigos.lista_familia_amigos_2025');
+        return view('familia_amigos.lista_familia_amigos');
     }
 
     // Retun view datos familiar
@@ -30,5 +30,9 @@ class FamiliaAmigosController extends Controller
 
     public function agregarConvenio($params) {
         return view('familia_amigos.familiar_aseguradora')->with('params',$params);
+    }
+
+    public function confirmarSoporte($params) {
+        return view('familia_amigos.confirmar_soporte')->with('params',$params);
     }
 }

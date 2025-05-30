@@ -11,26 +11,24 @@ Mi Veris - Agregar familiar o amigo
         </div>
     </a>
 </div>
-<div class="flex-grow-1 container-p-y pt-0">
-    <!-- Modal -->
-    <div class="modal fade" id="parentescoFamiliarModal" tabindex="-1" aria-labelledby="parentescoFamiliarModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
-            <div class="modal-content">
-                <div class="modal-header justify-content-center align-items-center pt-3 pb-0 px-3">
-                    <h1 class="modal-title fs--16 line-height-20 fw-medium" id="parentescoFamiliarModalLabel">Tipo de relación</h1>
-                </div>
-                <div class="modal-body p-3">
-                    <!-- Lista dinámica de tipos de parentesco -->
-                    <div class="list-group list-group-flush text-center fs--16">
-                        <!-- La lista se llenará dinámicamente aquí -->
-                    </div>
-                </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn text-primary-veris fs--18 line-height-24 w-100 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
+
+{{-- Modal de pregunta --}}
+<div class="modal fade" id="confirmarPregunta" tabindex="-1" aria-labelledby="confirmarPreguntaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3 text-center">
+                <h5 class="fs-18 line-height-24 my-3">¿Administras los tratamientos de <span class="primerNombreFamiliar text-capitalize"></span>?</h5>
+                <p class="fs--1 line-height-16 mb-0">Pídele permisos de administrador. Esto te permitirá agendarle citas, gestionar sus tratamientos, ver resultados y más.</p>
+                <div class="d-flex flex-column">
+                    <button type="button" id="btnSolicitarPermiso" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 mt-3 w-100 px-4 py-3" data-bs-dismiss="modal">Solicitar Permisos</button>
+                    <button type="button" id="btnAgregarPersona" class="btn btn-lg shadow-none text-primary-veris fw-medium col fs--18 line-height-24 m-0 mt-2 w-100 px-4 py-3" data-bs-dismiss="modal">Ahora no</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<div class="flex-grow-1 container-p-y pt-0">
+
     <!-- Modal mensaje -->
     <div class="modal fade" id="mensajePersonaAgregadaModal" tabindex="-1" aria-labelledby="mensajePersonaAgregadaModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
@@ -82,11 +80,11 @@ Mi Veris - Agregar familiar o amigo
     </div>
     <section class="pt-4 p-3 mb-3">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6 col-lg-4 px-0">
-                <ul class="list-group bg-white rounded-0 w-100">
+            <div class="col-12 col-md-6 col-lg-5 px-0">
+                <ul class="list-group bg-white rounded-3 shadow-sm w-100">
                     <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
                         <div class="mx-0">
-                            <h6 class="fw-medium fs--16 line-height-20 mb-1 text-veris-ai nombreFamiliar"></h6>
+                            <h6 class="fw-medium fs--16 line-height-20 mb-1 text-veris-ai nombreFamiliar text-capitalize"></h6>
                             <p class="fs--2 text-veris line-height-16 mb-0 numeroIdentificacionFamiliar"></p>
                             <p class="fs--2 text-veris line-height-16 mb-0 fechaNacimientoFamiliar"></p>
                         </div>
@@ -95,68 +93,34 @@ Mi Veris - Agregar familiar o amigo
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-12 col-md-6 col-lg-4">
-                <div class="col-12">
-                    <div class="card bg-transparent shadow-none mb-4">
-                        <div class="card-body py-3 px-0">
-                            <form class="row g-3">
-                                <div class="col-md-12">
-                                    <label for="tipoIdentificacion" class="form-label fs--1 line-height-16 fw-medium">{{ __('Tipo de identificación') }} *</label>
-                                    <select class="form-select fs--1 line-height-16 p-3 form-filter border-0 rounded-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        Elegir el tipo de identificación.
+            <div class="col-12 col-md-6 col-lg-5 px-0">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card bg-transparent shadow-none mb-4">
+                            <div class="card-body py-3 pt-2 px-0">
+                                <div class="row g-3">
+                                    <div class="col-md-12 listConvenios">
                                     </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <label for="numeroIdentificacion" class="form-label fs--1 line-height-16 fw-medium">{{ __('Número de identificación') }} *</label>
-                                    <input type="text" class="form-control fs--1 line-height-16 p-3 rounded-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="Ingresa tu número de identificación" required />
-                                    <div class="invalid-feedback">
-                                        Ingresar número de identificación.
+                                    <div class="col-md-12">
+                                        <p class="fs--20 line-height-24 text-veris my-0 ">Ingresa la relación</p>
                                     </div>
-                                </div>
-                                <div class="col-12 mt--32">
-                                    <button class="btn btn-outline-primary-veris bg-white rounded-3 fs--18 line-height-24 w-100 px-4 py-3" type="submit" id="btnBuscar">Buscar</button>
-                                </div>
-                            </form> 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="resultadoConsulta" style="display: none;">
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-6 col-lg-4 px-0">
-                    <ul class="list-group bg-white rounded-0 mb-3">
-                        <li class="list-group-item border-0 d-flex justify-content-start align-items-center px-3 py-2">
-                            <div class="me-auto">
-                                <h6 class="fw-medium fs--16 line-height-20 mb-0">Personas</h6>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card mx-auto mx-lg-3">
-                        <div class="card-body p--2">
-                            <p class="fs--16 line-height-20 hora-cita text-veris fw-medium mb-1" id="nombrePersona"></p>
-                            <p class="text-secondary line-height-16 fs--1 mb-1" >Número de identificación: <b class="hora-cita fw-medium" style="color: #3D4E66;" id="numeroIdentificacionPersona"></b></p>
-                            <p class="text-secondary line-height-16 fs--1 mb-1" >Ciudad: <b class="hora-cita fw-medium" style="color: #3D4E66;" id="ciudadPersona"></b></p>
-                            <p class="text-secondary line-height-16 fs--1 mb-1" >Fecha de nacimiento: <b class="hora-cita fw-medium" style="color: #3D4E66;" id="fechaNacimientoPersona"></b></p>
-                            <div class="d-flex justify-content-end align-items-center mt-3">
-                                <!-- Button trigger modal -->
-                                <button type="button" class="btn btn-sm btn-primary-veris fs--1 fw-medium line-height-16 px-3 py-2" data-bs-toggle="modal" data-bs-target="#parentescoFamiliarModal" id ="btnAgregarPersona">
-                                    Agregar
-                                </button>
+                                    <div class="col-md-12">
+                                        <label for="relacion" class="form-label fs--1 line-height-16 fw-medium">{{ __('Relación') }} *</label>
+                                        <select class="form-select fs--1 line-height-16 p-3 form-filter border-0 rounded-3 text-capitalize" name="relacion" id="relacion" required>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Elegir relación.
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt--32">
+                                        <button class="btn btn-primary-veris rounded-3 fs--18 line-height-24 w-100 px-4 py-3 text-white disabled" data-bs-toggle="modal" data-bs-target="#confirmarPregunta" id="btnGuardar">Guardar</button>
+                                    </div>
+                                </div> 
                             </div>
                         </div>
                     </div>
                 </div>
-    
             </div>
-        </div>
-        <div class="container px-0">
         </div>
     </section>
 </div>
@@ -172,74 +136,48 @@ Mi Veris - Agregar familiar o amigo
     let codigoParentescoClick;
     //llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        $('.nombreFamiliar').html(`${(dataCita.familiar.primerNombre) ?? `` } ${(dataCita.familiar.primerApellido) ?? ``} ${(dataCita.familiar.segundoApellido) ?? ``}`);
+        $('.nombreFamiliar').html(`${(dataCita.familiar.primerNombre.toLowerCase()) ?? `` } ${(dataCita.familiar.primerApellido.toLowerCase()) ?? ``} ${(dataCita.familiar.segundoApellido.toLowerCase()) ?? ``}`);
+        $('.primerNombreFamiliar').html(`${dataCita.familiar.primerNombre.toLowerCase()}`);
+
         $('.numeroIdentificacionFamiliar').html(`<b>No. de identificación:</b> ${dataCita.familiar.numeroIdentificacion}`)
         $('.fechaNacimientoFamiliar').html(`<b>Fecha de nacimiento:</b> ${dataCita.familiar.fechaNacimiento}`)
-        await tiposIdentificacion();
-        llenarSelect();        
+
+        $('body').on('change', '#relacion', function(){
+            $('#btnGuardar').removeClass('disabled');
+        })
+
+        await consultarTipoParentesco();
+        await obtenerConvenios();
     });
 
     
     // funciones asyncronas
     // obtener los tipos de identificación
-    async function tiposIdentificacion() {
+    async function obtenerConvenios() {
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/tiposIdentificacion`;
-        args["method"] = "GET";
-        // args["showLoader"] = true;
-
-        const data = await call(args);
-        if (data.code == 200) {
-            console.log('data.data', data.data);
-            datostiposIdentificacion = data.data;
-        } else if (data.code != 200) {
-            $("#mensajeErrorModalLabel").html(data.message);
-            $("#mensajeErrorModal").modal("show");
-        }
-        return data;
-    }
-
-    // Consultar base de personas.
-    async function consultarPersona() {
-        let canal= _canalOrigen;
-        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
-        let numeroIdentificacion = $("#numeroIdentificacion").val();
-        let tipoIdentificacion = $("#tipoIdentificacion").val();
-        let datosParentezco = [];
-        console.log('tipoIdentificacion', tipoIdentificacion);
-        let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/perfil/personas?canalOrigen=${canal}&codigoUsuario=${codigoUsuario}&numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${dataCita.familiar.tipoIdentificacion}&numeroIdentificacion=${dataCita.familiar.numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        const data = await call(args);
-        console.log('consultqar persona', data);
-        if (data.code == 200) {
-            if(data.data == null){
-                $("#mensajePersonaYaExisteModalLabel").html(data.message);
-                $("#mensajePersonaYaExisteModal").modal("show");
-                return;
-            } else {
-                datosConsultarPersona = data.data;
-                {{-- console.log('datosConsultarPersona', datosConsultarPersona);
-                $("#resultadoConsulta").show();
 
-                //llenar datos de la persona
-                $("#nombrePersona").text(revisarCamposNullUndefined(datosConsultarPersona[0].primerNombre) + " " + revisarCamposNullUndefined(datosConsultarPersona[0].segundoNombre) + " " + revisarCamposNullUndefined(datosConsultarPersona[0].primerApellido) + " " + revisarCamposNullUndefined(datosConsultarPersona[0].segundoApellido));
-                $("#numeroIdentificacionPersona").text(datosConsultarPersona[0].numeroIdentificacion);
-                $("#ciudadPersona").text(capitalizarPalabrasUnidasPorGuion(datosConsultarPersona[0].ciudad));
-                $("#fechaNacimientoPersona").text(datosConsultarPersona[0].fechaNacimiento); --}}
-                let dataCita = {}
-                dataCita.familiar = datosConsultarPersona[0];
-                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-                location.href = '/agregar-convenio/{{ $params }}';
-            }
-        } else if (data.code != 200) {
-            $("#mensajeErrorModalLabel").html(data.message);
-            $("#mensajeErrorModal").modal("show");
+        const data = await call(args);
+        console.log(data);
+        let elem = ``
+        if (data.code == 200) {
+            $.each(data.data, function(key, value){
+                elem += `<label class="list-group-item border rounded-3 bg-white p-2 shadow-sm mb-2">
+                    <div class="d-flex justify-content-between align-items-center w-100">
+                        <img src="${value.rutaImagenConvenio}" class="img-fluid">
+                        <div class="col-auto flex-grow-1 text-start ms-2">
+                            <p class="text-veris fs--1 fw-medium line-height-16 mb-0 text-capitalize text-truncate">${value.nombreConvenioUsuarioFinal.toLowerCase().substring(0, 40) + '...'}</p>
+                        </div>
+                    </div>
+                </label>`;
+            })
+            $('.listConvenios').html(elem)
         }
         return data;
     }
-   
+
     // consular tipos de parentesco
     async function consultarTipoParentesco() {
         let args = [];
@@ -251,10 +189,12 @@ Mi Veris - Agregar familiar o amigo
         console.log('consultarTipoParentesco', data);
         if (data.code == 200) {
             datosTipoParentesco = data.data;
-
-            $("#parentescoFamiliarModal").modal("show");
-        }
-        else if (data.code != 200) {
+            let elem = `<option value="" disabled hidden selected>Elegir relación</option>`;
+            $.each(datosTipoParentesco, function(key, value){
+                elem += `<option data-rel='${JSON.stringify(value)}' class="text-capitalize" value="${value.codigoParentesco}">${value.descripcion.toLowerCase()}</option>`;
+            })
+            $('#relacion').html(elem);
+        }else if (data.code != 200) {
             $("#mensajeErrorModalLabel").html(data.message);
             $("#mensajeErrorModal").modal("show");
         }
@@ -262,7 +202,7 @@ Mi Veris - Agregar familiar o amigo
     }
 
     // agregar persona
-    async function agregarPersona() {
+    async function agregarPersona(showConfirmation = false) {
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo`;
         args["method"] = "POST";
@@ -271,15 +211,17 @@ Mi Veris - Agregar familiar o amigo
         
         args["data"] = JSON.stringify({
             "codigoUsuario": "{{ Session::get('userData')->numeroIdentificacion }}",
-            "numeroIdentificacion": $("#numeroIdentificacion").val().toString(),
-            "tipoIdentificacion": parseInt($("#tipoIdentificacion").val()),
-            "codigoParentesco": codigoParentescoClick
+            "numeroIdentificacion": dataCita.familiar.numeroIdentificacion,
+            "tipoIdentificacion": parseInt(dataCita.familiar.tipoIdentificacion),
+            "codigoParentesco": parseInt(getInput('relacion'))
         });
 
         const data = await call(args);
         console.log('agregarPersona', data);
         if (data.code == 200) {
-            $("#mensajePersonaAgregadaModal").modal("show");
+            if(!showConfirmation){
+                $("#mensajePersonaAgregadaModal").modal("show");
+            }
         }
         else if (data.code != 200) {
             $("#mensajeErrorModalLabel").html(data.message);
@@ -300,20 +242,37 @@ Mi Veris - Agregar familiar o amigo
         }
     }
 
-    //buscar persona
-    $("form").on('submit', async function(e) {
-        e.preventDefault(); // Evita el comportamiento predeterminado de envío del formulario
-        await consultarPersona();
-    });
-
-
     // agregar persona
     $("#btnAgregarPersona").click(async function() {
-        await consultarTipoParentesco();
-        llenarModal(datosTipoParentesco);
-
-        // $("#parentescoFamiliarModal").modal("show");
+        await agregarPersona();
     });
+
+    $("#btnSolicitarPermiso").click(async function() {
+        await agregarPersona(true);
+        await sendCode();
+    });
+
+    async function sendCode(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/solicitaAdmin`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        
+        args["data"] = JSON.stringify({
+            "numeroPaciente": dataCita.familiar.numeroPaciente,
+            "virusu": dataCita.familiar.numeroIdentificacion,
+            "correo": dataCita.familiar.correo,
+            "canalOrigenDigital": _canalOrigen
+        });
+
+        const data = await call(args);
+        if(data.code == 200){
+            dataCita.parentesco = JSON.parse($('#relacion option:selected').attr('data-rel'))
+            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            location.href = "/confirmar-soporte/{{ $params }}";
+        }
+    }
 
     // seleccionar tipo de parentesco
     $(document).on('click', '#parentescoClick', async function() {
