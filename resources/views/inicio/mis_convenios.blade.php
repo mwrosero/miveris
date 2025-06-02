@@ -172,7 +172,7 @@ Mi Veris - Mis Convenios
             if(data.data.length > 0){
                 $.each(data.data, function(key, value){
                     elem += `<div class="col-12 p-1">
-                        <div class="form-check custom-option custom-option-basic shadow-sm d-flex justify-content-between align-items-center p-2">
+                        <div type="button" class="form-check custom-option custom-option-basic shadow-sm d-flex justify-content-between align-items-center p-2">
                             <img src="${value.rutaImagenConvenio}" class="me-3" alt="${value.nombreConvenio}">
                             <div>
                                 <p class="text-veris-ai fs--16 line-height-20 mb-1 fw-medium text-capitalize">${value.nombreCliente.toLowerCase()}</p>

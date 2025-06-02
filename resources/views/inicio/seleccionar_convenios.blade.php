@@ -124,9 +124,13 @@ Mi Veris - Elegir aseguradora
         const data = await call(args);
         console.log(data);
         if(data.code == 200 ){
-            dataCita.convenio = data.data;
-            localStorage.setItem('persona-{{ $params }}', JSON.stringify(dataCita));
-            // location.href = '/info-convenio/{{ $params }}';
+            if(data.data.length == 1){
+                dataCita.convenio = data.data[0];
+                localStorage.setItem('persona-{{ $params }}', JSON.stringify(dataCita));
+                location.href = '/info-convenio/{{ $params }}';
+            }else{
+                await drawConvenios(data.data);
+            }
         }else{
             $('.title-mensaje-info').html(`Lo sentimos`)
             $('#mensaje_400_validacion').html(data.message);

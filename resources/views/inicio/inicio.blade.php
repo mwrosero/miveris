@@ -96,6 +96,22 @@ Mi Veris - Inicio
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Inicio') }}</h5>
     </div>
+    <!-- Banners -->
+    <section class="bg-white p-3 py-3 pt-0 pe-0 pe-md-3 mb-0 d-none section-banners">
+        <div class="swiper swiper-banners position-relative py-2">
+            <div class="swiper-wrapper px-1" id="box-banners">
+                <!-- <div class="swiper-slide">
+                    <div class="card h-100 d-flex justify-content-center align-items-between shadow-none border-0">
+                        <div class="row h-100 g-0 justify-content-between align-items-center">
+                            <div class="col-12">
+                                <img src="https://dikg1979lm6fy.cloudfront.net/app/cmv/promocion/BANNER_BIENESTAR.png" class="img-fluid" alt=""  >
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
     <!-- Accesos rápidos -->
     <section class="bg-light-grayish-blue p-3 pe-0 pe-md-3 mb-3">
         <div class="d-flex justify-content-between align-items-center">
@@ -231,6 +247,7 @@ Mi Veris - Inicio
 
     document.addEventListener("DOMContentLoaded", async function () {
         await controlVersion();
+        
         var swiper = new Swiper('.swiper-acceso-rapidos', {
             // slidesPerView: 1,
             spaceBetween: 8,
@@ -264,6 +281,7 @@ Mi Veris - Inicio
             },
         });
         await obtenerPPD();
+        await cargarBanners();
         await obtenerTratamientos();
         await obtenerCitas();
         await obtenerUrgenciasAmbulatorias();
@@ -688,6 +706,74 @@ Mi Veris - Inicio
         });
 
     });
+
+    async function cargarBanners(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=7&canalOrigen=${_canalOrigen}&codigoFlujoProceso=7&codigoPantalla=16`;
+        console.log('args["endpoint"]',args["endpoint"]);
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        
+        const data = await call(args);
+        console.log("----------------BANNERS--------------")
+        console.log(data)
+        let tieneSlides = false;
+        if(data.code == 200){
+            if(data.data.pantallas.length > 0){
+                let elem = ``;
+                $.each(data.data.pantallas, function(key, value){
+                    $.each(value.configuraciones, function(k,v){
+                        tieneSlides = true;
+                        elem += `<div class="swiper-slide">
+                            <div class="card h-100 d-flex justify-content-center align-items-between shadow-none border-0">
+                                <div class="row h-100 g-0 justify-content-between align-items-center">
+                                    <div class="col-12">
+                                        <img src="https://dikg1979lm6fy.cloudfront.net/app/cmv/promocion/BANNER_BIENESTAR.png" class="img-fluid" alt=""  >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+                    })
+                })
+                if(tieneSlides){
+                    $('#box-banners').html(elem);
+                    var banners = new Swiper('.swiper-banners', {
+                        // slidesPerView: 1,
+                        spaceBetween: 8,
+                        
+                        navigation: {
+                            nextEl: '.btn-next',
+                            prevEl: '.btn-prev',
+                        },
+                        autoplay: false,
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true,
+                        },
+                        breakpoints: {
+                            300: {
+                                slidesPerView: 1.1,
+                                centeredSlides: false,
+                                // loop: true,
+                                spaceBetween: 4,
+                            },
+                            768: {
+                                slidesPerView: 1.5,
+                                // centeredSlides: true,
+                                // loop: true,
+                                // spaceBetween: 8,
+                            },
+                            1024: {
+                                slidesPerView: 2.7,
+                                // spaceBetween: 8,
+                            },
+                        },
+                    });
+                    $('.section-banners').removeClass('d-none');
+                }
+            }
+        }
+    }
 
     async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
         let args = [];
