@@ -100,22 +100,23 @@ Mi Veris - Mis tarjetas
             $('.tarjeta-'+tarjeta).remove();
             if($('#listado-tarjetas .item-tarjeta').length == 0){
                 let elem = `<div class="col-12 text-center">
-                    No tiene tarjetas guardadas
+                    No tienes tarjetas guardadas
                 </div>`;
                 $('#listado-tarjetas').append(elem);  
                 window.removeEventListener("beforeunload", beforeUnloadHandler);
                 var myModal = new bootstrap.Modal(document.getElementById('noExisteTarjeta'));
                 myModal.show();
+                await cargarListaTarjetas(false);
             }
         }
     }
 
-    async function cargarListaTarjetas(){
+    async function cargarListaTarjetas(showLoader = true){
         $('#listado-tarjetas').empty();
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu={{ Session::get('userData')->numeroIdentificacion }}`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = showLoader;
         const data = await call(args);
         console.log(data);
 
@@ -124,7 +125,7 @@ Mi Veris - Mis tarjetas
             let count = 0;
             if(data.data.length == 0){
                 elem += `<div class="col-12 text-center">
-                    <h6 class="card-title text-veris fs-24 line-height-28 mb-3">No tiene tarjetas guardadas</h6>
+                    <h6 class="card-title text-veris fs-24 line-height-28 mb-3">No tienes tarjetas guardadas</h6>
                     <p>En esta sección podrás ver y eliminar tus tarjetas.</p>
                     <img src="{{ asset('assets/img/svg/no-credit-card.svg') }}" class="img-fluid mt-3" >
                 </div>`;

@@ -168,15 +168,16 @@ Mi Veris - Citas - Familia y amigos
         // Iterar sobre los datos y crear elementos para cada familiar
         let elem = ``;
         if(familiar !== null){
+            console.log(familiar)
             data.forEach(familiar => {
                 let esAdminBadge = ``;
                 let ownMyAccount = ``;
-
+                console.log(familiar.poseoAdmin, familiar.tieneAdmin)
                 if(familiar.poseoAdmin == "S"){
                     esAdminBadge = `<span class="badge rounded-pill bg-purple-light text-veris-ai line-height-12 fs--3 me-2 fw-light">Eres administrador</span>`;
                 }
 
-                if(familiar.tieneAdmin = "S"){
+                if(familiar.tieneAdmin == "S"){
                     ownMyAccount = `<span class="badge rounded-pill bg-green-light text-green line-height-12 fs--3 me-2 fw-light">Este usuario administra tu cuenta</span>`;
                 }
 

@@ -624,7 +624,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "secuenciaTransaccion": null,
             "esParticular": esParticular,
             // "aplicaCredito": aplicaCredito,
-            "aplicaProntoPago": aplicaProntoPago,
+            //"aplicaProntoPago": aplicaProntoPago,
             "cantidad": dataCita.items[dataCita.position].cantidad
         }
 

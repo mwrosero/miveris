@@ -118,7 +118,7 @@ Mi Veris - Agregar familiar o amigo
                                     </div>
                                 </div>
                                 <div class="col-12 mt--32">
-                                    <button class="btn btn-outline-primary-veris bg-white rounded-3 fs--18 line-height-24 w-100 px-4 py-3" type="submit" id="btnBuscar">Buscar</button>
+                                    <button class="btn btn-primary-veris text-white rounded-3 fs--18 line-height-24 w-100 px-4 py-3" type="submit" id="btnBuscar">Buscar</button>
                                 </div>
                             </form> 
                         </div>
@@ -174,9 +174,7 @@ Mi Veris - Agregar familiar o amigo
     //llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         await tiposIdentificacion();
-        llenarSelect();
-        
-        
+        llenarSelect();    
     });
 
     
@@ -230,7 +228,7 @@ Mi Veris - Agregar familiar o amigo
                 $("#fechaNacimientoPersona").text(datosConsultarPersona[0].fechaNacimiento); --}}
                 let dataCita = {}
                 dataCita.familiar = datosConsultarPersona[0];
-                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+                localStorage.setItem('persona-{{ $tokenCita }}', JSON.stringify(dataCita));
                 location.href = '/agregar-convenio/{{ $tokenCita }}';
             }
         } else if (data.code != 200) {

@@ -1080,13 +1080,13 @@ function typeWriterWithStyle(txt, nameIdElement, styledWords = {}) {
 }
 
 $(document).ready(function() {
-    
-    if (localStorage.getItem('sessionTime') === null) {
-        localStorage.setItem('sessionTime', new Date().getTime());
+    if(typeof app_ori === 'undefined'){
+        if (localStorage.getItem('sessionTime') === null) {
+            localStorage.setItem('sessionTime', new Date().getTime());
+        }
+
+        setInterval(checkAndUpdateToken, 10 * 60 * 1000);
     }
-
-    setInterval(checkAndUpdateToken, 10 * 60 * 1000);
-
 });
 
 function logout(){

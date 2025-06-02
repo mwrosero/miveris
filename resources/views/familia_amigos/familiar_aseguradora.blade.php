@@ -129,7 +129,7 @@ Mi Veris - Agregar familiar o amigo
  
 <script>
     // variables globales
-    let local = localStorage.getItem('cita-{{ $params }}');
+    let local = localStorage.getItem('persona-{{ $params }}');
     let dataCita = JSON.parse(local);
     let datostiposIdentificacion;
     let datosConsultarPersona;
@@ -261,7 +261,7 @@ Mi Veris - Agregar familiar o amigo
         
         args["data"] = JSON.stringify({
             "numeroPaciente": dataCita.familiar.numeroPaciente,
-            "virusu": dataCita.familiar.numeroIdentificacion,
+            "virusu": "{{ Session::get('userData')->numeroIdentificacion }}",
             "correo": dataCita.familiar.correo,
             "canalOrigenDigital": _canalOrigen
         });
@@ -269,7 +269,7 @@ Mi Veris - Agregar familiar o amigo
         const data = await call(args);
         if(data.code == 200){
             dataCita.parentesco = JSON.parse($('#relacion option:selected').attr('data-rel'))
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            localStorage.setItem('persona-{{ $params }}', JSON.stringify(dataCita));
             location.href = "/confirmar-soporte/{{ $params }}";
         }
     }

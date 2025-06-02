@@ -1111,6 +1111,14 @@ Due to the split circle of progress-left and progress right, we must use the ani
   background: url('../img/svg/menu/solid/inicio_solid.svg') no-repeat center center;
 }
 
+.menu-item .svg-container.svg-cuenta {
+  background: url('../img/svg/menu/light/cuenta_light.svg') no-repeat center center;
+}
+
+.menu-item.active .svg-container.svg-cuenta {
+  background: url('../img/svg/menu/solid/cuenta_solid.svg') no-repeat center center;
+}
+
 .menu-item .svg-container.svg-citas {
   background: url('../img/svg/menu/light/citas_light.svg') no-repeat center center;
 }
@@ -1256,6 +1264,10 @@ Due to the split circle of progress-left and progress right, we must use the ani
 
 .fs--36 {
   font-size: 2.25rem !important;
+}
+
+.fs--64 {
+  font-size: 4rem !important;
 }
 
 .fs-18 {

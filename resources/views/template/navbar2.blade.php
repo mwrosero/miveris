@@ -34,7 +34,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end rounded-3 mt-2 py-1">
                     <li>
-                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('home.misDatos')}}">
+                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('cuenta.misDatos')}}">
                             <i class="fa-solid fa-user text-primary-veris me-2 ti-sm"></i>
                             <span class="align-middle">Mis datos</span>
                         </a>
@@ -278,7 +278,7 @@
         // localStorage.clear();
         for (let i = 0; i < localStorage.length; i++) {
             let key = localStorage.key(i);
-            if (key.startsWith('cita-')) {
+            if (key.startsWith('cita-') || key.startsWith('persona-')) {
                 localStorage.removeItem(key);
                 i--; // Ajustar el índice después de eliminar un elemento
             }
@@ -487,6 +487,10 @@
 
     .layout-navbar {
         {{-- height: 3.74rem !important; --}}
+        height: 58px !important;
+    }
+
+    .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal) .layout-page:before {
         height: 58px !important;
     }
 
