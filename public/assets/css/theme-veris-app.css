@@ -332,6 +332,12 @@ html:not([dir="rtl"]) .border-start-veris {
   background: var(--verisAi) !important;
 }
 
+.btn-outline-veris-ai{
+  color: var(--verisAi) !important;
+  border-color: var(--verisAi) !important;
+  background: transparent;
+}
+
 .text-veris-ai{
   color: var(--verisAi) !important;
 }

@@ -112,14 +112,29 @@ Mi Veris - Inicio
             </div>
         </div>
     </section>
+    
+    <!-- Tratamientos dinamico -->
+    <section class="bg-light-grayish-blue p-3 mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Mis tratamientos</h5>
+            <a href="{{route('tratamientos')}}" class="fw-medium fs--2 me-1 text-veris-ai" id="verTodosTratamientos">Ver todos</a>
+        </div>
+        <div class="swiper swiper-tratamientos position-relative pb-3">
+            <div class="swiper-wrapper px-1 py-2" id="contenedorTratamientoHome">
+            </div>
+            <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
+            <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
+        </div>
+        <div class="py-3 d-none" id="contenedorTratamientosHomePrincipal"></div>
+    </section>
+
     <!-- Accesos rápidos -->
-    <section class="bg-light-grayish-blue p-3 pe-0 pe-md-3 mb-3">
+    <section class="p-3 pe-md-3 mb-3 pb-0" style="overflow-x: hidden;">
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="fw-medium border-start-veris ps-3 fs-18 mb-0">{{ __('Accesos rápidos') }}</h6>
         </div>
-        <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-md-2 pb-md-4">
+        {{-- <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-md-2 pb-md-4">
             <div class="swiper-wrapper px-1">
-                {{-- Inteligencia Artificial --}}
                 <div class="swiper-slide">
                     <a href="{{route('citas.agendamiento-ai')}}">
                         <div class="card h-100 d-flex justify-content-center align-items-between border-ai">
@@ -137,9 +152,8 @@ Mi Veris - Inicio
                     </a>
                 </div>
                 <div class="swiper-slide">
-                    {{-- data-bs-toggle="modal" data-bs-target="#agendarCitaMedicaModal" --}}
-                    <a class="cursor-pointer d-block" id="cita-nueva">
-                        <div class="card">
+                    <a class="cursor-pointer d-block">
+                        <div class="card" id="cita-nueva">
                             <div class="row g-0 justify-content-between align-items-center">
                                 <div class="col-7 col-md-7">
                                     <div class="card-body p-0 ps-2">
@@ -184,28 +198,80 @@ Mi Veris - Inicio
                             </div>
                         </div>
                     </a>
-                </div>
+                </div> 
             </div>
             <button type="button" id="prevProperties" class="d-flex d-none mt-n4 btn btn-prev rounded-circle"></button>
             <button type="button" id="nextProperties" class="d-flex d-none mt-n4 btn btn-next rounded-circle"></button>
-        </div>
-    </section>
-    <!-- Tratamientos dinamico -->
-    <section class="bg-light-grayish-blue p-3 mb-3">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Mis tratamientos</h5>
-            <a href="{{route('tratamientos')}}" class="fw-medium fs--2 me-1" id="verTodosTratamientos">Ver todos</a>
-        </div>
-        <div class="swiper swiper-tratamientos position-relative pb-4">
-            <div class="swiper-wrapper px-1 py-2" id="contenedorTratamientoHome">
+        </div> --}}
+        <div class="container-fluid px-0 mt-3">
+            <div class="row px-1 d-flex justify-content-start align-items-stretch mb-3">
+                <div class="col-6 col-md-4 d-flex">
+                    <a href="{{route('citas.agendamiento-ai')}}" class="w-100">
+                        <div class="card h-100 d-flex justify-content-center border-ai">
+                            <div class="row h-100 g-0 justify-content-between align-items-center">
+                                <div class="col-8 col-md-7">
+                                    <div class="card-body p-0 ps-2">
+                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendamiento inteligente') }}</h6>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-md-auto text-end">
+                                    <img src="{{ asset('assets/img/svg/vericita-icon.svg') }}" class="img-fluid me-2" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 d-flex">
+                    <a class="cursor-pointer d-block w-100">
+                        <div class="card h-100" id="cita-nueva">
+                            <div class="row h-100 g-0 justify-content-between align-items-center">
+                                <div class="col-7 col-md-7">
+                                    <div class="card-body p-0 ps-2">
+                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendar cita médica') }}</h6>
+                                    </div>
+                                </div>
+                                <div class="col-5 col-md-auto text-end">
+                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="img-fluid" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
             </div>
-            <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
-            <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
         </div>
-        <div class="py-3" id="contenedorTratamientosHomePrincipal"></div>
+
+        <div class="container-fluid px-0">
+            <div class="row px-1 d-flex justify-content-start align-items-center">
+                <a href="/promociones" class="col-3 col-md-2 text-center text-veris">
+                    <div class="box-container-icon mb-1 p-2 rounded-3">
+                        <img src="{{ asset('assets/img/svg/descuento-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
+                    </div>
+                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Promociones</p>
+                </a>
+                <a href="/servicio-domicilio" class="col-3 col-md-2 text-center text-veris">
+                    <div class="box-container-icon mb-1 p-2 rounded-3">
+                        <img src="{{ asset('assets/img/svg/domicilio-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
+                    </div>
+                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Domicilio</p>
+                </a>
+                <a href="/receta-medica" class="col-3 col-md-2 text-center text-veris">
+                    <div class="box-container-icon mb-1 p-2 rounded-3">
+                        <img src="{{ asset('assets/img/svg/recetas-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
+                    </div>
+                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Recetas</p>
+                </a>
+                <a href="/resultados" class="col-3 col-md-2 text-center text-veris">
+                    <div class="box-container-icon mb-1 p-2 rounded-3">
+                        <img src="{{ asset('assets/img/svg/resultados-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
+                    </div>
+                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Resultados</p>
+                </a>
+            </div>
+        </div>
     </section>
+
     <!-- Mis citas dinamico -->
-    <section class="bg-light-grayish-blue p-3 mb-3" id="section-citas">
+    <section class="bg-light-grayish-blue p-3 mb-3 d-none" id="section-citas">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Mis citas</h5>
             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
@@ -219,7 +285,7 @@ Mi Veris - Inicio
         <div class="py-3" id="contenedorCitasHomePrincipal"></div>
     </section>
     <!-- Urgencias ambulatorias dinamico -->
-    <section class="bg-light-grayish-blue p-3 mb-3" id="section-urgencias">
+    <section class="bg-light-grayish-blue p-3 mb-3 d-none" id="section-urgencias">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-medium border-start-grenadier ps-3 fs-18 mb-0">Urgencias ambulatorias</h5>
             <a href="javascript:void(0)" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todos</a>
@@ -248,7 +314,7 @@ Mi Veris - Inicio
     document.addEventListener("DOMContentLoaded", async function () {
         await controlVersion();
         
-        var swiper = new Swiper('.swiper-acceso-rapidos', {
+        /*var swiper = new Swiper('.swiper-acceso-rapidos', {
             // slidesPerView: 1,
             spaceBetween: 8,
             
@@ -279,7 +345,7 @@ Mi Veris - Inicio
                     // spaceBetween: 8,
                 },
             },
-        });
+        });*/
         await obtenerPPD();
         await cargarBanners();
         await obtenerTratamientos();
@@ -297,7 +363,6 @@ Mi Veris - Inicio
         });
 
         $('#cita-nueva').on('click', function(){
-
             let params = {}
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
 
@@ -960,6 +1025,7 @@ Mi Veris - Inicio
             if (data.data.length == 0) {
                 mostrarNoExistenCitas();
             } else {
+                $('#section-citas').removeClass('d-none')
                 console.log('si hay citas');
                 datosCitas = data.data;
                 mostrarCitasenDiv();
@@ -985,6 +1051,7 @@ Mi Veris - Inicio
             if(data.data === null || data.data.length == 0){
                 mostrarNoExistenUrgencias();
             } else {
+                $('#section-urgencias').removeClass('d-none')
                 citas_vua = data.data
                 mostrarUrgenciasAmbulatorias();
             }
@@ -1019,7 +1086,7 @@ Mi Veris - Inicio
                                     <div class="card-body p-3">
                                         <div class="row gx-0 justify-content-between align-items-center mb-2">
                                             <div class="col-9">
-                                                <h6 class="card-title text-primary-veris fs--16 line-height-20 mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
+                                                <h6 class="card-title text-veris-ai fs--16 line-height-20 mb-0 capitalizar">${capitalizarElemento(tratamientos.nombreEspecialidad)}</h6>
                                                 <p class="fw-medium line-height-16 fs--2 mb-0">${capitalizarElemento(tratamientos.nombrePaciente)}</p>
                                                 <p class="card-text line-height-16 fs--2 text-one-line">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                             </div>
@@ -1040,7 +1107,7 @@ Mi Veris - Inicio
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="list-group list-group-checkable d-grid align-items-center h-50 gap-2 border-0">`;
+                                        <div class="list-group list-group-checkable d-grid align-items-center h-50 gap-2 border-0 d-none">`;
 
             // Bucle anidado para detalleTratamiento
             tratamientos.detallesTratamiento.forEach((detalle) => {
@@ -1087,7 +1154,7 @@ Mi Veris - Inicio
                             <h6 class="fs--16 fw-normal">Agenda una cita y revisa tus <b>tratamientos</b> aquí</h6>
                         </div>`;
         divContenedor.append(elemento);
-            
+        $('#contenedorTratamientosHomePrincipal').removeClass('d-none');
     }
 
     // llenar el div de citas
@@ -1133,24 +1200,24 @@ Mi Veris - Inicio
                     <div class="card h-100">
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `
-                                <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Videoconsulta</span>
-                            ` : ''}
+                                <span class="badge fs--12 fw-medium p-2 mb-2" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-video me-2 label-status-detalle"></i>Videoconsulta</span>
+                            ` : `<span class="badge fs--12 fw-medium p-2 mb-2 text-capitalize" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-door-closed me-2 label-status-detalle"></i>${citas.nombreSitio.toLowerCase()}</span>`}
                             <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
+                                <h6 class="text-veris-ai fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
                                 <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${ (citas.estaPagada == "S") ? "#00C853" : "#D84315"};"><i class="fa-solid fa-circle"></i> ${ (citas.estaPagada == "S") ? "Cita pagada" : "Pago pendiente" }</span>
                             </div>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
                             <ul class="fw-normal fs--2 line-height-16 mb-1 p-0">
                                 ${ prestaciones }
                             </ul>
-                            <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-veris-ai">${citas.horaInicio}</b></p>
                         </div>
                         <div class="card-footer pt-0 pb--2 px--2 d-flex justify-content-end align-items-center">
                             <div class="mt-auto">
                                 ${citas.estaPagada === "N" ? `
-                                <div class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>
-                                <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar-lab" data-rel='${JSON.stringify(citas)}'>Pagar</a>
-                                ` : `<div class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>`}
+                                <div class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>
+                                <a class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar-lab" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                ` : `<div class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-preparacionPrevia" data-rel='${JSON.stringify(citas)}'>Preparación previa</div>`}
                             </div>
                         </div>
                     </div>
@@ -1160,14 +1227,14 @@ Mi Veris - Inicio
                     <div class="card h-100">
                         <div class="card-body p--2">
                             ${(esConsultaOnline || citas.idTeleconsulta !== null) ? `
-                                <span class="badge bg-label-primary text-primary-veris fs--12 fw-medium p-2 mb-1" style="background-color: #CEEEFA !important;">Videoconsulta</span>
-                            ` : ''}
+                                <span class="badge fs--12 fw-medium p-2 mb-2" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-video me-2 label-status-detalle"></i>Videoconsulta</span>
+                            ` : `<span class="badge fs--12 fw-medium p-2 mb-2 text-capitalize" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-door-closed me-2 label-status-detalle"></i>${citas.nombreSitio.toLowerCase()}</span>`}
                             <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
+                                <h6 class="text-veris-ai fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
                                 <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
                             </div>
                             <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
-                            <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-veris-ai">${citas.horaInicio}</b></p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
                         </div>
@@ -1176,19 +1243,19 @@ Mi Veris - Inicio
                                 <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
                             ` : ''}
                             <div class="mt-auto">
-                                ${(citas.permiteCambiar == "S" && citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModalCitas" class="${(citas.estaPagada === "S" && citas.esVirtual === "N" && citas.idTeleconsulta === null) ? `btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16`: `btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none`} btn-opciones-cita" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
-                                ` : (citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
+                                ${(citas.permiteCambiar == "S" && citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModalCitas" class="${(citas.estaPagada === "S" && citas.esVirtual === "N" && citas.idTeleconsulta === null) ? `btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16`: `btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none`} btn-opciones-cita" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
+                                ` : (citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
                                         <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
-                                    </div>` : ( citas.estaPagada == "S" ) ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>` : `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-outline-primary-veris fs--1 fw-normal line-height-16 shadow-none btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
-                                        <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-sesion" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                    </div>` : ( citas.estaPagada == "S" ) ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>` : `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
+                                        <a class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-sesion" data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                     `
                                 }
                                 ${ (citas.estaPagada === "N" && citas.esSesionOdonto != "S") ? `
-                                <a class="btn btn-sm btn-primary-veris fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
+                                <a class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                 ` : ''}
                             </div>
                             ${(esConsultaOnline || citas.idTeleconsulta !== null) && citas.estaPagada == "S" ? `
-                                <a href="${citas.idTeleconsulta}" class="btn btn-sm btn-primary-veris fs--1 ms-2 m-0 line-height-16">Conectarme</a>
+                                <a href="${citas.idTeleconsulta}" class="btn btn-sm bg-veris-ai fs--1 ms-2 m-0 line-height-16 text-white">Entrar<i class="fa-solid fa-video ms-2"></i></a>
                             ` : ''}
                         </div>
                     </div>
@@ -1232,7 +1299,7 @@ Mi Veris - Inicio
                             <span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i>Reservado</span>
                         </div>
                         <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.nombreSucursal)}</p>
-                        <p class="fw-normal fs--2 line-height-16 mb-1">${urgencias.fechaAdmision.replace(/\*(.*?)\*/g, '<b class="hora-cita fw-normal text-primary-veris">$1</b>')}</p>
+                        <p class="fw-normal fs--2 line-height-16 mb-1">${urgencias.fechaAdmision.replace(/\*(.*?)\*/g, '<b class="hora-cita fw-normal text-veris-ai">$1</b>')}</p>
                         <!--p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(urgencias.medico)}</p-->
                         <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.paciente)}</p>
                         <div class="d-flex justify-content-between align-items-center">
@@ -1555,6 +1622,19 @@ Mi Veris - Inicio
 
 </script>
 <style>
+    .box-container-icon{
+        border: 1px solid #D4E1FC
+    }
+    @media screen and (max-width: 600px) {
+        .label-txt-acceso-directo{
+            font-size: 14px;
+        }
+    }
+    @media screen and (max-width: 500px) {
+        .label-txt-acceso-directo{
+            font-size: 12px;
+        }
+    }
     /* .btn-transition {
         opacity: 0;
         transition: opacity 0.01s ease;

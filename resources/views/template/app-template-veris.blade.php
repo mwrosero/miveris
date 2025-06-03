@@ -353,7 +353,7 @@
                         // spaceBetween: 8,
                     },
                     1024: {
-                        slidesPerView: 3,
+                        slidesPerView: 2.7,
                         // spaceBetween: 8,
                     },
                 },
