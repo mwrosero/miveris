@@ -342,7 +342,7 @@ Mi Veris - Agregar familiar o amigo
 
         datosTipoParentesco.forEach(parentesco => {
             const listItem = document.createElement('a');
-            // listItem.href = "{{route('familia.lista')}}";
+            
             listItem.classList.add('list-group-item', 'list-group-item-action', 'text-primary-veris', 'fs--16', 'px-3', 'py--2');
             listItem.textContent = capitalizarElemento(parentesco.descripcion);
             listItem.value = parentesco.codigoParentesco;
@@ -353,7 +353,7 @@ Mi Veris - Agregar familiar o amigo
 
     // redireccionar a la lista de familiares
     $("#btnEntendido").click(function() {
-        window.location.href = "{{route('familia.lista')}}";
+        window.location.href = "{{route('cuenta.lista')}}";
     });
 
 </script>

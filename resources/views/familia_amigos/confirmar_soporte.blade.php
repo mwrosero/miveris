@@ -297,7 +297,7 @@ Mi Veris - Agregar familiar o amigo
 
     // redireccionar a la lista de familiares
     $("#btnEntendido").click(function() {
-        window.location.href = "{{route('familia.lista')}}";
+        window.location.href = "{{route('cuenta.lista')}}";
     });
 
 </script>
