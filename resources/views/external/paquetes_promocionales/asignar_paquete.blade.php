@@ -26,28 +26,28 @@ Veris - Asignar Promoción
                             <p class="text-primary-veris fs--16 line-height-20 fw-medium mb-1 mt-5 mt-md-0">Información del Beneficiario del Paquete</p>
                             <span class="fs--1 line-height-16 mb-0">La información solicitada a continuación es referente a la persona a la que estará destinado el paquete.</span>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-6 col-md-4">
                             <label for="primerApellido" class="form-label fw-medium fs--1">Primer Apellido *</label>
                             <input type="text" class="form-control fs--1 p-3" name="primerApellido" id="primerApellido" placeholder="" required />
                             <div class="invalid-feedback">
                                 Ingrese su nombres y apellidos.
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-6 col-md-4">
                             <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo Apellido *</label>
                             <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" placeholder="" required />
                             <div class="invalid-feedback">
                                 Ingrese su nombres y apellidos.
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-6 col-md-4">
                             <label for="primerNombre" class="form-label fw-medium fs--1">Primer Nombre *</label>
                             <input type="text" class="form-control fs--1 p-3" name="primerNombre" id="primerNombre" placeholder="" required />
                             <div class="invalid-feedback">
                                 Ingrese su nombres y apellidos.
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-6 col-md-4">
                             <label for="genero" class="form-label fw-medium fs--1">Género *</label>
                             <select class="form-select fs--1 p-3" name="genero" id="genero" required>
                                 <option value="M">MASCULINO</option>
@@ -57,8 +57,8 @@ Veris - Asignar Promoción
                                 Elegir el género.
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
-                            <label for="tipoIdentificacion" class="form-label fw-medium fs--1">Tipo de documento *</label>
+                        <div class="col-6 col-md-4">
+                            <label for="tipoIdentificacion" class="form-label fw-medium fs--1">Tipo de identificación *</label>
                             <select class="form-select fs--1 p-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
                                 <option value="2">CÉDULA</option>
                                 <option value="3">PASAPORTE</option>
@@ -67,23 +67,43 @@ Veris - Asignar Promoción
                                 Elegir el tipo de documento.
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
-                            <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de documento *</label>
+                        <div class="col-6 col-md-4">
+                            <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Nro. de identificación *</label>
                             <input type="text" class="form-control fs--1 p-3" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
                             <div class="invalid-feedback">
                                 Ingrese un numero de identificacion.
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-6 col-md-4">
                             <label for="fechaNacimiento" class="form-label fw-medium fs--1">Fecha de nacimiento *</label>
                             <input type="date" lang="es" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" required />
                             <div class="invalid-feedback">
                                 Ingrese una fecha de nacimiento
                             </div>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-6 col-md-4">
                             <label for="codigoAsesor" class="form-label fw-medium fs--1">Código asesor</label>
                             <input type="text" class="form-control fs--1 p-3" name="codigoAsesor" id="codigoAsesor" placeholder="" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-check d-flex justify-content-start align-items-center h-100">
+                                <input class="form-check-input terminos-input me-2 mb-1 width-24 shadow" type="checkbox" value="" id="regalo" style="border: 1px solid #D0D3D9">
+                                <label class="form-check-label text-start fs--1 fw-medium line-height-16" for="regalo">
+                                    Esto es un regalo
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 box-regalo d-none">
+                            <label for="nombreEmisor" class="form-label fw-medium fs--1">De:*</label>
+                            <input type="text" class="form-control fs--1 p-3" name="nombreEmisor" id="nombreEmisor" placeholder="Tu nombre" />
+                        </div>
+                        <div class="col-12 col-md-6 box-regalo d-none">
+                            <label for="emailEmisor" class="form-label fw-medium fs--1">Tu correo:*</label>
+                            <input type="email" class="form-control fs--1 p-3" name="emailEmisor" id="emailEmisor" placeholder="ejemplo@ejemplo.com" />
+                        </div>
+                        <div class="col-12 box-regalo d-none">
+                            <label for="emailEmisor" class="form-label fw-medium fs--1">Mensaje:*</label>
+                            <textarea name="mensaje" id="mensaje" class="form-control fs--1 p-3" placeholder="Escribe aquí tu mensaje o dedicatoria"></textarea>
                         </div>
                         <div class="col-12 col-md-4 ms-auto align-self-end">
                             <!-- Button trigger modal -->
@@ -108,6 +128,14 @@ Veris - Asignar Promoción
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
         await drawCard();
+
+        $('body').on('change', '#regalo', function(){
+            if($(this).is(':checked')){
+                $('.box-regalo').removeClass('d-none');
+            }else{
+                $('.box-regalo').addClass('d-none');
+            }
+        })
 
         // if(dataCita.paquete.idPaciente !== null){
         //     $('.box-action').html(`<button type="button" class="btn btn-primary-veris btn-asignar w-100 fs--18 line-height-24 fw-medium px-4 py-3">
@@ -161,10 +189,39 @@ Veris - Asignar Promoción
             let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }&canalOrigen=${_canalOrigen}`;
             // let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }`;
             fbq('track', 'AddToCart');
+            if($('#regalo').is(':checked')){
+                await enviarRegalo(data.data.secuanciaPaquetePaciente);
+            }
             location.href = url;
             console.log(url);
             return;
         }
+    }
+
+    async function enviarRegalo(secuanciaPaquetePaciente){
+        let mensaje = $('#mensaje').val();
+        let nombreEmisor = $('#nombreEmisor').val();
+        let emailEmisor = $('#emailEmisor').val();
+        let formData = new FormData();
+        let obj = {
+            "tipoCampania": "DIG_PROMO_REGALO",
+            "tipoIdentificacion": getInput('tipoIdentificacion'),
+            "numeroIdentificacion": getInput('numeroIdentificacion'),
+            "nombrePaciente": nombreEmisor,
+            "mail": emailEmisor,
+            "aceptaTerminos": true,
+            "secuenciaPaquetePaciente": secuanciaPaquetePaciente,
+            "mensajeRemitente": mensaje,
+            "canalOrigen": "MVE_CMV"
+        }
+        formData.append("data", JSON.stringify(obj));
+        let args = [];
+        args["endpoint"] = `${api_url}/${api_war}/v1/promociones/registroCampania`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["data"] = formData;
+        args["bodyType"] = "formdata";
+        const data = await call(args);
     }
 
     async function validateForm(){
@@ -196,6 +253,28 @@ Veris - Asignar Promoción
             errors = true;
             msg += `<li class="ms-0">Campo fecha de nacimiento es requerido</li>`;
         }
+
+
+        if($('#regalo').is(':checked')){
+
+            if(getInput('nombreEmisor') == ""){
+                errors = true;
+                msg += `<li class="ms-0">El campo del nombre de quien envía el regalo es requerido</li>`;
+            }
+
+            if(getInput('emailEmisor') == ""){
+                errors = true;
+                msg += `<li class="ms-0">El campo del correo de quien envía el regalo es requerido</li>`;
+            }
+
+            if(getInput('mensaje') == ""){
+                errors = true;
+                msg += `<li class="ms-0">El campo del mensaje del regalo es requerido</li>`;
+            }
+
+        }
+
+
         msg += `</ul>`;
 
         if(!errors){
