@@ -180,7 +180,7 @@ Veris - Asignar Promoción
 
     async function asignarPaquete(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/asignarpaquete?tipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}&codigoEmpresa=${dataCita.paquete.codigoEmpresaPaquete}&codigoPaquete=${dataCita.paquete.codigoPaquete}&codigoAsesor=${getInput('codigoAsesor')}&canalOrigen=${_canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/asignarpaquete?tipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}&codigoEmpresa=${dataCita.paquete.codigoEmpresaPaquete}&codigoPaquete=${dataCita.paquete.codigoPaquete}&codigoAsesor=${getInput('codigoAsesor')}&genero=${getInput('genero')}&canalOrigen=${_canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -208,7 +208,7 @@ Veris - Asignar Promoción
             "tipoIdentificacion": getInput('tipoIdentificacion'),
             "numeroIdentificacion": getInput('numeroIdentificacion'),
             "nombrePaciente": nombreEmisor,
-            "mail": emailEmisor,
+            "mailDestino": emailEmisor,
             "aceptaTerminos": true,
             "secuenciaPaquetePaciente": secuanciaPaquetePaciente,
             "mensajeRemitente": mensaje,
