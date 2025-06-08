@@ -98,7 +98,7 @@ Veris - Asignar Promoción
                             <input type="text" class="form-control fs--1 p-3" name="nombreEmisor" id="nombreEmisor" placeholder="Tu nombre" />
                         </div>
                         <div class="col-12 col-md-6 box-regalo d-none">
-                            <label for="emailEmisor" class="form-label fw-medium fs--1">Tu correo:*</label>
+                            <label for="emailEmisor" class="form-label fw-medium fs--1">Correo de quien recibe:*</label>
                             <input type="email" class="form-control fs--1 p-3" name="emailEmisor" id="emailEmisor" placeholder="ejemplo@ejemplo.com" />
                         </div>
                         <div class="col-12 box-regalo d-none">
