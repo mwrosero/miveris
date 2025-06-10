@@ -26,6 +26,7 @@ class DashboardController extends Controller
 
     public function misDatos() {
         // return view('inicio.mis_datos');
+        // dd(Session::get('userData')); 
         return view('inicio.mis_datos_2025');
     }
 

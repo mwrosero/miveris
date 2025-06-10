@@ -3,6 +3,14 @@
 Mi Veris - Mis Datos
 @endsection
 @section('content')
+<div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
+    <a href="javascript:history.back()" class="text-decoration-none d-block">
+        <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 5px;">
+            <img src="{{asset('assets/img/svg/atras.svg')}}" class="cursor-pointer prev-image" alt="Atrás">
+            <label class="fw-medium cursor-pointer" style="color: #0A2240;font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
+        </div>
+    </a>
+</div>
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- modal datos actualizados -->
     <div class="modal fade" id="mensajeDatosActualizados" tabindex="-1" aria-labelledby="mensajeDatosActualizadosLabel" aria-hidden="true">
@@ -35,11 +43,14 @@ Mi Veris - Mis Datos
                             @csrf
                             <div class="col-12 justify-content-center align-items-center">
                                 <div class="d-flex justify-content-center align-items-center mb-3">
-                                    <span class="avatar avatar-xxl">
+                                    {{-- <span class="avatar avatar-xxl">
                                         <img src="{{ asset('assets/img/avatars/avatar.svg') }}" class="avatar-img rounded-circle" alt="user">
-                                    </span>
+                                    </span> --}}
+                                    <div class="avatar avatar-xxl d-flex justify-content-center align-items-center rounded-circle fs--60 line-height-70 fw-medium text-white bg-genero bg-genero-{{ strtolower(Session::get('userData')->sexo) }}">
+                                        <span class="">{{ substr(Session::get('userData')->primerNombre, 0, 1) }}</span>
+                                    </div>
                                 </div>
-                                <p class="user-name text-center fw-bold fs-sm mb-3">{{ Session::get('userData')->nombre }}</p>  
+                                <p class="user-name text-center fw-bold fs-sm mb-3 text-capitalize">{{ strtolower(Session::get('userData')->primerNombre) }} {{ strtolower(Session::get('userData')->primerApellido) }}</p>  
                             </div>
                             <div class="col-md-12">
                                 <div class="row g-2">
@@ -120,6 +131,20 @@ Mi Veris - Mis Datos
 <style>
     .form-label {
         color: #6C7A8C !important;
+    }
+    .bg-genero{
+        font-family: 'Gotham Rounded';
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+    }
+    .bg-genero-f{
+        background: #C52BD2;
+        border: 4px solid #F3F4F5;
+    }
+    .bg-genero-m{
+        background: #0071CE;
+        border: 4px solid #F3F4F5;
     }
 </style>
 <script>

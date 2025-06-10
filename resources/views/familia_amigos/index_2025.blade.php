@@ -104,7 +104,7 @@ Mi Veris - Agregar familiar o amigo
                             <form class="row g-3">
                                 <div class="col-md-12">
                                     <label for="tipoIdentificacion" class="form-label fs--1 line-height-16 fw-medium">{{ __('Tipo de identificación') }} *</label>
-                                    <select class="form-select fs--1 line-height-16 p-3 form-filter border-0 rounded-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                                    <select class="form-select fs--1 line-height-16 p-3 border-0 rounded-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
                                     </select>
                                     <div class="invalid-feedback">
                                         Elegir el tipo de identificación.

@@ -13,7 +13,8 @@
 
 /* Custom Properties */
 :root {
-  --bg-vris-blue: #0071CE;
+  /*--bg-vris-blue: #0071CE;*/
+  --bg-vris-blue: #296BEF;
   --bg-vris-white: #ffffff;
   --bg-vris-dark-blue: #071A35;
   --bg-vris-vivid: #FFC107;
@@ -364,6 +365,77 @@ html:not([dir="rtl"]) .border-start-veris {
 
 .text-veris-dark{
   color: var(--bg-vris-very-dark-blue-medium);
+}
+
+/* Estilo base para todos los inputs y selects (excluyendo checkbox) */
+input:not([type="checkbox"]),
+select {
+    /*padding: 8px 12px;*/
+    border-radius: 8px !important;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* Estado DEFAULT (campo vacío con placeholder) */
+input:not([type="checkbox"]):not(:focus):not(:disabled):not(:placeholder-shown),
+select:not(:focus):not(:disabled) {
+    border: 1px solid #ced4da;
+    background-color: #ffffff;
+    color: #495057;
+}
+
+/* Estado LLENADO (campo con valor) */
+input:not([type="checkbox"]):not(:focus):not(:disabled):placeholder-shown,
+input:not([type="checkbox"]):not(:focus):not(:disabled):not(:placeholder-shown),
+select:not(:focus):not(:disabled) {
+    border: 1px solid #005AA5 !important;
+    background-color: #ffffff;
+    color: #005AA5;
+}
+
+/* Estado INHABILITADO */
+input:not([type="checkbox"]):disabled,
+select:disabled {
+    border: 1px solid #ced4da;
+    background-color: #e9ecef;
+    color: #6c757d;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
+/* Estado SOLO VISUALIZACIÓN (solo texto, sin borde interactivo) */
+input[readonly]:not([type="checkbox"]),
+select[readonly] {
+    border: 1px solid #ced4da;
+    background-color: #e9ecef;
+    color: #495057;
+    cursor: default;
+    padding: 8px 12px;
+}
+
+/* Estado ESCRIBIENDO (foco activo) */
+input:not([type="checkbox"]):focus,
+select:focus {
+    border: 1px solid #3394DD;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    background-color: #ffffff !important;
+    color: #495057;
+}
+
+/* Estado ERROR */
+input:not([type="checkbox"]):invalid,
+input:not([type="checkbox"]):not(:focus):not(:disabled).error,
+select:invalid {
+    border: 1px solid #dc3545;
+    background-color: #fff;
+    color: #dc3545;
+}
+
+/* Placeholder styling (si es necesario) */
+input:not([type="checkbox"])::placeholder,
+select:invalid + span::before {
+    color: #6c757d;
+    opacity: 0.7;
 }
 
 @media (max-width: 576px){
@@ -1276,6 +1348,14 @@ Due to the split circle of progress-left and progress right, we must use the ani
   font-size: 4rem !important;
 }
 
+.fs--60 {
+  font-size: 3.75rem !important;
+}
+
+.line-height-70{
+  list-style: 4.375rem;
+}
+
 .fs-18 {
   font-size: 1.125rem;
 }
@@ -1290,6 +1370,10 @@ Due to the split circle of progress-left and progress right, we must use the ani
 
 .fs-32 {
   font-size: 2rem;
+}
+
+.fs-48{
+  font-size: 3rem;
 }
 
 .fs-28 {

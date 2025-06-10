@@ -39,7 +39,7 @@ Mi Veris - Mis Datos
                                         <img src="{{ asset('assets/img/avatars/avatar.svg') }}" class="avatar-img rounded-circle" alt="user">
                                     </span>
                                 </div>
-                                <p class="user-name text-center fw-bold fs-sm mb-3">{{ Session::get('userData')->nombre }}</p>  
+                                <p class="user-name text-center fw-bold fs-sm mb-3">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}</p>  
                             </div>
                             <div class="col-md-6">
                                 <div class="row g-2">

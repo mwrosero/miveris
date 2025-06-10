@@ -181,7 +181,7 @@ Mi Veris - Citas - Familia y amigos
                     ownMyAccount = `<span class="badge rounded-pill bg-green-light text-green line-height-12 fs--3 me-2 fw-light">Este usuario administra tu cuenta</span>`;
                 }
 
-                elem += `<div class="list-group-item border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
+                elem += `<div class="list-group-item border rounded-3 bg-white p-3" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.05);">
                     <div class="d-flex justify-content-start align-items-center w-100 mb-2">
                         ${esAdminBadge}
                         ${ownMyAccount}
