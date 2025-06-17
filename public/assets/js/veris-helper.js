@@ -1079,6 +1079,23 @@ function typeWriterWithStyle(txt, nameIdElement, styledWords = {}) {
     escribir();
 }
 
+function formatoFechaDiaMesAnio(fechaReserva) {
+    let partes = fechaReserva.split('/');
+    let dia = partes[0].padStart(2, '0'); // Asegura que tenga dos dígitos
+    let mes = partes[1];
+    let anio = partes[2];
+
+    // Array de meses abreviados
+    const meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
+
+    // Obtener el nombre del mes
+    let nombreMes = meses[parseInt(mes, 10) - 1]; // Restar 1 porque el array es 0-indexado
+
+    // Construir el nuevo formato
+    return `${nombreMes} ${dia}, ${anio}`;
+}
+
+
 $(document).ready(function() {
     if(typeof app_ori === 'undefined'){
         if (localStorage.getItem('sessionTime') === null) {

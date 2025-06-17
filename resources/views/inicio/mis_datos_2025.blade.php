@@ -70,7 +70,7 @@ Mi Veris - Mis Datos
                                         <input type="date" lang="es" class="form-control fs--1 p-3" name="fechaNacimiento" id="fechaNacimiento" disabled />
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="sexo" class="form-label fw-normal fs--1">{{ __('Sexo') }} *</label>
+                                        <label for="sexo" class="form-label fw-normal fs--1">{{ __('Género') }} *</label>
                                         <select class="form-select fs--1 p-3" name="sexo" id="sexo" required>
                                             <option value="M" {{ (Session::get('userData')->sexo == 'M') ? 'selected' : '' }}>Masculino</option>
                                             <option value="F" {{ (Session::get('userData')->sexo == 'F') ? 'selected' : '' }}>Femenino</option>
@@ -90,8 +90,8 @@ Mi Veris - Mis Datos
                                         <p class="font-medium fs--1 linea-height-16 text-veris-ai mb-0">Información de contacto</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="telefono" class="form-label fw-normal fs--1">{{ __('Teléfono') }} *</label>
-                                        <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono" required />
+                                        <label for="telefono" class="form-label fw-normal fs--1">{{ __('Número de Celular') }} *</label>
+                                        <input type="number" class="form-control fs--1 p-3" name="telefono" id="telefono" minlength="10" maxlength="10" required />
                                         <div class="invalid-feedback">
                                             Looks good!
                                         </div>
@@ -191,7 +191,7 @@ Mi Veris - Mis Datos
         let elem = ``
         if (data.code == 200) {
             if(data.data.length == 0 || data.data === null){
-                $('#convenio').val(`No tiene seguro médico asociado`);
+                $('#convenio').val(`Ninguno`);
             }else{
                 $('#convenio').val(`${data.data[0].nombreConvenioUsuarioFinal.toLowerCase().substring(0, 40) + '...'}`);
             }
@@ -215,11 +215,26 @@ Mi Veris - Mis Datos
     function validarCampo(campo) {
         campo.removeClass('is-invalid is-valid');
         campo.next('.invalid-feedback').remove();
+        let min = campo.attr('minlength')
+        let max = campo.attr('maxlength')
         if (campo.val().trim() === '') {
             campo.addClass('is-invalid');
             campo.after('<div class="invalid-feedback">Este campo es obligatorio.</div>');
             return false;
         }
+        if(min !== undefined && max !== undefined){
+            console.log(campo.val().length)
+            if(campo.val().length < min || campo.val().length > min){
+                campo.addClass('is-invalid');
+                campo.after(`<div class="invalid-feedback">Este campo debe tener ${max} dígitos.</div>`);
+                return false;
+            }
+        }
+        if(campo.attr('type') === 'email' && !campo.val().match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+            campo.addClass('is-invalid');
+                campo.after(`<div class="invalid-feedback">Formato de correo electrónico incorrecto.</div>`);
+                return false;
+        }  
         return true;
     }
 
@@ -263,9 +278,9 @@ Mi Veris - Mis Datos
 
     // llenar formulario con datos del usuario
     function llenarDatosUsuario() {
-        $('.strTipoDocumento').html(`${datosUsuario.tipoIdentificacion.toLowerCase()}*`)
-        $('#numeroDocumento').html(`${datosUsuario.numeroIdentificacion}*`)
-        $('#nombre').val(capitalizarElemento(datosUsuario.nombre));
+        $('.strTipoDocumento').html(`${(datosUsuario.codigoTipoIdentificacion == 2) ? `Cédula` : `Pasaporte`}*`)
+        $('#numeroDocumento').val(`${datosUsuario.numeroIdentificacion}*`)
+        $('#nombre').val(`${ (datosUsuario.primerNombre) ? capitalizarElemento(datosUsuario.primerNombre) : ``  } ${ (datosUsuario.segundoNombre) ? capitalizarElemento(datosUsuario.segundoNombre) : `` } ${ (datosUsuario.primerApellido) ? capitalizarElemento(datosUsuario.primerApellido) : `` } ${ (datosUsuario.segundoApellido) ? capitalizarElemento(datosUsuario.segundoApellido) : `` }`);
         $('#primerApellido').val(capitalizarElemento(datosUsuario.primerApellido));
         $('#segundoApellido').val(capitalizarElemento(datosUsuario.segundoApellido));
         $('#fechaNacimiento').val(convertirFechaNacimiento(datosUsuario.fechaNacimiento));
@@ -276,7 +291,6 @@ Mi Veris - Mis Datos
         //     const isSelected = value.codigoProvincia == datosUsuario.codigoProvincia ? ' selected' : '';
         //     $('#provincia').append(`<option value="${value.codigoProvincia}"${isSelected}>${capitalizarElemento(value.nombreProvincia)}</option>`);
         // });
-        {{-- $('#provincia').val(datosUsuario.codigoProvincia) --}}
 
         // Llenar el select de ciudad
         // $.each(ciudades, function(index, value) {
@@ -298,6 +312,7 @@ Mi Veris - Mis Datos
     //actualizar datos del usuario
     async function actualizarDatosUsuario() {
         // convertir fecha de nacimiento a formato dd/mm/yyyy
+        //await validarFormulario()
         let fechaNacimiento = $('#fechaNacimiento').val();
         let partesFecha = fechaNacimiento.split('-');
         let fecha = partesFecha[2] + '/' + partesFecha[1] + '/' + partesFecha[0];

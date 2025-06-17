@@ -114,7 +114,7 @@ Mi Veris - Inicio
     </section>
     
     <!-- Tratamientos dinamico -->
-    <section class="bg-light-grayish-blue p-3 mb-3">
+    <section class="bg-light-grayish-blue p-3 mb-3 d-none section-tratamientos">
         <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Mis tratamientos</h5>
             <a href="{{route('tratamientos')}}" class="fw-medium fs--2 me-1 text-veris-ai" id="verTodosTratamientos">Ver todos</a>
@@ -271,7 +271,7 @@ Mi Veris - Inicio
     </section>
 
     <!-- Mis citas dinamico -->
-    <section class="bg-light-grayish-blue p-3 mb-3 d-none" id="section-citas">
+    <section class="bg-light-grayish-blue p-3 d-none" id="section-citas">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Mis citas</h5>
             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
@@ -999,7 +999,10 @@ Mi Veris - Inicio
             } else {
                 datosTratamientos = data.data.items;
                 console.log(datosTratamientos.length);
-                mostrarTratamientoenDiv();
+                if(datosTratamientos.length > 0){
+                    $('#section-tratamientos').removeClass('d-none');
+                    mostrarTratamientoenDiv();
+                }
             }
         }
         chartProgres('#chart-progress');
@@ -1210,7 +1213,7 @@ Mi Veris - Inicio
                             <ul class="fw-normal fs--2 line-height-16 mb-1 p-0">
                                 ${ prestaciones }
                             </ul>
-                            <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-veris-ai">${citas.horaInicio}</b></p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${formatoFechaDiaMesAnio(citas.fechaReserva)} <b class="hora-cita ms-1 fw-normal text-veris-ai">${citas.horaInicio}</b></p>
                         </div>
                         <div class="card-footer pt-0 pb--2 px--2 d-flex justify-content-end align-items-center">
                             <div class="mt-auto">
@@ -1234,7 +1237,7 @@ Mi Veris - Inicio
                                 <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${citas.colorEstado};"><i class="fa-solid fa-circle"></i> ${citas.mensajeEstado}</span>
                             </div>
                             <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(citas.sucursal)}</p>
-                            <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-veris-ai">${citas.horaInicio}</b></p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${formatoFechaDiaMesAnio(citas.fechaReserva)} <b class="hora-cita ms-1 fw-normal text-veris-ai">${citas.horaInicio}</b></p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(citas.medico)}</p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.nombrePaciente)}</p>
                         </div>

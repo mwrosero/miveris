@@ -69,6 +69,10 @@ Mi Veris - Citas - Familia y amigos
                                 <i class="bi bi-person" style="font-size: 128px;"></i>
                                 <p class="fw-medium">Aún no tiene personas agregadas</p>
                             </div>
+                            <div class="d-flex flex-column flex-md-row gap-4 align-items-center justify-content-center d-none" id="familia-lista-empty">
+                                <div class="list-group list-group-radio d-grid gap-3 border-0 w-100">
+                                </div>
+                            </div>
                             <div class="card-footer p-0 mb-3">
                                 <a href="{{route('familia')}}" class="btn btn-primary-veris fs--18 line-height-24 rounded-3 m-0 w-100 px-4 py-3">Agregar</a>
                             </div>
@@ -203,10 +207,16 @@ Mi Veris - Citas - Familia y amigos
                     </div>
                 </div>`;
             });
+            $('#familia-lista').append(elem);
         }else{
-            elem += `<p class="fs--16 text-center line-height-20 mb-4">${msg}</p>`;
+            elem += `<div class="list-group list-group-radio d-grid gap-3 border-0 w-100">
+                <div>
+                    <img class="w-100" src="{{ asset('assets/img/svg/empty-no-familiares.svg') }}">
+                </div>
+                <p class="fs-24 text-center line-height-28 mb-4 fw-medium">Aún no tienes personas agregadas</p>
+            </div>`;
+            $('#familia-lista-empty').html(elem).removeClass('d-none');
         }
-        $('#familia-lista').append(elem);
     }
 </script>
 <style>

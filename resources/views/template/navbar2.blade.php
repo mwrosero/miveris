@@ -34,9 +34,9 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end rounded-3 mt-2 py-1">
                     <li>
-                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('cuenta.misDatos')}}">
+                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('cuenta.miCuenta')}}">
                             <i class="fa-solid fa-user text-primary-veris me-2 ti-sm"></i>
-                            <span class="align-middle">Mis datos</span>
+                            <span class="align-middle">Cuenta</span>
                         </a>
                     </li>
                     <li>
