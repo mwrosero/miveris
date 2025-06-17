@@ -38,21 +38,21 @@ Mi Veris - Cuenta
                         <div class="avatar-xl avatar-online mt-4 mb-3 mx-auto">
                             <img src="{{ asset('assets/img/avatars/avatar.svg') }}" width="74px" alt class="h-auto rounded-circle" />
                         </div>
-                        <h2 class="text-white text-center fs--16 line-height-20 mb-2">{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->segundoNombre }} {{ Session::get('userData')->primerApellido }}  {{ Session::get('userData')->segundoApellido }}</h2>
-                        <h2 class="text-white text-center fs--1 line-height-16">{{ Session::get('userData')->edad }} | @if(Session::get('userData')->codigoTipoIdentificacion == 2) {{ "C.I." }} @else {{ "PAS." }} @endif {{ Session::get('userData')->numeroIdentificacion }}</h2>
+                        <h2 class="text-white text-center fs--16 line-height-20 mb-2 text-capitalize">{{ strtolower(Session::get('userData')->primerNombre) }} {{ strtolower(Session::get('userData')->segundoNombre) }} {{ strtolower(Session::get('userData')->primerApellido) }}  {{ strtolower(Session::get('userData')->segundoApellido) }}</h2>
+                        <h2 class="text-white text-center fs--1 line-height-16"><span class="text-lowercase">{{ strtolower(Session::get('userData')->edad) }}</span> | <span>@if(Session::get('userData')->codigoTipoIdentificacion == 2) {{ "C.I." }} @else {{ "PAS." }} @endif {{ Session::get('userData')->numeroIdentificacion }}</span></h2>
                     </div>
                     <div class="card-body p-0 bg-white rounded-top-xl p-3">
                         <div class="row text-veris-ai mb-3 d-flex justify-content-between align-items-center g-3">
                             <div class="col-6">
                                 <a href="/mis-datos" class="w-100 waves-effect p-2 text-decoration-none d-block text-center bg-silver-light rounded-lg">
                                     <i class="fa-solid fa-user mb-2 fs-32 text-veris-ai"></i>
-                                    <p class="fs--1 fw-normal mb-0">Mis datos</p>
+                                    <p class="fs--1 fw-medium mb-0">Mis datos</p>
                                 </a>
                             </div>
                             <div class="col-6">
                                 <a href="/mis-tarjetas" class="w-100 waves-effect p-2 text-decoration-none d-block text-center bg-silver-light rounded-lg">
                                     <i class="fa-solid fa-credit-card mb-2 fs-32 text-veris-ai"></i>
-                                    <p class="fs--1 fw-normal mb-0">Mis tarjetas</p>
+                                    <p class="fs--1 fw-medium mb-0">Mis tarjetas</p>
                                 </a>
                             </div>
                         </div>

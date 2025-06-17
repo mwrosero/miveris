@@ -118,7 +118,7 @@ Mi Veris - Mis Datos
                     </div>
                     <div class="card-footer row justify-content-center mt-5 px-0">
                         <div class="col-12 col-md-6">
-                            <button class="btn btn-primary-veris fs--18 linea-height-24 fw-medium py-3 px-4 w-100" id="btnActualizarDatosUsuario">{{ __('Guardar') }}</button>
+                            <button class="btn btn-primary-veris fs--18 linea-height-24 fw-medium py-3 px-4 w-100" id="btnActualizarDatosUsuario">{{ __('Guardar cambios') }}</button>
                         </div>
                     </div>
                 </div>
@@ -279,7 +279,7 @@ Mi Veris - Mis Datos
     // llenar formulario con datos del usuario
     function llenarDatosUsuario() {
         $('.strTipoDocumento').html(`${(datosUsuario.codigoTipoIdentificacion == 2) ? `Cédula` : `Pasaporte`}*`)
-        $('#numeroDocumento').val(`${datosUsuario.numeroIdentificacion}*`)
+        $('#numeroDocumento').val(`${datosUsuario.numeroIdentificacion}`)
         $('#nombre').val(`${ (datosUsuario.primerNombre) ? capitalizarElemento(datosUsuario.primerNombre) : ``  } ${ (datosUsuario.segundoNombre) ? capitalizarElemento(datosUsuario.segundoNombre) : `` } ${ (datosUsuario.primerApellido) ? capitalizarElemento(datosUsuario.primerApellido) : `` } ${ (datosUsuario.segundoApellido) ? capitalizarElemento(datosUsuario.segundoApellido) : `` }`);
         $('#primerApellido').val(capitalizarElemento(datosUsuario.primerApellido));
         $('#segundoApellido').val(capitalizarElemento(datosUsuario.segundoApellido));
