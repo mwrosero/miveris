@@ -56,9 +56,9 @@ Mi Veris - Cuenta
                                 </a>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <!-- <div class="row mb-3">
                             <img src="{{ asset('assets/img/svg/E-Wallet-amico.svg') }}" class="w-100" />
-                        </div>
+                        </div> -->
                         <div class="row mb-3 px-3">
                             <a href="/familia-amigos-lista" class="col-12 d-flex justify-content-between align-items-center py-3 waves-effect text-decoration-none border-silver-1">
                                 <img src="{{ asset('assets/img/svg/familia-amigos.svg') }}" class="mx-3" />
