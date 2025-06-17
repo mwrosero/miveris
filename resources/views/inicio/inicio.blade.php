@@ -242,25 +242,25 @@ Mi Veris - Inicio
 
         <div class="container-fluid px-0">
             <div class="row px-1 d-flex justify-content-start align-items-center">
-                <a href="/promociones" class="col-3 col-md-2 text-center text-veris">
+                <a href="/promociones" class="col-3 col-md-2 text-center text-veris bg-transparent">
                     <div class="box-container-icon mb-1 p-2 rounded-3">
                         <img src="{{ asset('assets/img/svg/descuento-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
                     </div>
                     <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Promociones</p>
                 </a>
-                <a href="/servicio-domicilio" class="col-3 col-md-2 text-center text-veris">
+                <a href="/servicio-domicilio" class="col-3 col-md-2 text-center text-veris bg-transparent">
                     <div class="box-container-icon mb-1 p-2 rounded-3">
                         <img src="{{ asset('assets/img/svg/domicilio-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
                     </div>
                     <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Domicilio</p>
                 </a>
-                <a href="/receta-medica" class="col-3 col-md-2 text-center text-veris">
+                <a href="/receta-medica" class="col-3 col-md-2 text-center text-veris bg-transparent">
                     <div class="box-container-icon mb-1 p-2 rounded-3">
                         <img src="{{ asset('assets/img/svg/recetas-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
                     </div>
                     <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Recetas</p>
                 </a>
-                <a href="/resultados" class="col-3 col-md-2 text-center text-veris">
+                <a href="/resultados" class="col-3 col-md-2 text-center text-veris bg-transparent">
                     <div class="box-container-icon mb-1 p-2 rounded-3">
                         <img src="{{ asset('assets/img/svg/resultados-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
                     </div>
