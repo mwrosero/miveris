@@ -158,21 +158,21 @@ Mi Veris - Mis tarjetas
                         let elemDisabledItem = "";
                         if(value.tarjetaVencida){
                             disabledItem = "disabled";
-                            elemDisabledItem = `<br><b class="fw-normal text-danger-veris">Tarjeta vencida.</b>`;
+                            elemDisabledItem = `<br><b class="fw-normal text-danger-veris">Tarjeta caducada.</b>`;
                         }
-                        let path_card = "{{ asset('assets/img/icons/payments') }}/"+value.marca.toLowerCase()+".png";
+                        //let path_card = "{{ asset('assets/img/icons/payments') }}/"+value.marca.toLowerCase()+".png";
                         /*let path_card = "{{ asset('assets/img/veris/credit-card.svg') }}";
                         const existeImagen = await verificarImagen(value.nombre_foto);
                         if (existeImagen) {
                             path_card = value.nombre_foto;
                         }*/                     
-                        elem += `<div class="col-6 item-tarjeta tarjeta-${value.codigoTarjetaSuscrita}">
+                        elem += `<div class="col-12 col-md-6 item-tarjeta tarjeta-${value.codigoTarjetaSuscrita}">
                             <div class="form-check custom-option custom-option-basic border-secondary">
                                 <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center px-3" for="card-${value.codigoTarjetaSuscrita}">
                                     <input ${disabledItem} name="cardWallet" class="form-check-input d-none" type="radio" value="" id="card-${value.codigoTarjetaSuscrita}" data-rel='${ JSON.stringify(value) }'>
                                     <span class="custom-option-header w-100">
-                                        <div>
-                                            <img src="${path_card}" class="me-3 w-25" alt="" >
+                                        <div class="d-flex align-items-center justify-content-start">
+                                            <img src="${value.urlIconoMarca}" class="me-3 w-25" alt="" style="height: 40px;">
                                             <span class="fs--2 mb-0">****${value.cuatroUltimosDigitos} ${elemDisabledItem}</span>
                                         </div>
                                         <button type="button" codigoTarjetaSuscrita-rel="${value.codigoTarjetaSuscrita}" class="btn btn-sm text-danger shadow-none btn-delete-card" data-rel='${ JSON.stringify(value) }'><i class="bi bi-trash fs-4"></i></button>
