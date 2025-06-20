@@ -28,6 +28,28 @@ Mi Veris - Elegir aseguradora
     </div>
 </div>
 
+<!-- Modal Convenios -->
+<div class="modal modal-top fade" id="convenioModal" tabindex="-1" aria-labelledby="convenioModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <form class="modal-content rounded-4">
+            <div class="modal-header d-none">
+                <button type="button" class="btn-close fw-medium top-50" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-3 pb-2">
+                <h5 class="fs--20 line-height-24 mt-3 mb--20 text-center">{{ __('Elige el seguro:') }}</h5>
+                <h6 class="text-center fs--16 line-height-20 mb-2 text-center">{{ __('Elige el seguro que quieres agregar.') }}:</h6>
+                <div class="row gx-2 justify-content-between align-items-center">
+                    <div class="list-group list-group-checkable d-grid gap-2 border-0" id="listaConvenios">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn w-100 fw-medium fs--16 waves-effect line-height-20 m-0 p-3" style="color: #0071CE;" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal eliminar tarjeta -->
     <div class="modal fade" id="modalEliminarConvenio" tabindex="-1" aria-labelledby="modalEliminarConvenioLabel" aria-hidden="true">
@@ -78,7 +100,7 @@ Mi Veris - Elegir aseguradora
     let idPaciente = '{{ Session::get('userData')->numeroPaciente }}';
     let local = localStorage.getItem('persona-{{ $params }}');
     let dataCita = JSON.parse(local);
-
+    let convenioElegido;
     document.addEventListener("DOMContentLoaded", async function () {
         await obtenerClientes();
 
@@ -91,25 +113,16 @@ Mi Veris - Elegir aseguradora
                 myModal.show();
                 return;
             }
+            convenioElegido = convenio
             await buscarConvenio(convenio);
         })
 
-        $('body').on('click', '#btnAgregar', function(){
-            let data = $('input[name="listGroupRadios"]:checked').data('rel');
-            let usuario;
-            let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
-            let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
-
-            if(data !== undefined){
-                tipoIdentificacion = data.tipoIdentificacion;
-                numeroIdentificacion = data.numeroIdentificacion;
-            }
-            usuario = {
-                "numeroIdentificacion": numeroIdentificacion,
-                "tipoIdentificacion": tipoIdentificacion
-            }
-            dataCita.usuario = usuario;
-            
+        $('body').on('click', '.convenio-item-modal', async function(){
+            let convenio = JSON.parse($(this).attr('data-rel'));
+            dataCita.convenio = convenio;
+            dataCita.infoAdicional = convenioElegido;
+            localStorage.setItem('persona-{{ $params }}', JSON.stringify(dataCita));
+            location.href = '/info-convenio/{{ $params }}';
         })
 
     });
@@ -126,6 +139,7 @@ Mi Veris - Elegir aseguradora
         if(data.code == 200 ){
             if(data.data.length == 1){
                 dataCita.convenio = data.data[0];
+                dataCita.infoAdicional = convenioElegido;
                 localStorage.setItem('persona-{{ $params }}', JSON.stringify(dataCita));
                 location.href = '/info-convenio/{{ $params }}';
             }else{
@@ -138,6 +152,22 @@ Mi Veris - Elegir aseguradora
             myModal.show();
         }
         return;
+    }
+
+    async function drawConvenios(convenios){
+        let elem = ``;
+        $.each(convenios, function(key, value){
+            elem += `<div data-rel='${JSON.stringify(value)}' class="convenio-item-modal mb-2 custom-option">
+                    <div class="list-group-item rounded-3 py-2 px-3 border-0">
+                        <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${key}" value="">
+                        <label for="listGroupCheckableRadios${key}" class="text-primary-veris fs--1 line-height-16 cursor-pointer text-capitalize">
+                            ${value.nombreConvenio.toLowerCase()}
+                        </label> 
+                    </div>
+                </div>`;
+        })
+        $('#listaConvenios').html(elem);
+        $('#convenioModal').modal('show');
     }
 
     async function obtenerClientes(paciente = null) {

@@ -112,6 +112,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/mis-convenios', [DashboardController::class, 'misConvenios'])->name('cuenta.misConvenios')->withoutMiddleware(['guest']);
     Route::get('/seleccionar-convenio-agregar/{params}', [DashboardController::class, 'seleccionarConvenio'])->name('cuenta.seleccionarConvenio')->withoutMiddleware(['guest']);
     Route::get('/info-convenio/{params}', [DashboardController::class, 'infoConvenio'])->name('cuenta.infoConvenio')->withoutMiddleware(['guest']);
+    Route::get('/confirmacion-convenio-agregado/{params}', [DashboardController::class, 'convenioAgregado'])->name('cuenta.convenioAgregado')->withoutMiddleware(['guest']);
     
     Route::get('/politica-privacidad-datos', [DashboardController::class, 'politicaPrivacidadDatos'])->name('home.politicaPrivacidadDatos')->withoutMiddleware(['guest']);
     Route::get('/promociones', [DashboardController::class, 'listaPromociones'])->name('promociones.promociones')->withoutMiddleware(['guest']);

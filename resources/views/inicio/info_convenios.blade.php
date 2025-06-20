@@ -50,22 +50,39 @@ Mi Veris - Información de Convenio
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
             <div class="col-12 col-md-6 col-lg-5">
-                <div class="card bg-transparent shadow-none">
-                    <div class="card-body p-0">
-                        <div class="row g-3" id="listado-clientes">
-                            {{-- <div class="col-12">
-                                <div class="form-check custom-option custom-option-basic shadow-sm d-flex justify-content-between align-items-center p-3">
-                                    <img src="{{ asset('assets/img/svg/amex.svg')}}" class="me-3" alt="amex">
-                                    <div>
-                                        <p class="text-veris-ai fs--16 line-height-20 mb-1 fw-medium">BMI</p>
-                                        <span class="fs--1 line-height- mb-0">BMI Igualas médicas-Banco PichBMI Igualas médicas-Banco PichBMI Igualas médicas-Banco Pich</span>
-                                    </div>
-                                    <div class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></div>
-                                </div>
-                            </div> --}}
+               <div class="row g-2 justify-content-center">
+                    <div class="col-md-12">
+                        <label for="nombre" class="form-label fw-medium fs--1">{{ __('Nombre') }}</label>
+                        <input type="text" disabled readonly class="form-control text-capitalize fs--1 p-3" name="nombre" id="nombre" required />
+                        <div class="invalid-feedback">
+                            Looks good!
+                        </div>
+                    </div> 
+                    <div class="col-md-12">
+                        <label for="numeroIdentificacion" class="form-label fw-medium fs--1">{{ __('Número de identificación') }}</label>
+                        <input type="text" disabled readonly class="form-control text-capitalize fs--1 p-3" name="numeroIdentificacion" id="numeroIdentificacion" required />
+                        <div class="invalid-feedback">
+                            Looks good!
                         </div>
                     </div>
-                </div>
+                    <div class="col-md-12">
+                        <label for="aseguradora" class="form-label fw-medium fs--1">{{ __('Aseguradora') }}</label>
+                        <input type="text" disabled readonly class="form-control text-capitalize fs--1 p-3" name="aseguradora" id="aseguradora" required />
+                        <div class="invalid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="seguroMedicoPrivado" class="form-label fw-medium fs--1">{{ __('Seguro médico privado') }}*</label>
+                        <input type="text" disabled readonly class="form-control text-capitalize fs--1 p-3" name="seguroMedicoPrivado" id="seguroMedicoPrivado" required />
+                        <div class="invalid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="col-12 mt--32">
+                        <button class="btn btn-primary-veris rounded-3 fs--18 line-height-24 w-100 px-4 py-3 text-white" id="btnGuardar">Guardar</button>
+                    </div> 
+                </div> 
             </div>
         </div>
     </section>
@@ -78,89 +95,51 @@ Mi Veris - Información de Convenio
     let dataCita = JSON.parse(local);
 
     document.addEventListener("DOMContentLoaded", async function () {
-        await obtenerClientes();
 
-        $('body').on('click', '.convenio-item', async function(){
-            let convenio = JSON.parse($(this).attr('data-rel'));
-            if(convenio.aplicaSyncWs == "N"){
-                $('.title-mensaje-info').html(`Información importante`)
-                $('#mensaje_400_validacion').html(convenio.mensajeSync);
-            }
-            let dispone_convenio = await buscarConvenio(convenio);
-            console.log(dispone_convenio);
-            if(dispone_convenio == 200 ){
-                $('.title-mensaje-info').html(`Lo sentimos`)
-                $('#mensaje_400_validacion').html(data.message);
-                var myModal = new bootstrap.Modal(document.getElementById('modalErrorConvenio'));
-                myModal.show();
-                return;
-            }else{
-                dataCita.convenio = dispone_convenio.data;
-                localStorage.setItem('persona-{{ $params }}', JSON.stringify(dataCita));
-                location.href = '/info-convenio/{{ $params }}';
-            }
-        })
+        $('#nombre').val(`${dataCita.convenio.nombreCompletoAfiliado.toLowerCase()}`);
+        $('#numeroIdentificacion').val(`${dataCita.convenio.numeroIdentificacionAfiliado}`);
+        $('#aseguradora').val(`${dataCita.infoAdicional.nombreCliente.toLowerCase()}`);
+        $('#seguroMedicoPrivado').val(`${dataCita.convenio.nombreConvenio.toLowerCase()}`);
+        $('#seguroMedicoPrivado').attr('title',`${dataCita.convenio.nombreConvenio}`);
 
-        $('body').on('click', '#btnAgregar', function(){
-            let data = $('input[name="listGroupRadios"]:checked').data('rel');
-            let usuario;
-            let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
-            let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
-
-            if(data !== undefined){
-                tipoIdentificacion = data.tipoIdentificacion;
-                numeroIdentificacion = data.numeroIdentificacion;
-            }
-            usuario = {
-                "numeroIdentificacion": numeroIdentificacion,
-                "tipoIdentificacion": tipoIdentificacion
-            }
-            dataCita.usuario = usuario;
-            
+        $('body').on('click', '#btnGuardar', async function(){
+            await sincronizarConvenio();            
         })
 
     });
 
-    async function buscarConvenio(convenio) {
+    async function sincronizarConvenio() {
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/consultaAfiliadoWs?canalOrigen=${_canalOrigen}&idCliente=${convenio.idCliente}&numeroIdentificacion=${dataCita.usuario.numeroIdentificacion}&codigoTipoIdentificacion=${dataCita.usuario.tipoIdentificacion}`;
-        args["method"] = "GET";
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/sincronizarConvenioCliente?canalOrigen=${_canalOrigen}&idCliente=${dataCita.infoAdicional.idCliente}&numeroPaciente=${dataCita.usuario.numeroPaciente}`;
+        args["method"] = "POST";
         args["showLoader"] = true;
         args["dismissAlert"] = true;
+        args["bodyType"] = "json";
+        args["data"] = JSON.stringify({
+            metadataSincronizacion: dataCita.convenio.metadataSincronizacion
+        });
 
         const data = await call(args);
         console.log(data);
-        return data;
-    }
-
-    async function obtenerClientes(paciente = null) {
-        let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/lista/clientes?canalOrigen=${_canalOrigen}`;
-        args["method"] = "GET";
-        args["showLoader"] = true;
-
-        const data = await call(args);
-        console.log(data);
-        let elem = ``
-        if (data.code == 200) {
-            if(data.data.length > 0){
-                $.each(data.data, function(key, value){
-                    elem += `<div class="col-6">
-                        <div data-rel='${JSON.stringify(value)}' class="waves-effect p-1 convenio-item custom-option custom-option-basic shadow-sm d-flex justify-content-between align-items-center wa p-2">
-                            <img src="${value.urlIcono}" class="mx-auto" height="56px" alt="">
-                        </div>
-                    </div>`;
-                })
+        if(data.code == 200){
+            const existe = dataCita.conveniosSincronizados.some(item => item.secuenciaAfiliado === data.data.secuenciaAfiliado );
+            console.log(existe)
+            if(!existe){
+                location.href = '/confirmacion-convenio-agregado/{{ $params }}';
             }else{
-                elem += `<div class="col-12 p-1 text-center">
-                    <h2 class="fs-24 line-height-28">¿Tienes un seguro médico privado?</h2>
-                    <p class="fs-16 line-height-20">Añade tu seguro médico privado.</p>
-                    <img src="{{asset('assets/img/svg/empty-no-convenios.svg')}}" class="w-75 img-fluid" alt="">
-                </div>`;
+                $('.title-mensaje-info').html(`Ya tienes agregado este seguro`)
+                $('#mensaje_400_validacion').html(`El seguro médico privado que estás intentando agregar ya está sincronizado.`);
+                var myModal = new bootstrap.Modal(document.getElementById('modalErrorConvenio'));
+                myModal.show();
+                return;
             }
-            $('#listado-clientes').html(elem)
+        }else{
+            $('.title-mensaje-info').html(`Información importante`)
+            $('#mensaje_400_validacion').html(data.message);
+            var myModal = new bootstrap.Modal(document.getElementById('modalErrorConvenio'));
+            myModal.show();
+            return;
         }
-        return data;
     }
 </script>
 @endpush

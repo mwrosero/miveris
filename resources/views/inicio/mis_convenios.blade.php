@@ -73,7 +73,8 @@ Mi Veris - Mis Convenios
 <script>
     let dataCita = {};
     let idPaciente = '{{ Session::get('userData')->numeroPaciente }}';
-
+    let conveniosSincronizados;
+    
     document.addEventListener("DOMContentLoaded", async function () {
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
@@ -95,16 +96,20 @@ Mi Veris - Mis Convenios
             let usuario;
             let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
             let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
-
+            let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
+            
             if(data !== undefined){
                 tipoIdentificacion = data.tipoIdentificacion;
                 numeroIdentificacion = data.numeroIdentificacion;
+                numeroPaciente = data.numeroPaciente;
             }
             usuario = {
                 "numeroIdentificacion": numeroIdentificacion,
-                "tipoIdentificacion": tipoIdentificacion
+                "tipoIdentificacion": tipoIdentificacion,
+                "numeroPaciente": numeroPaciente
             }
             dataCita.usuario = usuario;
+            dataCita.conveniosSincronizados = conveniosSincronizados;
             localStorage.setItem('persona-{{ $tokenCita }}', JSON.stringify(dataCita));
             location.href = '/seleccionar-convenio-agregar/{{ $tokenCita }}';
         })
@@ -170,13 +175,14 @@ Mi Veris - Mis Convenios
         let elem = ``
         if (data.code == 200) {
             if(data.data.length > 0){
+                conveniosSincronizados = data.data;
                 $.each(data.data, function(key, value){
                     elem += `<div class="col-12 p-1">
                         <div type="button" class="form-check custom-option custom-option-basic shadow-sm d-flex justify-content-between align-items-center p-2">
                             <img src="${value.rutaImagenConvenio}" class="me-3" alt="${value.nombreConvenio}">
                             <div class="flex-grow-1">
                                 <p class="text-veris-ai fs--16 line-height-20 mb-1 fw-medium text-capitalize">${value.nombreCliente.toLowerCase()}</p>
-                                <span class="fs--1 line-height- mb-0 text-capitalize">${value.nombreConvenio.toLowerCase()}</span>
+                                <span class="fs--1 line-height- mb-0 text-capitalize">${value.nombreConvenioUsuarioFinal.toLowerCase()}</span>
                             </div>
                             <!--div class="btn btn-sm text-danger shadow-none btn-delete-convenio">
                                 <i class="bi bi-trash fs-4"></i>

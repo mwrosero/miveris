@@ -368,7 +368,8 @@ html:not([dir="rtl"]) .border-start-veris {
 }
 
 /* Estilo base para todos los inputs y selects (excluyendo checkbox) */
-input:not([type="checkbox"]),
+/* Estilo base para todos los inputs y selects (excluyendo checkbox y radio) */
+input:not([type="checkbox"]):not([type="radio"]),
 select {
     /*padding: 8px 12px;*/
     border-radius: 8px !important;
@@ -377,7 +378,7 @@ select {
 }
 
 /* Estado DEFAULT (campo vacío con placeholder) */
-input:not([type="checkbox"]):not(:focus):not(:disabled):not(:placeholder-shown),
+input:not([type="checkbox"]):not([type="radio"]):not(:focus):not(:disabled):not(:placeholder-shown),
 select:not(:focus):not(:disabled) {
     border: 1px solid #ced4da;
     background-color: #ffffff;
@@ -385,8 +386,8 @@ select:not(:focus):not(:disabled) {
 }
 
 /* Estado LLENADO (campo con valor) */
-input:not([type="checkbox"]):not(:focus):not(:disabled):placeholder-shown,
-input:not([type="checkbox"]):not(:focus):not(:disabled):not(:placeholder-shown),
+input:not([type="checkbox"]):not([type="radio"]):not(:focus):not(:disabled):placeholder-shown,
+input:not([type="checkbox"]):not([type="radio"]):not(:focus):not(:disabled):not(:placeholder-shown),
 select:not(:focus):not(:disabled) {
     border: 1px solid #005AA5 !important;
     background-color: #ffffff;
@@ -394,7 +395,7 @@ select:not(:focus):not(:disabled) {
 }
 
 /* Estado INHABILITADO */
-input:not([type="checkbox"]):disabled,
+input:not([type="checkbox"]):not([type="radio"]):disabled,
 select:disabled {
     border: 1px solid #ced4da;
     background-color: #e9ecef;
@@ -404,7 +405,7 @@ select:disabled {
 }
 
 /* Estado SOLO VISUALIZACIÓN (solo texto, sin borde interactivo) */
-input[readonly]:not([type="checkbox"]),
+input[readonly]:not([type="checkbox"]):not([type="radio"]),
 select[readonly] {
     border: 1px solid #ced4da;
     background-color: #e9ecef;
@@ -414,7 +415,7 @@ select[readonly] {
 }
 
 /* Estado ESCRIBIENDO (foco activo) */
-input:not([type="checkbox"]):focus,
+input:not([type="checkbox"]):not([type="radio"]):focus,
 select:focus {
     border: 1px solid #3394DD;
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
@@ -423,8 +424,8 @@ select:focus {
 }
 
 /* Estado ERROR */
-input:not([type="checkbox"]):invalid,
-input:not([type="checkbox"]):not(:focus):not(:disabled).error,
+input:not([type="checkbox"]):not([type="radio"]):invalid,
+input:not([type="checkbox"]):not([type="radio"]):not(:focus):not(:disabled).error,
 select:invalid {
     border: 1px solid #dc3545;
     background-color: #fff;
@@ -432,11 +433,12 @@ select:invalid {
 }
 
 /* Placeholder styling (si es necesario) */
-input:not([type="checkbox"])::placeholder,
+input:not([type="checkbox"]):not([type="radio"])::placeholder,
 select:invalid + span::before {
     color: #6c757d;
     opacity: 0.7;
 }
+
 
 @media (max-width: 576px){
   .bg-dark-blue-veris-medium-sm{

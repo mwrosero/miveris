@@ -68,7 +68,7 @@ Mi Veris - Cuenta
                                 </div>
                                 <i class="fa-solid fa-angle-right mx-3"></i>
                             </a>
-                            <a href="/administrar-seguros" class="col-12 d-flex justify-content-between align-items-center waves-effect py-3 text-decoration-none border-silver-1">
+                            <a href="/mis-convenios" class="col-12 d-flex justify-content-between align-items-center waves-effect py-3 text-decoration-none border-silver-1">
                                 <img src="{{ asset('assets/img/svg/hands-shake.svg') }}" class="mx-3" />
                                 <div class="context-list flex-grow-1">
                                     <p class="label-status-detalle fw-medium fs--1 line-height-16 mb-2">¿Tienes seguro médico privado?</p>

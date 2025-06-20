@@ -45,6 +45,11 @@ class DashboardController extends Controller
         return view('inicio.info_convenios')->with('params', $params);
     }
 
+    public function convenioAgregado($params) {
+        // return view('inicio.mis_datos');
+        return view('inicio.convenio_agregado')->with('params', $params);
+    }
+
     public function politicaPrivacidadDatos() {
         return view('inicio.politica_privacidad_datos');
     }
