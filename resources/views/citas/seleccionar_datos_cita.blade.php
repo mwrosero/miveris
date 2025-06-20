@@ -1011,6 +1011,10 @@ Elige datos para la Cita
 
 </script>
 <style>
+    #buscar{
+        border: none !important;
+        background: initial !important;
+    }
     .btn-modalidad{
         color: #13243F;
     }

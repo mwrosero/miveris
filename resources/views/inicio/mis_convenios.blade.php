@@ -174,7 +174,7 @@ Mi Veris - Mis Convenios
                     elem += `<div class="col-12 p-1">
                         <div type="button" class="form-check custom-option custom-option-basic shadow-sm d-flex justify-content-between align-items-center p-2">
                             <img src="${value.rutaImagenConvenio}" class="me-3" alt="${value.nombreConvenio}">
-                            <div>
+                            <div class="flex-grow-1">
                                 <p class="text-veris-ai fs--16 line-height-20 mb-1 fw-medium text-capitalize">${value.nombreCliente.toLowerCase()}</p>
                                 <span class="fs--1 line-height- mb-0 text-capitalize">${value.nombreConvenio.toLowerCase()}</span>
                             </div>

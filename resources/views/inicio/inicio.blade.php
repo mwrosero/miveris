@@ -1204,7 +1204,7 @@ Mi Veris - Inicio
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `
                                 <span class="badge fs--12 fw-medium p-2 mb-2" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-video me-2 label-status-detalle"></i>Videoconsulta</span>
-                            ` : `<span class="badge fs--12 fw-medium p-2 mb-2 text-capitalize" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-door-closed me-2 label-status-detalle"></i>${citas.nombreSitio.toLowerCase()}</span>`}
+                            ` : `<span class="badge fs--12 fw-medium p-2 mb-2 text-capitalize" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-motorcycle me-2 label-status-detalle"></i>A Domicilio</span>`}
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="text-veris-ai fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
                                 <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${ (citas.estaPagada == "S") ? "#00C853" : "#D84315"};"><i class="fa-solid fa-circle"></i> ${ (citas.estaPagada == "S") ? "Cita pagada" : "Pago pendiente" }</span>

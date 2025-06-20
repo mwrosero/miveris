@@ -241,6 +241,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         </div>
                     </div> --}}
                 </div>
+                <div class="card-body p-2 d-none" id="btnAgendarOrdenExterna">
+                    <div class="examenLista">
+                        <!-- Fila para el encabezado -->
+                        <div class="examenEncabezado">
+                            <h6 class="fw-medium mb-0">Disponibilidad</h6>
+                        </div>
+                        <!-- Fila para el botón, alineado a la derecha -->
+                        <div class="botonAgendar" style="text-align: right; margin-top: 10px;">
+                            <a href="#" class="btn btn-primary-veris" id="btnAgendarServicioOrdenExterna"
+                             >Agendar Servicio</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -290,7 +303,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div> --}}
                                 </div>
                             </div>
-                            <div class="card-footer border-0 p-3 d-none" id="btnAgendarOrdenExterna">  
+                            {{-- <div class="card-footer border-0 p-3 d-none" id="btnAgendarOrdenExterna">  
                                 <div class="col-auto overflow-auto" style="max-height: 433px;">
                                     <div class="card-body p-2">
                                         <div class="examenLista">
@@ -306,7 +319,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                         </div>
                     </div>
@@ -443,7 +456,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             })
             // setear titulo fecha doctor
             $('#btnAgendarOrdenExterna').removeClass('d-none');
-            document.getElementById('tituloFechaDoctor').innerHTML = 'Exámenes';
+            document.getElementById('nombreFiltro').innerHTML = 'Exámenes';
+            $('#pills-tab').addClass('d-none');
         } else {
             await consultarFechasDisponibles();
             // renderWeek();
@@ -1220,7 +1234,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     /*width: Hug (343px);
     height: Hug (124px);*/
     width: 343px;
-    height: 124px;
+    {{-- height: 124px; --}}
+    height: auto;
     padding: 12px;
     border-radius: 8px;
     gap: 8px;
