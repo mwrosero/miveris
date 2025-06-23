@@ -89,8 +89,7 @@ Mi Veris - Agregar familiar o amigo
                 <ul class="list-group bg-white rounded-0 w-100">
                     <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
                         <div class="mx-0">
-                            <h6 class="fw-medium fs--16 line-height-20 mb-1">Hola <b class="fw-medium user-auth">{{ Session::get('userData')->nombre }}</b></h6>
-                            <p class="fs--2 text-veris line-height-16 mb-0">Agrega personas a tu lista de familiares y amigos</p>
+                            <h6 class="fw-medium fs--16 line-height-20 mb-1">Ingresa los datos</h6>
                         </div>
                     </li>
                 </ul>

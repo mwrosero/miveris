@@ -136,7 +136,7 @@ Mi Veris - Agregar familiar o amigo
     let codigoParentescoClick;
     //llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        $('.nombreFamiliar').html(`${(dataCita.familiar.primerNombre.toLowerCase()) ?? `` } ${(dataCita.familiar.primerApellido.toLowerCase()) ?? ``} ${(dataCita.familiar.segundoApellido.toLowerCase()) ?? ``}`);
+        $('.nombreFamiliar').html(`${(dataCita.familiar.primerNombre !== null) ? dataCita.familiar.primerNombre.toLowerCase() : `` } ${(dataCita.familiar.primerApellido !== null) ? dataCita.familiar.primerApellido.toLowerCase() : ``} ${(dataCita.familiar.segundoApellido !== null) ? dataCita.familiar.segundoApellido.toLowerCase() : ``}`);
         $('.primerNombreFamiliar').html(`${dataCita.familiar.primerNombre.toLowerCase()}`);
 
         $('.numeroIdentificacionFamiliar').html(`<b>No. de identificación:</b> ${dataCita.familiar.numeroIdentificacion}`)
