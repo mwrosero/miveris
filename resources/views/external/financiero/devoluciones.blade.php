@@ -333,7 +333,7 @@ Veris - Devoluciones
 	}
 </style>
 <script>
-    _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }}";
+    //_idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }}";
 	let dataDevolucion = {};
 	document.addEventListener("DOMContentLoaded", async function () {
 		await cargarInstitucionesBancarias();
