@@ -93,12 +93,12 @@ Mi Veris - Inicio
         </div>
     </div>
 
-    <div class="d-flex justify-content-between align-items-center bg-white">
+    <div class="d-flex justify-content-between align-items-center bg-white mb-4" style="box-shadow: 0px 0px 4px 0px #0000000D !important;">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Inicio') }}</h5>
     </div>
     <!-- Banners -->
-    <section class="bg-white p-3 py-3 pt-0 pe-0 pe-md-3 mb-0 d-none section-banners">
-        <div class="swiper swiper-banners position-relative py-2">
+    <section class="p-3 py-3 pt-0 pe-0 pe-md-3 mb-0 d-none section-banners" style="background: #F9FAFB;">
+        <div class="swiper swiper-banners position-relative pb-2">
             <div class="swiper-wrapper px-1" id="box-banners">
                 <!-- <div class="swiper-slide">
                     <div class="card h-100 d-flex justify-content-center align-items-between shadow-none border-0">
@@ -246,7 +246,7 @@ Mi Veris - Inicio
                     <div class="box-container-icon mb-1 p-2 rounded-3">
                         <img src="{{ asset('assets/img/svg/descuento-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
                     </div>
-                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Promociones</p>
+                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Paquetes</p>
                 </a>
                 <a href="/servicio-domicilio" class="col-3 col-md-2 text-center text-veris bg-transparent">
                     <div class="box-container-icon mb-1 p-2 rounded-3">
