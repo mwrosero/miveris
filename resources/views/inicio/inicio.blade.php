@@ -1215,7 +1215,7 @@ Mi Veris - Inicio
                             </ul>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${formatoFechaDiaMesAnio(citas.fechaReserva)} <b class="hora-cita ms-1 fw-normal text-veris-ai">${citas.horaInicio}</b></p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
-                            <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.direccion)}</p>
+                            <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.direccion)}</p>
                         </div>
                         <div class="card-footer pt-0 pb--2 px--2 d-flex justify-content-end align-items-center">
                             <div class="mt-auto">
