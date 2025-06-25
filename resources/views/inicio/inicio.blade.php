@@ -793,7 +793,7 @@ Mi Veris - Inicio
                             <div class="card h-100 d-flex justify-content-center align-items-between shadow-none border-0">
                                 <div class="row h-100 g-0 justify-content-between align-items-center">
                                     <div class="col-12">
-                                        <img src="https://dikg1979lm6fy.cloudfront.net/app/cmv/promocion/BANNER_BIENESTAR.png" class="img-fluid" alt=""  >
+                                        <img src="${v.valor}" class="img-fluid" alt=""  >
                                     </div>
                                 </div>
                             </div>

@@ -1106,5 +1106,9 @@ Veris - Elige datos para la Cita
         filter: grayscale(0.5);
         pointer-events: none;
     }
+    #buscar {
+        border: none !important;
+        background: initial !important;
+    }
 </style>
 @endsection

@@ -934,8 +934,14 @@ Veris - Elige fecha y doctor
             codigoMedico = dataCita.codigoMedicoFavorito
         }
         // console.log(fechaSeleccionada);
+
+        let urlAdicionales = ``;
+        if(dataCita.convenio.hasOwnProperty('idCliente') && dataCita.convenio.idCliente !== null){
+            urlAdicionales = `&codigoCliente=${dataCita.convenio.codigoCliente}&secuenciaAfiliado=${dataCita.convenio.secuenciaAfiliado}&codigoConvenio=${dataCita.convenio.codigoConvenio}`;
+        }
+
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -997,8 +1003,14 @@ Veris - Elige fecha y doctor
             codigoMedico = dataCita.codigoMedicoFavorito
         }
         // console.log(fechaSeleccionada);
+
+        let urlAdicionales = ``;
+        if(dataCita.convenio.hasOwnProperty('idCliente') && dataCita.convenio.idCliente !== null){
+            urlAdicionales = `&codigoCliente=${dataCita.convenio.codigoCliente}&secuenciaAfiliado=${dataCita.convenio.secuenciaAfiliado}&codigoConvenio=${dataCita.convenio.codigoConvenio}`;
+        }
+
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
