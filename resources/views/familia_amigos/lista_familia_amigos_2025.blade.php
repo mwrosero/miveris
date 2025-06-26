@@ -191,7 +191,7 @@ Mi Veris - Citas - Familia y amigos
                         ${ownMyAccount}
                     </div>
                     <div class="d-flex justify-content-between align-items-center w-100">
-                        <div class="flex-grow-1">
+                        <div type="button" class="flex-grow-1 enlaceDetalles" data-rel='${JSON.stringify(familiar)}'>
                             <p class="text-veris fs--1 fw-medium line-height-16 mb-1 nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
                             <p class="fs--3 line-height-12 mb-1 parentesco">${capitalizarElemento(familiar.parentesco)}</p>
                         </div>

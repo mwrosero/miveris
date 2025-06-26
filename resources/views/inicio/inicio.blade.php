@@ -133,7 +133,7 @@ Mi Veris - Inicio
         <div class="d-flex justify-content-between align-items-center">
             <h6 class="fw-medium border-start-veris ps-3 fs-18 mb-0">{{ __('Accesos rápidos') }}</h6>
         </div>
-        {{-- <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-md-2 pb-md-4">
+        {{-- <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-0 pt-md-2 pb-md-4">
             <div class="swiper-wrapper px-1">
                 <div class="swiper-slide">
                     <a href="{{route('citas.agendamiento-ai')}}">
@@ -273,10 +273,10 @@ Mi Veris - Inicio
     <!-- Mis citas dinamico -->
     <section class="bg-light-grayish-blue p-3 d-none" id="section-citas">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Mis citas</h5>
+            <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Próximas citas</h5>
             <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
         </div>
-        <div class="swiper swiper-proximas-citas position-relative py-3">
+        <div class="swiper swiper-proximas-citas position-relative py-3 pt-0">
             <div class="swiper-wrapper px-1 mb-3 mb-md-0" id=contenedorCitas>
             </div>
             <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
@@ -290,7 +290,7 @@ Mi Veris - Inicio
             <h5 class="fw-medium border-start-grenadier ps-3 fs-18 mb-0">Urgencias ambulatorias</h5>
             <a href="javascript:void(0)" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todos</a>
         </div>
-        <div class="swiper swiper-urgencias-ambulatorias position-relative py-3">
+        <div class="swiper swiper-urgencias-ambulatorias position-relative py-3 pt-0">
             <div class="swiper-wrapper px-1" id="contenedorUrgenciasAmbulatorias">
             </div>
             <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
@@ -1000,7 +1000,7 @@ Mi Veris - Inicio
                 datosTratamientos = data.data.items;
                 console.log(datosTratamientos.length);
                 if(datosTratamientos.length > 0){
-                    $('#section-tratamientos').removeClass('d-none');
+                    $('.section-tratamientos').removeClass('d-none');
                     mostrarTratamientoenDiv();
                 }
             }
@@ -1085,7 +1085,7 @@ Mi Veris - Inicio
 
         data.forEach((tratamientos) => {
             let elemento = `<div class="swiper-slide">
-                                <div class="card h-100">
+                                <div class="card h-100 bg-transparent">
                                     <div class="card-body p-3">
                                         <div class="row gx-0 justify-content-between align-items-center mb-2">
                                             <div class="col-9">
@@ -1201,7 +1201,7 @@ Mi Veris - Inicio
                 {{-- tituloCard = `Solicitud de laboratorio a domicilio - ${citas.codigoSolicitud}`; --}}
                 tituloCard = `Laboratorio a domicilio`;
                 elemento += `<div class="swiper-slide">
-                    <div class="card h-100">
+                    <div class="card h-100 bg-transparent">
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `
                                 <span class="badge fs--12 fw-medium p-2 mb-2" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-video me-2 label-status-detalle"></i>Videoconsulta</span>
@@ -1229,7 +1229,7 @@ Mi Veris - Inicio
                 </div>`;
             }else{
                 elemento += `<div class="swiper-slide">
-                    <div class="card h-100">
+                    <div class="card h-100 bg-transparent">
                         <div class="card-body p--2">
                             ${(esConsultaOnline || citas.idTeleconsulta !== null) ? `
                                 <span class="badge fs--12 fw-medium p-2 mb-2" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-video me-2 label-status-detalle"></i>Videoconsulta</span>

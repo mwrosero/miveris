@@ -21,7 +21,7 @@ Mi Veris - Mis Datos
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center bg-white">
-        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis Datos') }}</h5>
+        <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis datos') }}</h5>
     </div>
     {{-- @foreach (Session::get('userData') as $key => $value)
     <p class="ps-4 mb-1 pb-2 bg-white">{{ $key }}: {{ $value }}</p>
