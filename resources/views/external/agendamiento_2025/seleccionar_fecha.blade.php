@@ -1181,9 +1181,14 @@ Veris - Elige fecha y doctor
         if(dataCita.sesion){
             argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}&tiempoSesion=${dataCita.detalleSesion.tiempoSesion}&tipoAtencion=${dataCita.detalleSesion.tipoAtencion}`;
         }
+
+        let urlAdicionales = ``;
+        if(dataCita.convenio.hasOwnProperty('idCliente') && dataCita.convenio.idCliente !== null){
+            urlAdicionales = `&codigoCliente=${dataCita.convenio.codigoCliente}&secuenciaAfiliado=${dataCita.convenio.secuenciaAfiliado}&codigoConvenio=${dataCita.convenio.codigoConvenio}`;
+        }
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
