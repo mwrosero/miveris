@@ -69,7 +69,7 @@ Mi Veris - Citas - Familia y amigos
                 </div>
                 <hr class="mt-4 mb-3 box-solicitud d-none">
                 <div class="mx-auto mt-3 box-solicitud d-none">
-                    <p class="fs--18 line-height-24 fw-medium text-veris-ai mb-1">¿Administras los tratamientos de Mariela?</p>
+                    <p class="fs--18 line-height-24 fw-medium text-veris-ai mb-1">¿Administras los tratamientos de <span class="primerNombreLabel text-capitalize"></span>?</p>
                     <p class="fs--1 line-height-16 text-veris-ai mb-1">Solícitale permisos de administrador.</p>
                     <p class="fs--2 line-height-16 mb-1">Esto te permitirá agendarle citas, gestionar sus tratamientos, resultados y más.</p>
                 </div>
@@ -210,6 +210,7 @@ Mi Veris - Citas - Familia y amigos
     //llenar datos del familiar
     function llenarDatosFamiliar() {
         document.getElementById('nombreFamiliar').innerHTML = dataCita.persona.primerNombre.toLowerCase() + ' ' + dataCita.persona.primerApellido.toLowerCase();
+        $('.primerNombreLabel').html(`${dataCita.persona.primerNombre.toLowerCase()}`);
         $('#numeroIdentificacion').val(dataCita.persona.numeroIdentificacion);
         tipoParentesco = dataCita.persona.codigoParentesco;
         tipoRelacion = dataCita.persona.idRelacion;
