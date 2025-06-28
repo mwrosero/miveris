@@ -487,8 +487,8 @@
     }
 
     .layout-navbar {
-        {{-- height: 3.74rem !important; --}}
-        height: 58px !important;
+        height: 3.74rem !important;
+        {{-- height: 58px !important; --}}
     }
 
     .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal) .layout-page:before {

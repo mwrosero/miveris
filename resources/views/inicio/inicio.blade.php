@@ -1096,7 +1096,7 @@ Mi Veris - Inicio
 
         data.forEach((tratamientos) => {
             let elemento = `<div class="swiper-slide">
-                                <div class="card h-100 bg-transparent shadow-none">
+                                <div class="card h-100 bg-white shadow-none">
                                     <div class="card-body p-3">
                                         <div class="row gx-0 justify-content-between align-items-center mb-2">
                                             <div class="col-9">

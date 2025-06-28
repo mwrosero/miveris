@@ -36,7 +36,7 @@ Mi Veris - Citas - Familia y amigos
     </div>
     <section class="p-3 mb-3">
         <div class="row justify-content-center">
-            <div class="col-auto col-md-5">
+            <div class="col-12 col-md-5">
                 <ul class="list-group mb-3 d-none">
                     <li class="list-group-item border-0 d-flex justify-content-between align-items-center p-2">
                         <div class="mx-auto">
@@ -64,16 +64,16 @@ Mi Veris - Citas - Familia y amigos
                         </div>
                     </div>
                 </div>
-                <div class="mx-auto mx-lg-3">
+                <div class="mx-auto">
                     <button class="btn btn-primary-veris w-100 fs--18 line-height-24 rounded-3 py-3 disabled" type="button" id="btnGuardar">Guardar</button>
                 </div>
                 <hr class="mt-4 mb-3 box-solicitud d-none">
-                <div class="mx-auto mx-lg-3 mt-3 box-solicitud d-none">
+                <div class="mx-auto mt-3 box-solicitud d-none">
                     <p class="fs--18 line-height-24 fw-medium text-veris-ai mb-1">¿Administras los tratamientos de Mariela?</p>
                     <p class="fs--1 line-height-16 text-veris-ai mb-1">Solícitale permisos de administrador.</p>
                     <p class="fs--2 line-height-16 mb-1">Esto te permitirá agendarle citas, gestionar sus tratamientos, resultados y más.</p>
                 </div>
-                <div class="mx-auto mx-lg-3 mt-3 box-solicitud d-none">
+                <div class="mx-auto mt-3 box-solicitud d-none">
                     <button class="btn btn-primary-veris w-100 fs--18 line-height-24 rounded-3 py-3" type="button" id="btnSolicitarPermiso">Solicitar permisos</button>
                 </div>
             </div>
