@@ -799,8 +799,10 @@ Veris - Elige datos para la Cita
         const data = await call(args);
         if(data.code == 200){
             drawCentrales(data.data);
+            console.log('Centrales recomendadas')
             if(data.data.length > 0){
                 dataCita.central = data.data[0];
+                console.log(dataCita.central)
                 $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}`);
             }
         }
