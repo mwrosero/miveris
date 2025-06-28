@@ -752,6 +752,13 @@ Mi Veris - Inicio
             location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
         });
 
+        $(document).on('click', '.link-item-banner', function(){
+            let url = $(this).attr('url-rel');
+            if(url != ''){
+                location.href = url;
+            }
+        })
+
         //cerrar el modal de politicas reuerdame
         $(document).on('click', '#modalRecuerdame', function(){
             console.log('click');
@@ -789,8 +796,12 @@ Mi Veris - Inicio
                 $.each(data.data.pantallas, function(key, value){
                     $.each(value.configuraciones, function(k,v){
                         tieneSlides = true;
+                        let attrAditional = `url-rel=''`;
+                        if(v.nombreTipoObjeto == "BANNER_CUIDATE_X_MI"){
+                            attrAditional = `type='button' url-rel='/comprar-promociones?s=Cuidate por mi'`;
+                        }
                         elem += `<div class="swiper-slide">
-                            <div class="card h-100 d-flex justify-content-center align-items-between shadow-none border-0">
+                            <div class="card h-100 d-flex justify-content-center align-items-between shadow-none border-0 link-item-banner" ${attrAditional}>
                                 <div class="row h-100 g-0 justify-content-between align-items-center">
                                     <div class="col-12">
                                         <img src="${v.valor}" class="img-fluid" alt=""  >
@@ -1085,7 +1096,7 @@ Mi Veris - Inicio
 
         data.forEach((tratamientos) => {
             let elemento = `<div class="swiper-slide">
-                                <div class="card h-100 bg-transparent">
+                                <div class="card h-100 bg-transparent shadow-none">
                                     <div class="card-body p-3">
                                         <div class="row gx-0 justify-content-between align-items-center mb-2">
                                             <div class="col-9">
@@ -1201,7 +1212,7 @@ Mi Veris - Inicio
                 {{-- tituloCard = `Solicitud de laboratorio a domicilio - ${citas.codigoSolicitud}`; --}}
                 tituloCard = `Laboratorio a domicilio`;
                 elemento += `<div class="swiper-slide">
-                    <div class="card h-100 bg-transparent">
+                    <div class="card h-100 bg-transparent shadow-none">
                         <div class="card-body p--2">
                             ${esConsultaOnline ? `
                                 <span class="badge fs--12 fw-medium p-2 mb-2" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-video me-2 label-status-detalle"></i>Videoconsulta</span>
@@ -1229,7 +1240,7 @@ Mi Veris - Inicio
                 </div>`;
             }else{
                 elemento += `<div class="swiper-slide">
-                    <div class="card h-100 bg-transparent">
+                    <div class="card h-100 bg-transparent shadow-none">
                         <div class="card-body p--2">
                             ${(esConsultaOnline || citas.idTeleconsulta !== null) ? `
                                 <span class="badge fs--12 fw-medium p-2 mb-2" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-video me-2 label-status-detalle"></i>Videoconsulta</span>

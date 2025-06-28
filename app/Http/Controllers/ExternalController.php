@@ -89,7 +89,7 @@ class ExternalController extends Controller
 
     public function payment(Request $request){
         $urlParams = $request->all();
-        if ($request->has('codigoPreTransaccion') || $request->has('idSolicitud')) {
+        if ($request->has('codigoPreTransaccion') || $request->has('idSolicitud') || $request->has('codigoIngreso')) {
             $esServicioCaja = false;
             $accessToken = $this->getTokenExternalFacturacion();
             //Verificar si Nuvei esta activo
@@ -110,13 +110,20 @@ class ExternalController extends Controller
                     $codigoEmpresa = $urlParams['codigoEmpresa'];
                 }
                 $params = '?codigoEmpresa='.$codigoEmpresa.'&idPreTransaccion='.$_REQUEST['codigoPreTransaccion'];
-            }else{
+            }else if($request->has('idSolicitud')){
                 $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/farmacia_domicilio';
                 $codigoEmpresa = 1;
                 if($request->has('codigoEmpresa')){
                     $codigoEmpresa = $urlParams['codigoEmpresa'];
                 }
                 $params = '?codigoEmpresa='.$codigoEmpresa.'&codigoSolicitudServDomicilio='.$_REQUEST['idSolicitud'];
+            }else{
+                $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/vap';
+                $codigoEmpresa = 1;
+                if($request->has('codigoEmpresa')){
+                    $codigoEmpresa = $urlParams['codigoEmpresa'];
+                }
+                $params = '?codigoEmpresa='.$codigoEmpresa.'&codigoIngreso='.$_REQUEST['codigoIngreso'];
             }
             $response = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method.$params,
@@ -395,10 +402,21 @@ class ExternalController extends Controller
                         $codigoEmpresa = $urlParams['codigoEmpresa'];
                     }
                     $params = '?codigoEmpresa='.$codigoEmpresa.'&idPreTransaccion='.$dataCita->infoTransaccion->codigoPreTransaccion;
-                }else{
+                }else if(isset($dataCita->infoTransaccion->codigoSolicitudServDomicilio)){
                     $returnUrl = "idSolicitud=".$dataCita->infoTransaccion->codigoSolicitudServDomicilio;
                     $nemonicoFlujoCobro = Veris::NEMONICO_FARMACIA;
                     $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/farmacia_domicilio';
+                    $codigoEmpresa = 1;
+                    if($request->has('codigoEmpresa')){
+                        $codigoEmpresa = $urlParams['codigoEmpresa'];
+                    }
+
+                    $params = '?codigoEmpresa='.$codigoEmpresa.'&codigoSolicitudServDomicilio='.$dataCita->infoTransaccion->codigoSolicitudServDomicilio;
+                }else{
+                    dd($dataCita);
+                    $returnUrl = "codigoIngreso=".$dataCita->infoTransaccion->codigoSolicitudServDomicilio;
+                    $nemonicoFlujoCobro = Veris::NEMONICO_VUA;
+                    $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/vap';
                     $codigoEmpresa = 1;
                     if($request->has('codigoEmpresa')){
                         $codigoEmpresa = $urlParams['codigoEmpresa'];
@@ -586,16 +604,20 @@ class ExternalController extends Controller
                 "numeroIdentificacion" => $urlParams['numeroIdentificacionNuvei'],
                 "codigoTransaccion" => $urlParams['codigoEPagoNuvei'],
                 "canalOrigenDigital" => $urlParams['canalOrigenNuvei'],
-                "datosNuvei" => $datosNuveiArray
+                "datosNuvei" => json_decode($urlParams['datosNuvei'], true)
             );
 
             $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_nuvei?idPreTransaccion='.$urlParams['idPreTransaccionNuvei'];
             $list = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
-                'token'    => $accessToken,
+                //'token'    => $accessToken,
                 'method'   => 'POST',
                 'data'     => $data
             ]);
+
+            // echo Veris::BASE_URL.$method;
+            // dump($data);
+            // dd($list);
 
             if($list->code == 200){
                 return redirect('/external/payment/comprobante?'.base64_encode($urlParams['codigoEPagoNuvei']));
@@ -685,6 +707,8 @@ class ExternalController extends Controller
             'method'   => 'POST',
             'data'     => ["user"=>strtoupper($_POST['numeroIdentificacion']),"pass"=>$_POST['password']]
         ]);
+
+        // echo Veris::URL_EPI.$method;
         // dd($response);
         
         if($response->codigo == 0){

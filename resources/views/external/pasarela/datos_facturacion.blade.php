@@ -484,6 +484,21 @@ Veris - Datos de facturación
         }
     }
 
+    {{-- async function reservaEstaPagada(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reserva/{{ request()->query('codigoArticulo') }}?canalOrigen=${window.config.canalOrigen}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+            if(data.data !== null){
+                return data.data.datosReserva.estaPagada;
+            }
+        }
+        return "N";
+    } --}}
+
     function mostrarInfo(){
         /*Datos de Facturación*/
         if(parseInt({{ request()->query('tipoIdentificacion') }}) != 3){
@@ -598,7 +613,7 @@ Veris - Datos de facturación
     }
 
     async function crearTransaccionVirtual(){
-        //let tipoBoton = "KUSHKI";
+        // let tipoBoton = "KUSHKI";
         let tipoBoton = "NUVEI";
         if(dataCita.facturacion.datosFactura.permiteNuvei != "S"){
             if(dataCita.facturacion.datosFactura.permiteKushki == "S"){
@@ -828,7 +843,7 @@ Veris - Datos de facturación
 
 
 		// Agregar los elementos al formulario
-		$form.append($tipoIdentificacionNuvei, $numeroIdentificacionNuvei, $idPreTransaccionNuvei, $codigoEPagoNuvei, $datosNuvei, $submitButton, $codigoReserva, $submitButton);
+		$form.append($tipoIdentificacionNuvei, $numeroIdentificacionNuvei, $idPreTransaccionNuvei, $codigoEPagoNuvei, $datosNuvei, $submitButton, $codigoReserva, $canalOrigenPost, $submitButton);
 
 		// Agregar el formulario a algÃºn lugar en el documento
 		$('body').append($form);

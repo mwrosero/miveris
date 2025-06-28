@@ -326,8 +326,29 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
     }
 
+    async function reservaEstaPagada(codigoReserva){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reserva/${codigoReserva}?canalOrigen=${window.config.canalOrigen}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+            if(data.data !== null){
+                return data.data.datosReserva.estaPagada;
+            }
+        }
+        return "N";
+    }
+
     async function eliminarReserva(codigoReserva = null){
         let codigoReservaEliminar = (codigoReserva === null) ? dataCita.reserva.codigoReserva : codigoReserva;
+        let puedeEliminar = await reservaEstaPagada(codigoReservaEliminar);
+        if(puedeEliminar == "S"){
+            showMessage('warning','Atención','Reserva ya se encuentra pagada')
+            $('#btn-pagar').parent().addClass('d-none');
+            return;
+        }
         let args = [];
         let canalOrigen = _canalOrigen
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";

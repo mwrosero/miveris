@@ -100,7 +100,7 @@ Mi Veris - Citas - Promociones
             <div class="col-12 col-md-6 mb-3">
                 <div class="input-group search-box">
                     <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
-                    <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" />
+                    <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" value="{{ request()->query('s') }}" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" />
                 </div>
             </div>
         </div>
@@ -148,6 +148,12 @@ Mi Veris - Citas - Promociones
 </div>
 @endsection
 @push('scripts')
+<style>
+    #buscarPorPromocion{
+        border: none !important;
+        background: initial !important;
+    }
+</style>
 <script>
     let page = 1;
     let perPage = 8;
@@ -340,11 +346,12 @@ Mi Veris - Citas - Promociones
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        // console.log(data)
+        console.log(data)
 
         if(data.code == 200){
             let elem = ``;
             $.each(data.data.items, function(key, value){
+                let nombrePaquete = (value.nombreComercialPaquete !== null) ? value.nombreComercialPaquete : value.nombrePaquete;
                 elem += `<div class="swiper-slide">
                     <a class="cursor-pointer btn-comprar" data-rel='${ JSON.stringify(value) }'>
                         <div class="card m-1">
@@ -354,8 +361,8 @@ Mi Veris - Citas - Promociones
                             }
                         elem += `</div>
                             <div class="card-body p-3 pb-0">
-                                <h2 class="title-promocion fs--16 line-height-20 mb-2">${capitalizarCadaPalabra(value.nombreComercialPaquete)}</h2>
-                                <h5 class="paciente-promocion fs--2 p-2 mb-2 text-nowrap overflow-hidden text-truncate"><strong>Ideal para: </strong>${capitalizarCadaPalabra(value.nombrePaciente)}</h5>
+                                <h2 class="title-promocion fs--16 line-height-20 mb-2 text-capitalize">${nombrePaquete.toLowerCase()}</h2>
+                                <h5 class="paciente-promocion fs--2 p-2 mb-2 text-nowrap overflow-hidden text-truncate text-capitalize"><strong>Ideal para: </strong>${value.nombrePaciente.toLowerCase()}</h5>
                             </div>
                             <div class="card-footer border-0 d-flex justify-content-between align-items-center p-3 pt-0">`;
                             if(value.porcentajeDescuento && value.porcentajeDescuento > 0){
