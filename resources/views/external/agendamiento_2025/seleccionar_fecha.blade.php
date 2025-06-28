@@ -361,6 +361,12 @@ Veris - Elige fecha y doctor
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
     $('.label-nombre-paciente').html(`Paciente: ${dataCita.paciente.primerNombre.toLowerCase()} ${dataCita.paciente.primerApellido.toLowerCase()}`)
+    if(dataCita.online == "S"){
+        dataCita.central = {
+            "codigoTipoSucursal": "VIR",
+            "codigoSucursal": ""
+        }
+    }
     let dataOrigen = dataCita?.origen;  
     let renderCalendarExternaFecha;
     let pacienteExternaSolicitud;
