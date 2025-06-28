@@ -31,7 +31,7 @@ Mi Veris - Cuenta
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Cuenta') }}</h5>
     </div>
     <section class="p-3 mb-3 px-md-0">
-        <div class="row">
+        <div class="row mx-md-0">
             <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                 <div class="card bg-veris-ai shadow-none text-white">
                     <div class="card-header p-0">
