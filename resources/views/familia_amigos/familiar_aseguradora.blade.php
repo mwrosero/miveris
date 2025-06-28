@@ -129,14 +129,14 @@ Mi Veris - Agregar familiar o amigo
  
 <script>
     // variables globales
-    let local = localStorage.getItem('cita-{{ $params }}');
+    let local = localStorage.getItem('persona-{{ $params }}');
     let dataCita = JSON.parse(local);
     let datostiposIdentificacion;
     let datosConsultarPersona;
     let codigoParentescoClick;
     //llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        $('.nombreFamiliar').html(`${(dataCita.familiar.primerNombre.toLowerCase()) ?? `` } ${(dataCita.familiar.primerApellido.toLowerCase()) ?? ``} ${(dataCita.familiar.segundoApellido.toLowerCase()) ?? ``}`);
+        $('.nombreFamiliar').html(`${(dataCita.familiar.primerNombre !== null) ? dataCita.familiar.primerNombre.toLowerCase() : `` } ${(dataCita.familiar.primerApellido !== null) ? dataCita.familiar.primerApellido.toLowerCase() : ``} ${(dataCita.familiar.segundoApellido !== null) ? dataCita.familiar.segundoApellido.toLowerCase() : ``}`);
         $('.primerNombreFamiliar').html(`${dataCita.familiar.primerNombre.toLowerCase()}`);
 
         $('.numeroIdentificacionFamiliar').html(`<b>No. de identificación:</b> ${dataCita.familiar.numeroIdentificacion}`)
@@ -261,7 +261,7 @@ Mi Veris - Agregar familiar o amigo
         
         args["data"] = JSON.stringify({
             "numeroPaciente": dataCita.familiar.numeroPaciente,
-            "virusu": dataCita.familiar.numeroIdentificacion,
+            "virusu": "{{ Session::get('userData')->numeroIdentificacion }}",
             "correo": dataCita.familiar.correo,
             "canalOrigenDigital": _canalOrigen
         });
@@ -269,7 +269,7 @@ Mi Veris - Agregar familiar o amigo
         const data = await call(args);
         if(data.code == 200){
             dataCita.parentesco = JSON.parse($('#relacion option:selected').attr('data-rel'))
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+            localStorage.setItem('persona-{{ $params }}', JSON.stringify(dataCita));
             location.href = "/confirmar-soporte/{{ $params }}";
         }
     }
@@ -303,7 +303,7 @@ Mi Veris - Agregar familiar o amigo
 
         datosTipoParentesco.forEach(parentesco => {
             const listItem = document.createElement('a');
-            // listItem.href = "{{route('familia.lista')}}";
+            
             listItem.classList.add('list-group-item', 'list-group-item-action', 'text-primary-veris', 'fs--16', 'px-3', 'py--2');
             listItem.textContent = capitalizarElemento(parentesco.descripcion);
             listItem.value = parentesco.codigoParentesco;
@@ -314,7 +314,7 @@ Mi Veris - Agregar familiar o amigo
 
     // redireccionar a la lista de familiares
     $("#btnEntendido").click(function() {
-        window.location.href = "{{route('familia.lista')}}";
+        window.location.href = "{{route('cuenta.lista')}}";
     });
 
 </script>

@@ -407,14 +407,14 @@ Veris - Pago en línea
 	        });
 	        const data = await call(args);
 	        referenceNuvei = data;
-		    if(response.code == 200){
-                $('.box-aprobado').html(`<div class="col-12" style="text-align: center;font-size: 30px;font-weight: 700;">Pago realizado exitosamente.</div>`)
-                $('.box-aprobado').show();
+		    if(data.code == 200){
+                $('.box-aprobado').html(`<div class="col-12" style="text-align: center;font-size: 30px;font-weight: 700;">Pago realizado exitosamente.</div>`).removeClass('d-none');
+                //$('.box-aprobado').show();
                 $('.box-transaccion').hide();
             }else{
-                alert(response.message)
+                alert(data.message)
                 $('.box-transaccion').show();
-                $('.box-aprobado').hide();
+                $('.box-aprobado').addClass('d-none');;
             }
         }
     }

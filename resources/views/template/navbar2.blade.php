@@ -34,9 +34,9 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end rounded-3 mt-2 py-1">
                     <li>
-                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('home.misDatos')}}">
+                        <a class="dropdown-item fs--1 d-flex align-items-center mb-0" href="{{route('cuenta.miCuenta')}}">
                             <i class="fa-solid fa-user text-primary-veris me-2 ti-sm"></i>
-                            <span class="align-middle">Mis datos</span>
+                            <span class="align-middle">Cuenta</span>
                         </a>
                     </li>
                     <li>
@@ -69,7 +69,8 @@
     <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
         <div class="modal-content">
             <div class="modal-body p-3 text-center">
-                <h5 class="fs-24 line-height-28 my-3">Cerrar sesión</h5>
+                <p class="text-danger fs-48 mb-0"><i class="fa-solid fa-triangle-exclamation me-2"></i></p>
+                <h5 class="fs-24 line-height-28 my-2">Cerrar sesión</h5>
                 <p class="fs--16 line-height-20 text-veris mb-0">¿Estás seguro que deseas cerrar sesión?.</p>
                 <div class="d-flex">
                     <button type="button" class="btn btn-lg btn-outline-primary-veris fs--18 col me-1 mt-3 m-0 px-4 py-3" data-bs-dismiss="modal">No</button>
@@ -278,7 +279,7 @@
         // localStorage.clear();
         for (let i = 0; i < localStorage.length; i++) {
             let key = localStorage.key(i);
-            if (key.startsWith('cita-')) {
+            if (key.startsWith('cita-') || key.startsWith('persona-')) {
                 localStorage.removeItem(key);
                 i--; // Ajustar el índice después de eliminar un elemento
             }
@@ -486,7 +487,11 @@
     }
 
     .layout-navbar {
-        {{-- height: 3.74rem !important; --}}
+        height: 3.74rem !important;
+        {{-- height: 58px !important; --}}
+    }
+
+    .layout-navbar-fixed .layout-wrapper:not(.layout-horizontal) .layout-page:before {
         height: 58px !important;
     }
 

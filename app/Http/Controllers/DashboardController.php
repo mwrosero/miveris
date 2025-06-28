@@ -25,7 +25,29 @@ class DashboardController extends Controller
     }
 
     public function misDatos() {
-        return view('inicio.mis_datos');
+        // return view('inicio.mis_datos');
+        // dd(Session::get('userData')); 
+        return view('inicio.mis_datos_2025');
+    }
+
+    public function misConvenios() {
+        // return view('inicio.mis_datos');
+        return view('inicio.mis_convenios');
+    }
+
+    public function seleccionarConvenio($params) {
+        // return view('inicio.mis_datos');
+        return view('inicio.seleccionar_convenios')->with('params', $params);
+    }
+
+    public function infoConvenio($params) {
+        // return view('inicio.mis_datos');
+        return view('inicio.info_convenios')->with('params', $params);
+    }
+
+    public function convenioAgregado($params) {
+        // return view('inicio.mis_datos');
+        return view('inicio.convenio_agregado')->with('params', $params);
     }
 
     public function politicaPrivacidadDatos() {

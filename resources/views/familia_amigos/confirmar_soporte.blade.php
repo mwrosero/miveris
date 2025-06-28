@@ -3,6 +3,9 @@
 Mi Veris - Agregar familiar o amigo
 @endsection
 @section('content')
+@php
+// dd(Session::get('userData'));
+@endphp
 <div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
     <a href="javascript:history.back()" class="text-decoration-none d-block">
         <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 5px;">
@@ -10,6 +13,22 @@ Mi Veris - Agregar familiar o amigo
             <label class="fw-medium cursor-pointer" style="color: #0A2240;font-family: 'Gotham Rounded'; font-size: 16px;">Atrás</label>
         </div>
     </a>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalErrorValidacion" tabindex="-1" aria-labelledby="modalErrorValidacionLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
+                <p class="fs--1 fw-normal mb-0 text-veris" id="mensaje_400_validacion"></p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <div class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Aceptar</div>
+                {{-- <button data-bs-dismiss="modal" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</button> --}}
+            </div>
+        </div>
+    </div>
 </div>
 
 {{-- Modal de pregunta --}}
@@ -90,7 +109,7 @@ Mi Veris - Agregar familiar o amigo
                                         <p class="fs--20 line-height-24 text-veris my-3">Código de Verificación</p>
                                         <p class="fs--16 line-height-20 infoFamiliar"></p>
                                         <p class="fs--16 line-height-20 infoMail fw-medium my-3 text-center"></p>
-                                        <div class="d-flex justify-content-center gap-2 mb-3 text-veris-dark">
+                                        <div class="box-digits d-none d-flex justify-content-center gap-2 mb-3 text-veris-dark">
                                             <input type="number" maxlength="1" class="input-digit" id="digit1">
                                             <input type="number" maxlength="1" class="input-digit" id="digit2">
                                             <input type="number" maxlength="1" class="input-digit" id="digit3">
@@ -98,11 +117,14 @@ Mi Veris - Agregar familiar o amigo
                                             <input type="number" maxlength="1" class="input-digit" id="digit5">
                                         </div>
                                         <div class="mt-3">
-                                            <div class="btn-reenviar text-veris-ai text-center fs--16 line-height-20">Solicitar nuevo código</div>
+                                            <div class="fs--16 line-height-20 text-center counter">
+                                                Solicitar nuevo código en <span id="timer"></span>
+                                            </div>
+                                            <div class="btn-reenviar text-veris-ai text-center fs--16 line-height-20 d-none">Solicitar nuevo código</div>
                                         </div>
                                     </div>
                                     <div class="col-12 mt--32">
-                                        <button class="btn btn-primary-veris rounded-3 fs--18 line-height-24 w-100 px-4 py-3 text-white disabled" data-bs-toggle="modal" data-bs-target="#confirmarPregunta" id="btnContinuar">Continuar</button>
+                                        <button class="btn btn-primary-veris rounded-3 fs--18 line-height-24 w-100 px-4 py-3 text-white disabled" data-bs-toggle="modal" id="btnContinuar">Continuar</button>
                                     </div>
                                 </div> 
                             </div>
@@ -118,17 +140,25 @@ Mi Veris - Agregar familiar o amigo
 
 <script>
     // variables globales
-    let local = localStorage.getItem('cita-{{ $params }}');
+    let local = localStorage.getItem('persona-{{ $params }}');
     let dataCita = JSON.parse(local);
-    let datostiposIdentificacion;
-    let datosConsultarPersona;
-    let codigoParentescoClick;
+    console.log(dataCita);
+    
     //llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
+
         $('.infoFamiliar').html(`Pídele a <b class="text-capitalize">${dataCita.familiar.primerNombre.toLowerCase()}</b> <b class="text-capitalize">(${dataCita.parentesco.descripcion.toLowerCase()})</b> el código que hemos enviado al correo.`);
         $('.infoMail').html(`${ocultarEmail(dataCita.familiar.correo)}`);
 
         const inputs = document.querySelectorAll(".input-digit");
+        $('.box-digits').removeClass('d-none')
+
+        document.getElementById('timer').innerHTML = "05" + ":" + "00";
+        startTimer();
+
+        $('body').on('click', '#btnContinuar', async function(){
+            await validarCodigo();
+        })
 
         inputs.forEach((input, index) => {
             input.addEventListener("input", function () {
@@ -156,7 +186,78 @@ Mi Veris - Agregar familiar o amigo
                 }
             });
         });
+
+        await consultarGrupoFamiliar();
     });
+
+    let idRelacion;
+    async function consultarGrupoFamiliar() {
+        let args = [];
+        canalOrigen = _canalOrigen
+        codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo?canalOrigen=${canalOrigen}&codigoUsuario=${codigoUsuario}`
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log('data', data);
+        if(data.code == 200){
+            const resultado = data.data.find(item => item.numeroIdentificacion === dataCita.familiar.numeroIdentificacion);
+            idRelacion = resultado.idRelacion;
+        }
+        return data;
+    }
+
+    async function validarCodigo(){
+        let codigo = `${ $('#digit1').val() }${ $('#digit2').val() }${ $('#digit3').val() }${ $('#digit4').val() }${ $('#digit5').val() }`
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/migrupo`;
+        args["method"] = "PUT";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        args["dismissAlert"] = true;
+        args["data"] = JSON.stringify({
+            "codigoUsuario": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "codigoParentesco": dataCita.parentesco.codigoParentesco,
+            "esAdmin": (dataCita.familiar.esAdmin !== null) ? dataCita.familiar.esAdmin : "N",
+            "idRelacion": idRelacion,
+            "codigoSolicitud": parseInt(codigo),
+            "requiereAdmin": "S"
+        });
+
+        const data = await call(args);
+
+        if(data.code == 200){
+            location.href = '/confirmacion-aprobada/{{ $params }}';
+        }else{
+            $('#mensaje_400_validacion').html(data.message);
+            var myModal = new bootstrap.Modal(document.getElementById('modalErrorValidacion'));
+            myModal.show();
+        }
+
+        return data;
+    }
+
+    function startTimer() {
+        var presentTime = document.getElementById('timer').innerHTML;
+        var timeArray = presentTime.split(/[:]+/);
+        var m = timeArray[0];
+        var s = checkSecond((timeArray[1] - 1));
+        if(s==59){m=m-1}
+        if (parseInt(m) === 0 && parseInt(s) === 0) {
+            $('.counter').addClass('d-none');
+            $('.btn-reenviar').removeClass('d-none');
+            return;
+        }
+
+        document.getElementById('timer').innerHTML = m + ":" + s;
+        setTimeout(startTimer, 1000);
+    }
+
+    function checkSecond(sec) {
+        if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+        if (sec < 0) {sec = "59"};
+        return sec;
+    }
 
     function ocultarEmail(email) {
         const partes = email.split("@");
@@ -187,13 +288,16 @@ Mi Veris - Agregar familiar o amigo
 
         const data = await call(args);
         if(data.code == 200){
-            location.href = "/confirmar-soporte/{{ $params }}";
+            $('.counter').removeClass('d-none');
+            $('.btn-reenviar').addClass('d-none');
+            document.getElementById('timer').innerHTML = "05" + ":" + "00";
+            startTimer();
         }
     }
 
     // redireccionar a la lista de familiares
     $("#btnEntendido").click(function() {
-        window.location.href = "{{route('familia.lista')}}";
+        window.location.href = "{{route('cuenta.lista')}}";
     });
 
 </script>

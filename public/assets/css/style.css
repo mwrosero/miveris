@@ -1,6 +1,6 @@
 /*HTML*/
 :root {
-    --bg-vris-blue: #0071CE;
+    --bg-vris-blue: #296BEF;
     --bg-vris-white: #ffffff;
     --bg-vris-dark-blue: #071A35;
     --bg-vris-vivid: #FFC107;
@@ -318,8 +318,8 @@ table td {
 
 .btn-primary-veris {
     --bs-btn-color: #fff;
-    --bs-btn-bg: #0071CE;
-    --bs-btn-border-color: #0071CE;
+    --bs-btn-bg: #296BEF;
+    --bs-btn-border-color: #296BEF;
     --bs-btn-hover-color: #CCEAFA;
     --bs-btn-hover-bg: #0055AA;
     --bs-btn-hover-border-color: #0055AA;
@@ -400,12 +400,12 @@ table td {
 }
 
 .bg-veris {
-    background: #0071CE;
+    background: #296BEF;
     color: #fff !important;
 }
 
 .bg-veris:hover {
-    background: #0071CE;
+    background: #296BEF;
     color: #fff !important;
 }
 
@@ -415,8 +415,8 @@ table td {
 }
 
 .bg-alt {
-    color: #0071CE;
-    border: 1px solid #0071CE !important;
+    color: #296BEF;
+    border: 1px solid #296BEF !important;
 }
 
 .bg-alt:hover {
@@ -451,7 +451,7 @@ a.menu-link {
 
 /*Componentes*/
 .txt-veris {
-    color: #0071CE !important;
+    color: #296BEF !important;
 }
 
 .txt-alt {
@@ -699,3 +699,4 @@ input::-webkit-inner-spin-button {
 input[type=number] {
     -moz-appearance: textfield;
 }
+

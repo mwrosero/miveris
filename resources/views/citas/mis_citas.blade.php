@@ -738,7 +738,8 @@ Mi Veris - Citas - Mis citas
                                 }
                             })
                         })
-                        tituloCard = `Solicitud de laboratorio a domicilio - ${citas.codigoSolicitud}`;
+                        {{-- tituloCard = `Solicitud de laboratorio a domicilio - ${citas.codigoSolicitud}`; --}}
+                        tituloCard = `Laboratorio a domicilio`;
                         elemento += `<div class="col-12 col-md-6">
                             <div class="card">
                                 <div class="card-body p--2">
@@ -749,11 +750,12 @@ Mi Veris - Citas - Mis citas
                                         <h6 class="text-primary-veris fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
                                         <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${ (citas.estaPagada == "S") ? "#00C853" : "#D84315"};"><i class="fa-solid fa-circle"></i> ${ (citas.estaPagada == "S") ? "Cita pagada" : "Pago pendiente" }</span>
                                     </div>
-                                    <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
                                     <ul class="fw-normal fs--2 line-height-16 mb-1 p-0">
                                         ${ prestaciones }
                                     </ul>
                                     <p class="fw-normal fs--2 line-height-16 mb-1">${citas.fechaReserva} <b class="hora-cita fw-normal text-primary-veris">${citas.horaInicio}</b></p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
+                                    <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(citas.direccion)}</p>
                                 </div>
                                 <div class="card-footer pt-0 pb--2 px--2 d-flex justify-content-end align-items-center">
                                     <div class="mt-auto">

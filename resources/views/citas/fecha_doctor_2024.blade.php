@@ -241,6 +241,19 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                         </div>
                     </div> --}}
                 </div>
+                <div class="card-body p-2 d-none" id="btnAgendarOrdenExterna">
+                    <div class="examenLista">
+                        <!-- Fila para el encabezado -->
+                        <div class="examenEncabezado">
+                            <h6 class="fw-medium mb-0">Disponibilidad</h6>
+                        </div>
+                        <!-- Fila para el botón, alineado a la derecha -->
+                        <div class="botonAgendar" style="text-align: right; margin-top: 10px;">
+                            <a href="#" class="btn btn-primary-veris" id="btnAgendarServicioOrdenExterna"
+                             >Agendar Servicio</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -290,7 +303,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                     </div> --}}
                                 </div>
                             </div>
-                            <div class="card-footer border-0 p-3 d-none" id="btnAgendarOrdenExterna">  
+                            {{-- <div class="card-footer border-0 p-3 d-none" id="btnAgendarOrdenExterna">  
                                 <div class="col-auto overflow-auto" style="max-height: 433px;">
                                     <div class="card-body p-2">
                                         <div class="examenLista">
@@ -306,7 +319,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
 
                         </div>
                     </div>
@@ -443,7 +456,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             })
             // setear titulo fecha doctor
             $('#btnAgendarOrdenExterna').removeClass('d-none');
-            document.getElementById('tituloFechaDoctor').innerHTML = 'Exámenes';
+            document.getElementById('nombreFiltro').innerHTML = 'Exámenes';
+            $('#pills-tab').addClass('d-none');
         } else {
             await consultarFechasDisponibles();
             // renderWeek();
@@ -624,7 +638,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             "secuenciaTransaccion": null,
             "esParticular": esParticular,
             // "aplicaCredito": aplicaCredito,
-            "aplicaProntoPago": aplicaProntoPago,
+            //"aplicaProntoPago": aplicaProntoPago,
             "cantidad": dataCita.items[dataCita.position].cantidad
         }
 
@@ -859,14 +873,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }
 
+        
         let soloDescuento = $('.options-date.active').attr("data-rel");
         let codigoMedico = "";
         if(dataCita.codigoMedicoFavorito){
             codigoMedico = dataCita.codigoMedicoFavorito
         }
         // console.log(fechaSeleccionada);
+
+        let urlAdicionales = ``;
+        if(dataCita.convenio.hasOwnProperty('idCliente') && dataCita.convenio.idCliente !== null){
+            urlAdicionales = `&codigoCliente=${dataCita.convenio.codigoCliente}&secuenciaAfiliado=${dataCita.convenio.secuenciaAfiliado}&codigoConvenio=${dataCita.convenio.codigoConvenio}`;
+        }
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/horarios?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent($('.selected-day').attr("fechaSeleccionada-rel"))}&esPlanStar=${esPlanStar}&mostrarDisponibilidad=S&idPaciente=${dataCita.paciente.numeroPaciente}&soloDescuento=${soloDescuento}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -1037,9 +1057,12 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.sesion){
             argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}&tiempoSesion=${dataCita.detalleSesion.tiempoSesion}&tipoAtencion=${dataCita.detalleSesion.tipoAtencion}`;
         }
-        
+        let urlAdicionales = ``;
+        if(dataCita.convenio.hasOwnProperty('idCliente') && dataCita.convenio.idCliente !== null){
+            urlAdicionales = `&codigoCliente=${dataCita.convenio.codigoCliente}&secuenciaAfiliado=${dataCita.convenio.secuenciaAfiliado}&codigoConvenio=${dataCita.convenio.codigoConvenio}`;
+        }
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -1220,7 +1243,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     /*width: Hug (343px);
     height: Hug (124px);*/
     width: 343px;
-    height: 124px;
+    {{-- height: 124px; --}}
+    height: auto;
     padding: 12px;
     border-radius: 8px;
     gap: 8px;

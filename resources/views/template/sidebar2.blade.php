@@ -15,6 +15,12 @@
                 <div data-i18n="Inicio">Inicio</div>
             </a>
         </li>
+        <li class="menu-item {{ Route::is('cuenta') || Route::is('cuenta.*')  ? 'active' : '' }}">
+            <a href="{{route('cuenta.miCuenta')}}" class="menu-link fs--1 text-white">
+                <div class="svg-container svg-cuenta me-3"></div>
+                <div data-i18n="Cuenta">Cuenta</div>
+            </a>
+        </li>
         <li class="menu-item {{ Route::is('citas') || Route::is('citas.*')  ? 'active' : '' }}">
             <a href="{{route('citas')}}" class="menu-link fs--1 text-white">
                 <div class="svg-container svg-citas me-3"></div>
@@ -45,12 +51,12 @@
                 <div data-i18n="Domicilio">Domicilio</div>
             </a>
         </li>
-        <li class="menu-item {{ Route::is('familia') || Route::is('familia.*')  ? 'active' : '' }}">
+        {{-- <li class="menu-item {{ Route::is('familia') || Route::is('familia.*')  ? 'active' : '' }}">
             <a href="{{route('familia.lista')}}" class="menu-link fs--1 text-white">
                 <div class="svg-container svg-familia me-3"></div>
                 <div data-i18n="Familia y amigos">Familia y amigos</div>
             </a>
-        </li>
+        </li> --}}
         <li class="menu-item {{ Route::is('doctoresFavoritos') || Route::is('doctoresFavoritos.*')  ? 'active' : '' }}">
             <a href="{{route('doctoresFavoritos')}}" class="menu-link fs--1 text-white">
                 <div class="svg-container svg-doctoresFavoritos me-3"></div>

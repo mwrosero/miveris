@@ -69,6 +69,10 @@ Mi Veris - Citas - Familia y amigos
                                 <i class="bi bi-person" style="font-size: 128px;"></i>
                                 <p class="fw-medium">Aún no tiene personas agregadas</p>
                             </div>
+                            <div class="d-flex flex-column flex-md-row gap-4 align-items-center justify-content-center d-none" id="familia-lista-empty">
+                                <div class="list-group list-group-radio d-grid gap-3 border-0 w-100">
+                                </div>
+                            </div>
                             <div class="card-footer p-0 mb-3">
                                 <a href="{{route('familia')}}" class="btn btn-primary-veris fs--18 line-height-24 rounded-3 m-0 w-100 px-4 py-3">Agregar</a>
                             </div>
@@ -168,25 +172,26 @@ Mi Veris - Citas - Familia y amigos
         // Iterar sobre los datos y crear elementos para cada familiar
         let elem = ``;
         if(familiar !== null){
+            console.log(familiar)
             data.forEach(familiar => {
                 let esAdminBadge = ``;
                 let ownMyAccount = ``;
-
+                console.log(familiar.poseoAdmin, familiar.tieneAdmin)
                 if(familiar.poseoAdmin == "S"){
                     esAdminBadge = `<span class="badge rounded-pill bg-purple-light text-veris-ai line-height-12 fs--3 me-2 fw-light">Eres administrador</span>`;
                 }
 
-                if(familiar.tieneAdmin = "S"){
+                if(familiar.tieneAdmin == "S"){
                     ownMyAccount = `<span class="badge rounded-pill bg-green-light text-green line-height-12 fs--3 me-2 fw-light">Este usuario administra tu cuenta</span>`;
                 }
 
-                elem += `<div class="list-group-item border rounded-3 bg-white p-2" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.10);">
+                elem += `<div class="list-group-item border rounded-3 bg-white p-3" style="border: 1px solid #CDD4DA !important; box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.05);">
                     <div class="d-flex justify-content-start align-items-center w-100 mb-2">
                         ${esAdminBadge}
                         ${ownMyAccount}
                     </div>
                     <div class="d-flex justify-content-between align-items-center w-100">
-                        <div class="flex-grow-1">
+                        <div type="button" class="flex-grow-1 enlaceDetalles" data-rel='${JSON.stringify(familiar)}'>
                             <p class="text-veris fs--1 fw-medium line-height-16 mb-1 nombrePariente">${capitalizarElemento(familiar.primerNombre)} ${capitalizarElemento(familiar.primerApellido)} ${capitalizarElemento(familiar.segundoApellido)}</p>
                             <p class="fs--3 line-height-12 mb-1 parentesco">${capitalizarElemento(familiar.parentesco)}</p>
                         </div>
@@ -202,10 +207,16 @@ Mi Veris - Citas - Familia y amigos
                     </div>
                 </div>`;
             });
+            $('#familia-lista').append(elem);
         }else{
-            elem += `<p class="fs--16 text-center line-height-20 mb-4">${msg}</p>`;
+            elem += `<div class="list-group list-group-radio d-grid gap-3 border-0 w-100">
+                <div>
+                    <img class="w-100" src="{{ asset('assets/img/svg/empty-no-familiares.svg') }}">
+                </div>
+                <p class="fs-24 text-center line-height-28 mb-4 fw-medium">Aún no tienes personas agregadas</p>
+            </div>`;
+            $('#familia-lista-empty').html(elem).removeClass('d-none');
         }
-        $('#familia-lista').append(elem);
     }
 </script>
 <style>

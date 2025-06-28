@@ -89,8 +89,7 @@ Mi Veris - Agregar familiar o amigo
                 <ul class="list-group bg-white rounded-0 w-100">
                     <li class="list-group-item border-0 d-flex justify-content-between align-items-center px-3 py-2">
                         <div class="mx-0">
-                            <h6 class="fw-medium fs--16 line-height-20 mb-1">Hola <b class="fw-medium user-auth">{{ Session::get('userData')->nombre }}</b></h6>
-                            <p class="fs--2 text-veris line-height-16 mb-0">Agrega personas a tu lista de familiares y amigos</p>
+                            <h6 class="fw-medium fs--16 line-height-20 mb-1">Ingresa los datos</h6>
                         </div>
                     </li>
                 </ul>
@@ -104,7 +103,7 @@ Mi Veris - Agregar familiar o amigo
                             <form class="row g-3">
                                 <div class="col-md-12">
                                     <label for="tipoIdentificacion" class="form-label fs--1 line-height-16 fw-medium">{{ __('Tipo de identificación') }} *</label>
-                                    <select class="form-select fs--1 line-height-16 p-3 form-filter border-0 rounded-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
+                                    <select class="form-select fs--1 line-height-16 p-3 border-0 rounded-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
                                     </select>
                                     <div class="invalid-feedback">
                                         Elegir el tipo de identificación.
@@ -118,7 +117,7 @@ Mi Veris - Agregar familiar o amigo
                                     </div>
                                 </div>
                                 <div class="col-12 mt--32">
-                                    <button class="btn btn-outline-primary-veris bg-white rounded-3 fs--18 line-height-24 w-100 px-4 py-3" type="submit" id="btnBuscar">Buscar</button>
+                                    <button class="btn btn-primary-veris text-white rounded-3 fs--18 line-height-24 w-100 px-4 py-3" type="submit" id="btnBuscar">Buscar</button>
                                 </div>
                             </form> 
                         </div>
@@ -174,9 +173,7 @@ Mi Veris - Agregar familiar o amigo
     //llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
         await tiposIdentificacion();
-        llenarSelect();
-        
-        
+        llenarSelect();    
     });
 
     
@@ -230,7 +227,7 @@ Mi Veris - Agregar familiar o amigo
                 $("#fechaNacimientoPersona").text(datosConsultarPersona[0].fechaNacimiento); --}}
                 let dataCita = {}
                 dataCita.familiar = datosConsultarPersona[0];
-                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+                localStorage.setItem('persona-{{ $tokenCita }}', JSON.stringify(dataCita));
                 location.href = '/agregar-convenio/{{ $tokenCita }}';
             }
         } else if (data.code != 200) {
@@ -344,7 +341,7 @@ Mi Veris - Agregar familiar o amigo
 
         datosTipoParentesco.forEach(parentesco => {
             const listItem = document.createElement('a');
-            // listItem.href = "{{route('familia.lista')}}";
+            
             listItem.classList.add('list-group-item', 'list-group-item-action', 'text-primary-veris', 'fs--16', 'px-3', 'py--2');
             listItem.textContent = capitalizarElemento(parentesco.descripcion);
             listItem.value = parentesco.codigoParentesco;
@@ -355,7 +352,7 @@ Mi Veris - Agregar familiar o amigo
 
     // redireccionar a la lista de familiares
     $("#btnEntendido").click(function() {
-        window.location.href = "{{route('familia.lista')}}";
+        window.location.href = "{{route('cuenta.lista')}}";
     });
 
 </script>

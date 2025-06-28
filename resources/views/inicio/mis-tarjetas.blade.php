@@ -16,20 +16,33 @@ Mi Veris - Mis tarjetas
     </a>
 </div>
 <div class="flex-grow-1 container-p-y pt-0">
-   
-
     <!-- Modal eliminar tarjeta -->
     <div class="modal fade" id="modalEliminarTarjeta" tabindex="-1" aria-labelledby="modalEliminarTarjetaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
                 <div class="modal-body text-center p-3 pb-0">
-                    <h1 class="modal-title fs--20 line-height-24 my-3">Eliminar tarjeta</h1>
-                    <p class="fs--1 fw-normal text-veris" id="mensajeError">¿Estás seguro(a) de eliminar esta tarjeta?</p>
+                    <h1 class="fs-24 line-height-28 my-3">Eliminar tarjeta</h1>
+                    <p class="fs--1 line-height-16 mb-0" id="mensajeTarjeta"></p>
                     <input type="hidden" id="idTarjetaEliminar">
+                    <div class="d-flex flex-column pb-3">
+                        <button type="button" id="aceptarPDP" class="btn btn-lg btn-primary-veris fw-medium col fs--18 mt-3 m-0 px-4 py-3 btn-confirmar-eliminar-tarjeta">Eliminar</button>
+                        <button type="button" class="btn btn-lg shadow-none text-primary-veris fw-medium col fs--18 mt-3 m-0 px-4 py-3" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
                 </div>
-                <div class="modal-footer pt-0 pb-3 px-3 d-flex justify-content-around align-items-center">
-                    <div class="text-primary-veris fs--1 fw-medium cursor-pointer text-center" data-bs-dismiss="modal">Cancelar</div>
-                    <div class="text-primary-veris fs--1 fw-medium cursor-pointer text-center btn-confirmar-eliminar-tarjeta">Eliminar</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal confirmacion eliminacion -->
+    <div class="modal fade" id="modalConirmacionEliminarTarjeta" tabindex="-1" aria-labelledby="modalConirmacionEliminarTarjetaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3 pb-0">
+                    <p class="my-3"><i class="fa-solid fa-circle-check text-veris-ai fs-48"></i></p>
+                    <h1 class="fs-24 line-height-28 my-3">Tarjeta eliminada</h1>
+                    <div class="d-flex flex-column pb-3">
+                        <button type="button" id="aceptarPDP" class="btn btn-lg btn-primary-veris fw-medium col fs--18 mt-3 m-0 px-4 py-3" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,6 +86,10 @@ Mi Veris - Mis tarjetas
 
         $('body').on('click', '.btn-delete-card', async function(){
             $('#idTarjetaEliminar').val($(this).attr('codigoTarjetaSuscrita-rel'));
+            let tarjeta = JSON.parse($(this).attr('data-rel'));
+            console.log(tarjeta);
+            //$('#mensajeTarjeta').html(`Estás seguro de que deseas eliminar la tarjeta de crédito
+            $('#mensajeTarjeta').html(`Estás seguro de que deseas eliminar la tarjeta de crédito <b>${tarjeta.marca}</b> terminada en <b>${tarjeta.cuatroUltimosDigitos}</b>?`);
             var myModal = new bootstrap.Modal(document.getElementById('modalEliminarTarjeta'));
             myModal.show();
         })
@@ -98,24 +115,28 @@ Mi Veris - Mis tarjetas
             $('#modalEliminarTarjeta').hide();
             $('.modal-backdrop').remove();
             $('.tarjeta-'+tarjeta).remove();
+            $('#modalConirmacionEliminarTarjeta').modal('show')
             if($('#listado-tarjetas .item-tarjeta').length == 0){
                 let elem = `<div class="col-12 text-center">
-                    No tiene tarjetas guardadas
+                    <h6 class="card-title text-veris fs-24 line-height-28 mb-3">No tienes tarjetas guardadas</h6>
+                    <p>En esta sección podrás ver y eliminar tus tarjetas.</p>
+                    <img src="{{ asset('assets/img/svg/no-credit-card.svg') }}" class="img-fluid mt-3" >
                 </div>`;
                 $('#listado-tarjetas').append(elem);  
                 window.removeEventListener("beforeunload", beforeUnloadHandler);
                 var myModal = new bootstrap.Modal(document.getElementById('noExisteTarjeta'));
                 myModal.show();
+                await cargarListaTarjetas(false);
             }
         }
     }
 
-    async function cargarListaTarjetas(){
+    async function cargarListaTarjetas(showLoader = true){
         $('#listado-tarjetas').empty();
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/facturacion/tarjetas?canalOrigen=${_canalOrigen}&virusu={{ Session::get('userData')->numeroIdentificacion }}`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = showLoader;
         const data = await call(args);
         console.log(data);
 
@@ -124,7 +145,7 @@ Mi Veris - Mis tarjetas
             let count = 0;
             if(data.data.length == 0){
                 elem += `<div class="col-12 text-center">
-                    <h6 class="card-title text-veris fs-24 line-height-28 mb-3">No tiene tarjetas guardadas</h6>
+                    <h6 class="card-title text-veris fs-24 line-height-28 mb-3">No tienes tarjetas guardadas</h6>
                     <p>En esta sección podrás ver y eliminar tus tarjetas.</p>
                     <img src="{{ asset('assets/img/svg/no-credit-card.svg') }}" class="img-fluid mt-3" >
                 </div>`;
@@ -137,24 +158,24 @@ Mi Veris - Mis tarjetas
                         let elemDisabledItem = "";
                         if(value.tarjetaVencida){
                             disabledItem = "disabled";
-                            elemDisabledItem = `<br><b class="fw-normal text-danger-veris">Tarjeta vencida.</b>`;
+                            elemDisabledItem = `<br><b class="fw-normal text-danger-veris">Tarjeta caducada.</b>`;
                         }
-                        let path_card = "{{ asset('assets/img/icons/payments') }}/"+value.marca.toLowerCase()+".png";
+                        //let path_card = "{{ asset('assets/img/icons/payments') }}/"+value.marca.toLowerCase()+".png";
                         /*let path_card = "{{ asset('assets/img/veris/credit-card.svg') }}";
                         const existeImagen = await verificarImagen(value.nombre_foto);
                         if (existeImagen) {
                             path_card = value.nombre_foto;
                         }*/                     
-                        elem += `<div class="col-6 item-tarjeta tarjeta-${value.codigoTarjetaSuscrita}">
+                        elem += `<div class="col-12 col-md-6 item-tarjeta tarjeta-${value.codigoTarjetaSuscrita}">
                             <div class="form-check custom-option custom-option-basic border-secondary">
                                 <label class="form-check-label custom-option-content d-flex justify-content-between align-items-center px-3" for="card-${value.codigoTarjetaSuscrita}">
                                     <input ${disabledItem} name="cardWallet" class="form-check-input d-none" type="radio" value="" id="card-${value.codigoTarjetaSuscrita}" data-rel='${ JSON.stringify(value) }'>
                                     <span class="custom-option-header w-100">
-                                        <div>
-                                            <img src="${path_card}" class="me-3 w-25" alt="" >
+                                        <div class="d-flex align-items-center justify-content-start">
+                                            <img src="${value.urlIconoMarca}" class="me-3 w-25" alt="" style="height: 40px;">
                                             <span class="fs--2 mb-0">****${value.cuatroUltimosDigitos} ${elemDisabledItem}</span>
                                         </div>
-                                        <button type="button" codigoTarjetaSuscrita-rel="${value.codigoTarjetaSuscrita}" class="btn btn-sm text-danger shadow-none btn-delete-card"><i class="bi bi-trash fs-4"></i></button>
+                                        <button type="button" codigoTarjetaSuscrita-rel="${value.codigoTarjetaSuscrita}" class="btn btn-sm text-danger shadow-none btn-delete-card" data-rel='${ JSON.stringify(value) }'><i class="bi bi-trash fs-4"></i></button>
                                     </span>
                                 </label>
                             </div>
