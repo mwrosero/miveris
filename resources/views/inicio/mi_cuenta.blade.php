@@ -43,7 +43,7 @@ Mi Veris - Cuenta
                             <span class="text-lowercase">{{ strtolower(Session::get('userData')->edad) }}</span> |
                             <span class="text-white">
                                 {{ Session::get('userData')->codigoTipoIdentificacion == 2 ? 'C.I.' : 'PAS.' }} {{ Session::get('userData')->numeroIdentificacion }}
-                            </span>
+                            </span> 
                         </h2>
                     </div>
                     <div class="card-body p-0 bg-white rounded-top-xl p-3">
