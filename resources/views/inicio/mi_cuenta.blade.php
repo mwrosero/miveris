@@ -39,13 +39,12 @@ Mi Veris - Cuenta
                             <img src="{{ asset('assets/img/avatars/avatar.svg') }}" width="74px" alt class="h-auto rounded-circle" />
                         </div>
                         <h2 class="text-white text-center fs--16 line-height-20 mb-2 text-capitalize">{{ strtolower(Session::get('userData')->primerNombre) }} {{ strtolower(Session::get('userData')->segundoNombre) }} {{ strtolower(Session::get('userData')->primerApellido) }}  {{ strtolower(Session::get('userData')->segundoApellido) }}</h2>
-                        <h2 class="text-white text-center fs--1 line-height-16"><span class="text-lowercase">{{ strtolower(Session::get('userData')->edad) }}</span> | <span class="text-white">
-                            @if(Session::get('userData')->codigoTipoIdentificacion == 2) 
-                                {{ "C.I." }} 
-                            @else 
-                                {{ "PAS." }} 
-                            @endif {{ Session::get('userData')->numeroIdentificacion }}
-                            </span></h2>
+                        <h2 class="text-white text-center fs--1 line-height-16">
+                            <span class="text-lowercase">{{ strtolower(Session::get('userData')->edad) }}</span> |
+                            <span class="text-white">
+                                {{ Session::get('userData')->codigoTipoIdentificacion == 2 ? 'C.I.' : 'PAS.' }} {{ Session::get('userData')->numeroIdentificacion }}
+                            </span> 
+                        </h2>
                     </div>
                     <div class="card-body p-0 bg-white rounded-top-xl p-3">
                         <div class="row text-veris-ai mb-3 d-flex justify-content-between align-items-center g-3">
