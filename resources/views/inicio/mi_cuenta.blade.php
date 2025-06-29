@@ -41,9 +41,8 @@ Mi Veris - Cuenta
                         <h2 class="text-white text-center fs--16 line-height-20 mb-2 text-capitalize">{{ strtolower(Session::get('userData')->primerNombre) }} {{ strtolower(Session::get('userData')->segundoNombre) }} {{ strtolower(Session::get('userData')->primerApellido) }}  {{ strtolower(Session::get('userData')->segundoApellido) }}</h2>
                         <h2 class="text-white text-center fs--1 line-height-16">
                             <span class="text-lowercase">{{ strtolower(Session::get('userData')->edad) }}</span> |
-                            <span class="text-white">
-                                {{ Session::get('userData')->codigoTipoIdentificacion == 2 ? 'C.I.' : 'PAS.' }} {{ Session::get('userData')->numeroIdentificacion }}
-                            </span> 
+                            {{ Session::get('userData')->codigoTipoIdentificacion == 2 ? 'C.I.' : 'PAS.' }} 
+                            <span class="text-white numeroIdentificacionUsuario"></span> 
                         </h2>
                     </div>
                     <div class="card-body p-0 bg-white rounded-top-xl p-3">
@@ -103,7 +102,7 @@ Mi Veris - Cuenta
 @push('scripts')
 <script>
     document.addEventListener("DOMContentLoaded", async function () {
-        
+        $('.numeroIdentificacionUsuario').html(`{{ Session::get('userData')->numeroIdentificacion }}`);
     });
 </script>
 <style>
