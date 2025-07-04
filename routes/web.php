@@ -109,6 +109,7 @@ Route::group(['middleware' => ['loggedUser']], function () {
     Route::get('/mis-datos', [DashboardController::class, 'misDatos'])->name('cuenta.misDatos')->withoutMiddleware(['guest']);
     Route::get('/mi-cuenta', [DashboardController::class, 'miCuenta'])->name('cuenta.miCuenta')->withoutMiddleware(['guest']);
     Route::get('/mis-tarjetas', [DashboardController::class, 'misTarjetas'])->name('cuenta.misTarjetas')->withoutMiddleware(['guest']);
+    Route::get('/mis-facturas', [DashboardController::class, 'misFacturas'])->name('cuenta.misFacturas')->withoutMiddleware(['guest']);
     Route::get('/mis-convenios', [DashboardController::class, 'misConvenios'])->name('cuenta.misConvenios')->withoutMiddleware(['guest']);
     Route::get('/seleccionar-convenio-agregar/{params}', [DashboardController::class, 'seleccionarConvenio'])->name('cuenta.seleccionarConvenio')->withoutMiddleware(['guest']);
     Route::get('/info-convenio/{params}', [DashboardController::class, 'infoConvenio'])->name('cuenta.infoConvenio')->withoutMiddleware(['guest']);
