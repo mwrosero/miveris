@@ -1523,7 +1523,7 @@ Mi Veris - Inicio
             //     console.log('datosConvenio', datosConvenios);
             //     // datosconvenio posicion 0
             //     params.convenio = datosConvenios[0];
-
+            
             // } else {
             //     params.convenio = {
             //         "permitePago": "S",
