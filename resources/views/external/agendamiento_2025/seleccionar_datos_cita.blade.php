@@ -452,12 +452,14 @@ Veris - Elige datos para la Cita
                             await consultarSiEsTratamiento();
                         }
                     }else{
-                        if(dataCita.convenio.esVerisCare && data.data.tieneCoberturaVerisCare == "N"){
+                        if(dataCita.convenio.esVerisCare == "S" && data.data.tieneCoberturaVerisCare == "N"){
                             $('#modalVerisCare').modal("show");
+                            let str1 = (data.data.mensajeInformacion1 !== null) ? `<p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion1}</p>` : ``;
+                            let str2 = (data.data.mensajeInformacion2 !== null) ? `<p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion2}</p>` : ``;
                             $('.box-mensajes-validaciones').html(`
-                                <p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion1}</p>
-                                <p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion2}</p>
-                            `);                    
+                                ${str1}
+                                ${str2}
+                            `);                         
                         }else{
                             await consultarSiEsTratamiento();
                         }
