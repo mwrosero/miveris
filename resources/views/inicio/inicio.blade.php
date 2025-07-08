@@ -434,6 +434,7 @@ Mi Veris - Inicio
             params.convenio = {
                 "secuenciaAfiliado": datosServicio.secuenciaAfiliado,
                 "idCliente": datosServicio.idCliente,
+                "codigoCliente": datosServicio.codigoCliente,
                 "codigoConvenio": datosServicio.codigoConvenio,
                 "codigoEmpresa": datosServicio.codigoEmpresa,
                 "permitePagoLab" : datosServicio.permitePagoLab,
@@ -1468,6 +1469,7 @@ Mi Veris - Inicio
             params.convenio = {
                 secuenciaAfiliado: data.secuenciaAfiliado,
                 idCliente: data.idCliente,
+                codigoCliente: data.codigoCliente,
                 codigoConvenio: data.codigoConvenio,
                 codigoEmpresa: data.codigoEmpresa,
                 permitePagoLab : data.permitePagoLab,
@@ -1508,6 +1510,7 @@ Mi Veris - Inicio
             params.convenio = {
                 secuenciaAfiliado: data.secuenciaAfiliado,
                 idCliente: data.idCliente,
+                codigoCliente: data.codigoCliente,
                 codigoConvenio: data.codigoConvenio,
                 codigoEmpresa: data.codigoEmpresa,
                 permitePagoLab : data.permitePagoLab,
