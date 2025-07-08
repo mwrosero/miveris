@@ -35,7 +35,7 @@ Mi Veris - Mis Convenios
     <div class="d-flex justify-content-between align-items-center bg-white">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Mis Facturas') }}</h5>
     </div>
-    <section class="p-3 mb-3">
+    <section class="p-3 mb-3 bg-white">
         <div class="row justify-content-center">
             <div class="mx-n4 px-2 mx-lg-n6 px-lg-6 bg-white mb-3 mb-md-4">
                 <!-- filtro -->
@@ -45,7 +45,7 @@ Mi Veris - Mis Convenios
             <div class="col-12 col-md-6 col-lg-5">
                 <div class="card bg-transparent shadow-none">
                     <div class="card-body p-0">
-                        <div class="row g-3" id="listado-convenios">
+                        <div class="row g-2" id="listado-facturas">
                             {{-- <div class="col-12">
                                 <div class="form-check custom-option custom-option-basic shadow-sm d-flex justify-content-between align-items-center p-3">
                                     <img src="{{ asset('assets/img/svg/amex.svg')}}" class="me-3" alt="amex">
@@ -56,11 +56,6 @@ Mi Veris - Mis Convenios
                                     <div class="btn btn-sm text-danger shadow-none"><i class="bi bi-trash fs-4"></i></div>
                                 </div>
                             </div> --}}
-                        </div>
-                        <div class="row g-3">
-                            <div class="col-12 mt--32">
-                                <button class="btn btn-primary-veris rounded-3 fs--18 line-height-24 w-100 px-4 py-3 text-white" id="btnAgregar">Agregar</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -79,7 +74,7 @@ Mi Veris - Mis Convenios
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}" );
         await consultarGrupoFamiliar();
-        await obtenerConvenios();
+        await obtenerFacturas();
 
         $('body').on('click', '.btn-delete-convenio', async function(){
             $('#idTarjetaEliminar').val($(this).attr('codigoTarjetaSuscrita-rel'));
@@ -139,7 +134,7 @@ Mi Veris - Mis Convenios
         // Obtener el texto completo de la opción seleccionada data-rel
         const texto = $('input[name="listGroupRadios"]:checked').data('rel');
 
-        obtenerConvenios(texto);
+        obtenerFacturas(texto);
         $('#filtroTratamientos').offcanvas('hide');
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento(texto.primerNombre + ' ' + texto.primerApellido);        
@@ -150,23 +145,21 @@ Mi Veris - Mis Convenios
         const contexto = $(this).data('context');
         let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
         let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
-        obtenerConvenios();
+        obtenerFacturas();
         const elemento = document.getElementById('nombreFiltro');
         elemento.innerHTML = capitalizarElemento("{{ Session::get('userData')->nombre }} {{ Session::get('userData')->primerApellido }}");
 
     });
 
-    async function obtenerConvenios(paciente = null) {
-        let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
-        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+    async function obtenerFacturas(paciente = null) {
+        let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
 
         if(paciente !== null){
-            tipoIdentificacion = paciente.tipoIdentificacion;
-            numeroIdentificacion = paciente.numeroIdentificacion;
+            numeroPaciente = paciente.numeroPaciente;
         }
 
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=1&tipoCredito=CREDITO_SERVICIOS&esOnline=N&excluyeNinguno=S`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/comprobantes?numeroPaciente=${numeroPaciente}&codigoEmpresa=1&canalOrigen=${_canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
 
@@ -177,22 +170,20 @@ Mi Veris - Mis Convenios
             if(data.data.length > 0){
                 conveniosSincronizados = data.data;
                 $.each(data.data, function(key, value){
-                    let logoConvenio = ``;
-                    if(value.rutaImagenConvenio !== null){
-                        logoConvenio = `<img src="${value.rutaImagenConvenio}" class="me-3" alt="${value.nombreConvenio}">`;
-                    }else{
-                        logoConvenio = `<div class="me-3" style="width:86px;"></div>`;
-                    }
-                    elem += `<div class="col-12 p-1">
-                        <div type="button" class="form-check custom-option custom-option-basic shadow-sm d-flex justify-content-between align-items-center p-2">
-                            ${logoConvenio}
-                            <div class="flex-grow-1">
-                                <p class="text-veris-ai fs--16 line-height-20 mb-1 fw-medium text-capitalize">${value.nombreCliente.toLowerCase()}</p>
-                                <span class="fs--1 line-height- mb-0 text-capitalize">${value.nombreConvenioUsuarioFinal.toLowerCase()}</span>
+                    elem += `<div class="col-12">
+                        <div class="card h-100 rounded-3" style="border: 1px solid #E7E9EC;box-shadow: 0px 0px 4px 0px #0000000D;">
+                            <div class="card-body p--2">
+                                <h6 class="fw-medium fs--16 line-height-20 mb-2 text-capitalize">${value.nombreServicio.toLowerCase()}</h6>
+                                <p class="mb-2 fs--1 line-height-16">Número de orden: ${value.numeroOrden}</p>
+                                <p class="mb-2 fs--1 line-height-16">Valor: $${value.valorTotal}</p>
+                                <p class="mb-4 fw-medium fs--1 line-height-16">${value.fechaEmision} <b class="hora-cita ms-1 fw-medium text-veris-ai">${value.horaEmision}</b></p>
+                                <div class="d-flex justify-content-end align-items-center">
+                                    <div class="mt-auto">
+                                        <div data-bs-toggle="modal" data-bs-target="#masOpcionesModalCitas" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none btn-opciones-cita" data-rel="">Ver orden</div>
+                                    </div>
+                                    <a href="" class="btn btn-sm bg-veris-ai fs--1 ms-2 m-0 line-height-16 text-white">Ver factura</a>
+                                </div>
                             </div>
-                            <!--div class="btn btn-sm text-danger shadow-none btn-delete-convenio">
-                                <i class="bi bi-trash fs-4"></i>
-                            </div-->
                         </div>
                     </div>`;
                 })
@@ -203,7 +194,7 @@ Mi Veris - Mis Convenios
                     <img src="{{asset('assets/img/svg/empty-no-convenios.svg')}}" class="w-75 img-fluid" alt="">
                 </div>`;
             }
-            $('#listado-convenios').html(elem)
+            $('#listado-facturas').html(elem)
         }
         return data;
     }

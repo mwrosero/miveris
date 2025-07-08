@@ -435,7 +435,7 @@ Elige datos para la Cita
                             await consultarSiEsTratamiento();
                         }
                     }else{
-                        if(dataCita.convenio.esVerisCare && data.data.tieneCoberturaVerisCare == "N"){
+                        if(dataCita.convenio.esVerisCare == "S" && data.data.tieneCoberturaVerisCare == "N"){
                             $('#modalVerisCare').modal("show");
                             $('.box-mensajes-validaciones').html(`
                                 <p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion1}</p>

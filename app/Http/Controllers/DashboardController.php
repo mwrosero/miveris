@@ -25,6 +25,7 @@ class DashboardController extends Controller
     }
 
     public function misFacturas(){
+        // dd(Session::get('userData')); 
         return view('inicio.mis-facturas');
     }
 
