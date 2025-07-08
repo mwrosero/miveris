@@ -58,6 +58,23 @@ Elige datos para la Cita
         </div>
     </div>
 </div>
+
+<!-- Modal mensaje Veris Care -->
+<div class="modal fade" id="modalVerisCare" tabindex="-1" aria-labelledby="modalVerisCareLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3 text-center">
+                <h5 class="fs-18 line-height-24 my-3">Información</h5>
+                <div class="box-mensajes-validaciones"></div>
+                <div class="d-flex flex-column">
+                    <button type="button" id="btn-continuar-veris-care" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 mt-3 w-100 px-4 py-3" data-bs-dismiss="modal">Continuar</button>
+                    <button type="button" id="btnAgregarPersona" class="btn btn-lg shadow-none text-primary-veris fw-medium col fs--18 line-height-24 m-0 mt-2 w-100 px-4 py-3" data-bs-dismiss="modal">Regresar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal Tratamiento-->
     <div class="modal fade" id="consultaTratamientoModal" tabindex="-1" aria-labelledby="consultaTratamientoModalLabel" aria-hidden="true">
@@ -418,7 +435,15 @@ Elige datos para la Cita
                             await consultarSiEsTratamiento();
                         }
                     }else{
-                        await consultarSiEsTratamiento();
+                        if(dataCita.convenio.esVerisCare == "S" && data.data.tieneCoberturaVerisCare == "N"){
+                            $('#modalVerisCare').modal("show");
+                            $('.box-mensajes-validaciones').html(`
+                                <p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion1}</p>
+                                <p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion2}</p>
+                            `);                    
+                        }else{
+                            await consultarSiEsTratamiento();
+                        }
                     }
                 }
             }else{
@@ -429,6 +454,10 @@ Elige datos para la Cita
         $('body').on('click', '.btn-respuesta-embarazo', async function(){
             let estaEmbarazada = $(this).attr('respuesta-rel');
             dataCita.estaEmbarazada = estaEmbarazada;
+            await consultarSiEsTratamiento();
+        })
+
+        $('body').on('click', '#btn-continuar-veris-care', async function(){
             await consultarSiEsTratamiento();
         })
 
@@ -631,12 +660,14 @@ Elige datos para la Cita
     }
 
     async function validarCondicionConvenio(){
+        let esVerisCare = (dataCita.convenio.hasOwnProperty('esVerisCare')) ? dataCita.convenio.esVerisCare : 'N';
+        let secuenciaAfiliado = (dataCita.convenio.hasOwnProperty('secuenciaAfiliado')) ? dataCita.convenio.secuenciaAfiliado : '';
         let paramasAditional = ``;
         if(dataCita.hasOwnProperty('especialidad')){
             paramasAditional += `&codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&tipoModalidad=${ (dataCita.online == "N") ? "PRESENCIAL" : "ONLINE" }`;
         }
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}${paramasAditional}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/validaCondicionConvenio?canalOrigen=${_canalOrigen}&esValidacionLink=false&codigoEmpresa=1&codigoConvenio=${(dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : ''}&esVerisCare=${esVerisCare}&secuenciaAfiliado=${secuenciaAfiliado}${paramasAditional}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
