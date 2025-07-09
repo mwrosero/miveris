@@ -435,8 +435,7 @@ Elige datos para la Cita
                             await consultarSiEsTratamiento();
                         }
                     }else{
-                        await consultarSiEsTratamiento();
-                        {{-- if(dataCita.convenio.esVerisCare == "S" && data.data.tieneCoberturaVerisCare == "N"){
+                        if(dataCita.convenio.esVerisCare == "S" && data.data.tieneCoberturaVerisCare == "N"){
                             $('#modalVerisCare').modal("show");
                             let str1 = (data.data.mensajeInformacion1 !== null) ? `<p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion1}</p>` : ``;
                             let str2 = (data.data.mensajeInformacion2 !== null) ? `<p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion2}</p>` : ``;
@@ -446,7 +445,7 @@ Elige datos para la Cita
                             `);                    
                         }else{
                             await consultarSiEsTratamiento();
-                        } --}}
+                        }
                     }
                 }
             }else{
