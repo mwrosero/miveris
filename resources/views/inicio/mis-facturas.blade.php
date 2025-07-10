@@ -109,7 +109,31 @@ Mi Veris - Mis Convenios
             location.href = '/seleccionar-convenio-agregar/{{ $tokenCita }}';
         })
 
+        $(document).on('click', '.verRide', function(){
+            let datos = $(this).data('rel');
+            descargarDocumentoRide(datos);
+        });
+
     });
+
+    async function descargarDocumentoRide(datos){
+        let args = [];
+
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/obtenerRide?numeroTransaccion=${datos.numeroTransaccion}&canalOrigen=${_canalOrigen}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+        } catch (error) {
+            console.error('Error al obtener el RIDE:', error);
+        }
+    }
 
     async function consultarGrupoFamiliar() {
         let args = [];
@@ -178,10 +202,10 @@ Mi Veris - Mis Convenios
                                 <p class="mb-2 fs--1 line-height-16">Valor: $${value.valorTotal}</p>
                                 <p class="mb-4 fw-medium fs--1 line-height-16">${value.fechaEmision} <b class="hora-cita ms-1 fw-medium text-veris-ai">${value.horaEmision}</b></p>
                                 <div class="d-flex justify-content-end align-items-center">
-                                    <div class="mt-auto">
-                                        <div data-bs-toggle="modal" data-bs-target="#masOpcionesModalCitas" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none btn-opciones-cita" data-rel="">Ver orden</div>
-                                    </div>
-                                    <a href="" class="btn btn-sm bg-veris-ai fs--1 ms-2 m-0 line-height-16 text-white">Ver factura</a>
+                                    {{-- <div class="mt-auto">
+                                        <div data-bs-toggle="modal" data-bs-target="#masOpcionesModalCitas" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none verOrdenCard" data-rel="">Ver orden</div>
+                                    </div> --}}
+                                    <div data-rel='${JSON.stringify(value)}' class="btn btn-sm bg-veris-ai fs--1 ms-2 m-0 line-height-16 text-white verRide">Ver factura</div>
                                 </div>
                             </div>
                         </div>
