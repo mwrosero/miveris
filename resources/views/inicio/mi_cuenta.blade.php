@@ -72,14 +72,14 @@ Mi Veris - Cuenta
                                 </div>
                                 <i class="fa-solid fa-angle-right mx-3"></i>
                             </a>
-                            {{-- <a href="/mis-facturas" class="col-12 d-flex justify-content-between align-items-center py-3 px-0 waves-effect text-decoration-none border-silver-1">
+                            <a href="/mis-facturas" class="col-12 d-flex justify-content-between align-items-center py-3 px-0 waves-effect text-decoration-none border-silver-1">
                                 <img src="{{ asset('assets/img/svg/mis-facturas.svg') }}" class="mx-3" />
                                 <div class="context-list flex-grow-1">
                                     <p class="label-status-detalle fw-medium fs--1 line-height-16 mb-2">Mis facturas</p>
                                     <p class="fw-light label-status-detalle fs--2 line-height-16 mb-0">Consulta tu historial de facturas.</p>
                                 </div>
                                 <i class="fa-solid fa-angle-right mx-3"></i>
-                            </a> --}}
+                            </a>
                             <a href="/mis-convenios" class="col-12 d-flex justify-content-between align-items-center waves-effect py-3 px-0 text-decoration-none border-silver-1">
                                 <img src="{{ asset('assets/img/svg/hands-shake.svg') }}" class="mx-3" />
                                 <div class="context-list flex-grow-1">
