@@ -779,9 +779,12 @@ Mi Veris - Citas - Mis citas
                             ruta = "/seleccionar-datos-cita/" + tokenCita;
                         }
 
+                        let codigoCliente = (citas.codigoCliente !== null) ? citas.codigoCliente : '';
+
                         let convenio = {
                             "secuenciaAfiliado": citas.secuenciaAfiliado,
                             "idCliente": citas.idCliente,
+                            "codigoCliente": codigoCliente,
                             "codigoConvenio": citas.codigoConvenio,
                             "secuenciaAfiliado": citas.secuenciaAfiliado,
                             "codigoEmpresa": citas.codigoEmpresa,
@@ -1128,6 +1131,7 @@ Mi Veris - Citas - Mis citas
             params.convenio = {                
                 secuenciaAfiliado: data.secuenciaAfiliado,
                 idCliente: data.idCliente,
+                codigoCliente: data.codigoCliente,
                 codigoConvenio: data.codigoConvenio,
                 codigoEmpresa: data.codigoEmpresa,
                 permitePagoLab : data.permitePagoLab,
