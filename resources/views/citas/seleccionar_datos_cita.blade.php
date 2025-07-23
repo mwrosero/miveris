@@ -663,7 +663,7 @@ Elige datos para la Cita
 
     async function validarCondicionConvenio(){
         let esVerisCare = (dataCita.convenio.hasOwnProperty('esVerisCare')) ? dataCita.convenio.esVerisCare : 'N';
-        let secuenciaAfiliado = (dataCita.convenio.hasOwnProperty('secuenciaAfiliado')) ? dataCita.convenio.secuenciaAfiliado : '';
+        let secuenciaAfiliado = (dataCita.convenio.hasOwnProperty('secuenciaAfiliado')) ? (dataCita.convenio.secuenciaAfiliado !== null) ? dataCita.convenio.secuenciaAfiliado : '' : '';
         let paramasAditional = ``;
         if(dataCita.hasOwnProperty('especialidad')){
             paramasAditional += `&codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&tipoModalidad=${ (dataCita.online == "N") ? "PRESENCIAL" : "ONLINE" }`;
