@@ -82,8 +82,8 @@ Veris - Asignar Promoción
                             </div>
                         </div>
                         <div class="col-6 col-md-4">
-                            <label for="codigoAsesor" class="form-label fw-medium fs--1">Código asesor</label>
-                            <input type="text" class="form-control fs--1 p-3" name="codigoAsesor" id="codigoAsesor" placeholder="" />
+                            <label for="correoElectronico" class="form-label fw-medium fs--1">Correo electrónico *</label>
+                            <input type="email" class="form-control fs--1 p-3" name="correoElectronico" id="correoElectronico" placeholder="" />
                         </div>
                         <div class="col-12 col-md-4">
                             <div class="form-check d-flex justify-content-start align-items-center h-100">
@@ -180,7 +180,7 @@ Veris - Asignar Promoción
 
     async function asignarPaquete(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/asignarpaquete?tipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}&codigoEmpresa=${dataCita.paquete.codigoEmpresaPaquete}&codigoPaquete=${dataCita.paquete.codigoPaquete}&codigoAsesor=${getInput('codigoAsesor')}&genero=${getInput('genero')}&canalOrigen=${_canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/asignarpaquete?tipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}&codigoEmpresa=${dataCita.paquete.codigoEmpresaPaquete}&codigoPaquete=${dataCita.paquete.codigoPaquete}&mail=${getInput('correoElectronico')}&genero=${getInput('genero')}&canalOrigen=${_canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -252,6 +252,11 @@ Veris - Asignar Promoción
         if(getInput('fechaNacimiento') == ""){
             errors = true;
             msg += `<li class="ms-0">Campo fecha de nacimiento es requerido</li>`;
+        }
+
+        if(!isValidEmailAddress(getInput('correoElectronico'))){
+            errors = true;
+            msg += `<li class="ms-0">Correo electrónico no válido</li>`;
         }
 
 
