@@ -731,6 +731,7 @@ Veris - Elige datos para la Cita
             }else{
                 dataCita.convenio = {
                     "nombreConvenio": "Ninguno",
+                    "secuenciaAfiliado": '',
                     "permitePago": "S",
                     "permiteReserva": "S",
                     "idCliente": null,
@@ -764,6 +765,7 @@ Veris - Elige datos para la Cita
         }
         let sinConvenio = {
             "nombreConvenio": "Ninguno",
+            "secuenciaAfiliado": '',
             "permitePago": "S",
             "permiteReserva": "S",
             "idCliente": null,
