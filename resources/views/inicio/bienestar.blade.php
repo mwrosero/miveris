@@ -154,7 +154,7 @@ Mi Veris - Bienestar
         await obtenerInfoIndicadores();
 
 
-        $(document).on('click', '.bienestar-item', function(){
+        $(document).on('click', '.bienestar-item', async function(){
             let tipo = $(this).attr('tipo-rel');
             let beneficioSeleccionado = $.grep(datosBienestar, function(item) {
                 return item.nemonico === tipo;
