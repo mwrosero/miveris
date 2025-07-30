@@ -832,7 +832,7 @@ Veris - Elige datos para la Cita
 
     async function consultarCentralesMedicasRecomendadas(){
         console.log(0);
-        let args = [];
+        let args = [];f
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.numeroPaciente}`;
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -844,6 +844,8 @@ Veris - Elige datos para la Cita
                 dataCita.central = data.data[0];
                 console.log(dataCita.central)
                 $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}`);
+            }else{
+                $('#btn-central p').html(`Seleccionar`);
             }
         }
     }
@@ -867,6 +869,7 @@ Veris - Elige datos para la Cita
     }
 
     function drawCentrales(dataCentrales){
+        console.log("--------------------------")
         let listaCentrales = $('#listaCentrales');
         let elemento = ``;
         listaCentrales.empty();

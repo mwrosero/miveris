@@ -764,6 +764,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 descuentoLabel = `*Se aplicó un ${porcentajeDescuentoCopago}% ${data.data.mensajeDescuento}`;
             }
 
+            if(valorCanalVirtual == 0){
+                $('#btn-pagar').html('Continuar')
+            }
+
             if(codigoConvenio){
                 console.log('subTotal', subtotalCopagoFloat, 'valorTotal', valorTotalCopagoFloat);
                 elem += `<div class="col-3 text-center">

@@ -818,6 +818,8 @@ Elige datos para la Cita
             if(data.data.length > 0){
                 dataCita.central = data.data[0];
                 $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}`);
+            }else{
+                $('#btn-central p').html(`Seleccionar`);
             }
         }
     }
