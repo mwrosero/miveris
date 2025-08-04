@@ -1,6 +1,10 @@
 @extends('template.external')
 @section('title')
+@if(config('app.subdomain') == "parami")
+Parami - Citas
+@else
 Veris - Citas
+@endif
 @endsection
 @section('content')
 @php
@@ -12,6 +16,9 @@ Veris - Citas
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/select2/select2.js"></script>
 
 <link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
+@if(config('app.subdomain') == "parami")
+<link rel="stylesheet" href="{{ asset('assets/css/embudo-parami.css?v=1.0.0')}}">
+@endif
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 
 @include('external.components.navbar-agendamiento', ['showInfo' => false])

@@ -1,11 +1,18 @@
 @extends('template.external')
 @section('title')
+@if(config('app.subdomain') == "parami")
+Parami - Elige datos para la Cita
+@else
 Veris - Elige datos para la Cita
+@endif
 @endsection
 @section('content')
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
+@if(config('app.subdomain') == "parami")
+<link rel="stylesheet" href="{{ asset('assets/css/embudo-parami.css?v=1.0.0')}}">
+@endif
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 
 @include('external.components.navbar-agendamiento', ['showInfo' => true])
@@ -832,7 +839,7 @@ Veris - Elige datos para la Cita
 
     async function consultarCentralesMedicasRecomendadas(){
         console.log(0);
-        let args = [];f
+        let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/listado/centrosMedicos?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&codigoCiudad=${dataCita.ciudad.codigoPais+'-'+dataCita.ciudad.codigoProvincia+'-'+dataCita.ciudad.codigoCiudad}&idPaciente=${dataCita.paciente.numeroPaciente}`;
         args["method"] = "GET";
         args["showLoader"] = true;

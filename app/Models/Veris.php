@@ -16,7 +16,8 @@ class Veris extends Model
     public const FACTURACION_WAR = 'seguridadtest';
     public const FACTURACION_WAR_DESA = 'seguridad';
     public const CANAL_ORIGEN = 'MVE_CMV';
-    public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';    
+    public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';
+    public const CANAL_ORIGEN_EXTERNAL_PARAMI = 'VER_PMF';
     public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
     public const APPLICATION_FARMACIA = 'UEhBTlRPTVhfV0VC';
     public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';
@@ -45,6 +46,7 @@ class Veris extends Model
     // public const FACTURACION_WAR = 'seguridad';
     // public const CANAL_ORIGEN = 'MVE_CMV';
     // public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';
+    // public const CANAL_ORIGEN_EXTERNAL_PARAMI = 'VER_PMF';
     // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
     // public const APPLICATION_FARMACIA = 'UEhBTlRPTVhfV0VC';
     // public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';

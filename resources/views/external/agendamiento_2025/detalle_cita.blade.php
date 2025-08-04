@@ -1,11 +1,18 @@
 @extends('template.external')
 @section('title')
+@if(config('app.subdomain') == "parami")
+Parami - Detalle de Citas
+@else
 Veris - Detalle de Citas
+@endif
 @endsection
 @section('content')
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
+@if(config('app.subdomain') == "parami")
+<link rel="stylesheet" href="{{ asset('assets/css/embudo-parami.css?v=1.0.0')}}">
+@endif
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 
 @include('external.components.navbar-agendamiento', ['showInfo' => true])
