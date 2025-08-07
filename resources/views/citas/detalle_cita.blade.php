@@ -3,6 +3,8 @@
 Mi Veris - Citas - Revisa tus datos
 @endsection
 @section('content')
+<link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.css" />
+<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script>
 @php
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd($data);
