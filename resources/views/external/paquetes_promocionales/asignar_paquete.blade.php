@@ -81,7 +81,17 @@ Veris - Asignar Promoción
                                 Ingrese su nombres y apellidos.
                             </div>
                         </div>
-                        <div class="col-6 col-md-4 col-lg-3">
+                        <div class="col-6 col-md-4 col-lg-3 box-pais d-none">
+                            <label for="pais" class="form-label fw-medium fs--1">País *</label>
+                            <select class="form-select fs--1 p-3" name="pais" id="pais" required>
+                                <option value="2">CÉDULA</option>
+                                <option value="3">PASAPORTE</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Elegir el país.
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 col-lg-3 box-email">
                             <label for="correoElectronico" class="form-label fw-medium fs--1">Correo electrónico *</label>
                             <input type="email" class="form-control fs--1 p-3" name="correoElectronico" id="correoElectronico" placeholder="" />
                         </div>
@@ -128,6 +138,16 @@ Veris - Asignar Promoción
     let dataCita = JSON.parse(local);
     document.addEventListener("DOMContentLoaded", async function () {
         await drawCard();
+        await obtenerPaises();
+
+        $('body').on('change', '#tipoIdentificacion', function(){
+            let tipoIdentificacion = parseInt($('#tipoIdentificacion option:selected').val());
+            if(tipoIdentificacion == 2){
+                $('.box-pais').addClass('d-none')
+            }else{
+                $('.box-pais').removeClass('d-none')
+            }
+        })
 
         $('body').on('change', '#regalo', function(){
             if($(this).is(':checked')){
@@ -306,9 +326,16 @@ Veris - Asignar Promoción
         let primerApellido = $('#primerApellido').val();
         let segundoApellido = $('#segundoApellido').val();
         let genero = $('#genero').val();
+        let pais = parseInt($('#pais option:selected').val());
+        {{-- if(tipoIdentificacion == 2){
+            $('.box-pais').addClass('d-none')
+        }else{
+            $('.box-pais').removeClass('d-none')
+        } --}}
+
 
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/crearusuariopaquete?tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&primerApellido=${removeAccents(primerApellido)}&segundoApellido=${removeAccents(segundoApellido)}&primerNombre=${removeAccents(primerNombre)}&fechaNacimiento=${fechaNacimiento}&genero=${genero}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/crearusuariopaquete?tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&primerApellido=${removeAccents(primerApellido)}&segundoApellido=${removeAccents(segundoApellido)}&primerNombre=${removeAccents(primerNombre)}&fechaNacimiento=${fechaNacimiento}&genero=${genero}&codPais=${pais}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["dismissAlert"] = true;

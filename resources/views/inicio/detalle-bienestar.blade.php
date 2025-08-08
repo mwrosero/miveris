@@ -372,7 +372,8 @@ Mi Veris - Bienestar
                 $('.x-bottom-legend').removeClass('d-none')
             }
             $.each(data.valores, function(key,value){
-                labels.push(value.fecha)
+                let str = value.fecha.split('/');
+                labels.push(parseInt(str[0]))
                 dataSet.push(value.valorNumerico);
                 let color = colors[0];
                 if(value.metaAlcanzada){
@@ -381,11 +382,22 @@ Mi Veris - Bienestar
                 colorsBar.push(color);
             })
             optX = {
-                grid: { display: false },
-                title: { display: false },
-                ticks: { display: false },
+                ticks: {
+                    callback: function(value, index) {
+                        return index % 4 === 0 ? this.getLabelForValue(value) : '';
+                    },
+                    maxRotation: 0,
+                    minRotation: 0
+                }
             }
+            
+            {{-- optX = { --}}
+                {{-- grid: { display: false }, --}}
+                {{-- title: { display: false }, --}}
+                {{-- ticks: { display: false }, --}}
+            {{-- } --}}
         }else{
+            //Diario
             $.each(data.valores, function(key,value){
                 labels.push(value.hora)
                 dataSet.push(value.valorNumerico);
@@ -397,6 +409,13 @@ Mi Veris - Bienestar
             })
             optX = {
                 grid: { display: false },
+                ticks: {
+                    callback: function(value, index) {
+                        return index % 4 === 0 ? this.getLabelForValue(value) : '';
+                    },
+                    maxRotation: 0,
+                    minRotation: 0
+                }
             }
         }
 
@@ -421,7 +440,7 @@ Mi Veris - Bienestar
                 plugins: {
                     title: {
                         display: true,
-                        text: labelYTop.label,
+                        text: `${data.valorTotal} ${labelYTop.label}`,
                         align: 'start', // Alineado a la izquierda
                         padding: {
                             top: 10,

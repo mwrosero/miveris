@@ -47,22 +47,17 @@ Mi Veris - Bienestar
                                         </div>
                                     </div>
 
-                                    <!-- Calories Burned Card -->
-                                    <div type="button" class="col-12 h-174 bienestar-item" tipo-rel="CALORIAS_GASTADAS">
-                                        <div class="card h-100 waves-effect border-silver-ai" style="background: #296BEF url({{asset('assets/img/svg/calorias.svg')}}) no-repeat bottom right;background-size: 40%;">
+                                    <!-- Steps Card -->
+                                    <div type="button" class="col-12 h-174 bienestar-item" tipo-rel="PASOS">
+                                        <div class="card h-100 waves-effect border-silver-ai bg-veris-ai">
                                             <div class="card-header d-flex align-items-center text-white fs-18 line-height-24 fw-medium p-3">
-                                                Calorías
+                                                Pasos
                                             </div>
-                                            <div class="card-body p-3 mt-auto d-flex align-items-end">
-                                                <div class="mt-5">
-                                                    <h3 class="fs--20 fw-medium line-height-32 mb-0 text-white label_calorias">--</h3>
-                                                    <p class="fs--1 line-height-16 mb-0 fw-normal text-white label_calorias_abreviatura"></p>
-                                                </div>
+                                            <div class="card-body px-3" id="infoPasos">
+                                                
                                             </div>
                                         </div>
                                     </div>
-
-                                    
 
                                     <!-- Sleep Card -->
                                     <div type="button" class="col-12 h-174 bienestar-item" tipo-rel="SUEÑO">
@@ -83,14 +78,17 @@ Mi Veris - Bienestar
                             </div>
                             <div class="col-6">
                                 <div class="row g-3">
-                                    <!-- Steps Card -->
-                                    <div type="button" class="col-12 h-174 bienestar-item" tipo-rel="PASOS">
-                                        <div class="card h-100 waves-effect border-silver-ai bg-veris-ai">
+                                    <!-- Calories Burned Card -->
+                                    <div type="button" class="col-12 h-174 bienestar-item" tipo-rel="CALORIAS_GASTADAS">
+                                        <div class="card h-100 waves-effect border-silver-ai" style="background: #296BEF url({{asset('assets/img/svg/calorias.svg')}}) no-repeat bottom right;background-size: 40%;">
                                             <div class="card-header d-flex align-items-center text-white fs-18 line-height-24 fw-medium p-3">
-                                                Pasos
+                                                Calorías
                                             </div>
-                                            <div class="card-body px-3" id="infoPasos">
-                                                
+                                            <div class="card-body p-3 mt-auto d-flex align-items-end">
+                                                <div class="mt-5">
+                                                    <h3 class="fs--20 fw-medium line-height-32 mb-0 text-white label_calorias">--</h3>
+                                                    <p class="fs--1 line-height-16 mb-0 fw-normal text-white label_calorias_abreviatura"></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -182,7 +180,13 @@ Mi Veris - Bienestar
             $.each(data.data, function(key, value){
                 switch(value.nemonico){
                     case "PASOS":
-                        $('#infoPasos').html(`<div class="progress-circle my-auto mx-auto" data-percentage="${value.valorTotal}">
+                        let meta = parseInt(value.meta.valor);
+                        let valor = value.valorTotal;
+                        let porcentaje = (valor / meta) * 100;
+
+                        // Redondeo al múltiplo de 10 más cercano
+                        let porcentajeFinal = Math.round(porcentaje / 10) * 10;
+                        $('#infoPasos').html(`<div class="progress-circle my-auto mx-auto" data-percentage="${porcentajeFinal}">
                             <span class="progress-left">
                                 <span class="progress-bar"></span>
                             </span>
