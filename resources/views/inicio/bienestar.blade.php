@@ -180,9 +180,12 @@ Mi Veris - Bienestar
             $.each(data.data, function(key, value){
                 switch(value.nemonico){
                     case "PASOS":
-                        let meta = parseInt(value.meta.valor);
-                        let valor = value.valorTotal;
-                        let porcentaje = (valor / meta) * 100;
+                        let porcentaje = 0;
+                        if(value.meta !== null){
+                            let meta = parseInt(value.meta.valor);
+                            let valor = value.valorTotal;
+                            porcentaje = (valor / meta) * 100;
+                        }
 
                         // Redondeo al múltiplo de 10 más cercano
                         let porcentajeFinal = Math.round(porcentaje / 10) * 10;

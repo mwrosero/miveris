@@ -20,15 +20,15 @@ Mi Veris - Bienestar
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24 label-bienestar text-capitalize"></h5>
     </div>
     <section class="p-0">
-        <div class="row g-0 justify-content-center mb-3 d-none">
+        <div class="row g-0 justify-content-center mb-3 box-metas d-none">
             <div class="col-auto p-3 d-flex justify-content-between align-items-center" style="min-width: 375px; max-width: 407px;background: #D4E1FC;">
                 <div class="box-meta">
                     <div class="w-100 mb-2">
-                        Mi meta es: <span class="text-veris-ai">--</span>
+                        Mi meta es: <span class="text-veris-ai valorMeta">--</span>
                     </div>
-                    <div class="btn btn-sm fw-normal fs--1 px-3 py-2 btn-outline-veris-ai text-primary-veris shadow-none bg-white">Registrar</div>
+                    <div class="btn btn-registrar-meta btn-sm fw-normal fs--1 px-3 py-2 btn-outline-veris-ai text-primary-veris shadow-none bg-white">Registrar</div>
                 </div>
-                <img src="{{asset('assets/img/svg/sueno.svg')}}" alt="">
+                <img class="img-banner-indicador" src="" alt="">
             </div>
         </div>
         <div class="row g-0 justify-content-center mt-3">
@@ -104,6 +104,25 @@ Mi Veris - Bienestar
 
     document.addEventListener("DOMContentLoaded", async function () {
         $('.label-bienestar').html(datosBienestar.nombre.toLowerCase())
+        if(datosBienestar.nemonico == "PASOS" || datosBienestar.nemonico == "SUEÑO"){
+            let imgUrl = "{{asset('assets/img/svg/sueno.svg')}}";
+            if(datosBienestar.nemonico == "PASOS"){
+                imgUrl = "{{asset('assets/img/svg/pasos.svg')}}";
+            }
+            $('.img-banner-indicador').attr('src', imgUrl);
+            $('.box-metas').removeClass('d-none');
+            if(datosBienestar.meta !== null){
+                $('.valorMeta').html(datosBienestar.meta.valor)
+            }
+
+            $('.btn-registrar-meta').attr('metaId-rel',datosBienestar.id)
+        }
+
+        $(document).on('click', '.btn-registrar-meta', async function(){
+            let metaId = $(this).attr('metaId-rel');
+            location.href = `/registrar-meta/{{ $params }}`;
+        });
+
         if(datosBienestar.nemonico == "PASOS"){
             $('#pills-tab').html(`<li class="nav-item flex-fill waves-effect" role="presentation">
                     <button class="nav-link px-8 px-md-5 item-rango active" rango-rel="diario" id="pills-diario-tab" data-bs-toggle="pill" data-bs-target="#pills-diario" type="button" role="tab" aria-controls="pills-diario" aria-selected="true">Diario</button>
