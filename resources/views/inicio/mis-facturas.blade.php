@@ -213,9 +213,8 @@ Mi Veris - Mis Convenios
                 })
             }else{
                 elem += `<div class="col-12 p-1 text-center">
-                    <h2 class="fs-24 line-height-28">¿Tienes un seguro médico privado?</h2>
-                    <p class="fs-16 line-height-20">Añade tu seguro médico privado.</p>
-                    <img src="{{asset('assets/img/svg/empty-no-convenios.svg')}}" class="w-75 img-fluid" alt="">
+                    <img src="{{asset('assets/img/svg/empty-no-facturas.svg')}}" class="w-75 img-fluid" alt="">
+                    <h2 class="fs-24 line-height-28">No hay facturas para visualizar</h2>
                 </div>`;
             }
             $('#listado-facturas').html(elem)

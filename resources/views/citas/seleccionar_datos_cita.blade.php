@@ -435,8 +435,7 @@ Elige datos para la Cita
                             await consultarSiEsTratamiento();
                         }
                     }else{
-                        await consultarSiEsTratamiento();
-                        {{-- if(dataCita.convenio.esVerisCare == "S" && data.data.tieneCoberturaVerisCare == "N"){
+                        if(dataCita.convenio.esVerisCare == "S" && data.data.tieneCoberturaVerisCare == "N"){
                             $('#modalVerisCare').modal("show");
                             let str1 = (data.data.mensajeInformacion1 !== null) ? `<p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion1}</p>` : ``;
                             let str2 = (data.data.mensajeInformacion2 !== null) ? `<p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion2}</p>` : ``;
@@ -446,7 +445,7 @@ Elige datos para la Cita
                             `);                    
                         }else{
                             await consultarSiEsTratamiento();
-                        } --}}
+                        }
                     }
                 }
             }else{
@@ -664,7 +663,7 @@ Elige datos para la Cita
 
     async function validarCondicionConvenio(){
         let esVerisCare = (dataCita.convenio.hasOwnProperty('esVerisCare')) ? dataCita.convenio.esVerisCare : 'N';
-        let secuenciaAfiliado = (dataCita.convenio.hasOwnProperty('secuenciaAfiliado')) ? dataCita.convenio.secuenciaAfiliado : '';
+        let secuenciaAfiliado = (dataCita.convenio.hasOwnProperty('secuenciaAfiliado')) ? (dataCita.convenio.secuenciaAfiliado !== null) ? dataCita.convenio.secuenciaAfiliado : '' : '';
         let paramasAditional = ``;
         if(dataCita.hasOwnProperty('especialidad')){
             paramasAditional += `&codigoServicio=${ dataCita.especialidad.codigoServicio }&codigoPrestacion=${ dataCita.especialidad.codigoPrestacion }&tipoModalidad=${ (dataCita.online == "N") ? "PRESENCIAL" : "ONLINE" }`;
@@ -819,6 +818,8 @@ Elige datos para la Cita
             if(data.data.length > 0){
                 dataCita.central = data.data[0];
                 $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}`);
+            }else{
+                $('#btn-central p').html(`Seleccionar`);
             }
         }
     }

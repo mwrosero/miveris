@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/typeahead-js/typeahead.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/vendor/libs/apex-charts/apex-charts.css') }}" /> --}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/swiper/swiper.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
@@ -59,6 +59,10 @@
         const api_url = "{{ \App\Models\Veris::BASE_URL }}";
         const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
         let tipoFlujo = "";
+        window.config = {
+            subdomain: @json(config('app.subdomain')),
+            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "VER_CMV" : "VER_PMF"
+        };
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script> 
@@ -309,7 +313,8 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-    <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script>
+    {{-- <script src="{{ asset('assets/vendor/libs/apex-charts/apexcharts.js') }}"></script> --}}
+    <script src="{{ asset('assets/vendor/libs/chartjs/chartjs.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/datatables/jquery.dataTables.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>

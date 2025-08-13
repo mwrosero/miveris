@@ -287,7 +287,7 @@ class ExternalController extends Controller
         //Realizar cobro y validar para donde redireccionar
         $data = $request->all();
         $dataCita = json_decode(utf8_encode(base64_decode(urldecode($data['dataCita']))));
-
+        // dd($dataCita);
         // dd($dataCita->datosIngresadosFactura);
         // $tokenCita = $data['tokenCita'];
         if($dataCita == null){
@@ -364,6 +364,11 @@ class ExternalController extends Controller
             // dd($dataCita);
             $codigoTransaccion = $dataCita->transaccionVirtual->codigoTransaccion;
             $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$dataCita->preTransaccion->codigoPreTransaccion;
+            if(config('app.subdomain') == "veris"){
+                $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL;
+            }else{
+                $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL_PARAMI;
+            }
             $response = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
                 'data' => [
@@ -376,10 +381,26 @@ class ExternalController extends Controller
                     "emailTarjetahabiente" => $dataCita->datosIngresadosFactura->emailFactura,
                     "codigoSuscripcionTarjeta" => null,
                     "codigoSeguridad" => null,
-                    "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL
+                    "canalOrigenDigital" => $canalOrigenServ
                 ],
                 'method'   => 'POST'
             ]);
+            // dd($response);
+            // echo Veris::BASE_URL.$method;
+            // dump([
+            //         "tipoIdentificacion" => $dataCita->datosIngresadosFactura->codigoTipoIdentificacion,
+            //         "numeroIdentificacion" => $dataCita->datosIngresadosFactura->numeroIdentificacion,
+            //         "codigoTransaccion" => $codigoTransaccion,
+            //         "cardToken" => $data['kushkiToken'],
+            //         "suscripcionToken" => null,
+            //         "nombreTarjetahabiente" => $dataCita->datosIngresadosFactura->primerNombre." ".$dataCita->datosIngresadosFactura->primerApellido,
+            //         "emailTarjetahabiente" => $dataCita->datosIngresadosFactura->emailFactura,
+            //         "codigoSuscripcionTarjeta" => null,
+            //         "codigoSeguridad" => null,
+            //         "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL_PARAMI
+            //     ]);
+            // dump($response);
+            // dd(config('app.subdomain') == "parami");
             // return redirect()->route('payment-error', [
             //     'error' => $responseTV->message,
             //     'showButtonRePay' => true,

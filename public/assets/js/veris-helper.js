@@ -437,7 +437,7 @@ async function verificarCuenta() {
 function actualizarMaxlength(select) {
     let numeroIdentificacionInput = document.getElementById('numeroIdentificacion');
     if (select.value == "3") {
-        numeroIdentificacionInput.setAttribute('maxlength', '13');
+        numeroIdentificacionInput.setAttribute('maxlength', '15');
         numeroIdentificacionInput.type = "text";
         numeroIdentificacionInput.onkeypress = function (event) {
         var charCode = event.charCode;

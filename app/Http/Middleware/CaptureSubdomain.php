@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
 
 class CaptureSubdomain
 {
@@ -20,16 +21,20 @@ class CaptureSubdomain
     {
         $ambiente = env('APP_ENV');
         $host = $request->getHost();
-        $subdomain = explode('.', $host)[1];
-        /*if($ambiente == 'prod'){
-            $subdomain = explode('.', $host)[1];
+        // $subdomain = explode('.', $host)[1];
+        if($host !== "127.0.0.1"){
+            if(Str::contains($host, 'veris')){
+                $subdomain = 'veris';
+            }else{
+                $subdomain = 'parami';
+            }
         }else{
-            $subdomain = explode('.', $host)[2];
-        }*/
-        // dd($subdomain);
+            $subdomain = 'veris';
+        }
+
         Session::forget('subdomain');
-        // Session::put('subdomain', $subdomain);
-        Session::put('subdomain', 'veris');
+        Session::put('subdomain', $subdomain);
+        // Session::put('subdomain', 'parami');
         config(['app.subdomain' => Session::get('subdomain')]);
         // dump(Session::get('subdomain'));
         

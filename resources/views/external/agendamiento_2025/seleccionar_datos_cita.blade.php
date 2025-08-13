@@ -1,11 +1,18 @@
 @extends('template.external')
 @section('title')
+@if(config('app.subdomain') == "parami")
+Parami - Elige datos para la Cita
+@else
 Veris - Elige datos para la Cita
+@endif
 @endsection
 @section('content')
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
+@if(config('app.subdomain') == "parami")
+<link rel="stylesheet" href="{{ asset('assets/css/embudo-parami.css?v=1.0.0')}}">
+@endif
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
 
 @include('external.components.navbar-agendamiento', ['showInfo' => true])
@@ -452,8 +459,7 @@ Veris - Elige datos para la Cita
                             await consultarSiEsTratamiento();
                         }
                     }else{
-                        await consultarSiEsTratamiento();
-                        {{-- if(dataCita.convenio.esVerisCare == "S" && data.data.tieneCoberturaVerisCare == "N"){
+                        if(dataCita.convenio.esVerisCare == "S" && data.data.tieneCoberturaVerisCare == "N"){
                             $('#modalVerisCare').modal("show");
                             let str1 = (data.data.mensajeInformacion1 !== null) ? `<p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion1}</p>` : ``;
                             let str2 = (data.data.mensajeInformacion2 !== null) ? `<p class="fs--1 line-height-16 mb-0">${data.data.mensajeInformacion2}</p>` : ``;
@@ -463,7 +469,7 @@ Veris - Elige datos para la Cita
                             `);                         
                         }else{
                             await consultarSiEsTratamiento();
-                        } --}}
+                        }
                     }
                 }
             }else{
@@ -732,6 +738,7 @@ Veris - Elige datos para la Cita
             }else{
                 dataCita.convenio = {
                     "nombreConvenio": "Ninguno",
+                    "secuenciaAfiliado": '',
                     "permitePago": "S",
                     "permiteReserva": "S",
                     "idCliente": null,
@@ -765,6 +772,7 @@ Veris - Elige datos para la Cita
         }
         let sinConvenio = {
             "nombreConvenio": "Ninguno",
+            "secuenciaAfiliado": '',
             "permitePago": "S",
             "permiteReserva": "S",
             "idCliente": null,
@@ -843,6 +851,8 @@ Veris - Elige datos para la Cita
                 dataCita.central = data.data[0];
                 console.log(dataCita.central)
                 $('#btn-central p').html(`${capitalizarCadaPalabra(dataCita.central.nombreSucursal)}`);
+            }else{
+                $('#btn-central p').html(`Seleccionar`);
             }
         }
     }
@@ -866,6 +876,7 @@ Veris - Elige datos para la Cita
     }
 
     function drawCentrales(dataCentrales){
+        console.log("--------------------------")
         let listaCentrales = $('#listaCentrales');
         let elemento = ``;
         listaCentrales.empty();

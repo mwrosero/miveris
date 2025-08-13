@@ -24,6 +24,21 @@ class DashboardController extends Controller
         return view('inicio.mis-tarjetas');
     }
 
+    public function bienestar(){
+        // dd(Session::get('userData')); 
+        return view('inicio.bienestar');
+    }
+
+    public function detalleBienestar($params){
+        // dd(Session::get('userData')); 
+        return view('inicio.detalle-bienestar')->with('params', $params);
+    }
+
+    public function registroMetaBienestar($params){
+        // dd(Session::get('userData')); 
+        return view('inicio.meta-bienestar')->with('params', $params);
+    }
+
     public function misFacturas(){
         // dd(Session::get('userData')); 
         return view('inicio.mis-facturas');

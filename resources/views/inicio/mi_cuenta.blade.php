@@ -47,16 +47,22 @@ Mi Veris - Cuenta
                     </div>
                     <div class="card-body p-0 bg-white rounded-top-xl p-3">
                         <div class="row text-veris-ai mb-3 d-flex justify-content-between align-items-center g-3">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <a href="/mis-datos" class="w-100 waves-effect p-2 text-decoration-none d-block text-center bg-silver-light rounded-lg">
                                     <i class="fa-solid fa-user mb-2 fs-32 text-veris-ai"></i>
                                     <p class="fs--1 fw-medium mb-0 text-veris-ai">Mis datos</p>
                                 </a>
                             </div>
-                            <div class="col-6">
+                            <div class="col-4">
                                 <a href="/mis-tarjetas" class="w-100 waves-effect p-2 text-decoration-none d-block text-center bg-silver-light rounded-lg">
                                     <i class="fa-solid fa-credit-card mb-2 fs-32 text-veris-ai"></i>
                                     <p class="fs--1 fw-medium mb-0 text-veris-ai">Mis tarjetas</p>
+                                </a>
+                            </div>
+                            <div class="col-4 d-none">
+                                <a href="/bienestar" class="w-100 waves-effect p-2 text-decoration-none d-block text-center bg-silver-light rounded-lg">
+                                    <img src="{{ asset('assets/img/svg/watch-smart.svg') }}" class="mb-2" />
+                                    <p class="fs--1 fw-medium mb-0 text-veris-ai">Bienestar</p>
                                 </a>
                             </div>
                         </div>
