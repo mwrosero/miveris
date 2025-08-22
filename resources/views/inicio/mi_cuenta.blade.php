@@ -59,7 +59,7 @@ Mi Veris - Cuenta
                                     <p class="fs--1 fw-medium mb-0 text-veris-ai">Mis tarjetas</p>
                                 </a>
                             </div>
-                            <div class="col-4 d-none">
+                            <div class="col-4">
                                 <a href="/bienestar" class="w-100 waves-effect p-2 text-decoration-none d-block text-center bg-silver-light rounded-lg">
                                     <img src="{{ asset('assets/img/svg/watch-smart.svg') }}" class="mb-2" />
                                     <p class="fs--1 fw-medium mb-0 text-veris-ai">Bienestar</p>

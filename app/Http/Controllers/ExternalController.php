@@ -134,7 +134,7 @@ class ExternalController extends Controller
             // dd($response);
 
             if($response->code != 200 || !isset($response->data) || $response->data->estaPagada){
-                $message = ( $response->code != 200 || !isset($response->data) ) ? (isset($response->data)) ? $response->message : "No existe información relacionada que pagar" : "El Servicio ya se encuentra pagado";
+                $message = ( $response->code != 200 || !isset($response->data) ) ? (isset($response->data)) ? $response->message : "No existe información relacionada que pagar o el link ha caducado, por favor solicite nuevamente el envío" : "El Servicio ya se encuentra pagado";
                 return view('external.pasarela.error')
                         ->with('showButtonRePay', false)
                         ->with('error',$message);

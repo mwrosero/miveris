@@ -3,6 +3,9 @@
 Mi Veris - Registrar Meta
 @endsection
 @section('content')
+<link rel="stylesheet" href="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.css" />
+<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/vendor/libs/toastr/toastr.js"></script>
+
 <div style="height: 40px; background-color: #F3F4F5; display: flex; align-items: center;">
     <a href="javascript:history.back()" class="text-decoration-none d-block">
         <div class="d-flex align-items-center justify-content-center" style="width: 87px; margin-left: 5px;">
@@ -81,6 +84,7 @@ Mi Veris - Registrar Meta
 
     async function guardarMeta(){
         let valor = $('#valorMeta option:selected').val();
+        let valorStr = $('#valorMeta option:selected').html();
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/fit/pacientes/{{ Session::get('userData')->numeroIdentificacion }}/meta`;
         args["method"] = "POST";
@@ -93,6 +97,17 @@ Mi Veris - Registrar Meta
 
         const data = await call(args);
         console.log(data);
+        if(data.code == 200){
+            datosBienestar.meta = {
+                "id": valor,
+                "descripcion": null,
+                "valor": valorStr
+            }
+            localStorage.setItem('beneficio-{{ $params }}', JSON.stringify(datosBienestar));
+            showMessage('success','Atención','Meta registrada exitosamente')
+        }else{
+            showMessage('success','Atención',data.message)
+        }
     }
 
     async function getMetas(){
@@ -105,7 +120,8 @@ Mi Veris - Registrar Meta
         if(data.code == 200){
             let elem = ``;
             $.each(data.data, function(key, value){
-                elem += `<option value="${value.id}">${value.valor}</option>`;
+                let esSelected = (value.id == datosBienestar.meta.id) ? 'selected' : '';
+                elem += `<option ${esSelected} value="${value.id}">${value.valor}</option>`;
             })
             $('#valorMeta').html(elem);
         }

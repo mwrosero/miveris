@@ -72,8 +72,8 @@ Veris - Detalle de Citas
     <section class="p-0">
         <div class="row g-0">
             <div class="col-12 col-md-8 offset-md-2 px-0" style="min-width: 375px;">
-                <h5 class="my-auto py-2 pt-4 fs-20 ps-3 line-height-24 text-primary-veris fw-bold label-nombre-paciente text-capitalize">Paciente: </h5>
-                <p class="fs-18 line-height-20 ps-3 mb-0">Revisa tus datos</p>
+                <h5 class="my-auto py-2 pt-4 fs-20 px-3 line-height-24 text-primary-veris fw-bold label-nombre-paciente text-capitalize">Paciente: </h5>
+                <p class="fs-18 line-height-20 px-3 mb-0">Revisa tus datos</p>
             </div>
         </div>
     </section>
