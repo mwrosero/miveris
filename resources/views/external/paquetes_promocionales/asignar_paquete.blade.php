@@ -21,7 +21,7 @@ Veris - Asignar Promoción
         <div class="col-12 col-md-7 col-lg-9">
             <div class="card bg-transparent shadow-none">
                 <div class="card-body p-0 p-md-3">
-                    <form class="row g-3 form-factura needs-validation" novalidate>
+                    <form class="row g-3 form-factura">
                         <div class="col-12 mt-0">
                             <p class="text-primary-veris fs--16 line-height-20 fw-medium mb-1 mt-5 mt-md-0">¿Quién usará el Paquete?</p>
                             <span class="fs--1 line-height-16 mb-0">La información solicitada a continuación es referente a la persona a la que estará destinado el paquete.</span>
@@ -46,6 +46,7 @@ Veris - Asignar Promoción
                         <div class="col-6 col-md-4 col-lg-3">
                             <label for="genero" class="form-label fw-medium fs--1">Género *</label>
                             <select class="form-select fs--1 p-3" name="genero" id="genero" required>
+                                <option value="" disabled selected hidden>Seleccionar</option>
                                 <option value="M">MASCULINO</option>
                                 <option value="F">FEMENINO</option>
                             </select>
@@ -84,8 +85,7 @@ Veris - Asignar Promoción
                         <div class="col-6 col-md-4 col-lg-3 box-pais d-none">
                             <label for="pais" class="form-label fw-medium fs--1">País *</label>
                             <select class="form-select fs--1 p-3" name="pais" id="pais" required>
-                                <option value="2">CÉDULA</option>
-                                <option value="3">PASAPORTE</option>
+                                
                             </select>
                             <div class="invalid-feedback">
                                 Elegir el país.
@@ -105,7 +105,7 @@ Veris - Asignar Promoción
                         </div>
                         <div class="col-12 col-md-8 col-lg-9  box-regalo d-none">
                             <label for="nombreEmisor" class="form-label fw-medium fs--1">Tu nombre:*</label>
-                            <input type="text" class="form-control fs--1 p-3" name="nombreEmisor" id="nombreEmisor" placeholder="Tu nombre" />
+                            <input type="text" class="form-control fs--1 p-3" name="nombreEmisor" id="nombreEmisor" placeholder="" />
                         </div>
                         <!--div class="col-12 col-md-6 box-regalo d-none">
                             <label for="emailEmisor" class="form-label fw-medium fs--1">Correo de quien recibe:*</label>
@@ -113,7 +113,7 @@ Veris - Asignar Promoción
                         </div-->
                         <div class="col-12 box-regalo d-none">
                             <label for="mensaje" class="form-label fw-medium fs--1">Escribe tu mensaje:*</label>
-                            <textarea name="mensaje" id="mensaje" class="form-control fs--1 p-3" placeholder="Escribe aquí tu mensaje o dedicatoria"></textarea>
+                            <textarea name="mensaje" id="mensaje" class="form-control fs--1 p-3" placeholder=""></textarea>
                         </div>
                         <div class="col-12 col-md-4 col-lg-3 ms-auto align-self-end">
                             <!-- Button trigger modal -->
@@ -206,6 +206,7 @@ Veris - Asignar Promoción
         const data = await call(args);
         if(data.code == 200){
             let codigoReserva = data.data.numeroOrden;
+            showMessage('success','Paquete preventivo asignado','Redireccionando al pago.')
             let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }&canalOrigen=${_canalOrigen}`;
             // let url = `/external/payment?tipoArticulo=PAQUETE&codArticulo=${codigoReserva}&tipoIdentificacion=${ jQuery('#tipoIdentificacion').val() }&numeroIdentificacion=${ jQuery('#numeroIdentificacion').val() }`;
             fbq('track', 'AddToCart');
