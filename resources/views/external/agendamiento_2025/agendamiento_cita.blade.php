@@ -120,6 +120,14 @@ Veris - Citas
     }
 </script>
 <style>
+	body {
+	  min-height: 100vh;
+	  min-height: -webkit-fill-available;
+	}
+	html {
+	  height: -webkit-fill-available;
+	}
+
 	input:placeholder-shown,
 	select:invalid{
 	  border: 1px solid #E7E9EC !important;
