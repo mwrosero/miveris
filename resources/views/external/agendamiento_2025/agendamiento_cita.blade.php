@@ -157,7 +157,7 @@ Veris - Citas
 	}
 	@media only screen and (max-width: 600px) {
 		.contenedor-login{
-			min-height: 90vh !important;
+			min-height: 80vh !important;
 		}
 	}
 </style>
