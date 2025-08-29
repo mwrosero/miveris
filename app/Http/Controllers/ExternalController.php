@@ -302,6 +302,13 @@ class ExternalController extends Controller
             if(isset($data['executionId'])){
                 $executionId = $data['executionId'];
             }
+
+            if(config('app.subdomain') == "veris"){
+                $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL;
+            }else{
+                $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL_PARAMI;
+            }
+
             $method = '/'.Veris::BASE_WAR.'/v1/facturacion/crear_transaccion_virtual?idPreTransaccion='.$codigoPreTransaccion;
             $responseTV = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
@@ -321,7 +328,7 @@ class ExternalController extends Controller
                     "plataformaOrigen" => "WEB",
                     "tipoBoton" => "KUSHKI",
                     "executionId" => $executionId,
-                    "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL,
+                    "canalOrigenDigital" => $canalOrigenServ,
                     "origenInvocacion" => ( isset($urlParams['origenInvocacion']) ) ? $urlParams['origenInvocacion'] : Veris::CANAL_ORIGEN_EXTERNAL
                 ],
                 'method'   => 'POST'
@@ -343,7 +350,7 @@ class ExternalController extends Controller
                         "emailTarjetahabiente" => $data['mailFact'],
                         "codigoSuscripcionTarjeta" => null,
                         "codigoSeguridad" => null,
-                        "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL
+                        "canalOrigenDigital" => $canalOrigenServ
                     ],
                     'method'   => 'POST'
                 ]);
@@ -574,6 +581,12 @@ class ExternalController extends Controller
                 $codigoPreTransaccion = $dataCita->preTransaccion->codigoPreTransaccion;
                 $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$codigoPreTransaccion;
 
+                if(config('app.subdomain') == "veris"){
+                    $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL;
+                }else{
+                    $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL_PARAMI;
+                }
+
                 $response = Veris::call([
                     'endpoint' => Veris::BASE_URL.$method,
                     'data' => [
@@ -586,7 +599,7 @@ class ExternalController extends Controller
                         "emailTarjetahabiente" => $dataCita->facturacion->datosFactura->email,
                         "codigoSuscripcionTarjeta" => null,
                         "codigoSeguridad" => null,
-                        "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL
+                        "canalOrigenDigital" => $canalOrigenServ
                     ],
                     'method'   => 'POST'
                 ]);
