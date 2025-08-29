@@ -26,7 +26,7 @@ Veris - Citas
 	<section class="p-0 px-md-3">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-auto d-flex flex-column" style="height: 90vh; min-width: 375px;">
+                <div class="col-auto d-flex flex-column contenedor-login" style="height: 90vh; min-width: 375px;">
                 	<div>
 	                	<h5 class="my-auto py-2 fs-20 line-height-24 text-primary-veris fw-bold">{{ __('Registrar paciente') }}</h5>
 	                	<p class="fs-18 line-height-20 mb-4">Ingresa el número de identificación del paciente</p>
@@ -120,6 +120,14 @@ Veris - Citas
     }
 </script>
 <style>
+	body {
+	  min-height: 100vh;
+	  min-height: -webkit-fill-available;
+	}
+	html {
+	  height: -webkit-fill-available;
+	}
+
 	input:placeholder-shown,
 	select:invalid{
 	  border: 1px solid #E7E9EC !important;
@@ -146,6 +154,11 @@ Veris - Citas
 	input:not(:placeholder-shown),
 	select:valid{
 	  font-weight: 500 !important;
+	}
+	@media only screen and (max-width: 600px) {
+		.contenedor-login{
+			height: 85vh !important;
+		}
 	}
 </style>
 @endsection

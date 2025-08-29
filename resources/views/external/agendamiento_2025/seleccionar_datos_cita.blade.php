@@ -110,8 +110,8 @@ Veris - Elige datos para la Cita
     <section class="p-0">
         <div class="row g-0 justify-content-center">
             <div class="col-auto px-0" style="min-width: 375px;">
-                <h5 class="my-auto py-2 pt-4 fs-20 line-height-24 text-primary-veris fw-bold label-nombre-paciente text-capitalize">Paciente: </h5>
-                <p class="fs-18 line-height-20 mb-3">Ingresa los datos para la cita</p>
+                <h5 class="my-auto py-2 pt-4 fs-20 line-height-24 text-primary-veris fw-bold label-nombre-paciente text-capitalize px-3">Paciente: </h5>
+                <p class="fs-18 line-height-20 mb-3 px-3">Ingresa los datos para la cita</p>
             </div>
         </div>
     </section>
