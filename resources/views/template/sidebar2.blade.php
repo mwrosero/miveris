@@ -42,7 +42,7 @@
         <li class="menu-item {{ Route::is('promociones.promociones') || Route::is('promociones.*')  ? 'active' : '' }}">
             <a href="{{route('promociones.promociones')}}" class="menu-link fs--1 text-white">
                 <div class="svg-container svg-promociones me-3"></div>
-                <div data-i18n="Promociones compradas">Promociones compradas</div>
+                <div data-i18n="Paquetes Preventivos">Paquetes Preventivos</div>
             </a>
         </li>
         <li class="menu-item {{ Route::is('domicilio') || Route::is('domicilio.*')  ? 'active' : '' }}">

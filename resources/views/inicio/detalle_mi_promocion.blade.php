@@ -54,6 +54,13 @@ Mi Veris - Citas - Detalle
                 </div>
             </div>
         </div>
+        <div class="mb-4">
+            <div class="d-flex justify-content-center mb-3 px-3">
+                <div class="col-12 col-md-6 col-lg-3 text-center">
+                    <div class="btn btn-sm fs--1 w-100 ms-2 m-0 line-height-16 btn-outline-veris-ai verRide">Ver factura</div>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 @endsection
@@ -67,7 +74,7 @@ Mi Veris - Citas - Detalle
         $('#tituloPromocionPendiente').html('Caducado');
     }
     document.addEventListener("DOMContentLoaded", async function () {
-
+        // console.log(dataCita.paquete);
         $('.feature-img-promocion').css('background', 'url("'+dataCita.paquete.urlImagen+'") no-repeat center');
         /*$('.title-promocion').html(capitalizarCadaPalabra(dataCita.paquete.nombreComercialPaquete));
         $('.nombrePaciente').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaciente));
@@ -89,6 +96,10 @@ Mi Veris - Citas - Detalle
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
         })
+
+        $(document).on('click', '.verRide', function(){
+            descargarDocumentoRide();
+        });
 
         $('body').on('click','.btn-agendar-item', function(){
             let promocion = JSON.parse($(this).attr("promocion-rel"));
@@ -170,14 +181,41 @@ Mi Veris - Citas - Detalle
         return elem;
     }
 
-    async function obtenerDetallePaquetePromocional(){
+    async function descargarDocumentoRide(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=1&secuenciaPaquetePaciente=${dataCita.paquete.secuenciaPaquetePaciente}`;
+
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/obtenerRide?numeroTransaccion=${dataCita.detallePaquete.numeroTransaccion}&canalOrigen=${_canalOrigen}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+        } catch (error) {
+            console.error('Error al obtener el RIDE:', error);
+        }
+    }
+
+    async function obtenerDetallePaquetePromocional(){
+        let secuenciaPaquetePaciente;
+        if(dataCita.hasOwnProperty('secuenciaPaquetePaciente')){
+            secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
+        }else{
+            secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente
+        }
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=1&secuenciaPaquetePaciente=${secuenciaPaquetePaciente}`;
+        console.log(args["endpoint"])
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
         // console.log(data);
         if (data.code == 200){
+            dataCita.detallePaquete = data.data;
             if(data.data.pendientes.length > 0){
                 $('.box-llamada').html(`<i class="fa-solid fa-circle-info text-primary-veris line-height-16 fs--16 me-2"></i><div>Para agendar tus servicios llámanos al <span>${data.data.numeroContactCenter}</span>.</div><a href="tel:+593${data.data.numeroContactCenter}" class="btn btn-sm btn-primary-veris fw-medium fs--16 line-height-16 px-3 py-2 shadow-none ms-2 d-block d-md-none" style="border-radius:8px;">Llamar</a>`);
                 $('.fechaValidez').removeClass('d-none');
@@ -193,13 +231,17 @@ Mi Veris - Citas - Detalle
                     if(detalles.esAgendable){
                         mostrarBoxLlamada = false;
                     }
+                    let detalleRealizadas = `<p class="fs--1">Realizadas: <span style="color: #00C853">${detalles.cantidad}</span></p>`;
+                    if(detalles.esAgrupado){
+                        detalleRealizadas = `<p class="fs--1">${detalles.descripcionServicio}</p>`;
+                    }
                     elemPendiente += `<div class="col-12 col-md-6">
                         <div class="card">
                             <div class="card-body p--2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                 </div>
-                                <p class="fs--1">Realizadas: <span style="color: #00C853">${detalles.cantidad}</span></p>
+                                ${detalleRealizadas}
                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                     <div class="avatar-sm me-2">
                                         <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">

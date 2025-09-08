@@ -75,7 +75,8 @@ class DashboardController extends Controller
     }
 
     public function listaPromociones() {
-        return view('inicio.promociones');
+        // return view('inicio.promociones');
+        return view('inicio.paquetes_preventivos');
     }
 
     public function comprarPromociones() {
@@ -87,7 +88,8 @@ class DashboardController extends Controller
     }
 
     public function misPromociones() {
-        return view('inicio.mis-promociones');
+        // return view('inicio.mis-promociones');
+        return view('inicio.mis-promociones-2025');
     }
 
     public function promocion() {
@@ -95,7 +97,8 @@ class DashboardController extends Controller
     }
 
     public function promocionDetalle($params) {
-        return view('inicio.detalle_promocion')->with('params',$params);
+        // return view('inicio.detalle_promocion')->with('params',$params);
+        return view('inicio.detalle_promocion_2025')->with('params',$params);
     }
 
     public function miPromocionDetalle($params) {

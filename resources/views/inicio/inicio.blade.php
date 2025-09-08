@@ -806,6 +806,8 @@ Mi Veris - Inicio
                         let attrAditional = `url-rel=''`;
                         if(v.nombreTipoObjeto == "BANNER_CUIDATE_X_MI"){
                             attrAditional = `type='button' url-rel='/comprar-promociones?s=Cuidate por mi'`;
+                        }else if(v.nombreTipoObjeto == "BANNER_BIENESTAR"){
+                            attrAditional = `type='button' url-rel='/bienestar'`;
                         }
                         elem += `<div class="swiper-slide">
                             <div class="card h-100 d-flex justify-content-center align-items-between shadow-none border-0 link-item-banner" ${attrAditional}>

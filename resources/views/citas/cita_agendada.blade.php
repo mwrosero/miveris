@@ -4,8 +4,7 @@ Mi Veris - Cita agendada
 @endsection
 @section('content')
 @php
-$data = json_decode(utf8_encode(base64_decode(urldecode($params))));
-// dd($data);
+    $tokenCita = base64_encode(uniqid());
 @endphp
 <div class="flex-grow-1 container-p-y pt-0">
     <section class="p-3 mb-3">
@@ -58,13 +57,14 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                 <img src="{{asset('assets/img/svg/visto.svg')}}" alt="Promoción comprada">
                             </div>
                             <h3 class="fs--28 line-height-36 fw-medium mb-4">Promoción comprada</h3>
-                            <p style="color: #0A2240;" class="fs--16 line-height-20">Tu promoción se compró exitosamente.<br>¡Nos vemos pronto!</p>
+                            <p style="color: #0A2240;" class="fs--16 line-height-20">Ya puedes usar tu paquete</p>
                             <p class="fs--16 line-height-20 mb-5" id="infoAgendar"></p>
                             <div class="d-flex justify-content-center align-items-center">
                                 <img src="{{ asset('assets/img/svg/paquete-comprado.svg') }}"  alt="Promoción comprada">
                             </div>
                             <div class="mt-5">
-                                <a href="/mis-promociones" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2">Ir a mis promociones</a>
+                                {{-- <a href="/mis-promociones" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2">Ir a mis promociones</a> --}}
+                                <div type="button" url-rel="/mi-promocion/detalle/{{ $tokenCita }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2 btn-ver-paquete">Ver paquete preventivo</div>
                                 <a href="/" class="btn btn-sm fs--18 line-height-24 px-4 py-3 w-100 w-md-75 border-0 text-primary-veris shadow-none">Volver al inicio</a>
                             </div>
                         </div>
@@ -130,6 +130,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         // convertirImagenABase64(urlImagen, function(base64Imagen) {
         //     imagenBase64 = base64Imagen
         // });
+
+        $('body').on('click', '.btn-ver-paquete', async function(){
+            let url = $(this).attr('url-rel');
+            //let infoPaquete = await consultarDetallesPaquete();
+            //infoPaquete.secuenciaPaquetePaciente = dataCita.facturacion.detalleServicio.detallePaquetes[0].secuenciaPaquetePaciente;
+            dataCita.paquete.nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido}`
+            let data = {
+                "secuenciaPaquetePaciente": dataCita.facturacion.detalleServicio.detallePaquetes[0].secuenciaPaquetePaciente,
+                "paquete": dataCita.paquete,
+                "paciente": dataCita.paciente
+            };
+            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
+            location.href = url;
+        })
 
         $('body').on('click', '.btnShare', async function(){
             try {
@@ -237,6 +251,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             }
         }
     });
+
+    async function consultarDetallesPaquete(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=${dataCita.paquete.codigoEmpresaPaquete}&secuenciaPaquetePaciente=${dataCita.facturacion.detalleServicio.detallePaquetes[0].secuenciaPaquetePaciente}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+        return data.data;
+    }
 
     function dataURItoBlob(dataURI) {
         var byteString = atob(dataURI.split(',')[1]);
