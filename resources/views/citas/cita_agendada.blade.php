@@ -64,7 +64,7 @@ Mi Veris - Cita agendada
                             </div>
                             <div class="mt-5">
                                 {{-- <a href="/mis-promociones" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2">Ir a mis promociones</a> --}}
-                                <div type="button" url-rel="/mi-promocion/detalle/{{ $tokenCita }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2 btn-ver-paquete">Ver paquete preventivo</div>
+                                <div type="button" url-rel="/mi-promocion/detalle/{{ $tokenCita }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2 btn-ver-paquete"></div>
                                 <a href="/" class="btn btn-sm fs--18 line-height-24 px-4 py-3 w-100 w-md-75 border-0 text-primary-veris shadow-none">Volver al inicio</a>
                             </div>
                         </div>
@@ -130,6 +130,14 @@ Mi Veris - Cita agendada
         // convertirImagenABase64(urlImagen, function(base64Imagen) {
         //     imagenBase64 = base64Imagen
         // });
+
+        if(dataCita.hasOwnProperty('paquete')){
+            if(dataCita.detallePaquete.esAgendable){
+                $('.btn-ver-paquete').html(`Agendar ahora`)
+            }else{
+                $('.btn-ver-paquete').html(`Ver paquete preventivo`)
+            }
+        }
 
         $('body').on('click', '.btn-ver-paquete', async function(){
             let url = $(this).attr('url-rel');

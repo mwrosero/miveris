@@ -110,12 +110,20 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     // consultar lista de convenios
     async function consultarConvenios(event) {
         if(typeof dataCita.paquete !== 'undefined'){
-            console.log(2)
             let dataRel = $(event.currentTarget).data('rel');
-            let url = '/citas-datos-facturacion/';
-            dataCita.paciente = dataRel;
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-            location.href = url + "{{ $params }}";
+            // console.log(dataRel.genero, dataCita.paquete.genero)
+            if(dataRel.genero === dataCita.paquete.genero){
+                let url = '/citas-datos-facturacion/';
+                dataCita.paciente = dataRel;
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                location.href = url + "{{ $params }}";
+            }else{
+                $('#modalErrorSamePage .modal-title').html(`Lo sentimos`)
+                let generoPaquete = (dataCita.paquete.genero) ? `Femenino` : `Masculino`;
+                $('#mensaje_400_same_page').html(`Este paquete está diseñado exclusivamente para pacientes de sexo [${generoPaquete}]. Por favor, selecciona otro paquete o cambia el paciente seleccionado.`);
+                var myModal = new bootstrap.Modal(document.getElementById('modalErrorSamePage'));
+                myModal.show();
+            }
             return;
         }
 

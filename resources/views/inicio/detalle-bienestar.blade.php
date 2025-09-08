@@ -360,7 +360,7 @@ Mi Veris - Bienestar
         }else if(datosBienestar.nemonico == "CALORIAS_GASTADAS"){
             return {
                 label: '',
-                unit: 'h'
+                unit: ''
             };
         }
     }
