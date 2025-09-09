@@ -78,7 +78,7 @@ Mi Veris - Citas - Mis Promociones
         </div>
         <div class="row justify-content-center mt-2">
             <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
-                <div class="row gy-3 mt-0" id="contenedorPromociones">
+                <div class="row gy-3 mt-0 w-100" id="contenedorPromociones">
                 </div>
             </div>
         </div>

@@ -112,7 +112,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(typeof dataCita.paquete !== 'undefined'){
             let dataRel = $(event.currentTarget).data('rel');
             // console.log(dataRel.genero, dataCita.paquete.genero)
-            if(dataRel.genero === dataCita.paquete.genero){
+            if(dataRel.genero === dataCita.paquete.genero || dataCita.paquete.genero === "A"){
                 let url = '/citas-datos-facturacion/';
                 dataCita.paciente = dataRel;
                 localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));

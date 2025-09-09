@@ -54,7 +54,7 @@ Mi Veris - Citas - Detalle
                 </div>
             </div>
         </div>
-        <div class="mb-4">
+        <div class="mb-4 box-factura d-none">
             <div class="d-flex justify-content-center mb-3 px-3">
                 <div class="col-12 col-md-6 col-lg-3 text-center">
                     <div class="btn btn-sm fs--1 w-100 ms-2 m-0 line-height-16 btn-outline-veris-ai verRide">Ver factura</div>
@@ -81,6 +81,12 @@ Mi Veris - Citas - Detalle
         $('.fechaValidez').html(validarCaducidad())*/
         //consultarGrupoFamiliar();
         await obtenerDetallePaquetePromocional();
+
+        console.log(dataCita.paquete.esArchivado)
+
+        if(!dataCita.paquete.esArchivado){
+            $('.box-factura').removeClass('d-none')
+        }
 
         $('body').on('click','.btn-detalle', function(){
             let url = '/detalle/item/';

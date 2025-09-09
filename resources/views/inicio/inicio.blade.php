@@ -759,7 +759,8 @@ Mi Veris - Inicio
             location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
         });
 
-        $(document).on('click', '.link-item-banner', function(){
+        $('body').on('click', '.link-item-banner', function(){
+            console.log('Banner click')
             let url = $(this).attr('url-rel');
             if(url != ''){
                 location.href = url;
@@ -805,14 +806,14 @@ Mi Veris - Inicio
                         tieneSlides = true;
                         let attrAditional = `url-rel=''`;
                         if(v.nombreTipoObjeto == "BANNER_CUIDATE_X_MI"){
-                            attrAditional = `type='button' url-rel='/comprar-promociones?s=Cuidate por mi'`;
+                            attrAditional = `type='button' url-rel='/promociones?s=Cuidate por mi'`;
                         }else if(v.nombreTipoObjeto == "BANNER_BIENESTAR"){
                             attrAditional = `type='button' url-rel='/bienestar'`;
                         }
                         elem += `<div class="swiper-slide">
-                            <div class="card h-100 d-flex justify-content-center align-items-between shadow-none border-0 link-item-banner" ${attrAditional}>
+                            <div class="card d-block h-100 d-flex justify-content-center align-items-between shadow-none border-0">
                                 <div class="row h-100 g-0 justify-content-between align-items-center">
-                                    <div class="col-12">
+                                    <div class="col-12 link-item-banner" ${attrAditional}>
                                         <img src="${v.valor}" class="img-fluid" alt=""  >
                                     </div>
                                 </div>
@@ -1649,6 +1650,11 @@ Mi Veris - Inicio
 
 </script>
 <style>
+    .link-item-banner {
+        cursor: pointer;
+        pointer-events: auto;
+        z-index: 10;
+    }
     .box-container-icon{
         border: 1px solid #D4E1FC
     }
