@@ -128,7 +128,7 @@ Mi Veris - Citas - Detalle
         $('#nombrePaquete').html(capitalizarElemento(dataCita.paquete.nombreComercialPaquete));
 
         let descripcion = dataCita.paquete.descripcionPaquete.replace(/\u00A0/g, " ").replace(/\n/g, "<br>");
-        let centrales = `<br><br><b class="fs--16 line-height-20">Puedes realizarlo en las centrales: </b><br>
+        {{-- let centrales = `<br><br><b class="fs--16 line-height-20">Puedes realizarlo en las centrales: </b><br>
             <div class='text-capitalize'>`
         let centralesArr = []
         $.each(dataCita.paquete.sucursalesAsignacion, function(key, value){
@@ -137,7 +137,8 @@ Mi Veris - Citas - Detalle
         centrales += centralesArr.join(', ');
         centrales += `.</div>`;
 
-        $('#descripcionPaquete').html(descripcion + centrales);
+        $('#descripcionPaquete').html(descripcion + centrales); --}}
+        $('#descripcionPaquete').html(descripcion);
 
         $('.imagenPaquete').html(`<img src="${dataCita.paquete.urlImagen}" class="img-fluid rounded-3 w-100" alt="${dataCita.paquete.nombrePaquete}" />`);
         if(dataCita.paquete.porcentajeDescuento > 0){
