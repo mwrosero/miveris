@@ -89,9 +89,15 @@ Mi Veris - Citas - Detalle
         }
 
         $('body').on('click','.btn-detalle', function(){
+            let secuenciaPaquetePaciente;
+            if(dataCita.hasOwnProperty('secuenciaPaquetePaciente')){
+                secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
+            }else{
+                secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente
+            }
             let url = '/detalle/item/';
             let data = {
-                "secuenciaPaquetePaciente": dataCita.paquete.secuenciaPaquetePaciente,
+                "secuenciaPaquetePaciente": secuenciaPaquetePaciente,
                 "detalle": JSON.parse($(this).attr("data-rel")),
                 "detalleItemPaquete": JSON.parse($(this).attr("data-rel"))[0],
                 "promocion": JSON.parse($(this).attr("promocion-rel")),
@@ -126,7 +132,14 @@ Mi Veris - Citas - Detalle
                 url = '/citas-elegir-fecha-doctor/';
             }
 
-            dataCita.secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente;
+            let secuenciaPaquetePaciente;
+            if(dataCita.hasOwnProperty('secuenciaPaquetePaciente')){
+                secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
+            }else{
+                secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente
+            }
+
+            dataCita.secuenciaPaquetePaciente = secuenciaPaquetePaciente;
             dataCita.nombrePaciente = dataCita.paquete.nombrePaciente;
             dataCita.paciente = dataCita.paciente;
             dataCita.promocion = promocion;
@@ -182,7 +195,8 @@ Mi Veris - Citas - Detalle
         if(dataCita.paquete.esCaducada){
             elem += `<span class="text-danger">${dataCita.paquete.fechaCaducidad} | Caducado</span>`;
         }else{
-            elem += `Válida hasta: <span class="text-primary-veris">${dataCita.paquete.fechaCaducidad}</span>`;
+            let fechaCaducidad = (dataCita.paquete.fechaCaducidad !== null) ? dataCita.paquete.fechaCaducidad : dataCita.detallePaquete.fechaCaducidad;
+            elem += `Válida hasta: <span class="text-primary-veris">${fechaCaducidad}</span>`;
         }
         return elem;
     }

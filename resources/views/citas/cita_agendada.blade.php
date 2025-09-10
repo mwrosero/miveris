@@ -54,13 +54,13 @@ Mi Veris - Cita agendada
                         <!-- Paquete comprado -->
                         <div class="content-paquete d-none">
                             <div class="avatar avatar-lg mx-auto mb-4">
-                                <img src="{{asset('assets/img/svg/visto.svg')}}" alt="Promoción comprada">
+                                <img src="{{asset('assets/img/svg/visto.svg')}}" alt="Paquete comprado">
                             </div>
-                            <h3 class="fs--28 line-height-36 fw-medium mb-4">Promoción comprada</h3>
-                            <p style="color: #0A2240;" class="fs--16 line-height-20">Ya puedes usar tu paquete</p>
+                            <h3 class="fs--28 line-height-36 fw-medium mb-4">Paquete comprado</h3>
+                            <p style="color: #0A2240;" class="fs--16 line-height-20">Encuéntralo en la sección Paquetes<br>preventivos ¡Utilízalo ahora!</p>
                             <p class="fs--16 line-height-20 mb-5" id="infoAgendar"></p>
                             <div class="d-flex justify-content-center align-items-center">
-                                <img src="{{ asset('assets/img/svg/paquete-comprado.svg') }}"  alt="Promoción comprada">
+                                <img src="{{ asset('assets/img/svg/paquete-comprado.svg') }}"  alt="Paquete comprado">
                             </div>
                             <div class="mt-5">
                                 {{-- <a href="/mis-promociones" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2">Ir a mis promociones</a> --}}
