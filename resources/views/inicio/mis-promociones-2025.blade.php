@@ -76,6 +76,18 @@ Mi Veris - Citas - Mis Promociones
                 </div> --}}
             </div>
         </div>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 d-flex justify-content-between align-items-center">
+                <div class="row mt-0 w-100">
+                    <div class="col-12 my-3">
+                        <div class="input-group search-box" style="border: 1px solid #D0D3D9">
+                            <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
+                            <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" value="{{ request()->query('s') }}" placeholder="Busca tus promociones" aria-describedby="search" style="border-radius: 8px;" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row justify-content-center mt-2">
             <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
                 <div class="row gy-3 mt-0 w-100" id="contenedorPromociones">
@@ -98,6 +110,23 @@ Mi Veris - Citas - Mis Promociones
         $('#pills-tab').removeClass("invisible");
 
         $('.box-fechas-filtro').remove();
+
+        $('body').on('input', '#buscarPorPromocion', function () {
+            var value = $(this).val().toLowerCase();
+            console.log("Valor de búsqueda:", value);
+            
+            $("#contenedorPromociones .item-promocion").each(function () {
+                let text = $(this).find('.title-promocion-mis-compras').text().toLowerCase(); // Obtiene el texto dentro de <p>
+                console.log("Texto del elemento:", text);
+                
+                // Verificar si el texto contiene el valor de búsqueda
+                if (text.indexOf(value) > -1 || value === "") {
+                    $(this).removeClass("d-none"); // Mostrar el elemento
+                } else {
+                    $(this).addClass("d-none"); // Ocultar el elemento
+                }
+            });
+        });
 
         $('body').on('click','.page-promociones', function(){
             let section = $(this).attr('data-rel');
@@ -248,6 +277,7 @@ Mi Veris - Citas - Mis Promociones
     }
 
     async function obtenerPaquetesPromocionales(tipoFiltro){
+        $('#buscarPorPromocion').val('')
         var paciente = JSON.parse($('input[name="listGroupRadios"]:checked').attr("data-rel"));
         // let idPaciente = "";
         // if(parseInt({{ Session::get('userData')->numeroPaciente }}) !== paciente.numeroPaciente){
@@ -267,7 +297,7 @@ Mi Veris - Citas - Mis Promociones
             if(data.data.tienePermisoAdmin){
                 $.each(data.data.items, function(key, value){
                     if(tipoFiltro == "ASIGNADO" || tipoFiltro == "ARCHIVADAS"){
-                        elem += `<div class="col-md-6 mt-0 mb-3" id="promocion-${value.secuenciaPaquetePaciente}">
+                        elem += `<div class="col-md-6 mt-0 mb-3 item-promocion" id="promocion-${value.secuenciaPaquetePaciente}">
                             <div class="card m-1 mt-0 mb-0">
                                 <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
                                 </div>
@@ -276,24 +306,25 @@ Mi Veris - Citas - Mis Promociones
                                     <p class="fs--2 mb-1 text-nowrap overflow-hidden text-truncate">${capitalizarCadaPalabra(value.nombrePaciente)}</p>
                                     <p class="fs--2 mb-1">Válido hasta: ${ validarCaducidad(value.fechaCaducidad, value.esCaducada) }</p>
                                 </div>
-                                <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0">`;
+                                <div class="card-footer border-0 d-flex justify-content-end align-items-center p-3 pt-0 mt-3">`;
+                                if(value.esCaducada && tipoFiltro == "ASIGNADO"){
+                                    elem += `<a href="#" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btnDesarchivar" tipo-rel="A" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Archivar</a>`
+                                }else if(tipoFiltro == "ARCHIVADAS"){
+                                    elem += `<a href="#" class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btnDesarchivar" tipo-rel="D" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Desarchivar</a>`
+                                }
+
                                 if(!value.esCaducada){
-                                    elem += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver promoción</div>`;
+                                    elem += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver paquete</div>`;
                                 }else{
-                                    elem += `<div class="btn btn-sm fw-normal fs--1 px-3 py-2 border-0 text-primary-veris shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver promoción</div>`;
+                                    elem += `<div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver paquete</div>`;
                                 }
                                 
-                                if(value.esCaducada && tipoFiltro == "ASIGNADO"){
-                                    elem += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btnDesarchivar" tipo-rel="A" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Archivar</a>`
-                                }else if(tipoFiltro == "ARCHIVADAS"){
-                                    elem += `<a href="#" class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btnDesarchivar" tipo-rel="D" secuenciaPaquetePaciente-rel="${value.secuenciaPaquetePaciente}">Desarchivar</a>`
-                                }
                                     elem += `
                                 </div>
                             </div>
                         </div>`;
                     }else if(tipoFiltro == "REALIZADAS"){
-                        elem += `<div class="col-md-6 mt-0 mb-3" id="promocion-${value.secuenciaPaquetePaciente}">
+                        elem += `<div class="col-md-6 mt-0 mb-3 item-promocion" id="promocion-${value.secuenciaPaquetePaciente}">
                             <div class="card m-1 mt-0 mb-0">
                                 <div class="card-header position-relative feature-img-promocion" style="background: url(${value.urlImagen}) no-repeat center;">
                                 </div>
@@ -301,9 +332,9 @@ Mi Veris - Citas - Mis Promociones
                                     <h2 class="title-promocion-mis-compras line-height-20 fs--16 mb-2">${capitalizarCadaPalabra(value.nombreComercialPaquete)}</h2>
                                     <p class="fs--2 mb-1 text-nowrap overflow-hidden text-truncate">${capitalizarCadaPalabra(value.nombrePaciente)}</p>
                                 </div>
-                                <div class="card-footer border-0 d-flex justify-content-between align-items-center p-3 pt-0">
+                                <div class="card-footer border-0 d-flex justify-content-between align-items-center p-3 pt-0 mt-3">
                                     <img src="{{ asset('assets/img/svg/golden.svg') }}" />
-                                    <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver promoción</div>
+                                    <div class="btn btn-sm btn-primary-veris fw-medium fs--1 line-height-16 px-3 py-2 shadow-none btn-detalle" data-rel='${JSON.stringify(value)}'>Ver paquete</div>
                                 </div>
                             </div>
                         </div>`;
@@ -379,6 +410,17 @@ Mi Veris - Citas - Mis Promociones
 
 </script>
 <style>
+    #buscarPorPromocion{
+        border: none !important;
+        background: initial !important;
+    }
+    input:not([type="checkbox"]):not([type="radio"]):not(:focus):not(:disabled):placeholder-shown, input:not([type="checkbox"]):not([type="radio"]):not(:focus):not(:disabled):not(:placeholder-shown), select:not(:focus):not(:disabled){
+        box-shadow: none !important;
+        outline: none !important;
+    }
+    input:not([type="checkbox"]):not([type="radio"]):focus, select:focus{
+        box-shadow: none !important;
+    }
     .square-pills .nav-pills .nav-link{
         box-shadow: 0px 2px 4px 0px #0000000D !important;
         border-radius: 8px !important;

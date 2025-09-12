@@ -119,7 +119,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 location.href = url + "{{ $params }}";
             }else{
                 $('#modalErrorSamePage .modal-title').html(`Lo sentimos`)
-                let generoPaquete = (dataCita.paquete.genero) ? `Femenino` : `Masculino`;
+                let generoPaquete = (dataCita.paquete.genero == "F") ? `Femenino` : `Masculino`;
                 $('#mensaje_400_same_page').html(`Este paquete está diseñado exclusivamente para pacientes de sexo [${generoPaquete}]. Por favor, selecciona otro paquete o cambia el paciente seleccionado.`);
                 var myModal = new bootstrap.Modal(document.getElementById('modalErrorSamePage'));
                 myModal.show();

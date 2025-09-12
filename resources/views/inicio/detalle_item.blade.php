@@ -281,7 +281,7 @@ Mi Veris - Citas - Detalle
         }else{
             if(dataCita.promocion.tipoServicio == "LABORATORIO"){
                 elem += `<div class="col-12 mt-3">
-                        <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect btn-informacion waves-light order-last">Ver información</a>
+                        <button type="button" class="btn btn-lg btn-primary-veris w-100 px-4 py-3 fs-5 waves-effect btn-informacion waves-light order-last">Ver preparación previa</a>
                     </div>`;
             }
         }

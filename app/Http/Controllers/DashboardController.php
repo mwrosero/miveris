@@ -111,4 +111,7 @@ class DashboardController extends Controller
     public function detalleItemPreparacionPrevia($params) {
         return view('inicio.preparacion_previa')->with('params',$params);
     }
+    public function coberturaPaqueteDomicilio($params){
+        return view('inicio.cobertura_domicilio')->with('params',$params);
+    }
 }

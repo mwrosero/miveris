@@ -191,17 +191,23 @@ Mi Veris - Citas - Detalle
         $('.listPrestaciones').html(prestaciones);
 
         $('body').on('click', '.btn-asignar', function(){
-            let url = '/citas-elegir-paciente/'
-            if(dataCita.paquete.idPaciente !== null){
-                url = '/citas-datos-facturacion/';
-                dataCita.paciente = {
-                    "numeroPaciente": dataCita.paquete.idPaciente
-                };
+            if(dataCita.paquete.esDomicilio){
+                let url = '/cobertura-domicilio/'
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                location.href = url + "{{ $params }}";
             }else{
-                
+                let url = '/citas-elegir-paciente/'
+                if(dataCita.paquete.idPaciente !== null){
+                    url = '/citas-datos-facturacion/';
+                    dataCita.paciente = {
+                        "numeroPaciente": dataCita.paquete.idPaciente
+                    };
+                }else{
+                    
+                }
+                localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+                location.href = url + "{{ $params }}";
             }
-            localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-            location.href = url + "{{ $params }}";
         })
 
         let valorAnteriorElem = ``;
