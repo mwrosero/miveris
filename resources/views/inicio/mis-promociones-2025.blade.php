@@ -44,21 +44,21 @@ Mi Veris - Citas - Mis Promociones
                     <button class="nav-link bg-white btn-estado-promocion px-8 px-md-5 m-1 d-flex flex-column active" tipoFiltro-rel="ASIGNADO" id="pills-compradas-tab" data-bs-toggle="pill" data-bs-target="#pills-compradas" type="button" role="tab" aria-controls="pills-compradas" aria-selected="true">
                         <img src="{{ asset('assets/img/svg/promociones-compradas-selected-ico.svg') }}" alt="" class="ico-estado ico-estado-activo">
                         <img src="{{ asset('assets/img/svg/promociones-compradas-ico.svg') }}" alt="" class="d-none ico-estado ico-estado-inactivo">
-                        <p class="fs--2 line-height-20 mt-2 mb-0">Compradas</p>
+                        <p class="fs--2 line-height-20 mt-2 mb-0">Comprados</p>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link bg-white btn-estado-promocion px-8 px-md-5 m-1 d-flex flex-column" tipoFiltro-rel="REALIZADAS" id="pills-realizadas-tab" data-bs-toggle="pill" data-bs-target="#pills-realizadas" type="button" role="tab" aria-controls="pills-realizadas" aria-selected="false">
                         <img src="{{ asset('assets/img/svg/promociones-realizadas-ico.svg') }}" alt="" class="ico-estado ico-estado-inactivo">
                         <img src="{{ asset('assets/img/svg/promociones-realizadas-selected-ico.svg') }}" alt="" class="d-none ico-estado ico-estado-activo">
-                        <p class="fs--2 line-height-20 mt-2 mb-0">Realizadas</p>
+                        <p class="fs--2 line-height-20 mt-2 mb-0">Realizados</p>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link bg-white btn-estado-promocion px-8 px-md-5 m-1 d-flex flex-column" tipoFiltro-rel="ARCHIVADAS" id="pills-archivadas-tab" data-bs-toggle="pill" data-bs-target="#pills-archivadas" type="button" role="tab" aria-controls="pills-archivadas" aria-selected="false">
                         <img src="{{ asset('assets/img/svg/promociones-archivadas-ico.svg') }}" alt="" class="ico-estado ico-estado-inactivo">
                         <img src="{{ asset('assets/img/svg/promociones-archivadas-selected-ico.svg') }}" alt="" class="d-none ico-estado ico-estado-activo">
-                        <p class="fs--2 line-height-20 mt-2 mb-0">Archivadas</p>
+                        <p class="fs--2 line-height-20 mt-2 mb-0">Archivados</p>
                     </button>
                 </li>
             </ul>
@@ -93,6 +93,13 @@ Mi Veris - Citas - Mis Promociones
                 <div class="row gy-3 mt-0 w-100" id="contenedorPromociones">
                 </div>
             </div>
+            <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center box-search-result d-none">
+                <div class="row gy-3 mt-0 w-100">
+                    <div class="col-12 text-center">
+                        <p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </div>
@@ -114,18 +121,26 @@ Mi Veris - Citas - Mis Promociones
         $('body').on('input', '#buscarPorPromocion', function () {
             var value = $(this).val().toLowerCase();
             console.log("Valor de búsqueda:", value);
-            
+            let tieneCoincidencias = false;
             $("#contenedorPromociones .item-promocion").each(function () {
                 let text = $(this).find('.title-promocion-mis-compras').text().toLowerCase(); // Obtiene el texto dentro de <p>
                 console.log("Texto del elemento:", text);
                 
                 // Verificar si el texto contiene el valor de búsqueda
                 if (text.indexOf(value) > -1 || value === "") {
+                    tieneCoincidencias = true
                     $(this).removeClass("d-none"); // Mostrar el elemento
                 } else {
                     $(this).addClass("d-none"); // Ocultar el elemento
                 }
             });
+
+            if(!tieneCoincidencias){
+                $('.box-search-result').removeClass('d-none')
+                console.log('No se encontraron coincidencias para tu búsqueda')
+            }else{
+                $('.box-search-result').addClass('d-none')
+            }
         });
 
         $('body').on('click','.page-promociones', function(){

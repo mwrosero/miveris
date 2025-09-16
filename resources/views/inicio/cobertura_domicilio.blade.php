@@ -16,7 +16,7 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
         <div class="modal-content">
             <div class="modal-body text-center p-3 pb-0">
                 <h1 class="fs-24 fw-medium line-height-28 my-3">Lo sentimos</h1>
-                <p class="fs--1 line-height-16 text-veris mb-3" id="mensajeNoCobertura"></p>
+                <p class="fs--1 line-height-16 text-veris mb-3" id="mensajeNoCobertura">No tenemos cobertura de servicio a domicilio en el sector.</p>
             </div>
             <div class="modal-footer pt-0 pb-3 px-3">
                 <button type="button" class="btn btn-primary-veris fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cerrar</button>
@@ -202,23 +202,20 @@ Mi Veris - Citas - Laboratorio a domicilio Orden Externa
         $('body').on('click', '.btn-verificar', async function(){
             let lnglat = await obtenerLatitudYLongitudDelMarcador();
             let validarCobertura = await consultarCobertura(lnglat.latitud, lnglat.longitud);
-            if(validarCobertura.code != 200 || !validarCobertura.data.tieneCobertura || validarCobertura.data.tieneCobertura == "N"){
-                let msg = "";
-                if(validarCobertura.code == 200){
-                    msg = validarCobertura.data.mensaje;
+            if(validarCobertura.code == 200){
+                if(validarCobertura.data.tieneCobertura === "S"){
+                    $('#modalSiCubre').modal('show');
+                    let url = '/citas-elegir-paciente/'
+                    console.log("SI")
+                    setTimeout(function(){
+                        location.href = url + "{{ $params }}";
+                    }, 800)
                 }else{
-                    msg = validarCobertura.message;
+                    $('#mensajeNoCobertura').html(validarCobertura.data.mensaje)
+                    $('#modalCobertura').modal('show');
                 }
-                $('#mensajeNoCobertura').html(msg);
-                $('#modalCobertura').modal('show');
-                console.log("NO")
             }else{
-                $('#modalSiCubre').modal('show');
-                let url = '/citas-elegir-paciente/'
-                console.log("SI")
-                setTimeout(function(){
-                    location.href = url + "{{ $params }}";
-                }, 800)
+                alert(validarCobertura.message)
             }
         })
         

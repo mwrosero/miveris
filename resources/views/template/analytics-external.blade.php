@@ -1,3 +1,4 @@
+@if (config('app.subdomain') === 'veris')
 <!-- Facebook Pixel Code -->
 <script>
 !function(f,b,e,v,n,t,s)
@@ -118,3 +119,9 @@ fbq('track', 'PageView');
       gtag('config', 'DC-11242873');
     </script>
 <!-- Global site tag (gtag.js) - Google Marketing Platform -->
+
+@else
+
+
+
+@endif

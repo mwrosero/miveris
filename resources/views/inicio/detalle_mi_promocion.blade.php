@@ -227,8 +227,9 @@ Mi Veris - Citas - Detalle
         }else{
             secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente
         }
+        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=1&secuenciaPaquetePaciente=${secuenciaPaquetePaciente}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=1&secuenciaPaquetePaciente=${secuenciaPaquetePaciente}&codigoUsuario=${codigoUsuario}`;
         console.log(args["endpoint"])
         args["method"] = "GET";
         args["showLoader"] = true;

@@ -57,7 +57,7 @@ Mi Veris - Cita agendada
                                 <img src="{{asset('assets/img/svg/visto.svg')}}" alt="Paquete comprado">
                             </div>
                             <h3 class="fs--28 line-height-36 fw-medium mb-4">Paquete comprado</h3>
-                            <p style="color: #0A2240;" class="fs--16 line-height-20">Encuéntralo en la sección Paquetes<br>preventivos ¡Utilízalo ahora!</p>
+                            <p style="color: #0A2240;" class="fs--16 line-height-20 subtitle-paquete"></p>
                             <p class="fs--16 line-height-20 mb-5" id="infoAgendar"></p>
                             <div class="d-flex justify-content-center align-items-center">
                                 <img src="{{ asset('assets/img/svg/paquete-comprado.svg') }}"  alt="Paquete comprado">
@@ -65,7 +65,7 @@ Mi Veris - Cita agendada
                             <div class="mt-5">
                                 {{-- <a href="/mis-promociones" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2">Ir a mis promociones</a> --}}
                                 <div type="button" url-rel="/mi-promocion/detalle/{{ $tokenCita }}" class="btn btn-primary-veris fs--18 line-height-24 w-100 w-md-75 px-4 py-3 mb-2 btn-ver-paquete"></div>
-                                <a href="/" class="btn btn-sm fs--18 line-height-24 px-4 py-3 w-100 w-md-75 border-0 text-primary-veris shadow-none">Volver al inicio</a>
+                                <a href="/" class="btn btn-sm fs--18 line-height-24 px-4 py-3 w-100 w-md-75 border-0 text-primary-veris shadow-none">Cerrar</a>
                             </div>
                         </div>
                         <!-- Promoción tratamiento comprado -->
@@ -133,8 +133,10 @@ Mi Veris - Cita agendada
 
         if(dataCita.hasOwnProperty('paquete')){
             if(dataCita.detallePaquete.esAgendable){
+                $('.subtitle-paquete').html(`Ya puedes usar tu paquete`)
                 $('.btn-ver-paquete').html(`Agendar ahora`)
             }else{
+                $('.subtitle-paquete').html(`Encuéntralo en la sección Paquetes<br>preventivos ¡Utilízalo ahora!`)
                 $('.btn-ver-paquete').html(`Ver paquete preventivo`)
             }
         }
