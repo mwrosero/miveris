@@ -79,6 +79,11 @@ Mi Veris - Citas - Promociones
         </div>
         <div class="d-flex justify-content-center">
             <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
+                <img src="{{asset('assets/img/svg/banner-paquetes.png')}}" class="img-fluid" alt="">
+            </div>
+        </div>
+        <div class="d-flex justify-content-center">
+            <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
                 <div class="input-group search-box" style="border: 1px solid #D0D3D9">
                     <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
                     <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" value="{{ request()->query('s') }}" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" style="border-radius: 8px;" />

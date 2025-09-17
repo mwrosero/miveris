@@ -81,8 +81,8 @@ Mi Veris - Citas - Mis Promociones
                 <div class="row mt-0 w-100">
                     <div class="col-12 my-3">
                         <div class="input-group search-box" style="border: 1px solid #D0D3D9">
-                            <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
-                            <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" value="{{ request()->query('s') }}" placeholder="Busca tus promociones" aria-describedby="search" style="border-radius: 8px;" />
+                            <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-paquetes"></span>
+                            <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" value="{{ request()->query('s') }}" placeholder="Busca tus paquetes" aria-describedby="search" style="border-radius: 8px;" />
                         </div>
                     </div>
                 </div>
