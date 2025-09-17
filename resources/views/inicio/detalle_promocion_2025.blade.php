@@ -54,13 +54,13 @@ Mi Veris - Citas - Detalle
     </div>
     <section class="p-3 mb-3">
         <div class="row g-4">
-            <div class="col-12 col-lg-7">
+            <div class="col-12 col-sm-7">
                 <div class="card border-0">
                     <div class="card-body p-0 imagenPaquete">
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-4">
+            <div class="col-12 col-sm-5">
                 <div class="mb-3">
                     <div class="original-price d-flex justify-content-start align-items-center">
                         <p class="card-text text-veris-ai fs-28 line-height-36 fw-bold mb-0 precioVenta"></p>
