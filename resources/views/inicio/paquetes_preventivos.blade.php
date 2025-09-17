@@ -78,12 +78,12 @@ Mi Veris - Citas - Promociones
             </ul>
         </div>
         <div class="d-flex justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 mb-3 d-flex justify-content-between align-items-center">
+            <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
                 <img src="{{asset('assets/img/svg/BANNER_CUIDATE_X_MI.png')}}" class="w-100 link-item-banner" type='button' search-rel='Cuidate por mi' alt="">
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 mb-3 d-flex justify-content-between align-items-center">
+            <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
                 <div class="input-group search-box" style="border: 1px solid #D0D3D9">
                     <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
                     <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" value="{{ request()->query('s') }}" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" style="border-radius: 8px;" />
@@ -95,14 +95,14 @@ Mi Veris - Citas - Promociones
             </div>
         </div>
         <div class="d-flex justify-content-center">
-            <div class="col-12 col-md-8 col-lg-6 mb-3 d-flex justify-content-between align-items-center">
+            <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
                 <div class="box-categorias-seleccionadas ms-2 mt-2 d-inline-block justify-content-start align-items-center"></div>
             </div>
         </div>
     </section>
     <section class="mb-3 p-3 pt-0">
         <div class="row justify-content-center mt-0">
-            <div class="col-12 col-md-8 col-lg-6">
+            <div class="col-12 col-md-8">
                 <div class="row gy-3" id="listado-paquetes">
                 </div>
             </div>
