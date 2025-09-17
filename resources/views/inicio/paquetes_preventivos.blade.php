@@ -79,7 +79,7 @@ Mi Veris - Citas - Promociones
         </div>
         <div class="d-flex justify-content-center">
             <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
-                <img src="{{asset('assets/img/svg/banner-paquetes.png')}}" class="img-fluid" alt="">
+                <img src="{{asset('assets/img/svg/banner-paquetes.png')}}" class="w-100" alt="">
             </div>
         </div>
         <div class="d-flex justify-content-center">
