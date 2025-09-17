@@ -11,7 +11,7 @@ Mi Veris - Citas - Detalle
     $tokenMods = base64_encode(uniqid());
     $tokenCita = base64_encode(uniqid());
 @endphp
-<div class="flex-grow-1 container-p-y pt-0">
+<div class="flex-grow-1 container-p-y pt-0 d-none con-permisos">
     
     <div class="d-flex justify-content-between align-items-center bg-white shadow-bottom">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Promoción') }}</h5>
@@ -58,6 +58,28 @@ Mi Veris - Citas - Detalle
             <div class="d-flex justify-content-center mb-3 px-3">
                 <div class="col-12 col-md-6 col-lg-3 text-center">
                     <div class="btn btn-sm fs--1 w-100 ms-2 m-0 line-height-16 btn-outline-veris-ai verRide">Ver factura</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="flex-grow-1 container-p-y pt-0 d-none sin-permisos">
+    <section class="p-0 px-md-3">
+        <div class="mb-4 contenedorPromocionRealizadoSection">
+            <div class="d-flex justify-content-center mb-3 px-3">
+                <div class="col-12 col-md-5 d-flex justify-content-center" id="mensajeNoTienesPermisosAdministradorRealizados">
+                    <div class="card bg-transparent shadow-none">
+                        <div class="card-body mt-5">
+                            <div class="text-center">
+                                <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes permisos de visualización</h5>
+                                <p class="fs--16 line-height-20 mb-4">Para ver o agendar un paquete de <span class="nombrePacienteFamiliar text-capitalize"></span> necesitas permisos de administrador.</p>
+                                <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
+                            </div>
+                            <div class="mx-auto mt-3 box-solicitud">
+                                <button class="btn btn-primary-veris w-100 fs--18 line-height-24 rounded-3 py-3 waves-effect waves-light" type="button" id="btnSolicitarPermiso">Solicitar permisos</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,6 +133,10 @@ Mi Veris - Citas - Detalle
 
         $(document).on('click', '.verRide', function(){
             descargarDocumentoRide();
+        });
+
+        $("#btnSolicitarPermiso").click(async function() {
+            await sendCode();
         });
 
         $('body').on('click','.btn-agendar-item', function(){
@@ -190,6 +216,33 @@ Mi Veris - Citas - Detalle
         })
     })
 
+    async function sendCode(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/solicitaAdmin`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        
+        args["data"] = JSON.stringify({
+            "numeroPaciente": dataCita.paciente.numeroPaciente,
+            "virusu": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "correo": dataCita.paciente.correo,
+            "canalOrigenDigital": _canalOrigen
+        });
+
+        const data = await call(args);
+        if(data.code == 200){
+            dataCita.familiar = dataCita.paciente;
+            dataCita.parentesco = {
+                "descripcion": dataCita.paciente.parentesco,
+                "codigoParentesco": dataCita.paciente.codigoParentesco
+            }
+            dataCita.provienePaquete = true;
+            localStorage.setItem('persona-{{ $params }}', JSON.stringify(dataCita));
+            location.href = "/confirmar-soporte/{{ $params }}";
+        }
+    }
+
     function validarCaducidad(){
         let elem = ``;
         if(dataCita.paquete.esCaducada){
@@ -223,9 +276,10 @@ Mi Veris - Citas - Detalle
     async function obtenerDetallePaquetePromocional(){
         let secuenciaPaquetePaciente;
         if(dataCita.hasOwnProperty('secuenciaPaquetePaciente')){
-            secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
+            secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente;
+            $('.nombrePacienteFamiliar').html(dataCita.paciente.primerNombre.toLowerCase());
         }else{
-            secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente
+            secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente;
         }
         let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
         let args = [];
@@ -236,6 +290,11 @@ Mi Veris - Citas - Detalle
         const data = await call(args);
         // console.log(data);
         if (data.code == 200){
+            if(data.data.tienePermisoAdmin){
+                $('.con-permisos').removeClass('d-none')
+            }else{
+                $('.sin-permisos').removeClass('d-none')
+            }
             dataCita.detallePaquete = data.data;
             if(data.data.pendientes.length > 0){
                 $('.box-llamada').html(`<i class="fa-solid fa-circle-info text-primary-veris line-height-16 fs--16 me-2"></i><div>Para agendar tus servicios llámanos al <span>${data.data.numeroContactCenter}</span>.</div><a href="tel:+593${data.data.numeroContactCenter}" class="btn btn-sm btn-primary-veris fw-medium fs--16 line-height-16 px-3 py-2 shadow-none ms-2 d-block d-md-none" style="border-radius:8px;">Llamar</a>`);

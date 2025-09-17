@@ -789,7 +789,7 @@ Mi Veris - Inicio
 
     async function cargarBanners(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=7&canalOrigen=${_canalOrigen}&codigoFlujoProceso=7&codigoPantalla=16`;
+        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=12&canalOrigen=${_canalOrigen}`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -809,6 +809,8 @@ Mi Veris - Inicio
                             attrAditional = `type='button' url-rel='/promociones?s=Cuidate por mi'`;
                         }else if(v.nombreTipoObjeto == "BANNER_BIENESTAR"){
                             attrAditional = `type='button' url-rel='/bienestar'`;
+                        }else if(v.nombreTipoObjeto == "BAN_DESC_EXCLUSIVOS"){
+                            attrAditional = `type='button' url-rel='/promociones?c=TP'`;
                         }
                         elem += `<div class="swiper-slide">
                             <div class="card d-block h-100 d-flex justify-content-center align-items-between shadow-none border-0">

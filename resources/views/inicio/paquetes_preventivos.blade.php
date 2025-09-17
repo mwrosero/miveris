@@ -151,7 +151,8 @@ Mi Veris - Citas - Promociones
     let cargandoContenido = false;
     let isFiltered = false;
     document.addEventListener("DOMContentLoaded", async function () {
-        obtenerCategorias();
+        await obtenerCategorias();
+
         // await obtenerPaquetesSugeridos();
         await obtenerPaquetesPromocionales();
 
@@ -324,12 +325,18 @@ Mi Veris - Citas - Promociones
         args["method"] = "GET";
         args["showLoader"] = false;
         const data = await call(args);
-        
+        let preSelected = false;
         if(data.code == 200){
             let elem = `<h1 class="modal-title fs--20 line-height-24 my-3">Filtrar por</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" style="position: absolute;right: 5px;top: 5px;"></button>`;
             $.each(data.data, function(key, categoria){
-                elem += `<div nombreCategoria-rel="${capitalizarCadaPalabra(categoria.nombreCategoria)}" categoria-rel="${categoria.nemonicoCategoria}" class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item">
+                let params = new URLSearchParams(window.location.search);
+                let cat_sel = ``;
+                if (params.has("c") && params.get("c") === categoria.nemonicoCategoria) {
+                    preSelected = true;
+                    cat_sel = `category-selected`;
+                }
+                elem += `<div nombreCategoria-rel="${capitalizarCadaPalabra(categoria.nombreCategoria)}" categoria-rel="${categoria.nemonicoCategoria}" class="d-flex justify-content-start align-items-center mb-2 cursor-pointer category-item ${cat_sel}">
                         <img src="${categoria.urlImagenCategoria}" class="ico-categoria me-3 ico-unselected"/>
                         <img src="${categoria.urlImagenCategoriaSel}" class="ico-categoria me-3 ico-selected d-none"/>
                         <span class="fs--16 me-3 text-veris">${capitalizarCadaPalabra(categoria.nombreCategoria)}</span>
@@ -337,6 +344,17 @@ Mi Veris - Citas - Promociones
                     </div>`
             })
             $('#lista-categorias').html(elem)
+            if (preSelected) {
+                let categorias = await obtenerCategoriasSeleccionadas("texto-valor");
+                let elem = ``;
+                $.each(categorias, function(key, value){
+                    let label = value.split("-");
+                    elem += `<span class="badge bg-filter-promocion p-2 me-2 mb-2 fs--2 fw-medium">${label[1]} <i class="fa-solid fa-xmark ms-2 cursor-pointer btnEliminarCategoria" categoria-rel="${label[0]}"></i></span>`
+                })
+                console.log(elem)
+                $('.box-categorias-seleccionadas').html(elem);
+                categorias.join(',')
+            }
         }
     }
 
@@ -414,7 +432,7 @@ Mi Veris - Citas - Promociones
                     elem += `<div class="col-12 col-md-6">
                         <div class="card h-100 border-0 box-shadow-3 rounded-4 p-3">
                             <div type="button" class="zoom-img btn-comprar position-relative rounded-3 overflow-hidden" data-rel='${JSON.stringify(value)}'>
-                                <img src="${value.urlImagen}" onerror="https://www.veris.com.ec/wp-content/themes/veris2025/img/veris.png" class="card-img-top" alt="${value.nombrePaquete}">
+                                <img src="${value.urlImagen}" onerror="this.onerror=null;this.src='https://www.veris.com.ec/wp-content/themes/veris2025/img/veris.png';"   class="card-img-top" alt="${value.nombrePaquete}">
                                 ${strDescuento}
                                 ${badgesImg}
                             </div>

@@ -227,7 +227,11 @@ Mi Veris - Agregar familiar o amigo
         const data = await call(args);
 
         if(data.code == 200){
-            location.href = '/confirmacion-aprobada/{{ $params }}';
+            if(dataCita.hasOwnProperty('provienePaquete')){
+                location.href = '/mi-promocion/detalle/{{ $params }}';
+            }else{
+                location.href = '/confirmacion-aprobada/{{ $params }}';
+            }
         }else{
             $('#mensaje_400_validacion').html(data.message);
             var myModal = new bootstrap.Modal(document.getElementById('modalErrorValidacion'));
