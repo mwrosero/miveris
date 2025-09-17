@@ -77,28 +77,22 @@ Mi Veris - Citas - Mis Promociones
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-12 col-md-8 d-flex justify-content-between align-items-center">
-                <div class="row mt-0 w-100">
-                    <div class="col-12 my-3">
-                        <div class="input-group search-box" style="border: 1px solid #D0D3D9">
-                            <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-paquetes"></span>
-                            <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" value="{{ request()->query('s') }}" placeholder="Busca tus paquetes" aria-describedby="search" style="border-radius: 8px;" />
-                        </div>
-                    </div>
+            <div class="col-12 col-md-8 d-flex justify-content-between align-items-center my-3">
+                <div class="input-group search-box" style="border: 1px solid #D0D3D9">
+                    <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-paquetes"></span>
+                    <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" value="{{ request()->query('s') }}" placeholder="Busca tus paquetes" aria-describedby="search" style="border-radius: 8px;" />
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center mt-2">
-            <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
+        <div class="row justify-content-center mt-2" id="contenedorPromociones">
+            {{-- <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
                 <div class="row gy-3 mt-0 w-100" id="contenedorPromociones">
                 </div>
-            </div>
-            <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center box-search-result d-none">
-                <div class="row gy-3 mt-0 w-100">
-                    <div class="col-12 text-center">
-                        <p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>
-                    </div>
-                </div>
+            </div> --}}
+        </div>
+        <div class="row justify-content-center mt-2">
+            <div class="col-12 col-md-8 mb-3 d-flex justify-content-center align-items-center box-search-result d-none">
+                <p class="fs--16 line-height-20 text-center mt-5 mb-4">No se encontraron coincidencias para tu búsqueda</p>
             </div>
         </div>
     </section>
