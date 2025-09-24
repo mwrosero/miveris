@@ -21,19 +21,19 @@ Elige datos para la Cita
 </div>
 
 <!-- Modal Agenda terapia -->
-    <div class="modal fade" id="modalInfoTerapia" tabindex="-1" aria-labelledby="modalInfoTerapiaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
-            <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs--20 line-height-24 my-3">Información</h1>
-                    <p class="fs--1 fw-normal mb-0 text-veris">Necesitas una orden médica para agendar terapia física. Agenda una cita en traumatología o fisiatría para solicitar una orden.</p>
-                </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cerrar</button>
-                </div>
+<div class="modal fade" id="modalInfoTerapia" tabindex="-1" aria-labelledby="modalInfoTerapiaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3">Información</h1>
+                <p class="fs--1 fw-normal mb-0 text-veris">Necesitas una orden médica para agendar terapia física. Agenda una cita en traumatología o fisiatría para solicitar una orden.</p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
+</div>
 
 <!-- Modal mensaje -->
 <div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
