@@ -77,20 +77,20 @@ Mi Veris - Citas - Promociones
                 </li>
             </ul>
         </div>
-        <div class="d-flex justify-content-center">
+        {{-- <div class="d-flex justify-content-center">
             <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
                 <img src="{{asset('assets/img/svg/BANNER_CUIDATE_X_MI.png')}}" class="w-100 link-item-banner" type='button' search-rel='Cuidate por mi' alt="">
             </div>
-        </div>
+        </div> --}}
         <div class="d-flex justify-content-center">
             <div class="col-12 col-md-8 mb-3 d-flex justify-content-between align-items-center">
                 <div class="input-group search-box" style="border: 1px solid #D0D3D9">
                     <span class="input-group-text bg-transparent border-0 p-3" id="search"><img src="{{asset('assets/img/svg/search.svg')}}" alt="veris-promociones"></span>
                     <input type="search" class="form-control bg-transparent fs--16 border-0 p-2 ps-0" name="buscarPorPromocion" id="buscarPorPromocion" value="{{ request()->query('s') }}" placeholder="Ejemplo: Exámenes de laboratorio" aria-describedby="search" style="border-radius: 8px;" />
                 </div>
-                <button class="btn btn-sm btn-outline-primary-veris ms-2 px-2 waves-effect flex-grow-1 h-100" type="button" data-bs-toggle="modal" data-bs-target="#modalCategoriaPromociones" style="width: 160px;border-radius: 8px;">
+                <button class="btn btn-sm btn-outline-primary-veris ms-2 px-2 waves-effect flex-grow-1 h-100 bg-white" type="button" data-bs-toggle="modal" data-bs-target="#modalCategoriaPromociones" style="width: 160px;border-radius: 8px;">
                     <img src="{{asset('assets/img/svg/fa-filter.svg')}}" class="me-1" alt="filtro categorías"> 
-                    <p class="fs--1 line-height-16 fw-normal mb-0" id="nombreFiltro">Filtrar por</p>
+                    <p class="fs--1 line-height-16 fw-normal mb-0 d-none d-md-block" id="nombreFiltro">Filtrar por</p>
                 </button>
             </div>
         </div>

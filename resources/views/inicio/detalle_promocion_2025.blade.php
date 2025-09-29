@@ -54,13 +54,13 @@ Mi Veris - Citas - Detalle
     </div>
     <section class="p-3 mb-3">
         <div class="row g-4">
-            <div class="col-12 col-sm-7">
+            <div class="col-12 col-md-5">
                 <div class="card border-0">
                     <div class="card-body p-0 imagenPaquete">
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-sm-5">
+            <div class="col-12 col-md-7">
                 <div class="mb-3">
                     <div class="original-price d-flex justify-content-start align-items-center">
                         <p class="card-text text-veris-ai fs-28 line-height-36 fw-bold mb-0 precioVenta"></p>
@@ -73,12 +73,13 @@ Mi Veris - Citas - Detalle
                 <span class="badge text-bg-pale-blue rounded-4 fw-normal px-2 py-1 mb-4 strCategoria d-none"></span>
                 <div class="border-0 rounded-3 mb-4 listPrestaciones">
                 </div>
-                <button type="button" class="btn bg-veris-ai text-white btn-asignar w-100 fs--18 line-height-24 fw-medium px-4 py-3 rounded-3">Comprar</button>
+                <button type="button" class="btn bg-veris-ai text-white btn-asignar w-100 fs--18 line-height-24 fw-medium px-4 py-3 rounded-3 d-none d-md-block">Comprar</button>
             </div>
         </div>
         <div class="row mt-4">
             <div class="col-12">
                 <div class="p-3 fs--16 line-height-20 text-start" id="descripcionPaquete" style="background: #EAF0FD;border-radius: 8px;"></div>
+                <button type="button" class="btn bg-veris-ai text-white btn-asignar w-100 fs--18 line-height-24 fw-medium px-4 py-3 rounded-3 d-block d-md-none mt-4">Comprar</button>
             </div>
         </div>
     </section>

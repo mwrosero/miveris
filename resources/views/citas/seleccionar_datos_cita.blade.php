@@ -254,7 +254,7 @@ Elige datos para la Cita
                     <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" id="btn-central" data-rel="">
                         {{-- data-bs-toggle="modal" data-bs-target="#centralModal" --}}
                         <p class="fs--1 line-height-16 fw-medium fs--1 mb-0"></p>
-                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
+                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro CEntral médica"> 
                     </button>
                 </div>
                 <span class="mb-2 d-block fs--2 line-height-16 text-light d-none label-sugerencia label-sugerencia-central">Seleccionada en base a tus agendamientos anteriores</span>
