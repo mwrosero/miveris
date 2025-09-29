@@ -375,10 +375,10 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             dataCita.reserva = data.data;
             await crearPreTransaccion();
         }else{
-                        $('#mensaje_400_same_page').html(data.message);
+            $('#mensaje_400_same_page').html(data.message);
             var myModal = new bootstrap.Modal(document.getElementById('modalErrorSamePage'));
             myModal.show();
-                    }
+        }
     }
 
     async function crearPreTransaccion(){

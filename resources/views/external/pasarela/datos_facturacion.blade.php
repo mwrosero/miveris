@@ -715,6 +715,7 @@ Veris - Datos de facturación
 		        if(response.transaction.status == "success" && response.transaction.status_detail == 3){
 		        	console.log(JSON.stringify(response));
 		        	console.log("Inicio Enviando formulario de pago TC");
+		        	executeDataLayer()
 		        	$('.btnNuvei').hide();
 		        	if(ppd){
 		        		await actualizarPoliticas();
@@ -755,6 +756,32 @@ Veris - Datos de facturación
 			paymentCheckout.close();
 		});
 
+	}
+
+	function executeDataLayer(){
+		//validar
+		if(dataCita.facturacion.detalleServicio.detallePaquetes === null){
+			return;
+		}
+
+		window.dataLayer = window.dataLayer || [];
+		dataLayer.push({
+			event: 'purchase',
+		    transaction_id: 'ORD-'+preTransaccion.data.codigoPreTransaccion, // ← dinámico, generado desde backend
+		    value: dataCita.facturacion.totales.total,                 // ← monto real de la orden
+		    currency: 'USD',
+		    tax: 0,
+		    shipping: 0,
+		    coupon: '',                   // ← si hubo cupón
+		    paquete_nombre: dataCita.facturacion.totales.total,
+		    items: [{
+				item_id: dataCita.facturacion.detalleServicio.detallePaquetes[0].codigoPaquete,        // ← ID real del producto
+				item_name: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
+				item_category: 'Paquetes',
+				quantity: 1,
+				price: dataCita.facturacion.totales
+		  	}]
+		});
 	}
 
 	async function llenarDataDetallesCitas(){

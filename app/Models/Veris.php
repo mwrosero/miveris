@@ -40,7 +40,7 @@ class Veris extends Model
     // public const CONTIENE_DESARROLLO = true;
     // public const API_KEY_GOOGLE_MAP = 'AIzaSyCvKhNY5DAACMCU8gAY1AbJiaqg3bTo2jc';
 
-    //PROD
+    //PROD 
     public const BASE_URL = 'https://api.phantomx.com.ec';
     public const BASE_WAR = 'digitales';
     public const FACTURACION_WAR = 'seguridad';

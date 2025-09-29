@@ -26,7 +26,7 @@ Mi Veris - Registrar Meta
                     Registrar meta
                 </div>
                 <div class="w-100 mt-3">
-                    <label for="valorMeta" class="form-label fw-medium fs--1">Meta de pasos *</label>
+                    <label for="valorMeta" class="form-label fw-medium fs--1" id="tipoMeta"></label>
                     <select class="form-select fs--1 p-3" name="valorMeta" id="valorMeta" required>
                     </select>
                 </div>
@@ -68,9 +68,12 @@ Mi Veris - Registrar Meta
 
     document.addEventListener("DOMContentLoaded", async function () {
         if(datosBienestar.nemonico == "PASOS" || datosBienestar.nemonico == "SUEÑO"){
-            let imgUrl = "{{asset('assets/img/svg/sueno.svg')}}";
+            let imgUrl = "{{asset('assets/img/svg/banner-sueno.svg')}}";
             if(datosBienestar.nemonico == "PASOS"){
+                $('#tipoMeta').html(`Meta de pasos *`);
                 imgUrl = "{{asset('assets/img/svg/banner-pasos.svg')}}";
+            }else{
+                $('#tipoMeta').html(`Meta de sueño *`);
             }
             $('.img-banner-indicador').attr('src', imgUrl);
         }
@@ -120,7 +123,7 @@ Mi Veris - Registrar Meta
         if(data.code == 200){
             let elem = ``;
             $.each(data.data, function(key, value){
-                let esSelected = (value.id == datosBienestar.meta.id) ? 'selected' : '';
+                let esSelected = (datosBienestar.meta !== null && value.id == datosBienestar.meta.id) ? 'selected' : '';
                 elem += `<option ${esSelected} value="${value.id}">${value.valor}</option>`;
             })
             $('#valorMeta').html(elem);

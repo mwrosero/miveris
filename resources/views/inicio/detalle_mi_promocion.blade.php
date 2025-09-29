@@ -11,7 +11,7 @@ Mi Veris - Citas - Detalle
     $tokenMods = base64_encode(uniqid());
     $tokenCita = base64_encode(uniqid());
 @endphp
-<div class="flex-grow-1 container-p-y pt-0">
+<div class="flex-grow-1 container-p-y pt-0 d-none con-permisos">
     
     <div class="d-flex justify-content-between align-items-center bg-white shadow-bottom">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Promoción') }}</h5>
@@ -54,6 +54,35 @@ Mi Veris - Citas - Detalle
                 </div>
             </div>
         </div>
+        <div class="mb-4 box-factura d-none">
+            <div class="d-flex justify-content-center mb-3 px-3">
+                <div class="col-12 col-md-6 col-lg-3 text-center">
+                    <div class="btn btn-sm fs--1 w-100 ms-2 m-0 line-height-16 btn-outline-veris-ai verRide">Ver factura</div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<div class="flex-grow-1 container-p-y pt-0 d-none sin-permisos">
+    <section class="p-0 px-md-3">
+        <div class="mb-4 contenedorPromocionRealizadoSection">
+            <div class="d-flex justify-content-center mb-3 px-3">
+                <div class="col-12 col-md-5 d-flex justify-content-center" id="mensajeNoTienesPermisosAdministradorRealizados">
+                    <div class="card bg-transparent shadow-none">
+                        <div class="card-body mt-5">
+                            <div class="text-center">
+                                <h5 class="fs-24 fw-medium line-height-28 mb-4">No tienes permisos de visualización</h5>
+                                <p class="fs--16 line-height-20 mb-4">Para ver o agendar un paquete de <span class="nombrePacienteFamiliar text-capitalize"></span> necesitas permisos de administrador.</p>
+                                <img src="{{ asset('assets/img/svg/resultado_2.svg') }}" class="img-fluid" alt="">
+                            </div>
+                            <div class="mx-auto mt-3 box-solicitud">
+                                <button class="btn btn-primary-veris w-100 fs--18 line-height-24 rounded-3 py-3 waves-effect waves-light" type="button" id="btnSolicitarPermiso">Solicitar permisos</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 @endsection
@@ -67,7 +96,7 @@ Mi Veris - Citas - Detalle
         $('#tituloPromocionPendiente').html('Caducado');
     }
     document.addEventListener("DOMContentLoaded", async function () {
-
+        // console.log(dataCita.paquete);
         $('.feature-img-promocion').css('background', 'url("'+dataCita.paquete.urlImagen+'") no-repeat center');
         /*$('.title-promocion').html(capitalizarCadaPalabra(dataCita.paquete.nombreComercialPaquete));
         $('.nombrePaciente').html(capitalizarCadaPalabra(dataCita.paquete.nombrePaciente));
@@ -75,10 +104,22 @@ Mi Veris - Citas - Detalle
         //consultarGrupoFamiliar();
         await obtenerDetallePaquetePromocional();
 
+        console.log(dataCita.paquete.esArchivado)
+
+        if(!dataCita.paquete.esArchivado){
+            $('.box-factura').removeClass('d-none')
+        }
+
         $('body').on('click','.btn-detalle', function(){
+            let secuenciaPaquetePaciente;
+            if(dataCita.hasOwnProperty('secuenciaPaquetePaciente')){
+                secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
+            }else{
+                secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente
+            }
             let url = '/detalle/item/';
             let data = {
-                "secuenciaPaquetePaciente": dataCita.paquete.secuenciaPaquetePaciente,
+                "secuenciaPaquetePaciente": secuenciaPaquetePaciente,
                 "detalle": JSON.parse($(this).attr("data-rel")),
                 "detalleItemPaquete": JSON.parse($(this).attr("data-rel"))[0],
                 "promocion": JSON.parse($(this).attr("promocion-rel")),
@@ -89,6 +130,14 @@ Mi Veris - Citas - Detalle
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
             location.href = url + "{{ $tokenCita }}";
         })
+
+        $(document).on('click', '.verRide', function(){
+            descargarDocumentoRide();
+        });
+
+        $("#btnSolicitarPermiso").click(async function() {
+            await sendCode();
+        });
 
         $('body').on('click','.btn-agendar-item', function(){
             let promocion = JSON.parse($(this).attr("promocion-rel"));
@@ -109,7 +158,14 @@ Mi Veris - Citas - Detalle
                 url = '/citas-elegir-fecha-doctor/';
             }
 
-            dataCita.secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente;
+            let secuenciaPaquetePaciente;
+            if(dataCita.hasOwnProperty('secuenciaPaquetePaciente')){
+                secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente
+            }else{
+                secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente
+            }
+
+            dataCita.secuenciaPaquetePaciente = secuenciaPaquetePaciente;
             dataCita.nombrePaciente = dataCita.paquete.nombrePaciente;
             dataCita.paciente = dataCita.paciente;
             dataCita.promocion = promocion;
@@ -160,24 +216,86 @@ Mi Veris - Citas - Detalle
         })
     })
 
+    async function sendCode(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/perfil/solicitaAdmin`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["bodyType"] = "json";
+        
+        args["data"] = JSON.stringify({
+            "numeroPaciente": dataCita.paciente.numeroPaciente,
+            "virusu": "{{ Session::get('userData')->numeroIdentificacion }}",
+            "correo": dataCita.paciente.correo,
+            "canalOrigenDigital": _canalOrigen
+        });
+
+        const data = await call(args);
+        if(data.code == 200){
+            dataCita.familiar = dataCita.paciente;
+            dataCita.parentesco = {
+                "descripcion": dataCita.paciente.parentesco,
+                "codigoParentesco": dataCita.paciente.codigoParentesco
+            }
+            dataCita.provienePaquete = true;
+            localStorage.setItem('persona-{{ $params }}', JSON.stringify(dataCita));
+            location.href = "/confirmar-soporte/{{ $params }}";
+        }
+    }
+
     function validarCaducidad(){
         let elem = ``;
         if(dataCita.paquete.esCaducada){
             elem += `<span class="text-danger">${dataCita.paquete.fechaCaducidad} | Caducado</span>`;
         }else{
-            elem += `Válida hasta: <span class="text-primary-veris">${dataCita.paquete.fechaCaducidad}</span>`;
+            let fechaCaducidad = (dataCita.paquete.fechaCaducidad !== null) ? dataCita.paquete.fechaCaducidad : dataCita.detallePaquete.fechaCaducidad;
+            elem += `Válida hasta: <span class="text-primary-veris">${fechaCaducidad}</span>`;
         }
         return elem;
     }
 
-    async function obtenerDetallePaquetePromocional(){
+    async function descargarDocumentoRide(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=1&secuenciaPaquetePaciente=${dataCita.paquete.secuenciaPaquetePaciente}`;
+
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/obtenerRide?numeroTransaccion=${dataCita.detallePaquete.numeroTransaccion}&canalOrigen=${_canalOrigen}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        console.log('arsgs', args["endpoint"]);
+        try {
+            const blob = await callInformes(args);
+            const pdfUrl = URL.createObjectURL(blob);
+            window.open(pdfUrl, '_blank');
+            setTimeout(() => {
+                URL.revokeObjectURL(pdfUrl);
+            }, 100);
+        } catch (error) {
+            console.error('Error al obtener el RIDE:', error);
+        }
+    }
+
+    async function obtenerDetallePaquetePromocional(){
+        let secuenciaPaquetePaciente;
+        if(dataCita.hasOwnProperty('secuenciaPaquetePaciente')){
+            secuenciaPaquetePaciente = dataCita.secuenciaPaquetePaciente;
+            $('.nombrePacienteFamiliar').html(dataCita.paciente.primerNombre.toLowerCase());
+        }else{
+            secuenciaPaquetePaciente = dataCita.paquete.secuenciaPaquetePaciente;
+        }
+        let codigoUsuario = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/detallePaquete?canalOrigen=${_canalOrigen}&codigoEmpresa=1&secuenciaPaquetePaciente=${secuenciaPaquetePaciente}&codigoUsuario=${codigoUsuario}`;
+        console.log(args["endpoint"])
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
         // console.log(data);
         if (data.code == 200){
+            if(data.data.tienePermisoAdmin){
+                $('.con-permisos').removeClass('d-none')
+            }else{
+                $('.sin-permisos').removeClass('d-none')
+            }
+            dataCita.detallePaquete = data.data;
             if(data.data.pendientes.length > 0){
                 $('.box-llamada').html(`<i class="fa-solid fa-circle-info text-primary-veris line-height-16 fs--16 me-2"></i><div>Para agendar tus servicios llámanos al <span>${data.data.numeroContactCenter}</span>.</div><a href="tel:+593${data.data.numeroContactCenter}" class="btn btn-sm btn-primary-veris fw-medium fs--16 line-height-16 px-3 py-2 shadow-none ms-2 d-block d-md-none" style="border-radius:8px;">Llamar</a>`);
                 $('.fechaValidez').removeClass('d-none');
@@ -193,13 +311,17 @@ Mi Veris - Citas - Detalle
                     if(detalles.esAgendable){
                         mostrarBoxLlamada = false;
                     }
+                    let detalleRealizadas = `<p class="fs--1">Realizadas: <span style="color: #00C853">${detalles.cantidad}</span></p>`;
+                    if(detalles.esAgrupado){
+                        detalleRealizadas = `<p class="fs--1">${detalles.descripcionServicio}</p>`;
+                    }
                     elemPendiente += `<div class="col-12 col-md-6">
                         <div class="card">
                             <div class="card-body p--2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <h6 class="text-primary-veris fw-medium fs--1 line-height-16 mb-1 text-one-line">${capitalizarElemento(detalles.nombreServicio)}</h6>
                                 </div>
-                                <p class="fs--1">Realizadas: <span style="color: #00C853">${detalles.cantidad}</span></p>
+                                ${detalleRealizadas}
                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                     <div class="avatar-sm me-2">
                                         <img src="${quitarComillas(detalles.urlImagenTipoServicio)}" alt="Avatar" class="rounded-circle bg-light-grayish-green">

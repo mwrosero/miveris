@@ -21,19 +21,19 @@ Elige datos para la Cita
 </div>
 
 <!-- Modal Agenda terapia -->
-    <div class="modal fade" id="modalInfoTerapia" tabindex="-1" aria-labelledby="modalInfoTerapiaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
-            <div class="modal-content">
-                <div class="modal-body text-center p-3">
-                    <h1 class="modal-title fs--20 line-height-24 my-3">Información</h1>
-                    <p class="fs--1 fw-normal mb-0 text-veris">Necesitas una orden médica para agendar terapia física. Agenda una cita en traumatología o fisiatría para solicitar una orden.</p>
-                </div>
-                <div class="modal-footer pt-0 pb-3 px-3">
-                    <button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cerrar</button>
-                </div>
+<div class="modal fade" id="modalInfoTerapia" tabindex="-1" aria-labelledby="modalInfoTerapiaLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3">Información</h1>
+                <p class="fs--1 fw-normal mb-0 text-veris">Necesitas una orden médica para agendar terapia física. Agenda una cita en traumatología o fisiatría para solicitar una orden.</p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
+</div>
 
 <!-- Modal mensaje -->
 <div class="modal fade" id="modalEmbarazo" tabindex="-1" aria-labelledby="modalEmbarazoLabel" aria-hidden="true">
@@ -254,7 +254,7 @@ Elige datos para la Cita
                     <button class="btn disabled bg-white-80 w-100 btn-sm btn-outline-primary-veris waves-effect d-flex justify-content-between align-items-center pt-3 pb-3 border-1" type="button" id="btn-central" data-rel="">
                         {{-- data-bs-toggle="modal" data-bs-target="#centralModal" --}}
                         <p class="fs--1 line-height-16 fw-medium fs--1 mb-0"></p>
-                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro Especialidad"> 
+                        <img src="{{asset('assets/img/svg/arrow-right.svg')}}" class="ms-1" alt="Filtro CEntral médica"> 
                     </button>
                 </div>
                 <span class="mb-2 d-block fs--2 line-height-16 text-light d-none label-sugerencia label-sugerencia-central">Seleccionada en base a tus agendamientos anteriores</span>
