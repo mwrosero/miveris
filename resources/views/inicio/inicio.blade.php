@@ -799,6 +799,9 @@ Mi Veris - Inicio
         console.log(data)
         let tieneSlides = false;
         if(data.code == 200){
+            if(data.data === null){
+                return;
+            }
             if(data.data.pantallas.length > 0){
                 let elem = ``;
                 $.each(data.data.pantallas, function(key, value){
