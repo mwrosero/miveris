@@ -723,7 +723,8 @@ Veris - Datos de facturación
 		        	createPostForm(response);
 		        	$('.btnNuvei').hide();
 		        	showLoader();
-		        	showError('Procesando pago, por favor no cierre el navegador.');
+		        	//showError('Procesando pago, por favor no cierre el navegador.');
+		        	showMessage('success', "Procesando pago, por favor no cierre el navegador.")
 		        	//alert('Procesando pago, por favor no cierre el navegador. '+response.message);
 		        	/*armar formulario y hacer submit a procesarlo*/
 		        	// $('#metodo-pago-form').submit();
