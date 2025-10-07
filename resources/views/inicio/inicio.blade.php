@@ -1013,7 +1013,7 @@ Mi Veris - Inicio
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
         // imprimir todos los valores de session
         
-        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${window.config.canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
@@ -1043,7 +1043,7 @@ Mi Veris - Inicio
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
         let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroPaciente=${numeroPaciente}&numeroIdentificacion=${numeroIdentificacion}&codigoUsuario=${numeroIdentificacion}&version=7.8.0&adicionaSolicitudes=S&soloUsuarioSesion=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroPaciente=${numeroPaciente}&numeroIdentificacion=${numeroIdentificacion}&codigoUsuario=${numeroIdentificacion}&version=7.8.0&adicionaSolicitudes=S&soloUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
