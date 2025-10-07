@@ -767,15 +767,15 @@ Veris - Datos de facturación
 		window.dataLayer = window.dataLayer || [];
 		dataLayer.push({
 			event: 'purchase',
-		    transaction_id: 'ORD-'+preTransaccion.data.codigoPreTransaccion, // ← dinámico, generado desde backend
-		    value: dataCita.facturacion.totales.total,                 // ← monto real de la orden
+		    transaction_id: 'ORD-'+preTransaccion.data.codigoPreTransaccion,
+		    value: dataCita.facturacion.totales.total,                 
 		    currency: 'USD',
 		    tax: 0,
 		    shipping: 0,
-		    coupon: '',                   // ← si hubo cupón
-		    paquete_nombre: dataCita.facturacion.totales.total,
+		    coupon: '',                   
+		    paquete_nombre: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
 		    items: [{
-				item_id: dataCita.facturacion.detalleServicio.detallePaquetes[0].codigoPaquete,        // ← ID real del producto
+				item_id: dataCita.facturacion.detalleServicio.detallePaquetes[0].codigoPaquete,
 				item_name: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
 				item_category: 'Paquetes',
 				quantity: 1,
