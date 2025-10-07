@@ -27,4 +27,8 @@ src="https://www.facebook.com/tr?id=1006474684733281&ev=PageView&noscript=1"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=676276461652855&ev=PageView&noscript=1"
+/></noscript>
+
 @endif
