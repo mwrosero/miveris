@@ -765,8 +765,7 @@ Veris - Datos de facturación
 			return;
 		}
 
-		window.dataLayer = window.dataLayer || [];
-		dataLayer.push({
+		let payload = {
 			event: 'purchase',
 		    transaction_id: 'ORD-'+preTransaccion.data.codigoPreTransaccion,
 		    value: dataCita.facturacion.totales.total,                 
@@ -782,7 +781,10 @@ Veris - Datos de facturación
 				quantity: 1,
 				price: dataCita.facturacion.totales
 		  	}]
-		});
+		}
+		localStorage.setItem('dataLayer', JSON.stringify(payload));
+		window.dataLayer = window.dataLayer || [];
+		dataLayer.push(payload);
 	}
 
 	async function llenarDataDetallesCitas(){
