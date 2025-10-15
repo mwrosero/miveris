@@ -789,7 +789,7 @@ Mi Veris - Inicio
 
     async function cargarBanners(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=12&canalOrigen=${_canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=12&canalOrigen=${window.config.canalOrigen}`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -868,7 +868,7 @@ Mi Veris - Inicio
 
     async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
         console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -909,7 +909,7 @@ Mi Veris - Inicio
         let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
         let codigoEmpresa = 1
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
+        args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const dataConvenio = await call(args);
@@ -925,7 +925,7 @@ Mi Veris - Inicio
         let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
         let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const dataPaciente = await call(args);
@@ -970,7 +970,7 @@ Mi Veris - Inicio
 
     async function controlVersion(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/controlVersion?codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&plataforma=WEB&version=1.0.0&canalOrigen=${_canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/controlVersion?codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&plataforma=WEB&version=1.0.0&canalOrigen=${window.config.canalOrigen}`;
                 args["method"] = "GET";
                 args["showLoader"] = true;
         const data = await call(args);
@@ -1013,7 +1013,7 @@ Mi Veris - Inicio
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
         // imprimir todos los valores de session
         
-        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${window.config.canalOrigen}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
@@ -1043,7 +1043,7 @@ Mi Veris - Inicio
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
         let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroPaciente=${numeroPaciente}&numeroIdentificacion=${numeroIdentificacion}&codigoUsuario=${numeroIdentificacion}&version=7.8.0&adicionaSolicitudes=S&soloUsuarioSesion=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroPaciente=${numeroPaciente}&numeroIdentificacion=${numeroIdentificacion}&codigoUsuario=${numeroIdentificacion}&version=7.8.0&adicionaSolicitudes=S&soloUsuarioSesion=S`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log(args["endpoint"]);
@@ -1071,7 +1071,7 @@ Mi Veris - Inicio
         let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservas/ingresos?idPaciente=${numeroPaciente}&canalOrigen=${_canalOrigen}`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservas/ingresos?idPaciente=${numeroPaciente}&canalOrigen=${window.config.canalOrigen}`
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
