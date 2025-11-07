@@ -96,7 +96,6 @@ Mi Veris - Citas - Detalle
         background: #cc0b39;
         font-size: 16px;
         font-style: normal;
-        font-weight: 350;
         line-height: 20px;
         border-top-right-radius: 8px;
     }
@@ -152,7 +151,7 @@ Mi Veris - Citas - Detalle
         if(dataCita.paquete.porcentajeDescuento > 0){
             //strDescuento = `<span class="badge badge-discount position-absolute top-0 end-0">-${dataCita.paquete.porcentajeDescuento}%</span>`;
             if(dataCita.paquete.esDescuentoExclusivo){
-               strDescuento += `<span class="badge badge-discount position-absolute top-0 end-0">Desct. exclusivo web</span>`;
+               strDescuento = `<span class="badge badge-discount position-absolute top-0 end-0 fw-medium rounded-3 p-2 mt-2 me-2"><i class="fa-solid fa-fire me-1 text-white"></i>Descuento online</span>`;
             }
         }
         

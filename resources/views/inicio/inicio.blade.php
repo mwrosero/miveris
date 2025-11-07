@@ -7,7 +7,19 @@ Mi Veris - Inicio
     $tokenCita = base64_encode(uniqid());
     // dd($tokenCita);
 @endphp
+{{-- <style>
+    #animacion {
+      width: 300px;
+      height: 300px;
+      margin: auto;
+      position: absolute;
+      z-index: 9;
+      pointer-events: none;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script> --}}
 <div class="flex-grow-1 container-p-y pt-0">
+    {{-- <div id="animacion"></div> --}}
 
     <!-- Modal de error -->
     <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
@@ -312,6 +324,14 @@ Mi Veris - Inicio
     let datosPaciente = [];
 
     document.addEventListener("DOMContentLoaded", async function () {
+        {{-- var anim = lottie.loadAnimation({
+            container: document.getElementById('animacion'),
+            renderer: 'svg', // 👈 evita canvas
+            loop: true,
+            autoplay: true,
+            path: '{{ asset('assets/json/SPIDER_JSON.json') }}' // tu archivo Lottie JSON
+        }); --}}
+        
         await controlVersion();
         
         /*var swiper = new Swiper('.swiper-acceso-rapidos', {
@@ -1652,6 +1672,8 @@ Mi Veris - Inicio
         }
         return [];
     }
+
+
 
 </script>
 <style>
