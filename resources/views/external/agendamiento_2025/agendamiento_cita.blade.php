@@ -69,6 +69,21 @@ Veris - Citas
 	document.addEventListener("DOMContentLoaded", async function () {
         await obtenerIdentificacion();
 
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('ti')) {
+		  	const ti = params.get('ti'); // valor de ti (o null si no tiene valor)
+		  	$('#tipoIdentificacion').val(ti).trigger('change');
+		}
+
+		if (params.has('ni')){
+			const ni = params.get('ni');
+			$('#numeroIdentificacion').val(ni).trigger('change');
+		}
+
+		if(params.has('ti') && params.has('ni')){
+			//await buscarUsuario()
+		}
+
         $('body').on('click', '.next-button', async function(){
         	let tipoIdentificacion = getInput('tipoIdentificacion');
         	let numeroIdentificacion = getInput('numeroIdentificacion');

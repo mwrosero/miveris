@@ -123,10 +123,9 @@ Mi Veris - Citas - Promociones
         gap: 8px;
         flex-shrink: 0;
         background: #cc0b39;
-        font-size: 16px;
-        font-style: normal;
+        font-size: 12px;
         font-weight: 350;
-        line-height: 20px;
+        line-height: 16px;
     }
     .box-discount {
         font-size: 12px;
@@ -433,7 +432,7 @@ Mi Veris - Citas - Promociones
                     if(value.porcentajeDescuento > 0){
                         //strDescuento = `<span class="badge badge-discount position-absolute top-0 end-0">-${value.porcentajeDescuento}%</span>`;
                         if(value.esDescuentoExclusivo){
-                           strDescuento = `<span class="badge badge-discount position-absolute top-0 end-0">Desct. exclusivo web</span>`;
+                           strDescuento = `<span class="badge badge-discount position-absolute top-0 end-0 fw-medium rounded-3 p-2 mt-2 me-2"><i class="fa-solid fa-fire me-1 text-white"></i>Descuento online</span>`;
                         }
                         strDescuentoFooter = `<div class="p-1 font-gotham box-discount fw-medium text-center d-inline-block mb-1">-${value.porcentajeDescuento}% dto.</div><p class="mb-0 font-gotham text-muted text-sm">Antes <span class="text-decoration-line-through"> $${value.valorAnteriorPaquete}</span></p>`;
                     }
