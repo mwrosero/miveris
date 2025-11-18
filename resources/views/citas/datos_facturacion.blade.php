@@ -124,8 +124,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                                         </div>
                                     </div>
                                     <div class="col-md-12 box-no-ruc">
-                                        <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo Apellido *</label>
-                                        <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" placeholder="" required />
+                                        <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo Apellido</label>
+                                        <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" placeholder="" />
                                         <div class="invalid-feedback">
                                             Ingrese su nombres y apellidos.
                                         </div>
@@ -638,8 +638,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 msg += `<li class="ms-0">El campo primer apellido es obligatorio.</li>`;
             }
             if (segundoApellido.trim() === "") {
-                errors = true;
-                msg += `<li class="ms-0">El campo segundo apellido es obligatorio.</li>`;
+                {{-- errors = true;
+                msg += `<li class="ms-0">El campo segundo apellido es obligatorio.</li>`; --}}
             }
         }
 

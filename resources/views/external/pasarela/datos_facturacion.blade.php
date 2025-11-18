@@ -170,8 +170,8 @@ Veris - Datos de facturación
 	                                </div>
 	                            </div>
 	                            <div class="col-md-12 box-no-ruc">
-	                                <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo Apellido *</label>
-	                                <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" placeholder="" required />
+	                                <label for="segundoApellido" class="form-label fw-medium fs--1">Segundo Apellido</label>
+	                                <input type="text" class="form-control fs--1 p-3" name="segundoApellido" id="segundoApellido" placeholder="" />
 	                                <div class="invalid-feedback">
 	                                    Ingrese su nombres y apellidos.
 	                                </div>
@@ -575,8 +575,8 @@ Veris - Datos de facturación
                 msg += `<li class="ms-0">El campo primer apellido es obligatorio.</li>`;
             }
             if (segundoApellido.trim() === "") {
-                errors = true;
-                msg += `<li class="ms-0">El campo segundo apellido es obligatorio.</li>`;
+                {{-- errors = true;
+                msg += `<li class="ms-0">El campo segundo apellido es obligatorio.</li>`; --}}
             }
         }
 
@@ -761,27 +761,50 @@ Veris - Datos de facturación
 
 	function executeDataLayer(){
 		//validar
-		if(dataCita.facturacion.detalleServicio.detallePaquetes === null){
+		if(dataCita.facturacion.detalleServicio.detallePaquetes === null && dataCita.facturacion.detalleServicio.citas === null){
 			return;
 		}
 
-		let payload = {
-			event: 'purchase',
-		    transaction_id: 'ORD-'+preTransaccion.data.codigoPreTransaccion,
-		    value: dataCita.facturacion.totales.total,                 
-		    currency: 'USD',
-		    tax: 0,
-		    shipping: 0,
-		    coupon: '',                   
-		    paquete_nombre: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
-		    items: [{
-				item_id: dataCita.facturacion.detalleServicio.detallePaquetes[0].codigoPaquete,
-				item_name: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
-				item_category: 'Paquetes',
-				quantity: 1,
-				price: dataCita.facturacion.totales
-		  	}]
+		let payload;
+
+		if(dataCita.facturacion.detalleServicio.detallePaquetes !== null){
+			payload = {
+				event: 'purchase',
+			    transaction_id: 'ORD-'+preTransaccion.data.codigoPreTransaccion,
+			    value: dataCita.facturacion.totales.total,                 
+			    currency: 'USD',
+			    tax: 0,
+			    shipping: 0,
+			    coupon: '',                   
+			    paquete_nombre: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
+			    items: [{
+					item_id: dataCita.facturacion.detalleServicio.detallePaquetes[0].codigoPaquete,
+					item_name: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
+					item_category: 'Paquetes',
+					quantity: 1,
+					price: dataCita.facturacion.totales
+			  	}]
+			}
+		}else if(dataCita.facturacion.detalleServicio.citas !== null){
+			payload = {
+				event: 'purchase',
+			    transaction_id: 'ORD-'+preTransaccion.data.codigoPreTransaccion,
+			    value: dataCita.facturacion.totales.total,                 
+			    currency: 'USD',
+			    tax: 0,
+			    shipping: 0,
+			    coupon: '',                   
+			    especialidad_nombre: dataCita.facturacion.detalleServicio.citas[0].especialidad,
+			    items: [{
+					item_id: dataCita.facturacion.detalleServicio.citas[0].idCita,
+					item_name: dataCita.facturacion.detalleServicio.citas[0].especialidad,
+					item_category: 'Citas',
+					quantity: 1,
+					price: dataCita.facturacion.totales
+			  	}]
+			}
 		}
+
 		localStorage.setItem('dataLayer', JSON.stringify(payload));
 		window.dataLayer = window.dataLayer || [];
 		dataLayer.push(payload);
