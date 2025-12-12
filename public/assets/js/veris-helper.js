@@ -1142,3 +1142,22 @@ async function updateToken() {
         _token = data.idToken;
     }
 }
+
+function getClientBrowserInfo(serverData) {
+    // Cálculo del desplazamiento de la zona horaria en minutos
+    const timezoneOffsetMinutes = (new Date()).getTimezoneOffset();
+    const colorDepth = window.screen.colorDepth || 0;
+
+    return {
+        "language": navigator.language || navigator.userLanguage || "unknown",
+        "java_enabled": navigator.javaEnabled(),
+        "js_enabled": true,
+        "color_depth": colorDepth,
+        "screen_height": window.screen.height || 0,
+        "screen_width": window.screen.width || 0,
+        "timezone_offset": timezoneOffsetMinutes / -60,
+        "ip": serverData.ip, 
+        "user_agent": serverData.user_agent, 
+        "accept_header": serverData.accept_header
+    };
+}
