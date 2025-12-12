@@ -357,7 +357,7 @@ Mi Veris - Politica-privacidad-datos
     //obtener las politicas
     async function obtenerPPD(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}/?codigoEmpresa=1&plataforma=WEB&version=7.0.1`;
+        args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}?codigoEmpresa=1&plataforma=WEB&version=7.0.1`;
         args["method"] = "GET";
         args["showLoader"] = true;
 

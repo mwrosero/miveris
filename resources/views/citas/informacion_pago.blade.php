@@ -7,6 +7,7 @@ Mi Veris - Citas - Información de pago
 $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 // dd($data);
 @endphp
+@include('components.dataBrowser')
 <div class="flex-grow-1 container-p-y pt-0">
     <!-- Modal Autenticar tarjeta-->
     <div class="modal fade" id="autenticarPago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="autenticarPagoLabel" aria-hidden="true">
@@ -336,6 +337,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
+            "browser_info": getClientBrowserInfo(serverData),
             "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
             "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
             "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
