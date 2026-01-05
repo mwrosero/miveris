@@ -84,6 +84,10 @@ class Veris extends Model
         }
 
         $header = [];
+        if(isset($config['TokenPush'])){
+            $header[] = 'TokenPush: ' . $config['TokenPush'];
+        }
+        
         if(isset($config['application'])){
             $header[] = 'application: ' . $config['application'];
         }else{
@@ -139,7 +143,7 @@ class Veris extends Model
             curl_setopt($ch, CURLOPT_USERPWD, $config['username'].":".$config['password']);
         }
 
-        // dd($header);
+        // dump($header);
         
         // API CALL
         try{

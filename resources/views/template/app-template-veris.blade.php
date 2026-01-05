@@ -58,10 +58,12 @@
         const app_ori = "APPWEB";
         const api_url = "{{ \App\Models\Veris::BASE_URL }}";
         const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
+        let _token = "{{ Session::get('userData')->tokenPush }}";
         let tipoFlujo = "";
+        const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
         window.config = {
             subdomain: @json(config('app.subdomain')),
-            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "VER_CMV" : "VER_PMF"
+            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "VER_CMV" : "VER_PMF",
         };
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

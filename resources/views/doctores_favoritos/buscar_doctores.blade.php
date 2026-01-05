@@ -252,7 +252,7 @@ Mi Veris - Buscar doctor
         let args = [];
         let codigoUsuario = '{{ Session::get('userData')->numeroIdentificacion }}';
         args["endpoint"] = api_url + `/${api_war}/v1/perfil/doctores/favoritos/agregar?codigoUsuario=${codigoUsuario}`;
-        console.log('args["endpoint"]',args["endpoint"]);
+        
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";

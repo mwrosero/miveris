@@ -145,7 +145,7 @@ Mi Veris - Citas - Farmacia a domicilio
     async function crearFarmaciaDomicilio() {
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/domicilio/farmacia/solicitud`;
-        console.log('args["endpoint"]',args["endpoint"]);
+        
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";

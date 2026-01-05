@@ -148,9 +148,11 @@ class ExternalController extends Controller
 
                 $list_paciente = Veris::call([
                     'endpoint' => Veris::BASE_URL.$method,
-                    'method'   => 'GET'
+                    'method'   => 'GET',
+                    'token'    => $this->getTokenExternalDigitales()
                 ]);
-                // dd($response->data);
+                // echo Veris::BASE_URL.$method;
+                // dd($list_paciente);
                 return view('external.pasarela.pago_servicios_y_farmacia')
                             ->with('info',$response->data)
                             ->with('esServicioCaja',$esServicioCaja)
@@ -166,7 +168,8 @@ class ExternalController extends Controller
 
             $list_paciente = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
-                'method'   => 'GET'
+                'method'   => 'GET',
+                'token'    => $this->getTokenExternalDigitales()
             ]);
             // dd($list_paciente);
             $idPaciente = ($list_paciente->data !== null) ? $list_paciente->data->numeroPaciente : null;
@@ -254,7 +257,8 @@ class ExternalController extends Controller
             $response_pretrx = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
                 'method'   => 'POST',
-                'data'     => $data
+                'data'     => $data,
+                'token'    => $this->getTokenExternalDigitales()
             ]);
             // echo Veris::BASE_URL.$method;
             // dump($data);
@@ -352,7 +356,8 @@ class ExternalController extends Controller
                         "codigoSeguridad" => null,
                         "canalOrigenDigital" => $canalOrigenServ
                     ],
-                    'method'   => 'POST'
+                    'method'   => 'POST',
+                    'token'    => $this->getTokenExternalDigitales()
                 ]);
             }else{
                 /*return redirect()->route('payment-error')
@@ -390,7 +395,8 @@ class ExternalController extends Controller
                     "codigoSeguridad" => null,
                     "canalOrigenDigital" => $canalOrigenServ
                 ],
-                'method'   => 'POST'
+                'method'   => 'POST',
+                'token'    => $this->getTokenExternalDigitales()
             ]);
             // dd($response);
             // echo Veris::BASE_URL.$method;
@@ -601,7 +607,8 @@ class ExternalController extends Controller
                         "codigoSeguridad" => null,
                         "canalOrigenDigital" => $canalOrigenServ
                     ],
-                    'method'   => 'POST'
+                    'method'   => 'POST',
+                    'token'    => $this->getTokenExternalDigitales()
                 ]);
             }
         }
@@ -646,7 +653,8 @@ class ExternalController extends Controller
                 'endpoint' => Veris::BASE_URL.$method,
                 //'token'    => $accessToken,
                 'method'   => 'POST',
-                'data'     => $data
+                'data'     => $data,
+                'token'    => $this->getTokenExternalDigitales()
             ]);
 
             // echo Veris::BASE_URL.$method;
@@ -850,6 +858,7 @@ class ExternalController extends Controller
             'method'   => 'POST',
             'tokenDesarrollo' => $esDesarrollo
         ]);
+        // echo $basic;
         // dump(Veris::BASE_URL.$method);
         // dd($response);
         session(['accessTokenFacturacion' => $response->data->idToken]);
@@ -981,17 +990,43 @@ class ExternalController extends Controller
 
     public function refreshToken(){
         $info = Session::get('userData');
-        // dd($info->refreshToken);
+        // dd($info);
+        if(isset($info->tokenPush)){
+            $method = '/'.Veris::BASE_WAR.'/v1/seguridad/refreshToken?canalOrigen='.Veris::CANAL_ORIGEN;
+            $response = Veris::call([
+                'endpoint'  => Veris::BASE_URL.$method,
+                'TokenPush' => $info->tokenPush,
+                'method'    => 'POST',
+                'basic'     => Veris::BASICAUTHDIGITALES,
+                //'application' => Veris::APPLICATION_FARMACIA
+            ]);
+            // echo Veris::BASE_URL.$method;
+            dd($response);
+            // $tokenSession = $response->data->refreshToken;
+        }else{
+            $tokenSession = $info->refreshToken;
+            $method = '/'.Veris::FACTURACION_WAR.'/v1/autenticacion/refresh_token';
+            $response = Veris::call([
+                'endpoint'  => Veris::BASE_URL.$method,
+                'data'      => ["refreshToken" => $tokenSession],
+                'method'    => 'POST',
+                'application' => Veris::APPLICATION_FARMACIA
+            ]);
+            // dd($response);
+        }
         
-        $method = '/'.Veris::FACTURACION_WAR.'/v1/autenticacion/refresh_token';
-        $response = Veris::call([
-            'endpoint'  => Veris::BASE_URL.$method,
-            'data'      => ["refreshToken" => $info->refreshToken],
-            'method'    => 'POST',
-            'application' => Veris::APPLICATION_FARMACIA
-        ]);
 
-        Session::put('accessToken', $response->data->idToken);
+
+        if(isset($info->tokenPush)){
+            $nuevoToken = $response->data->refreshToken;
+            $userData = Session::get('userData');
+            //Verificar nombre parámetro
+            $userData->tokenPush = $nuevoToken;
+            Session::put('userData', $userData);
+        }else{
+            $nuevoToken = $response->data->idToken;
+            Session::put('accessToken', $response->data->idToken);
+        }
 
         $msg = [
             "code" => $response->code,
@@ -999,7 +1034,7 @@ class ExternalController extends Controller
         ];
 
         if($response->code == 200){
-            $msg["idToken"] = $response->data->idToken;
+            $msg["idToken"] = $nuevoToken;
         }
 
         return response()->json($msg);

@@ -811,7 +811,7 @@ Mi Veris - Inicio
     async function cargarBanners(){
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=12&canalOrigen=${window.config.canalOrigen}`;
-        console.log('args["endpoint"]',args["endpoint"]);
+        
         args["method"] = "GET";
         args["showLoader"] = true;
         
@@ -890,7 +890,7 @@ Mi Veris - Inicio
     async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
-        console.log('args["endpoint"]',args["endpoint"]);
+        
         args["method"] = "GET";
         args["showLoader"] = true;
         
