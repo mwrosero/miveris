@@ -741,11 +741,12 @@ class ExternalController extends Controller
             $list = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
                 'token'    => $accessToken,
-                'method'   => 'GET'
+                'method'   => 'GET',
             ]);
         }
         // dd($list);
         return view('external.pasarela.comprobante_pago')
+            ->with('accessToken',$this->getTokenExternalDigitales())
             ->with('data',$list);
     }
 
