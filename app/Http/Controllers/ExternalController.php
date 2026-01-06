@@ -17,7 +17,6 @@ class ExternalController extends Controller
         // session()->flash('url', "https://akold.com");
         // return redirect()->route('payment-error');
 
-
         return view('external.embudo_agendamiento.index_agendamiento')
             ->with('accesToken',$this->getTokenExternalDigitales());
     }
@@ -38,23 +37,33 @@ class ExternalController extends Controller
     }
     
     public function datosCitaNuevoAgendamientoCitas($params){
-        return view('external.agendamiento_2025.seleccionar_datos_cita')->with('params',$params);
+        return view('external.agendamiento_2025.seleccionar_datos_cita')
+                ->with('params',$params)
+                ->with('accesToken', $this->getTokenExternalDigitales());
     }
 
     public function fechaNuevoAgendamientoCitas($params){
-        return view('external.agendamiento_2025.seleccionar_fecha')->with('params',$params);
+        return view('external.agendamiento_2025.seleccionar_fecha')
+                ->with('params',$params)
+                ->with('accesToken', $this->getTokenExternalDigitales());
     }
 
     public function VuaNuevoAgendamientoCitas($params){
-        return view('external.agendamiento_2025.citas_vua')->with('params',$params);
+        return view('external.agendamiento_2025.citas_vua')
+                ->with('params',$params)
+                ->with('accesToken', $this->getTokenExternalDigitales());
     }
 
     public function detalleCitaNuevoAgendamientoCitas($params){
-        return view('external.agendamiento_2025.detalle_cita')->with('params',$params);
+        return view('external.agendamiento_2025.detalle_cita')
+                ->with('params',$params)
+                ->with('accesToken', $this->getTokenExternalDigitales());
     }
 
     public function CitaAgendadaNuevoAgendamientoCitas($params){
-        return view('external.agendamiento_2025.cita_agendada')->with('params',$params);
+        return view('external.agendamiento_2025.cita_agendada')
+                ->with('params',$params)
+                ->with('accesToken', $this->getTokenExternalDigitales());
     }
 
     public function listadoPaquetes(){
