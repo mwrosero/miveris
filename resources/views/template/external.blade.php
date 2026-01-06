@@ -64,7 +64,7 @@
             const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
             const _application = "{{ \App\Models\Veris::APPLICATION }}";
             let _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACION }}";
-            let _token = "{{ $accesToken }}";
+            let _token = "{{ $accessToken }}";
             // "@if (\App\Models\Veris::CONTIENE_DESARROLLO)  {{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }} @else {{ \App\Models\Veris::IDORGANIZACION }} @endif";
             // const _idOrganizacionResultadosLaboratorio = "";
             let tipoFlujo = "";

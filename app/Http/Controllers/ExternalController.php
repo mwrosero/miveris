@@ -18,7 +18,7 @@ class ExternalController extends Controller
         // return redirect()->route('payment-error');
 
         return view('external.embudo_agendamiento.index_agendamiento')
-            ->with('accesToken',$this->getTokenExternalDigitales());
+            ->with('accessToken',$this->getTokenExternalDigitales());
     }
 
     public function nuevoAgendamientoCitas(){
@@ -29,7 +29,7 @@ class ExternalController extends Controller
 
 
         return view('external.agendamiento_2025.agendamiento_cita')
-            ->with('accesToken',$this->getTokenExternalDigitales());
+            ->with('accessToken',$this->getTokenExternalDigitales());
     }
 
     public function registroNuevoAgendamientoCitas($params){
@@ -39,41 +39,41 @@ class ExternalController extends Controller
     public function datosCitaNuevoAgendamientoCitas($params){
         return view('external.agendamiento_2025.seleccionar_datos_cita')
                 ->with('params',$params)
-                ->with('accesToken', $this->getTokenExternalDigitales());
+                ->with('accessToken', $this->getTokenExternalDigitales());
     }
 
     public function fechaNuevoAgendamientoCitas($params){
         return view('external.agendamiento_2025.seleccionar_fecha')
                 ->with('params',$params)
-                ->with('accesToken', $this->getTokenExternalDigitales());
+                ->with('accessToken', $this->getTokenExternalDigitales());
     }
 
     public function VuaNuevoAgendamientoCitas($params){
         return view('external.agendamiento_2025.citas_vua')
                 ->with('params',$params)
-                ->with('accesToken', $this->getTokenExternalDigitales());
+                ->with('accessToken', $this->getTokenExternalDigitales());
     }
 
     public function detalleCitaNuevoAgendamientoCitas($params){
         return view('external.agendamiento_2025.detalle_cita')
                 ->with('params',$params)
-                ->with('accesToken', $this->getTokenExternalDigitales());
+                ->with('accessToken', $this->getTokenExternalDigitales());
     }
 
     public function CitaAgendadaNuevoAgendamientoCitas($params){
         return view('external.agendamiento_2025.cita_agendada')
                 ->with('params',$params)
-                ->with('accesToken', $this->getTokenExternalDigitales());
+                ->with('accessToken', $this->getTokenExternalDigitales());
     }
 
     public function listadoPaquetes(){
         return view('external.paquetes_promocionales.listado_paquetes')
-            ->with('accesToken',$this->getTokenExternalDigitales());
+            ->with('accessToken',$this->getTokenExternalDigitales());
     }
 
     public function detallePaquete($params){
         return view('external.paquetes_promocionales.detalle_paquete')
-            ->with('accesToken',$this->getTokenExternalDigitales())
+            ->with('accessToken',$this->getTokenExternalDigitales())
             ->with('params',$params);
     }
 
@@ -81,13 +81,13 @@ class ExternalController extends Controller
         $urlParams = $request->all();
         $idPaquete = $urlParams['id'];
         return view('external.paquetes_promocionales.detalle_paquete_id')
-            ->with('accesToken',$this->getTokenExternalFacturacion())
+            ->with('accessToken',$this->getTokenExternalFacturacion())
             ->with('idPaquete', $idPaquete);
     }
 
     public function asignarPaquete($params){
         return view('external.paquetes_promocionales.asignar_paquete')
-            ->with('accesToken',$this->getTokenExternalDigitales())
+            ->with('accessToken',$this->getTokenExternalDigitales())
             ->with('params',$params);
     }
 
@@ -279,11 +279,13 @@ class ExternalController extends Controller
                         ->with('urlRetornoPago', http_build_query($urlParams))
                         ->with('origenInvocacion', (isset($urlParams['origenInvocacion'])) ? $urlParams['origenInvocacion'] : Veris::CANAL_ORIGEN_EXTERNAL)
                         ->with('esLinkDigiturno', $data['esLinkDigiturno'])
+                        ->with('accessToken',$this->getTokenExternalDigitales())
                         ->with('pretransaccion',$response_pretrx);
             }else{
                 // dd(http_build_query($urlParams)); //MEJORAR
                 return view('external.pasarela.error')
                         ->with('showButtonRePay', false)
+                        ->with('accessToken',$this->getTokenExternalDigitales())
                         ->with('error',$response_pretrx->message);//'El servicio ya se encuentra pagado o no tiene detalles disponibles'
             }
         }
