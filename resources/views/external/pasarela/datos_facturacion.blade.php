@@ -807,7 +807,7 @@ Veris - Datos de facturación
 
 		localStorage.setItem('dataLayer', JSON.stringify(payload));
 		window.dataLayer = window.dataLayer || [];
-		dataLayer.push(payload);
+		// dataLayer.push(payload);
 	}
 
 	async function llenarDataDetallesCitas(){

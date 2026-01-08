@@ -14,7 +14,7 @@ class SeguridadesController extends Controller
     /*Login*/
     public function login(){
         $info = Session::get('userData');
-        return view('seguridades.login');
+        return view('seguridades.login')->with('accessToken',$this->getTokenExternalDigitales());
     }
 
     public function autenticar(Request $request){
@@ -55,7 +55,8 @@ class SeguridadesController extends Controller
             return view('seguridades.activar_cuenta')
                 ->with('tipoIdentificacion',Session::get('userDataTmp')->codigoTipoIdentificacion)
                 ->with('numeroIdentificacion',Session::get('userDataTmp')->numeroIdentificacion)
-                ->with('mail',Session::get('userDataTmp')->mail);
+                ->with('mail',Session::get('userDataTmp')->mail)
+                ->with('accessToken',$this->getTokenExternalDigitales());;
         }else{
             return redirect('/login');
         }
@@ -85,17 +86,20 @@ class SeguridadesController extends Controller
             return view('seguridades.activar_cuenta')
                 ->with('tipoIdentificacion',Session::get('userDataTmp')->codigoTipoIdentificacion)
                 ->with('numeroIdentificacion',Session::get('userDataTmp')->numeroIdentificacion)
-                ->with('mail',Session::get('userDataTmp')->mail);
+                ->with('mail',Session::get('userDataTmp')->mail)
+                ->with('accessToken',$this->getTokenExternalDigitales());;
         }
     }
 
     public function registrarCuenta(){
-        return view('seguridades.registrar_cuenta');
+        return view('seguridades.registrar_cuenta')
+                ->with('accessToken',$this->getTokenExternalDigitales());
     }
 
     /*Formulario de Olvide clave*/
     public function olvideClave(){
-        return view('seguridades.olvide_clave');
+        return view('seguridades.olvide_clave')
+                ->with('accessToken',$this->getTokenExternalDigitales());
     }
 
     /*public function recuperarClave(Request $request){
@@ -104,7 +108,8 @@ class SeguridadesController extends Controller
 
     public function reestablecerClave($params){
         return view('seguridades.reestablecer_clave')
-            ->with('params',$params);
+            ->with('params',$params)
+            ->with('accessToken',$this->getTokenExternalDigitales());;
     }
 
     /*Logout*/
@@ -113,5 +118,23 @@ class SeguridadesController extends Controller
         // Session::forget('user');
         Session::flush();
         return redirect()->route('login');
+    }
+
+    public function getTokenExternalDigitales(){
+        $token = session('accessTokenDigitales', null);
+
+        if( $token !== null ){
+            //return $token;
+        }
+
+        $method = '/'.Veris::BASE_WAR.'/v1/seguridad/login?canalOrigen='.Veris::CANAL_ORIGEN_EXTERNAL;
+        $response = Veris::call([
+            'endpoint' => Veris::BASE_URL.$method,
+            'basic' => Veris::BASICAUTHDIGITALES,
+            'method'   => 'POST'
+        ]);
+        // dd($response->data->tokenPush);
+        session(['accessTokenDigitales' => $response->data->tokenPush]);
+        return $response->data->tokenPush;
     }
 }

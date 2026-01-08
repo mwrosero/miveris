@@ -70,6 +70,8 @@
             }
             const api_url = "{{ \App\Models\Veris::BASE_URL }}";
             const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
+            let _token = "{{ $accessToken }}";
+            const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
             let tipoFlujo = "";
         </script>
         
