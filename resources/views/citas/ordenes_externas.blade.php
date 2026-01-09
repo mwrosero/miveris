@@ -184,7 +184,6 @@ Mi Veris - Órdenes externas
     async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
-        console.log('args["endpoint"]',args["endpoint"]);
         args["method"] = "GET";
         args["showLoader"] = true;
         

@@ -32,6 +32,10 @@ async function call(args){
         // Solo agregas Content-Type si NO es FormData
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     }
+
+    if(_token !== undefined && _token !== "" && !args.token){
+        myHeaders.append("Authorization","Bearer "+ _token);
+    }
     
     if(args.token){
         myHeaders.append("Authorization","Bearer "+ args.token);
@@ -40,6 +44,8 @@ async function call(args){
         // console.log(myHeaders)
     }
     requestOptions.headers = myHeaders;
+    // console.log(args.endpoint, myHeaders)
+    console.log(Object.fromEntries(myHeaders.entries()));
     
     if(args.method == "POST" || args.method == "PUT" || args.method == "DELETE" || args.method == "GET"){
         if(args.data){
@@ -1097,13 +1103,13 @@ function formatoFechaDiaMesAnio(fechaReserva) {
 
 
 $(document).ready(function() {
-    if(typeof app_ori === 'undefined'){
+    //if(typeof app_ori === 'undefined'){
         if (localStorage.getItem('sessionTime') === null) {
             localStorage.setItem('sessionTime', new Date().getTime());
         }
 
         setInterval(checkAndUpdateToken, 10 * 60 * 1000);
-    }
+    //}
 });
 
 function logout(){
@@ -1137,9 +1143,22 @@ async function updateToken() {
     console.log(data);
     if(!data || data.code != 200){
         //showMessage("warning","Atención",data.message);
-        window.location.href = "/external/farmacia/logout";
+        if(app_ori === "APPWEB"){
+            for (let i = 0; i < localStorage.length; i++) {
+                let key = localStorage.key(i);
+                if (key.startsWith('cita-') || key.startsWith('persona-')) {
+                    localStorage.removeItem(key);
+                    i--; // Ajustar el índice después de eliminar un elemento
+                }
+            }
+            window.location.href = "/logout";
+        }else{
+            window.location.href = "/external/farmacia/logout";
+        }
     }else{
+        console.log("Nuevo token");
         _token = data.idToken;
+        //tokenBearer = data.idToken;
     }
 }
 

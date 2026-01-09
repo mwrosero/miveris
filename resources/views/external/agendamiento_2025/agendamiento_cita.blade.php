@@ -19,7 +19,7 @@ Veris - Citas
 @if(config('app.subdomain') == "parami")
 <link rel="stylesheet" href="{{ asset('assets/css/embudo-parami.css?v=1.0.0')}}">
 @endif
-<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
+<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.6"></script>
 
 @include('external.components.navbar-agendamiento', ['showInfo' => false])
 <div class="flex-grow-1 container-p-y pt-0 pb-0">

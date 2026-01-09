@@ -10,7 +10,7 @@ Veris - Pago en línea
     $tokenCita = base64_encode(uniqid());
 @endphp
 <link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
-<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js"></script>
+<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.6"></script>
 
 <link href="https://cdn.paymentez.com/ccapi/sdk/payment_stable.min.css" rel="stylesheet" type="text/css" />
 {{-- <script src="https://cdn.paymentez.com/ccapi/sdk/payment_checkout_stable.min.js" charset="UTF-8"></script> --}}
@@ -408,7 +408,7 @@ Veris - Pago en línea
 	        const data = await call(args);
 	        referenceNuvei = data;
 		    if(data.code == 200){
-                $('.box-aprobado').html(`<div class="col-12" style="text-align: center;font-size: 30px;font-weight: 700;">Pago realizado exitosamente.</div>`).removeClass('d-none');
+                $('.box-aprobado').html(`<div class="col-12 mt-5" style="text-align: center;font-size: 30px;font-weight: 700;">Pago realizado exitosamente.</div>`).removeClass('d-none');
                 //$('.box-aprobado').show();
                 $('.box-transaccion').hide();
             }else{

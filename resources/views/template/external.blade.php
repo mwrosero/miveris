@@ -64,9 +64,11 @@
             const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
             const _application = "{{ \App\Models\Veris::APPLICATION }}";
             let _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACION }}";
+            let _token = "{{ $accessToken }}";
             // "@if (\App\Models\Veris::CONTIENE_DESARROLLO)  {{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }} @else {{ \App\Models\Veris::IDORGANIZACION }} @endif";
             // const _idOrganizacionResultadosLaboratorio = "";
             let tipoFlujo = "";
+            const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
             window.config = {
                 subdomain: @json(config('app.subdomain')),
                 canalOrigen: (@json(config('app.subdomain')) == "veris") ? "VER_CMV" : "VER_PMF"

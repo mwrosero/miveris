@@ -222,7 +222,7 @@ Mi Veris - Mis Datos
     async function obtenerDatosUsuario() {
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${_canalOrigen}&tipoIdentificacion={{Session::get('userData')->codigoTipoIdentificacion}}&numeroIdentificacion={{Session::get('userData')->numeroIdentificacion}}`;
-        console.log('args["endpoint"]',args["endpoint"]);
+        
         args["method"] = "GET";
         args["showLoader"] = true;
         
@@ -279,7 +279,7 @@ Mi Veris - Mis Datos
         console.log($('#direccion').val());
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/perfil`
-        console.log('args["endpoint"]',args["endpoint"]);
+        
         args["method"] = "PUT";
         args["showLoader"] = true;
         args["bodyType"] = "json";

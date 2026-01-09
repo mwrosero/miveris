@@ -37,7 +37,8 @@ class Veris extends Model
     // public const NEMONICO_VUA = 'LIQUIDACION_VAP';
     // public const URL_EPI = 'http://ecstest.veris.com.ec/Verisrest/v1/formularioepi1';
     // public const BASICAUTHEPI = 'd3Nmb3JtdWxhcmlvZXBpMTpDQVM1Nzg5Yjg2TWRyNUYwcm11bGFyMTAzcGkxKg==';
-    // public const CONTIENE_DESARROLLO = true;
+    
+    // public const CONTIENE_DESARROLLO = false;
     // public const API_KEY_GOOGLE_MAP = 'AIzaSyCvKhNY5DAACMCU8gAY1AbJiaqg3bTo2jc';
 
     //PROD 
@@ -84,6 +85,10 @@ class Veris extends Model
         }
 
         $header = [];
+        if(isset($config['TokenPush'])){
+            $header[] = 'TokenPush: ' . $config['TokenPush'];
+        }
+        
         if(isset($config['application'])){
             $header[] = 'application: ' . $config['application'];
         }else{
@@ -139,7 +144,7 @@ class Veris extends Model
             curl_setopt($ch, CURLOPT_USERPWD, $config['username'].":".$config['password']);
         }
 
-        // dd($header);
+        // dump($header);
         
         // API CALL
         try{
