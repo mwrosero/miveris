@@ -33,7 +33,9 @@ class ExternalController extends Controller
     }
 
     public function registroNuevoAgendamientoCitas($params){
-        return view('external.agendamiento_2025.registrar_cuenta')->with('params',$params);
+        return view('external.agendamiento_2025.registrar_cuenta')
+                ->with('params',$params)
+                ->with('accessToken', $this->getTokenExternalDigitales());
     }
     
     public function datosCitaNuevoAgendamientoCitas($params){
