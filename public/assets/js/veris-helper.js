@@ -45,7 +45,7 @@ async function call(args){
     }
     requestOptions.headers = myHeaders;
     // console.log(args.endpoint, myHeaders)
-    console.log(Object.fromEntries(myHeaders.entries()));
+    // console.log(Object.fromEntries(myHeaders.entries()));
     
     if(args.method == "POST" || args.method == "PUT" || args.method == "DELETE" || args.method == "GET"){
         if(args.data){
