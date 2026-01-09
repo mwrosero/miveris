@@ -915,7 +915,8 @@ class ExternalController extends Controller
         if(Session::has('userData')) {
             return redirect('/external/farmacia/gestion');
         }
-        return view('external.farmacia.login');
+        return view('external.farmacia.login')
+            ->with('accessToken','');
     }
 
     public function loginFarmaciaPickingAction(Request $request){
@@ -980,7 +981,8 @@ class ExternalController extends Controller
         if(isset($message)){
             session()->flash('mensaje', $message);
             session()->flash('user', strtoupper($user));
-            return redirect('/external/farmacia/login');
+            return redirect('/external/farmacia/login')
+                    ->with('accessToken','');
         }
     }
 
