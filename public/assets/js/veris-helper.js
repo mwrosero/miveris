@@ -33,7 +33,7 @@ async function call(args){
         myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
     }
 
-    if(_token !== undefined && _token !== ""){
+    if(_token !== undefined && _token !== "" && !args.token){
         myHeaders.append("Authorization","Bearer "+ _token);
     }
     
@@ -45,6 +45,7 @@ async function call(args){
     }
     requestOptions.headers = myHeaders;
     // console.log(args.endpoint, myHeaders)
+    console.log(Object.fromEntries(myHeaders.entries()));
     
     if(args.method == "POST" || args.method == "PUT" || args.method == "DELETE" || args.method == "GET"){
         if(args.data){

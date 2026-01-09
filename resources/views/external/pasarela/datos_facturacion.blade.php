@@ -762,7 +762,7 @@ Veris - Datos de facturación
 	function executeDataLayer(){
 		//validar
 		if(dataCita.facturacion.detalleServicio.detallePaquetes === null && dataCita.facturacion.detalleServicio.citas === null){
-			return;
+			//return;
 		}
 
 		let payload;
@@ -782,7 +782,7 @@ Veris - Datos de facturación
 					item_name: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
 					item_category: 'Paquetes',
 					quantity: 1,
-					price: dataCita.facturacion.totales
+					price: dataCita.facturacion.totales.total
 			  	}]
 			}
 		}else if(dataCita.facturacion.detalleServicio.citas !== null){
@@ -800,13 +800,30 @@ Veris - Datos de facturación
 					item_name: dataCita.facturacion.detalleServicio.citas[0].especialidad,
 					item_category: 'Citas',
 					quantity: 1,
-					price: dataCita.facturacion.totales
+					price: dataCita.facturacion.totales.total
+			  	}]
+			}
+		}else{
+			payload = {
+				event: 'purchase',
+			    transaction_id: 'ORD-'+preTransaccion.data.codigoPreTransaccion,
+			    value: dataCita.facturacion.totales.total,                 
+			    currency: 'USD',
+			    tax: 0,
+			    shipping: 0,
+			    coupon: '',                   
+			    nombreServicio: '{{ request()->input('tipoArticulo') }}',
+			    items: [{
+					item_name: '{{ request()->input('tipoArticulo') }}',
+					item_category: '{{ request()->input('tipoArticulo') }}',
+					quantity: 1,
+					price: dataCita.facturacion.totales.total
 			  	}]
 			}
 		}
 
 		localStorage.setItem('dataLayer', JSON.stringify(payload));
-		window.dataLayer = window.dataLayer || [];
+		// window.dataLayer = window.dataLayer || [];
 		// dataLayer.push(payload);
 	}
 

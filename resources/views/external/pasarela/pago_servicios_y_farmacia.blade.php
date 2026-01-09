@@ -408,7 +408,7 @@ Veris - Pago en línea
 	        const data = await call(args);
 	        referenceNuvei = data;
 		    if(data.code == 200){
-                $('.box-aprobado').html(`<div class="col-12" style="text-align: center;font-size: 30px;font-weight: 700;">Pago realizado exitosamente.</div>`).removeClass('d-none');
+                $('.box-aprobado').html(`<div class="col-12 mt-5" style="text-align: center;font-size: 30px;font-weight: 700;">Pago realizado exitosamente.</div>`).removeClass('d-none');
                 //$('.box-aprobado').show();
                 $('.box-transaccion').hide();
             }else{

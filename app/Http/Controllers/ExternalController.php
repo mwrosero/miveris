@@ -141,10 +141,11 @@ class ExternalController extends Controller
             ]);
             // echo Veris::BASE_URL.$method.$params;
             // dd($response);
-
+            // dd($accessToken);
             if($response->code != 200 || !isset($response->data) || $response->data->estaPagada){
                 $message = ( $response->code != 200 || !isset($response->data) ) ? (isset($response->data)) ? $response->message : "No existe información relacionada que pagar o el link ha caducado, por favor solicite nuevamente el envío" : "El Servicio ya se encuentra pagado";
                 return view('external.pasarela.error')
+                        ->with('accessToken',$accessToken)
                         ->with('showButtonRePay', false)
                         ->with('error',$message);
             }else{
