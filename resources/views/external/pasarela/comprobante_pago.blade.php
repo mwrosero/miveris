@@ -70,12 +70,22 @@ Veris - Comprobante de Pago
 	});
 
 	async function sendWebHook(payload){
+		let datosPago = JSON.parse(localStorage.getItem('datosPago'));
+		str = datosPago.returnUrl;
+		var cleanStr = str.replace(/&amp;/g, '&');
+		var params = new URLSearchParams(cleanStr);
+		var identificacion = params.get('numeroIdentificacion');
+
+		payload.numeroIdentificacion = identificacion;
+		payload.detalleServicio = dataCita.facturacion;
+
 		let args = [];
         args["endpoint"] = `https://services.leadconnectorhq.com/hooks/VVBeMdHWmgKOSHSq2cP1/webhook-trigger/f46eeb07-8f09-4f7f-8970-8a46962bf2c4`;
         args["method"] = "POST";
         args["showLoader"] = true; 
         args["bodyType"] = "json"; 
         args["dismissAlert"] = true;
+
         args["data"] = JSON.stringify(payload)
         args["showLoader"] = true;
         const data = await call(args);
