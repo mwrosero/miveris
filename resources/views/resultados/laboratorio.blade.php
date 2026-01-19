@@ -219,7 +219,7 @@ Mi Veris - Resultados
             window.open(pdfUrl, '_blank');
 
             setTimeout(() => {
-                URL.revokeObjectURL(pdfUrl);
+                // URL.revokeObjectURL(pdfUrl);
             }, 100);
 
         } catch (error) {

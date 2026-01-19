@@ -128,7 +128,7 @@ Mi Veris - Mis Convenios
             const pdfUrl = URL.createObjectURL(blob);
             window.open(pdfUrl, '_blank');
             setTimeout(() => {
-                URL.revokeObjectURL(pdfUrl);
+                {{-- URL.revokeObjectURL(pdfUrl); --}}
             }, 100);
         } catch (error) {
             console.error('Error al obtener el RIDE:', error);
