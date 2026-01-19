@@ -115,17 +115,23 @@ async function callInformes(args) {
 
     let requestOptions = {
         method: args.method,
-        redirect: 'follow'
+        redirect: 'follow',
+        headers: []
     };
     let myHeaders = new Headers();
     if (args.bodyType === "json") {
         myHeaders.append("Content-Type", "application/json");
-        requestOptions.headers = myHeaders;
     }
     if (["POST", "PUT", "DELETE"].includes(args.method) && args.data) {
         requestOptions.body = args.data;
     }
 
+    myHeaders.append("Accept-Language", "es");
+    if(_token !== undefined && _token !== "" && !args.token){
+        myHeaders.append("Authorization","Bearer "+ _token);
+    }
+    requestOptions.headers = myHeaders;
+    console.log(myHeaders)
     try {
         const response = await fetch(args.endpoint, requestOptions);
 

@@ -66,6 +66,20 @@ Veris - Comprobante de Pago
 		let payload = JSON.parse(localStorage.getItem('dataLayer'));
 		window.dataLayer = window.dataLayer || [];
 		dataLayer.push(payload);
+		await sendWebHook(payload);
 	});
+
+	async function sendWebHook(payload){
+		let args = [];
+        args["endpoint"] = `https://services.leadconnectorhq.com/hooks/VVBeMdHWmgKOSHSq2cP1/webhook-trigger/f46eeb07-8f09-4f7f-8970-8a46962bf2c4`;
+        args["method"] = "POST";
+        args["showLoader"] = true; 
+        args["bodyType"] = "json"; 
+        args["dismissAlert"] = true;
+        args["data"] = JSON.stringify(payload)
+        args["showLoader"] = true;
+        const data = await call(args);
+        console.log(data);
+	}
 </script>
 @endsection
