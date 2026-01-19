@@ -561,7 +561,7 @@ $tokenSesion = base64_encode(uniqid());
             const pdfUrl = URL.createObjectURL(blob);
             window.open(pdfUrl, '_blank');
             setTimeout(() => {
-                URL.revokeObjectURL(pdfUrl);
+                // URL.revokeObjectURL(pdfUrl);
             }, 100);
         } catch (error) {
             console.error('Error al obtener el PDF:', error);
@@ -590,7 +590,7 @@ $tokenSesion = base64_encode(uniqid());
             const pdfUrl = URL.createObjectURL(blob);
             window.open(pdfUrl, '_blank');
             setTimeout(() => {
-                URL.revokeObjectURL(pdfUrl);
+                // URL.revokeObjectURL(pdfUrl);
             }, 100);
         } catch (error) {
             console.error('Error al obtener el PDF:', error);
