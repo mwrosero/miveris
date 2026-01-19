@@ -822,6 +822,9 @@ Veris - Datos de facturación
 			}
 		}
 
+
+
+		localStorage.setItem('datosPago', JSON.stringify(dataCita));
 		localStorage.setItem('dataLayer', JSON.stringify(payload));
 		// window.dataLayer = window.dataLayer || [];
 		// dataLayer.push(payload);
