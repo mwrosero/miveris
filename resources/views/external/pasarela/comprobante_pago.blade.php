@@ -77,7 +77,7 @@ Veris - Comprobante de Pago
 		var identificacion = params.get('numeroIdentificacion');
 
 		payload.numeroIdentificacion = identificacion;
-		payload.detalleServicio = dataCita.facturacion;
+		payload.detalleServicio = datosPago.facturacion;
 
 		let args = [];
         args["endpoint"] = `https://services.leadconnectorhq.com/hooks/VVBeMdHWmgKOSHSq2cP1/webhook-trigger/f46eeb07-8f09-4f7f-8970-8a46962bf2c4`;
