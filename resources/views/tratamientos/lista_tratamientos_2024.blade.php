@@ -611,7 +611,7 @@ $tokenSesion = base64_encode(uniqid());
             const blob = await callInformes(args);
             const pdfUrl = URL.createObjectURL(blob);
 
-            // Aquí definimos el nombre que tendrá el archivo al bajar
+            {{-- // Aquí definimos el nombre que tendrá el archivo al bajar
             link.download = `Receta_${datos.secuenciaReceta}.pdf`; 
             
             // Añadir al documento, hacer click y remover
@@ -622,13 +622,13 @@ $tokenSesion = base64_encode(uniqid());
             // IMPORTANTE: Aumentar el tiempo o dejar que el usuario maneje la pestaña
             setTimeout(() => {
                 URL.revokeObjectURL(pdfUrl);
-            }, 5000); // 5 segundos es más seguro para asegurar que la descarga inició
+            }, 5000); // 5 segundos es más seguro para asegurar que la descarga inició --}}
 
-            {{-- window.open(pdfUrl, '_blank');
+            window.open(pdfUrl, '_blank');
 
             setTimeout(() => {
-                URL.revokeObjectURL(pdfUrl);
-            }, 100); --}}
+                // URL.revokeObjectURL(pdfUrl);
+            }, 100);
 
         } catch (error) {
             console.error('Error al obtener el PDF');
