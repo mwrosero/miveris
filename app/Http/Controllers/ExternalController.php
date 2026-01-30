@@ -681,6 +681,7 @@ class ExternalController extends Controller
                 // session()->flash('alert', $list->message);
                 // return redirect('/external/payment/error/'.$params);
                 return view('external.pasarela.error')
+                    ->with('accessToken',$this->getTokenExternalDigitales())
                     ->with('showButtonRePay', false)
                     ->with('error', $list->message);
             }
