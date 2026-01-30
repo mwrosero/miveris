@@ -201,7 +201,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
-            "cvcTarjeta": getInput('cvcTarjeta'),
+            "cvcTarjeta": btoa(getInput('cvcTarjeta')),
             "browser_info": getClientBrowserInfo(serverData),
             "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
             "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
