@@ -68,6 +68,12 @@ class ExternalController extends Controller
                 ->with('accessToken', $this->getTokenExternalDigitales());
     }
 
+    public function pagoCajaNuevaCita($params){
+        return view('external.agendamiento_2025.pago_caja')
+                ->with('params',$params)
+                ->with('accessToken', $this->getTokenExternalDigitales());
+    }
+
     public function listadoPaquetes(){
         return view('external.paquetes_promocionales.listado_paquetes')
             ->with('accessToken',$this->getTokenExternalDigitales());
