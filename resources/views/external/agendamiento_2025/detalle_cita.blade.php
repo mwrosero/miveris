@@ -1032,7 +1032,7 @@ Veris - Detalle de Citas
                 https://api-phantomx.veris.com.ec/${api_war}/v1/agenda/validarPermitePago?canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
                 */
                 // await crearPreTransaccion()
-                if(window.config.canalOrigen == 'VER_PMF'){
+                if(window.config.canalOrigen == 'VER_PMF' && dataCita.online == "N"){
                     let url_payment = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
                     $('#paymentOnline').attr('href', url_payment);
                     $('#modalTipoPago').modal('show')
