@@ -292,10 +292,17 @@ class ExternalController extends Controller
                         ->with('pretransaccion',$response_pretrx);
             }else{
                 // dd(http_build_query($urlParams)); //MEJORAR
-                return view('external.pasarela.error')
+                if($urlParams['tipoArticulo'] == "PAQUETE"){
+                    return view('external.pasarela.error_paquete')
                         ->with('showButtonRePay', false)
                         ->with('accessToken',$this->getTokenExternalDigitales())
-                        ->with('error',$response_pretrx->message);//'El servicio ya se encuentra pagado o no tiene detalles disponibles'
+                        ->with('error',$response_pretrx->message);
+                }else{
+                    return view('external.pasarela.error')
+                        ->with('showButtonRePay', false)
+                        ->with('accessToken',$this->getTokenExternalDigitales())
+                        ->with('error',$response_pretrx->message);
+                }
             }
         }
     }
