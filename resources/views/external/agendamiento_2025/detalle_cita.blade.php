@@ -17,6 +17,23 @@ Veris - Detalle de Citas
 
 @include('external.components.navbar-agendamiento', ['showInfo' => true])
 
+{{-- Modal Confirmar cita ParaMi --}}
+<div class="modal fade" id="modalTipoPago" tabindex="-1" aria-labelledby="modalTipoPagoLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3 text-center">
+                <h5 class="fs-24 line-height-28 my-3" > ¡Cita reservada con éxito!</h5>
+                <p class="fs--1 fw-bold line-height-16 mb-2">Evita filas y gana tiempo pagando tu cita en línea.</p>
+                <p class="fs--1 line-height-16 mb-2">Si lo prefieres, también puedes pagar directamente en caja.</p>
+                <div class="d-flex flex-column">
+                    <a href="" id="paymentOnline" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 mt-2 w-100 px-4 py-3">Pagar en línea</a>
+                    <a href="/external/agendamiento/pago-caja/{{ $params }}" type="button" class="btn btn-lg shadow-none text-primary-veris fw-medium col fs--18 line-height-24 m-0 mt-2 w-100 px-4 py-3">Pagar en caja</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal de error -->
 <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -192,7 +209,11 @@ Veris - Detalle de Citas
     }
 
     if(permitePago == "S"){
-        $('#btn-pagar').html('Pagar');
+        let labelBtn = `Pagar`;
+        if(window.config.canalOrigen == 'VER_PMF'){
+            labelBtn = `Confirmar Cita`;
+        }
+        $('#btn-pagar').html(labelBtn);
     }
 
     document.addEventListener("DOMContentLoaded", async function () {
@@ -1011,7 +1032,13 @@ Veris - Detalle de Citas
                 https://api-phantomx.veris.com.ec/${api_war}/v1/agenda/validarPermitePago?canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
                 */
                 // await crearPreTransaccion()
-                location.href = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
+                if(window.config.canalOrigen == 'VER_PMF' && dataCita.online == "N"){
+                    let url_payment = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
+                    $('#paymentOnline').attr('href', url_payment);
+                    $('#modalTipoPago').modal('show')
+                }else{
+                    location.href = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
+                }
             }else{
                 location.href = '/external/agendamiento/cita-agendada/{{ $params }}';
             }

@@ -30,6 +30,21 @@ Mi Veris - Citas - Selecciona tu tarjeta
     </div>
 
     <!-- Modal eliminar tarjeta -->
+    <div class="modal fade" id="modalCvc" tabindex="-1" aria-labelledby="modalCvcLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3 pb-0">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Ingrese el código CVV</h1>
+                    <input type="text" class="form-control fs--1 p-3" name="cvcTarjeta" id="cvcTarjeta" placeholder="Código de seguridad (CVV)" required />
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3 d-flex justify-content-around align-items-center mt-3">
+                    <div class="btn btn-lg btn-outline-primary-veris fs--18 line-height-24 py-3 w-100 m-0 disabled" id="btn-pagar-cvv">Pagar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal eliminar tarjeta -->
     <div class="modal fade" id="modalEliminarTarjeta" tabindex="-1" aria-labelledby="modalEliminarTarjetaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
@@ -107,6 +122,14 @@ Mi Veris - Citas - Selecciona tu tarjeta
         });
         
         $('body').on('click', '#btn-pagar', async function(){
+            {{-- $('#cvcTarjeta').val("");
+            $('#btn-pagar-cvv').addClass('disabled');
+            $('#modalCvc').modal('show'); --}}
+            await pagarCita();
+        })
+
+        $('body').on('click', '#btn-pagar-cvv', async function(){
+            $('#modalCvc').modal('hide');
             await pagarCita();
         })
 
@@ -119,6 +142,28 @@ Mi Veris - Citas - Selecciona tu tarjeta
         $('body').on('click', '.btn-confirmar-eliminar-tarjeta', async function(){
             await eliminarTarjeta()
         })
+
+        const cvcInput = document.getElementById('cvcTarjeta');
+
+        cvcInput.addEventListener('input', (e) => {
+            // Eliminamos cualquier caracter que no sea número
+            let value = e.target.value.replace(/\D/g, '');
+            
+            // Limitamos a 4 dígitos manualmente por seguridad
+            if (value.length > 4) {
+                value = value.slice(0, 4);
+            }
+    
+            // Actualizamos el valor del input
+            e.target.value = value;
+    
+            // Lógica del evento: 3 o más dígitos
+            if (value.length >= 3) {
+                $('#btn-pagar-cvv').removeClass('disabled');
+            }else{
+                $('#btn-pagar-cvv').addClass('disabled');
+            }
+        });
 
     });
 
@@ -156,6 +201,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
+            //"cvcTarjeta": btoa(getInput('cvcTarjeta')),
             "browser_info": getClientBrowserInfo(serverData),
             "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
             "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
@@ -249,4 +295,23 @@ Mi Veris - Citas - Selecciona tu tarjeta
     }
 
 </script>
+<style>
+#cvcTarjeta:placeholder-shown {
+    border: 1px solid #E7E9EC !important;
+    background-color: #E7E9EC !important;
+    border: 0px !important;
+}
+
+/* Estilos para input-group-text cuando el input asociado tiene foco */
+.input-group input:focus+.input-group-text {
+    border: 1px solid #3394DD;
+    background: #fff;
+}
+
+/* Estilos para input-group-text cuando el input tiene un valor */
+.input-group input:not(:placeholder-shown)+.input-group-text {
+    border: 1px solid #3D4E66;
+    background: #fff;
+}
+</style>
 @endpush

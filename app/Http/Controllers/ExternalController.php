@@ -68,6 +68,12 @@ class ExternalController extends Controller
                 ->with('accessToken', $this->getTokenExternalDigitales());
     }
 
+    public function pagoCajaNuevaCita($params){
+        return view('external.agendamiento_2025.pago_caja')
+                ->with('params',$params)
+                ->with('accessToken', $this->getTokenExternalDigitales());
+    }
+
     public function listadoPaquetes(){
         return view('external.paquetes_promocionales.listado_paquetes')
             ->with('accessToken',$this->getTokenExternalDigitales());
@@ -286,10 +292,17 @@ class ExternalController extends Controller
                         ->with('pretransaccion',$response_pretrx);
             }else{
                 // dd(http_build_query($urlParams)); //MEJORAR
-                return view('external.pasarela.error')
+                if($urlParams['tipoArticulo'] == "PAQUETE"){
+                    return view('external.pasarela.error_paquete')
                         ->with('showButtonRePay', false)
                         ->with('accessToken',$this->getTokenExternalDigitales())
-                        ->with('error',$response_pretrx->message);//'El servicio ya se encuentra pagado o no tiene detalles disponibles'
+                        ->with('error',$response_pretrx->message);
+                }else{
+                    return view('external.pasarela.error')
+                        ->with('showButtonRePay', false)
+                        ->with('accessToken',$this->getTokenExternalDigitales())
+                        ->with('error',$response_pretrx->message);
+                }
             }
         }
     }
@@ -681,6 +694,7 @@ class ExternalController extends Controller
                 // session()->flash('alert', $list->message);
                 // return redirect('/external/payment/error/'.$params);
                 return view('external.pasarela.error')
+                    ->with('accessToken',$this->getTokenExternalDigitales())
                     ->with('showButtonRePay', false)
                     ->with('error', $list->message);
             }

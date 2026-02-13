@@ -80,6 +80,7 @@ Route::middleware('guest')->group(function () {
         Route::get('/agendamiento/seleccionar-fecha/{params}', [ExternalController::class, 'fechaNuevoAgendamientoCitas'])->name('fecha-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
         Route::get('/agendamiento/cita-urgencias-ambulatorias/{params}', [ExternalController::class, 'VuaNuevoAgendamientoCitas'])->name('cita-vua-embudo-agendamiento')->withoutMiddleware(['guest']);
         Route::get('/agendamiento/detalle-cita/{params}', [ExternalController::class, 'detalleCitaNuevoAgendamientoCitas'])->name('detalle-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
+        Route::get('/agendamiento/pago-caja/{params}', [ExternalController::class, 'pagoCajaNuevaCita'])->name('pago-caja-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
         Route::get('/agendamiento/cita-agendada/{params}', [ExternalController::class, 'CitaAgendadaNuevoAgendamientoCitas'])->name('cita-agendada-embudo-agendamiento')->withoutMiddleware(['guest']);
         
         Route::get('/farmacia/login', [ExternalController::class, 'loginFarmaciaPickingView'])->name('login-farmacia-picking-view')->withoutMiddleware(['guest']);

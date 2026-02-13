@@ -37,7 +37,6 @@ class Veris extends Model
     // public const NEMONICO_VUA = 'LIQUIDACION_VAP';
     // public const URL_EPI = 'http://ecstest.veris.com.ec/Verisrest/v1/formularioepi1';
     // public const BASICAUTHEPI = 'd3Nmb3JtdWxhcmlvZXBpMTpDQVM1Nzg5Yjg2TWRyNUYwcm11bGFyMTAzcGkxKg==';
-    
     // public const CONTIENE_DESARROLLO = false;
     // public const API_KEY_GOOGLE_MAP = 'AIzaSyCvKhNY5DAACMCU8gAY1AbJiaqg3bTo2jc';
 
