@@ -15,7 +15,8 @@
 <!-- Logo -->
 
 <div class="text-center mb-2">
-    <img class="logo-login" src="../../assets/img/veris/isotipo.svg">
+    {{-- <img class="logo-login" src="../../assets/img/veris/isotipo.svg"> --}}
+    <img class="logo-login" src="{{ asset('assets/img/'.config('app.subdomain').'/isotipo.svg') }}" width="58">
 </div>
 <!-- /Logo -->
 {{-- <form id="formAuthentication" class="mb-3" action="/registrar" method="POST"> --}}

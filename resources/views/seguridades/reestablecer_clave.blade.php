@@ -19,7 +19,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 @endsection
 @section('content')
 <div class="text-center mb-2">
-    <img class="logo-login" src="../../assets/img/veris/isotipo.svg">
+    {{-- <img class="logo-login" src="../../assets/img/veris/isotipo.svg"> --}}
+    <img class="logo-login" src="{{ asset('assets/img/'.config('app.subdomain').'/isotipo.svg') }}" width="58">
 </div>
 <!-- Content Recuperar Clave -->
 <p class="fs-4 mb-1 pt-2 text-center bg-colortext fw-medium">Recupera tu contraseña</p>

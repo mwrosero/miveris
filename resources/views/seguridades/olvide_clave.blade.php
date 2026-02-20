@@ -16,7 +16,8 @@
 @section('content')
 <!-- Logo -->
 <div class="text-center mb-2">
-    <img class="logo-login" src="../../assets/img/veris/isotipo.svg">
+    {{-- <img class="logo-login" src="../../assets/img/veris/isotipo.svg"> --}}
+    <img class="logo-login" src="{{ asset('assets/img/'.config('app.subdomain').'/icono.svg') }}" width="86">
 </div>
 <!-- /Logo -->
 <!-- Content Olvide Clave -->
