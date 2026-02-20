@@ -6,7 +6,8 @@
 @section('content')
 <!-- Logo -->
 <div class="text-center mb-4">
-    <img class="logo-login" src="../../assets/img/veris/icono.svg">
+    {{-- <img class="logo-login" src="../../assets/img/veris/icono.svg"> --}}
+    <img class="logo-login" src="{{ asset('assets/img/'.config('app.subdomain').'/icono.svg') }}" width="86">
 </div>
 <!-- /Logo -->
 <form id="formAuthentication" class="mb-3" action="/autenticar" method="POST">
