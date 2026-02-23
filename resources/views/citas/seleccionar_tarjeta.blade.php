@@ -215,6 +215,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
         if (data.code == 200){
             console.log(data.data);
             window.removeEventListener("beforeunload", beforeUnloadHandler);
+            return;
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
                 guardarData();
