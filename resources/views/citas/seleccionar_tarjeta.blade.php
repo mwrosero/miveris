@@ -122,10 +122,10 @@ Mi Veris - Citas - Selecciona tu tarjeta
         });
         
         $('body').on('click', '#btn-pagar', async function(){
-            $('#cvcTarjeta').val("");
+            {{-- $('#cvcTarjeta').val("");
             $('#btn-pagar-cvv').addClass('disabled');
-            $('#modalCvc').modal('show');
-            {{-- await pagarCita(); --}}
+            $('#modalCvc').modal('show'); --}}
+            await pagarCita();
         })
 
         $('body').on('click', '#btn-pagar-cvv', async function(){
@@ -215,7 +215,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
         if (data.code == 200){
             console.log(data.data);
             window.removeEventListener("beforeunload", beforeUnloadHandler);
-            return;
+            //return;
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
                 guardarData();
