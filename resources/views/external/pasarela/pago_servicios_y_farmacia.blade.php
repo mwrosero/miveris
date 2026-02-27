@@ -392,13 +392,17 @@ Veris - Pago en línea
 	            "codigoEpago": parseInt({{ $info->codigoEpago }}),
 	            @if($esServicioCaja)
 	            "nemonicoFlujoCobro": "{{ \App\Models\Veris::NEMONICO_FLUJO_PAGO }}",
+	            @elseif($esPagoVua)
+	            "nemonicoFlujoCobro": "{{ \App\Models\Veris::NEMONICO_FLUJO_PAGO }}",
 	            @else
-	            "nemonicoFlujoCobro": "{{ \App\Models\Veris::NEMONICO_FARMACIA }}",
+	            "nemonicoFlujoCobro": "{{ \App\Models\Veris::NEMONICO_FLUJO_PAGO }}",
 	            @endif
                 "metadataIdFlujoCobro": {
                     //"codigoIngresoVap": null,
                     @if($esServicioCaja)
                     "idPreTransaccion": infoTransaccion.codigoPreTransaccion,
+                    @elseif($esPagoVua)
+                    "codigoIngresoVap": infoTransaccion.codigoSolicitudServDomicilio
                     @else
                     "codigoSolicitudServDomicilio": infoTransaccion.codigoSolicitudServDomicilio
                     @endif

@@ -66,6 +66,7 @@
         window.config = {
             subdomain: @json(config('app.subdomain')),
             canalOrigen: (@json(config('app.subdomain')) == "veris") ? "VER_CMV" : "VER_PMF",
+            {{-- canalOrigen: (@json(config('app.subdomain')) == "veris") ? "APP_CMV" : "VER_PMF", --}}
         };
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -116,6 +117,16 @@
         <div class="drag-target d-none"></div>
     </div>
     <!-- / Layout wrapper -->
+
+    <!-- Modal 3DS Nuvei -->
+    <div class="modal fade" id="modalIframe3DS" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalIframe3DSLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body p-3" id="box-iframe-3ds">
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal eliminar cita -->
     <div class="modal fade" id="modalEliminarCita" tabindex="-1" aria-labelledby="modalEliminarCitaLabel" aria-hidden="true">
@@ -331,7 +342,7 @@
 
     <!-- Page JS -->
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
-    <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.7"></script>
+    <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.8"></script>
 
     <script>
         // Inicializa Swiper.js

@@ -122,10 +122,10 @@ Mi Veris - Citas - Selecciona tu tarjeta
         });
         
         $('body').on('click', '#btn-pagar', async function(){
-            {{-- $('#cvcTarjeta').val("");
+            $('#cvcTarjeta').val("");
             $('#btn-pagar-cvv').addClass('disabled');
-            $('#modalCvc').modal('show'); --}}
-            await pagarCita();
+            $('#modalCvc').modal('show');
+            {{-- await pagarCita(); --}}
         })
 
         $('body').on('click', '#btn-pagar-cvv', async function(){
@@ -202,7 +202,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
             "cvcTarjeta": btoa(getInput('cvcTarjeta')),
-            "browser_info": getClientBrowserInfo(serverData),
+            "browserInfo": getClientBrowserInfo(serverData),
             "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
             "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
             "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
@@ -214,8 +214,16 @@ Mi Veris - Citas - Selecciona tu tarjeta
 
         if (data.code == 200){
             console.log(data.data);
+            if(data.data.nuvei3ds !== null){
+                dataCita.registroPago = data.data;
+                guardarData();
+                const htmlChallenge = dataCita.registroPago.nuvei3ds.challengeRequest;
+                mostrarDesafio3DS(htmlChallenge);
+                $('#modalIframe3DS').modal('show');
+                return;
+            }
+
             window.removeEventListener("beforeunload", beforeUnloadHandler);
-            //return;
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
                 guardarData();

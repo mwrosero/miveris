@@ -331,13 +331,15 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
     }
 
     async function pagarCita(){
+        {{-- 4016360000000002
+        4016360000000093 --}}
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/facturacion/registrar_pago_nuvei?canalOrigen=${_canalOrigen}&idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
-            "browser_info": getClientBrowserInfo(serverData),
+            "browserInfo": getClientBrowserInfo(serverData),
             "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
             "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
             "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
@@ -349,6 +351,17 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         if (data.code == 200){
             console.log(data.data);
+            console.log(999)
+            if(data.data.nuvei3ds){
+                dataCita.registroPago = data.data;
+                guardarData();
+                const htmlChallenge = dataCita.registroPago.nuvei3ds.challengeRequest;
+                mostrarDesafio3DS(htmlChallenge);
+                $('#modalIframe3DS').modal('show');
+                return;
+            }
+            console.log(777)
+
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;
                 let ruta = `/cita-agendada/{{ $params }}`;

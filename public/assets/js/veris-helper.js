@@ -1,4 +1,5 @@
-const _canalOrigen = "MVE_CMV";
+// const _canalOrigen = "MVE_CMV";
+const _canalOrigen = window.config.canalOrigen;
 const _plataforma = "WEB";
 const _version = "7.8.0";
 const _langDate = {
@@ -1173,16 +1174,62 @@ function getClientBrowserInfo(serverData) {
     const timezoneOffsetMinutes = (new Date()).getTimezoneOffset();
     const colorDepth = window.screen.colorDepth || 0;
 
-    return {
-        "language": navigator.language || navigator.userLanguage || "unknown",
-        "java_enabled": navigator.javaEnabled(),
-        "js_enabled": true,
-        "color_depth": colorDepth,
-        "screen_height": window.screen.height || 0,
-        "screen_width": window.screen.width || 0,
-        "timezone_offset": timezoneOffsetMinutes / -60,
-        "ip": serverData.ip, 
-        "user_agent": serverData.user_agent, 
-        "accept_header": serverData.accept_header
+    const getDeviceType = () => {
+        const ua = navigator.userAgent;
+        if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+            return "Tablet";
+        }
+        if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+            return "Mobile";
+        }
+        return "Desktop";
     };
+
+    return {
+        "deviceType": "browser", //getDeviceType(),
+        "language": navigator.language || navigator.userLanguage || "unknown",
+        "javaEnabled": navigator.javaEnabled(),
+        "jsEnabled": true,
+        "colorDepth": colorDepth,
+        "screenHeight": window.screen.height || 0,
+        "screenWidth": window.screen.width || 0,
+        "timezoneOffset": timezoneOffsetMinutes / -60,
+        "ip": serverData.ip, 
+        "userAgent": serverData.user_agent, 
+        "acceptHeader": serverData.accept_header
+    };
+}
+
+async function validarEstadoTransaccion(){
+    let args = [];
+    args["endpoint"] = api_url + `/${api_war}/v1/facturacion/validarEstadoTransaccion?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}&codigoTransaccion=${dataCita.transaccionVirtual.codigoTransaccion}`;
+    args["method"] = "GET";
+    args["showLoader"] = false;
+
+    const data = await call(args);
+    console.log(data);
+}
+
+function mostrarDesafio3DS(html) {
+    const $container = $('#box-iframe-3ds');
+    $container.empty(); // Limpiar contenido previo
+
+    // Crear el iframe dinámicamente
+    const $iframe = $('<iframe>', {
+        id: 'iframe-nuvei',
+        name: 'iframe-nuvei',
+        style: 'width: 100%; height: 450px; border: none;'
+    });
+
+    $container.append($iframe);
+
+    // Escribir el HTML del challenge dentro del iframe
+    const doc = $iframe[0].contentWindow.document;
+    doc.open();
+    doc.write(html);
+    doc.close();
+
+    // Mostrar el modal de Bootstrap 5
+    //const modal3DS = new bootstrap.Modal(document.getElementById('tu-id-del-modal')); 
+    //modal3DS.show();
 }

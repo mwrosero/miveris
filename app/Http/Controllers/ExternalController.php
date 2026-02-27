@@ -107,6 +107,7 @@ class ExternalController extends Controller
     public function payment(Request $request){
         $urlParams = $request->all();
         if ($request->has('codigoPreTransaccion') || $request->has('idSolicitud') || $request->has('codigoIngreso')) {
+            $esPagoVua = false;
             $esServicioCaja = false;
             $accessToken = $this->getTokenExternalFacturacion();
             //Verificar si Nuvei esta activo
@@ -135,6 +136,7 @@ class ExternalController extends Controller
                 }
                 $params = '?codigoEmpresa='.$codigoEmpresa.'&codigoSolicitudServDomicilio='.$_REQUEST['idSolicitud'];
             }else{
+                $esPagoVua = true;
                 $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/vap';
                 $codigoEmpresa = 1;
                 if($request->has('codigoEmpresa')){
@@ -175,7 +177,7 @@ class ExternalController extends Controller
                             ->with('info',$response->data)
                             ->with('esServicioCaja',$esServicioCaja)
                             ->with('permiteNuvei',$permiteNuvei)
-                            // ->with('permiteNuvei',"N")
+                            ->with('esPagoVua',$esPagoVua)
                             ->with('accessToken',$accessToken)
                             ->with('paciente',$list_paciente->data)
                             ->with('codigoEmpresa',$codigoEmpresa);
