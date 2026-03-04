@@ -310,7 +310,10 @@ Veris - Pago en línea
         myModal.show();
     }
 
-    function pasarelaNuvei(){
+    async function pasarelaNuvei(){
+    	@if($permiteNuvei == "S")
+		await crearReferencia();
+        @endif
 		let paymentCheckout = new PaymentCheckout.modal({
 		    // client_app_code: dataNuvei.applicationCode, // Client Credentials
 		    // client_app_key: dataNuvei.applicationKey, // Client Credentials
