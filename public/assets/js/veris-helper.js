@@ -1200,17 +1200,19 @@ function getClientBrowserInfo(serverData) {
     };
 }
 
-async function validarEstadoTransaccion(){
+async function validarEstadoTransaccion(mostrarLoader = false){
     let args = [];
     args["endpoint"] = api_url + `/${api_war}/v1/facturacion/validarEstadoTransaccion?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}&codigoTransaccion=${dataCita.transaccionVirtual.codigoTransaccion}`;
     args["method"] = "GET";
-    args["showLoader"] = false;
+    args["showLoader"] = mostrarLoader;
+    args["dismissAlert"] = true;
 
     const data = await call(args);
     console.log(data);
+    return data;
 }
 
-function mostrarDesafio3DS(html) {
+async function mostrarDesafio3DS(html) {
     const $container = $('#box-iframe-3ds');
     $container.empty(); // Limpiar contenido previo
 
@@ -1219,6 +1221,20 @@ function mostrarDesafio3DS(html) {
         id: 'iframe-nuvei',
         name: 'iframe-nuvei',
         style: 'width: 100%; height: 450px; border: none;'
+    });
+
+    let cargaInicialIgnorada = false;
+
+    $iframe.on('load', async function() {
+        if (!cargaInicialIgnorada) {
+            console.log("Iframe inicializado (auto-submit). Ignorando primera carga...");
+            cargaInicialIgnorada = true; 
+            return; // Salimos de la función sin validar nada
+        }
+
+        // 2. A partir de aquí, cualquier 'load' significa que el usuario interactuó o hubo redirect
+        console.log("Detectado redirect real en el iframe. Iniciando validación...");
+        await validarHastaQueEsteListo();
     });
 
     $container.append($iframe);
@@ -1232,4 +1248,27 @@ function mostrarDesafio3DS(html) {
     // Mostrar el modal de Bootstrap 5
     //const modal3DS = new bootstrap.Modal(document.getElementById('tu-id-del-modal')); 
     //modal3DS.show();
+}
+
+async function validarHastaQueEsteListo() {
+    const resultado = await validarEstadoTransaccion(true);
+
+    // Si el código es 200, significa que la transacción terminó (éxito o error final)
+    if (resultado.code === 200) {
+        console.log("Transacción procesada correctamente.");
+        $('#modalIframe3DS').modal('hide');
+        window.location.href = `/cita-agendada/${globalParams}`; 
+    }else{
+        if(resultado.message !== null) {
+            console.warn("Se detectó una respuesta crítica. Deteniendo validación.");
+            
+            $('#modalIframe3DS').modal('hide');
+            alert("Atención: " + resultado.message);
+            return; // Termina la recursividad (NO vuelve a llamar a la función)
+        }
+        // Si el código NO es 200 (ej: 404, 202, etc), esperamos y reintentamos
+        console.log("Aún no está listo (Code: " + resultado.code + "). Reintentando en 3 segundos...");
+        await new Promise(resolve => setTimeout(resolve, 3000)); // Pausa de 3 seg
+        return validarHastaQueEsteListo(); // RECURSIÓN: se llama a sí misma
+    }
 }

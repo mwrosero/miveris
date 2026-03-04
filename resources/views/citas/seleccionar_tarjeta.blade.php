@@ -105,6 +105,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
 <script>
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    let globalParams = "{{ $params }}";
 
     document.addEventListener("DOMContentLoaded", async function () {
         if(dataCita.reserva){
@@ -218,7 +219,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
                 dataCita.registroPago = data.data;
                 guardarData();
                 const htmlChallenge = dataCita.registroPago.nuvei3ds.challengeRequest;
-                mostrarDesafio3DS(htmlChallenge);
+                await mostrarDesafio3DS(htmlChallenge);
                 $('#modalIframe3DS').modal('show');
                 return;
             }
