@@ -702,7 +702,7 @@ Mi Veris - Citas - Mis citas
             numeroPaciente = pacienteSeleccionado;
         }
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${_canalOrigen}&adicionaSolicitudes=S&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&codigoUsuario=${numeroPaciente}&version=7.8.0`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${_canalOrigen}&adicionaSolicitudes=S&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroPaciente}&codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&version=7.8.0`
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('citasxd',args["endpoint"]);
