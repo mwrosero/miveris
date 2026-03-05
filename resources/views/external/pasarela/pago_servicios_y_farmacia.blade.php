@@ -310,7 +310,7 @@ Veris - Pago en línea
         myModal.show();
     }
 
-    function pasarelaNuvei(){
+    async function pasarelaNuvei(){
     	@if($permiteNuvei == "S")
 		await crearReferencia();
         @endif
