@@ -1259,11 +1259,18 @@ async function validarHastaQueEsteListo() {
         $('#modalIframe3DS').modal('hide');
         window.location.href = `/cita-agendada/${globalParams}`; 
     }else{
-        if(resultado.message !== null) {
+        if(resultado.message !== null && resultado.message !== "") {
             console.warn("Se detectó una respuesta crítica. Deteniendo validación.");
             
             $('#modalIframe3DS').modal('hide');
             alert("Atención: " + resultado.message);
+
+            let form = $("#add-card-form");
+            let submitButton = form.find("button");
+            if(submitButton){
+                submitButton.attr("disabled", "").text("Pagar")
+            }
+
             return; // Termina la recursividad (NO vuelve a llamar a la función)
         }
         // Si el código NO es 200 (ej: 404, 202, etc), esperamos y reintentamos
