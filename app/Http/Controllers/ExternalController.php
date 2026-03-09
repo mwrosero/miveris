@@ -285,9 +285,10 @@ class ExternalController extends Controller
                 'data'     => $data,
                 'token'    => $this->getTokenExternalDigitales()
             ]);
-            echo Veris::BASE_URL.$method;
-            dump($data);
-            dump($response_pretrx);
+            
+            // echo Veris::BASE_URL.$method;
+            // dump($data);
+            // dump($response_pretrx);
             
             if($response_pretrx->code == 200){
                 return view('external.pasarela.datos_facturacion')
