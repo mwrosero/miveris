@@ -1276,7 +1276,9 @@ async function validarHastaQueEsteListo() {
             console.warn("Se detectó una respuesta crítica. Deteniendo validación.");
             
             $('#modalIframe3DS').modal('hide');
-            alert("Atención: " + resultado.message);
+            //alert("Atención: " + resultado.message);
+            $('#mensaje_3ds').html(resultado.message);
+            $('#modalError3DS').modal('show');
 
             let form = $("#add-card-form");
             let submitButton = form.find("button");

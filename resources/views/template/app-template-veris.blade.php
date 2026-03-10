@@ -176,6 +176,21 @@
         </div>
     </div>
 
+    <!-- Modal 3ds -->
+    <div class="modal fade" id="modalError3DS" tabindex="-1" aria-labelledby="modalError3DSLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris" id="mensaje_3ds"></p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button data-bs-dismiss="modal" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal -->
     <div class="modal fade" id="modalErrorSamePage" tabindex="-1" aria-labelledby="modalErrorSamePageLabel" data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -342,7 +357,7 @@
 
     <!-- Page JS -->
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
-    <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.9"></script>
+    <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.1.0"></script>
 
     <script>
         // Inicializa Swiper.js
