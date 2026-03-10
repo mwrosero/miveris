@@ -1223,18 +1223,30 @@ async function mostrarDesafio3DS(html) {
         style: 'width: 100%; height: 450px; border: none;'
     });
 
-    let cargaInicialIgnorada = false;
+    let contadorCargas = 0;
 
     $iframe.on('load', async function() {
-        if (!cargaInicialIgnorada) {
-            console.log("Iframe inicializado (auto-submit). Ignorando primera carga...");
-            cargaInicialIgnorada = true; 
-            return; // Salimos de la función sin validar nada
+        contadorCargas++;
+        console.log("Carga detectada #" + contadorCargas);
+
+        if (contadorCargas === 1) {
+            // Esta es la carga del HTML que nos mostraste.
+            // Aquí es donde el formulario se auto-ejecuta.
+            console.log("Iframe con auto-submit cargado. Esperando redirección del banco...");
+            return; 
         }
 
-        // 2. A partir de aquí, cualquier 'load' significa que el usuario interactuó o hubo redirect
-        console.log("Detectado redirect real en el iframe. Iniciando validación...");
-        await validarHastaQueEsteListo();
+        if (contadorCargas === 2) {
+            // Aquí el usuario ya está viendo la pantalla de la pasarela o ya terminó.
+            // Si el flujo de Nuvei tiene más pasos, podrías necesitar esperar a contadorCargas === 3
+            console.log("El iframe ha navegado. Iniciando validación de estado...");
+            //await validarHastaQueEsteListo();
+        }
+
+        if (contadorCargas === 3) {
+            console.log("Redirect iframe");
+            await validarHastaQueEsteListo();
+        }
     });
 
     $container.append($iframe);
@@ -1251,6 +1263,7 @@ async function mostrarDesafio3DS(html) {
 }
 
 async function validarHastaQueEsteListo() {
+    console.log("validarHastaQueEsteListo");
     const resultado = await validarEstadoTransaccion(true);
 
     // Si el código es 200, significa que la transacción terminó (éxito o error final)

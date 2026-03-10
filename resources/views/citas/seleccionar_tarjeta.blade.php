@@ -219,8 +219,8 @@ Mi Veris - Citas - Selecciona tu tarjeta
                 dataCita.registroPago = data.data;
                 guardarData();
                 const htmlChallenge = dataCita.registroPago.nuvei3ds.challengeRequest;
-                await mostrarDesafio3DS(htmlChallenge);
                 $('#modalIframe3DS').modal('show');
+                await mostrarDesafio3DS(htmlChallenge);
                 return;
             }
 

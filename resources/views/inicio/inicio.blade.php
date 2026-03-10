@@ -261,12 +261,14 @@ Mi Veris - Inicio
                     </div>
                     <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Paquetes</p>
                 </a>
+                @if(config('app.subdomain') == "veris")
                 <a href="/servicio-domicilio" class="col-3 col-md-2 text-center text-veris bg-transparent">
                     <div class="box-container-icon mb-1 p-2 rounded-3">
                         <img src="{{ asset('assets/img/svg/domicilio-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
                     </div>
                     <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Domicilio</p>
                 </a>
+                @endif
                 <a href="/receta-medica" class="col-3 col-md-2 text-center text-veris bg-transparent">
                     <div class="box-container-icon mb-1 p-2 rounded-3">
                         <img src="{{ asset('assets/img/svg/recetas-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">

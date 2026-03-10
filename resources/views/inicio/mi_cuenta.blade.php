@@ -59,12 +59,14 @@ Mi Veris - Cuenta
                                     <p class="fs--1 fw-medium mb-0 text-veris-ai">Mis tarjetas</p>
                                 </a>
                             </div>
+                            @if(config('app.subdomain') == "veris")
                             <div class="col-4">
                                 <a href="/bienestar" class="w-100 waves-effect p-2 text-decoration-none d-block text-center bg-silver-light rounded-lg">
                                     <img src="{{ asset('assets/img/svg/watch-smart.svg') }}" class="mb-2" />
                                     <p class="fs--1 fw-medium mb-0 text-veris-ai">Bienestar</p>
                                 </a>
                             </div>
+                            @endif
                         </div>
                         <!-- <div class="row mb-3">
                             <img src="{{ asset('assets/img/svg/E-Wallet-amico.svg') }}" class="w-100" />

@@ -44,6 +44,9 @@
         <link rel="stylesheet" href="../../../assets/css/demo.css" />
         <link rel="stylesheet" href="../../../assets/css/style.css" />
 
+        @if(config('app.subdomain') == "parami")
+        <link rel="stylesheet" href="{{ asset('assets/css/theme-parami-app.css?v=1.0.4')}}">
+        @endif
         <!-- Vendors CSS -->
         
         <link rel="stylesheet" href="../../../assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
