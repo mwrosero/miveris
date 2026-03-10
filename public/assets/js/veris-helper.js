@@ -1270,6 +1270,7 @@ async function validarHastaQueEsteListo() {
     if (resultado.code === 200) {
         console.log("Transacción procesada correctamente.");
         $('#modalIframe3DS').modal('hide');
+        window.removeEventListener("beforeunload", beforeUnloadHandler);
         window.location.href = `/cita-agendada/${globalParams}`; 
     }else{
         if(resultado.message !== null && resultado.message !== "") {
