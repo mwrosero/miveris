@@ -356,8 +356,8 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
                 dataCita.registroPago = data.data;
                 guardarData();
                 const htmlChallenge = dataCita.registroPago.nuvei3ds.challengeRequest;
-                mostrarDesafio3DS(htmlChallenge);
                 $('#modalIframe3DS').modal('show');
+                await mostrarDesafio3DS(htmlChallenge);
                 return;
             }
             console.log(777)
