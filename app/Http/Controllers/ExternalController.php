@@ -260,7 +260,12 @@ class ExternalController extends Controller
                     break;
             }
             //CANAL_ORIGEN_EXTERNAL
-            $method = '/'.Veris::BASE_WAR.'/v1/facturacion/crear_pretransaccion?canalOrigen='.Veris::CANAL_ORIGEN_EXTERNAL;
+            if(config('app.subdomain') == "veris"){
+                $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL;
+            }else{
+                $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL_PARAMI;
+            }
+            $method = '/'.Veris::BASE_WAR.'/v1/facturacion/crear_pretransaccion?canalOrigen='.$canalOrigenServ;
 
             // Pago para Digiturno
             if(isset($urlParams['esLinkDigiturno'])){
