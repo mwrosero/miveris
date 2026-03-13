@@ -242,7 +242,7 @@ class ExternalController extends Controller
                 break;
                 case 'PAQUETE':
                     $data["idPaciente"] = $idPaciente;
-                    if(isset($urlParams['canalOrigen']) && $urlParams['canalOrigen'] == "WEBSITE"){
+                    if(isset($urlParams['canalOrigen']) && $urlParams['canalOrigen'] == "WEBSITE" && config('app.subdomain') == "veris"){
                         $tramaPaquete = array(
                             "codigoPaquete" => $urlParams['codArticulo']
                         );
@@ -283,6 +283,7 @@ class ExternalController extends Controller
                 'data'     => $data,
                 'token'    => $this->getTokenExternalDigitales()
             ]);
+            
             // echo Veris::BASE_URL.$method;
             // dump($data);
             // dump($response_pretrx);
