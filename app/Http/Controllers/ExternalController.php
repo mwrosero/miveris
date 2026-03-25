@@ -244,7 +244,7 @@ class ExternalController extends Controller
                 break;
                 case 'PAQUETE':
                     $data["idPaciente"] = $idPaciente;
-                    if(isset($urlParams['canalOrigen']) && $urlParams['canalOrigen'] == "WEBSITE"){
+                    if(isset($urlParams['canalOrigen']) && $urlParams['canalOrigen'] == "WEBSITE" && config('app.subdomain') == "veris"){
                         $tramaPaquete = array(
                             "codigoPaquete" => $urlParams['codArticulo']
                         );
@@ -903,7 +903,15 @@ class ExternalController extends Controller
     }
 
     public function bot(){
-        return view('external.bot.index');
+        $accessToken = $this->getTokenExternalFacturacion();
+        return view('external.bot.index')
+                ->with('accessToken',$accessToken);
+    }
+
+    public function portalCautivo(){
+        $accessToken = $this->getTokenExternalFacturacion();
+        return view('external.portal_cautivo.index_portal_cautivo')
+                ->with('accessToken',$accessToken);
     }
 
     public function devoluciones(Request $request){
