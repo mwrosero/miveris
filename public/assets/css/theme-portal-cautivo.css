@@ -57,6 +57,30 @@ body{
     color: #fff !important;
 }
 
+/* Estilos personalizados para igualar tu imagen */
+  .custom-radio-pill {
+    border-radius: 20px; /* Bordes muy redondeados */
+    border-width: 2px;    /* Grosor del borde */
+    padding: 15px 30px;  /* Espaciado interno */
+    font-size: 1.25rem;  /* Tamaño de fuente */
+    color: #4A90E2;      /* Color de texto azul suave */
+    border-color: #4A90E2;
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Estado cuando el radio está seleccionado */
+  .btn-check:checked + .custom-radio-pill {
+    background-color: #4A90E2;
+    border-color: #4A90E2;
+    color: white;
+  }
+
+  /* Quitar el sombreado azul de enfoque si prefieres algo más limpio */
+  .btn:focus {
+    box-shadow: none;
+  }
+
 .auto-expand-textarea {
     border: 1px solid #ced4da; /* Estilo de input */
     border-radius: 0.25rem; /* Estilo de input */

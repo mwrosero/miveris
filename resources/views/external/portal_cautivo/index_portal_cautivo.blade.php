@@ -213,6 +213,16 @@ Veris - Portal Cautivo
 										  	<div class="col-md-12 mb-2">
 				                                {{-- <label class="form-label fw-medium fs--1">¿Cuál es el motivo de tu visita?</label> --}}
 				                                <p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24">¿Cuál es el motivo de tu visita?</p>
+				                                <div class="d-flex flex-column gap-3 ms-auto" style="max-width: 300px;">
+				                                	<input type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
+				                                	<label class="btn btn-outline-primary custom-radio-pill" for="option1">
+				                                		Me siento mal
+				                                	</label>
+				                                	<input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
+				                                	<label class="btn btn-outline-primary custom-radio-pill" for="option2">
+				                                		Es un control
+				                                	</label>
+				                                </div>
 				                            </div>
 				                        </div>
 									    <div class="footer-action w-100">
