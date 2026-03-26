@@ -1,6 +1,8 @@
 :root {
 	--Secundario-Midnight-blue-00: #13243F;
 	--Silver-neutral: #A1A7B2;
+	--Silver-676767: #676767;
+	--Secundario-Midnight-blue-Tint-20s: #425065;
 }
 
 body{
@@ -11,8 +13,31 @@ body{
 	font-weight: 300 !important;
 }
 
+.swipe-up-entry {
+	animation: swipeUp 0.5s ease-out forwards;
+}
+
+@keyframes swipeUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .text-secundario-midnight-blue-00{
 	color: var(--Secundario-Midnight-blue-00) !important;
+}
+
+.text-Silver-676767{
+	color: var(--Silver-676767) !important;
+}
+
+.text-Secundario-Midnight-blue-Tint-20s{
+	color: var(--Secundario-Midnight-blue-Tint-20s) !important;
 }
 
 .bg-vris-light-grayish-blue-3{
@@ -21,6 +46,15 @@ body{
 
 .border-silver-neutral{
 	border: var(--Silver-neutral) !important;
+}
+
+.item-cita-selected {
+    border: 1px solid var(--bg-vris-blue);
+    background: var(--bg-vris-blue) !important;
+}
+
+.item-cita-selected  * {
+    color: #fff !important;
 }
 
 .auto-expand-textarea {
