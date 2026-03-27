@@ -142,7 +142,7 @@ Veris - Pago en línea
 	</div>
 </section>
 <script>
-	let canalOrigen = (window.config.subdomain == "veris") ? "VER_CMV" : "VER_PMF";
+	let canalOrigen = (window.config.subdomain == "veris") ? "MVE_CMV" : "VER_PMF";
 	let permiteNuvei = "{{ $permiteNuvei }}";
 	let dataNuvei;
 	let referenceNuvei;

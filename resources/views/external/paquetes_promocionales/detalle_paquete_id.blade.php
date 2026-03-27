@@ -51,7 +51,7 @@ Veris - Detalle Promoción
 </section>
 
 <script>
-    let canalOrigen = (window.config.subdomain == "veris") ? "VER_CMV" : "VER_PMF";
+    let canalOrigen = (window.config.subdomain == "veris") ? "MVE_CMV" : "VER_PMF";
     localStorage.setItem('external-cita-{{ $params }}', JSON.stringify({}));
     let local = localStorage.getItem('external-cita-{{ $params }}');
     let dataCita = JSON.parse(local);

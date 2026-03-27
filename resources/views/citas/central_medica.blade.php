@@ -105,7 +105,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         listaCentrales.empty();
         let mostrarVua = (dataCita.vua && !dataCita.tratamiento) ? dataCita.vua : false;
         let ciudad = JSON.parse($('#ciudad option:selected').attr("data-rel"));
-        let canalOrigen = "VER_CMV";
+        let canalOrigen = "MVE_CMV";
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/agenda/centrosmedicos?canalOrigen=${canalOrigen}&codigoEmpresa=1&codigoEspecialidad=${codigoEspecialidad}&codigoPais=${ciudad.codigoPais}&codigoProvincia=${ciudad.codigoProvincia}&codigoCiudad=${ciudad.codigoCiudad}&mostrarSucursalPrioritaria=${mostrarVua}`;
         args["method"] = "GET";

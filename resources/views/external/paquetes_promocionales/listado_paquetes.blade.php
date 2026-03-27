@@ -67,7 +67,7 @@ Veris - Planes Promociones
     let perPage = 12;
     let cargandoContenido = false;
     let isFiltered = false;
-    let canalOrigen = (window.config.subdomain == "veris") ? "VER_CMV" : "VER_PMF";
+    let canalOrigen = (window.config.subdomain == "veris") ? "MVE_CMV" : "VER_PMF";
 
     document.addEventListener("DOMContentLoaded", async function () {
         console.log(99)
