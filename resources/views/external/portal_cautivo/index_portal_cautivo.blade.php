@@ -69,15 +69,7 @@ Veris - Portal Cautivo
 					{{-- STEP 2 --}}
 					<div class="step step-2 d-none modal-dialog-scrollable">
 						<div class="modal-content">
-							<div class="msg-head bg-vris-light-grayish-blue-3">
-								<div class="btn-back settings-tray rounded d-flex justify-content-between align-items-center gap-2">
-									<div type="button" class="d-flex justify-content-between align-items-center gap-2 fw-medium">
-										<i class="fa-solid fa-arrow-left"></i>
-										Atrás
-									</div>
-									<img class="my-2" height="40px" src="{{ asset('assets/img/veris/logo-veris-2025.svg')}}">
-								</div>
-							</div>
+							@include('external.portal_cautivo.navigation')
 							<div class="modal-body">
 								<div class="h-100 d-flex flex-column justify-content-between">
 									<div class="d-flex flex-column align-items-start px-3 mt-auto">
@@ -85,7 +77,7 @@ Veris - Portal Cautivo
 								            <img src="{{ asset('assets/external/bot/logo-vericita.png') }}" width="75px">
 								        	<h2 class="text-secundario-midnight-blue-00 mb-0">Comencemos con tu identificación.</h2>
 								        </div>
-								        <div class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 p-4 swipe-up-entry">
+								        <div class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 p-4 swipe-up-entry w-100">
 										  	<div class="col-md-12 mb-2">
 				                                <label for="tipoIdentificacion" class="form-label fw-medium fs--1">Elige tu documento *</label>
 				                                <select class="form-select fs--1 p-3" name="tipoIdentificacion" id="tipoIdentificacion" required>
@@ -128,15 +120,7 @@ Veris - Portal Cautivo
 					{{-- STEP 3 --}}
 					<div class="step step-3 d-none modal-dialog-scrollable">
 						<div class="modal-content">
-							<div class="msg-head bg-vris-light-grayish-blue-3">
-								<div class="btn-back settings-tray rounded d-flex justify-content-between align-items-center gap-2">
-									<div type="button" class="d-flex justify-content-between align-items-center gap-2 fw-medium">
-										<i class="fa-solid fa-arrow-left"></i>
-										Atrás
-									</div>
-									<img class="my-2" height="40px" src="{{ asset('assets/img/veris/logo-veris-2025.svg')}}">
-								</div>
-							</div>
+							@include('external.portal_cautivo.navigation')
 							<div class="modal-body">
 								<div class="h-100 d-flex flex-column justify-content-between">
 									<div class="d-flex flex-column align-items-start px-3 mt-auto">
@@ -190,15 +174,7 @@ Veris - Portal Cautivo
 					{{-- STEP 4 --}}
 					<div class="step step-4 d-none modal-dialog-scrollable">
 						<div class="modal-content">
-							<div class="msg-head bg-vris-light-grayish-blue-3">
-								<div class="btn-back settings-tray rounded d-flex justify-content-between align-items-center gap-2">
-									<div type="button" class="d-flex justify-content-between align-items-center gap-2 fw-medium">
-										<i class="fa-solid fa-arrow-left"></i>
-										Atrás
-									</div>
-									<img class="my-2" height="40px" src="{{ asset('assets/img/veris/logo-veris-2025.svg')}}">
-								</div>
-							</div>
+							@include('external.portal_cautivo.navigation')
 							<div class="modal-body">
 								<div class="h-100 d-flex flex-column justify-content-between">
 									<div class="d-flex flex-column align-items-start px-3 mt-auto">
@@ -209,25 +185,79 @@ Veris - Portal Cautivo
 								        		<p class="fs--16 line-height-20 text-secundario-midnight-blue-00 mb-0">Te tomará solo unos minutos.</p>
 								        	</div>
 								        </div>
-								        <div class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 px-2 w-100 shadow-sm swipe-up-entry">
+								        <div class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 pb-0 px-2 w-100 shadow-sm swipe-up-entry mb-3">
 										  	<div class="col-md-12 mb-2">
 				                                {{-- <label class="form-label fw-medium fs--1">¿Cuál es el motivo de tu visita?</label> --}}
-				                                <p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24">¿Cuál es el motivo de tu visita?</p>
-				                                <div class="d-flex flex-column gap-3 ms-auto" style="max-width: 300px;">
-				                                	<input type="radio" class="btn-check" name="options" id="option1" autocomplete="off">
-				                                	<label class="btn btn-outline-primary custom-radio-pill" for="option1">
+				                                <p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">¿Cuál es el motivo de tu visita?</p>
+				                                <div class="text-end ms-auto" style="max-width: 300px;">
+				                                	<input type="radio" class="btn-check d-none" name="tipoCita" id="sentirse_mal" value="sentirse_mal" autocomplete="off">
+				                                	<label class="btn btn-outline-primary fs--16 line-height-22 rounded-3 px-4 py-3 fw-normal mb-3 item-radio" for="sentirse_mal">
 				                                		Me siento mal
 				                                	</label>
-				                                	<input type="radio" class="btn-check" name="options" id="option2" autocomplete="off">
-				                                	<label class="btn btn-outline-primary custom-radio-pill" for="option2">
+				                                	<input type="radio" class="btn-check d-none" name="tipoCita" id="control" value="control" autocomplete="off">
+				                                	<label class="btn btn-outline-primary fs--16 line-height-22 rounded-3 px-4 py-3 fw-normal mb-3 item-radio" for="control">
 				                                		Es un control
 				                                	</label>
 				                                </div>
 				                            </div>
 				                        </div>
-									    <div class="footer-action w-100">
+									    {{-- <div class="footer-action w-100">
 									        <button class="btn btn-primary-veris rounded-3 btn-continue w-100 mt-4 mb-1 py-4 fs--20 line-height-24 fw-medium" disabled id="btn-elegir-cita">Continuar</button>
 									        <div type="button" id="btn-datos-erroneos" class="text-center py-3 text-veris-ai fw-medium fs--18 line-height-24">No soy esa persona</div>
+									    </div> --}}
+								    </div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{{-- STEP 5 --}}
+					<div class="step step-5 d-none modal-dialog-scrollable">
+						<div class="modal-content">
+							@include('external.portal_cautivo.navigation')
+							<div class="modal-body">
+								<div class="h-100 d-flex flex-column justify-content-between">
+									<div class="d-flex flex-column align-items-start px-3 mt-auto">
+								        <div class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 pb-0 px-2 w-100 shadow-sm swipe-up-entry mb-3">
+										  	<div class="col-md-12 mb-2">
+				                                <p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">¿Dónde te duele?</p>
+				                                <div class="alert bg-Light-Sky-Blue-Tint-90 rounded-3 align-items-start mb-3 alert-dismissible fade show d-flex justify-content-between align-items-top gap-2" role="alert">
+												  	<i class="fa-regular fa-lightbulb text-veris-ai fs--20 mt-1"></i>
+											        <div class="alert-text fw-normal text-secundario-midnight-blue-00 fs--1">
+											            Puedes buscar tus síntomas utilizando el buscador o seleccionando una parte del cuerpo.
+											        </div>
+												  	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+												</div>
+
+												<ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
+													<li class="nav-item flex-fill" role="presentation">
+														<button class="nav-link fs--16 line-height-20 py-3 active" id="pills-buscador-tab" data-bs-toggle="pill" data-bs-target="#pills-buscador" type="button" role="tab" aria-controls="pills-buscador" aria-selected="true">Buscador</button>
+													</li>
+													<li class="nav-item flex-fill" role="presentation">
+														<button class="nav-link fs--16 line-height-20 py-3" id="pills-cuerpo-tab" data-bs-toggle="pill" data-bs-target="#pills-cuerpo" type="button" role="tab" aria-controls="pills-cuerpo" aria-selected="false">Parte del cuerpo</button>
+													</li>
+												</ul>
+
+												<div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
+													<div class="tab-pane fade mt-3 show active" id="pills-buscador" role="tabpanel" aria-labelledby="pills-buscador-tab" tabindex="0">
+														<p class="text-secundario-midnight-blue-00 fs--14 line-height-18 fw-normal mb-2">Busca tu molestia o dolor para mostrarte las opciones específicas.</p>
+														<div class="d-flex gap-2 justify-content-between align-items-center mb-3 p-3 rounded-3" style="background: #0000000D;">
+															<i class="fa-solid fa-magnifying-glass text-muted text-silver-neutral"></i>
+															<input type="search" 
+																class="fs--14 line-height-18 shadow-none border-0 text-silver-neutral bg-transparent flex-grow-1" 
+																id="parte_cuerpo" 
+																name="parte_cuerpo" 
+																placeholder="Ej. Dolor de Cabeza" >
+														</div>
+													</div>
+													<div class="tab-pane fade mt-3" id="pills-cuerpo" role="tabpanel" aria-labelledby="pills-cuerpo-tab" tabindex="0">
+														<p class="text-secundario-midnight-blue-00 fs--14 line-height-18 fw-normal mb-2">Selecciona la parte del cuerpo dónde sientas molestia o dolor para mostrarte opciones generales.</p>
+													</div>
+												</div>
+				                            </div>
+				                        </div>
+									    <div class="footer-action w-100">
+									        <button class="btn btn-primary-veris rounded-3 btn-continue w-100 my-4 py-4 fs--20 line-height-24 fw-medium" disabled id="btn-continuar-cuerpo">Continuar</button>
 									    </div>
 								    </div>
 								</div>
@@ -318,6 +348,23 @@ Veris - Portal Cautivo
         	$('.item-cita').removeClass('item-cita-selected');
         	$(this).addClass('item-cita-selected');
         	$('#btn-elegir-cita').attr('disabled', false);
+        })
+
+        $('body').on('change', 'input:radio', function() {
+        	let nombreGrupo = $(this).attr('name');
+    		let valorSeleccionado = $(this).val();
+
+    		console.log("Se cambió el grupo: " + nombreGrupo);
+    		console.log("Nuevo valor seleccionado: " + valorSeleccionado);
+    		currentStep++;
+    		$('.step').addClass('d-none');
+			$(`.step-${currentStep}`).removeClass('d-none');
+
+    		/*switch(nombreGrupo){
+    			case 'tipoCita':
+
+    			break;
+    		}*/
         })
 		
 	});

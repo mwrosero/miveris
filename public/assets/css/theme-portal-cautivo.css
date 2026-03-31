@@ -3,6 +3,8 @@
 	--Silver-neutral: #A1A7B2;
 	--Silver-676767: #676767;
 	--Secundario-Midnight-blue-Tint-20s: #425065;
+	--Primario-Royal-blue-Tint-80: #D4E1FC;
+	--Light-Sky-Blue-Tint-90: #EBF6FE;
 }
 
 body{
@@ -28,6 +30,10 @@ body{
   }
 }
 
+.bg-Primario-Royal-blue-Tint-80{
+	background: var(--Primario-Royal-blue-Tint-80);
+}
+
 .text-secundario-midnight-blue-00{
 	color: var(--Secundario-Midnight-blue-00) !important;
 }
@@ -44,8 +50,20 @@ body{
 	background: var(--bg-vris-light-grayish-blue-3) !important;
 }
 
+.bg-Light-Sky-Blue-Tint-90{
+	background: var(--Light-Sky-Blue-Tint-90) !important;
+}
+
+.text-silver-neutral{
+	color: var(--Silver-neutral) !important;
+}
+
 .border-silver-neutral{
 	border: var(--Silver-neutral) !important;
+}
+
+.bg-silver-neutral{
+	background: var(--Silver-neutral) !important;
 }
 
 .item-cita-selected {
@@ -58,28 +76,30 @@ body{
 }
 
 /* Estilos personalizados para igualar tu imagen */
-  .custom-radio-pill {
-    border-radius: 20px; /* Bordes muy redondeados */
-    border-width: 2px;    /* Grosor del borde */
-    padding: 15px 30px;  /* Espaciado interno */
-    font-size: 1.25rem;  /* Tamaño de fuente */
-    color: #4A90E2;      /* Color de texto azul suave */
-    border-color: #4A90E2;
-    background-color: transparent;
-    transition: all 0.2s ease-in-out;
-  }
+.custom-radio-pill {
+	border-width: 2px;    /* Grosor del borde */
+	color: var(--bg-vris-blue);      /* Color de texto azul suave */
+	border-color: var(--bg-vris-blue);
+	background-color: transparent;
+	transition: all 0.2s ease-in-out;
+}
 
-  /* Estado cuando el radio está seleccionado */
-  .btn-check:checked + .custom-radio-pill {
-    background-color: #4A90E2;
-    border-color: #4A90E2;
-    color: white;
-  }
+/* Estado cuando el radio está seleccionado */
+.btn-check:checked + .item-radio {
+	background-color: var(--Primario-Royal-blue-Tint-80) !important;
+	font-weight: 700 !important;
+	border-color: var(--bg-vris-blue) !important;
+}
 
-  /* Quitar el sombreado azul de enfoque si prefieres algo más limpio */
-  .btn:focus {
-    box-shadow: none;
-  }
+/* Quitar el sombreado azul de enfoque si prefieres algo más limpio */
+.btn:focus {
+	box-shadow: none;
+}
+
+#parte_cuerpo{
+	border: 0px !important;
+	background: transparent !important;
+}
 
 .auto-expand-textarea {
     border: 1px solid #ced4da; /* Estilo de input */
