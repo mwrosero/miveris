@@ -76,6 +76,11 @@
             let _token = "{{ $accessToken }}";
             const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
             let tipoFlujo = "";
+            window.config = {
+                subdomain: @json(config('app.subdomain')),
+                canalOrigen: (@json(config('app.subdomain')) == "veris") ? "MVE_CMV" : "VER_PMF",
+                {{-- canalOrigen: (@json(config('app.subdomain')) == "veris") ? "APP_CMV" : "VER_PMF", --}}
+            };
         </script>
         
         @include('template.analytics')
