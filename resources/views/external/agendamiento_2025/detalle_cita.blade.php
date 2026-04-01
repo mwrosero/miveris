@@ -758,7 +758,9 @@ Veris - Detalle de Citas
             argsSesion = `&secuenciaPlanTto=${dataCita.sesion.secuenciaPlanTto}&numeroSesion=${dataCita.sesion.numeroSesion}`;
         }
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${dataCita.horario.porcentajeDescuento}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
+        let porcentajeDescuentoCond = (dataCita.hasOwnProperty('validarCondicionConvenio') && dataCita.validarCondicionConvenio.permitePago == "N") ? 0 : dataCita.horario.porcentajeDescuento;
+
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/precio?canalOrigen=${canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEspecialidad=${dataCita.especialidad.codigoEspecialidad}&idIntervalos=${dataCita.horario.idIntervalo}&permitePago=${permitePago}&codigoConvenio=${codigoConvenio}&esOnline=${dataCita.online}&porcentajeDescuento=${porcentajeDescuentoCond}&aplicaProntoPago=${aplicaProntoPago}&codigoPrestacion=${dataCita.especialidad.codigoPrestacion}&codigoServicio=${dataCita.especialidad.codigoServicio}&codigoReserva=${codigoReserva}&secuenciaAfiliado=${secuenciaAfiliado}&aplicaCredito=${aplicaCredito}&codigoReserva=${codigoReserva}&numeroOrden=${numeroOrden}&codEmpOrden=${codigoEmpOrden}&lineaDetalle=${lineaDetalle}&cantidad=${cantidad}${argsSesion}`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
