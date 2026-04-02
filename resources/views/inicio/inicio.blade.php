@@ -782,12 +782,33 @@ Mi Veris - Inicio
             location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
         });
 
-        $('body').on('click', '.link-item-banner', function(){
+        $('body').on('click', '.link-item-banner', async function(){
             console.log('Banner click')
             let url = $(this).attr('url-rel');
-            if(url != ''){
-                location.href = url;
+            let codigoPaquete = $(this).attr('codigoPaquete-rel');
+
+            if (typeof codigoPaquete === "undefined"){
+                
+                if(url != ''){
+                    location.href = url;
+                    return;
+                }
+            }else{
+                console.log(codigoPaquete);
+                let args = [];
+                args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=1&perPage=1&estaPagado=false&verDetalle=false&categoria=&buscarPorPromocion=&codigoPaquete=5759`;
+                args["method"] = "GET";
+                args["showLoader"] = true;
+                const res = await call(args);
+                let url = '/promocion/detalle/';
+                let data = {
+                    "paquete": res.data.items[0]
+                };
+                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
+                location.href = url + "{{ $tokenCita }}";
+                return;
             }
+
         })
 
         //cerrar el modal de politicas reuerdame
@@ -837,7 +858,12 @@ Mi Veris - Inicio
                             attrAditional = `type='button' url-rel='/bienestar'`;
                         }else if(v.nombreTipoObjeto == "BAN_DESC_EXCLUSIVOS"){
                             attrAditional = `type='button' url-rel='/promociones?c=TP'`;
+                        }else if(v.nombreTipoObjeto == "BANNER_PROMO_FILTRADA"){
+                            attrAditional = `type='button' url-rel='/promociones?s=${v.valorAdicional}'`;
+                        }else if(v.nombreTipoObjeto == "BANNER_PROMO_X_CODIGO"){
+                            attrAditional = `type='button' codigoPaquete-rel='${v.valorAdicional}'`;
                         }
+
                         elem += `<div class="swiper-slide">
                             <div class="card d-block h-100 d-flex justify-content-center align-items-between shadow-none border-0">
                                 <div class="row h-100 g-0 justify-content-between align-items-center">

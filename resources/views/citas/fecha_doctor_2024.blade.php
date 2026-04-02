@@ -1024,7 +1024,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         }
 
         // if(horario.porcentajeDescuento > 0 && !dataCita.hasOwnProperty('detalleItemPaquete')){
-        if(horario.porcentajeDescuento > 0 ){
+        if(horario.porcentajeDescuento > 0 && dataCita.validarCondicionConvenio.permitePago == "S"){
             return `<div class="col-${size}">
                 <div class="cursor-pointer waves-effect btn-disponibilidad-medico p--2 px-3 w-100 bg-time-doctor box-time-doctor-with-discount position-relative rounded-3 d-flex justify-content-end align-items-center" data-horario='${JSON.stringify(horario)}'>
                     <div class="${aditionalClass} position-absolute">
