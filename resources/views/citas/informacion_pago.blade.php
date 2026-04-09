@@ -197,6 +197,11 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
 
         $('#btn-pagar').removeClass('disabled');
 
+        $('#modalIframe3DS').on('hidden.bs.modal', function () {
+            $('#btn-pagar').removeClass('disabled');
+            $('#btn-pagar').attr("disabled", "disabled").text("Pagar");
+        });
+
         let successHandler = async function (cardResponse) {
             console.log(cardResponse.card);
             if (cardResponse.card.status === 'valid') {

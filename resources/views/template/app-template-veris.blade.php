@@ -122,6 +122,7 @@
     <div class="modal fade" id="modalIframe3DS" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalIframe3DSLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable mx-auto">
             <div class="modal-content">
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
                 <div class="modal-body p-3" id="box-iframe-3ds">
                 </div>
             </div>
