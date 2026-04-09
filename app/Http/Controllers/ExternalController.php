@@ -850,7 +850,8 @@ class ExternalController extends Controller
             'basic' => Veris::BASICAUTHDIGITALES,
             'method'   => 'POST'
         ]);
-        // dd($response->data->tokenPush);
+        // echo Veris::BASE_URL.$method;
+        // dd($response);
         session(['accessTokenDigitales' => $response->data->tokenPush]);
         return $response->data->tokenPush;
     }
@@ -908,9 +909,10 @@ class ExternalController extends Controller
                 ->with('accessToken',$accessToken);
     }
 
-    public function portalCautivo(){
+    public function portalCautivo($codigoSucursal){
         $accessToken = $this->getTokenExternalFacturacion();
         return view('external.portal_cautivo.index_portal_cautivo')
+                ->with('codigoSucursal', $codigoSucursal)
                 ->with('accessToken',$accessToken);
     }
 

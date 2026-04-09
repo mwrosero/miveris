@@ -352,7 +352,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if (data.code == 200){
             console.log(data.data);
             console.log(999)
-            if(data.data.nuvei3ds){
+            if(data.data.estado.toUpperCase() == "PENDING" && data.data.nuvei3ds !== null && data.data.nuvei3ds.htmlChallenge !== ""){
                 dataCita.registroPago = data.data;
                 guardarData();
                 const htmlChallenge = dataCita.registroPago.nuvei3ds.challengeRequest;

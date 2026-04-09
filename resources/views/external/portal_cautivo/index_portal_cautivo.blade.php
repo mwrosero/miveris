@@ -201,10 +201,6 @@ Veris - Portal Cautivo
 				                                </div>
 				                            </div>
 				                        </div>
-									    {{-- <div class="footer-action w-100">
-									        <button class="btn btn-primary-veris rounded-3 btn-continue w-100 mt-4 mb-1 py-4 fs--20 line-height-24 fw-medium" disabled id="btn-elegir-cita">Continuar</button>
-									        <div type="button" id="btn-datos-erroneos" class="text-center py-3 text-veris-ai fw-medium fs--18 line-height-24">No soy esa persona</div>
-									    </div> --}}
 								    </div>
 								</div>
 							</div>
@@ -226,15 +222,14 @@ Veris - Portal Cautivo
 											        <div class="alert-text fw-normal text-secundario-midnight-blue-00 fs--1">
 											            Puedes buscar tus síntomas utilizando el buscador o seleccionando una parte del cuerpo.
 											        </div>
-												  	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 												</div>
 
 												<ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab" role="tablist">
 													<li class="nav-item flex-fill" role="presentation">
-														<button class="nav-link fs--16 line-height-20 py-3 active" id="pills-buscador-tab" data-bs-toggle="pill" data-bs-target="#pills-buscador" type="button" role="tab" aria-controls="pills-buscador" aria-selected="true">Buscador</button>
+														<button class="nav-link fs--14 line-height-18 py-3 active" id="pills-buscador-tab" data-bs-toggle="pill" data-bs-target="#pills-buscador" type="button" role="tab" aria-controls="pills-buscador" aria-selected="true">Buscador</button>
 													</li>
 													<li class="nav-item flex-fill" role="presentation">
-														<button class="nav-link fs--16 line-height-20 py-3" id="pills-cuerpo-tab" data-bs-toggle="pill" data-bs-target="#pills-cuerpo" type="button" role="tab" aria-controls="pills-cuerpo" aria-selected="false">Parte del cuerpo</button>
+														<button class="nav-link fs--14 line-height-18 py-3" id="pills-cuerpo-tab" data-bs-toggle="pill" data-bs-target="#pills-cuerpo" type="button" role="tab" aria-controls="pills-cuerpo" aria-selected="false">Parte del cuerpo</button>
 													</li>
 												</ul>
 
@@ -248,6 +243,15 @@ Veris - Portal Cautivo
 																id="parte_cuerpo" 
 																name="parte_cuerpo" 
 																placeholder="Ej. Dolor de Cabeza" >
+														</div>
+														<div class="box-autocomplete-options">
+															<div class="form-check d-flex justify-content-md-center align-items-center">
+																<input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
+																<label class="form-check-label text-start fs--1 fw-medium line-height-16 label-terminos" for="checkTerminosCondicion">
+																	Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank" class="">Términos y condiciones</a> 
+																	<span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
+																</label>
+															</div>
 														</div>
 													</div>
 													<div class="tab-pane fade mt-3" id="pills-cuerpo" role="tabpanel" aria-labelledby="pills-cuerpo-tab" tabindex="0">
@@ -310,13 +314,43 @@ Veris - Portal Cautivo
             }
         });
 
-        $('body').on('click', '#btn-validar', function(){
-			$('.step').addClass('d-none');
-			$('.step-3').removeClass('d-none');
-			//Realizar en el ws para obtener citas
-			$('.item-cita').removeClass('item-cita-selected');
-			$('#btn-elegir-cita').attr('disabled', true);
-			currentStep++;
+        $('body').on('click', '#btn-validar', async function(){
+			let citas = await obtenerCitas();
+			
+			if(citas.code == 200){
+				if(citas.data.length == 0){
+					showMessage('warning','No existen citas asociadas a su identificación.');
+					return;
+				}else{
+					$('.step').addClass('d-none');
+					$('.step-3').removeClass('d-none');
+					let elem = ``;
+					$.each(citas.data, function(key, value){
+						elem += `<div type="button" class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 px-2 w-100 shadow-sm item-cita">
+								  	<div class="col-md-12 mb-2">
+		                                <p class="text-secundario-midnight-blue-00 fs--16 line-height-20 fw-normal mb-2">Tendrás una cita con:</p>
+		                                <div class="box-horario d-flex justify-content-between align-items-center gap-3">
+		                                	<div style="background: url(https://dikg1979lm6fy.cloudfront.net/fotosMedicos/0913067625.jpg) no-repeat top center;    background-size: cover; border-radius: 100%; border: 1px solid #BAB9BE; width: 80px; height: 80px;">
+		                                	</div>
+		                                	<div class="infoCita flex-grow-1">
+		                                		<p class="fs--16 line-height-20 mb-1 text-secundario-midnight-blue-00 fw-medium">Arianna Sofía Flores Alvarado</p>
+		                                		<p class="fs--14 line-height-18 mb-1 text-Silver-676767 fw-normal">Medicina General</p>
+		                                		<p class="fs--14 line-height-18 mb-1 text-veris-ai fw-medium">Hoy, 3:00 pm</p>
+		                                	</div>
+		                                </div>
+		                            </div>
+								</div>`;
+					})
+
+					$('#lista-citas').html(elem);
+
+					$('.item-cita').removeClass('item-cita-selected');
+					$('#btn-elegir-cita').attr('disabled', true);
+					currentStep++;
+				}
+			}else{
+				showMessage('error', citas.message);
+			}
 		})
 
 		$('body').on('click', '#btn-elegir-cita', function(){
@@ -368,5 +402,16 @@ Veris - Portal Cautivo
         })
 		
 	});
+
+	async function obtenerCitas(){
+		let args = [];
+        args["endpoint"] = api_url + `/historiaclinica/v1/prediligenciamiento/agenda_paciente?codigoEmpresa=1&codigoSucursal={{ $codigoSucursal }}&codigoTipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        args["token"] = _token;
+        args["dismissAlert"] = true;
+        const data = await call(args);
+        return data;
+	}
 </script>
 @endsection
