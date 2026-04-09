@@ -13,6 +13,7 @@ Veris - Portal Cautivo
 <link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
 <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.6"></script>
+<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/body-part.js?v=1.0.6"></script>
 
 <link rel="stylesheet" href="{{ asset('assets/css/theme-portal-cautivo.css?v=1.0.4')}}">
 
@@ -233,7 +234,7 @@ Veris - Portal Cautivo
 													</li>
 												</ul>
 
-												<div class="tab-content bg-transparent px-0 px-lg-4" id="pills-tabContent">
+												<div class="tab-content bg-transparent px-0 px-lg-4 py-1" id="pills-tabContent">
 													<div class="tab-pane fade mt-3 show active" id="pills-buscador" role="tabpanel" aria-labelledby="pills-buscador-tab" tabindex="0">
 														<p class="text-secundario-midnight-blue-00 fs--14 line-height-18 fw-normal mb-2">Busca tu molestia o dolor para mostrarte las opciones específicas.</p>
 														<div class="d-flex gap-2 justify-content-between align-items-center mb-3 p-3 rounded-3" style="background: #0000000D;">
@@ -246,16 +247,30 @@ Veris - Portal Cautivo
 														</div>
 														<div class="box-autocomplete-options">
 															<div class="form-check d-flex justify-content-md-center align-items-center">
-																<input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
-																<label class="form-check-label text-start fs--1 fw-medium line-height-16 label-terminos" for="checkTerminosCondicion">
-																	Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank" class="">Términos y condiciones</a> 
-																	<span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
+																<input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="opt1" required>
+																<label class="form-check-label text-start fs--1 fw-normal line-height-16">
+																	Dolor de cabeza
 																</label>
 															</div>
 														</div>
 													</div>
 													<div class="tab-pane fade mt-3" id="pills-cuerpo" role="tabpanel" aria-labelledby="pills-cuerpo-tab" tabindex="0">
 														<p class="text-secundario-midnight-blue-00 fs--14 line-height-18 fw-normal mb-2">Selecciona la parte del cuerpo dónde sientas molestia o dolor para mostrarte opciones generales.</p>
+														<ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab-vista" role="tablist">
+															<li class="nav-item flex-fill" role="presentation">
+																<button class="nav-link fs--14 line-height-18 py-3 active" id="pills-frente-tab" data-bs-toggle="pill" data-bs-target="#pills-frente" type="button" role="tab" aria-controls="pills-frente" aria-selected="true">Frente</button>
+															</li>
+															<li class="nav-item flex-fill" role="presentation">
+																<button class="nav-link fs--14 line-height-18 py-3" id="pills-espalda-tab" data-bs-toggle="pill" data-bs-target="#pills-espalda" type="button" role="tab" aria-controls="pills-espalda" aria-selected="false">Espalda</button>
+															</li>
+														</ul>
+														<div class="tab-content bg-transparent px-0 px-lg-4 pb-0" id="pills-tabContentParte">
+															<div class="tab-pane fade mt-1 show active" id="pills-frente" role="tabpanel" aria-labelledby="pills-frente-tab" tabindex="0">
+																<div id="body-svg-wrapper"></div>
+															</div>
+															<div class="tab-pane fade mt-1" id="pills-espalda" role="tabpanel" aria-labelledby="pills-espalda-tab" tabindex="0">
+															</div>
+														</div>
 													</div>
 												</div>
 				                            </div>
@@ -333,9 +348,9 @@ Veris - Portal Cautivo
 		                                	<div style="background: url(https://dikg1979lm6fy.cloudfront.net/fotosMedicos/0913067625.jpg) no-repeat top center;    background-size: cover; border-radius: 100%; border: 1px solid #BAB9BE; width: 80px; height: 80px;">
 		                                	</div>
 		                                	<div class="infoCita flex-grow-1">
-		                                		<p class="fs--16 line-height-20 mb-1 text-secundario-midnight-blue-00 fw-medium">Arianna Sofía Flores Alvarado</p>
-		                                		<p class="fs--14 line-height-18 mb-1 text-Silver-676767 fw-normal">Medicina General</p>
-		                                		<p class="fs--14 line-height-18 mb-1 text-veris-ai fw-medium">Hoy, 3:00 pm</p>
+		                                		<p class="fs--16 line-height-20 mb-1 text-secundario-midnight-blue-00 fw-medium text-capitalize">${value.nombreMedico.toLowerCase()}</p>
+		                                		<p class="fs--14 line-height-18 mb-1 text-Silver-676767 fw-normal text-capitalize">${value.nombreEspecialidad.toLowerCase()}</p>
+		                                		<p class="fs--14 line-height-18 mb-1 text-veris-ai fw-medium">${formatearFechaRelativa(value.horaInicio)}</p>
 		                                	</div>
 		                                </div>
 		                            </div>
@@ -412,6 +427,39 @@ Veris - Portal Cautivo
         args["dismissAlert"] = true;
         const data = await call(args);
         return data;
+	}
+
+	function formatearFechaRelativa(fechaStr) {
+	    // 1. Crear objetos de fecha (reemplazamos '-' por '/' para compatibilidad total)
+	    var fechaInput = new Date(fechaStr.replace(/-/g, '/'));
+	    var ahora = new Date();
+
+	    // 2. Normalizar fechas para comparar solo el día (sin horas)
+	    var hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+	    var fechaComparar = new Date(fechaInput.getFullYear(), fechaInput.getMonth(), fechaInput.getDate());
+
+	    // 3. Calcular la diferencia en días
+	    var diferenciaTiempo = fechaComparar.getTime() - hoy.getTime();
+	    var diferenciaDias = Math.round(diferenciaTiempo / (1000 * 3600 * 24));
+
+	    // 4. Formatear la hora (ej: 08:40 pm)
+	    var opcionesHora = { hour: '2-digit', minute: '2-digit', hour12: true };
+	    var horaFormateada = fechaInput.toLocaleTimeString('en-US', opcionesHora).toLowerCase();
+
+	    // 5. Determinar el prefijo
+	    var prefijo = "";
+	    if (diferenciaDias === 0) {
+	        prefijo = "Hoy";
+	    } else if (diferenciaDias === 1) {
+	        prefijo = "Mañana";
+	    } else if (diferenciaDias === -1) {
+	        prefijo = "Ayer";
+	    } else {
+	        // Para fechas más lejanas: "12 de abr."
+	        prefijo = fechaInput.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+	    }
+
+	    return prefijo + ", " + horaFormateada;
 	}
 </script>
 @endsection
