@@ -45,12 +45,14 @@
                 <div data-i18n="Paquetes Preventivos">Paquetes Preventivos</div>
             </a>
         </li>
+        @if(config('app.subdomain') == "veris")
         <li class="menu-item {{ Route::is('domicilio') || Route::is('domicilio.*')  ? 'active' : '' }}">
             <a href="{{route('domicilio')}}" class="menu-link fs--1 text-white">
                 <div class="svg-container svg-domicilio me-3"></div>
                 <div data-i18n="Domicilio">Domicilio</div>
             </a>
         </li>
+        @endif
         {{-- <li class="menu-item {{ Route::is('familia') || Route::is('familia.*')  ? 'active' : '' }}">
             <a href="{{route('familia.lista')}}" class="menu-link fs--1 text-white">
                 <div class="svg-container svg-familia me-3"></div>

@@ -105,6 +105,7 @@ Mi Veris - Citas - Selecciona tu tarjeta
 <script>
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    let globalParams = "{{ $params }}";
 
     document.addEventListener("DOMContentLoaded", async function () {
         if(dataCita.reserva){
@@ -122,10 +123,10 @@ Mi Veris - Citas - Selecciona tu tarjeta
         });
         
         $('body').on('click', '#btn-pagar', async function(){
-            {{-- $('#cvcTarjeta').val("");
+            $('#cvcTarjeta').val("");
             $('#btn-pagar-cvv').addClass('disabled');
-            $('#modalCvc').modal('show'); --}}
-            await pagarCita();
+            $('#modalCvc').modal('show');
+            {{-- await pagarCita(); --}}
         })
 
         $('body').on('click', '#btn-pagar-cvv', async function(){
@@ -201,8 +202,8 @@ Mi Veris - Citas - Selecciona tu tarjeta
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
-            //"cvcTarjeta": btoa(getInput('cvcTarjeta')),
-            "browser_info": getClientBrowserInfo(serverData),
+            "cvcTarjeta": btoa(getInput('cvcTarjeta')),
+            "browserInfo": getClientBrowserInfo(serverData),
             "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
             "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
             "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,
@@ -214,6 +215,16 @@ Mi Veris - Citas - Selecciona tu tarjeta
 
         if (data.code == 200){
             console.log(data.data);
+            //if(data.data.nuvei3ds !== null){
+            if(data.data.estado.toUpperCase() == "PENDING" && data.data.nuvei3ds !== null && data.data.nuvei3ds.htmlChallenge !== ""){
+                dataCita.registroPago = data.data;
+                guardarData();
+                const htmlChallenge = dataCita.registroPago.nuvei3ds.challengeRequest;
+                $('#modalIframe3DS').modal('show');
+                await mostrarDesafio3DS(htmlChallenge);
+                return;
+            }
+
             window.removeEventListener("beforeunload", beforeUnloadHandler);
             if(data.data.estado.toUpperCase() == "APPROVED"){
                 dataCita.registroPago = data.data;

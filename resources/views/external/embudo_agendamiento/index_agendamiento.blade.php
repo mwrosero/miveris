@@ -1343,7 +1343,7 @@
                     "codigoEmpresa": 1,
                     "plataforma": "WEB",
                     "versionPlataforma": "7.0.1",
-                    "canalOrigen": "VER_CMV",
+                    "canalOrigen": "MVE_CMV",
                     "tipoEvento": "CR" //Opcional
                 })
             };

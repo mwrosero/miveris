@@ -527,7 +527,7 @@ Veris - Elige fecha y doctor
             $('#detalleItems').html(elemsDetalle)
         }
 
-        if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP")){
+        if((dataCita.central && dataCita.central.codigoTipoSucursal == "CAP") || (dataCita.validarCondicionConvenio && dataCita.validarCondicionConvenio.permitePago == "N")){
             $('#nombreFiltro').addClass('d-none');
             $('#pills-tab').addClass('d-none');
             $('#listaMedicos').addClass('pt-3');
@@ -1103,10 +1103,10 @@ Veris - Elige fecha y doctor
                                 <div class="content-doctor ms-2 flex-grow-1">
                                     <div class="name-rate d-flex justify-content-between align-items-start mb-1">
                                         <h6 style="max-width: 200px" class="fs--16 line-height-20 fw-medium flex-grow-1 m-0">${capitalizarCadaPalabra(medico.nombreMedico)}</h6>
-                                        <div class="star-box text-center ms-1">
+                                        {{-- <div class="star-box text-center ms-1">
                                             <i class="fa-solid fa-star fw-bold star-ico fs--20 d-block"></i>
                                             <span class="d-block fw-normal fs--3 mt-1 rate-label">5.0</span>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                     ${ (dataCita.online == "N") ? `<p class="text-primary-veris fs--1 line-height-16 fw-medium mb-1">${capitalizarCadaPalabra(dataCita.central.nombreSucursal) } </p>` : ``}
                                     <p class="fs--2 line-height-16 fw-normal mb-1" style="color: #425065;">${capitalizarCadaPalabra(nombreEspecialidad)}</p>
@@ -1168,7 +1168,7 @@ Veris - Elige fecha y doctor
         }
 
         // if(horario.porcentajeDescuento > 0 && !dataCita.hasOwnProperty('detalleItemPaquete')){
-        if(horario.porcentajeDescuento > 0 ){
+        if(horario.porcentajeDescuento > 0  && dataCita.validarCondicionConvenio.permitePago == "S"){
             return `<div class="col-${size}">
                 <div class="cursor-pointer waves-effect btn-disponibilidad-medico p--2 px-3 w-100 bg-time-doctor box-time-doctor-with-discount position-relative rounded-3 d-flex justify-content-end align-items-center" data-horario='${JSON.stringify(horario)}'>
                     <div class="${aditionalClass} position-absolute">
@@ -1208,7 +1208,7 @@ Veris - Elige fecha y doctor
         }
         
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&bloques=${bloques}${argsSesion}${urlAdicionales}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/medicos/disponibilidad?canalOrigen=${window.config.canalOrigen}&codigoEmpresa=1&online=${online}&codigoEspecialidad=${codigoEspecialidad}&codigoSucursal=${codigoSucursal}&codigoServicio=${codigoServicio}&codigoPrestacion=${codigoPrestacion}&fechaSeleccionada=${encodeURIComponent(fechaSeleccionada)}&filtroIntervalos=SOLO_DISPONIBLES&idMedico=${medico.codigoMedico}&esPlanStar=${esPlanStar}&idPaciente=${dataCita.paciente.numeroPaciente}&bloques=${bloques}${argsSesion}${urlAdicionales}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);

@@ -151,7 +151,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         args["showLoader"] = true;
         args["bodyType"] = "json";
         args["data"] = JSON.stringify({
-            "browser_info": getClientBrowserInfo(serverData),
+            "browserInfo": getClientBrowserInfo(serverData),
             "tipoIdentificacion": parseInt(dataCita.facturacion.datosFactura.codigoTipoIdentificacion),
             "numeroIdentificacion": dataCita.facturacion.datosFactura.codigoUsuario,
             "codigoTransaccion": dataCita.transaccionVirtual.codigoTransaccion,

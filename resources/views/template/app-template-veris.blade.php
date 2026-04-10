@@ -65,7 +65,8 @@
         const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
         window.config = {
             subdomain: @json(config('app.subdomain')),
-            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "VER_CMV" : "VER_PMF",
+            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "MVE_CMV" : "VER_PMF",
+            {{-- canalOrigen: (@json(config('app.subdomain')) == "veris") ? "APP_CMV" : "VER_PMF", --}}
         };
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -117,6 +118,17 @@
     </div>
     <!-- / Layout wrapper -->
 
+    <!-- Modal 3DS Nuvei -->
+    <div class="modal fade" id="modalIframe3DS" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalIframe3DSLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body p-3" id="box-iframe-3ds">
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal eliminar cita -->
     <div class="modal fade" id="modalEliminarCita" tabindex="-1" aria-labelledby="modalEliminarCitaLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
@@ -160,6 +172,21 @@
                 <div class="modal-footer pt-0 pb-3 px-3">
                     <a href="/" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</a>
                     {{-- <button data-bs-dismiss="modal" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</button> --}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3ds -->
+    <div class="modal fade" id="modalError3DS" tabindex="-1" aria-labelledby="modalError3DSLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
+            <div class="modal-content">
+                <div class="modal-body text-center p-3">
+                    <h1 class="modal-title fs--20 line-height-24 my-3">Veris</h1>
+                    <p class="fs--1 fw-normal mb-0 text-veris" id="mensaje_3ds"></p>
+                </div>
+                <div class="modal-footer pt-0 pb-3 px-3">
+                    <button data-bs-dismiss="modal" class="btn btn-primary-veris fw-medium fs--18 line-height-24 m-0 w-100 px-4 py-3">Aceptar</button>
                 </div>
             </div>
         </div>
@@ -331,7 +358,7 @@
 
     <!-- Page JS -->
     <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
-    <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.7"></script>
+    <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.1.1"></script>
 
     <script>
         // Inicializa Swiper.js

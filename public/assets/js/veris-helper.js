@@ -1,4 +1,5 @@
-const _canalOrigen = "MVE_CMV";
+// const _canalOrigen = "MVE_CMV";
+const _canalOrigen = window.config.canalOrigen;
 const _plataforma = "WEB";
 const _version = "7.8.0";
 const _langDate = {
@@ -1173,16 +1174,124 @@ function getClientBrowserInfo(serverData) {
     const timezoneOffsetMinutes = (new Date()).getTimezoneOffset();
     const colorDepth = window.screen.colorDepth || 0;
 
-    return {
-        "language": navigator.language || navigator.userLanguage || "unknown",
-        "java_enabled": navigator.javaEnabled(),
-        "js_enabled": true,
-        "color_depth": colorDepth,
-        "screen_height": window.screen.height || 0,
-        "screen_width": window.screen.width || 0,
-        "timezone_offset": timezoneOffsetMinutes / -60,
-        "ip": serverData.ip, 
-        "user_agent": serverData.user_agent, 
-        "accept_header": serverData.accept_header
+    const getDeviceType = () => {
+        const ua = navigator.userAgent;
+        if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+            return "Tablet";
+        }
+        if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+            return "Mobile";
+        }
+        return "Desktop";
     };
+
+    return {
+        "deviceType": "browser", //getDeviceType(),
+        "language": navigator.language || navigator.userLanguage || "unknown",
+        "javaEnabled": navigator.javaEnabled(),
+        "jsEnabled": true,
+        "colorDepth": colorDepth,
+        "screenHeight": window.screen.height || 0,
+        "screenWidth": window.screen.width || 0,
+        "timezoneOffset": timezoneOffsetMinutes / -60,
+        "ip": serverData.ip, 
+        "userAgent": serverData.user_agent, 
+        "acceptHeader": serverData.accept_header
+    };
+}
+
+async function validarEstadoTransaccion(mostrarLoader = false){
+    let args = [];
+    args["endpoint"] = api_url + `/${api_war}/v1/facturacion/validarEstadoTransaccion?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}&codigoTransaccion=${dataCita.transaccionVirtual.codigoTransaccion}`;
+    args["method"] = "GET";
+    args["showLoader"] = mostrarLoader;
+    args["dismissAlert"] = true;
+
+    const data = await call(args);
+    console.log(data);
+    return data;
+}
+
+async function mostrarDesafio3DS(html) {
+    const $container = $('#box-iframe-3ds');
+    $container.empty(); // Limpiar contenido previo
+
+    // Crear el iframe dinámicamente
+    const $iframe = $('<iframe>', {
+        id: 'iframe-nuvei',
+        name: 'iframe-nuvei',
+        style: 'width: 100%; height: 450px; border: none;'
+    });
+
+    let contadorCargas = 0;
+
+    $iframe.on('load', async function() {
+        contadorCargas++;
+        console.log("Carga detectada #" + contadorCargas);
+
+        if (contadorCargas === 1) {
+            // Esta es la carga del HTML que nos mostraste.
+            // Aquí es donde el formulario se auto-ejecuta.
+            console.log("Iframe con auto-submit cargado. Esperando redirección del banco...");
+            return; 
+        }
+
+        if (contadorCargas === 2) {
+            // Aquí el usuario ya está viendo la pantalla de la pasarela o ya terminó.
+            // Si el flujo de Nuvei tiene más pasos, podrías necesitar esperar a contadorCargas === 3
+            console.log("El iframe ha navegado. Iniciando validación de estado...");
+            //await validarHastaQueEsteListo();
+        }
+
+        if (contadorCargas === 3) {
+            console.log("Redirect iframe");
+            await validarHastaQueEsteListo();
+        }
+    });
+
+    $container.append($iframe);
+
+    // Escribir el HTML del challenge dentro del iframe
+    const doc = $iframe[0].contentWindow.document;
+    doc.open();
+    doc.write(html);
+    doc.close();
+
+    // Mostrar el modal de Bootstrap 5
+    //const modal3DS = new bootstrap.Modal(document.getElementById('tu-id-del-modal')); 
+    //modal3DS.show();
+}
+
+async function validarHastaQueEsteListo() {
+    console.log("validarHastaQueEsteListo");
+    const resultado = await validarEstadoTransaccion(true);
+
+    // Si el código es 200, significa que la transacción terminó (éxito o error final)
+    if (resultado.code === 200) {
+        console.log("Transacción procesada correctamente.");
+        $('#modalIframe3DS').modal('hide');
+        window.removeEventListener("beforeunload", beforeUnloadHandler);
+        window.location.href = `/cita-agendada/${globalParams}`; 
+    }else{
+        if(resultado.message !== null && resultado.message !== "") {
+            console.warn("Se detectó una respuesta crítica. Deteniendo validación.");
+            
+            $('#modalIframe3DS').modal('hide');
+            //alert("Atención: " + resultado.message);
+            $('#mensaje_3ds').html(resultado.message);
+            $('#modalError3DS').modal('show');
+
+            let form = $("#add-card-form");
+            let submitButton = form.find("button");
+            if(submitButton){
+                submitButton.attr("disabled", "").text("Pagar")
+            }
+
+            return; // Termina la recursividad (NO vuelve a llamar a la función)
+        }
+        // Si el código NO es 200 (ej: 404, 202, etc), esperamos y reintentamos
+        console.log("Aún no está listo (Code: " + resultado.code + "). Reintentando en 3 segundos...");
+        await new Promise(resolve => setTimeout(resolve, 3000)); // Pausa de 3 seg
+        return validarHastaQueEsteListo(); // RECURSIÓN: se llama a sí misma
+    }
 }

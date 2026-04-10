@@ -44,6 +44,9 @@
         <link rel="stylesheet" href="../../../assets/css/demo.css" />
         <link rel="stylesheet" href="../../../assets/css/style.css" />
 
+        @if(config('app.subdomain') == "parami")
+        <link rel="stylesheet" href="{{ asset('assets/css/theme-parami-app.css?v=1.0.4')}}">
+        @endif
         <!-- Vendors CSS -->
         
         <link rel="stylesheet" href="../../../assets/vendor/libs/bootstrap-select/bootstrap-select.css" />
@@ -73,6 +76,11 @@
             let _token = "{{ $accessToken }}";
             const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
             let tipoFlujo = "";
+            window.config = {
+                subdomain: @json(config('app.subdomain')),
+                canalOrigen: (@json(config('app.subdomain')) == "veris") ? "MVE_CMV" : "VER_PMF",
+                {{-- canalOrigen: (@json(config('app.subdomain')) == "veris") ? "APP_CMV" : "VER_PMF", --}}
+            };
         </script>
         
         @include('template.analytics')

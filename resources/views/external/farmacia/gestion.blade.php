@@ -184,7 +184,7 @@
         let tipoFlujo = "";
         window.config = {
             subdomain: @json(config('app.subdomain')),
-            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "VER_CMV" : "VER_PMF"
+            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "MVE_CMV" : "VER_PMF"
         };
 
         let numeroSolicitudEnProceso;

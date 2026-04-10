@@ -59,7 +59,7 @@ Veris - Comprobante de Pago
 </div>
 
 <script>
-	let canalOrigen = (window.config.subdomain == "veris") ? "VER_CMV" : "VER_PMF";
+	let canalOrigen = (window.config.subdomain == "veris") ? "MVE_CMV" : "VER_PMF";
 	let data = @json($data);
 
 	document.addEventListener("DOMContentLoaded", async function () {
