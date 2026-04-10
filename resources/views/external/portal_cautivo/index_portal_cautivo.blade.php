@@ -267,6 +267,7 @@ Veris - Portal Cautivo
 														<div class="tab-content bg-transparent px-0 px-lg-4 pb-0" id="pills-tabContentParte">
 															<div class="tab-pane fade mt-1 show active" id="pills-frente" role="tabpanel" aria-labelledby="pills-frente-tab" tabindex="0">
 																<div id="body-svg-wrapper"></div>
+																<pre id="json-output" style="font-size:0.78rem; color:#8888aa; margin:0; white-space: pre-wrap; word-break: break-all;">[]</pre>
 															</div>
 															<div class="tab-pane fade mt-1" id="pills-espalda" role="tabpanel" aria-labelledby="pills-espalda-tab" tabindex="0">
 															</div>

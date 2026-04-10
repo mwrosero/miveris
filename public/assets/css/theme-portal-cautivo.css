@@ -67,8 +67,8 @@ body{
 }
 
 .item-cita-selected {
-    border: 1px solid var(--bg-vris-blue);
-    background: var(--bg-vris-blue) !important;
+    border: 1px solid var(--bg-vris-dark-blue);
+    background: var(--bg-vris-dark-blue) !important;
 }
 
 .item-cita-selected  * {
