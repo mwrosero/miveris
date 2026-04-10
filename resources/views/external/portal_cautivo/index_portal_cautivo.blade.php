@@ -10,12 +10,12 @@ Veris - Portal Cautivo
     $tokenCita = base64_encode(uniqid());
 @endphp
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/swiper/swiper.css') }}" />
-<link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
+<link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0.1')}}">
 <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.6"></script>
-<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/body-part.js?v=1.0.6"></script>
+<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/body-part.js?v=1.0.7"></script>
 
-<link rel="stylesheet" href="{{ asset('assets/css/theme-portal-cautivo.css?v=1.0.4')}}">
+<link rel="stylesheet" href="{{ asset('assets/css/theme-portal-cautivo.css?v=1.0.5')}}">
 
 {{-- @include('external.components.navbar-portal-cautivo') --}}
 {{-- <div id="splash">
