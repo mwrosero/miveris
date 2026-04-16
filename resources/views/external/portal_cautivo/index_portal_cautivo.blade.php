@@ -124,6 +124,13 @@ Veris - Portal Cautivo
 							@include('external.portal_cautivo.navigation')
 							<div class="modal-body">
 								<div class="h-100 d-flex flex-column justify-content-between">
+									<div class="alert bg-success-claro m-3 rounded-3 align-items-start mb-4 alert-dismissible fade show d-flex justify-content-between align-items-top gap-3" role="alert">
+									  	<i class="fa-solid fa-circle-check text-lime-veris fs--20 mt-1"></i>
+								        <div class="alert-text fw-normal text-secundario-midnight-blue-00 fs--1 flex-grow-1">
+								            Los datos han sido validados <br> con éxito.
+								        </div>
+									  	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									</div>
 									<div class="d-flex flex-column align-items-start px-3 mt-auto">
 								        <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
 								            <img src="{{ asset('assets/external/bot/logo-vericita.png') }}" width="75px">
@@ -133,7 +140,7 @@ Veris - Portal Cautivo
 									        </div>
 								        </div>
 								        <div class="w-100 swipe-up-entry" id="lista-citas">
-									        <div type="button" class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 px-2 w-100 shadow-sm item-cita">
+									        {{-- <div type="button" class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 px-2 w-100 shadow-sm item-cita">
 											  	<div class="col-md-12 mb-2">
 					                                <p class="text-secundario-midnight-blue-00 fs--16 line-height-20 fw-normal mb-2">Tendrás una cita con:</p>
 					                                <div class="box-horario d-flex justify-content-between align-items-center gap-3">
@@ -160,7 +167,7 @@ Veris - Portal Cautivo
 					                                	</div>
 					                                </div>
 					                            </div>
-											</div>
+											</div> --}}
 										</div>
 									    <div class="footer-action w-100">
 									        <button class="btn btn-primary-veris rounded-3 btn-continue w-100 mt-4 mb-1 py-4 fs--20 line-height-24 fw-medium" disabled id="btn-elegir-cita">Continuar</button>
@@ -245,14 +252,8 @@ Veris - Portal Cautivo
 																name="parte_cuerpo" 
 																placeholder="Ej. Dolor de Cabeza" >
 														</div>
-														<div class="box-autocomplete-options">
-															<div class="form-check d-flex justify-content-md-center align-items-center">
-																<input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="opt1" required>
-																<label class="form-check-label text-start fs--1 fw-normal line-height-16">
-																	Dolor de cabeza
-																</label>
-															</div>
-														</div>
+														<div id="motivo-seleccionado-autocomplete"></div>
+														<div id="listado-motivos-autocomplete"></div>
 													</div>
 													<div class="tab-pane fade mt-3" id="pills-cuerpo" role="tabpanel" aria-labelledby="pills-cuerpo-tab" tabindex="0">
 														<p class="text-secundario-midnight-blue-00 fs--14 line-height-18 fw-normal mb-2">Selecciona la parte del cuerpo dónde sientas molestia o dolor para mostrarte opciones generales.</p>
@@ -267,17 +268,64 @@ Veris - Portal Cautivo
 														<div class="tab-content bg-transparent px-0 px-lg-4 pb-0" id="pills-tabContentParte">
 															<div class="tab-pane fade mt-1 show active" id="pills-frente" role="tabpanel" aria-labelledby="pills-frente-tab" tabindex="0">
 																<div id="body-svg-wrapper"></div>
-																<pre id="json-output" style="font-size:0.78rem; color:#8888aa; margin:0; white-space: pre-wrap; word-break: break-all;">[]</pre>
 															</div>
 															<div class="tab-pane fade mt-1" id="pills-espalda" role="tabpanel" aria-labelledby="pills-espalda-tab" tabindex="0">
 															</div>
 														</div>
+														{{-- <pre id="json-output" style="font-size:0.78rem; color:#8888aa; margin:0; white-space: pre-wrap; word-break: break-all;">[]</pre> --}}
+														<div id="motivo-seleccionado"></div>
+														<div id="listado-motivos"></div>
 													</div>
 												</div>
 				                            </div>
 				                        </div>
 									    <div class="footer-action w-100">
-									        <button class="btn btn-primary-veris rounded-3 btn-continue w-100 my-4 py-4 fs--20 line-height-24 fw-medium" disabled id="btn-continuar-cuerpo">Continuar</button>
+									        <button class="btn btn-primary-veris rounded-3 btn-continue w-100 my-4 py-4 fs--20 line-height-24 fw-medium" disabled id="btn-seleccionar-motivo">Continuar</button>
+									    </div>
+								    </div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{{-- STEP 6 --}}
+					<div class="step step-6 d-none modal-dialog-scrollable">
+						<div class="modal-content">
+							@include('external.portal_cautivo.navigation')
+							<div class="modal-body">
+								<div class="h-100 d-flex flex-column justify-content-between">
+									<div class="d-flex flex-column align-items-start px-3 mt-auto">
+								        <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+								            <img src="{{ asset('assets/external/bot/logo-vericita.png') }}" width="75px">
+								            <div>
+									        	<h2 class="text-secundario-midnight-blue-00 mb-0">Hola, <span class="namePaciente">Michael</span>.</h2>
+									        	<p class="fs--16 line-height-20 text-secundario-midnight-blue-00 mb-0">Selecciona tu cita.</p>
+									        </div>
+								        </div>
+								        <div class="w-100 swipe-up-entry" id="lista-citas">
+									        <div type="button" class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 px-2 w-100 shadow-sm">
+									        	<div class="col-md-12 mb-2">
+				                                	<p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">¿Qué tan intenso es tu dolor?</p>
+				                                	<p class="text-center color-ranking fw-medium valor-ranking-dolor mb-2 mt-4 fs--28 line-height-32">0</p>
+				                                	<p class="text-center color-ranking fw-medium descripcion-ranking-dolor mb-4 fs--16 line-height-20"></p>
+				                                	<div class="rating-card mb-3">
+				                                		<div class="emoji-rating d-flex justify-content-between align-items-center">
+				                                			<div type="button" class="btn-ranking bg-neutral-05 border-neutral-10 rounded-3 py-2 px-1 fs-32 line-height-36" data-ranking="1">😃</div>
+				                                			<div type="button" class="btn-ranking bg-neutral-05 border-neutral-10 rounded-3 py-2 px-1 fs-32 line-height-36" data-ranking="2">😊</div>
+				                                			<div type="button" class="btn-ranking bg-neutral-05 border-neutral-10 rounded-3 py-2 px-1 fs-32 line-height-36" data-ranking="3">😐</div>
+				                                			<div type="button" class="btn-ranking bg-neutral-05 border-neutral-10 rounded-3 py-2 px-1 fs-32 line-height-36" data-ranking="4">😖</div>
+				                                			<div type="button" class="btn-ranking bg-neutral-05 border-neutral-10 rounded-3 py-2 px-1 fs-32 line-height-36" data-ranking="5">😫</div>
+				                                		</div>
+				                                	</div>
+				                                	<div class="d-flex justify-content-between align-items-center gap-2">
+				                                		<span>Sin dolor</span>
+				                                		<span>Dolor insoportable</span>
+				                                	</div>
+				                                </div>
+											</div>
+										</div>
+									    <div class="footer-action w-100">
+									        <button class="btn btn-primary-veris rounded-3 btn-continue w-100 mt-4 mb-1 py-4 fs--20 line-height-24 fw-medium" disabled id="btn-calificar-dolor">Continuar</button>
 									    </div>
 								    </div>
 								</div>
@@ -310,6 +358,9 @@ Veris - Portal Cautivo
             e.preventDefault();
         }
     }, { passive: false }); // `passive: false` es necesario para poder prevenir el comportamiento por defecto
+
+
+    let descripcionDolor = ["","Sin dolor","Dolor leve","Dolor moderado","Dolor fuerte","Dolor insoportable"];
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		setTimeout(function(){
@@ -346,7 +397,7 @@ Veris - Portal Cautivo
 								  	<div class="col-md-12 mb-2">
 		                                <p class="text-secundario-midnight-blue-00 fs--16 line-height-20 fw-normal mb-2">Tendrás una cita con:</p>
 		                                <div class="box-horario d-flex justify-content-between align-items-center gap-3">
-		                                	<div style="background: url(https://dikg1979lm6fy.cloudfront.net/fotosMedicos/0913067625.jpg) no-repeat top center;    background-size: cover; border-radius: 100%; border: 1px solid #BAB9BE; width: 80px; height: 80px;">
+		                                	<div style="background: url(${value.fotoMedico}) no-repeat top center;    background-size: cover; border-radius: 100%; border: 1px solid #BAB9BE; width: 80px; height: 80px;">
 		                                	</div>
 		                                	<div class="infoCita flex-grow-1">
 		                                		<p class="fs--16 line-height-20 mb-1 text-secundario-midnight-blue-00 fw-medium text-capitalize">${value.nombreMedico.toLowerCase()}</p>
@@ -376,16 +427,46 @@ Veris - Portal Cautivo
 			currentStep++;
 		})
 
+		$('body').on('click', '#btn-seleccionar-motivo', function(){
+			let detalleCita = [];
+			$('.step').addClass('d-none');
+			$('.step-6').removeClass('d-none');
+			currentStep++;
+		})
+
         $('body').on('click', '.btn-back', function(){
+        	console.log('Before: '+currentStep);
+			currentStep--;
+			console.log('After: '+currentStep);
         	switch(currentStep){
         		case 2:
         		case 3:
+        			$('.item-cita').removeClass('item-cita-selected');
+		        	$('#btn-elegir-cita').attr('disabled', true);
+		        break;
         		case 4:
-					currentStep--;
-        			$('.step').addClass('d-none');
-					$(`.step-${currentStep}`).removeClass('d-none');
+		        	$('input[name="tipoCita"]').prop('checked', false);
+				    state.selection = [];
+				    renderSVG();
+        			$('#motivo-seleccionado').empty();
+				    $('#listado-motivos').empty();
+
+        			$('#motivo-seleccionado-autocomplete').empty();
+        			$('#listado-motivos-autocomplete').empty();
+        			$('#parte_cuerpo').val('');
+
+				    $('#btn-seleccionar-motivo').attr('disabled', true);
+		        break;
+        		case 5:
+        			// $('input[name="tipoCita"]').prop('checked', false);
+        			console.log("motivo cita")
+        		break;
+        		case 6:
+        			
         		break;
         	}
+			$('.step').addClass('d-none');
+			$(`.step-${currentStep}`).removeClass('d-none');
         })
 
         $('body').on('click', '#btn-datos-erroneos', function(){
@@ -400,34 +481,144 @@ Veris - Portal Cautivo
         	$('#btn-elegir-cita').attr('disabled', false);
         })
 
+        $('#parte_cuerpo').on('keypress', async function(e) {
+		    if (e.which === 13) {
+		        // Evita que el formulario se envíe (si el input está dentro de uno)
+		        e.preventDefault();
+		        
+		        // Captura el valor del input
+		        let valorBusqueda = $(this).val();
+		        await cargarDoloresAsociados(valorBusqueda);		        
+		    }
+		});
+
+		$('body').on('click', '#btn-calificar-dolor', async function(){
+			let preguntas = await cargarPreguntas();
+        	$('.step').addClass('d-none');
+			$('.step-7').removeClass('d-none');
+        	currentStep++;
+        })
+
         $('body').on('change', 'input:radio', function() {
         	let nombreGrupo = $(this).attr('name');
     		let valorSeleccionado = $(this).val();
 
     		console.log("Se cambió el grupo: " + nombreGrupo);
     		console.log("Nuevo valor seleccionado: " + valorSeleccionado);
-    		currentStep++;
-    		$('.step').addClass('d-none');
-			$(`.step-${currentStep}`).removeClass('d-none');
 
-    		/*switch(nombreGrupo){
+    		switch(nombreGrupo){
     			case 'tipoCita':
-
+    				currentStep++;
+		    		$('.step').addClass('d-none');
+					$(`.step-${currentStep}`).removeClass('d-none');
     			break;
-    		}*/
+    			case 'motivoCita':
+    				let detalle = JSON.parse($(this).attr('data-rel'));
+    				var tab = $('#pills-tab .nav-link.active').text(); // "Buscador"
+    				let idListado = (tab == "Buscador") ? `motivo-seleccionado-autocomplete` : `motivo-seleccionado`;
+    				$(`#${idListado}`).html(`<span class="badge bg-primario-Royal-blue-Tint-90 my-2 btn-outline-primary-veris d-inline-block fw-medium fs--2 line-height-24 p-2 border rounded-3 me-2 text-wrap">${ capitalizarFirstLetter(detalle.descripcion) } <i class="fa-solid fa-xmark px-2 cursor-pointer btnEliminarDolor"></i></span>`);
+    				$('#btn-seleccionar-motivo').attr('disabled', false);
+    			break;
+    		}
+        })
+
+        $('body').on('click', '.btnEliminarDolor', function(){
+        	var tab = $('#pills-tab .nav-link.active').text(); // "Buscador"
+    		let idListado = (tab == "Buscador") ? `motivo-seleccionado-autocomplete` : `motivo-seleccionado`;
+        	console.log(tab);
+    		console.log({idListado});
+        	$(`#${idListado}`).empty();
+		    
+		    $('#btn-seleccionar-motivo').attr('disabled', true);
+		    $('input[name="motivoCita"]').prop('checked', false);
+        });
+
+        $('body').on('click', '.btn-ranking', function(){
+        	let valor = $(this).attr('data-ranking');
+        	$('.color-ranking').attr('data-ranking',valor);
+			$('.valor-ranking-dolor').html(valor);
+			$('.descripcion-ranking-dolor').html(descripcionDolor[valor]).removeClass('d-none');
+        	$('.btn-ranking').removeClass('btn-ranking-selected py-3');
+        	$(this).addClass('btn-ranking-selected py-3');
+        	$('#btn-calificar-dolor').attr('disabled', false);
         })
 		
 	});
 
+	function capitalizarFirstLetter(string) {
+		if (!string) return "";
+		return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+	}
+
 	async function obtenerCitas(){
 		let args = [];
-        args["endpoint"] = api_url + `/historiaclinica/v1/prediligenciamiento/agenda_paciente?codigoEmpresa=1&codigoSucursal={{ $codigoSucursal }}&codigoTipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
+        args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/agenda_paciente?codigoEmpresa=1&codigoSucursal={{ $codigoSucursal }}&codigoTipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = _token;
         args["dismissAlert"] = true;
         const data = await call(args);
         return data;
+	}
+
+	async function cargarDoloresAsociados(strBusqueda){
+		let args = [];
+        args["endpoint"] = `${api_url}/${api_war_ai}/v1/prediligencionamiento-hc/motivos/buscar`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["token"] = _token;
+        args["dismissAlert"] = true;
+        args["bodyType"] = "json";
+		args["data"] = JSON.stringify({
+		  	"texto": strBusqueda,
+		  	"codigo_empresa": 1
+		});
+        const data = await call(args);
+        $('#motivo-seleccionado').empty();
+        $('#btn-seleccionar-motivo').attr('disabled', true);
+        var tab = $('#pills-tab .nav-link.active').text(); // "Buscador"
+        let idListado = (tab == "Buscador") ? `listado-motivos-autocomplete` : `listado-motivos`;
+
+        console.log(data);
+        if(data.success){
+        	let elem = ``;
+        	$.each(data.data.motivos, function(key, value){
+        		elem += `<div class="mb-2 position-relative">
+			                <input type="radio" class="btn-check-motivo d-none" name="motivoCita" 
+			                       id="motivo_${value.codigo}" value="${value.codigo}" data-rel='${JSON.stringify(value)}' autocomplete="off">
+			                <label class="btn w-100 text-start p-3 py-2 d-flex justify-content-between align-items-center value-radio" 
+			                       for="motivo_${value.codigo}">
+				        		<div class="me-2">
+				                    <i class="fa-regular fa-square fs-20"></i>
+				                    <i class="fa-solid fa-square-check fs-20"></i>
+				                </div>
+			                    <span class="flex-grow-1 fw-normal">${capitalizarFirstLetter(value.descripcion)}</span>
+			                </label>
+			            </div>`
+        	});
+        	$(`#${idListado}`).html(elem);
+        	$('.modal-body, .modal-dialog-scrollable, .step').scrollTop(99999);
+        }else{
+        	$(`#${idListado}`).empty();
+        	showMessage('warning', data.message);
+        }
+	}
+
+	async function cargarPreguntas(){
+		showMessage('info','Optimizando tu experiencia con inteligencia artificial. Por favor, espera un momento.');
+		let args = [];
+        args["endpoint"] = `${api_url}/${api_war_ai}/v1/prediligencionamiento-hc/preguntas`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["token"] = _token;
+        args["dismissAlert"] = true;
+        args["bodyType"] = "json";
+		args["data"] = JSON.stringify({
+		  	"codigo_motivo": parseInt(getInput('motivoCita', 'radio')),
+		  	"codigo_empresa": 1
+		});
+        const data = await call(args);
+		console.log(data);
 	}
 
 	function formatearFechaRelativa(fechaStr) {
