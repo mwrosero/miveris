@@ -98,7 +98,7 @@ Veris - Portal Cautivo
 				                            </div>
 				                            <div class="col-12 text-center mt-4">
 						                        <div class="form-check d-flex justify-content-md-center align-items-center">
-						                            <input class="form-check-input terminos-input me-2 mb-1 width-24" type="checkbox" value="" id="checkTerminosCondicion" required>
+						                            <input class="form-check-input terminos-input me-2 mb-1 width-24 shadow border-box-light-blue" type="checkbox" value="" id="checkTerminosCondicion" required>
 						                            <label class="form-check-label text-start fs--1 fw-medium line-height-16 label-terminos" for="checkTerminosCondicion">
 						                                Acepto los <a href="https://www.veris.com.ec/terminos-y-condiciones/" target="_blank" class="">Términos y condiciones</a> 
 						                                <span id="politicas" class="d-none">y <a href="https://www.veris.com.ec/politicas/" target="_blank">Política de protección de Datos Personales</a></span>
@@ -195,7 +195,6 @@ Veris - Portal Cautivo
 								        </div>
 								        <div class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 pb-0 px-2 w-100 shadow-sm swipe-up-entry mb-3">
 										  	<div class="col-md-12 mb-2">
-				                                {{-- <label class="form-label fw-medium fs--1">¿Cuál es el motivo de tu visita?</label> --}}
 				                                <p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">¿Cuál es el motivo de tu visita?</p>
 				                                <div class="text-end ms-auto" style="max-width: 300px;">
 				                                	<input type="radio" class="btn-check d-none" name="tipoCita" id="sentirse_mal" value="sentirse_mal" autocomplete="off">
@@ -216,7 +215,7 @@ Veris - Portal Cautivo
 					</div>
 
 					{{-- STEP 5 --}}
-					<div class="step step-5 d-none modal-dialog-scrollable">
+					<div class="step step-5 d-none modal-dialog-scrollable progreso-step">
 						<div class="modal-content">
 							@include('external.portal_cautivo.navigation')
 							<div class="modal-body">
@@ -289,7 +288,7 @@ Veris - Portal Cautivo
 					</div>
 
 					{{-- STEP 6 --}}
-					<div class="step step-6 d-none modal-dialog-scrollable">
+					<div class="step step-6 d-none modal-dialog-scrollable progreso-step">
 						<div class="modal-content">
 							@include('external.portal_cautivo.navigation')
 							<div class="modal-body">
@@ -333,6 +332,36 @@ Veris - Portal Cautivo
 						</div>
 					</div>
 
+					{{-- Step gracias --}}
+					
+					<div class="step step-gracias d-none modal-dialog-scrollable progreso-step">
+						<div class="modal-content">
+							<div class="msg-head bg-vris-light-grayish-blue-3">
+								<div class="settings-tray rounded d-flex justify-content-center align-items-center">
+									<img class="my-2" height="40px" src="{{ asset('assets/img/veris/logo-veris-2025.svg')}}">
+								</div>
+							</div>
+							<div class="modal-body">
+								<div class="h-100 d-flex flex-column justify-content-between">
+									<div class="d-flex flex-column align-items-start px-3 mt-auto">
+								        <div class="w-100 swipe-up-entry">
+								        	<div class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 px-2 w-100 shadow-sm">
+									        	<div class="col-md-12 mb-2 text-center">
+									        		<i class="fa-solid fa-circle-check text-primary-veris fs--20 mt-1 mb-3 fs-72"></i>
+									        		<h2 class="text-primary-veris fw-medium fs-24 line-height-28">Tus respuestas se han enviado con éxito.</h2>
+									        		<p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">¡Nos vemos pronto <span class="namePaciente"></span>!</p>
+									        		<img width="130px" src="{{ asset('assets/external/portal-cautivo/final-thank.svg') }}" alt="">
+									        	</div>
+										</div>
+									    <div class="footer-action w-100 mb-3">
+									        <a href="https://www.veris.com.ec" class="btn btn-primary-veris rounded-3 btn-continue w-100 mt-4 mb-1 py-4 fs--20 line-height-24 fw-medium">Salir</a>
+									    </div>
+								    </div>
+								</div>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 			<!-- chatbox -->
@@ -346,6 +375,7 @@ Veris - Portal Cautivo
         window.initialY = e.touches[0].clientY;
     });
 
+    let _codigoEmpresa = 1;
     let currentStep = 1;
     document.addEventListener('touchmove', function (e) {
         // Calcula la diferencia entre la posición vertical actual y la inicial
@@ -361,6 +391,7 @@ Veris - Portal Cautivo
 
 
     let descripcionDolor = ["","Sin dolor","Dolor leve","Dolor moderado","Dolor fuerte","Dolor insoportable"];
+    let preguntas;
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		setTimeout(function(){
@@ -393,11 +424,12 @@ Veris - Portal Cautivo
 					$('.step-3').removeClass('d-none');
 					let elem = ``;
 					$.each(citas.data, function(key, value){
-						elem += `<div type="button" class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 px-2 w-100 shadow-sm item-cita">
+						let img_doctor = (value.fotoMedico != null) ? value.fotoMedico : '{{ asset('assets/img/svg/avatar_doctor.svg') }}';
+						elem += `<div type="button" class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 px-2 w-100 shadow-sm item-cita" data-rel='${ JSON.stringify(value) }'>
 								  	<div class="col-md-12 mb-2">
 		                                <p class="text-secundario-midnight-blue-00 fs--16 line-height-20 fw-normal mb-2">Tendrás una cita con:</p>
 		                                <div class="box-horario d-flex justify-content-between align-items-center gap-3">
-		                                	<div style="background: url(${value.fotoMedico}) no-repeat top center;    background-size: cover; border-radius: 100%; border: 1px solid #BAB9BE; width: 80px; height: 80px;">
+		                                	<div style="background: url(${img_doctor}) no-repeat top center;    background-size: cover; border-radius: 100%; border: 1px solid #BAB9BE; width: 80px; height: 80px;">
 		                                	</div>
 		                                	<div class="infoCita flex-grow-1">
 		                                		<p class="fs--16 line-height-20 mb-1 text-secundario-midnight-blue-00 fw-medium text-capitalize">${value.nombreMedico.toLowerCase()}</p>
@@ -432,6 +464,34 @@ Veris - Portal Cautivo
 			$('.step').addClass('d-none');
 			$('.step-6').removeClass('d-none');
 			currentStep++;
+			actualizarProgreso(2, 12);
+		})
+
+		$('body').on('click', '.btn-continue-dinamico', async function(){
+			let position = $(this).attr('stepNext-rel');
+			let idInput = $(this).attr('idInput-rel');
+			let isRequired = $(this).attr('isRequired-rel');
+
+			let ultimaPregunta = $(`.step-${currentStep}`).attr('ultimaPregunta-rel');
+
+			if(ultimaPregunta == "S"){
+				showMessage('info', 'Estamos procesando sus respuestas.');
+				await obtenerTraduccion();
+				return;
+			}
+
+			if(isRequired){
+				//if(getInput(idInput, 'radio') === undefined){
+				if(getInput(idInput) === ""){
+					showMessage('warning', 'El campo solicitado es obligatorio.');
+					return;
+				}
+			}
+
+			$('.step').addClass('d-none');
+			$(`.step-${position}`).removeClass('d-none');
+			currentStep++;
+			actualizarProgreso(currentStep, preguntas.data.preguntas.length + 7);
 		})
 
         $('body').on('click', '.btn-back', function(){
@@ -460,10 +520,13 @@ Veris - Portal Cautivo
         		case 5:
         			// $('input[name="tipoCita"]').prop('checked', false);
         			console.log("motivo cita")
+        			actualizarProgreso(2, 12);
         		break;
-        		case 6:
-        			
-        		break;
+        		// case 6:
+        		// break;
+        		default:
+        			actualizarProgreso(currentStep, preguntas.data.preguntas.length + 7);
+        			$(`.step-dinamico.step-${currentStep} input[type="radio"]`).prop('checked', false);
         	}
 			$('.step').addClass('d-none');
 			$(`.step-${currentStep}`).removeClass('d-none');
@@ -493,13 +556,19 @@ Veris - Portal Cautivo
 		});
 
 		$('body').on('click', '#btn-calificar-dolor', async function(){
-			let preguntas = await cargarPreguntas();
-        	$('.step').addClass('d-none');
-			$('.step-7').removeClass('d-none');
-        	currentStep++;
+			preguntas = await cargarPreguntas();
+			if(preguntas.code == 200){
+				await drawSeccionesCuestionario();
+	        	$('.step').addClass('d-none');
+				$('.step-7').removeClass('d-none');
+	        	currentStep++;
+	        	actualizarProgreso(currentStep, preguntas.data.preguntas.length + 7);
+	        }else{
+	        	showMessage('warning', data.message);
+	        }
         })
 
-        $('body').on('change', 'input:radio', function() {
+        $('body').on('change', 'input:radio', async function() {
         	let nombreGrupo = $(this).attr('name');
     		let valorSeleccionado = $(this).val();
 
@@ -511,6 +580,7 @@ Veris - Portal Cautivo
     				currentStep++;
 		    		$('.step').addClass('d-none');
 					$(`.step-${currentStep}`).removeClass('d-none');
+					actualizarProgreso(1, 12);
     			break;
     			case 'motivoCita':
     				let detalle = JSON.parse($(this).attr('data-rel'));
@@ -519,6 +589,18 @@ Veris - Portal Cautivo
     				$(`#${idListado}`).html(`<span class="badge bg-primario-Royal-blue-Tint-90 my-2 btn-outline-primary-veris d-inline-block fw-medium fs--2 line-height-24 p-2 border rounded-3 me-2 text-wrap">${ capitalizarFirstLetter(detalle.descripcion) } <i class="fa-solid fa-xmark px-2 cursor-pointer btnEliminarDolor"></i></span>`);
     				$('#btn-seleccionar-motivo').attr('disabled', false);
     			break;
+    			default:
+    				let ultimaPregunta = $(`.step-${currentStep}`).attr('ultimaPregunta-rel');
+					if(ultimaPregunta == "S"){
+						showMessage('info', 'Estamos procesando sus respuestas.');
+						await obtenerTraduccion();
+						return;
+					}
+
+    				currentStep++;
+		    		$('.step').addClass('d-none');
+					$(`.step-${currentStep}`).removeClass('d-none');
+    				actualizarProgreso(currentStep, preguntas.data.preguntas.length + 7);
     		}
         })
 
@@ -552,7 +634,7 @@ Veris - Portal Cautivo
 
 	async function obtenerCitas(){
 		let args = [];
-        args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/agenda_paciente?codigoEmpresa=1&codigoSucursal={{ $codigoSucursal }}&codigoTipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
+        args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/agenda_paciente?codigoEmpresa=${_codigoEmpresa}&codigoSucursal={{ $codigoSucursal }}&codigoTipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = _token;
@@ -571,7 +653,7 @@ Veris - Portal Cautivo
         args["bodyType"] = "json";
 		args["data"] = JSON.stringify({
 		  	"texto": strBusqueda,
-		  	"codigo_empresa": 1
+		  	"codigo_empresa": _codigoEmpresa
 		});
         const data = await call(args);
         $('#motivo-seleccionado').empty();
@@ -580,7 +662,7 @@ Veris - Portal Cautivo
         let idListado = (tab == "Buscador") ? `listado-motivos-autocomplete` : `listado-motivos`;
 
         console.log(data);
-        if(data.success){
+        if(data.code == 200){
         	let elem = ``;
         	$.each(data.data.motivos, function(key, value){
         		elem += `<div class="mb-2 position-relative">
@@ -615,10 +697,211 @@ Veris - Portal Cautivo
         args["bodyType"] = "json";
 		args["data"] = JSON.stringify({
 		  	"codigo_motivo": parseInt(getInput('motivoCita', 'radio')),
-		  	"codigo_empresa": 1
+		  	"codigo_empresa": _codigoEmpresa
 		});
         const data = await call(args);
 		console.log(data);
+		return data;
+	}
+
+	async function drawSeccionesCuestionario(){
+		let elem = ``;
+		let counter = 7;
+		var total = preguntas.data.preguntas.length;
+		$.each(preguntas.data.preguntas, function(key, value){
+			let seccionPregunta = drawPreguntaIndividual(value);
+			let esUltima = "N";
+			if (key === total - 1) {
+		        esUltima = "S";
+		    }
+			let footer = drawFooter(value, counter, esUltima);
+
+			elem += `<div class="step-dinamico progreso-step step step-${counter} d-none modal-dialog-scrollable" ultimaPregunta-rel='${esUltima}'>
+						<div class="modal-content">
+							@include('external.portal_cautivo.navigation')
+							<div class="modal-body">
+								<div class="h-100 d-flex flex-column justify-content-between">
+									<div class="d-flex flex-column align-items-start px-3 mt-auto">
+								        <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+								            <img src="{{ asset('assets/external/bot/logo-vericita.png') }}" width="75px">
+								            <div>
+								        		<h2 class="text-secundario-midnight-blue-00 mb-0">Un poco más de detalle.</h2>
+								        		<p class="fs--16 line-height-20 text-secundario-midnight-blue-00 mb-0">Nos ayudará a comprender mejor tu dolor o malestar.</p>
+								        	</div>
+								        </div>
+								        <div class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 pb-0 px-2 w-100 shadow-sm swipe-up-entry mb-3">
+										  	<div class="col-md-12 mb-2">
+				                                ${seccionPregunta}
+				                            </div>
+				                        </div>
+										<p class="text-Secundario-Midnight-blue-Tint-40 fs--14 line-height-16 fw-normal text-end w-100 mt-2 mb-3 px-2">Danos tu opinión</p>
+										${footer}
+								    </div>
+								</div>
+							</div>
+						</div>
+					</div>`;
+			counter++;
+		});
+		$('.chatbox').append(elem);
+	}
+
+	function actualizarProgreso(pasoActual, totalPasos) {
+		console.log("***********Pasos***********");
+		console.log(pasoActual, totalPasos);
+	    let porcentaje = (pasoActual / totalPasos) * 100;
+	    $('.progreso-step .msg-head').css('--progreso', porcentaje + '%');
+	}
+
+	// Estos TipoPregunta = Literal["TEXT", "NUMBER", "SELECT", "TEXTAREA", "DATE", "DURATION"]
+	function drawPreguntaIndividual(value){
+		let elem = ``;
+		let required;
+		switch(value.tipo){
+			case 'DURATION':
+			case 'SELECT':
+				elem += `<p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">${value.texto}</p>
+						<div class="text-end">`;
+				let options = ``;
+
+				$.each(value.opciones, function(k, v){
+					options += `<div class="w-100">
+							<input type="radio" class="btn-check d-none" name="${value.id}" id="opt-${value.id}-${k}" value="${v}" autocomplete="off">
+			            	<label class="btn btn-outline-primary fs--16 line-height-22 rounded-3 px-4 py-2 fw-normal mb-3 item-radio text-end" for="opt-${value.id}-${k}">
+			            		${capitalizarFirstLetter(v)}
+			            	</label>
+						</div>`;
+				});
+				elem += options;
+				elem += `</div>`;
+			break;
+			case 'TEXT':
+				required = (value.requerido) ? `required` : ``;
+				elem += `<p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">${value.texto}</p>
+						<div class="w-100 mb-3">
+                            <input type="text" class="form-control fs--1 p-3 w-100" name="${value.id}" id="${value.id}" ${required} />
+                        </div>`;
+			break;
+			case 'TEXTAREA':
+				required = (value.requerido) ? `required` : ``;
+				elem += `<p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">${value.texto}</p>
+						<div class="w-100 mb-3">
+                            <textarea rows="4" type="text" class="form-control fs--1 p-3 w-100" name="${value.id}" id="${value.id}" ${required}></textarea>
+                        </div>`;
+			break;
+		}
+
+		return elem;
+	}
+
+	function drawFooter(value, position){
+		let elem = ``;
+		switch(value.tipo){
+			case 'DURATION':
+			case 'SELECT':
+				return ``;
+			break;
+			default:
+				elem += `<div class="footer-action w-100">
+			        <button class="btn btn-primary-veris rounded-3 btn-continue btn-continue-dinamico w-100 my-4 mt-1 py-4 fs--20 line-height-24 fw-medium" idInput-rel='${value.id}' isRequired-rel='${value.requerido}' stepNext-rel='${position+1}'>Continuar</button>
+			    </div>`;
+		}
+		return elem;
+	}
+
+	async function obtenerRespuestas(){
+		let respuestasObj = [];
+		$.each(preguntas.data.preguntas, function(key, value){
+			let respuesta;
+		    switch(value.tipo){
+				case 'DURATION':
+				case 'SELECT':
+				case 'TEXT':
+				case 'TEXTAREA':
+					respuesta = $(`input[name="${value.id}"]`).val();
+					respuesta = $(`input[name="${value.id}"]`).val();
+				break;
+		    }
+
+		    respuestasObj.push({
+		      	"pregunta_id": value.id,
+		      	"pregunta_texto": value.texto,
+		      	"respuesta": respuesta
+		    })
+		})
+
+		return respuestasObj;
+	}
+
+	let traduccion;
+	async function obtenerTraduccion(){
+		let respuestas = await obtenerRespuestas();
+		let payload = {
+			"codigo_motivo": preguntas.data.motivo_id,
+			"motivo_descripcion": preguntas.data.motivo_descripcion,
+			"codigo_empresa": _codigoEmpresa,
+			"respuestas": respuestas
+		}
+
+		let args = [];
+        args["endpoint"] = `${api_url}/${api_war_ai}/v1/prediligencionamiento-hc/traducir`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["token"] = _token;
+        args["dismissAlert"] = true;
+        args["bodyType"] = "json";
+		args["data"] = JSON.stringify(payload);
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+        	traduccion = data.data;
+        	await guardarBorrador();
+        }else{
+        	showMessage('warning', data.message);
+        }
+	}
+
+	async function guardarBorrador(){
+		let infoCita = JSON.parse($('.item-cita-selected').attr('data-rel'));
+		let valorEscala = $('.btn-ranking').attr('data-ranking');
+		{{-- {
+    "code": 400,
+    "success": false,
+    "message": "El campo codigoEmpresa, nombreMotivo, enfermedadActual, aceptaTerminosCond es obligatorio.",
+    "errorData": [
+        "El campo codigoEmpresa es obligatorio.",
+        "El campo nombreMotivo es obligatorio.",
+        "El campo enfermedadActual es obligatorio.",
+        "El campo aceptaTerminosCond es obligatorio.",
+        "{\"method\":\"POST\",\"url\":\"/historiaclinica/v1/prediligenciamiento/anamnesis\",\"query\":{},\"params\":{},\"body\":{\"codigoReserva\":7029134439,\"descripcionEnfermedadActual\":\"Paciente refiere desde hace pocas horas dolor de aparición insidiosa localizado en la región anterior del cuello, de intensidad moderada, con irradiación hacia otras regiones del cuerpo no especificadas por el paciente, acompañado de sintomatología asociada no detallada en el formulario, por lo cual acude a este centro para valoración.\",\"codigoEscalaDolor\":1,\"codigoMotivo\":8,\"copyBody\":{\"codigoReserva\":7029134439,\"descripcionEnfermedadActual\":\"Paciente refiere desde hace pocas horas dolor de aparición insidiosa localizado en la región anterior del cuello, de intensidad moderada, con irradiación hacia otras regiones del cuerpo no especificadas por el paciente, acompañado de sintomatología asociada no detallada en el formulario, por lo cual acude a este centro para valoración.\",\"codigoEscalaDolor\":1,\"codigoMotivo\":8,\"idPeticion\":\"08414d27-c3f3-4754-ad57-ca3da1b0a530\",\"timeInicio\":1776535465022,\"json\":[]},\"usuarioMW\":{\"username\":\"BACKENDPHANTOM\",\"idUsuario\":6006,\"datasource\":\"DB_TRX_VERIS_TEST\",\"idEmpresa\":1,\"timeZone\":\"America/Guayaquil\",\"userSigningKey\":\"0822f833-bb79-4e58-8e06-a2e561e69071\"}}}"
+    ]
+} --}}
+		let payload = {
+			"codigoReserva": infoCita.codigoReserva,
+			"descripcionEnfermedadActual": traduccion.narrativo_medico,
+			"codigoEscalaDolor": parseInt(valorEscala),
+			"codigo_motivo": preguntas.data.motivo_id,
+			"motivo_descripcion": preguntas.data.motivo_descripcion,
+			"codigo_empresa": _codigoEmpresa,
+		}
+
+		let args = [];
+        args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/anamnesis`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["token"] = _token;
+        args["dismissAlert"] = true;
+        args["bodyType"] = "json";
+		args["data"] = JSON.stringify(payload);
+        const data = await call(args);
+        console.log(data);
+        if(data.code == 200){
+			$('.step').addClass('d-none');
+			$(`.step-gracias`).removeClass('d-none');
+			actualizarProgreso(1, 1);
+        }else{
+        	showMessage('warning', data.message);
+        }
 	}
 
 	function formatearFechaRelativa(fechaStr) {
