@@ -370,10 +370,14 @@ Veris - Portal Cautivo
 </section>
 <script>
 	// Previene "pull-to-refresh" en navegadores móviles
-    document.addEventListener('touchstart', function (e) {
+    {{-- document.addEventListener('touchstart', function (e) {
         // Guarda la posición vertical inicial cuando se toca la pantalla
         window.initialY = e.touches[0].clientY;
-    });
+    }); --}}
+    
+    document.addEventListener('touchstart', function (e) {
+	    window.initialY = e.touches[0].clientY;
+	}, { passive: true }); // <--- Agrega esto
 
     let _codigoEmpresa = 1;
     let currentStep = 1;

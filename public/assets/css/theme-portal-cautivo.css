@@ -1039,6 +1039,23 @@ button:focus {
     z-index: 100;
 }
 
+#body-svg-wrapper {
+    /* Permite que el navegador maneje el scroll horizontal/vertical 
+       antes de que el JS intente capturarlo */
+    touch-action: pan-y; 
+}
+
+#humanAnatomy {
+    /* Evita que el SVG bloquee el scroll si el usuario 
+       pone el dedo directamente sobre el dibujo */
+    pointer-events: none; 
+}
+
+#humanAnatomy .body-part {
+    /* Pero permite que las partes sigan siendo clickeables */
+    pointer-events: auto; 
+}
+
 @media (max-width: 576px) {
     #body-svg-wrapper { max-width: 240px; }
 }
