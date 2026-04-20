@@ -135,7 +135,7 @@ Veris - Portal Cautivo
 								        <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
 								            <img src="{{ asset('assets/external/bot/logo-vericita.png') }}" width="75px">
 								            <div>
-									        	<h2 class="text-secundario-midnight-blue-00 mb-0">Hola, <span class="namePaciente">Michael</span>.</h2>
+									        	<h2 class="text-secundario-midnight-blue-00 mb-0">Hola, <span class="namePaciente"></span>.</h2>
 									        	<p class="fs--16 line-height-20 text-secundario-midnight-blue-00 mb-0">Selecciona tu cita.</p>
 									        </div>
 								        </div>
@@ -297,7 +297,7 @@ Veris - Portal Cautivo
 								        <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
 								            <img src="{{ asset('assets/external/bot/logo-vericita.png') }}" width="75px">
 								            <div>
-									        	<h2 class="text-secundario-midnight-blue-00 mb-0">Hola, <span class="namePaciente">Michael</span>.</h2>
+									        	<h2 class="text-secundario-midnight-blue-00 mb-0">Hola, <span class="namePaciente"></span>.</h2>
 									        	<p class="fs--16 line-height-20 text-secundario-midnight-blue-00 mb-0">Selecciona tu cita.</p>
 									        </div>
 								        </div>
@@ -374,7 +374,7 @@ Veris - Portal Cautivo
         // Guarda la posición vertical inicial cuando se toca la pantalla
         window.initialY = e.touches[0].clientY;
     }); --}}
-    
+
     document.addEventListener('touchstart', function (e) {
 	    window.initialY = e.touches[0].clientY;
 	}, { passive: true }); // <--- Agrega esto
@@ -460,6 +460,9 @@ Veris - Portal Cautivo
 			let detalleCita = [];
 			$('.step').addClass('d-none');
 			$('.step-4').removeClass('d-none');
+
+			let infoCita = JSON.parse($('.item-cita-selected').attr('data-rel'));
+			$('.namePaciente').html(infoCita.primerNombrePaciente);
 			currentStep++;
 		})
 
@@ -868,25 +871,14 @@ Veris - Portal Cautivo
 	async function guardarBorrador(){
 		let infoCita = JSON.parse($('.item-cita-selected').attr('data-rel'));
 		let valorEscala = $('.btn-ranking').attr('data-ranking');
-		{{-- {
-    "code": 400,
-    "success": false,
-    "message": "El campo codigoEmpresa, nombreMotivo, enfermedadActual, aceptaTerminosCond es obligatorio.",
-    "errorData": [
-        "El campo codigoEmpresa es obligatorio.",
-        "El campo nombreMotivo es obligatorio.",
-        "El campo enfermedadActual es obligatorio.",
-        "El campo aceptaTerminosCond es obligatorio.",
-        "{\"method\":\"POST\",\"url\":\"/historiaclinica/v1/prediligenciamiento/anamnesis\",\"query\":{},\"params\":{},\"body\":{\"codigoReserva\":7029134439,\"descripcionEnfermedadActual\":\"Paciente refiere desde hace pocas horas dolor de aparición insidiosa localizado en la región anterior del cuello, de intensidad moderada, con irradiación hacia otras regiones del cuerpo no especificadas por el paciente, acompañado de sintomatología asociada no detallada en el formulario, por lo cual acude a este centro para valoración.\",\"codigoEscalaDolor\":1,\"codigoMotivo\":8,\"copyBody\":{\"codigoReserva\":7029134439,\"descripcionEnfermedadActual\":\"Paciente refiere desde hace pocas horas dolor de aparición insidiosa localizado en la región anterior del cuello, de intensidad moderada, con irradiación hacia otras regiones del cuerpo no especificadas por el paciente, acompañado de sintomatología asociada no detallada en el formulario, por lo cual acude a este centro para valoración.\",\"codigoEscalaDolor\":1,\"codigoMotivo\":8,\"idPeticion\":\"08414d27-c3f3-4754-ad57-ca3da1b0a530\",\"timeInicio\":1776535465022,\"json\":[]},\"usuarioMW\":{\"username\":\"BACKENDPHANTOM\",\"idUsuario\":6006,\"datasource\":\"DB_TRX_VERIS_TEST\",\"idEmpresa\":1,\"timeZone\":\"America/Guayaquil\",\"userSigningKey\":\"0822f833-bb79-4e58-8e06-a2e561e69071\"}}}"
-    ]
-} --}}
 		let payload = {
-			"codigoReserva": infoCita.codigoReserva,
-			"descripcionEnfermedadActual": traduccion.narrativo_medico,
-			"codigoEscalaDolor": parseInt(valorEscala),
-			"codigo_motivo": preguntas.data.motivo_id,
-			"motivo_descripcion": preguntas.data.motivo_descripcion,
-			"codigo_empresa": _codigoEmpresa,
+			"codigoEmpresa": _codigoEmpresa,
+		    "codigoReserva": infoCita.codigoReserva,
+		    "enfermedadActual": traduccion.narrativo_medico,
+		    "codigoEscalaDolor": parseInt(valorEscala),
+		    "codigoMotivo": preguntas.data.motivo_id,
+		    "nombreMotivo": preguntas.data.motivo_descripcion,
+		    "aceptaTerminosCond": "S"
 		}
 
 		let args = [];
