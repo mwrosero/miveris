@@ -443,6 +443,7 @@ Veris - Portal Cautivo
 		                                </div>
 		                            </div>
 								</div>`;
+						$('.namePaciente').html(capitalizarFirstLetter(value.primerNombrePaciente.toLowerCase()));
 					})
 
 					$('#lista-citas').html(elem);
@@ -460,9 +461,6 @@ Veris - Portal Cautivo
 			let detalleCita = [];
 			$('.step').addClass('d-none');
 			$('.step-4').removeClass('d-none');
-
-			let infoCita = JSON.parse($('.item-cita-selected').attr('data-rel'));
-			$('.namePaciente').html(infoCita.primerNombrePaciente);
 			currentStep++;
 		})
 
