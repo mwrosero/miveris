@@ -868,7 +868,7 @@ Veris - Portal Cautivo
 
 	async function guardarBorrador(){
 		let infoCita = JSON.parse($('.item-cita-selected').attr('data-rel'));
-		let valorEscala = $('.btn-ranking').attr('data-ranking');
+		let valorEscala = $('.btn-ranking-selected').attr('data-ranking');
 		let payload = {
 			"codigoEmpresa": _codigoEmpresa,
 		    "codigoReserva": infoCita.codigoReserva,
