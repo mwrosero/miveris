@@ -438,6 +438,7 @@ Veris - Portal Cautivo
 		                                	<div class="infoCita flex-grow-1">
 		                                		<p class="fs--16 line-height-20 mb-1 text-secundario-midnight-blue-00 fw-medium text-capitalize">${value.nombreMedico.toLowerCase()}</p>
 		                                		<p class="fs--14 line-height-18 mb-1 text-Silver-676767 fw-normal text-capitalize">${value.nombreEspecialidad.toLowerCase()}</p>
+		                                		<p class="fs--14 line-height-18 mb-1 text-Silver-676767 fw-normal text-capitalize">${value.nombreSucursal.toLowerCase()}</p>
 		                                		<p class="fs--14 line-height-18 mb-1 text-veris-ai fw-medium">${formatearFechaRelativa(value.horaInicio)}</p>
 		                                	</div>
 		                                </div>
@@ -582,10 +583,15 @@ Veris - Portal Cautivo
 
     		switch(nombreGrupo){
     			case 'tipoCita':
-    				currentStep++;
-		    		$('.step').addClass('d-none');
-					$(`.step-${currentStep}`).removeClass('d-none');
-					actualizarProgreso(1, 12);
+    				if(valorSeleccionado == "control"){
+	    				// nueva trad
+						// await obtenerTraduccion();
+					}else{
+						currentStep++;
+			    		$('.step').addClass('d-none');
+						$(`.step-${currentStep}`).removeClass('d-none');
+						actualizarProgreso(1, 12);
+					}
     			break;
     			case 'motivoCita':
     				let detalle = JSON.parse($(this).attr('data-rel'));
@@ -638,8 +644,12 @@ Veris - Portal Cautivo
 	}
 
 	async function obtenerCitas(){
+		let aditional = ``;
+		@if($codigoSucursal)
+			aditional = `&codigoSucursal={{ $codigoSucursal }}`;
+		@endif
 		let args = [];
-        args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/agenda_paciente?codigoEmpresa=${_codigoEmpresa}&codigoSucursal={{ $codigoSucursal }}&codigoTipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
+        args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/agenda_paciente?codigoEmpresa=${_codigoEmpresa}${aditional}&codigoTipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = _token;
@@ -876,7 +886,8 @@ Veris - Portal Cautivo
 		    "codigoEscalaDolor": parseInt(valorEscala),
 		    "codigoMotivo": preguntas.data.motivo_id,
 		    "nombreMotivo": preguntas.data.motivo_descripcion,
-		    "aceptaTerminosCond": "S"
+		    "aceptaTerminosCond": "S",
+		    "esControl": "S"
 		}
 
 		let args = [];
