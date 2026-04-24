@@ -214,6 +214,38 @@ Veris - Portal Cautivo
 						</div>
 					</div>
 
+					{{-- STEP CONTROL --}}
+					<div class="step step-control d-none modal-dialog-scrollable">
+						<div class="modal-content">
+							@include('external.portal_cautivo.navigation')
+							<div class="modal-body">
+								<div class="h-100 d-flex flex-column justify-content-between">
+									<div class="d-flex flex-column align-items-start px-3 mt-auto">
+								        <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+								            <img src="{{ asset('assets/external/bot/logo-vericita.png') }}" width="75px">
+								            <div>
+								        		<h2 class="text-secundario-midnight-blue-00 mb-0">Ahora sí, comencemos.</h2>
+								        		<p class="fs--16 line-height-20 text-secundario-midnight-blue-00 mb-0">Te tomará solo unos minutos.</p>
+								        	</div>
+								        </div>
+								        <div class="bg-white m-3 rounded-3 mb-0 gap-2 row mx-0 py-3 pb-0 px-2 w-100 shadow-sm swipe-up-entry mb-3">
+										  	<div class="col-md-12 mb-2">
+				                                <p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">Puedes describir el control</p>
+												<div class="w-100 mb-3">
+						                            <textarea rows="4" type="text" class="form-control fs--1 p-3 w-100 rounded-3" name="detalle_control" id="detalle_control">
+						                            </textarea>
+						                        </div>
+				                            </div>
+				                        </div>
+				                        <div class="footer-action w-100">
+									        <button class="btn btn-primary-veris rounded-3 btn-continue w-100 my-4 py-4 fs--20 line-height-24 fw-medium" id="btn-finalizar-control">Continuar</button>
+									    </div>
+								    </div>
+								</div>
+							</div>
+						</div>
+					</div>
+
 					{{-- STEP 5 --}}
 					<div class="step step-5 d-none modal-dialog-scrollable progreso-step">
 						<div class="modal-content">
@@ -465,6 +497,13 @@ Veris - Portal Cautivo
 			currentStep++;
 		})
 
+		$('body').on('click', '#btn-finalizar-control', async function(){
+			console.log('traducir');
+			showMessage('info', 'Estamos procesando sus respuestas.');
+			await obtenerTraduccion('control');
+			return;
+        })
+
 		$('body').on('click', '#btn-seleccionar-motivo', function(){
 			let detalleCita = [];
 			$('.step').addClass('d-none');
@@ -482,7 +521,7 @@ Veris - Portal Cautivo
 
 			if(ultimaPregunta == "S"){
 				showMessage('info', 'Estamos procesando sus respuestas.');
-				await obtenerTraduccion();
+				await obtenerTraduccion('formulario');
 				return;
 			}
 
@@ -584,8 +623,9 @@ Veris - Portal Cautivo
     		switch(nombreGrupo){
     			case 'tipoCita':
     				if(valorSeleccionado == "control"){
-	    				// nueva trad
-						// await obtenerTraduccion();
+	    				currentStep++;
+			    		$('.step').addClass('d-none');
+						$(`.step-control`).removeClass('d-none');
 					}else{
 						currentStep++;
 			    		$('.step').addClass('d-none');
@@ -801,7 +841,7 @@ Veris - Portal Cautivo
 				required = (value.requerido) ? `required` : ``;
 				elem += `<p class="text-Secundario-Midnight-blue-Tint-20s fw-normal fs--18 line-height-24 mb-3">${value.texto}</p>
 						<div class="w-100 mb-3">
-                            <textarea rows="4" type="text" class="form-control fs--1 p-3 w-100" name="${value.id}" id="${value.id}" ${required}></textarea>
+                            <textarea rows="4" type="text" class="form-control fs--1 p-3 w-100 rounded-3" name="${value.id}" id="${value.id}" ${required}></textarea>
                         </div>`;
 			break;
 		}
@@ -849,13 +889,22 @@ Veris - Portal Cautivo
 	}
 
 	let traduccion;
-	async function obtenerTraduccion(){
-		let respuestas = await obtenerRespuestas();
-		let payload = {
-			"codigo_motivo": preguntas.data.motivo_id,
-			"motivo_descripcion": preguntas.data.motivo_descripcion,
-			"codigo_empresa": _codigoEmpresa,
-			"respuestas": respuestas
+	async function obtenerTraduccion(type){
+		let payload;
+		if(type == "control"){
+			payload = {
+				"codigo_motivo": null,
+				"codigo_empresa": _codigoEmpresa,
+				"texto_libre_sintomas": getInput('detalle_control').trim()
+			}
+		}else{
+			let respuestas = await obtenerRespuestas();
+			payload = {
+				"codigo_motivo": preguntas.data.motivo_id,
+				"motivo_descripcion": preguntas.data.motivo_descripcion,
+				"codigo_empresa": _codigoEmpresa,
+				"respuestas": respuestas
+			}
 		}
 
 		let args = [];
