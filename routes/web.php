@@ -66,7 +66,7 @@ Route::middleware('guest')->group(function () {
         Route::get('/bot', [ExternalController::class, 'bot'])->name('bot')->withoutMiddleware(['guest']);
         Route::get('/call', [ExternalController::class, 'botAi'])->name('botAi')->withoutMiddleware(['guest']);
 
-        Route::get('/portal-cautivo/{codigoSucursal}', [ExternalController::class, 'portalCautivo'])->name('portalCautivo')->withoutMiddleware(['guest']);
+        Route::get('/portal-cautivo/{codigoSucursal?}', [ExternalController::class, 'portalCautivo'])->name('portalCautivo')->withoutMiddleware(['guest']);
 
         Route::get('/laboratorio/resultados/{idPaciente}', [ExternalController::class, 'mostrarResultadoLaboratorio'])->name('resultado-laboratorio')->withoutMiddleware(['guest']);
 

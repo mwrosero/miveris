@@ -909,7 +909,7 @@ class ExternalController extends Controller
                 ->with('accessToken',$accessToken);
     }
 
-    public function portalCautivo($codigoSucursal){
+    public function portalCautivo($codigoSucursal = null){
         $accessToken = $this->getTokenExternalFacturacion();
         return view('external.portal_cautivo.index_portal_cautivo')
                 ->with('codigoSucursal', $codigoSucursal)

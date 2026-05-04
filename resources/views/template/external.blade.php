@@ -62,6 +62,7 @@
         <script>
             const api_url = "{{ \App\Models\Veris::BASE_URL }}";
             const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
+            const api_war_ai = "{{ \App\Models\Veris::BASE_WAR_AI }}";
             const _application = "{{ \App\Models\Veris::APPLICATION }}";
             let _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACION }}";
             let _token = "{{ $accessToken }}";

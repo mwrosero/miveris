@@ -5,6 +5,10 @@
 	--Secundario-Midnight-blue-Tint-20s: #425065;
 	--Primario-Royal-blue-Tint-80: #D4E1FC;
 	--Light-Sky-Blue-Tint-90: #EBF6FE;
+    --neutral-05: #F3F4F5;
+    --success-claro: #B9F6CA;
+    --primario-Royal-blue-Tint-90: #EAF0FD;
+    --Secundario-Midnight-blue-Tint-40 :#717C8C;
 }
 
 body{
@@ -30,8 +34,28 @@ body{
   }
 }
 
+.bg-primario-Royal-blue-Tint-90{
+    background: var(--primario-Royal-blue-Tint-90) !important;
+}
+
+.bg-success-claro{
+    background: var(--success-claro);
+}
+
+.bg-neutral-05 {
+    background: var(--neutral-05);
+}
+
+.border-neutral-10{
+    border: 1px solid var(--Neutral-10) !important;
+}
+
 .bg-Primario-Royal-blue-Tint-80{
 	background: var(--Primario-Royal-blue-Tint-80);
+}
+
+.text-Secundario-Midnight-blue-Tint-40{
+    color: var(--Secundario-Midnight-blue-Tint-40) !important;
 }
 
 .text-secundario-midnight-blue-00{
@@ -67,12 +91,57 @@ body{
 }
 
 .item-cita-selected {
-    border: 1px solid var(--bg-vris-dark-blue);
-    background: var(--bg-vris-dark-blue) !important;
+    border: 2px solid var(--verisAi);
+    /*background: var(--bg-vris-dark-blue) !important;*/
 }
 
 .item-cita-selected  * {
-    color: #fff !important;
+    /*color: #fff !important;*/
+}
+
+.btn-ranking-selected[data-ranking="1"] {
+    background-color: #69F0AE !important;
+    border-color: #00C853 !important;
+}
+
+.btn-ranking-selected[data-ranking="2"] {
+    background-color: #A9C4F9 !important;
+    border-color: #296BEF !important;
+}
+
+.btn-ranking-selected[data-ranking="3"] {
+    background-color: #FFE57F !important;
+    border-color: #FFC107 !important;
+}
+
+.btn-ranking-selected[data-ranking="4"] {
+    background-color: #F1B66F !important;
+    border-color: #E8850F !important;
+}
+
+.btn-ranking-selected[data-ranking="5"] {
+    background-color: #FFAB91 !important;
+    border-color: #D84315 !important;
+}
+
+.color-ranking[data-ranking="1"]{
+    color: #00C853 !important;
+}
+
+.color-ranking[data-ranking="2"]{
+    color: #296BEF !important;
+}
+
+.color-ranking[data-ranking="3"]{
+    color: #FFC107 !important;
+}
+
+.color-ranking[data-ranking="4"]{
+    color: #E8850F !important;
+}
+
+.color-ranking[data-ranking="5"]{
+    color: #D84315 !important;
 }
 
 /* Estilos personalizados para igualar tu imagen */
@@ -89,6 +158,32 @@ body{
 	background-color: var(--Primario-Royal-blue-Tint-80) !important;
 	font-weight: 700 !important;
 	border-color: var(--bg-vris-blue) !important;
+}
+
+/* 1. Ocultar el icono de "check" por defecto y mostrar el cuadrado vacío */
+.value-radio .fa-square-check {
+    display: none;
+}
+
+/* 2. Cuando el radio está SELECCIONADO */
+.btn-check-motivo:checked + .value-radio {
+    /*background-color: rgba(79, 122, 255, 0.1);*/
+    color: var(--verisAi) !important;
+    font-weight: 600 !important;
+}
+
+/* 3. Cambiar el icono cuando está seleccionado */
+.btn-check-motivo:checked + .value-radio .fa-square {
+    display: none; /* Esconde el cuadrado vacío */
+}
+
+.btn-check-motivo:checked + .value-radio .fa-square-check {
+    display: inline-block; /* Muestra el check sólido */
+    color: #4f7aff;
+}
+
+.btn-check-motivo:checked + .value-radio span {
+    font-weight: 500 !important;
 }
 
 /* Quitar el sombreado azul de enfoque si prefieres algo más limpio */
@@ -115,7 +210,7 @@ body{
 	border-radius: 40px;
 }
 .settings-tray {
-	background: #F3F4F5;
+	background: var(--neutral-05);
 	padding: 10px 15px;
 }
 .settings-tray .no-gutters {
@@ -169,7 +264,7 @@ input:focus, textarea:focus {
 	transition: 0.3s ease;
 }
 .friend-drawer--grey {
-	background: #F3F4F5;
+	background: var(--neutral-05);
 }
 .friend-drawer .text {
 	margin-left: 12px;
@@ -198,7 +293,7 @@ hr {
 }
 .chat-bubble {
 	padding: 10px 14px;
-	background: #F3F4F5;
+	background: var(--neutral-05);
 	margin: 10px 30px;
 	border-radius: 9px;
 	position: relative;
@@ -216,7 +311,7 @@ hr {
 }
 .chat-bubble--left:after {
 	left: 0;
-	border-right-color: #F3F4F5;
+	border-right-color: var(--neutral-05);
 	border-left: 0;
 	margin-left: -20px;
 }
@@ -239,7 +334,7 @@ hr {
 	color: #fff;
 }
 .chat-box-tray {
-	background: #F3F4F5;
+	background: var(--neutral-05);
 	display: flex;
 	padding: 10px 15px;
 	/*align-items: baseline;
@@ -917,6 +1012,50 @@ button:focus {
     cursor: not-allowed;
     opacity: 0.6;
 }
+
+/*Barra de progreso*/
+.progreso-step .msg-head{
+    position: relative;
+}
+.progreso-step .msg-head::before{
+    background: var(--Neutral-10);
+    content: '';
+    position: absolute;
+    bottom: -4px; /* Colócalo exactamente sobre el borde del header */
+    left: 0;
+    width: 100%;
+    height: 8px;
+    z-index: 99;
+}
+.progreso-step .msg-head::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; /* Colócalo exactamente sobre el borde del header */
+    left: 0;
+    width: var(--progreso);
+    height: 8px;
+    background-color: var(--bg-vris-blue); /* Tu color azul */
+    transition: width 1s ease-out; /* Animación suave */
+    z-index: 100;
+}
+
+#body-svg-wrapper {
+    /* Permite que el navegador maneje el scroll horizontal/vertical 
+       antes de que el JS intente capturarlo */
+    touch-action: pan-y; 
+}
+
+#humanAnatomy {
+    /* Evita que el SVG bloquee el scroll si el usuario 
+       pone el dedo directamente sobre el dibujo */
+    pointer-events: none; 
+}
+
+#humanAnatomy .body-part {
+    /* Pero permite que las partes sigan siendo clickeables */
+    pointer-events: auto; 
+}
+
 @media (max-width: 576px) {
     #body-svg-wrapper { max-width: 240px; }
 }
