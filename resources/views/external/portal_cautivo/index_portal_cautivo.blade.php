@@ -919,7 +919,7 @@ Veris - Portal Cautivo
         console.log(data);
         if(data.code == 200){
         	traduccion = data.data;
-        	await guardarBorrador();
+        	await guardarBorrador(type);
         }else{
         	showMessage('warning', data.message);
         }

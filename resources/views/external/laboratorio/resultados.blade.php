@@ -759,8 +759,8 @@ Veris - Resultados de Laboratorio
         args["showLoader"] = true;
 
         const data = await call(args);
-        _ppd = data.data;
         if(data.code == 200){
+            _ppd = data.data;
             if( data.data.estadoPoliticas == "N" || data.data.estadoPoliticas == null ){
                 $('#modalPPD').modal('show');
             }
