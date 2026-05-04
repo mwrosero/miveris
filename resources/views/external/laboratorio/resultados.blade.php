@@ -756,6 +756,7 @@ Veris - Resultados de Laboratorio
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ $data->numeroIdentificacion }}?codigoEmpresa=1&plataforma=WEB&version=7.0.1`;
         args["method"] = "GET";
+        args["dismissAlert"] = true;
         args["showLoader"] = true;
 
         const data = await call(args);
