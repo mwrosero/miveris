@@ -871,10 +871,11 @@ Veris - Portal Cautivo
 		    switch(value.tipo){
 				case 'DURATION':
 				case 'SELECT':
+					respuesta = $(`input[name="${value.id}"]`).val();
+				break;
 				case 'TEXT':
 				case 'TEXTAREA':
-					respuesta = $(`input[name="${value.id}"]`).val();
-					respuesta = $(`input[name="${value.id}"]`).val();
+					respuesta = $(`#${value.id}`).val();
 				break;
 		    }
 
@@ -882,6 +883,32 @@ Veris - Portal Cautivo
 		      	"pregunta_id": value.id,
 		      	"pregunta_texto": value.texto,
 		      	"respuesta": respuesta
+		    })
+		})
+
+		return respuestasObj;
+	}
+
+	async function obtenerRespuestasConModelo(){
+		let respuestasObj = [];
+		$.each(preguntas.data.preguntas, function(key, value){
+			let respuesta;
+		    switch(value.tipo){
+				case 'DURATION':
+				case 'SELECT':
+					respuesta = $(`input[name="${value.id}"]`).val();
+				break;
+				case 'TEXT':
+				case 'TEXTAREA':
+					respuesta = $(`#${value.id}`).val();
+				break;
+		    }
+
+		    respuestasObj.push({
+		      	"codigoModelo": value.modelo,
+		      	"codigoPregunta": value.id,
+		      	"descripcionPregunta": value.texto,
+		      	"respuestaPaciente": respuesta
 		    })
 		})
 
@@ -925,7 +952,8 @@ Veris - Portal Cautivo
         }
 	}
 
-	async function guardarBorrador(){
+	let secuenciaBorrador;
+	async function guardarBorrador(type){
 		let infoCita = JSON.parse($('.item-cita-selected').attr('data-rel'));
 		let valorEscala = $('.btn-ranking-selected').attr('data-ranking');
 		let payload = {
@@ -952,8 +980,32 @@ Veris - Portal Cautivo
         if(data.code == 200){
 			$('.step').addClass('d-none');
 			$(`.step-gracias`).removeClass('d-none');
+			secuenciaBorrador = data.data.secuenciaBorrador;
 			actualizarProgreso(1, 1);
+			if(type !== "control"){
+				await guardarRespuestaPaciente();
+			}
         }else{
+        	showMessage('warning', data.message);
+        }
+	}
+
+	async function guardarRespuestaPaciente(){
+		let payload = await obtenerRespuestasConModelo();
+
+		let args = [];
+		args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/anamnesis/${secuenciaBorrador}/respuesta_paciente`;
+        args["method"] = "POST";
+        args["showLoader"] = true;
+        args["token"] = _token;
+        args["dismissAlert"] = true;
+        args["bodyType"] = "json";
+		args["data"] = JSON.stringify({
+			"respuestas": payload
+		});
+        const data = await call(args);
+        console.log(data);
+        if(data.code !== 200){
         	showMessage('warning', data.message);
         }
 	}
