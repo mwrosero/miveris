@@ -956,16 +956,31 @@ Veris - Portal Cautivo
 	async function guardarBorrador(type){
 		let infoCita = JSON.parse($('.item-cita-selected').attr('data-rel'));
 		let valorEscala = $('.btn-ranking-selected').attr('data-ranking');
-		let payload = {
-			"codigoEmpresa": _codigoEmpresa,
-		    "codigoReserva": infoCita.codigoReserva,
-		    "enfermedadActual": traduccion.narrativo_medico,
-		    "codigoEscalaDolor": parseInt(valorEscala),
-		    "codigoMotivo": preguntas.data.motivo_id,
-		    "nombreMotivo": preguntas.data.motivo_descripcion,
-		    "aceptaTerminosCond": "S",
-		    "esControl": "S"
+		let payload;
+		if(type == "control"){
+			payload = {
+				"codigoEmpresa": _codigoEmpresa,
+			    "codigoReserva": infoCita.codigoReserva,
+			    "enfermedadActual": "CONTROL",
+			    "codigoEscalaDolor": parseInt(valorEscala),
+			    "codigoMotivo": null,
+			    "nombreMotivo": "NA",
+			    "aceptaTerminosCond": "S",
+			    "esControl": "S"
+			}
+		}else{
+			payload = {
+				"codigoEmpresa": _codigoEmpresa,
+			    "codigoReserva": infoCita.codigoReserva,
+			    "enfermedadActual": traduccion.narrativo_medico,
+			    "codigoEscalaDolor": parseInt(valorEscala),
+			    "codigoMotivo": preguntas.data.motivo_id,
+			    "nombreMotivo": preguntas.data.motivo_descripcion,
+			    "aceptaTerminosCond": "S",
+			    "esControl": "N"
+			}
 		}
+		
 
 		let args = [];
         args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/anamnesis`;
