@@ -962,7 +962,7 @@ Veris - Portal Cautivo
 				"codigoEmpresa": _codigoEmpresa,
 			    "codigoReserva": infoCita.codigoReserva,
 			    "enfermedadActual": "CONTROL",
-			    "codigoEscalaDolor": parseInt(valorEscala),
+			    "codigoEscalaDolor": 1,
 			    "codigoMotivo": null,
 			    "nombreMotivo": "NA",
 			    "aceptaTerminosCond": "S",
