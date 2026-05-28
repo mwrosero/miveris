@@ -1057,5 +1057,9 @@ Veris - Portal Cautivo
 
 	    return prefijo + ", " + horaFormateada;
 	}
+
+	async function updateToken(){
+		console.log("No hace refresh");
+	}
 </script>
 @endsection
