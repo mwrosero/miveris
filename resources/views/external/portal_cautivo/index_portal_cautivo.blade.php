@@ -871,7 +871,7 @@ Veris - Portal Cautivo
 		    switch(value.tipo){
 				case 'DURATION':
 				case 'SELECT':
-					respuesta = $(`input[name="${value.id}"]`).val();
+					respuesta = $(`input[name="${value.id}"]:checked`).val();
 				break;
 				case 'TEXT':
 				case 'TEXTAREA':
@@ -896,7 +896,7 @@ Veris - Portal Cautivo
 		    switch(value.tipo){
 				case 'DURATION':
 				case 'SELECT':
-					respuesta = $(`input[name="${value.id}"]`).val();
+					respuesta = $(`input[name="${value.id}"]:checked`).val();
 				break;
 				case 'TEXT':
 				case 'TEXTAREA':
