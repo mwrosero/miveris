@@ -767,6 +767,8 @@ Veris - Datos de facturación
 
 		let payload;
 
+		let idPaciente = (dataCita.facturacion.datosFactura.hasOwnProperty('idPaciente')) ? dataCita.facturacion.datosFactura.idPaciente : '';
+
 		if(dataCita.facturacion.detalleServicio.detallePaquetes !== null){
 			payload = {
 				event: 'purchase',
@@ -777,6 +779,7 @@ Veris - Datos de facturación
 			    shipping: 0,
 			    coupon: '',                   
 			    paquete_nombre: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
+			    pac_pac_numero: idPaciente,
 			    items: [{
 					item_id: dataCita.facturacion.detalleServicio.detallePaquetes[0].codigoPaquete,
 					item_name: dataCita.facturacion.detalleServicio.detallePaquetes[0].nombrePaquete,
@@ -795,6 +798,7 @@ Veris - Datos de facturación
 			    shipping: 0,
 			    coupon: '',                   
 			    especialidad_nombre: dataCita.facturacion.detalleServicio.citas[0].especialidad,
+			    pac_pac_numero: idPaciente,
 			    items: [{
 					item_id: dataCita.facturacion.detalleServicio.citas[0].idCita,
 					item_name: dataCita.facturacion.detalleServicio.citas[0].especialidad,
@@ -813,6 +817,7 @@ Veris - Datos de facturación
 			    shipping: 0,
 			    coupon: '',                   
 			    nombreServicio: '{{ request()->input('tipoArticulo') }}',
+			    pac_pac_numero: idPaciente,
 			    items: [{
 					item_name: '{{ request()->input('tipoArticulo') }}',
 					item_category: '{{ request()->input('tipoArticulo') }}',
