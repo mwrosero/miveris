@@ -61,12 +61,15 @@ Veris - Comprobante de Pago
 <script>
 	let canalOrigen = (window.config.subdomain == "veris") ? "MVE_CMV" : "VER_PMF";
 	let data = @json($data);
+	const environment_nuvei = '{{ \App\Models\Veris::ENVIRONMENT_NUVEI }}';
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		let payload = JSON.parse(localStorage.getItem('dataLayer'));
 		window.dataLayer = window.dataLayer || [];
-		dataLayer.push(payload);
-		await sendWebHook(payload);
+		if(environment_nuvei !== "stg"){
+			dataLayer.push(payload);
+			await sendWebHook(payload);
+		}
 	});
 
 	async function sendWebHook(payload){
