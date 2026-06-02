@@ -12,7 +12,7 @@ Veris - Resultados de Laboratorio
 <link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0')}}">
 <script src="{{ asset('assets/vendor/libs/swiper/swiper.js') }}"></script>
 <script src="{{ asset('assets/external/resultados-laboratorio/js/flatpickr.js') }}"></script>
-<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.6"></script>
+<script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.7"></script>
 
 <script type="text/javascript" src="{{ asset('assets/external/resultados-laboratorio/js/pdf.min.js') }}"></script>
 @include('external.components.navbar')
@@ -519,6 +519,10 @@ Veris - Resultados de Laboratorio
                     }else{
                         total_en_proceso++;
                     }
+                    nombreExamen = v.nombreExamen;
+                    if(v.esConfidencial){
+                        nombreExamen = "Confidencial";
+                    }
                     if(v.esConfidencialReactivo){
                         elem += `<tr class="">
                                 <td></td>
@@ -529,7 +533,7 @@ Veris - Resultados de Laboratorio
                     }else{
                         elem += `<tr class="">
                                 <td></td>
-                                <td class="fw-bold text-veris">${ v.nombreExamen }</td>
+                                <td class="fw-bold text-veris">${ nombreExamen }</td>
                                 <td><span class="badge rounded-pill w-100 bg-${ (v.estado == "LISTO") ? `success` : `warning` }">${ v.estado }</span></td>
                                 <td>${ (v.numeroFactura != null) ? v.numeroFactura : `` }</td>
                             </tr>`;
