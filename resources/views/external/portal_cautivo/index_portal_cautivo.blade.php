@@ -91,7 +91,7 @@ Veris - Portal Cautivo
 				                            </div>
 				                            <div class="col-md-12">
 				                                <label for="numeroIdentificacion" class="form-label fw-medium fs--1">Número de documento *</label>
-				                                <input type="number" class="form-control fs--1 p-3 w-100" name="numeroIdentificacion" id="numeroIdentificacion" placeholder="0999999999" required />
+				                                <input type="number" class="form-control fs--1 p-3 w-100" name="numeroIdentificacion" pattern="^\S*$" id="numeroIdentificacion" placeholder="0999999999" required />
 				                                <div class="invalid-feedback">
 				                                    Ingrese un numero de identificacion.
 				                                </div>
@@ -433,6 +433,21 @@ Veris - Portal Cautivo
 		setTimeout(function(){
 			// $('#splash').fadeOut(1000);
 		}, 500);
+
+		$('body').on('change', '#tipoIdentificacion', function(){
+			$('#numeroIdentificacion').val('');
+            if(numeroIdentificacion == "2") {
+                $('#numeroIdentificacion').attr('type', 'number');
+            } else {
+                $('#numeroIdentificacion').attr('type', 'text');
+            }
+        });
+
+        $('#numeroIdentificacion').on('keydown', function(event) {
+		  	if (event.key === ' ') {
+		    	event.preventDefault();
+		  	}
+		});
 
 		$('body').on('click', '#btn-comenzar', function(){
 			$('.step').addClass('d-none');
