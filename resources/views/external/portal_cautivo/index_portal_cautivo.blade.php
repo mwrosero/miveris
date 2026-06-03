@@ -704,7 +704,7 @@ Veris - Portal Cautivo
 			aditional = `&codigoSucursal={{ $codigoSucursal }}`;
 		@endif
 		let args = [];
-        args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/agenda_paciente?codigoEmpresa=${_codigoEmpresa}${aditional}&codigoTipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
+        args["endpoint"] = `${api_url}/historiaclinica/v1/prediligenciamiento/agenda_paciente?codigoEmpresa=${_codigoEmpresa}${aditional}&codigoTipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion').toUpperCase()}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = _token;
