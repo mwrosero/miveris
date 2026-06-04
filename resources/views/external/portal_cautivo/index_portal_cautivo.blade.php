@@ -582,8 +582,9 @@ Veris - Portal Cautivo
         			console.log("motivo cita")
         			actualizarProgreso(2, 12);
         		break;
-        		// case 6:
-        		// break;
+        		case 6:
+        			$('.step-dinamico').remove()
+        		break;
         		default:
         			actualizarProgreso(currentStep, preguntas.data.preguntas.length + 7);
         			$(`.step-dinamico.step-${currentStep} input[type="radio"]`).prop('checked', false);
@@ -950,7 +951,7 @@ Veris - Portal Cautivo
 		}
 
 		let args = [];
-        args["endpoint"] = `${api_url}/${api_war_ai}/v1/prediligencionamiento-hc/traducir`;
+        args["endpoint"] = `${api_url}/${api_war_ai}/v1/f`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["token"] = _token;
