@@ -976,7 +976,7 @@ Veris - Portal Cautivo
 			payload = {
 				"codigoEmpresa": _codigoEmpresa,
 			    "codigoReserva": infoCita.codigoReserva,
-			    "enfermedadActual": "CONTROL",
+			    "enfermedadActual": `CONTROL - ${traduccion.narrativo_medico}`,
 			    "codigoEscalaDolor": 1,
 			    "codigoMotivo": null,
 			    "nombreMotivo": "NA",
