@@ -583,7 +583,7 @@ Veris - Portal Cautivo
         			actualizarProgreso(2, 12);
         		break;
         		case 6:
-        			$('.step-dinamico')
+        			$('.step-dinamico').remove();
         		break;
         		default:
         			actualizarProgreso(currentStep, preguntas.data.preguntas.length + 7);
