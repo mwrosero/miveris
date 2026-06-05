@@ -288,12 +288,12 @@ Veris - Portal Cautivo
 													</div>
 													<div class="tab-pane fade mt-3" id="pills-cuerpo" role="tabpanel" aria-labelledby="pills-cuerpo-tab" tabindex="0">
 														<p class="text-secundario-midnight-blue-00 fs--14 line-height-18 fw-normal mb-2">Selecciona la parte del cuerpo dónde sientas molestia o dolor para mostrarte opciones generales.</p>
-														<ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3" id="pills-tab-vista" role="tablist">
+														<ul class="nav nav-pills justify-content-center bg-white w-auto p-1 rounded-3 mb-3 d-none" id="pills-tab-vista" role="tablist">
 															<li class="nav-item flex-fill" role="presentation">
-																<button class="nav-link fs--14 line-height-18 py-3 active" id="pills-frente-tab" data-bs-toggle="pill" data-bs-target="#pills-frente" type="button" role="tab" aria-controls="pills-frente" aria-selected="true">Frente</button>
+																<button class="nav-link fs--14 line-height-18 py-3 active" id="pills-frente-tab" data-view="front" data-bs-toggle="pill" data-bs-target="#pills-frente" type="button" role="tab" aria-controls="pills-frente" aria-selected="true">Frente</button>
 															</li>
 															<li class="nav-item flex-fill" role="presentation">
-																<button class="nav-link fs--14 line-height-18 py-3" id="pills-espalda-tab" data-bs-toggle="pill" data-bs-target="#pills-espalda" type="button" role="tab" aria-controls="pills-espalda" aria-selected="false">Espalda</button>
+																<button class="nav-link fs--14 line-height-18 py-3" data-view="back" id="pills-espalda-tab" data-bs-toggle="pill" data-bs-target="#pills-espalda" type="button" role="tab" aria-controls="pills-espalda" aria-selected="false">Espalda</button>
 															</li>
 														</ul>
 														<div class="tab-content bg-transparent px-0 px-lg-4 pb-0" id="pills-tabContentParte">
