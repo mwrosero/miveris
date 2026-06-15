@@ -191,6 +191,7 @@ class ExternalController extends Controller
                 'method'   => 'GET',
                 'token'    => $this->getTokenExternalDigitales()
             ]);
+            // dump(Veris::BASE_URL.$method);
             // dd($list_paciente);
             $idPaciente = ($list_paciente->data !== null) ? $list_paciente->data->numeroPaciente : null;
             if($list_paciente->data === null){
