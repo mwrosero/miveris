@@ -282,7 +282,7 @@ Veris - Datos de facturación
 	dataCita.returnUrl = "{{ $urlRetornoPago }}"
 	dataCita.preTransaccion = preTransaccion.data;
 	dataCita.executionId = "{{ request()->input('executionId', '') }}";
-	console.log("{{ $paciente->data->telefonoMovil }}");
+	console.log(`{{ $paciente->data->telefonoMovil }}`);
 	// dataCita.preTransaccion.codigoPreTransaccion
 	document.addEventListener("DOMContentLoaded", async function () {
 		await consultarDatosFactura();
@@ -744,7 +744,7 @@ Veris - Datos de facturación
 			reference: dataCita.transaccionVirtual.reference,
 			// user_id: String($('#numeroIdentificacionTH').val()),
 			// user_email: getInput('mail'),
-			// user_phone: "{{ $paciente->data->telefonoMovil }}",
+			{{-- user_phone: "{{ $paciente->data->telefonoMovil }}", --}}
 			// order_description: dataCita.transaccionVirtual.reference,
 			// order_amount: dataCita.facturacion.totales.total,
 			// order_vat: 0,
