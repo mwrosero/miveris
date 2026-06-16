@@ -586,7 +586,9 @@ Veris - Portal Cautivo
         			$('.step-dinamico').remove();
         		break;
         		default:
-        			actualizarProgreso(currentStep, preguntas.data.preguntas.length + 7);
+        			if(preguntas.hasOwnProperty('data')){
+        				actualizarProgreso(currentStep, preguntas.data.preguntas.length + 7);
+        			}
         			$(`.step-dinamico.step-${currentStep} input[type="radio"]`).prop('checked', false);
         	}
 			$('.step').addClass('d-none');
@@ -1078,4 +1080,9 @@ Veris - Portal Cautivo
 		console.log("No hace refresh");
 	}
 </script>
+<style>
+	.layout-container {
+	    min-height: 100dvh !important;
+	}
+</style>
 @endsection
