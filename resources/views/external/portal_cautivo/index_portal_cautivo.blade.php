@@ -427,7 +427,7 @@ Veris - Portal Cautivo
 
 
     let descripcionDolor = ["","Sin dolor","Dolor leve","Dolor moderado","Dolor fuerte","Dolor insoportable"];
-    let preguntas;
+    let preguntas = [];
 
 	document.addEventListener("DOMContentLoaded", async function () {
 		setTimeout(function(){
@@ -586,7 +586,7 @@ Veris - Portal Cautivo
         			$('.step-dinamico').remove();
         		break;
         		default:
-        			if(preguntas.hasOwnProperty('data')){
+        			if(preguntas.length > 0){
         				actualizarProgreso(currentStep, preguntas.data.preguntas.length + 7);
         			}
         			$(`.step-dinamico.step-${currentStep} input[type="radio"]`).prop('checked', false);
