@@ -811,7 +811,7 @@ Mi Veris - Citas - {{ $titulo }}
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
-        // console.log(data.data);
+        console.log(data.data);
 
         if (!pacienteSeleccionado) {
             data.data.tienePermisoAdmin = true;
@@ -888,7 +888,7 @@ Mi Veris - Citas - {{ $titulo }}
                                                 </div>
                                             </div>
                                         </div>`;
-                                    if(laboratorio.mostrarTerapiasAgrupadas === "N"){
+                                    if(laboratorio.mostrarTerapiasAgrupadas === "N" || detalles.tipoCard !== "AGENDA_TERAPIA"){
                                         elementos += elem_tmp;
                                     }else{
                                         if(detalles.tipoCard == "AGENDA_TERAPIA"){
