@@ -40,6 +40,7 @@
   --Neutral-10: #E7E9EC;
   --font: "Gotham Rounded", sans-serif;
   --verisAi: #296BEF;
+  --Secundario-Midnight-blue-Tint-40:#717C8C
 }
 
 body {
@@ -341,6 +342,10 @@ html:not([dir="rtl"]) .border-start-veris {
 
 .text-veris-ai{
   color: var(--verisAi) !important;
+}
+
+.text-Secundario-Midnight-blue-Tint-40{
+  color: var(--Secundario-Midnight-blue-Tint-40) !important;
 }
 
 .border-ai > .row {

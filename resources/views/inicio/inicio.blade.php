@@ -370,8 +370,11 @@ Mi Veris - Inicio
             },
         });*/
         await obtenerPPD();
+        await cargarConfiguracionesHome();
+
         await cargarBanners();
         await obtenerTratamientos();
+        
         await obtenerCitas();
         await obtenerUrgenciasAmbulatorias();
         // chartProgres('#chart-progress');
@@ -831,6 +834,103 @@ Mi Veris - Inicio
 
     });
 
+    async function cargarConfiguracionesHome(){
+        let args = [];
+        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones/home?canalOrigen=${window.config.canalOrigen}&usuario={{ Session::get('userData')->numeroIdentificacion }}`;
+        
+        args["method"] = "GET";
+        args["showLoader"] = true;
+        
+        const data = await call(args);
+        console.log(data);
+        let opt = data.data[0].pantallas[0].configuraciones;
+        let resumen = await constructHtml(opt);
+        console.log(resumen);
+        $('.resumen-consentimiento').html(resumen);
+        $('#modalPPD2').modal('show');
+    }
+
+    async function constructHtml(configuraciones) {
+        let elem = ``;
+        $.each(configuraciones, function(key, item){
+
+            // Evitar errores si item o nombreTipoObjeto no vienen definidos
+            if (!item || !item.nombreTipoObjeto) return elem;
+
+            switch (item.nombreTipoObjeto) {
+                case "TITLE":
+                    elem += `<h3 class="fw-medium fs--2 line-height-16 text-veris mb-2">${item.valor}</h3>`;
+                    break;
+
+                case "SUBTITLE":
+                    elem += `<h4 class="fw-normal fs--1 line-height-16 text-veris mb-2">${item.valor}</h4>`;
+                    break;
+
+                case "SALTO_LINEA":
+                    // Calculamos el salto dinámico multiplicando por un factor base en rem o px
+                    const multiplicador = Number(item.valor || 1);
+                    elem += `<div style="height: ${multiplicador * 0.5}rem;"></div>`;
+                    break;
+
+                case "TEXTO": {
+                    const textStr = item.valor || "";
+                    const startsWithStar = textStr.startsWith('* ');
+                    const startsWithSection = textStr.startsWith('§ ');
+                    const startsWithBullet = startsWithStar || startsWithSection;
+                    
+                    // Limpiamos el prefijo si existe
+                    const textContent = startsWithBullet ? textStr.slice(2) : textStr;
+                    
+                    if (startsWithBullet) {
+                        const bulletChar = startsWithStar ? '•' : '§';
+                        elem += `
+                            <div class="d-flex align-items-start ${startsWithStar ? 'ms-2' : ''} mb-1">
+                                <span class="fw-normal fs--2 line-height-16 text-veris me-2">${bulletChar}</span>
+                                <p class="fw-normal fs--2 line-height-16 text-veris mb-0 flex-1">${textContent}</p>
+                            </div>`;
+                    } else {
+                        elem += `<p class="fw-normal fs--2 line-height-16 text-veris mb-2">${textContent}</p>`;
+                    }
+                    break;
+                }
+
+                case "PARRAFO_CON_INFO":
+                    elem += `
+                        <p class="fw-normal fs--2 line-height-16 text-veris mb-2">
+                            <span class="fw-medium">${item.valor} </span>
+                            <span>${item.valorAdicional || ''}</span>
+                        </p>`;
+                    break;
+
+                case "CHECK_MULTIPLE_CONSENTIMIENTO": {
+                    const key = item.valor; // La clave única del consentimiento
+                    
+                    // Creamos un grupo de botones de opción (Radio Buttons) estilizados
+                    elem += `
+                        <div class="d-flex justify-content-end gap-2 my-3 pe-3 consentimiento-group" data-key="${key}">
+                            <label class="btn btn-outline-primary d-flex align-items-center justify-content-center gap-2 px-3 py-2" style="width: 120px; font-size: 0.85rem;">
+                                <input type="radio" name="consentimiento_${key}" value="true" class="d-none consent-input-accept">
+                                <span class="check-icon-placeholder d-inline-block border text-center rounded" style="width: 16px; height: 16px; font-size: 10px; line-height: 14px;"></span>
+                                Aceptar
+                            </label>
+                            
+                            <label class="btn btn-outline-danger d-flex align-items-center justify-content-center gap-2 px-3 py-2" style="width: 120px; font-size: 0.85rem;">
+                                <input type="radio" name="consentimiento_${key}" value="false" class="d-none consent-input-reject">
+                                <span class="check-icon-placeholder d-inline-block border text-center rounded" style="width: 16px; height: 16px; font-size: 10px; line-height: 14px;"></span>
+                                Rechazar
+                            </label>
+                        </div>`;
+                    break;
+                }
+
+                default:
+                    break;
+            }
+        })
+
+        return elem;
+    }
+
     async function cargarBanners(){
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=12&canalOrigen=${window.config.canalOrigen}`;
@@ -993,12 +1093,14 @@ Mi Veris - Inicio
 
         const data = await call(args);
         _ppd = data.data;
+        // Verificar ppd 2.0
+        return;
+
         if(data.code == 200){
             console.log(data.data)
             localStorage.setItem('estadoPoliticas', data.data.estadoPoliticas);
 
             if(localStorage.getItem('politicasAbiertas') == null){
-                console.log('emtro');
                 let politicas = JSON.parse(localStorage.getItem('politicas'));
                 if((data.data.estadoPoliticas == "N") && (data.data.isPoliticasAceptadas == null || data.data.isPoliticasAceptadas == false)){
                     localStorage.setItem('politicasAbiertas', true);

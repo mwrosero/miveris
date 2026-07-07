@@ -98,6 +98,25 @@
     </div>
 </div>
 
+<!-- Modal PPD -->
+<div class="modal fade" id="modalPPD2" tabindex="-1" aria-labelledby="modalPPD2Label" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered mx-auto">
+        <div class="modal-content">
+            <div class="modal-body p-3 text-start">
+                {{-- <h5 class="fs--2 line-height-28 my-3"  id="tituloPPD2"></h5>
+                <p class="fs--2 line-height-16 mb-0" id="subtituloPPD2"></p>
+                <p class="fs--2 line-height-16 mb-0 btn-mostrar-ppd2">Mostrar todo</p> --}}
+                <div class="resumen-consentimiento"></div>
+                <p class="text-decoration-underline fs--2 line-height-16 my-3 text-Secundario-Midnight-blue-Tint-40 link-mostrar-todo-ppd2 cursor-pointer">Mostrar todo</p>
+                <div class="d-flex flex-column">
+                    <button type="button" id="aceptarPPD2" class="btn btn-lg btn-primary-veris fw-medium col fs--18 mt-3 m-0 px-4 py-3">Aceptar</button>
+                    <button type="button" class="btn btn-lg shadow-none text-Secundario-Midnight-blue-Tint-40 fw-medium col fs--18 mt-3 m-0 px-4 py-3" id="configuracionPPD2">Configuración</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Notificaciones -->
 <div class="offcanvas offcanvas-end" style="margin-top: 62px;" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
     <div class="offcanvas-header flex-column align-items-start p-0">
