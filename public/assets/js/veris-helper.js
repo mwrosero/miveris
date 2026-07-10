@@ -128,9 +128,18 @@ async function callInformes(args) {
     }
 
     myHeaders.append("Accept-Language", "es");
-    if(_token !== undefined && _token !== "" && !args.token){
-        myHeaders.append("Authorization","Bearer "+ _token);
+    // if(_token !== undefined && _token !== "" && !args.token){
+    //     myHeaders.append("Authorization","Bearer "+ _token);
+    // }
+    
+    if(args.token){
+        myHeaders.append("Authorization", "Bearer " + args.token);
+        myHeaders.append("Application", _application);
+        myHeaders.append("IdOrganizacion", _idOrganizacion);
+    } else if(_token !== undefined && _token !== ""){
+        myHeaders.append("Authorization", "Bearer " + _token);
     }
+
     requestOptions.headers = myHeaders;
     console.log(myHeaders)
     try {

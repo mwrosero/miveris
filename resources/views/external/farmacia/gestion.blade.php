@@ -53,6 +53,24 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="modalRecetaPdf" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalRecetaPdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <h5 class="modal-title" id="numeroTransaccionReceta"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" id="recetaPdf">
+                    
+                </div>
+                <div class="modal-footer text-center">
+                	<button type="button" class="btn btn-blue-phax mx-auto" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <header>
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid align-items-center">
@@ -112,6 +130,7 @@
         						<th class="text-nowrap d-none">Código</th>
         						<th>Prestación</th>
         						<th class="text-nowrap">Cantidad</th>
+        						<th class="text-nowrap">Confirmar</th>
         						<th class="text-nowrap">Estado</th>
         					</tr>
         				</thead>
@@ -188,6 +207,7 @@
         };
 
         let numeroSolicitudEnProceso;
+        let tokenDigitales = "{{ $tokenDigitales }}";
         document.addEventListener("DOMContentLoaded", async function () {
         	await fillSucursales();
 
@@ -223,6 +243,11 @@
         		if($('.table td.td-required-empty').length > 0){
         			hasErrors = true;
         			msg_error += `<li>Verificar que todas las prestaciones requeridas de pistoleo hayan sido ingresadas.</li>`;
+        		}
+
+        		if(!validarInputsLimites()){
+        			hasErrors = true;
+        			msg_error += `<li>Por favor, corrija los campos marcados en rojo. Deben ser iguales que la cantidad requerida.</li>`;
         		}
 
         		msg_error += `</ul>`
@@ -296,7 +321,108 @@
 		            $(this).removeClass('is-valid').addClass('is-invalid');
 		        }
 		    }); --}}
+
+		    $(document).on('click', '.btn-ver-receta', async function(){
+		    	let transaccion = $(this).attr('transaccion-rel');
+		    	let secuencia = $(this).attr('secuencia-rel');
+				$("#numeroTransaccionReceta").html(`Receta transacción: ${transaccion}`);
+				await cargarReceta(secuencia);
+		    })
+
+		    $(document).on('input', '.control-limites', function() {
+			    const $input = $(this);
+			    const qty = $(this).attr('qty-rel');
+			    const val = parseInt($input.val(), 10);
+			    const max = parseInt($input.attr('max'), 10);
+			    const min = parseInt($input.attr('min'), 10);
+
+			    // Validar si el valor es un número válido (por si borran todo)
+			    if (!isNaN(val)) {
+			      if (val > max) {
+			        //$input.val(max);
+			        showMsg(`La cantidad para despachar es: ${max}`, 'error');
+			        setTimeout(function(){
+			        	$input.val('');
+			        }, 750);
+			      } else if (val < min) {
+			      	showMsg(`La cantidad para despachar es: ${max}`, 'error');
+			        setTimeout(function(){
+			        	$input.val('');
+			        }, 750);
+			      } else {
+			      	$input.css('background-color', '#ffffff');
+			      }
+			    }
+			});
         })
+
+		function validarInputsLimites() {
+		    let todoValido = true;
+
+		    $('.control-limites').each(function() {
+		        const $input = $(this);
+		        const valor = $input.val().trim();
+		        // Usamos parseFloat por si la cantidad maneja decimales, si no, usa parseInt
+		        const valorNum = parseFloat(valor); 
+		        const maximo = parseFloat($input.attr('max'));
+
+		        // VALIDACIÓN: 
+		        // 1. Si está vacío (valor === '')
+		        // 2. Si no es un número válido (isNaN)
+		        // 3. Si el valor es diferente al máximo permitido
+		        if (valor === '' || isNaN(valorNum) || valorNum !== maximo) {
+		            
+		            // Pintamos el fondo de rojo suave (para que sea agradable a la vista)
+		            $input.css('background-color', '#f8d7da'); 
+		            // $input.css('border-color', '#f5c2c7'); // Opcional: borde rojo
+		            todoValido = false;
+
+		        } else {
+		            
+		            // Si está perfecto, lo regresamos a blanco
+		            $input.css('background-color', '#ffffff');
+		            // $input.css('border-color', '#ced4da'); // Borde estándar de Bootstrap
+		            
+		        }
+		    });
+
+		    return todoValido; // Te devuelve true si todos pasaron la validación, o false si falló alguno
+		}
+
+		async function cargarReceta(secuenciaReceta){
+			let args = [];
+	        let canalOrigen = 'APP_CMV'
+	        
+	        args["endpoint"] = api_url + `/${api_war}/v1/recetas/archivoreceta?codigoReceta=${secuenciaReceta}`;
+	        args["method"] = "GET";
+	        args["token"] = tokenDigitales;
+	        args["showLoader"] = true;
+	        console.log('arsgs', args["endpoint"]);
+	        try {
+	            const blob = await callInformes(args);
+	            const pdfUrl = URL.createObjectURL(blob);
+
+	            const $iframe = $('<iframe>', {
+				    src: pdfUrl,
+				    css: {
+				        'width': '100%',
+				        'height': '500px',
+				        'border': 'none'
+				    }
+				});
+
+	            $('#recetaPdf').html($iframe);
+
+	            setTimeout(() => {
+	                URL.revokeObjectURL(pdfUrl);
+	            }, 5000);
+
+	            $('#modalRecetaPdf').modal('show');
+
+	        } catch (error) {
+	            console.error('Error al obtener el PDF:', error);
+	        }
+		}
 
 		async function generarPicking(){
 			let args = [];
@@ -347,7 +473,17 @@
         	console.log(data);
         	let elem = ``
         	$.each(data, function(key, value){
-        		let td_str_paciente = `<td colspan="4" class="bg-silver-light text-veris">Transacción: ${value.numeroTransaccion}`;
+        		let btn_factura = ``;
+        		if(value.secuenciaReceta !== null){
+        			btn_factura = ` <div type="button" class="btn-ver-receta" title="Ver receta" transaccion-rel="${value.numeroTransaccion}" secuencia-rel="${value.secuenciaReceta}">
+        				<i class="fa-solid fa-file-pdf"></i>
+        			</div>`;
+        		}
+        		let td_str_paciente = `<td colspan="5" class="bg-silver-light text-veris">
+        			<div class="d-flex justify-content-start align-items-center gap-2">
+        				Transacción: ${value.numeroTransaccion}
+        				${btn_factura}
+        			</div>`;
         		if(value.numeroComprobante !== null && value.numeroComprobante !== "--"){
         			td_str_paciente += `  <i class="fa-solid fa-grip-lines-vertical mx-3"></i> Comprobante: ${value.numeroComprobante}`;
         		}
@@ -365,16 +501,17 @@
     				let classTdRequired = ``;
     				let codigos = [];
     				let iconCompleted = `<i class="fa-solid fa-circle-check text-success"></i>`
+    				let inputQty = `No aplica`;
     				if(aplicaPistoleo){
     					iconBarCode = `<i class="fa-solid fa-barcode"></i><i class="fa-solid fa-barcode"></i>`;
     					isRequired = `required`;
     					codigos = v.codigoBarras;
     					iconCompleted = `<i class="fa-solid fa-triangle-exclamation text-danger"></i>`;
     					classTdRequired = `td-required-empty`;
+    					inputQty = `<input min="0" max="${v.cantidad}" max qty-rel="${v.cantidad}" type="number" class="form-control control-limites" id="${value.numeroTransaccion}-${v.codigoServicio}-${v.codigoPrestacion}" name="${value.numeroTransaccion}-${v.codigoServicio}-${v.codigoPrestacion}">`;
     				}else{
     					isRequired = `disabled`;
     				}
-    				console.log(codigos)
     				elem += `<tr class="align-middle">
         						<td class="${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}">${iconBarCode}</td>
         						<td class="d-none ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}">
@@ -382,6 +519,9 @@
         						</td>
         						<td class="${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}"><small class="fw-bold">${v.codigoPrestacion}</small> - ${v.nombrePrestacion}</td>
         						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}">${v.cantidad}</td>
+        						<td class="text-nowrap ${classTdRequired} transaccion-${value.numeroTransaccion}-${v.codigoServicio}-${v.codigoPrestacion} td-${v.codigoServicio}-${v.codigoPrestacion}">
+    								${inputQty}
+        						</td>
         						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion} icon-status-${v.codigoServicio}-${v.codigoPrestacion}">${iconCompleted}</td>
         					</tr>`;
     			})

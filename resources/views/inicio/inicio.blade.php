@@ -370,7 +370,7 @@ Mi Veris - Inicio
             },
         });*/
         await obtenerPPD();
-        await cargarConfiguracionesHome();
+        // await cargarConfiguracionesHome();
 
         await cargarBanners();
         await obtenerTratamientos();
