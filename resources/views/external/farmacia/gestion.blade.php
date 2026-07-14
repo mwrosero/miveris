@@ -393,7 +393,8 @@
 			let args = [];
 	        let canalOrigen = 'APP_CMV'
 	        
-	        args["endpoint"] = api_url + `/${api_war}/v1/recetas/archivoreceta?codigoReceta=${secuenciaReceta}`;
+	        {{-- args["endpoint"] = api_url + `/${api_war}/v1/recetas/archivoreceta?codigoReceta=${secuenciaReceta}`; --}}
+	        args["endpoint"] = `https://api.phantomx.com.ec/digitales/v1/recetas/archivoreceta?codigoReceta=${secuenciaReceta}`;
 	        args["method"] = "GET";
 	        args["token"] = tokenDigitales;
 	        args["showLoader"] = true;
@@ -401,23 +402,49 @@
 	        try {
 	            const blob = await callInformes(args);
 	            const pdfUrl = URL.createObjectURL(blob);
+	            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
-	            const $iframe = $('<iframe>', {
-				    src: pdfUrl,
-				    css: {
-				        'width': '100%',
-				        'height': '500px',
-				        'border': 'none'
-				    }
-				});
+	            if (isMobile) {
+		            // --- COMPORTAMIENTO PARA MÓVILES ---
+		            
+		            // OPCIÓN A: Abrir en una nueva pestaña
+		            //window.open(pdfUrl, '_blank');
 
-	            $('#recetaPdf').html($iframe);
+		            // OPCIÓN B: Si prefieres que se DESCARGUE directamente, usa este bloque en su lugar:
+		            
+		            const link = document.createElement('a');
+		            link.href = pdfUrl;
+		            link.download = `receta-${secuenciaReceta}.pdf`; // Nombre del archivo descargado
+		            document.body.appendChild(link);
+		            link.click();
+		            document.body.removeChild(link);
+		            
 
-	            setTimeout(() => {
-	                URL.revokeObjectURL(pdfUrl);
-	            }, 5000);
+		            // En móviles dejamos un margen de tiempo mayor (15s) para liberar la memoria,
+		            // ya que abrir pestañas nuevas o procesar descargas en background puede tomar un momento.
+		            setTimeout(() => {
+		                URL.revokeObjectURL(pdfUrl);
+		            }, 15000);
 
-	            $('#modalRecetaPdf').modal('show');
+		        }else{
+
+		            const $iframe = $('<iframe>', {
+					    src: pdfUrl,
+					    css: {
+					        'width': '100%',
+					        'height': '500px',
+					        'border': 'none'
+					    }
+					});
+
+		            $('#recetaPdf').html($iframe);
+
+		            setTimeout(() => {
+		                URL.revokeObjectURL(pdfUrl);
+		            }, 5000);
+
+		            $('#modalRecetaPdf').modal('show');
+		        }
 
 	        } catch (error) {
 	            console.error('Error al obtener el PDF:', error);
