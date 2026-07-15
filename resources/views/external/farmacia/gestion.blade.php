@@ -54,14 +54,14 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modalRecetaPdf" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalRecetaPdfModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal fade" id="modalRecetaPdf" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalRecetaPdfModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header justify-content-center">
                     <h5 class="modal-title" id="numeroTransaccionReceta"></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-center" id="recetaPdf">
+                <div class="modal-body text-center" id="recetaPdf" style="height: 50vh; padding: 0;">
                     
                 </div>
                 <div class="modal-footer text-center">
@@ -590,6 +590,71 @@
 	        });
 	    }
 
+	    document.addEventListener("DOMContentLoaded", function () {
+  const modalEl = document.getElementById("modalRecetaPdf");
+  const dialog = modalEl.querySelector(".modal-dialog");
+  const header = modalEl.querySelector(".modal-header");
+
+  let isDragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  // Resetea todo al abrir el modal
+  modalEl.addEventListener("show.bs.modal", () => {
+    dialog.style.position = "";
+    dialog.style.left = "";
+    dialog.style.top = "";
+    dialog.style.margin = "";
+    dialog.style.width = ""; 
+    dialog.classList.add("modal-dialog-centered");
+    modalEl.classList.remove("modal-dragging");
+  });
+
+  header.addEventListener("mousedown", (e) => {
+    if (e.target.closest(".btn-close")) return;
+
+    isDragging = true;
+
+    // 🛡️ ACTIVAR ESCUDO: Evita que el iframe interfiera con el mouse
+    modalEl.classList.add("modal-dragging");
+
+    const rect = dialog.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
+    dialog.style.width = `${rect.width}px`;
+
+    if (dialog.classList.contains("modal-dialog-centered")) {
+      dialog.classList.remove("modal-dialog-centered");
+    }
+
+    // Escuchamos en todo el documento para no perder el rastro del mouse
+    document.addEventListener("mousemove", drag);
+    document.addEventListener("mouseup", stopDrag);
+  });
+
+  function drag(e) {
+    if (!isDragging) return;
+
+    dialog.style.position = "absolute";
+    dialog.style.margin = "0"; 
+    
+    dialog.style.left = `${e.clientX - offsetX}px`;
+    dialog.style.top = `${e.clientY - offsetY}px`;
+  }
+
+  function stopDrag() {
+    isDragging = false;
+    
+    // 🛡️ DESACTIVAR ESCUDO: Devuelve el control y scroll normal al PDF
+    modalEl.classList.remove("modal-dragging");
+
+    // Limpieza estricta de eventos
+    document.removeEventListener("mousemove", drag);
+    document.removeEventListener("mouseup", stopDrag);
+  }
+});
+
     </script>
     <style>
         .bg-silver-light {
@@ -617,17 +682,48 @@
         	background: #f500000f !important;
         }
         html, body {
-      height: 100%;
-    }
+	      height: 100%;
+	    }
 
-    body {
-      display: flex;
-      flex-direction: column;
-    }
+	    body {
+	      display: flex;
+	      flex-direction: column;
+	    }
 
-    main {
-      flex: 1;
-    }
+	    main {
+	      flex: 1;
+	    }
+
+	    /* Permite interactuar con la pantalla trasera */
+		#modalRecetaPdf {
+		  pointer-events: none;
+		}
+
+		/* Restaura la interacción dentro del modal */
+		#modalRecetaPdf .modal-dialog {
+		  pointer-events: auto;
+		}
+
+		/* Indica visualmente que la cabecera sirve para arrastrar */
+		#modalRecetaPdf .modal-header {
+		  cursor: move;
+		  user-select: none; /* Evita que se seleccione el texto del título al arrastrar */
+		}
+
+		/* Evita que el iframe interfiera con el arrastre mientras se mueve */
+		#modalRecetaPdf.dragging iframe {
+		  pointer-events: none;
+		}
+
+		/* Cuando el modal se esté arrastrando, el iframe no recibirá eventos del mouse */
+		.modal-dragging iframe {
+		  pointer-events: none;
+		}
+
+		/* Opcional: Asegúrate de que el contenedor del PDF tampoco moleste */
+		.modal-dragging .modal-body {
+		  user-select: none;
+		}
     </style>
 </body>
 
