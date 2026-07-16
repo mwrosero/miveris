@@ -55,7 +55,7 @@
     </div>
 
     <div class="modal fade" id="modalRecetaPdf" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalRecetaPdfModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-md modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header justify-content-center">
                     <h5 class="modal-title" id="numeroTransaccionReceta"></h5>
