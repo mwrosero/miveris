@@ -1026,10 +1026,11 @@ class ExternalController extends Controller
             return redirect('/external/farmacia/login');
         }
         $this->refreshToken();
-        // $accessToken = $this->getTokenExternalFacturacion();
+        $tokenDigitales = $this->getTokenExternalDigitales();
         $accessToken = Session::get('accessToken');
 
         return view('external.farmacia.gestion')
+                ->with('tokenDigitales',$tokenDigitales)
                 ->with('accessToken',$accessToken);
     }
 
