@@ -1052,7 +1052,7 @@ class ExternalController extends Controller
                 //'application' => Veris::APPLICATION_FARMACIA
             ]);
             // echo Veris::BASE_URL.$method;
-            dd($response);
+            // dd($response);
             // $tokenSession = $response->data->refreshToken;
         }else{
             $tokenSession = $info->refreshToken;
