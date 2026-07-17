@@ -142,6 +142,7 @@ Veris - Pago en línea
 	</div>
 </section>
 <script>
+	const api_war_facturacion = "{{ \App\Models\Veris::BASE_WAR_FACTURACION }}";
 	let canalOrigen = (window.config.subdomain == "veris") ? "MVE_CMV" : "VER_PMF";
 	let permiteNuvei = "{{ $permiteNuvei }}";
 	let dataNuvei;
@@ -291,7 +292,7 @@ Veris - Pago en línea
 
     async function crearReferencia(){
     	let args = [];
-        args["endpoint"] = api_url + `/facturacion/v1/pagos_electronicos/nuvei/crear_referencia`;
+        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/pagos_electronicos/nuvei/crear_referencia`;
         args["method"] = "POST";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -371,7 +372,7 @@ Veris - Pago en línea
 
 	async function registrarPagoNuvei(responseNuveiApproved) {
 		let args = [];
-        args["endpoint"] = api_url + `/facturacion/v1/pagos_electronicos/transaccion_epago/{{ $info->codigoEpago }}`;
+        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/pagos_electronicos/transaccion_epago/{{ $info->codigoEpago }}`;
         args["method"] = "GET";
         args["bodyType"] = "json";
         args["showLoader"] = true;
@@ -385,7 +386,7 @@ Veris - Pago en línea
             window.location.href = `/external/payment/comprobante?${ btoa(infoTransaccion.codigoEpago) }`;
         }else{
         	args = [];
-	        args["endpoint"] = api_url + `/facturacion/v1/pagos_electronicos/nuvei/registrar_cobro`;
+	        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/pagos_electronicos/nuvei/registrar_cobro`;
 	        args["method"] = "POST";
 	        args["bodyType"] = "json";
 	        args["showLoader"] = true;

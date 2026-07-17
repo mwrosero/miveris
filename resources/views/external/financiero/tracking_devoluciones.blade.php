@@ -158,6 +158,8 @@ Veris - Devoluciones
 <script>
 	_idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }}";
 	let dataDevolucion = {};
+	const api_war_facturacion = "{{ \App\Models\Veris::BASE_WAR_FACTURACION }}";
+
 	document.addEventListener("DOMContentLoaded", async function () {
 		await obtenerTracking();
 
@@ -196,7 +198,7 @@ Veris - Devoluciones
 
 	async function obtenerTracking(){
 		let args = [];
-	    args["endpoint"] = api_url + `/facturacion/v1/comprobantes/notas_creditos_x_devoluciones_bancarias?codigoEmpresa=1&page=1&perPage=10&tipoNotaCredito=TODOS&tipoFiltro=NUM_PACIENTE_COMPROBANTE&codigoTipoIdentificacion={{ $tipoIdentificacion }}&numeroIdentificacion={{ $numeroIdentificacion }}&numeroComprobante={{ $numeroFactura }}`;
+	    args["endpoint"] = api_url + `/${api_war_facturacion}/v1/comprobantes/notas_creditos_x_devoluciones_bancarias?codigoEmpresa=1&page=1&perPage=10&tipoNotaCredito=TODOS&tipoFiltro=NUM_PACIENTE_COMPROBANTE&codigoTipoIdentificacion={{ $tipoIdentificacion }}&numeroIdentificacion={{ $numeroIdentificacion }}&numeroComprobante={{ $numeroFactura }}`;
 	    args["method"] = "GET";
 	    args["showLoader"] = true;
 	    args["token"] = "{{ $accessToken }}";
@@ -285,7 +287,7 @@ Veris - Devoluciones
 
 	async function solicitarNC(){
 		let args = [];
-        args["endpoint"] = api_url + `/facturacion/v1/comprobantes/registro_devoluciones_bancarias?accion=REGISTRO_BANCARIO_PORTAL&codigoEmpresa=1`;
+        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/comprobantes/registro_devoluciones_bancarias?accion=REGISTRO_BANCARIO_PORTAL&codigoEmpresa=1`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";
@@ -379,7 +381,7 @@ Veris - Devoluciones
 
 	async function cargarTiposCuenta(){
 		let args = [];
-        args["endpoint"] = api_url + `/facturacion/v1/util/tipos_cuenta_bancaria`;
+        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/util/tipos_cuenta_bancaria`;
         args["method"] = "GET";
         args["showLoader"] = false;
         args["token"] = "{{ $accessToken }}";

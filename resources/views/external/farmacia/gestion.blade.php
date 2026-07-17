@@ -31,6 +31,7 @@
         const _idOrganizacion = "{{ \App\Models\VERIS::IDORGANIZACION }}";
         const api_url = "{{ \App\Models\VERIS::BASE_URL }}";
     	const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
+    	const api_war_facturacion = "{{ \App\Models\Veris::BASE_WAR_FACTURACION }}";
         const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
     </script>
 
@@ -453,8 +454,8 @@
 
 		async function generarPicking(){
 			let args = [];
-            // args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1&codigoSucursal=${getInput('sucursal')}`;
-			args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1`;
+            // args["endpoint"] = api_url + `/${api_war_facturacion}/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1&codigoSucursal=${getInput('sucursal')}`;
+			args["endpoint"] = api_url + `/${api_war_facturacion}/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1`;
 	        args["method"] = "POST";
 	        args["showLoader"] = true;
 	        args["token"] = _token;
@@ -472,9 +473,9 @@
 
         async function buscarSolicitud(numeroSolicitud){
         	let args = [];
-        	// https://api-phantomx.veris.com.ec/facturacion/v1/farmacia_domicilio/solicitudes/123/detalle_transacciones?codigoEmpresa=1
+        	// https://api-phantomx.veris.com.ec/${api_war_facturacion}/v1/farmacia_domicilio/solicitudes/123/detalle_transacciones?codigoEmpresa=1
 
-	        args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitud}/detalle_transacciones?codigoEmpresa=1`;
+	        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/farmacia_domicilio/solicitudes/${numeroSolicitud}/detalle_transacciones?codigoEmpresa=1`;
 	        args["method"] = "GET";
 	        args["showLoader"] = true;
 	        args["token"] = _token;

@@ -67,6 +67,7 @@ Veris - Pago en línea
     let canalOrigen = (window.config.subdomain == "veris") ? "MVE_CMV" : "VER_PMF";
     let local = localStorage.getItem('cita-{{ $params }}');
     let dataCita = JSON.parse(local);
+    const api_war_facturacion = "{{ \App\Models\Veris::BASE_WAR_FACTURACION }}";
 
     document.addEventListener("DOMContentLoaded", async function () {
 
@@ -145,7 +146,7 @@ Veris - Pago en línea
         // await updatePolitics();
 
         let args = [];
-        args["endpoint"] = `${api_url}/facturacion/v1/pagos_electronicos/placetopay/crear_session`;
+        args["endpoint"] = `${api_url}/${api_war_facturacion}/v1/pagos_electronicos/placetopay/crear_session`;
         args["method"] = "POST"; 
         args["showLoader"] = true; 
         args["bodyType"] = "json"; 

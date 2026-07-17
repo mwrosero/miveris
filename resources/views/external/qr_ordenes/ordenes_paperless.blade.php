@@ -94,8 +94,7 @@
     <script>
         const api_url = "{{ \App\Models\Veris::BASE_URL }}";
         const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
-        {{-- const api_war_facturacion = "facturacion"; --}}
-        const api_war_facturacion = "facturacion";
+        const api_war_facturacion = "{{ \App\Models\Veris::BASE_WAR_FACTURACION }}";
         const _application = "{{ \App\Models\Veris::APPLICATION }}";
         let _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACION }}";
         // "@if (\App\Models\Veris::CONTIENE_DESARROLLO)  {{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }} @else {{ \App\Models\Veris::IDORGANIZACION }} @endif";

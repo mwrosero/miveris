@@ -10,12 +10,13 @@ use Illuminate\Database\Eloquent\Model;
 class Veris extends Model
 {
     use HasFactory;
-    //DEV
+    //DEV factiracion -> facturaciontest
     public const BASE_URL = 'https://api-phantomx.veris.com.ec';
     public const BASE_WAR = 'digitalestest';
     public const FACTURACION_WAR = 'seguridadtest';
     public const FACTURACION_WAR_DESA = 'seguridad';
     public const BASE_WAR_AI = 'agents-ai';
+    public const BASE_WAR_FACTURACION = 'facturaciontest';
     public const CANAL_ORIGEN = 'MVE_CMV';
     public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';
     public const CANAL_ORIGEN_EXTERNAL_PARAMI = 'VER_PMF';
@@ -46,6 +47,7 @@ class Veris extends Model
     // public const BASE_WAR = 'digitales';
     // public const FACTURACION_WAR = 'seguridad';
     // public const BASE_WAR_AI = 'agents-ai';
+    // public const BASE_WAR_FACTURACION = 'facturacion';
     // public const CANAL_ORIGEN = 'MVE_CMV';
     // public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';
     // public const CANAL_ORIGEN_EXTERNAL_PARAMI = 'VER_PMF';
