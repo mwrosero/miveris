@@ -94,6 +94,8 @@
     <script>
         const api_url = "{{ \App\Models\Veris::BASE_URL }}";
         const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
+        {{-- const api_war_facturacion = "facturacion"; --}}
+        const api_war_facturacion = "facturacion";
         const _application = "{{ \App\Models\Veris::APPLICATION }}";
         let _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACION }}";
         // "@if (\App\Models\Veris::CONTIENE_DESARROLLO)  {{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }} @else {{ \App\Models\Veris::IDORGANIZACION }} @endif";
@@ -174,7 +176,7 @@
 
         async function deleteSoporte(detalle){
             let args = [];
-            args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes/${detalle.codigoSoporteOrden}?idAgrupacion=${detalle.codigoAgrupacion}&tipoSoporte=${detalle.tipoSoporte}`;
+            args["endpoint"] = api_url + `/${api_war_facturacion}/v1/soportes_ordenes/${detalle.codigoSoporteOrden}?idAgrupacion=${detalle.codigoAgrupacion}&tipoSoporte=${detalle.tipoSoporte}`;
             args["method"] = "DELETE";
             args["token"] = "{{ $accessToken }}";
             args["isPhantomX"] = true;
@@ -187,7 +189,7 @@
 
         async function mostrarPdfSoporteOnline(detalle) {
             let args = [];
-            args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes/${ detalle.codigoSoporteOrden }`;
+            args["endpoint"] = api_url + `/${api_war_facturacion}/v1/soportes_ordenes/${ detalle.codigoSoporteOrden }`;
             args["method"] = "GET";
             args["token"] = "{{ $accessToken }}";
             args["isPhantomX"] = true;
@@ -231,7 +233,7 @@
 
         async function mostrarPdfSoporteOnlineIos(detalle) {
             let args = [];
-            args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes/${ detalle.codigoSoporteOrden }`;
+            args["endpoint"] = api_url + `/${api_war_facturacion}/v1/soportes_ordenes/${ detalle.codigoSoporteOrden }`;
             args["method"] = "GET";
             args["token"] = "{{ $accessToken }}";
             args["isPhantomX"] = true;
@@ -266,7 +268,7 @@
 
                 // Intentamos hacer una segunda llamada simple para recuperar el blob
                 try {
-                    const response = await fetch(api_url + `/facturacion/v1/soportes_ordenes/${ detalle.codigoSoporteOrden }`, {
+                    const response = await fetch(api_url + `/${api_war_facturacion}/v1/soportes_ordenes/${ detalle.codigoSoporteOrden }`, {
                         method: "GET",
                         headers: {
                             Authorization: "Bearer {{ $accessToken }}",
@@ -349,7 +351,7 @@
         let soportes_generales;
         async function getData(type = "inicio"){
             let args = [];
-            args["endpoint"] = api_url + `/facturacion/v1/pre_transacciones/{{ $idPreTransaccion }}/soportes_generales?codigoEmpresa={{ $codigoEmpresa }}`;
+            args["endpoint"] = api_url + `/${api_war_facturacion}/v1/pre_transacciones/{{ $idPreTransaccion }}/soportes_generales?codigoEmpresa={{ $codigoEmpresa }}`;
             args["method"] = "GET";
             args["token"] = "{{ $accessToken }}";
             args["isPhantomX"] = true;
@@ -752,7 +754,7 @@
             });
 
             let args = [];
-            args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes/asociar_det_agrup_pre_trans`;
+            args["endpoint"] = api_url + `/${api_war_facturacion}/v1/soportes_ordenes/asociar_det_agrup_pre_trans`;
             args["method"] = "PUT";
             args["token"] = "{{ $accessToken }}";
             args["isPhantomX"] = true;
@@ -828,7 +830,7 @@
             formData.append("documento", finalFile);
 
             let args = [];
-            args["endpoint"] = api_url + `/facturacion/v1/soportes_ordenes?codigoEmpresa={{ $codigoEmpresa }}&orden=${orden}`;
+            args["endpoint"] = api_url + `/${api_war_facturacion}/v1/soportes_ordenes?codigoEmpresa={{ $codigoEmpresa }}&orden=${orden}`;
             args["method"] = "POST";
             args["token"] = "{{ $accessToken }}";
             args["isPhantomX"] = true;
