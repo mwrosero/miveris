@@ -31,6 +31,8 @@
         const _idOrganizacion = "{{ \App\Models\VERIS::IDORGANIZACION }}";
         const api_url = "{{ \App\Models\VERIS::BASE_URL }}";
     	const api_war = "{{ \App\Models\Veris::BASE_WAR }}";
+    	const api_war_facturacion = "{{ \App\Models\Veris::BASE_WAR_FACTURACION }}";
+    	{{-- const api_war_facturacion = "facturacion"; --}}
         const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
     </script>
 
@@ -130,7 +132,7 @@
         						<th class="text-nowrap d-none">Código</th>
         						<th>Prestación</th>
         						<th class="text-nowrap">Cantidad</th>
-        						<th class="text-nowrap">Confirmar</th>
+        						{{-- <th class="text-nowrap">Confirmar</th> --}}
         						<th class="text-nowrap">Estado</th>
         					</tr>
         				</thead>
@@ -245,10 +247,10 @@
         			msg_error += `<li>Verificar que todas las prestaciones requeridas de pistoleo hayan sido ingresadas.</li>`;
         		}
 
-        		if(!validarInputsLimites()){
+        		{{-- if(!validarInputsLimites()){
         			hasErrors = true;
         			msg_error += `<li>Por favor, corrija los campos marcados en rojo. Deben ser iguales que la cantidad requerida.</li>`;
-        		}
+        		} --}}
 
         		msg_error += `</ul>`
         		if(hasErrors){
@@ -453,8 +455,8 @@
 
 		async function generarPicking(){
 			let args = [];
-            // args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1&codigoSucursal=${getInput('sucursal')}`;
-			args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1`;
+            // args["endpoint"] = api_url + `/${api_war_facturacion}/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1&codigoSucursal=${getInput('sucursal')}`;
+			args["endpoint"] = api_url + `/${api_war_facturacion}/v1/farmacia_domicilio/solicitudes/${numeroSolicitudEnProceso}/actualizar_picking_transaccion?codigoEmpresa=1`;
 	        args["method"] = "POST";
 	        args["showLoader"] = true;
 	        args["token"] = _token;
@@ -472,9 +474,9 @@
 
         async function buscarSolicitud(numeroSolicitud){
         	let args = [];
-        	// https://api-phantomx.veris.com.ec/facturacion/v1/farmacia_domicilio/solicitudes/123/detalle_transacciones?codigoEmpresa=1
+        	// https://api-phantomx.veris.com.ec/${api_war_facturacion}/v1/farmacia_domicilio/solicitudes/123/detalle_transacciones?codigoEmpresa=1
 
-	        args["endpoint"] = api_url + `/facturacion/v1/farmacia_domicilio/solicitudes/${numeroSolicitud}/detalle_transacciones?codigoEmpresa=1`;
+	        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/farmacia_domicilio/solicitudes/${numeroSolicitud}/detalle_transacciones?codigoEmpresa=1`;
 	        args["method"] = "GET";
 	        args["showLoader"] = true;
 	        args["token"] = _token;
@@ -535,7 +537,7 @@
     					codigos = v.codigoBarras;
     					iconCompleted = `<i class="fa-solid fa-triangle-exclamation text-danger"></i>`;
     					classTdRequired = `td-required-empty`;
-    					inputQty = `<input min="0" max="${v.cantidad}" max qty-rel="${v.cantidad}" type="number" class="form-control control-limites" id="${value.numeroTransaccion}-${v.codigoServicio}-${v.codigoPrestacion}" name="${value.numeroTransaccion}-${v.codigoServicio}-${v.codigoPrestacion}">`;
+    					{{-- inputQty = `<input min="0" max="${v.cantidad}" max qty-rel="${v.cantidad}" type="number" class="form-control control-limites" id="${value.numeroTransaccion}-${v.codigoServicio}-${v.codigoPrestacion}" name="${value.numeroTransaccion}-${v.codigoServicio}-${v.codigoPrestacion}">`; --}}
     				}else{
     					isRequired = `disabled`;
     				}
@@ -546,11 +548,11 @@
         						</td>
         						<td class="${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}"><small class="fw-bold">${v.codigoPrestacion}</small> - ${v.nombrePrestacion}</td>
         						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion}">${v.cantidad}</td>
-        						<td class="text-nowrap ${classTdRequired} transaccion-${value.numeroTransaccion}-${v.codigoServicio}-${v.codigoPrestacion} td-${v.codigoServicio}-${v.codigoPrestacion}">
-    								${inputQty}
-        						</td>
         						<td class="text-nowrap ${classTdRequired} td-${v.codigoServicio}-${v.codigoPrestacion} icon-status-${v.codigoServicio}-${v.codigoPrestacion}">${iconCompleted}</td>
         					</tr>`;
+        					{{-- <td class="text-nowrap ${classTdRequired} transaccion-${value.numeroTransaccion}-${v.codigoServicio}-${v.codigoPrestacion} td-${v.codigoServicio}-${v.codigoPrestacion}">
+    								${inputQty}
+        						</td> --}}
     			})
         	})
         	$('#dataPrestaciones').html(elem);
