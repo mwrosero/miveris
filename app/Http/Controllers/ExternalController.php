@@ -122,14 +122,14 @@ class ExternalController extends Controller
             // dd($permiteNuvei);
             if($request->has('codigoPreTransaccion')){
                 $esServicioCaja = true;
-                $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
+                $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
                 $codigoEmpresa = 1;
                 if($request->has('codigoEmpresa')){
                     $codigoEmpresa = $urlParams['codigoEmpresa'];
                 }
                 $params = '?codigoEmpresa='.$codigoEmpresa.'&idPreTransaccion='.$_REQUEST['codigoPreTransaccion'];
             }else if($request->has('idSolicitud')){
-                $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/farmacia_domicilio';
+                $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/obtener_info_previa_factura/farmacia_domicilio';
                 $codigoEmpresa = 1;
                 if($request->has('codigoEmpresa')){
                     $codigoEmpresa = $urlParams['codigoEmpresa'];
@@ -137,7 +137,7 @@ class ExternalController extends Controller
                 $params = '?codigoEmpresa='.$codigoEmpresa.'&codigoSolicitudServDomicilio='.$_REQUEST['idSolicitud'];
             }else{
                 $esPagoVua = true;
-                $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/vap';
+                $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/obtener_info_previa_factura/vap';
                 $codigoEmpresa = 1;
                 if($request->has('codigoEmpresa')){
                     $codigoEmpresa = $urlParams['codigoEmpresa'];
@@ -466,7 +466,7 @@ class ExternalController extends Controller
                     $returnUrl = "codigoPreTransaccion=".$dataCita->infoTransaccion->codigoPreTransaccion;
                     $nemonicoFlujoCobro = Veris::NEMONICO_FLUJO_PAGO;
                     $esServicioCaja = true;
-                    $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
+                    $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/obtener_info_previa_factura/pre_transaccion';
                     $codigoEmpresa = 1;
                     if(isset($dataCita->infoTransaccion->codigoEmpresa)){
                         $codigoEmpresa = $urlParams['codigoEmpresa'];
@@ -475,7 +475,7 @@ class ExternalController extends Controller
                 }else if(isset($dataCita->infoTransaccion->codigoSolicitudServDomicilio)){
                     $returnUrl = "idSolicitud=".$dataCita->infoTransaccion->codigoSolicitudServDomicilio;
                     $nemonicoFlujoCobro = Veris::NEMONICO_FARMACIA;
-                    $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/farmacia_domicilio';
+                    $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/obtener_info_previa_factura/farmacia_domicilio';
                     $codigoEmpresa = 1;
                     if($request->has('codigoEmpresa')){
                         $codigoEmpresa = $urlParams['codigoEmpresa'];
@@ -486,7 +486,7 @@ class ExternalController extends Controller
                     dd($dataCita);
                     $returnUrl = "codigoIngreso=".$dataCita->infoTransaccion->codigoSolicitudServDomicilio;
                     $nemonicoFlujoCobro = Veris::NEMONICO_VUA;
-                    $method = '/facturacion/v1/pagos_electronicos/obtener_info_previa_factura/vap';
+                    $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/obtener_info_previa_factura/vap';
                     $codigoEmpresa = 1;
                     if($request->has('codigoEmpresa')){
                         $codigoEmpresa = $urlParams['codigoEmpresa'];
@@ -597,7 +597,7 @@ class ExternalController extends Controller
 
                         // dump($dataK);
                         $accessToken = $this->getTokenExternalFacturacion();
-                        $method = '/facturacion/v1/pagos_electronicos/kushki/registrar_cobro/';
+                        $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/kushki/registrar_cobro/';
                         $response = Veris::call([
                             'endpoint' => Veris::BASE_URL.$method,
                             'token'    => $accessToken,
@@ -665,7 +665,7 @@ class ExternalController extends Controller
         $urlParams = $request->all();
         // dd($urlParams);
         $accessToken = $this->getTokenExternalFacturacion();
-        $method = '/facturacion/v1/pagos_electronicos/transaccion_epago/'.$urlParams['codigoEPagoNuvei'];
+        $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/transaccion_epago/'.$urlParams['codigoEPagoNuvei'];
         $response = Veris::call([
             'endpoint' => Veris::BASE_URL.$method,
             'token'    => $accessToken,
@@ -731,7 +731,7 @@ class ExternalController extends Controller
         $codigoEPagoNuvei = urldecode($queryString);
 
         $accessToken = $this->getTokenExternalFacturacion();
-        $method = '/facturacion/v1/pagos_electronicos/transaccion_epago/'.base64_decode($codigoEPagoNuvei);
+        $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/transaccion_epago/'.base64_decode($codigoEPagoNuvei);
         $list = Veris::call([
             'endpoint' => Veris::BASE_URL.$method,
             'token'    => $accessToken,
@@ -745,7 +745,7 @@ class ExternalController extends Controller
             }
 
             $data = array("codigoEmpresa"=>1,"codigoEPago"=>base64_decode($codigoEPagoNuvei), "generarFactura"=>true, "generarCobroBotonPago"=>$generarBoton, "datoskushki"=>null);
-            $method = '/facturacion/v1/pagos_electronicos/facturar_pago_transaccion_epago/';
+            $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/facturar_pago_transaccion_epago/';
             $response = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
                 'token'    => $accessToken,
@@ -763,7 +763,7 @@ class ExternalController extends Controller
                     ->with('error',$response->message);
             }
 
-            $method = '/facturacion/v1/pagos_electronicos/transaccion_epago/'.base64_decode($codigoEPagoNuvei);
+            $method = '/'.Veris::BASE_WAR_FACTURACION.'/v1/pagos_electronicos/transaccion_epago/'.base64_decode($codigoEPagoNuvei);
             $list = Veris::call([
                 'endpoint' => Veris::BASE_URL.$method,
                 'token'    => $accessToken,
