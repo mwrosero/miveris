@@ -932,8 +932,9 @@ Mi Veris - Inicio
     }
 
     async function cargarBanners(){
+        let codigoLineaNegocio = (window.config.subdomain == "veris") ? 12 : 10;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=12&canalOrigen=${window.config.canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=${codigoLineaNegocio}&canalOrigen=${window.config.canalOrigen}`;
         
         args["method"] = "GET";
         args["showLoader"] = true;

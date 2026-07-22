@@ -127,13 +127,15 @@ class SeguridadesController extends Controller
             //return $token;
         }
 
-        $method = '/'.Veris::BASE_WAR.'/v1/seguridad/login?canalOrigen='.Veris::CANAL_ORIGEN_EXTERNAL;
+        $method = '/'.Veris::BASE_WAR.'/v1/'.Veris::FACTURACION_WAR.'/login?canalOrigen='.Veris::CANAL_ORIGEN_EXTERNAL;
         $response = Veris::call([
             'endpoint' => Veris::BASE_URL.$method,
             'basic' => Veris::BASICAUTHDIGITALES,
             'method'   => 'POST'
         ]);
-        // dd($response->data->tokenPush);
+        // echo Veris::BASE_URL.$method;
+        // echo Veris::BASICAUTHDIGITALES;
+        // dd($response);
         session(['accessTokenDigitales' => $response->data->tokenPush]);
         return $response->data->tokenPush;
     }
