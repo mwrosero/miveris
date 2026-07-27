@@ -11,7 +11,7 @@ class Veris extends Model
 {
     use HasFactory;
 
-    // DESARROLLO
+    // DESARROLLO -> Migracion
     public const BASE_URL = 'https://api-phantomx.veris.com.ec';
     public const BASE_WAR = 'digitales';
     public const FACTURACION_WAR = 'seguridad';
@@ -33,8 +33,8 @@ class Veris extends Model
     public const TEST_ENVIRONMENT_KUSHKI = true;
     public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
     public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
-    public const BASICAUTHFACTURACION = 'YmFja2VuZHBoYW50b206QmFja1BAbnRoMG1QQHNzMjAyMQ==';
-    public const BASICAUTHFACTURACIONDESARROLLO = 'YmFja2VuZHBoYW50b206QmFja1BAbnRoMG1QQHNzMjAyMQ==';
+    public const BASICAUTHFACTURACION = 'QkFDS0VORFBIQU5UT006UGhAbnQwbUQzdiMyNSE=';
+    public const BASICAUTHFACTURACIONDESARROLLO = 'QkFDS0VORFBIQU5UT006UGhAbnQwbUQzdiMyNSE=';
     public const NEMONICO_FLUJO_PAGO = 'PRE_TRANSACCIONES';
     public const NEMONICO_FARMACIA = 'FARMACIA_DOMICILIO';
     public const NEMONICO_VUA = 'LIQUIDACION_VAP';
