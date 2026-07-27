@@ -711,22 +711,9 @@ async function aplicarFiltrosResultados(contexto, tipoServicio) {
     fechaHasta = formatearFecha(fechaHasta);
 
     if (contexto === 'contextoAplicarFiltros') {
-        console.log('exito');
+        console.log('exito - '+pacienteSeleccionado);
         await consultarResultadosPorTipo(pacienteSeleccionado, tipoIdentificacion, fechaDesde, fechaHasta, tipoServicio, esAdmin);
         $('#filtroTratamientos').offcanvas('hide');
-    }
-}
-
-// limpiar filtros para resultados
-async function limpiarFiltrosResultados(contexto, tipoServicio) {
-    if (contexto === 'contextoLimpiarFiltros') {
-        $('input[name="listGroupRadios"]').prop('checked', false);
-        $('input[name="listGroupRadios"]').first().prop('checked', true);
-        $('#fechaDesde').val('');
-        $('#fechaHasta').val('');
-        let pacienteSeleccionado = "{{ Session::get('userData')->numeroIdentificacion }}";
-        let  tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
-        await consultarResultadosPorTipo(pacienteSeleccionado, tipoIdentificacion, '', '', tipoServicio, 'S');
     }
 }
 
@@ -872,6 +859,9 @@ function capitalizarPrimeraLetra(texto) {
 
 
 function capitalizarCadaPalabra(texto) {
+    if(texto == null){
+        return ``;
+    }
     return texto.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 }
 

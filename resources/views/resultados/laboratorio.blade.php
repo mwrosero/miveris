@@ -133,6 +133,19 @@ Mi Veris - Resultados
                  
          });
      });
+
+    // limpiar filtros para resultados
+    async function limpiarFiltrosResultados(contexto, tipoServicio) {
+        if (contexto === 'contextoLimpiarFiltros') {
+            $('input[name="listGroupRadios"]').prop('checked', false);
+            $('input[name="listGroupRadios"]').first().prop('checked', true);
+            $('#fechaDesde').val('');
+            $('#fechaHasta').val('');
+            let pacienteSeleccionado = "{{ Session::get('userData')->numeroIdentificacion }}";
+            let  tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+            await consultarResultadosPorTipo(pacienteSeleccionado, tipoIdentificacion, '', '', tipoServicio, 'S');
+        }
+    }
  
      // funciones asyncronas
      // Consultar resultados de laboratorio
