@@ -1095,7 +1095,7 @@ Mi Veris - Inicio
         const data = await call(args);
         _ppd = data.data;
         // Verificar ppd 2.0
-        return;
+        // return;
 
         if(data.code == 200){
             console.log(data.data)
