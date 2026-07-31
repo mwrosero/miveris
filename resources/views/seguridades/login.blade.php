@@ -86,6 +86,11 @@
             }
         });
 
+        localStorage.removeItem('estadoPoliticas');
+        localStorage.removeItem('politicas');
+        localStorage.removeItem('politicasAbiertas');
+        localStorage.removeItem('politicaspoliticasAbiertas');
+
         function validateForm(){
             let errors = false;
             let msg = `<ul class="ms-0 text-start text-veris">`;
