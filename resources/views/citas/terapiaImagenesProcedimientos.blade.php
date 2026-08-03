@@ -899,10 +899,18 @@ Mi Veris - Citas - {{ $titulo }}
                                                 </div>
                                             </div>
                                         </div>`;
-                                    if(laboratorio.mostrarTerapiasAgrupadas === "N" || detalles.tipoCard !== "AGENDA_TERAPIA"){
+                                    {{-- if(laboratorio.mostrarTerapiasAgrupadas === "N" || detalles.tipoCard !== "AGENDA_TERAPIA"){
                                         elementos += elem_tmp;
                                     }else{
                                         if(detalles.tipoCard == "AGENDA_TERAPIA"){
+                                            elementos += elem_tmp;
+                                        }
+                                    } --}}
+
+                                    if(laboratorio.mostrarTerapiasAgrupadas === "N"){
+                                        elementos += elem_tmp;
+                                    }else{
+                                        if(laboratorio.mostrarTerapiasAgrupadas == "S" && detalles.tipoServicio != "TERAPIA"){
                                             elementos += elem_tmp;
                                         }
                                     }
