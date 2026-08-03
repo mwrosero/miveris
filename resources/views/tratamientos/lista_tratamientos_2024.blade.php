@@ -1520,7 +1520,7 @@ $tokenSesion = base64_encode(uniqid());
         let datosServicio = $(this).data('rel');
         let convenio = JSON.parse($(this).attr('convenio-rel'));
 
-        if(datosServicio.esPagada && datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL"){
+        if(datosServicio.esPagada == "S" && datosServicio.tipoCard == "LAB" && datosServicio.modalidad == "PRESENCIAL"){
             $('#mensajeNoPermiteCambiar').html(datosServicio.mensaje);
             $('#modalPermiteCambiar').modal('show');
             return;

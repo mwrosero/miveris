@@ -815,11 +815,10 @@ Mi Veris - Citas - {{ $titulo }}
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
 
-        if (estado == 'PENDIENTE') {
-            args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-        } else if (estado == 'REALIZADO') {
-            args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=TODOS&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=S&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-        }
+        let esDetalleRealizado = ( estado == 'PENDIENTE') ? "N" : "S";
+
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=${esDetalleRealizado}&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
