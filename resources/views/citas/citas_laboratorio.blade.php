@@ -67,7 +67,9 @@ Mi Veris - Citas - Citas Laboratorio
     let items = [];
     // llamada al dom
     document.addEventListener("DOMContentLoaded", async function () {
-        $('#pacienteLabel').html('Paciente: '+dataCita.paciente.primerNombre.toLowerCase() + " " + dataCita.paciente.primerApellido.toLowerCase() + " " +dataCita.paciente.segundoApellido.toLowerCase());
+        {{-- $('#pacienteLabel').html('Paciente: '+dataCita.paciente.primerNombre.toLowerCase() + " " + dataCita.paciente.primerApellido.toLowerCase() + " " +dataCita.paciente.segundoApellido.toLowerCase()); --}}
+
+        $('#pacienteLabel').html(`Paciente: ${dataCita.paciente.primerNombre.toLowerCase()} ${dataCita.paciente.primerApellido.toLowerCase()} ${ (dataCita.paciente.segundoApellido !== null) ? dataCita.paciente.segundoApellido.toLowerCase() : ''}`);
         let labelOrden = dataCita.datosTratamiento.detalleLaboratorio.descripcionOrden;
         $('#ordenLabel').html(labelOrden.charAt(0).toUpperCase() + labelOrden.slice(1).toLowerCase());
         if(dataCita.datosTratamiento.permitePago == "N"){

@@ -473,6 +473,8 @@ Mi Veris - Citas - {{ $titulo }}
             let convenio = JSON.parse($(this).attr('convenio-rel'));
             let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
             let datosTratamiento;
+
+            console.log({esTerapiaAgrupada});
             
             if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
                 esTerapiaAgrupada = true;
@@ -480,7 +482,11 @@ Mi Veris - Citas - {{ $titulo }}
             }else{
                 esTerapiaAgrupada = false;
             }
-            // console.log('datosServicio', datosServicio);
+
+            console.log("*******************************");
+            console.log('datosServicio', datosServicio);
+            console.log('datosTratamiento', datosTratamiento);
+            console.log("*******************************");
 
             let modalidad;
             if (datosServicio.modalidad === 'ONLINE') {
@@ -527,6 +533,12 @@ Mi Veris - Citas - {{ $titulo }}
             }
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+            if (dataCita.online == 'S') {
+                window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
+            } else {
+                // ir a central medica
+                window.location.href = '/seleccionar-datos-cita/{{ $tokenCita }}';
+            }
         });
 
         $(document).on('click', '.btn-CambiarFechaCita', function(){
