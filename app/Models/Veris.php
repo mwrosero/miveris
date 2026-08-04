@@ -125,17 +125,20 @@ class Veris extends Model
             $header[] = 'TokenPush: ' . $config['TokenPush'];
         }
         
-        if(isset($config['application'])){
-            $header[] = 'application: ' . $config['application'];
-        }else{
-            $header[] = 'application: ' . self::APPLICATION;
-        }
-        
-        // $header[] = 'idOrganizacion: ' . self::IDORGANIZACION;
-        if(isset($config['tokenDesarrollo']) && $config['tokenDesarrollo']){
-            $header[] = 'idOrganizacion: ' . self::IDORGANIZACIONRESULTADOSLAB;
-        }else{
-            $header[] = 'idOrganizacion: ' . self::IDORGANIZACION;
+        $subcadenaWar = '/' . self::BASE_WAR . '/';
+
+        if(!str_contains($config['endpoint'] ?? '', $subcadenaWar)){
+            if(isset($config['application'])){
+                $header[] = 'application: ' . $config['application'];
+            }else{
+                $header[] = 'application: ' . self::APPLICATION;
+            }
+            
+            if(isset($config['tokenDesarrollo']) && $config['tokenDesarrollo']){
+                $header[] = 'idOrganizacion: ' . self::IDORGANIZACIONRESULTADOSLAB;
+            }else{
+                $header[] = 'idOrganizacion: ' . self::IDORGANIZACION;
+            }
         }
 
         if(isset($config['tokenKushki']) && $config['tokenKushki']){
@@ -180,6 +183,7 @@ class Veris extends Model
             curl_setopt($ch, CURLOPT_USERPWD, $config['username'].":".$config['password']);
         }
 
+        // dump($config['endpoint']);
         // dump($header);
         
         // API CALL

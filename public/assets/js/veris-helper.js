@@ -40,8 +40,10 @@ async function call(args){
     
     if(args.token){
         myHeaders.append("Authorization","Bearer "+ args.token);
-        myHeaders.append("Application", _application);
-        myHeaders.append("IdOrganizacion", _idOrganizacion);
+        if (!args?.method?.includes(`/${api_war}/`)) {
+            myHeaders.append("Application", _application);
+            myHeaders.append("IdOrganizacion", _idOrganizacion);
+        }
         // console.log(myHeaders)
     }
     requestOptions.headers = myHeaders;
@@ -134,8 +136,10 @@ async function callInformes(args) {
     
     if(args.token){
         myHeaders.append("Authorization", "Bearer " + args.token);
-        myHeaders.append("Application", _application);
-        myHeaders.append("IdOrganizacion", _idOrganizacion);
+        if (!args?.method?.includes(`/${api_war}/`)) {
+            myHeaders.append("Application", _application);
+            myHeaders.append("IdOrganizacion", _idOrganizacion);
+        }
     } else if(_token !== undefined && _token !== ""){
         myHeaders.append("Authorization", "Bearer " + _token);
     }
