@@ -408,7 +408,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(dataCita.paciente.nombrePaciente){
                 nombrePaciente = dataCita.paciente.nombrePaciente;
             }else{
-                nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
+                nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${(dataCita.paciente.segundoApellido !== null) ? dataCita.paciente.segundoApellido : ''}`;
             }
             elem += `<div class="accordion-item border-bottom accordion-item-${key}">
                 <h2 class="accordion-header" id="panelsStayOpen-${key}">
@@ -526,7 +526,7 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         if(dataCita.paciente.nombrePaciente){
             nombrePaciente = dataCita.paciente.nombrePaciente;
         }else{
-            nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
+            nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${(dataCita.paciente.segundoApellido !== null) ? dataCita.paciente.segundoApellido : ''}`;
         }
         elem += `<p class="fs--2 line-height-16 mb-1">${capitalizarElemento(dia)} <b class="text-normal text-primary-veris fw-normal">${horaInicio} - ${horaFin} ${determinarMeridiano(horaInicio)}</b></p>
             <p class="fs--2 line-height-16 mb-1 text-capitalize">Dr(a) ${dataCita.horario.nombreMedico.toLowerCase()}</p>
