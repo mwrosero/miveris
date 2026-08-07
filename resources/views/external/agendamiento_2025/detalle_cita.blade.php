@@ -428,7 +428,7 @@ Veris - Detalle de Citas
             if(dataCita.paciente.nombrePaciente){
                 nombrePaciente = dataCita.paciente.nombrePaciente;
             }else{
-                nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`;
+                nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${(dataCita.paciente.segundoApellido !== null) ? dataCita.paciente.segundoApellido : '' }`;
             }
             elem += `<div class="accordion-item border-bottom accordion-item-${key}">
                 <h2 class="accordion-header" id="panelsStayOpen-${key}">
@@ -546,10 +546,11 @@ Veris - Detalle de Citas
         if(dataCita.paciente.nombrePaciente){
             nombrePaciente = dataCita.paciente.nombrePaciente;
         }else{
+            let segundoApellidoTmp = (dataCita.paciente.segundoApellido !== null) ? dataCita.paciente.segundoApellido : '';
             nombrePaciente = [
                 dataCita.paciente.primerNombre,
                 dataCita.paciente.primerApellido,
-                dataCita.paciente.segundoApellido
+                segundoApellidoTmp
             ].filter(v => v).join(' ');
             {{-- nombrePaciente = `${dataCita.paciente.primerNombre} ${dataCita.paciente.primerApellido} ${dataCita.paciente.segundoApellido}`; --}}
         }
