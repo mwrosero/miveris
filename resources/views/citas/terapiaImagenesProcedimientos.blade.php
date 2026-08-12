@@ -483,6 +483,12 @@ Mi Veris - Citas - {{ $titulo }}
                 esTerapiaAgrupada = false;
             }
 
+            if(datosServicio.permiteReserva == "N" && !esTerapiaAgrupada){
+                $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
+
             console.log("*******************************");
             console.log('datosServicio', datosServicio);
             console.log('datosTratamiento', datosTratamiento);
