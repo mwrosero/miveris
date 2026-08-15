@@ -2,10 +2,15 @@
   /*--bg-vris-blue: #0071CE;*/
   --bg-vris-blue: #0070C7 !important;
   --verisAi: #0070C7 !important;
+  --paramiPrimary: #0070C7 !important;
 }
 
 .txt-veris{
   color: var(--verisAi) !important;
+}
+
+.txt-parami-primary{
+  color: var(--paramiPrimary) !important;
 }
 
 .bg-alt {

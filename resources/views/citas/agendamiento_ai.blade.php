@@ -495,8 +495,7 @@ $tokenCitaNormal = base64_encode(uniqid());
         let codigoServicio = dataCita.especialidad.modalidadPrestacionAgenda.presencial.codigoServicio;
         let codigoPrestacion = dataCita.especialidad.modalidadPrestacionAgenda.presencial.codigoPrestacion;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}
-        &codigoServicio=${ codigoServicio }&codigoPrestacion=${ codigoPrestacion }&codigoConvenio=${ (dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : '' }`;
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/obtener_tratamiento_compatible?canalOrigen=${_canalOrigen}&codigoEmpresa=1&online=${dataCita.online}&idPaciente=${dataCita.paciente.numeroPaciente}&codigoServicio=${ codigoServicio }&codigoPrestacion=${ codigoPrestacion }&codigoConvenio=${ (dataCita.convenio.codigoConvenio != null) ? dataCita.convenio.codigoConvenio : '' }`;
         
         args["method"] = "GET";
         args["showLoader"] = true;

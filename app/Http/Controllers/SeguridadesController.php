@@ -133,7 +133,11 @@ class SeguridadesController extends Controller
             'basic' => Veris::BASICAUTHDIGITALES,
             'method'   => 'POST'
         ]);
-        // dd($response->data->tokenPush);
+        
+        // echo Veris::BASE_URL.$method;
+        // echo Veris::BASICAUTHDIGITALES;
+        // dd($response);
+        
         session(['accessTokenDigitales' => $response->data->tokenPush]);
         return $response->data->tokenPush;
     }

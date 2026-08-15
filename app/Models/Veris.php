@@ -10,7 +10,40 @@ use Illuminate\Database\Eloquent\Model;
 class Veris extends Model
 {
     use HasFactory;
-    //DEV
+
+    // DESARROLLO -> miveris-desa.akold.com
+    // public const BASE_URL = 'https://api-phantomx.veris.com.ec';
+    // public const BASE_WAR = 'digitales';
+    // public const FACTURACION_WAR = 'seguridad';
+    // public const FACTURACION_WAR_DESA = 'seguridad';
+    // public const BASE_WAR_AI = 'agents-ai';
+    // public const BASE_WAR_FACTURACION = 'facturacion';
+    // public const CANAL_ORIGEN = 'MVE_CMV';
+    // public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';
+    // public const CANAL_ORIGEN_EXTERNAL_PARAMI = 'VER_PMF';
+    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
+    // public const APPLICATION_FARMACIA = 'UEhBTlRPTVhfV0VC';
+    // public const IDORGANIZACION = '365509c8-9596-4506-a5b3-487782d5876e';
+    // public const IDORGANIZACIONRESULTADOSLAB = '365509c8-9596-4506-a5b3-487782d5876e';
+    // public const URL_KUSHKI = 'https://api-uat.kushkipagos.com';
+    // public const KUSHKI_MERCHANT_ID = '10000003012872942409151942277385';
+    // public const KUSHKI_PRIVATE_MERCHANT_ID = '10000003012852139010151942277385';
+    // public const IS_KUSHKI_TEST_ENVIRONMENT = true;
+    // public const ENVIRONMENT_NUVEI = "stg";
+    // public const TEST_ENVIRONMENT_KUSHKI = true;
+    // public const AMPLITUDE = "1cbd8baed97a6c8abf6b8e398b77cf6f";
+    // public const BASICAUTHDIGITALES = 'd3NhcHBjZW50cmljbzpDQVM1Nzg5Yjg2TWRyNUMzbnRyMWMw';
+    // public const BASICAUTHFACTURACION = 'QkFDS0VORFBIQU5UT006UGhAbnQwbUQzdiMyNSE=';
+    // public const BASICAUTHFACTURACIONDESARROLLO = 'QkFDS0VORFBIQU5UT006UGhAbnQwbUQzdiMyNSE=';
+    // public const NEMONICO_FLUJO_PAGO = 'PRE_TRANSACCIONES';
+    // public const NEMONICO_FARMACIA = 'FARMACIA_DOMICILIO';
+    // public const NEMONICO_VUA = 'LIQUIDACION_VAP';
+    // public const URL_EPI = 'http://ecstest.veris.com.ec/Verisrest/v1/formularioepi1';
+    // public const BASICAUTHEPI = 'd3Nmb3JtdWxhcmlvZXBpMTpDQVM1Nzg5Yjg2TWRyNUYwcm11bGFyMTAzcGkxKg==';
+    // public const CONTIENE_DESARROLLO = false;
+    // public const API_KEY_GOOGLE_MAP = 'AIzaSyCvKhNY5DAACMCU8gAY1AbJiaqg3bTo2jc';
+    
+    //TEST miveris.akold.com
     // public const BASE_URL = 'https://api-phantomx.veris.com.ec';
     // public const BASE_WAR = 'digitalestest';
     // public const FACTURACION_WAR = 'seguridadtest';
@@ -20,7 +53,7 @@ class Veris extends Model
     // public const CANAL_ORIGEN = 'MVE_CMV';
     // public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';
     // public const CANAL_ORIGEN_EXTERNAL_PARAMI = 'VER_PMF';
-    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';//UEhBTlRPTVhfRU1QUkVTQVJJQUw=
+    // public const APPLICATION = 'UEhBTlRPTVhfQkFDS0VORA==';
     // public const APPLICATION_FARMACIA = 'UEhBTlRPTVhfV0VC';
     // public const IDORGANIZACION = 'adf4e264-cd20-4653-9a44-025b13050992';
     // public const IDORGANIZACIONRESULTADOSLAB = '365509c8-9596-4506-a5b3-487782d5876e';
@@ -92,17 +125,20 @@ class Veris extends Model
             $header[] = 'TokenPush: ' . $config['TokenPush'];
         }
         
-        if(isset($config['application'])){
-            $header[] = 'application: ' . $config['application'];
-        }else{
-            $header[] = 'application: ' . self::APPLICATION;
-        }
-        
-        // $header[] = 'idOrganizacion: ' . self::IDORGANIZACION;
-        if(isset($config['tokenDesarrollo']) && $config['tokenDesarrollo']){
-            $header[] = 'idOrganizacion: ' . self::IDORGANIZACIONRESULTADOSLAB;
-        }else{
-            $header[] = 'idOrganizacion: ' . self::IDORGANIZACION;
+        $subcadenaWar = '/' . self::BASE_WAR . '/';
+
+        if(!str_contains($config['endpoint'] ?? '', $subcadenaWar)){
+            if(isset($config['application'])){
+                $header[] = 'application: ' . $config['application'];
+            }else{
+                $header[] = 'application: ' . self::APPLICATION;
+            }
+            
+            if(isset($config['tokenDesarrollo']) && $config['tokenDesarrollo']){
+                $header[] = 'idOrganizacion: ' . self::IDORGANIZACIONRESULTADOSLAB;
+            }else{
+                $header[] = 'idOrganizacion: ' . self::IDORGANIZACION;
+            }
         }
 
         if(isset($config['tokenKushki']) && $config['tokenKushki']){
@@ -147,6 +183,7 @@ class Veris extends Model
             curl_setopt($ch, CURLOPT_USERPWD, $config['username'].":".$config['password']);
         }
 
+        // dump($config['endpoint']);
         // dump($header);
         
         // API CALL

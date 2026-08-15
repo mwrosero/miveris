@@ -113,206 +113,30 @@ Mi Veris - Inicio
     <section class="p-3 py-3 pt-0 pe-0 pe-md-3 mb-0 d-none section-banners" style="background: #F9FAFB;">
         <div class="swiper swiper-banners position-relative pb-2">
             <div class="swiper-wrapper px-1" id="box-banners">
-                <!-- <div class="swiper-slide">
-                    <div class="card h-100 d-flex justify-content-center align-items-between shadow-none border-0">
-                        <div class="row h-100 g-0 justify-content-between align-items-center">
-                            <div class="col-12">
-                                <img src="https://dikg1979lm6fy.cloudfront.net/app/cmv/promocion/BANNER_BIENESTAR.png" class="img-fluid" alt=""  >
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </section>
     
-    <!-- Tratamientos dinamico -->
-    <section class="bg-light-grayish-blue p-3 mb-3 d-none section-tratamientos">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Mis tratamientos</h5>
-            <a href="{{route('tratamientos')}}" class="fw-medium fs--2 me-1 text-veris-ai" id="verTodosTratamientos">Ver todos</a>
-        </div>
-        <div class="swiper swiper-tratamientos position-relative pb-3">
-            <div class="swiper-wrapper px-1 py-2" id="contenedorTratamientoHome">
-            </div>
-            <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
-            <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
-        </div>
-        <div class="py-3 d-none" id="contenedorTratamientosHomePrincipal"></div>
-    </section>
+    @if(config('app.subdomain') == "veris")
+        @include('inicio.sections.tratamientos-home')
+    @else
+        @include('inicio.sections.accesos-home')
+    @endif
 
-    <!-- Accesos rápidos -->
-    <section class="p-3 pe-md-3 mb-3 pb-0" style="overflow-x: hidden;">
-        <div class="d-flex justify-content-between align-items-center">
-            <h6 class="fw-medium border-start-veris ps-3 fs-18 mb-0">{{ __('Accesos rápidos') }}</h6>
-        </div>
-        {{-- <div class="swiper swiper-acceso-rapidos position-relative py-3 pt-0 pt-md-2 pb-md-4">
-            <div class="swiper-wrapper px-1">
-                <div class="swiper-slide">
-                    <a href="{{route('citas.agendamiento-ai')}}">
-                        <div class="card h-100 d-flex justify-content-center align-items-between border-ai">
-                            <div class="row h-100 g-0 justify-content-between align-items-center">
-                                <div class="col-8 col-md-7">
-                                    <div class="card-body p-0 ps-2">
-                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendamiento inteligente') }}</h6>
-                                    </div>
-                                </div>
-                                <div class="col-4 col-md-auto text-end">
-                                    <img src="{{ asset('assets/img/card/svg/inteligencia_artificial.svg') }}" class="img-fluid me-2" alt=""  >
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a class="cursor-pointer d-block">
-                        <div class="card" id="cita-nueva">
-                            <div class="row g-0 justify-content-between align-items-center">
-                                <div class="col-7 col-md-7">
-                                    <div class="card-body p-0 ps-2">
-                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendar cita médica') }}</h6>
-                                    </div>
-                                </div>
-                                <div class="col-5 col-md-auto text-end">
-                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="img-fluid" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="{{route('promociones.promociones')}}">
-                        <div class="card">
-                            <div class="row g-0 justify-content-between align-items-center">
-                                <div class="col-7 col-md-7">
-                                    <div class="card-body p-0 ps-2">
-                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Ver promociones compradas') }}</h6>
-                                    </div>
-                                </div>
-                                <div class="col-5 col-md-auto text-end">
-                                    <img src="{{ asset('assets/img/card/svg/comprar_1.svg') }}" class="img-fluid" alt=""  >
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="swiper-slide">
-                    <a href="/servicio-domicilio" >
-                        <div class="card">
-                            <div class="row g-0 justify-content-between align-items-center">
-                                <div class="col-7 col-md-7">
-                                    <div class="card-body p-0 ps-2">
-                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Solicitar servicios') }} <br> {{ __('a domicilio') }}</h6>
-                                    </div>
-                                </div>
-                                <div class="col-5 col-md-auto text-end">
-                                    <img src="{{ asset('assets/img/card/svg/motociclista_1.svg') }}" class="img-fluid" alt=""  >
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div> 
-            </div>
-            <button type="button" id="prevProperties" class="d-flex d-none mt-n4 btn btn-prev rounded-circle"></button>
-            <button type="button" id="nextProperties" class="d-flex d-none mt-n4 btn btn-next rounded-circle"></button>
-        </div> --}}
-        <div class="container-fluid px-0 mt-3">
-            <div class="row px-1 d-flex justify-content-start align-items-stretch mb-3">
-                <div class="col-6 col-md-4 d-flex">
-                    <a href="{{route('citas.agendamiento-ai')}}" class="w-100">
-                        <div class="card h-100 d-flex justify-content-center border-ai">
-                            <div class="row h-100 g-0 justify-content-between align-items-center">
-                                <div class="col-8 col-md-7">
-                                    <div class="card-body p-0 ps-2">
-                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendamiento inteligente') }}</h6>
-                                    </div>
-                                </div>
-                                <div class="col-4 col-md-auto text-end">
-                                    <img src="{{ asset('assets/img/svg/vericita-icon.svg') }}" class="img-fluid me-2" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-6 col-md-4 d-flex">
-                    <a class="cursor-pointer d-block w-100">
-                        <div class="card h-100" id="cita-nueva">
-                            <div class="row h-100 g-0 justify-content-between align-items-center">
-                                <div class="col-7 col-md-7">
-                                    <div class="card-body p-0 ps-2">
-                                        <h6 class="fw-medium fs--2 fs--lg-1 mb-0">{{ __('Agendar cita médica') }}</h6>
-                                    </div>
-                                </div>
-                                <div class="col-5 col-md-auto text-end">
-                                    <img src="{{ asset('assets/img/card/svg/doctora_1.svg') }}" class="img-fluid" alt="">
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
+    @if(config('app.subdomain') == "veris")
+        @include('inicio.sections.accesos-home')
+    @else
+        @include('inicio.sections.citas')
+    @endif
 
-        <div class="container-fluid px-0">
-            <div class="row px-1 d-flex justify-content-start align-items-center">
-                <a href="/promociones" class="col-3 col-md-2 text-center text-veris bg-transparent">
-                    <div class="box-container-icon mb-1 p-2 rounded-3">
-                        <img src="{{ asset('assets/img/svg/descuento-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
-                    </div>
-                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Paquetes</p>
-                </a>
-                @if(config('app.subdomain') == "veris")
-                <a href="/servicio-domicilio" class="col-3 col-md-2 text-center text-veris bg-transparent">
-                    <div class="box-container-icon mb-1 p-2 rounded-3">
-                        <img src="{{ asset('assets/img/svg/domicilio-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
-                    </div>
-                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Domicilio</p>
-                </a>
-                @endif
-                <a href="/receta-medica" class="col-3 col-md-2 text-center text-veris bg-transparent">
-                    <div class="box-container-icon mb-1 p-2 rounded-3">
-                        <img src="{{ asset('assets/img/svg/recetas-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
-                    </div>
-                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Recetas</p>
-                </a>
-                <a href="/resultados" class="col-3 col-md-2 text-center text-veris bg-transparent">
-                    <div class="box-container-icon mb-1 p-2 rounded-3">
-                        <img src="{{ asset('assets/img/svg/resultados-icon.svg') }}" class="w-100 img-fluid" alt="" style="max-width: 80px;">
-                    </div>
-                    <p class="m-0 fs-18 line-height-24 fw-medium label-txt-acceso-directo">Resultados</p>
-                </a>
-            </div>
-        </div>
-    </section>
+    @if(config('app.subdomain') == "veris")
+        @include('inicio.sections.citas')
+        @include('inicio.sections.citas-vua') 
+    @else
+        @include('inicio.sections.tratamientos-home')
+    @endif
 
-    <!-- Mis citas dinamico -->
-    <section class="bg-light-grayish-blue p-3 d-none" id="section-citas">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-medium border-start-veris ps-3 fs-18 mb-0">Próximas citas</h5>
-            <a href="{{route('citas')}}" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todas <i class="fa-solid fa-chevron-right ms-3"></i></a>
-        </div>
-        <div class="swiper swiper-proximas-citas position-relative py-3 pt-0">
-            <div class="swiper-wrapper px-1 mb-3 mb-md-0" id=contenedorCitas>
-            </div>
-            <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
-            <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
-        </div>
-        <div class="py-3" id="contenedorCitasHomePrincipal"></div>
-    </section>
-    <!-- Urgencias ambulatorias dinamico -->
-    <section class="bg-light-grayish-blue p-3 mb-3 d-none" id="section-urgencias">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5 class="fw-medium border-start-grenadier ps-3 fs-18 mb-0">Urgencias ambulatorias</h5>
-            <a href="javascript:void(0)" class="btn btn-sm text-primary-veris fs--2 d-none">Ver todos</a>
-        </div>
-        <div class="swiper swiper-urgencias-ambulatorias position-relative py-3 pt-0">
-            <div class="swiper-wrapper px-1" id="contenedorUrgenciasAmbulatorias">
-            </div>
-            <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
-            <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
-        </div>
-        <div class="py-3" id="contenedorUrgenciasAmbulatoriasMensaje"></div>
-    </section>
+    
 </div>
 @endsection
 @push('scripts')
@@ -376,7 +200,9 @@ Mi Veris - Inicio
         await obtenerTratamientos();
         
         await obtenerCitas();
+        @if(config('app.subdomain') == "veris")
         await obtenerUrgenciasAmbulatorias();
+        @endif
         // chartProgres('#chart-progress');
         await consultarConvenios();
         await consultarDatosPaciente();
@@ -388,7 +214,7 @@ Mi Veris - Inicio
             $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/seleccionar-datos-cita/{{ $tokenCita }}");
         });
 
-        $('#cita-nueva').on('click', function(){
+        $('#cita-nueva, .banner-cita-nueva').on('click', function(){
             let params = {}
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
 
@@ -932,8 +758,9 @@ Mi Veris - Inicio
     }
 
     async function cargarBanners(){
+        let codigoLineaNegocio = (window.config.subdomain == "veris") ? 12 : 10;
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=12&canalOrigen=${window.config.canalOrigen}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=${codigoLineaNegocio}&canalOrigen=${window.config.canalOrigen}`;
         
         args["method"] = "GET";
         args["showLoader"] = true;
@@ -951,6 +778,7 @@ Mi Veris - Inicio
                 $.each(data.data.pantallas, function(key, value){
                     $.each(value.configuraciones, function(k,v){
                         tieneSlides = true;
+                        let classAdd = ``;
                         let attrAditional = `url-rel=''`;
                         if(v.nombreTipoObjeto == "BANNER_CUIDATE_X_MI"){
                             attrAditional = `type='button' url-rel='/promociones?s=Cuidate por mi'`;
@@ -962,13 +790,15 @@ Mi Veris - Inicio
                             attrAditional = `type='button' url-rel='/promociones?s=${v.valorAdicional}'`;
                         }else if(v.nombreTipoObjeto == "BANNER_PROMO_X_CODIGO"){
                             attrAditional = `type='button' codigoPaquete-rel='${v.valorAdicional}'`;
+                        }else if(v.nombreTipoObjeto == "BANNER_AGENDAMIENTO"){
+                            classAdd = `banner-cita-nueva`;
                         }
 
                         elem += `<div class="swiper-slide">
                             <div class="card d-block h-100 d-flex justify-content-center align-items-between shadow-none border-0">
                                 <div class="row h-100 g-0 justify-content-between align-items-center">
                                     <div class="col-12 link-item-banner" ${attrAditional}>
-                                        <img src="${v.valor}" class="img-fluid" alt=""  >
+                                        <img src="${v.valor}" class="img-fluid ${classAdd}" alt=""  >
                                     </div>
                                 </div>
                             </div>
@@ -1094,7 +924,7 @@ Mi Veris - Inicio
         const data = await call(args);
         _ppd = data.data;
         // Verificar ppd 2.0
-        return;
+        // return;
 
         if(data.code == 200){
             console.log(data.data)
@@ -1461,6 +1291,7 @@ Mi Veris - Inicio
                             <p class="fs--16 fw-normal text-veris">Agenda una cita pulsado aqui <a href="{{route('citas')}}">Agendar cita</a></p>
                         </div>`;
         divContenedor.append(elemento);
+        $('#contenedorCitasHomePrincipal').removeClass('d-none');
     }
 
     // llenar el div de urgencias ambulatorias

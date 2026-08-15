@@ -297,13 +297,25 @@
     // salir de la sesion
     $('#logout').click(function(){
         // localStorage.clear();
-        for (let i = 0; i < localStorage.length; i++) {
+        /*for (let i = 0; i < localStorage.length; i++) {
             let key = localStorage.key(i);
             if (key.startsWith('cita-') || key.startsWith('persona-')) {
                 localStorage.removeItem(key);
-                i--; // Ajustar el índice después de eliminar un elemento
+                i--;
             }
-        }
+        }*/
+        // 1. Recolectar todas las claves que coincidan con tus prefijos
+        const keysToRemove = Object.keys(localStorage).filter(key => 
+            key.startsWith('cita-') || 
+            key.startsWith('persona-') || 
+            key.startsWith('beneficio-') ||
+            key.startsWith('external-cita-')
+        );
+
+        // 2. Eliminar cada clave encontrada de forma segura
+        keysToRemove.forEach(key => {
+            localStorage.removeItem(key);
+        });
 
         window.location.href = "{{ route('logout') }}";
     });

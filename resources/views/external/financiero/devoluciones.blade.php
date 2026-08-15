@@ -334,6 +334,7 @@ Veris - Devoluciones
 </style>
 <script>
     //_idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }}";
+    const api_war_facturacion = "{{ \App\Models\Veris::BASE_WAR_FACTURACION }}";
 	let dataDevolucion = {};
 	document.addEventListener("DOMContentLoaded", async function () {
 		await cargarInstitucionesBancarias();
@@ -420,7 +421,7 @@ Veris - Devoluciones
 
 	async function parametrosDevoluciones(){
 		let args = [];
-        args["endpoint"] = api_url + `/facturacion/v1/util/parametros_devoluciones_automaticas?codigoEmpresa=1`;
+        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/util/parametros_devoluciones_automaticas?codigoEmpresa=1`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";
@@ -452,7 +453,7 @@ Veris - Devoluciones
 
 	async function cargarTiposCuenta(){
 		let args = [];
-        args["endpoint"] = api_url + `/facturacion/v1/util/tipos_cuenta_bancaria`;
+        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/util/tipos_cuenta_bancaria`;
         args["method"] = "GET";
         args["showLoader"] = false;
         args["token"] = "{{ $accessToken }}";
@@ -480,7 +481,7 @@ Veris - Devoluciones
 		$('.box-datos').empty();
 		let numeroComprobante = `${$('#first-input').val()}${$('#medium-input').val()}${$('#last-input').val()}`
 		let args = [];
-        args["endpoint"] = api_url + `/facturacion/v1/comprobantes/factura_paciente/consulta_por_anulacion/devolucion_bancaria?codigoEmpresa=1&numeroComprobante=${numeroComprobante}`;
+        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/comprobantes/factura_paciente/consulta_por_anulacion/devolucion_bancaria?codigoEmpresa=1&numeroComprobante=${numeroComprobante}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";
@@ -536,7 +537,7 @@ Veris - Devoluciones
 
 	async function solicitarNC(){
 		let args = [];
-        args["endpoint"] = api_url + `/facturacion/v1/comprobantes/anulacion_paciente/devolucion_bancaria?codigoEmpresa=${dataDevolucion.comprobante.codigoEmpresa}`;
+        args["endpoint"] = api_url + `/${api_war_facturacion}/v1/comprobantes/anulacion_paciente/devolucion_bancaria?codigoEmpresa=${dataDevolucion.comprobante.codigoEmpresa}`;
         args["method"] = "POST";
         args["showLoader"] = true;
         args["token"] = "{{ $accessToken }}";

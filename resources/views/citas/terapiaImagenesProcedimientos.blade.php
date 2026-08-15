@@ -473,6 +473,8 @@ Mi Veris - Citas - {{ $titulo }}
             let convenio = JSON.parse($(this).attr('convenio-rel'));
             let esTerapiaAgrupada = $(this).attr('esTerapiAgrupada-rel');
             let datosTratamiento;
+
+            console.log({esTerapiaAgrupada});
             
             if(esTerapiaAgrupada !== undefined && esTerapiaAgrupada !== null && esTerapiaAgrupada == "true"){
                 esTerapiaAgrupada = true;
@@ -480,7 +482,17 @@ Mi Veris - Citas - {{ $titulo }}
             }else{
                 esTerapiaAgrupada = false;
             }
-            // console.log('datosServicio', datosServicio);
+
+            if(datosServicio.permiteReserva == "N" && !esTerapiaAgrupada){
+                $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
+
+            console.log("*******************************");
+            console.log('datosServicio', datosServicio);
+            console.log('datosTratamiento', datosTratamiento);
+            console.log("*******************************");
 
             let modalidad;
             if (datosServicio.modalidad === 'ONLINE') {
@@ -527,6 +539,12 @@ Mi Veris - Citas - {{ $titulo }}
             }
 
             localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+            if (dataCita.online == 'S') {
+                window.location.href = '/citas-elegir-fecha-doctor/{{ $tokenCita }}';
+            } else {
+                // ir a central medica
+                window.location.href = '/seleccionar-datos-cita/{{ $tokenCita }}';
+            }
         });
 
         $(document).on('click', '.btn-CambiarFechaCita', function(){
@@ -803,11 +821,10 @@ Mi Veris - Citas - {{ $titulo }}
         fechaDesde = formatearFecha(fechaDesde);
         fechaHasta = formatearFecha(fechaHasta);
 
-        if (estado == 'PENDIENTE') {
-            args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=N&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-        } else if (estado == 'REALIZADO') {
-            args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=TODOS&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=S&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
-        }
+        let esDetalleRealizado = ( estado == 'PENDIENTE') ? "N" : "S";
+
+        args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${numeroPaciente}&canalOrigen=${canalOrigen}&estadoTratamiento=${estado}&fechaInicio=${fechaDesde}&fechaFin=${fechaHasta}&page=1&perPage=100&esDetalleRealizado=${esDetalleRealizado}&esResumen=N&tipoServicio=${servicio}&plataforma=${plataforma}&version=${version}&aplicaNuevoControl=false`;
+
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
@@ -888,10 +905,18 @@ Mi Veris - Citas - {{ $titulo }}
                                                 </div>
                                             </div>
                                         </div>`;
-                                    if(laboratorio.mostrarTerapiasAgrupadas === "N" || detalles.tipoCard !== "AGENDA_TERAPIA"){
+                                    {{-- if(laboratorio.mostrarTerapiasAgrupadas === "N" || detalles.tipoCard !== "AGENDA_TERAPIA"){
                                         elementos += elem_tmp;
                                     }else{
                                         if(detalles.tipoCard == "AGENDA_TERAPIA"){
+                                            elementos += elem_tmp;
+                                        }
+                                    } --}}
+
+                                    if(laboratorio.mostrarTerapiasAgrupadas === "N"){
+                                        elementos += elem_tmp;
+                                    }else{
+                                        if(laboratorio.mostrarTerapiasAgrupadas == "S" && detalles.tipoServicio != "TERAPIA"){
                                             elementos += elem_tmp;
                                         }
                                     }

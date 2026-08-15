@@ -411,11 +411,16 @@ Mi Veris - Politica-privacidad-datos
         args["showLoader"] = true;
         args["bodyType"] = "json";
 
+        let acepta = true;
+        if($('#inlineRadioCancelacionSi').prop('checked')){
+            acepta = false;
+        }
+
         args["data"] = JSON.stringify({
             // enviar datos del formulario
             "usuario": "{{ Session::get('userData')->numeroIdentificacion }}",
             "idPaciente": {{ Session::get('userData')->numeroPaciente }},
-            "aceptaPoliticas": true,
+            "aceptaPoliticas": acepta,
             "primerNombre": $('#primerNombre').val(),
             "segundoNombre": $('#segundoNombre').val(),
             "primerApellido": $('#prmerApellido').val(),

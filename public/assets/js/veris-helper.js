@@ -40,8 +40,10 @@ async function call(args){
     
     if(args.token){
         myHeaders.append("Authorization","Bearer "+ args.token);
-        myHeaders.append("Application", _application);
-        myHeaders.append("IdOrganizacion", _idOrganizacion);
+        if (!args?.method?.includes(`/${api_war}/`)) {
+            myHeaders.append("Application", _application);
+            myHeaders.append("IdOrganizacion", _idOrganizacion);
+        }
         // console.log(myHeaders)
     }
     requestOptions.headers = myHeaders;
@@ -134,8 +136,10 @@ async function callInformes(args) {
     
     if(args.token){
         myHeaders.append("Authorization", "Bearer " + args.token);
-        myHeaders.append("Application", _application);
-        myHeaders.append("IdOrganizacion", _idOrganizacion);
+        if (!args?.method?.includes(`/${api_war}/`)) {
+            myHeaders.append("Application", _application);
+            myHeaders.append("IdOrganizacion", _idOrganizacion);
+        }
     } else if(_token !== undefined && _token !== ""){
         myHeaders.append("Authorization", "Bearer " + _token);
     }
@@ -711,22 +715,9 @@ async function aplicarFiltrosResultados(contexto, tipoServicio) {
     fechaHasta = formatearFecha(fechaHasta);
 
     if (contexto === 'contextoAplicarFiltros') {
-        console.log('exito');
+        console.log('exito - '+pacienteSeleccionado);
         await consultarResultadosPorTipo(pacienteSeleccionado, tipoIdentificacion, fechaDesde, fechaHasta, tipoServicio, esAdmin);
         $('#filtroTratamientos').offcanvas('hide');
-    }
-}
-
-// limpiar filtros para resultados
-async function limpiarFiltrosResultados(contexto, tipoServicio) {
-    if (contexto === 'contextoLimpiarFiltros') {
-        $('input[name="listGroupRadios"]').prop('checked', false);
-        $('input[name="listGroupRadios"]').first().prop('checked', true);
-        $('#fechaDesde').val('');
-        $('#fechaHasta').val('');
-        let pacienteSeleccionado = "{{ Session::get('userData')->numeroIdentificacion }}";
-        let  tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
-        await consultarResultadosPorTipo(pacienteSeleccionado, tipoIdentificacion, '', '', tipoServicio, 'S');
     }
 }
 
@@ -872,6 +863,9 @@ function capitalizarPrimeraLetra(texto) {
 
 
 function capitalizarCadaPalabra(texto) {
+    if(texto == null){
+        return ``;
+    }
     return texto.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
 }
 
