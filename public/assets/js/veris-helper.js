@@ -40,7 +40,7 @@ async function call(args){
     
     if(args.token){
         myHeaders.append("Authorization","Bearer "+ args.token);
-        if (!args?.method?.includes(`/${api_war}/`)) {
+        if (!args?.endpoint?.includes(`/${api_war}/`)) {
             myHeaders.append("Application", _application);
             myHeaders.append("IdOrganizacion", _idOrganizacion);
         }
@@ -136,7 +136,7 @@ async function callInformes(args) {
     
     if(args.token){
         myHeaders.append("Authorization", "Bearer " + args.token);
-        if (!args?.method?.includes(`/${api_war}/`)) {
+        if (!args?.endpoint?.includes(`/${api_war}/`)) {
             myHeaders.append("Application", _application);
             myHeaders.append("IdOrganizacion", _idOrganizacion);
         }
