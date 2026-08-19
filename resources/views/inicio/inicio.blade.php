@@ -1235,6 +1235,12 @@ Mi Veris - Inicio
                     </div>
                 </div>`;
             }else{
+                let noPermiteCambio = ``;
+                if(citas.permiteCambiar == "N"){
+                    noPermiteCambio += `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
+                            <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
+                        </div>`;
+                }
                 elemento += `<div class="swiper-slide">
                     <div class="card h-100 bg-transparent shadow-none">
                         <div class="card-body p--2">
@@ -1255,7 +1261,7 @@ Mi Veris - Inicio
                                 <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
                             ` : ''}
                             <div class="mt-auto">
-                                ${(citas.permiteCambiar == "S" && citas.esSesionOdonto != "S") ? `<div class="${(citas.estaPagada === "S" && citas.esVirtual === "N" && citas.idTeleconsulta === null) ? `btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16`: `btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none`} btn-opciones-cita" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
+                                ${( citas.esSesionOdonto != "S") ? `<div class="${(citas.estaPagada === "S" && citas.esVirtual === "N" && citas.idTeleconsulta === null) ? `btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16`: `btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none`} btn-opciones-cita" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
                                 ` : (citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
                                         <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
                                     </div>` : ( citas.estaPagada == "S" ) ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>` : `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
@@ -1269,6 +1275,7 @@ Mi Veris - Inicio
                             ${(esConsultaOnline || citas.idTeleconsulta !== null) && citas.estaPagada == "S" ? `
                                 <a href="${citas.idTeleconsulta}" class="btn btn-sm bg-veris-ai fs--1 ms-2 m-0 line-height-16 text-white">Entrar<i class="fa-solid fa-video ms-2"></i></a>
                             ` : ''}
+                            ${noPermiteCambio}
                         </div>
                     </div>
                 </div>`;
