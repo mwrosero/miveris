@@ -916,15 +916,17 @@ Mi Veris - Citas - Mis citas
             numeroOrden = datos.datosCita.numeroOrden;
         }
 
-        console.log(datos);
-        let numeroTransaccion = datos.datosDocumento.numeroTransaccion
+        let numeroTransaccion = ``;
+        if(datos.datosDocumento.numeroTransaccion !== null){
+            numeroTransaccion += `&numeroTransaccion=${datos.datosDocumento.numeroTransaccion}`;
+        }
 
         if (tipoServicio == 'RECETA') {
             console.log('entro a receta');
-            args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=&secuenciaReceta=${datos.datosDocumento.secuenciaReceta}&numeroTransaccion=${numeroTransaccion}`;
+            args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=&secuenciaReceta=${datos.datosDocumento.secuenciaReceta}${numeroTransaccion}`;
         }
         else {
-            args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=${numeroOrden}&numeroTransaccion=${numeroTransaccion}`;
+            args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtencion}&tipoServicio=${tipoServicio}&numeroOrden=${numeroOrden}${numeroTransaccion}`;
         }
         
         args["method"] = "GET";
