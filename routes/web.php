@@ -23,10 +23,10 @@ use App\Http\Controllers\ExternalController;
 |
 */
 
-Route::any('{any}', function () {
-    return view('external.mantenimiento.index')
-                ->with('accessToken',"");
-})->where('any', '.*');
+// Route::any('{any}', function () {
+//     return view('external.mantenimiento.index')
+//                 ->with('accessToken',"");
+// })->where('any', '.*');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [SeguridadesController::class, 'login'])->name('login')->withoutMiddleware(['loggedUser']);
