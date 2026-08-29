@@ -194,7 +194,7 @@ Elige datos para la Cita
                                         <div class="col-12 p-2 ps-3 pe-3 rounded-3 d-flex justify-content-start align-items-center bg-white item-especialidad waves-effect shadow-item-modal cursor-pointer especialidad-item" type-rel="button">
                                             <div class="avatar avatar-10 me-2">
                                                 <div class="avatar-especialidad">
-                                                    <img src="https://dikg1979lm6fy.cloudfront.net/especialidades/ico_cirugia_oncologica_v2.png" alt="CIRUGÍA ONCOLOGICA" onerror="this.src='http://127.0.0.1:7000/assets/img/svg/especialidades/medicina_general.svg'">
+                                                    <img src="https://dikg1979lm6fy.cloudfront.net/especialidades/ico_cirugia_oncologica_v2.png" alt="CIRUGÍA ONCOLOGICA" onerror="this.src='{{asset('assets/img/svg/especialidades/medicina_general.svg')}}'">
                                                 </div>
                                             </div>
                                             <p class="text-veris fs--16 fw-medium text-one-line mb-0">Cirugía Oncologica</p>
@@ -231,7 +231,7 @@ Elige datos para la Cita
                                             <div class="card-body p--2">
                                                 <div class="d-flex">
                                                     <div class="avatar avatar-88 me-2">
-                                                        <img src="https://dikg1979lm6fy.cloudfront.net/fotosCentrales/1_46.jpg" onerror="this.src='http://127.0.0.1:7000/assets/img/svg/dummy_central.svg'" class="card-img-top" alt="VERIS URGENCIAS AMBULATORIAS">
+                                                        <img src="https://dikg1979lm6fy.cloudfront.net/fotosCentrales/1_46.jpg" onerror="this.src='{{asset('assets/img/svg/dummy_central.svg')}}'" class="card-img-top" alt="VERIS URGENCIAS AMBULATORIAS">
                                                     </div>
                                                     <div class="col">
                                                         <h6 class="fs--16 line-height-20 fw-medium mb-2">Veris - Juan Tanca Marengo</h6>
@@ -886,14 +886,17 @@ Elige datos para la Cita
         args["method"] = "GET";
         args["showLoader"] = true;
         const data = await call(args);
+        console.log(data);
         if(data.code == 200){
-            let existeSucursal = data.data.some(sucursal => parseInt(sucursal.codigoSucursal) === parseInt(dataCita.central.codigoSucursal));
-            if(!existeSucursal){
-                $('.label-sugerencia-central').hide();
-                $('#btn-central p').html(`Seleccionar`);
-                $('#btn-central').attr('data-rel','');
-                $('#btn-central').addClass(`selectable`);
-                delete dataCita.central;
+            if(dataCita.hasOwnProperty('central')){
+                let existeSucursal = data.data.some(sucursal => parseInt(sucursal.codigoSucursal) === parseInt(dataCita.central.codigoSucursal));
+                if(!existeSucursal){
+                    $('.label-sugerencia-central').hide();
+                    $('#btn-central p').html(`Seleccionar`);
+                    $('#btn-central').attr('data-rel','');
+                    $('#btn-central').addClass(`selectable`);
+                    delete dataCita.central;
+                }
             }
         }
     }

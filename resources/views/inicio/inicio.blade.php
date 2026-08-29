@@ -612,9 +612,11 @@ Mi Veris - Inicio
         });
 
         $('body').on('click', '.link-item-banner', async function(){
-            console.log('Banner click')
             let url = $(this).attr('url-rel');
             let codigoPaquete = $(this).attr('codigoPaquete-rel');
+            console.log('Banner click');
+            console.log(url);
+            console.log(codigoPaquete);
 
             if (typeof codigoPaquete === "undefined"){
                 
@@ -792,6 +794,8 @@ Mi Veris - Inicio
                             attrAditional = `type='button' codigoPaquete-rel='${v.valorAdicional}'`;
                         }else if(v.nombreTipoObjeto == "BANNER_AGENDAMIENTO"){
                             classAdd = `banner-cita-nueva`;
+                        }else if(v.nombreTipoObjeto == "BANNER_PROMOCIONES"){
+                            attrAditional = `type='button' url-rel='/promociones'`;
                         }
 
                         elem += `<div class="swiper-slide">
