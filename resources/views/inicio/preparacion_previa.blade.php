@@ -74,8 +74,12 @@ Mi Veris - Preparación previa
     		$('.form-check').addClass('d-none')
     		// $('.box-actions').addClass('sticky-bottom').removeClass('d-none');
     		$('.box-actions').removeClass('d-none');
-    		$('#btn-next').html(`<span class="shadow-none">Ir a la sección domicilio</span>`);
-    		$('#btn-next').removeClass('disabled');
+    		if(_canalOrigen == "VER_PMF"){
+	    		$('#btn-next').html(`<span class="shadow-none">Entendido</span>`);
+	    	}else{
+	    		$('#btn-next').html(`<span class="shadow-none">Ir a la sección domicilio</span>`);
+	    	}
+	    	$('#btn-next').removeClass('disabled');
     	}
 
     	$('body').on('change', '#checkTerminosCondicion', function(){
@@ -89,6 +93,10 @@ Mi Veris - Preparación previa
         $('body').on('click', '#btn-next', async function(){
         	// window.history.back();
         	// return;
+        	if(_canalOrigen == "VER_PMF"){
+        		window.history.back();
+        		return;
+        	}
         	if(dataCita.promocion.tipoServicio == "LABORATORIO"){
         		{{-- window.history.back(); --}}
         		location.href = `/servicio-domicilio`

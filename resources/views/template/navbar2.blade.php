@@ -15,6 +15,7 @@
             <img src="{{ asset('assets/img/'.config('app.subdomain').'/logo-'.config('app.subdomain').'.svg') }}" class="ml-lg-12" alt="veris" width="84">
         </a>
         <ul class="navbar-nav flex-row align-items-center">
+            @if(config('app.subdomain') == "veris")
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-4 me-xl-1" id="dropdownNotifications">
                 <a class="nav-link dropdown-toggle hide-arrow fs-3 position-relative" data-bs-toggle="offcanvas" href="#offcanvasEnd" role="button" aria-controls="offcanvasEnd" id="dropdownNotifications" >
@@ -23,6 +24,7 @@
                     <span class="icon-button__badge d-none" id="numeroNotificaciones"></span>
                 </a>
             </li>
+            @endif
             <!--/ Notification -->
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">

@@ -76,7 +76,13 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <button class="btn fs--18 fw-medium line-height-24 px-4 py-3 d-grid w-100 bg-veris btn-recuperar" type="button">Recuperar contraseña</button>
     </div>
     <div>
-        <p class="txt-alt fs-12 text-center">Revisa en tu bandeja de correo no deseado. Si no has recibido el correo con el código, comunícate al <b>6009600</b>.</p>
+        <p class="txt-alt fs-12 text-center">Revisa en tu bandeja de correo no deseado. Si no has recibido el correo con el código, comunícate al 
+            @if(config('app.subdomain') == "veris")
+                <b>6009600</b>
+            @else
+                <b>5505070</b>
+            @endif
+        .</p>
     </div>
 </form>
 <!-- /Content Recuperar Clave -->

@@ -292,7 +292,7 @@ Mi Veris - Citas - Mis Promociones
         // if(parseInt({{ Session::get('userData')->numeroPaciente }}) !== paciente.numeroPaciente){
 
         // }
-        let canalOrigen = 'MVE_CMV';//_canalOrigen
+        let canalOrigen = _canalOrigen
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${canalOrigen}&codigoEmpresa=1&tipoFiltro=${tipoFiltro}&page=${page}&perPage=${perPage}&idPaciente={{ Session::get('userData')->numeroPaciente }}&idPacienteFiltrar=${ paciente.numeroPaciente }&estaPagado=true&verDetalle=false`;
         args["method"] = "GET";
