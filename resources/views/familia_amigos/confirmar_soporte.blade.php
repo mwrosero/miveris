@@ -120,7 +120,7 @@ Mi Veris - Agregar familiar o amigo
                                             <div class="fs--16 line-height-20 text-center counter">
                                                 Solicitar nuevo código en <span id="timer"></span>
                                             </div>
-                                            <div class="btn-reenviar text-veris-ai text-center fs--16 line-height-20 d-none">Solicitar nuevo código</div>
+                                            <div style="button" class="btn-reenviar text-veris-ai text-center fs--16 line-height-20 d-none">Solicitar nuevo código</div>
                                         </div>
                                     </div>
                                     <div class="col-12 mt--32">
@@ -159,6 +159,10 @@ Mi Veris - Agregar familiar o amigo
         $('body').on('click', '#btnContinuar', async function(){
             await validarCodigo();
         })
+
+        $('body').on('click', '.btn-reenviar', async function(){
+            await sendCode()
+        });
 
         inputs.forEach((input, index) => {
             input.addEventListener("input", function () {
