@@ -119,10 +119,12 @@ Mi Veris - Preparación previa
     	// $('.subtitle-preparacion').html(`${ (dataCita.promocion.tipoServicio == "LABORATORIO") ? `Preparación previa` : `Lee y acepta la preparación previa` }`)
     	$('.subtitle-preparacion').html(`${ (dataCita.promocion.tipoServicio == "LABORATORIO") ? `Preparación previa` : `` }`)
     	if(dataCita.promocion.tipoServicio == "LABORATORIO"){
-    		$('.box-content-info').prepend(`<div class="d-flex justify-content-between align-items-center p-2 mb-3 rounded-3 box-legend">
-    			<i class="fa-solid fa-circle-info me-3 fs-24 text-primary-veris"></i>
-    			<p class="mb-0 fs--1 line-height-16 my-1"><span class="fw-bold">Solicita</span> la visita de laboratorio a domicilio en la <span class="fw-bold">sección domicilio.</span></p>
-    		</div>`)
+    		if(_canalOrigen != "VER_PMF"){
+	    		$('.box-content-info').prepend(`<div class="d-flex justify-content-between align-items-center p-2 mb-3 rounded-3 box-legend">
+	    			<i class="fa-solid fa-circle-info me-3 fs-24 text-primary-veris"></i>
+	    			<p class="mb-0 fs--1 line-height-16 my-1"><span class="fw-bold">Solicita</span> la visita de laboratorio a domicilio en la <span class="fw-bold">sección domicilio.</span></p>
+	    		</div>`)
+	    	}
     	}
     	let elem = ``;
     	$.each(dataCita.promocion.preparacionPrevia, function(key, value){
