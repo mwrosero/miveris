@@ -335,7 +335,9 @@ Mi Veris - Citas - Detalle
                     </div>`; 
                 })
                 if(mostrarBoxLlamada){
-                    $('.box-llamada-all').removeClass('d-none');
+                    @if(config('app.subdomain') == "veris")
+                        $('.box-llamada-all').removeClass('d-none');
+                    @endif
                 }
                 $('#contenedorPromocionPendiente').html(elemPendiente);
             }else{
