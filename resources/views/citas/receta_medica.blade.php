@@ -470,8 +470,14 @@ Mi Veris - Citas - Receta médica
         console.log('datosPdfff', datos);
         let args = [];
         let canalOrigen = 'APP_CMV'
+
+        let numeroTransaccion = ``;
+        {{-- if(datos.datosDocumento.numeroTransaccion !== null){
+            numeroTransaccion += `&numeroTransaccion=${datos.datosDocumento.numeroTransaccion}`;
+        } --}}
         
-        args["endpoint"] = api_url + `/${api_war}/v1/recetas/archivoreceta?codigoReceta=${datos.secuenciaReceta}`;
+        // args["endpoint"] = api_url + `/${api_war}/v1/recetas/archivoreceta?codigoReceta=${datos.secuenciaReceta}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${datos.secuenciaAtencion}&tipoServicio=RECETA&numeroOrden=&secuenciaReceta=${datos.secuenciaReceta}${numeroTransaccion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
         console.log('arsgs', args["endpoint"]);
@@ -695,8 +701,11 @@ Mi Veris - Citas - Receta médica
                     return respuesta;
                     break;
                 case "RECETAS" :
+                    //console.log(estado)
                     let respuestaRecetas = "";
-                    respuestaRecetas += ` <button type="button" class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                    if(estado == "PENDIENTE"){
+                        respuestaRecetas += ` <button type="button" class="btn btn-sm text-primary-veris fw-normal fs--1 line-height-16 px-3 py-2 shadow-none" data-rel='${JSON.stringify(datosServicio)}'>Ver orden</button>`;
+                    }
 
                     if(estado == 'REALIZADO'){
                         //respuestaRecetas = "";
