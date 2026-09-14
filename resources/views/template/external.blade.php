@@ -77,6 +77,7 @@
         </script>
         
         @include('template.analytics-external')
+        @include('template.modal_ppd2')
     </head>
 
     <body>

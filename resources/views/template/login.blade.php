@@ -84,6 +84,7 @@
         </script>
         
         @include('template.analytics')
+        @include('template.modal_ppd2')
     </head>
 
     <body class="bg-fondo">

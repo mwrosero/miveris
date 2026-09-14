@@ -12,6 +12,8 @@
 
 @endsection
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0.4')}}">
 <!-- Logo -->
 
 <div class="text-center mb-2">
