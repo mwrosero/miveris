@@ -1351,7 +1351,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
 
 let objPPD = [];
-async function cargarConfiguracionesHome(usuario){
+async function cargarConfiguracionesHome(usuario, modalShowId = 'modalPPD2'){
     let args = [];
     args["endpoint"] = api_url + `/${api_war}/v1/configuraciones/home?canalOrigen=${window.config.canalOrigen}&usuario=${usuario}&nemonico=FLUJO_CONSENTIMIENTO`;
     args["method"] = "GET";
@@ -1365,9 +1365,11 @@ async function cargarConfiguracionesHome(usuario){
         let resumen = await constructHtml(opt);
         // console.log(resumen);
         $('.resumen-consentimiento').html(resumen);
-        $('#modalPPD2').modal('show');
+        $(`#${modalShowId}`).modal('show');
         await renderizarPantallasPPD();
     }
+
+    return data;
 }
 
 async function marcarTodosConsentimientos(aceptar = true) {
@@ -1554,6 +1556,9 @@ async function guardarPPD2(esAceptacionTotal = false){
     console.log(data);
     if(data.code == 200){
         $('#modalPPD2').modal('hide');
+        if(dataCita !== null){
+            await redirectAfterPPD2();
+        }
     }else{
         $('#modalPPD2').modal('hide');
         alert(data.message);

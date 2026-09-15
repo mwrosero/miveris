@@ -17,7 +17,7 @@
 
             <!-- 3. PIE: Botones fijos abajo (fuera del scroll) -->
             <div class="modal-footer border-0 justify-content-center p-3 pt-0">
-                <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 w-100">
+                <div class="d-flex flex-column flex-lg-row justify-content-center align-items-center gap-3 w-100">
                     <button type="button" id="btnAceptarPPD2" class="btn btn-lg btn-primary-veris fw-medium fs--18 px-5 py-3 btn-custom-width">
                         Aceptar todo
                     </button>

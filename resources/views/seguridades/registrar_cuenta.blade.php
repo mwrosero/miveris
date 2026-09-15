@@ -395,6 +395,13 @@
 			if(!errors){
 				let registro = await registrarCuenta();
 				if(registro.code == 200){
+					window.config.userInfo = {
+					    "codigoTipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
+					    "numeroIdentificacion": getInput('numeroIdentificacion')
+					}
+
+					await cargarConfiguracionesHome(window.config.userInfo.numeroIdentificacion);
+
 					$('.logo-login').hide();
 					$('.email-masked').html(enmascararEmail(getInput('mail')));
 					step2.classList.add("d-none");

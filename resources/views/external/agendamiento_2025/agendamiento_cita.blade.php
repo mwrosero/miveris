@@ -22,6 +22,24 @@ Veris - Citas
 <script src="{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}/assets/js/veris-helper.js?v=1.0.6"></script>
 
 @include('external.components.navbar-agendamiento', ['showInfo' => false])
+
+<!-- Modal info agendador-->
+<div class="modal fade" id="modalInfoAgendador" tabindex="-1" aria-labelledby="modalInfoAgendador" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body text-center p-3">
+                <h1 class="modal-title fs--20 line-height-24 my-3">Importante</h1>
+                <hr>
+                <p class="fs--1 fw-normal text-veris text-start">¿La cita que estas agendando es para tí o para un tercero?</p>
+            </div>
+            <div class="modal-footer pt-0 pb-3 px-3">
+                <button type="button" class="btn btn-agendador btn-primary-veris fw-medium fs--18 m-0 w-100 px-4 py-3 mb-2" data-bs-dismiss="modal" tipo-rel="S">La cita es para mí</button>
+                <button type="button" class="btn btn-agendador lg btn-outline-primary-veris fw-medium fs--18 m-0 w-100 px-4 py-3" data-bs-dismiss="modal" tipo-rel="N">La cita es para un tercero</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="flex-grow-1 container-p-y pt-0 pb-0">
 	<section class="p-0 px-md-3">
         <div class="container">
@@ -101,8 +119,19 @@ Veris - Citas
         		}
         	}
         })
+
+        $('body').on('click', '.btn-agendador', async function(){
+        	let tipo = $(this).attr("tipo-rel");
+        	if(tipo == "S"){
+        		$(`#modalPPD2`).modal('show');
+        	}else{
+        		await redirectAfterPPD2();
+        	}
+        })
+
     })
 
+	let dataCita;
     async function buscarUsuario(){
     	let args = [];
 	    args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?tipoIdentificacion=${getInput('tipoIdentificacion')}&numeroIdentificacion=${getInput('numeroIdentificacion')}`;
@@ -112,7 +141,7 @@ Veris - Citas
 	    const data = await call(args);
 	    
 	    if(data.code == 200){
-	    	let dataCita;
+	    	
 	    	if(data.data === null){
 	    		dataCita = {
 	    			"registro": {
@@ -126,12 +155,28 @@ Veris - Citas
 	    		dataCita = {
 	    			"paciente": data.data
 	    		}
-	    		localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
-	    		location.href = `/external/agendamiento/seleccionar-datos-cita/{{ $tokenCita }}`;
+
+	    		window.config.userInfo = {
+				    "codigoTipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
+				    "numeroIdentificacion": getInput('numeroIdentificacion')
+				}
+
+	    		let configHome = await cargarConfiguracionesHome(getInput('numeroIdentificacion'), 'modalInfoAgendador');
+	    		console.log(configHome);
+	    		if(configHome.data.length == 0){
+	    			await redirectAfterPPD2();
+	    		}
+	    		{{-- localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+	    		location.href = `/external/agendamiento/seleccionar-datos-cita/{{ $tokenCita }}`; --}}
 	    	}
 	    }else{
 	    	showMessage('error', 'Atención', data.message);
 	    }
+    }
+
+    async function redirectAfterPPD2(){
+		localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+		location.href = `/external/agendamiento/seleccionar-datos-cita/{{ $tokenCita }}`;
     }
 </script>
 <style>
