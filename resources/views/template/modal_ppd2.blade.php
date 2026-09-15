@@ -6,7 +6,7 @@
         <div class="modal-content">
             
             <!-- 2. CUERPO: Con el contenido que scrollea -->
-            <div class="modal-body p-3 py-4 text-start overflow-hidden">
+            <div class="modal-body p-3 py-4 text-start">
                 <div class="resumen-consentimiento mt-3"></div>
                 <div class="full-consentimiento d-none mt-3"></div>
 
@@ -47,7 +47,7 @@
     /* Permitir scroll solo cuando se despliegue full-consentimiento */
     .full-consentimiento:not(.d-none) {
         max-height: 50vh;
-        overflow-y: auto;
+        {{-- overflow-y: auto; --}}
         padding-right: 5px; /* Evita que la barra de scroll tape el contenido */
     }
 
@@ -111,12 +111,18 @@
     }
 
     /* Limita el texto a máximo 4 líneas cuando tiene la clase */
+    /* Reemplaza .text-clamp-4 con esto */
     .text-clamp-4 {
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
+        display: block; /* Cambiamos -webkit-box por block */
+        max-height: 4.8em; /* Ajusta según el line-height (~4 líneas) */
+        line-height: 1.2em;
         overflow: hidden;
-        text-overflow: ellipsis;
+        transition: max-height 0.25s ease;
+    }
+
+    /* Agrega esta clase para cuando expandas el texto desde JavaScript */
+    .text-clamp-4.expanded {
+        max-height: 2000px; /* Permite desplegar todo el contenido sin saltos */
     }
 
     .btn-ppd-disabled{

@@ -1318,14 +1318,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         const $icon = $btn.find('i');
         const $label = $btn.find('.lbl-text');
 
-        $paragraph.toggleClass('text-clamp-4');
+        // Alternamos la clase 'expanded' sin quitar 'text-clamp-4'
+        $paragraph.toggleClass('expanded');
 
-        if ($paragraph.hasClass('text-clamp-4')) {
-            $label.text('Mostrar más');
-            $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
-        } else {
+        if ($paragraph.hasClass('expanded')) {
             $label.text('Mostrar menos');
             $icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+        } else {
+            $label.text('Mostrar más');
+            $icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
         }
     });
 
