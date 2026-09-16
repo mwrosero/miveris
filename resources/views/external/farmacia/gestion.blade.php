@@ -327,8 +327,10 @@
 		    $(document).on('click', '.btn-ver-receta', async function(){
 		    	let transaccion = $(this).attr('transaccion-rel');
 		    	let secuencia = $(this).attr('secuencia-rel');
+		    	let secuenciaAtenciones = $(this).attr('secuenciaAtenciones-rel');
+
 				$("#numeroTransaccionReceta").html(`Receta transacción: ${transaccion}`);
-				await cargarReceta(secuencia);
+				await cargarReceta(secuencia, secuenciaAtenciones);
 		    })
 
 		    $(document).on('input', '.control-limites', function() {
@@ -391,12 +393,12 @@
 		    return todoValido; // Te devuelve true si todos pasaron la validación, o false si falló alguno
 		}
 
-		async function cargarReceta(secuenciaReceta){
+		async function cargarReceta(secuenciaReceta, secuenciaAtenciones){
 			let args = [];
 	        let canalOrigen = 'APP_CMV'
 	        
-	        {{-- args["endpoint"] = api_url + `/${api_war}/v1/recetas/archivoreceta?codigoReceta=${secuenciaReceta}`; --}}
-	        args["endpoint"] = `https://api.phantomx.com.ec/digitales/v1/recetas/archivoreceta?codigoReceta=${secuenciaReceta}`;
+	        {{-- args["endpoint"] = `https://api.phantomx.com.ec/digitales/v1/recetas/archivoreceta?codigoReceta=${secuenciaReceta}`; --}}
+	        args["endpoint"] = api_url + `/${api_war}/v1/hc/archivos/generarDocumento?secuenciaAtencion=${secuenciaAtenciones}&tipoServicio=RECETA&numeroOrden=&secuenciaReceta=${secuenciaReceta}`;
 	        args["method"] = "GET";
 	        args["token"] = tokenDigitales;
 	        args["showLoader"] = true;
@@ -504,7 +506,7 @@
         	$.each(data, function(key, value){
         		let btn_factura = ``;
         		if(value.secuenciaReceta !== null){
-        			btn_factura = ` <div type="button" class="btn-ver-receta" title="Ver receta" transaccion-rel="${value.numeroTransaccion}" secuencia-rel="${value.secuenciaReceta}">
+        			btn_factura = ` <div type="button" class="btn-ver-receta" title="Ver receta" transaccion-rel="${value.numeroTransaccion}" secuenciaAtenciones-rel="${value.secuenciaAtenciones}" secuencia-rel="${value.secuenciaReceta}">
         				<i class="fa-solid fa-file-pdf"></i>
         			</div>`;
         		}
