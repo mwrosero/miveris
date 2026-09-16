@@ -1345,8 +1345,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     });
 
     $('body').on('change', '.consentimiento-group input[type="radio"]', function () {
-        $('#btnGuardarPPD2').removeClass('btn-ppd-disabled');
-    })
+        // 1. Obtener la cantidad total de grupos de consentimiento
+        const totalGrupos = $('.consentimiento-group').length;
+
+        // 2. Contar cuántos grupos tienen al menos un radio seleccionado
+        const gruposRespondidos = $('.consentimiento-group').filter(function () {
+            return $(this).find('input[type="radio"]:checked').length > 0;
+        }).length;
+
+        // 3. Evaluar si se respondieron todos los grupos
+        if (totalGrupos > 0 && totalGrupos === gruposRespondidos) {
+            $('#btnGuardarPPD2').removeClass('btn-ppd-disabled');
+        } else {
+            // Mantiene o regresa el estado deshabilitado si falta alguno
+            $('#btnGuardarPPD2').addClass('btn-ppd-disabled');
+        }
+    });
 
 });
 
