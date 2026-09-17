@@ -1449,8 +1449,7 @@ async function constructHtml(configuraciones, nombrePantalla, type) {
         const esUltima = index === configuraciones.length - 1;
         let infoAditional = ``
         if(esUltima && type == "resumen" && nombrePantalla == "RESUMEN_CONSENTIMIENTO"){
-            infoAditional += `<span class="text-decoration-underline fs--2 line-height-16 my-3 text-veris-ai link-mostrar-todo-ppd2 cursor-pointer"> Ver política y consentimiento de datos personales.
-                </span>`;
+            infoAditional += `<span class="text-decoration-underline fs--2 line-height-16 my-3 text-veris-ai link-mostrar-todo-ppd2 cursor-pointer"> Ver política y consentimiento de datos personales.</span>`;
         }
 
         if (!item || !item.nombreTipoObjeto) continue;
