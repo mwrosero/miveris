@@ -1571,7 +1571,8 @@ async function guardarPPD2(esAceptacionTotal = false){
     console.log(data);
     if(data.code == 200){
         $('#modalPPD2').modal('hide');
-        if(dataCita !== null){
+        // if(dataCita !== null){
+        if(typeof dataCita !== 'undefined' && dataCita !== null){
             await redirectAfterPPD2();
         }
     }else{
