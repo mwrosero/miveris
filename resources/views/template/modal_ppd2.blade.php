@@ -1,6 +1,6 @@
 <!-- Modal PPD 2-->
 <!-- Modal PPD 2-->
-<div class="modal fade" id="modalPPD2" tabindex="-1" aria-labelledby="modalError400Label" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="modalPPD2" tabindex="-1" aria-labelledby="modalPPD2Label" data-bs-backdrop="static" data-bs-keyboard="false">
     <!-- 1. Agregada la clase modal-dialog-scrollable -->
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable mx-auto">
         <div class="modal-content">
@@ -10,9 +10,9 @@
                 <div class="resumen-consentimiento mt-3"></div>
                 <div class="full-consentimiento d-none mt-3"></div>
 
-                <p class="text-decoration-underline fs--2 line-height-16 my-3 text-veris-ai link-mostrar-todo-ppd2 cursor-pointer">
+                {{-- <p class="text-decoration-underline fs--2 line-height-16 my-3 text-veris-ai link-mostrar-todo-ppd2 cursor-pointer">
                     Ver política y consentimiento de datos personales.
-                </p>
+                </p> --}}
             </div>
 
             <!-- 3. PIE: Botones fijos abajo (fuera del scroll) -->

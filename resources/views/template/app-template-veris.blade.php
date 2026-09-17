@@ -67,7 +67,7 @@
         const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
         window.config = {
             subdomain: @json(config('app.subdomain')),
-            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "MVE_CMV" : "VER_PMF",
+            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "MVE_CMV" : "MVE_PMF",
             userInfo: @json(Session::get('userData'))
             {{-- canalOrigen: (@json(config('app.subdomain')) == "veris") ? "APP_CMV" : "VER_PMF", --}}
         };

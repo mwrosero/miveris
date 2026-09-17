@@ -1377,8 +1377,7 @@ async function cargarConfiguracionesHome(usuario, modalShowId = 'modalPPD2'){
         // console.log(data);
         let opt = data.data[0].pantallas[0].configuraciones;
         objPPD = data.data[0].pantallas;
-        let resumen = await constructHtml(opt);
-        // console.log(resumen);
+        let resumen = await constructHtml(opt, data.data[0].pantallas[0].nombrePantalla, 'resumen');
         $('.resumen-consentimiento').html(resumen);
         $(`#${modalShowId}`).modal('show');
         await renderizarPantallasPPD();
@@ -1429,7 +1428,7 @@ async function renderizarPantallasPPD() {
 
     for (const pantalla of objPPD) {
         // Ejecuta la función de maquetación para la pantalla actual
-        const htmlPantalla = await constructHtml(pantalla.configuraciones);
+        const htmlPantalla = await constructHtml(pantalla.configuraciones, pantalla.nombrePantalla, 'full');
         
         // Puedes envolver el resultado en un contenedor propio de la pantalla si lo necesitas
         htmlGeneral += `
@@ -1442,26 +1441,32 @@ async function renderizarPantallasPPD() {
     $('.full-consentimiento').html(htmlGeneral);
 }
 
-async function constructHtml(configuraciones) {
+async function constructHtml(configuraciones, nombrePantalla, type) {
     let elem = ``;
-    
+    let index = 0;
     // Usamos for...of para mantener compatibilidad pura con async/await
     for (const item of configuraciones) {
+        const esUltima = index === configuraciones.length - 1;
+        let infoAditional = ``
+        if(esUltima && type == "resumen" && nombrePantalla == "RESUMEN_CONSENTIMIENTO"){
+            infoAditional += `<span class="text-decoration-underline fs--2 line-height-16 my-3 text-veris-ai link-mostrar-todo-ppd2 cursor-pointer"> Ver política y consentimiento de datos personales.
+                </span>`;
+        }
 
         if (!item || !item.nombreTipoObjeto) continue;
 
         switch (item.nombreTipoObjeto) {
             case "TITLE":
-                elem += `<h3 class="fw-medium fs--2 line-height-16 text-veris mb-2">${item.valor || ''}</h3>`;
+                elem += `<h3 class="fw-medium fs--2 line-height-16 text-veris mb-2">${item.valor || ''}${infoAditional}</h3>`;
                 break;
 
             case "SUBTITLE":
-                elem += `<h4 class="fw-normal fs--1 line-height-16 text-veris mb-2">${item.valor || ''}</h4>`;
+                elem += `<h4 class="fw-normal fs--1 line-height-16 text-veris mb-2">${item.valor || ''}${infoAditional}</h4>`;
                 break;
 
             case "SALTO_LINEA": {
                 const multiplicador = Number(item.valor || 1);
-                elem += `<div style="height: ${multiplicador * 0.5}rem;"></div>`;
+                elem += `<div style="height: ${multiplicador * 0.5}rem;">${infoAditional}</div>`;
                 break;
             }
 
@@ -1480,6 +1485,7 @@ async function constructHtml(configuraciones) {
                         <div class="d-flex align-items-start ${startsWithStar ? 'ms-2' : ''} mb-1">
                             <span class="fw-normal fs--2 line-height-16 text-veris me-2">${bulletChar}</span>
                             <p class="fw-normal fs--2 line-height-16 text-veris mb-0 flex-1">${textContent}</p>
+                            ${infoAditional}
                         </div>`;
                 } else {
                     if (aplicaVistaCorta) {
@@ -1493,9 +1499,9 @@ async function constructHtml(configuraciones) {
                                         <span class="fw-normal lbl-text">Mostrar más</span> <i class="fa-solid fa-chevron-down ms-2"></i>
                                     </button>
                                 </div>
-                            </div>`;
+                            </div>${infoAditional}`;
                     } else {
-                        elem += `<p class="fw-normal fs--2 line-height-16 text-veris mb-2">${textContent}</p>`;
+                        elem += `<p class="fw-normal fs--2 line-height-16 text-veris mb-2">${textContent}${infoAditional}</p>`;
                     }
                 }
                 break;
@@ -1506,6 +1512,7 @@ async function constructHtml(configuraciones) {
                     <p class="fw-normal fs--2 line-height-16 text-veris mb-2">
                         <span class="fw-medium">${item.valor || ''} </span>
                         <span>${item.valorAdicional || ''}</span>
+                        ${infoAditional}
                     </p>`;
                 break;
 
@@ -1537,6 +1544,8 @@ async function constructHtml(configuraciones) {
             default:
                 break;
         }
+
+        index++;
     }
 
     return elem;
