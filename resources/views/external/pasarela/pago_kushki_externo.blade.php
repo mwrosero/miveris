@@ -127,6 +127,7 @@ Veris - Pago en línea
             "idiomaNavegador": "",
             "navegadorUA": "",
             "executionId": dataCita.executionId,
+            "idConnect": dataCita.idConnect,
             "canalOrigenDigital": canalOrigen
         });
         const data = await call(args);

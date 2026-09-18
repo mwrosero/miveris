@@ -150,6 +150,8 @@ Veris - Pago en línea
 	let infoTransaccion = @json($info);
 	let dataCita = {};
 	dataCita.executionId = "{{ request()->input('executionId', '') }}";
+	dataCita.idConnect = "{{ request()->input('idConnect', '') }}";
+	
 	document.addEventListener("DOMContentLoaded", async function () {
 		@if($permiteNuvei == "S")
 		await obtenerCredenciales();
