@@ -229,6 +229,7 @@ Veris - Registrar cuenta
 	    }
 	}
 
+	let paciente;
 	async function buscarUsuario(){
     	let args = [];
 	    args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?tipoIdentificacion=${dataCita.registro.tipoIdentificacion}&numeroIdentificacion=${dataCita.registro.numeroIdentificacion}`;
@@ -238,14 +239,30 @@ Veris - Registrar cuenta
 	    const data = await call(args);
 	    
 	    if(data.code == 200){
-	    	let dataCita = {
+	    	paciente = data.data;
+	    	{{-- let dataCita = {
     			"paciente": data.data
     		}
     		localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
-    		location.href = `/external/agendamiento/seleccionar-datos-cita/{{ $params }}`;
+    		location.href = `/external/agendamiento/seleccionar-datos-cita/{{ $params }}`; --}}
+
+    		window.config.userInfo = {
+			    "codigoTipoIdentificacion": parseInt(dataCita.registro.tipoIdentificacion),
+			    "numeroIdentificacion": dataCita.registro.numeroIdentificacion
+			}
+
+			await cargarConfiguracionesHome(window.config.userInfo.numeroIdentificacion);
 	    }else{
 	    	showMessage('error', 'Atención', data.message);
 	    }
+    }
+
+    async function redirectAfterPPD2(){
+    	let dataCita = {
+			"paciente": paciente
+		}
+		localStorage.setItem('cita-{{ $params }}', JSON.stringify(dataCita));
+		location.href = `/external/agendamiento/seleccionar-datos-cita/{{ $params }}`;
     }
 </script>
 <style>

@@ -12,6 +12,8 @@
 
 @endsection
 @section('content')
+
+<link rel="stylesheet" href="{{ asset('assets/css/theme-veris-app.css?v=1.0.4')}}">
 <!-- Logo -->
 
 <div class="text-center mb-2">
@@ -393,6 +395,13 @@
 			if(!errors){
 				let registro = await registrarCuenta();
 				if(registro.code == 200){
+					window.config.userInfo = {
+					    "codigoTipoIdentificacion": parseInt(getInput('tipoIdentificacion')),
+					    "numeroIdentificacion": getInput('numeroIdentificacion')
+					}
+
+					await cargarConfiguracionesHome(window.config.userInfo.numeroIdentificacion);
+
 					$('.logo-login').hide();
 					$('.email-masked').html(enmascararEmail(getInput('mail')));
 					step2.classList.add("d-none");

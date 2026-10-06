@@ -220,7 +220,14 @@ Mi Veris - Citas - Agendamiento múltiple
         $('body').on('click', '.btn-CambiarFechaCita', async function(){
             let data = JSON.parse($(this).attr('data-rel'));
             let convenio = dataCita.convenio;
-            console.log(data);
+            console.log(data.detalleReserva);
+            {{-- return; --}}
+
+            if(data.detalleReserva.permiteCambiar == "N"){
+                $('#mensajeNoPermiteCambiar').html(data.detalleReserva.mensajeInformacion);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
 
             if(data.permiteReserva == "N" && data.esPagada != "S"){
                 $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
@@ -543,11 +550,16 @@ Mi Veris - Citas - Agendamiento múltiple
         let tipoAgenda = detalles.tipoAgenda;
         let titleBtn = `Agendar`;
         let btnEnviaAgendarClass = `btn-agendar`;
-        if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.estado == "Agendada" && detalles.detalleReserva != null && detalles.detalleReserva.habilitaBotonCambio == "S"){
-            if(detalles.detalleReserva != null){
-                titleBtn = `${detalles.detalleReserva.nombreBotonCambiar}`;
-                btnEnviaAgendarClass = `btn-CambiarFechaCita`;
-            }
+        if(tiposAgendaPermitida.includes(tipoAgenda) && detalles.estado == "Agendada" && detalles.detalleReserva != null){
+            if(detalles.detalleReserva.habilitaBotonCambio == "S"){
+                if(detalles.detalleReserva != null){
+                    titleBtn = `${detalles.detalleReserva.nombreBotonCambiar}`;
+                    btnEnviaAgendarClass = `btn-CambiarFechaCita`;
+                }
+            }else if(detalles.detalleReserva.permiteCambiar == "N"){
+                    titleBtn = `Cambiar fecha`;
+                    btnEnviaAgendarClass = `btn-CambiarFechaCita`;
+                }
         }
 
         if(detalles.hasOwnProperty('itemPaquete')){

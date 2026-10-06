@@ -78,12 +78,13 @@
             let tipoFlujo = "";
             window.config = {
                 subdomain: @json(config('app.subdomain')),
-                canalOrigen: (@json(config('app.subdomain')) == "veris") ? "MVE_CMV" : "VER_PMF",
+                canalOrigen: (@json(config('app.subdomain')) == "veris") ? "MVE_CMV" : "MVE_PMF",
                 {{-- canalOrigen: (@json(config('app.subdomain')) == "veris") ? "APP_CMV" : "VER_PMF", --}}
             };
         </script>
         
         @include('template.analytics')
+        @include('template.modal_ppd2')
     </head>
 
     <body class="bg-fondo">

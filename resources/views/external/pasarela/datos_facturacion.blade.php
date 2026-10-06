@@ -282,6 +282,7 @@ Veris - Datos de facturación
 	dataCita.returnUrl = "{{ $urlRetornoPago }}"
 	dataCita.preTransaccion = preTransaccion.data;
 	dataCita.executionId = "{{ request()->input('executionId', '') }}";
+	dataCita.idConnect = "{{ request()->input('idConnect', '') }}";
 	console.log(`{{ $paciente->data->telefonoMovil }}`);
 	// dataCita.preTransaccion.codigoPreTransaccion
 	document.addEventListener("DOMContentLoaded", async function () {
@@ -651,6 +652,7 @@ Veris - Datos de facturación
             "idiomaNavegador": "",
             "navegadorUA": "",
             "executionId": dataCita.executionId,
+            "idConnect": dataCita.idConnect,
 			"origenInvocacion": "{{ $origenInvocacion }}",
             "canalOrigenDigital": canalOrigen//"VER_CMV",
         });

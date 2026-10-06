@@ -343,6 +343,11 @@ class ExternalController extends Controller
                 $executionId = $data['executionId'];
             }
 
+            $idConnect = "";
+            if(isset($data['idConnect'])){
+                $idConnect = $data['idConnect'];
+            }
+
             if(config('app.subdomain') == "veris"){
                 $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL;
             }else{
@@ -368,6 +373,7 @@ class ExternalController extends Controller
                     "plataformaOrigen" => "WEB",
                     "tipoBoton" => "KUSHKI",
                     "executionId" => $executionId,
+                    "idConnect" => $idConnect,
                     "canalOrigenDigital" => $canalOrigenServ,
                     "origenInvocacion" => ( isset($urlParams['origenInvocacion']) ) ? $urlParams['origenInvocacion'] : Veris::CANAL_ORIGEN_EXTERNAL
                 ],

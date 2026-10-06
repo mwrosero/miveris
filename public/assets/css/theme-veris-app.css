@@ -40,7 +40,8 @@
   --Neutral-10: #E7E9EC;
   --font: "Gotham Rounded", sans-serif;
   --verisAi: #296BEF;
-  --Secundario-Midnight-blue-Tint-40:#717C8C
+  --Secundario-Midnight-blue-Tint-40: #717C8C;
+  --Secundario-Midnight-blue-Tint-80: #D0D3D9;
 }
 
 body {
@@ -346,6 +347,14 @@ html:not([dir="rtl"]) .border-start-veris {
 
 .text-Secundario-Midnight-blue-Tint-40{
   color: var(--Secundario-Midnight-blue-Tint-40) !important;
+}
+
+.text-Secundario-Midnight-blue-Tint-80{
+  color: var(--Secundario-Midnight-blue-Tint-80) !important;
+}
+
+.border-Secundario-Midnight-blue-Tint-80{
+  border: 1px solid var(--Secundario-Midnight-blue-Tint-80) !important;
 }
 
 .border-ai > .row {

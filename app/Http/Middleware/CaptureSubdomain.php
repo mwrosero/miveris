@@ -29,7 +29,7 @@ class CaptureSubdomain
                 $subdomain = 'parami';
             }
         }else{
-            $subdomain = 'parami';
+            $subdomain = 'veris';
         }
 
         Session::forget('subdomain');
