@@ -49,7 +49,7 @@ class Veris extends Model
     public const FACTURACION_WAR = 'seguridadtest';
     public const FACTURACION_WAR_DESA = 'seguridad';
     public const BASE_WAR_AI = 'agents-ai';
-    public const BASE_WAR_FACTURACION = 'facturaciontest';
+    public const BASE_WAR_FACTURACION = 'facturacion';
     public const CANAL_ORIGEN = 'MVE_CMV';
     public const CANAL_ORIGEN_EXTERNAL = 'VER_CMV';
     public const CANAL_ORIGEN_EXTERNAL_PARAMI = 'VER_PMF';
