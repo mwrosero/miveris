@@ -84,6 +84,7 @@ Veris - Citas
 </div>
 
 <script>
+	let uuidGenerado;
 	document.addEventListener("DOMContentLoaded", async function () {
         await obtenerIdentificacion();
 
@@ -141,7 +142,8 @@ Veris - Citas
 	    const data = await call(args);
 	    
 	    if(data.code == 200){
-	    	
+	    	uuidGenerado = await encriptarCedula(getInput('numeroIdentificacion'));
+
 	    	if(data.data === null){
 	    		dataCita = {
 	    			"registro": {
@@ -149,8 +151,10 @@ Veris - Citas
 		    			"numeroIdentificacion": getInput('numeroIdentificacion')
 		    		}
 	    		}
-	    		localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
-	    		location.href = `/external/agendamiento/registro/{{ $tokenCita }}`;
+
+
+	    		localStorage.setItem(`cita-${ uuidGenerado }`, JSON.stringify(dataCita));
+	    		location.href = `/external/agendamiento/registro/${ uuidGenerado }`;
 	    	}else{
 	    		dataCita = {
 	    			"paciente": data.data
@@ -166,7 +170,7 @@ Veris - Citas
 	    		if(configHome.data.length == 0){
 	    			await redirectAfterPPD2();
 	    		}
-	    		{{-- localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
+	    		{{-- localStorage.setItem(`cita-${ uuidGenerado }`, JSON.stringify(dataCita));
 	    		location.href = `/external/agendamiento/seleccionar-datos-cita/{{ $tokenCita }}`; --}}
 	    	}
 	    }else{
@@ -175,8 +179,8 @@ Veris - Citas
     }
 
     async function redirectAfterPPD2(){
-		localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(dataCita));
-		location.href = `/external/agendamiento/seleccionar-datos-cita/{{ $tokenCita }}`;
+		localStorage.setItem(`cita-${ uuidGenerado }`, JSON.stringify(dataCita));
+		location.href = `/external/agendamiento/seleccionar-datos-cita/${ uuidGenerado }`;
     }
 </script>
 <style>

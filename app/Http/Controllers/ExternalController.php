@@ -104,6 +104,20 @@ class ExternalController extends Controller
         dd($urlParams['codigoPreTransaccion']);
     }
 
+    public function paymentUuid5($params){
+        // dd($params);
+        if(config('app.subdomain') == "veris"){
+            $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL;
+        }else{
+            $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL_PARAMI;
+        }
+        return view('external.pasarela.datos_facturacion_uuid5')
+                ->with('params',$params)
+                ->with('origenInvocacion', Veris::CANAL_ORIGEN_EXTERNAL)
+                ->with('canalOrigenServ', $canalOrigenServ)
+                ->with('accessToken', $this->getTokenExternalDigitales());
+    }
+
     public function payment(Request $request){
         $urlParams = $request->all();
         if ($request->has('codigoPreTransaccion') || $request->has('idSolicitud') || $request->has('codigoIngreso')) {
@@ -678,9 +692,16 @@ class ExternalController extends Controller
             'method'   => 'GET'
         ]);
 
+        //dd($urlParams);
+        
+        $urlAdd = '';
+        if($urlParams['tipoArticulo'] == "CITA"){
+            $urlAdd = '/'.$urlParams['uuid5'];
+        }
+
         // dd($response);
         if($response->data->estaPagado){
-            return redirect('/external/payment/comprobante?'.base64_encode($urlParams['codigoEPagoNuvei']));
+            return redirect('/external/payment/comprobante'.$urlAdd.'?'.base64_encode($urlParams['codigoEPagoNuvei']));
         }else{
             $data = array(
                 "tipoIdentificacion" => $urlParams['tipoIdentificacionNuvei'],
@@ -704,7 +725,7 @@ class ExternalController extends Controller
             // dd($list);
 
             if($list->code == 200){
-                return redirect('/external/payment/comprobante?'.base64_encode($urlParams['codigoEPagoNuvei']));
+                return redirect('/external/payment/comprobante'.$urlAdd.'?'.base64_encode($urlParams['codigoEPagoNuvei']));
             }else{
                 // session()->flash('alert', $list->message);
                 // return redirect('/external/payment/error/'.$params);

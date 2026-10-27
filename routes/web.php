@@ -47,55 +47,61 @@ Route::middleware('guest')->group(function () {
     Route::post('/actualizar-clave', [SeguridadesController::class, 'actualizarClave'])->name('actualizar_clave.update')->withoutMiddleware(['loggedUser']);
 
     /*Externo*/
-    Route::prefix('external')->group(function () {
-        Route::get('/citas', [ExternalController::class, 'agendamientoCitas'])->name('embudo-agendamiento')->withoutMiddleware(['guest']);
-        Route::get('/planes-promocionales', [ExternalController::class, 'listadoPaquetes'])->name('listado-paquetes')->withoutMiddleware(['guest']);
-        Route::get('/planes-promocionales/detalle/{params}', [ExternalController::class, 'detallePaquete'])->name('detalle-paquete')->withoutMiddleware(['guest']);
-        Route::get('/planes-promocionales/detalle', [ExternalController::class, 'detallePaquetePorId'])->name('detalle-paquete-id')->withoutMiddleware(['guest']);
-        Route::get('/planes-promocionales/asignar/{params}', [ExternalController::class, 'asignarPaquete'])->name('asignar-paquete')->withoutMiddleware(['guest']);
-        Route::get('/payment/', [ExternalController::class, 'payment'])->name('pago-citas')->withoutMiddleware(['guest']);
-        // Route::get('/payment/services/', [ExternalController::class, 'paymentServices'])->name('pago-servicios')->withoutMiddleware(['guest']);
-        Route::get('/payment/kushki/{params}', [ExternalController::class, 'pagoExternoKushki'])->name('pago-kushki-externo')->withoutMiddleware(['guest']);
-        Route::post('/payment/kushki/procesar/{params}', [ExternalController::class, 'procesarExternoKushki'])->name('procesar-pago-kushki-externo')->withoutMiddleware(['guest']);
-        Route::get('/payment/error', [ExternalController::class, 'showErrorPayment'])->name('payment-error')->withoutMiddleware(['guest']);
+    Route::prefix('external')->withoutMiddleware(['guest'])->group(function () {
+        Route::get('/citas', [ExternalController::class, 'agendamientoCitas'])->name('embudo-agendamiento');
+        Route::get('/planes-promocionales', [ExternalController::class, 'listadoPaquetes'])->name('listado-paquetes');
+        Route::get('/planes-promocionales/detalle/{params}', [ExternalController::class, 'detallePaquete'])->name('detalle-paquete');
+        Route::get('/planes-promocionales/detalle', [ExternalController::class, 'detallePaquetePorId'])->name('detalle-paquete-id');
+        Route::get('/planes-promocionales/asignar/{params}', [ExternalController::class, 'asignarPaquete'])->name('asignar-paquete');
+
+        Route::get('/payment/comprobante', [ExternalController::class, 'comprobantePago'])->name('comprobante-pago');
+        Route::get('/payment/comprobante/{params}', [ExternalController::class, 'comprobantePago'])->name('comprobante-pago-uuid5');
+
+        Route::get('/payment/', [ExternalController::class, 'payment'])->name('pago-citas');
+        // Route::get('/payment/services/', [ExternalController::class, 'paymentServices'])->name('pago-servicios');
+        Route::get('/payment/kushki/{params}', [ExternalController::class, 'pagoExternoKushki'])->name('pago-kushki-externo');
+        Route::post('/payment/kushki/procesar/{params}', [ExternalController::class, 'procesarExternoKushki'])->name('procesar-pago-kushki-externo');
+        Route::get('/payment/error', [ExternalController::class, 'showErrorPayment'])->name('payment-error');
         
-        Route::post('/payment/nuvei/procesar/{params}', [ExternalController::class, 'procesarExternoNuvei'])->name('procesar-pago-nuvei-externo')->withoutMiddleware(['guest']);
+        Route::post('/payment/nuvei/procesar/{params}', [ExternalController::class, 'procesarExternoNuvei'])->name('procesar-pago-nuvei-externo');
+        //Route::post('/payment/nuvei/procesar/{params}', [ExternalController::class, 'procesarExternoNuveiUuid5'])->name('procesar-pago-nuvei-externo');
 
-        Route::get('/payment/comprobante', [ExternalController::class, 'comprobantePago'])->name('comprobante-pago')->withoutMiddleware(['guest']);
+        // UUID5
+        Route::get('/payment/{params}', [ExternalController::class, 'paymentUuid5'])->name('pago-citas-uuid5');
 
-        Route::get('/farmacia/qr', [ExternalController::class, 'loginQr'])->name('login-qr')->withoutMiddleware(['guest']);
-        Route::get('/logout-qr', [ExternalController::class, 'logoutQr'])->name('logout-qr')->withoutMiddleware(['guest']);
+        Route::get('/farmacia/qr', [ExternalController::class, 'loginQr'])->name('login-qr');
+        Route::get('/logout-qr', [ExternalController::class, 'logoutQr'])->name('logout-qr');
 
         Route::post('/farmacia/qr/autenticar', [ExternalController::class, 'autenticarQr'])->name('autenticar-qr')->withoutMiddleware(['externalVeris']);
 
-        Route::get('/bot', [ExternalController::class, 'bot'])->name('bot')->withoutMiddleware(['guest']);
-        Route::get('/call', [ExternalController::class, 'botAi'])->name('botAi')->withoutMiddleware(['guest']);
+        Route::get('/bot', [ExternalController::class, 'bot'])->name('bot');
+        Route::get('/call', [ExternalController::class, 'botAi'])->name('botAi');
 
-        Route::get('/portal-cautivo/{codigoSucursal?}', [ExternalController::class, 'portalCautivo'])->name('portalCautivo')->withoutMiddleware(['guest']);
+        Route::get('/portal-cautivo/{codigoSucursal?}', [ExternalController::class, 'portalCautivo'])->name('portalCautivo');
 
-        Route::get('/laboratorio/resultados/{idPaciente}', [ExternalController::class, 'mostrarResultadoLaboratorio'])->name('resultado-laboratorio')->withoutMiddleware(['guest']);
+        Route::get('/laboratorio/resultados/{idPaciente}', [ExternalController::class, 'mostrarResultadoLaboratorio'])->name('resultado-laboratorio');
 
-        Route::get('/financiero/devoluciones', [ExternalController::class, 'devoluciones'])->name('devoluciones')->withoutMiddleware(['guest']);
-        Route::get('/financiero/devoluciones/tracking/{numeroFactura}/{tipoIdentificacion}/{numeroIdentificacion}', [ExternalController::class, 'trackDevoluciones'])->name('trackDevoluciones')->withoutMiddleware(['guest']);
+        Route::get('/financiero/devoluciones', [ExternalController::class, 'devoluciones'])->name('devoluciones');
+        Route::get('/financiero/devoluciones/tracking/{numeroFactura}/{tipoIdentificacion}/{numeroIdentificacion}', [ExternalController::class, 'trackDevoluciones'])->name('trackDevoluciones');
 
-        Route::get('/phantomx/soportes', [ExternalController::class, 'soportesPhantomX'])->name('soportesPhantomX')->withoutMiddleware(['guest']);
+        Route::get('/phantomx/soportes', [ExternalController::class, 'soportesPhantomX'])->name('soportesPhantomX');
         
         // Nuevo embudo
-        Route::get('/agendamiento', [ExternalController::class, 'nuevoAgendamientoCitas'])->name('nuevo-embudo-agendamiento')->withoutMiddleware(['guest']);
-        Route::get('/agendamiento/registro/{params}', [ExternalController::class, 'registroNuevoAgendamientoCitas'])->name('registro-embudo-agendamiento')->withoutMiddleware(['guest']);
-        Route::get('/agendamiento/seleccionar-datos-cita/{params}', [ExternalController::class, 'datosCitaNuevoAgendamientoCitas'])->name('datos-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
-        Route::get('/agendamiento/seleccionar-fecha/{params}', [ExternalController::class, 'fechaNuevoAgendamientoCitas'])->name('fecha-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
-        Route::get('/agendamiento/cita-urgencias-ambulatorias/{params}', [ExternalController::class, 'VuaNuevoAgendamientoCitas'])->name('cita-vua-embudo-agendamiento')->withoutMiddleware(['guest']);
-        Route::get('/agendamiento/detalle-cita/{params}', [ExternalController::class, 'detalleCitaNuevoAgendamientoCitas'])->name('detalle-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
-        Route::get('/agendamiento/pago-caja/{params}', [ExternalController::class, 'pagoCajaNuevaCita'])->name('pago-caja-cita-embudo-agendamiento')->withoutMiddleware(['guest']);
-        Route::get('/agendamiento/cita-agendada/{params}', [ExternalController::class, 'CitaAgendadaNuevoAgendamientoCitas'])->name('cita-agendada-embudo-agendamiento')->withoutMiddleware(['guest']);
+        Route::get('/agendamiento', [ExternalController::class, 'nuevoAgendamientoCitas'])->name('nuevo-embudo-agendamiento');
+        Route::get('/agendamiento/registro/{params}', [ExternalController::class, 'registroNuevoAgendamientoCitas'])->name('registro-embudo-agendamiento');
+        Route::get('/agendamiento/seleccionar-datos-cita/{params}', [ExternalController::class, 'datosCitaNuevoAgendamientoCitas'])->name('datos-cita-embudo-agendamiento');
+        Route::get('/agendamiento/seleccionar-fecha/{params}', [ExternalController::class, 'fechaNuevoAgendamientoCitas'])->name('fecha-cita-embudo-agendamiento');
+        Route::get('/agendamiento/cita-urgencias-ambulatorias/{params}', [ExternalController::class, 'VuaNuevoAgendamientoCitas'])->name('cita-vua-embudo-agendamiento');
+        Route::get('/agendamiento/detalle-cita/{params}', [ExternalController::class, 'detalleCitaNuevoAgendamientoCitas'])->name('detalle-cita-embudo-agendamiento');
+        Route::get('/agendamiento/pago-caja/{params}', [ExternalController::class, 'pagoCajaNuevaCita'])->name('pago-caja-cita-embudo-agendamiento');
+        Route::get('/agendamiento/cita-agendada/{params}', [ExternalController::class, 'CitaAgendadaNuevoAgendamientoCitas'])->name('cita-agendada-embudo-agendamiento');
         
-        Route::get('/farmacia/login', [ExternalController::class, 'loginFarmaciaPickingView'])->name('login-farmacia-picking-view')->withoutMiddleware(['guest']);
-        Route::get('/farmacia/gestion', [ExternalController::class, 'gestionFarmaciaPickingView'])->name('gestion-farmacia-picking-view')->withoutMiddleware(['guest']);
-        Route::post('/farmacia/login', [ExternalController::class, 'loginFarmaciaPickingAction'])->name('login-farmacia-picking-action')->withoutMiddleware(['guest']);
-        Route::get('/farmacia/logout', [ExternalController::class, 'gestionFarmaciaPickingLogout'])->name('gestion-farmacia-picking-logout')->withoutMiddleware(['guest']);
+        Route::get('/farmacia/login', [ExternalController::class, 'loginFarmaciaPickingView'])->name('login-farmacia-picking-view');
+        Route::get('/farmacia/gestion', [ExternalController::class, 'gestionFarmaciaPickingView'])->name('gestion-farmacia-picking-view');
+        Route::post('/farmacia/login', [ExternalController::class, 'loginFarmaciaPickingAction'])->name('login-farmacia-picking-action');
+        Route::get('/farmacia/logout', [ExternalController::class, 'gestionFarmaciaPickingLogout'])->name('gestion-farmacia-picking-logout');
 
-        Route::get('/refreshToken', [ExternalController::class, 'refreshToken'])->name('refreshToken')->withoutMiddleware(['guest']);
+        Route::get('/refreshToken', [ExternalController::class, 'refreshToken'])->name('refreshToken');
 
     });
 

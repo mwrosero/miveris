@@ -1036,11 +1036,13 @@ Veris - Detalle de Citas
                 */
                 // await crearPreTransaccion()
                 if(window.config.canalOrigen == 'VER_PMF' && dataCita.online == "N"){
-                    let url_payment = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
+                    //let url_payment = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
+                    let url_payment = `/external/payment/{{ $params }}?canalOrigenNuvei=${window.config.canalOrigen}`;
                     $('#paymentOnline').attr('href', url_payment);
                     $('#modalTipoPago').modal('show')
                 }else{
-                    location.href = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
+                    //location.href = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
+                    location.href = `/external/payment/{{ $params }}?canalOrigenNuvei=${window.config.canalOrigen}`;
                 }
             }else{
                 location.href = '/external/agendamiento/cita-agendada/{{ $params }}';
