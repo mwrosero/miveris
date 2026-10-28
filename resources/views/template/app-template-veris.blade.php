@@ -611,6 +611,22 @@
             $("#fechaHasta").attr("autocomplete", "off");
         }
     </script>
+    
+    <script type="text/javascript">
+      (function(w, d, x, id){
+        s=d.createElement('script');
+        s.src='https://veris-dev.my.connect.aws/connectwidget/static/amazon-connect-chat-interface-client.js';
+        s.async=1;
+        s.id=id;
+        d.getElementsByTagName('head')[0].appendChild(s);
+        w[x] =  w[x] || function() { (w[x].ac = w[x].ac || []).push(arguments) };
+      })(window, document, 'amazon_connect', '3fa526e0-9d9f-4666-b06d-06bac6a535b0');
+      amazon_connect('styles', { iconType: 'CHAT_VOICE', openChat: { color: '#ffffff', backgroundColor: '#123456' }, closeChat: { color: '#ffffff', backgroundColor: '#123456'} });
+      amazon_connect('snippetId', 'QVFJREFIaThPZ042Z2Vwd1EzbWNOOW9zZVBpdlltbFlYREFwbEVldGoySmJEcktXREFHY0hOMCtQM1pUNXpTZ3dSditrTTlWQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNVWlDTGhrMjFUZkZGckhrdUFnRVFnQ3YweUFPcWlFVkNIWmViZ2hxR1RJNEZOZ2xva3dacmNHWVpVYzJaK2lVbUJKV3VxSklZRCtQb3hGNlY6OjcrZDdVTUx0b0VhbzdDaHFVNXhLTWQxd0dWZktkMXFGQ3doNjRSMWZKOENoWlRkV2xWYkE2UGwvTFJMUTRaelpueEozN0NaTlREQysxVGlxZ0RkS3V5QTcrUGIySFFEL2ZsQlM2VURKOEg1QzgxeGIrRi9KczVpWDdXKzUwQzdKTW1LYW5pekpHeWdQNmp1a01KWjE3b0JPQldLdDRhaz0=');
+      amazon_connect('supportedMessagingContentTypes', [ 'text/plain', 'text/markdown', 'application/vnd.amazonaws.connect.message.interactive', 'application/vnd.amazonaws.connect.message.interactive.response' ]);
+      amazon_connect('dataTrackingConfig', {enabled: true, advancedTracking: false});
+      amazon_connect('webNotificationConfig', {enabled: true});
+    </script>
     @stack('scripts')
 </body>
 
