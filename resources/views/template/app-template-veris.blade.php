@@ -611,7 +611,20 @@
             $("#fechaHasta").attr("autocomplete", "off");
         }
     </script>
+
     
+
+    @stack('scripts')
+
+    <style>
+      #amazon-connect-open-widget-button {
+        background: #FFFFFF url("https://www.veris.com.ec/wp-content/uploads/2026/10/logo-vericita.png") center / cover no-repeat !important;
+        border: 0 !important;
+        box-shadow: 0 4px 14px rgba(10, 34, 64, .28) !important;
+      }
+      #amazon-connect-open-widget-button > * { visibility: hidden !important; }   /* el icono de AWS */
+    </style>
+
     <script type="text/javascript">
       (function(w, d, x, id){
         s=d.createElement('script');
@@ -621,13 +634,54 @@
         d.getElementsByTagName('head')[0].appendChild(s);
         w[x] =  w[x] || function() { (w[x].ac = w[x].ac || []).push(arguments) };
       })(window, document, 'amazon_connect', '3fa526e0-9d9f-4666-b06d-06bac6a535b0');
-      amazon_connect('styles', { iconType: 'CHAT_VOICE', openChat: { color: '#ffffff', backgroundColor: '#123456' }, closeChat: { color: '#ffffff', backgroundColor: '#123456'} });
+
+      // Lo que entrega la consola, tal cual (los colores del boton se cambian en la consola y se vuelve a copiar).
+      amazon_connect('styles', { iconType: 'CHAT_VOICE', openChat: { color: '#ffffff', backgroundColor: '#296BEF' }, closeChat: { color: '#ffffff', backgroundColor: '#296BEF' } });
       amazon_connect('snippetId', 'QVFJREFIaThPZ042Z2Vwd1EzbWNOOW9zZVBpdlltbFlYREFwbEVldGoySmJEcktXREFHY0hOMCtQM1pUNXpTZ3dSditrTTlWQUFBQWJqQnNCZ2txaGtpRzl3MEJCd2FnWHpCZEFnRUFNRmdHQ1NxR1NJYjNEUUVIQVRBZUJnbGdoa2dCWlFNRUFTNHdFUVFNVWlDTGhrMjFUZkZGckhrdUFnRVFnQ3YweUFPcWlFVkNIWmViZ2hxR1RJNEZOZ2xva3dacmNHWVpVYzJaK2lVbUJKV3VxSklZRCtQb3hGNlY6OjcrZDdVTUx0b0VhbzdDaHFVNXhLTWQxd0dWZktkMXFGQ3doNjRSMWZKOENoWlRkV2xWYkE2UGwvTFJMUTRaelpueEozN0NaTlREQysxVGlxZ0RkS3V5QTcrUGIySFFEL2ZsQlM2VURKOEg1QzgxeGIrRi9KczVpWDdXKzUwQzdKTW1LYW5pekpHeWdQNmp1a01KWjE3b0JPQldLdDRhaz0=');
       amazon_connect('supportedMessagingContentTypes', [ 'text/plain', 'text/markdown', 'application/vnd.amazonaws.connect.message.interactive', 'application/vnd.amazonaws.connect.message.interactive.response' ]);
-      amazon_connect('dataTrackingConfig', {enabled: true, advancedTracking: false});
-      amazon_connect('webNotificationConfig', {enabled: true});
+      amazon_connect('language', 'es_ES');
+
+      // Muestra "escribiendo" mientras responde el bot.
+      amazon_connect('mockLexBotTyping', true);
+
+      // Diseno con los colores del app: primario #296BEF, texto #0A2240, grises #F9FAFB y #F3F4F5.
+      amazon_connect('customStyles', {
+        global:     { textColor: '#0A2240', fontSize: '15px', frameWidth: '400px', frameHeight: '640px' },
+        header:     { headerTextColor: '#FFFFFF', headerBackgroundColor: '#296BEF' },
+        transcript: { widgetBackgroundColor: '#FFFFFF',
+                      agentChatBubbleColor: '#F3F4F5', systemChatBubbleColor: '#F3F4F5',
+                      customerChatBubbleColor: '#296BEF',
+                      agentMessageTextColor: '#0A2240', systemMessageTextColor: '#0A2240',
+                      customerMessageTextColor: '#FFFFFF' },
+        footer:     { footerBackgroundColor: '#F9FAFB', buttonTextColor: '#296BEF',
+                      buttonBorderColor: '#296BEF', buttonBackgroundColor: '#FFFFFF' },
+        composer:   { textColor: '#0A2240', backgroundColor: '#FFFFFF', borderColor: '#D0D5DD',
+                      focusBorderColor: '#296BEF', placeholderColor: '#6B7280' },
+        logo:       { logoMaxHeight: '36px', logoMaxWidth: '99%' },
+        fullscreenMode: true   // en celular el widget ocupa toda la pantalla
+      });
+
+      amazon_connect('customizationObject', {
+        transcript: {
+          displayIcons: true,
+          iconSources: { botMessage: 'https://www.veris.com.ec/wp-content/uploads/2025/05/vericita.png', systemMessage: 'https://www.veris.com.ec/wp-content/uploads/2025/05/vericita.png' },
+          eventNames: { customer: 'Usuario' },     // el nombre del asesor se deja el real
+          eventMessages: { participantJoined: '{name} se unió al chat', chatEnded: 'El chat finalizó' }
+        },
+        endChat: { enableConfirmationDialog: true,
+                   confirmationDialogText: { title: 'Finalizar chat', message: '¿Quieres terminar esta conversación?',
+                                             confirmButtonText: 'Finalizar', cancelButtonText: 'Cancelar' } }
+      });
+
+      amazon_connect('customDisplayNames', {
+        header: { logoUrl: 'https://www.veris.com.ec/wp-content/uploads/2026/10/logo-vericita.png', logoAltText: 'VeriCita' },
+        transcript: { systemMessageDisplayName: 'VeriCita', botMessageDisplayName: 'VeriCita' }
+      });
+
+      // Sin esto el link de un PDF que manda el asesor abre una pestana bloqueada (ERR_BLOCKED_BY_CLIENT).
+      amazon_connect('updateSandboxAttributes',
+        'allow-scripts allow-same-origin allow-popups allow-downloads allow-modals allow-popups-to-escape-sandbox');
     </script>
-    @stack('scripts')
 </body>
 
 </html>
