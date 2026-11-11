@@ -335,6 +335,7 @@ Veris - Datos de facturación
 	document.addEventListener("DOMContentLoaded", async function () {
 
 		preTransaccion = await crearPreTransaccion();
+		dataCita.uuid5 = true;
 		dataCita.preTransaccion = preTransaccion;
 
 		await consultarDatosFactura();
@@ -748,7 +749,7 @@ Veris - Datos de facturación
             dataCita.transaccionVirtual = data.data;
             // if (estadoPoliticas == "N"){
             //     await aceptarPoliticas();
-            // }   
+            // }
             guardarData();
             if(tipoBoton == "NUVEI"){
                 // var myModal = new bootstrap.Modal(document.getElementById('metodoPago'));

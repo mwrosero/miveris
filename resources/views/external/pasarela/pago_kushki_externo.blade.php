@@ -101,7 +101,7 @@ Veris - Pago en línea
 
     async function pagarPtp(){
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion}`;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/crear_transaccion_virtual?idPreTransaccion=${dataCita.preTransaccion.codigoPreTransaccion || dataCita.preTransaccion.data.codigoPreTransaccion}`;
         args["method"] = "POST"; 
         args["showLoader"] = true; 
         args["bodyType"] = "json"; 

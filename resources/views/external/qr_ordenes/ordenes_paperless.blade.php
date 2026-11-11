@@ -25,6 +25,10 @@
     <script>
         let _token = "";
         const url_site = "{{ request()->getHost() === '127.0.0.1' ? url('/') : secure_url('/') }}";
+        window.config = {
+            subdomain: @json(config('app.subdomain')),
+            canalOrigen: (@json(config('app.subdomain')) == "veris") ? "MVE_CMV" : "MVE_PMF"
+        };
     </script>
 
 </head>
@@ -97,8 +101,6 @@
         const api_war_facturacion = "{{ \App\Models\Veris::BASE_WAR_FACTURACION }}";
         const _application = "{{ \App\Models\Veris::APPLICATION }}";
         let _idOrganizacion = "{{ \App\Models\Veris::IDORGANIZACION }}";
-        // "@if (\App\Models\Veris::CONTIENE_DESARROLLO)  {{ \App\Models\Veris::IDORGANIZACIONRESULTADOSLAB }} @else {{ \App\Models\Veris::IDORGANIZACION }} @endif";
-        // const _idOrganizacionResultadosLaboratorio = "";
         let tipoFlujo = "";
         window.config = {
             subdomain: @json(config('app.subdomain')),
@@ -109,13 +111,11 @@
             await getData();
 
             $('body').on('click', '.btn-subir', async function(e){
-                e.preventDefault(); // opcional, por si es un botón de formulario
+                e.preventDefault();
                 const $btn = $(this);
 
-                // Si ya está deshabilitado, no hacer nada
                 if ($btn.prop('disabled')) return;
 
-                // Desactiva el botón
                 $btn.prop('disabled', true);
                 $btn.text('Subiendo...');
 
@@ -127,9 +127,6 @@
                     $(`.swiper-wrapper`).empty();
                     $(`.file-list`).empty();
                     await getData("reload")
-                    /*setTimeout(async function(){
-                        location.reload();
-                    }, 1000);*/
                 }
             })
 
@@ -154,10 +151,7 @@
                 await deleteSoporte(detalle);
                 
                 $(`.box-${servicio} .box-soporte-${detalle.codigoSoporteOrden}`).remove();
-                console.log(`.col-paciente-${idPaciente} .box-${servicio} .file-list`);
                 let globalObj = JSON.parse($(`.col-paciente-${idPaciente} .box-${servicio} .file-list`).attr('soportescargados-rel'));
-                console.log(detalle)
-                console.log(globalObj)
                 let nuevoArray;
                 if(detalle.length > 1){
                     nuevoArray = data.filter(item => item.codigoSoporteOrden !== detalle.codigoSoporteOrden);
@@ -192,15 +186,14 @@
             args["method"] = "GET";
             args["token"] = "{{ $accessToken }}";
             args["isPhantomX"] = true;
-            args["responseType"] = "blob"; // <--- clave para no intentar convertir a JSON
+            args["responseType"] = "blob";
             args["showLoader"] = true;
 
-            const data = await call(args); // ← el PDF viene aquí como Blob
+            const data = await call(args);
 
-            // Forzamos el tipo PDF si no está definido
             const pdfBlob = new Blob([data], { type: 'application/pdf' });
             const fileURL = URL.createObjectURL(pdfBlob);
-            const fileName = "Soporte.pdf"; // puedes hacerlo dinámico si lo necesitas
+            const fileName = "Soporte.pdf";
 
             const modalTitle = document.getElementById("previewModalTitle");
             const modalBody = document.getElementById("previewModalBody");
@@ -223,7 +216,6 @@
             const previewModal = new bootstrap.Modal(document.getElementById("previewModal"));
             previewModal.show();
 
-            // Limpieza cuando se cierre el modal
             const modalElement = document.getElementById("previewModal");
             modalElement.addEventListener("hidden.bs.modal", () => {
                 URL.revokeObjectURL(fileURL);
@@ -265,7 +257,6 @@
             } catch (error) {
                 console.error('Error al obtener o renderizar el PDF:', error);
 
-                // Intentamos hacer una segunda llamada simple para recuperar el blob
                 try {
                     const response = await fetch(api_url + `/${api_war_facturacion}/v1/soportes_ordenes/${ detalle.codigoSoporteOrden }`, {
                         method: "GET",
@@ -306,8 +297,6 @@
             }
         }
 
-
-
         async function drawPdf(pdfUrl){
             pdfjsLib.GlobalWorkerOptions.workerSrc = '{{ asset('assets/external/resultados-laboratorio/js/pdf.worker.js') }}';
 
@@ -345,7 +334,6 @@
                 renderPage(i + 1, canvas);
             }
         }
-
 
         let soportes_generales;
         async function getData(type = "inicio"){
@@ -418,58 +406,56 @@
             });
         }
 
+        function formatTitle(str) {
+            if (!str) return '';
+            return str.toLowerCase()
+                      .replace(/_/g, ' ')
+                      .replace(/\b\w/g, l => l.toUpperCase());
+        }
+
         async function drawSoportes(data, idPaciente){
-            let elem = ``;
-            let elem_seguros = ``;
-            let elem_ordenes = ``;
-            let box_elem_seguros = ``;
-            let box_elem_ordenes = ``;
-            
-            let soportesJson_AUTORIZACION_ASEGU = {};
-            let soportesJson_SERV_DEMANDA = {};
-            $.each(data.agrupaciones, async function(key, value){
-                let soportesExistentes_AUTORIZACION_ASEGU = `<!--p class="w-100 mb-0">Documentos cargados</p--><div class="w-100 d-flex p-2 px-0 justify-content-start align-items-center g-2">`;
-                let soportesExistentes_SERV_DEMANDA = `<!--p class="w-100 mb-0">Documentos cargados</p--><div class="w-100 d-flex p-2 px-0 justify-content-start align-items-center g-2">`;
-                if(value.soportes.length > 0){
-                    $.each(value.soportes, function(k,v){
-                        if(v.tipoSoporte == "AUTORIZACION_ASEGU"){
-                            soportesJson_AUTORIZACION_ASEGU = v;
-                            soportesExistentes_AUTORIZACION_ASEGU += `<div class="d-flex justify-content-between align-items-center badge bg-silver-light mx-2 box-soporte-${v.codigoSoporteOrden}">
-                                <div class="view-file mx-1 text-success" data-rel='${JSON.stringify(v)}'>
+            let seccionesHtml = ``;
+            let soportesJsonMap = {};
+
+            for (const [key, value] of Object.entries(data.agrupaciones)) {
+                if (!value.tiposSoportes || !Array.isArray(value.tiposSoportes)) continue;
+
+                for (const tipoSoporte of value.tiposSoportes) {
+                    let soportesExistentes = `<div class="w-100 d-flex p-2 px-0 justify-content-start align-items-center g-2">`;
+                    soportesJsonMap[tipoSoporte] = {};
+
+                    if (value.soportes && value.soportes.length > 0) {
+                        const soporteEncontrado = value.soportes.find(v => v.tipoSoporte === tipoSoporte);
+                        if (soporteEncontrado) {
+                            soportesJsonMap[tipoSoporte] = soporteEncontrado;
+                            soportesExistentes += `<div class="d-flex justify-content-between align-items-center badge bg-silver-light mx-2 box-soporte-${soporteEncontrado.codigoSoporteOrden}">
+                                <div class="view-file mx-1 text-success" data-rel='${JSON.stringify(soporteEncontrado)}'>
                                     <i class="fa-solid fa-file me-1"></i>
-                                    <small>${v.codigoSoporteOrden}${v.extensionArchivo}</small>
+                                    <small>${soporteEncontrado.codigoSoporteOrden}${soporteEncontrado.extensionArchivo}</small>
                                 </div>
-                                <small type="button" class="ms-2 btn-eliminar-soporte" idPaciente-rel='${idPaciente}' data-rel='${JSON.stringify(v)}'><i class="fa-regular fa-trash-can text-danger fw-bold"></i></small>
-                            </div>`;
-                        }else{
-                            soportesJson_SERV_DEMANDA = v;
-                            soportesExistentes_SERV_DEMANDA += `<div class="d-flex justify-content-between align-items-center badge bg-silver-light mx-2 box-soporte-${v.codigoSoporteOrden}">
-                                <div class="view-file mx-1 text-success" data-rel='${JSON.stringify(v)}'>
-                                    <i class="fa-solid fa-file me-1"></i>
-                                    <small>${v.codigoSoporteOrden}${v.extensionArchivo}</small>
-                                </div>
-                                <small type="button" class="ms-2 btn-eliminar-soporte" idPaciente-rel='${idPaciente}' data-rel='${JSON.stringify(v)}'><i class="fa-regular fa-trash-can text-danger fw-bold"></i></small>
+                                <small type="button" class="ms-2 btn-eliminar-soporte" idPaciente-rel='${idPaciente}' data-rel='${JSON.stringify(soporteEncontrado)}'><i class="fa-regular fa-trash-can text-danger fw-bold"></i></small>
                             </div>`;
                         }
-                    })
-                }
-                soportesExistentes_AUTORIZACION_ASEGU += `</div>`;
-                soportesExistentes_SERV_DEMANDA += `</div>`;
+                    }
+                    soportesExistentes += `</div>`;
 
-                if(value.tiposSoportes.includes('AUTORIZACION_ASEGU')){
-                    elem_seguros += `<div class="col-12 col-md-6 col-paciente-${idPaciente}">
-                        <div class="accordion accordion-flush" id="accordion-AUTORIZACION_ASEGU-${value.idAgrupacion}-${value.codigoServicioNivel1}">
+                    let tituloVisual = formatTitle(tipoSoporte);
+                    let tituloPrincipal = value.nombreServicioNivel1;
+                    let subtituloTipo = (tituloVisual.toLowerCase() !== value.nombreServicioNivel1.toLowerCase()) ? `(${tituloVisual})` : '';
+
+                    seccionesHtml += `<div class="col-12 col-md-6 col-paciente-${idPaciente}">
+                        <div class="accordion accordion-flush" id="accordion-${tipoSoporte}-${value.idAgrupacion}-${value.codigoServicioNivel1}">
                             <div class="accordion-item">
-                                <h5 class="text-pale-sky-40 mb-0">${value.beneficio.convenio.nombreConvenio}</h5>
+                                <h5 class="text-pale-sky-40 mb-0">${tipoSoporte === 'AUTORIZACION_ASEGU' && value.beneficio?.convenio ? value.beneficio.convenio.nombreConvenio : ''}</h5>
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button accordion-bg-white fs-4 fw-semibold text-success px-0 pt-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-AUTORIZACION_ASEGU-${value.idAgrupacion}-${value.codigoServicioNivel1}" aria-expanded="true" aria-controls="collapse-AUTORIZACION_ASEGU-${value.idAgrupacion}-${value.codigoServicioNivel1}">
-                                        ${value.nombreServicioNivel1}
+                                    <button class="accordion-button accordion-bg-white fs-4 fw-semibold text-success px-0 pt-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${tipoSoporte}-${value.idAgrupacion}-${value.codigoServicioNivel1}" aria-expanded="true" aria-controls="collapse-${tipoSoporte}-${value.idAgrupacion}-${value.codigoServicioNivel1}">
+                                        ${tituloPrincipal} <span class="fs-6 text-muted ms-1">${subtituloTipo}</span>
                                     </button>
                                 </h2>
-                                <div id="collapse-AUTORIZACION_ASEGU-${value.idAgrupacion}-${value.codigoServicioNivel1}" class="accordion-collapse collapse show" data-bs-parent="#accordion-AUTORIZACION_ASEGU-${value.idAgrupacion}-${value.codigoServicioNivel1}">
-                                    <div class="accordion-body px-0 py-1 box-AUTORIZACION_ASEGU" data-rel='AUTORIZACION_ASEGU'>
-                                        ${soportesExistentes_AUTORIZACION_ASEGU}
-                                        <div class="file-list" soportesCargados-rel='${JSON.stringify(soportesJson_AUTORIZACION_ASEGU)}' idPaciente-rel="${idPaciente}" nombreServicioNivel1-rel='${value.nombreServicioNivel1}' type-rel="AUTORIZACION_ASEGU" convenio-rel='${JSON.stringify(value.beneficio.convenio)}' idAgrupacion-rel='${value.idAgrupacion}' codigoServicioNivel1-rel='${value.codigoServicioNivel1}'>
+                                <div id="collapse-${tipoSoporte}-${value.idAgrupacion}-${value.codigoServicioNivel1}" class="accordion-collapse collapse show" data-bs-parent="#accordion-${tipoSoporte}-${value.idAgrupacion}-${value.codigoServicioNivel1}">
+                                    <div class="accordion-body px-0 py-1 box-${tipoSoporte}" data-rel='${tipoSoporte}'>
+                                        ${soportesExistentes}
+                                        <div class="file-list" soportesCargados-rel='${JSON.stringify(soportesJsonMap[tipoSoporte])}' idPaciente-rel="${idPaciente}" nombreServicioNivel1-rel='${value.nombreServicioNivel1}' type-rel="${tipoSoporte}" ${tipoSoporte === 'AUTORIZACION_ASEGU' && value.beneficio ? `convenio-rel='${JSON.stringify(value.beneficio.convenio)}'` : ''} idAgrupacion-rel='${value.idAgrupacion}' codigoServicioNivel1-rel='${value.codigoServicioNivel1}'>
                                         </div>
                                     </div>
                                 </div>
@@ -477,55 +463,21 @@
                         </div>
                     </div>`;
                 }
+            }
 
-                if(value.tiposSoportes.includes('SERV_DEMANDA')){
-                    elem_ordenes += `<div class="col-12 col-md-6 col-paciente-${idPaciente}">
-                        <div class="accordion accordion-flush" id="accordion-SERV_DEMANDA-${value.idAgrupacion}-${value.codigoServicioNivel1}">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button accordion-bg-white fs-4 fw-semibold text-success px-0 pt-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-SERV_DEMANDA-${value.idAgrupacion}-${value.codigoServicioNivel1}" aria-expanded="true" aria-controls="collapse-SERV_DEMANDA-${value.idAgrupacion}-${value.codigoServicioNivel1}">
-                                        ${value.nombreServicioNivel1}
-                                    </button>
-                                </h2>
-                                <div id="collapse-SERV_DEMANDA-${value.idAgrupacion}-${value.codigoServicioNivel1}" class="accordion-collapse collapse show" data-bs-parent="#accordion-SERV_DEMANDA-${value.idAgrupacion}-${value.codigoServicioNivel1}">
-                                    <div class="accordion-body px-0 py-1 box-SERV_DEMANDA" data-rel='SERV_DEMANDA'>
-                                        ${soportesExistentes_SERV_DEMANDA}
-                                        <div class="file-list" soportesCargados-rel='${JSON.stringify(soportesJson_SERV_DEMANDA)}' idPaciente-rel="${idPaciente}" nombreServicioNivel1-rel='${value.nombreServicioNivel1}' type-rel="SERV_DEMANDA" idAgrupacion-rel='${value.idAgrupacion}' codigoServicioNivel1-rel='${value.codigoServicioNivel1}'>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-                }
-            })
-            if(elem_seguros.length > 0){
-                box_elem_seguros = `<div class="row">
+            if (seccionesHtml.length > 0) {
+                return `<div class="row">
                     <div class="text-start alert-blue-phax mb-3">
                         <h3 class="fw-semibold text-title-2 my-3">
-                            Soporte por autorización 
+                            Soportes Requeridos 
                             <button type="button" class="btn btn-sm border border-blue-phax rounded-3 text-blue btn-reload"><i class="fa-solid fa-rotate"></i></button>
                         </h3>
                     </div>
-                    ${elem_seguros}
-                </div>`
+                    ${seccionesHtml}
+                </div>`;
             }
 
-            if(elem_ordenes.length > 0){
-                box_elem_ordenes = `<div class="row">
-                    <div class="text-start alert-blue-phax mb-3">
-                        <h3 class="fw-semibold text-title-2 my-3">
-                            Ordenes externas `;
-                if(elem_seguros.length == 0){
-                    box_elem_ordenes += `<button type="button" class="btn btn-sm border border-blue-phax rounded-3 text-blue"><i class="fa-solid fa-rotate"></i></button>`;
-                }
-                box_elem_ordenes += `</h3>
-                    </div>
-                    ${elem_ordenes}
-                </div>`
-            }
-
-            return box_elem_seguros + box_elem_ordenes;
+            return '';
         }
 
         async function drawCollapseItem(data){
@@ -534,7 +486,6 @@
             if(soportes_generales.length == 1){
                 isShowed = `show`;
             }
-            // $.each(data, async function(key, value){
             for (const value of data) {
                 let soportes = await drawSoportes(value, value.paciente.idPaciente);
                 elem += `<h2 class="accordion-header">
@@ -657,12 +608,6 @@
                 const idAgrupacion = $fileList.attr('idAgrupacion-rel');
                 const type = $fileList.attr('type-rel');
 
-                {{-- console.log("Paciente:", idPaciente);
-                console.log("Tiene contenido HTML:", notEmpty);
-                console.log("Checkbox checked:", hasCheckboxChecked);
-                console.log("Checkbox encontrados:", $fileList.find('input[type="checkbox"]').length);
-                console.log("Contenido actual del file-list:", $fileList.html()); --}}
-
                 if (notEmpty && hasCheckboxChecked) {
                     console.log("tiene archivos")
                     hasFiles = true;
@@ -678,10 +623,6 @@
 
                     console.log("✔️ IDs seleccionados:", selectedIds);
                     console.log("📂 Archivos encontrados:", selectedFiles);
-
-                    {{-- console.log("Files reales en input:", allFiles);
-                    console.log("Nombres seleccionados por checkbox:", checkedFileNames);
-                    console.log("Archivos encontrados en filter:", selectedFiles); --}}
 
                     let detallesAgrupacion = [];
                     let count = 1;
@@ -701,7 +642,6 @@
                             }
                         } catch (error) {
                             $('.btn-subir').prop('disabled', false).html("Subir");
-                            // console.log(error);
                         }
                     }
 
@@ -711,8 +651,6 @@
                     console.log("no tiene archivos")
                     let detallesAgrupacion = [];
                     if (Object.keys(soportesPrevios).length !== 0) {
-                        // console.log("tiene soportes")
-                        // console.log(soportesPrevios)
                         hasFiles = true;
                         detallesAgrupacion.push({
                             "codigoSoporteOrden": soportesPrevios.codigoSoporteOrden,
@@ -770,9 +708,6 @@
             console.log(data)
             if(data.code == 200){
                 console.log("datos agrupados")
-                // alert("Archivos guardados")
-                // $(`.swiper-wrapper`).empty();
-                // $(`.file-list`).empty();
             }else{
                 console.log(error)
                 alert(data.message);
@@ -817,7 +752,6 @@
 
                 pdf.addImage(imageDataURL, props.fileType, x, y, imgWidth, imgHeight);
 
-                // Convertir a blob y renombrar
                 finalFile = pdf.output('blob');
                 finalFile = new File([finalFile], "convertido.pdf", { type: "application/pdf" });
             } else {
@@ -850,7 +784,6 @@
             }
         }
 
-
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -862,9 +795,9 @@
 
         function generateUUIDv4() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                const r = (Math.random() * 16) | 0; // Genera un número aleatorio entre 0 y 15
-                const v = c === 'x' ? r : (r & 0x3) | 0x8; // Asegura que el formato cumple con UUID v4
-                return v.toString(16); // Convierte el número a hexadecimal
+                const r = (Math.random() * 16) | 0;
+                const v = c === 'x' ? r : (r & 0x3) | 0x8;
+                return v.toString(16);
             });
         }
 

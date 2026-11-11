@@ -341,9 +341,10 @@ class ExternalController extends Controller
         //Realizar cobro y validar para donde redireccionar
         $data = $request->all();
         $dataCita = json_decode(utf8_encode(base64_decode(urldecode($data['dataCita']))));
-        // dd($dataCita);
+        //dd($dataCita);
         // dd($dataCita->datosIngresadosFactura);
         // $tokenCita = $data['tokenCita'];
+        // if($dataCita == null || (isset($dataCita->infoTransaccion->codigoPreTransaccion) && $dataCita->infoTransaccion->codigoPreTransaccion)){
         if($dataCita == null){
             $returnUrl = "numeroIdentificacion=".$data['numeroIdentificacionCita']."&tipoIdentificacion=".$data['tipoIdentificacionCita']."&codArticulo=".$data['codigoReserva']."&tipoArticulo=CITA";
             $showButtonRePay = false;
@@ -427,11 +428,23 @@ class ExternalController extends Controller
                 ]);
             }
         }else if(isset($dataCita->datosIngresadosFactura) && !empty($dataCita->datosIngresadosFactura)){
-            $returnUrl = (isset($dataCita->returnUrl)) ? $dataCita->returnUrl : "numeroIdentificacion=".$data['numeroIdentificacionCita']."&tipoIdentificacion=".$data['tipoIdentificacionCita']."&codArticulo=".$data['codigoReserva']."&tipoArticulo=CITA";
+            // dd($dataCita->paciente->numeroIdentificacion);
+            if( isset($dataCita->uuid5) && $dataCita->uuid5){
+                $returnUrl = "numeroIdentificacion=".$dataCita->paciente->numeroIdentificacion."&tipoIdentificacion=".$dataCita->paciente->codigoTipoIdentificacion."&codArticulo=".$dataCita->reserva->codigoReserva."&tipoArticulo=CITA";
+            }else{
+                $returnUrl = (isset($dataCita->returnUrl)) ? $dataCita->returnUrl : "numeroIdentificacion=".$data['numeroIdentificacionCita']."&tipoIdentificacion=".$data['tipoIdentificacionCita']."&codArticulo=".$data['codigoReserva']."&tipoArticulo=CITA";
+            }
             $showButtonRePay = true;
-            // dd($dataCita);
+            // dd($dataCita->preTransaccion->data->codigoPreTransaccion);
             $codigoTransaccion = $dataCita->transaccionVirtual->codigoTransaccion;
-            $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$dataCita->preTransaccion->codigoPreTransaccion;
+            if( isset($dataCita->uuid5) && $dataCita->uuid5){
+                $codigoPreTransaccion = $dataCita->preTransaccion->data->codigoPreTransaccion;
+            }else{
+                $codigoPreTransaccion = $dataCita->preTransaccion->codigoPreTransaccion;
+            }
+            
+            $method = '/'.Veris::BASE_WAR.'/v1/facturacion/registrar_pago_kushki?idPreTransaccion='.$codigoPreTransaccion;
+            
             if(config('app.subdomain') == "veris"){
                 $canalOrigenServ = Veris::CANAL_ORIGEN_EXTERNAL;
             }else{
@@ -466,9 +479,9 @@ class ExternalController extends Controller
             //         "emailTarjetahabiente" => $dataCita->datosIngresadosFactura->emailFactura,
             //         "codigoSuscripcionTarjeta" => null,
             //         "codigoSeguridad" => null,
-            //         "canalOrigenDigital" => Veris::CANAL_ORIGEN_EXTERNAL_PARAMI
+            //         "canalOrigenDigital" => $canalOrigenServ
             //     ]);
-            // dump($response);
+            // dd($response);
             // dd(config('app.subdomain') == "parami");
             // return redirect()->route('payment-error', [
             //     'error' => $responseTV->message,
@@ -749,6 +762,7 @@ class ExternalController extends Controller
         //dd($request->input('urlRetornoPago'));
         return view('external.pasarela.error')
             ->with('error',$request->input('error'))
+            ->with('accessToken',$this->getTokenExternalFacturacion())
             ->with('showButtonRePay',$request->input('showButtonRePay'))
             ->with('urlRetornoPago',$request->input('urlRetornoPago'));
     }
