@@ -78,7 +78,7 @@
         transcript: {
           displayIcons: true,
           iconSources: { botMessage: 'https://www.veris.com.ec/wp-content/uploads/2025/05/vericita.png', systemMessage: 'https://www.veris.com.ec/wp-content/uploads/2025/05/vericita.png' },
-          eventNames: { customer: 'Usuario' },
+          eventNames: { customer: '{{ Session::get('userData')->primerNombre }}' },
           eventMessages: { participantJoined: '{name} se unió al chat', chatEnded: 'El chat finalizó' }
         },
         endChat: { enableConfirmationDialog: true,
