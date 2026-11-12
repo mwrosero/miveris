@@ -616,8 +616,8 @@
 
     @stack('scripts')
 
-    {{-- @include('template.connect-test') --}}
-    @include('template.connect-prod')
+    @include('template.connect-test')
+    {{-- @include('template.connect-prod') --}}
 </body>
 
 </html>
