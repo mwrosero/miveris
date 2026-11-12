@@ -612,6 +612,7 @@
         }
     </script>
     @stack('scripts')
+    @if(config('app.subdomain') == "veris")
     <style>
   /* 1. Botón flotante para abrir el chat */
   #amazon-connect-open-widget-button {
@@ -721,7 +722,7 @@
   amazon_connect('updateSandboxAttributes',
     'allow-scripts allow-same-origin allow-popups allow-downloads allow-modals allow-popups-to-escape-sandbox');
 </script>
-
+@endif
     
 </body>
 
