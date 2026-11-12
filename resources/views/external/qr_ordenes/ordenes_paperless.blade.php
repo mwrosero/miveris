@@ -814,6 +814,9 @@
         .bg-silver-light {
             background: #f2f2f2;
         }
+        .form-check-input[type=checkbox] {
+            border-color: #0d6efd;
+        }
     </style>
 </body>
 
