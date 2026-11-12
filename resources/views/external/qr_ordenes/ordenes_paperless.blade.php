@@ -441,9 +441,9 @@
 
                     let tituloVisual = formatTitle(tipoSoporte);
                     let tituloPrincipal = value.nombreServicioNivel1;
-                    let subtituloTipo = (tituloVisual.toLowerCase() !== value.nombreServicioNivel1.toLowerCase()) ? `(${tituloVisual})` : '';
+                    let subtituloTipo = (tituloVisual.toLowerCase() !== value.nombreServicioNivel1.toLowerCase()) ? `<strong class="text-dark">(${tituloVisual})</strong>` : '';
 
-                    seccionesHtml += `<div class="col-12 col-md-6 col-paciente-${idPaciente}">
+                    seccionesHtml += `<div class="col-12 mb-3 col-paciente-${idPaciente}">
                         <div class="accordion accordion-flush" id="accordion-${tipoSoporte}-${value.idAgrupacion}-${value.codigoServicioNivel1}">
                             <div class="accordion-item">
                                 <h5 class="text-pale-sky-40 mb-0">${tipoSoporte === 'AUTORIZACION_ASEGU' && value.beneficio?.convenio ? value.beneficio.convenio.nombreConvenio : ''}</h5>
