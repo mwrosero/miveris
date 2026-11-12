@@ -13,6 +13,7 @@ use App\Models\Veris;
 class DashboardController extends Controller
 {
     public function home(){
+        // dd(Session::get('userData'));
         return view('inicio.inicio');
     }
 

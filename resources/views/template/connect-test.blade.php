@@ -1,37 +1,37 @@
 <style>
-      /* 1. Botón flotante para abrir el chat */
-      #amazon-connect-open-widget-button {
-        background: #FFFFFF url("https://www.veris.com.ec/wp-content/uploads/2026/10/logo-vericita.png") center / contain no-repeat !important;
-        border: 0 !important;
-        box-shadow: 0 4px 16px rgba(10, 34, 64, 0.2) !important;
-        border-radius: 50% !important;
-      }
-      
-      #amazon-connect-open-widget-button > * { 
-        visibility: hidden !important; 
-      }
+  /* 1. Botón flotante para abrir el chat */
+  #amazon-connect-open-widget-button {
+    background: #FFFFFF url("https://www.veris.com.ec/wp-content/uploads/2026/10/logo-vericita.png") center / contain no-repeat !important;
+    border: 0 !important;
+    box-shadow: 0 4px 16px rgba(10, 34, 64, 0.2) !important;
+    border-radius: 50% !important;
+  }
+  
+  #amazon-connect-open-widget-button > * { 
+    visibility: hidden !important; 
+  }
 
-      /* 2. Contenedor del Iframe: limita la altura responsiva */
-      #amazon-connect-chat-iframe-container {
-        max-height: 85vh !important;
-        bottom: 20px !important;
-        right: 20px !important;
-        border-radius: 16px !important;
-        overflow: hidden !important;
-        box-shadow: 0 10px 30px rgba(10, 34, 64, 0.25) !important;
-      }
+  /* 2. Contenedor del Iframe: limita la altura responsiva */
+  #amazon-connect-chat-iframe-container {
+    max-height: 85vh !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 30px rgba(10, 34, 64, 0.25) !important;
+  }
 
-      /* 3. BORDES REDONDEADOS PARA LOS BOTONES DEL FOOTER */
-      /* Forzamos el border-radius en los botones dentro del iframe/widget de Amazon Connect */
-      [class*="Footer"] button,
-      [class*="footer"] button,
-      #amazon-connect-chat-iframe-container button {
-        border-radius: 20px !important; /* Bordes redondeados/cápsula */
-        padding: 8px 16px !important;
-        font-weight: 600 !important;
-        transition: all 0.2s ease !important;
-      }
-    </style>
+  /* 3. BORDES REDONDEADOS PARA LOS BOTONES DEL FOOTER */
+  /* Forzamos el border-radius en los botones dentro del iframe/widget de Amazon Connect */
+  [class*="Footer"] button,
+  [class*="footer"] button,
+  #amazon-connect-chat-iframe-container button {
+    border-radius: 20px !important; /* Bordes redondeados/cápsula */
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+  }
+</style>
 
     <script type="text/javascript">
       (function(w, d, x, id){
@@ -71,6 +71,10 @@
       });
 
       amazon_connect('customizationObject', {
+        composer: {
+          richTextEditorV2Enabled: true,
+          disableCustomerAttachments: false
+        },
         transcript: {
           displayIcons: true,
           iconSources: { botMessage: 'https://www.veris.com.ec/wp-content/uploads/2025/05/vericita.png', systemMessage: 'https://www.veris.com.ec/wp-content/uploads/2025/05/vericita.png' },
@@ -84,7 +88,21 @@
 
       amazon_connect('customDisplayNames', {
         header: { logoUrl: 'https://www.veris.com.ec/wp-content/uploads/2026/10/logo-vericita.png', logoAltText: 'VeriCita' },
-        transcript: { systemMessageDisplayName: 'VeriCita', botMessageDisplayName: 'VeriCita' }
+        transcript: { systemMessageDisplayName: 'VeriCita', botMessageDisplayName: 'VeriCita' },
+        footer: {
+          textInputPlaceholder: 'Escriba un mensaje...',
+          endChatButtonText: 'Finalizar chat',
+          startCallButtonText: 'Iniciar una llamada'
+        }
+      });
+
+      amazon_connect('contactAttributes', {
+        patient_cedula: '{{ Session::get('userData')->numeroIdentificacion }}',
+        patient_name:   '{{ Session::get('userData')->primerNombre }} {{ Session::get('userData')->primerApellido }}{{ Session::get('userData')->segundoApellido }}',
+        patient_name_short : '{{ Session::get('userData')->nombre }}',
+        telefono_app:   '{{ Session::get('userData')->telefonoMovil }}',
+        canal_ui: 'portal',
+        negocio: (@json(config('app.subdomain')) == "veris") ? "veris" : "parami"
       });
 
       amazon_connect('updateSandboxAttributes',
