@@ -705,10 +705,10 @@ class ExternalController extends Controller
             'method'   => 'GET'
         ]);
 
-        //dd($urlParams);
+        // dd($urlParams);
         
         $urlAdd = '';
-        if($urlParams['tipoArticulo'] == "CITA"){
+        if(isset($urlParams['uuid5'])){
             $urlAdd = '/'.$urlParams['uuid5'];
         }
 
