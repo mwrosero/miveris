@@ -1589,3 +1589,75 @@ async function guardarPPD2(esAceptacionTotal = false){
     }
         //return data;
 }
+
+/**
+ * Convierte un string UUID en un Uint8Array de 16 bytes.
+ */
+function parseUUID(uuid) {
+    const hex = uuid.replace(/-/g, '');
+    const bytes = new Uint8Array(16);
+    for (let i = 0; i < 16; i++) {
+        bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+    }
+    return bytes;
+}
+
+/**
+ * Genera un UUID v5 basado en un espacio de nombres y un nombre usando SHA-1.
+ */
+async function generateUUIDv5(namespace, name) {
+    const nsBytes = parseUUID(namespace);
+    const nameBytes = new TextEncoder().encode(name);
+
+    // Concatenar namespace + nombre en un solo buffer
+    const buffer = new Uint8Array(nsBytes.length + nameBytes.length);
+    buffer.set(nsBytes);
+    buffer.set(nameBytes, nsBytes.length);
+
+    // Aplicar hash SHA-1 usando la API nativa de criptografía
+    const hashBuffer = await crypto.subtle.digest('SHA-1', buffer);
+    const hashBytes = new Uint8Array(hashBuffer);
+
+    // Tomar los primeros 16 bytes del hash SHA-1
+    const uuidBytes = hashBytes.slice(0, 16);
+
+    // Configurar versión a v5 (bits del 4 al 7 del byte 6 en 0101 -> 0x50)
+    uuidBytes[6] = (uuidBytes[6] & 0x0f) | 0x50;
+    
+    // Configurar variante RFC 4122 (los dos bits más altos del byte 8 en 10 -> 0x80)
+    uuidBytes[8] = (uuidBytes[8] & 0x3f) | 0x80;
+
+    // Formatear los bytes en formato hexadecimal con guiones (8-4-4-4-12)
+    const hexBytes = Array.from(uuidBytes).map(b => b.toString(16).padStart(2, '0'));
+    return [
+        hexBytes.slice(0, 4).join(''),
+        hexBytes.slice(4, 6).join(''),
+        hexBytes.slice(6, 8).join(''),
+        hexBytes.slice(8, 10).join(''),
+        hexBytes.slice(10, 16).join('')
+    ].join('-');
+}
+
+// ==========================================
+// USO PRÁCTICO PARA LA CÉDULA
+// ==========================================
+
+// Espacio de nombres DNS especificado
+const DNS_NAMESPACE = "6ba7b810-9dad-11d1-80b4-00c04fd430c8";
+
+/**
+ * Transforma una cédula en un identificador único UUID v5 determinista.
+ * @param {string|number} cedula - El número de cédula del usuario.
+ * @returns {Promise<string>} - El UUID v5 resultante.
+ */
+async function encriptarCedula(cedula) {
+    if (!cedula) {
+        throw new Error("Debe proporcionar un número de cédula válido.");
+    }
+    
+    // Limpiamos espacios y convertimos a string por seguridad
+    const cedulaLimpia = String(cedula).trim();
+    
+    const uuidV5 = await generateUUIDv5(DNS_NAMESPACE, cedulaLimpia);
+    return uuidV5;
+}

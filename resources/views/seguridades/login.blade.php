@@ -76,6 +76,7 @@
     });
 
     document.addEventListener("DOMContentLoaded", function() {
+        sessionStorage.clear();
         var form = document.getElementById("formAuthentication");
         var submitButton = document.getElementById("btnLogin");
 
