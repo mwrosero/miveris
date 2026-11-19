@@ -7,8 +7,8 @@
     <div class="swiper swiper-tratamientos position-relative pb-3">
         <div class="swiper-wrapper px-1 py-2" id="contenedorTratamientoHome">
         </div>
-        <button type="button" class="mt-n4 btn btn-prev rounded-circle"></button>
-        <button type="button" class="mt-n4 btn btn-next rounded-circle"></button>
+        <button type="button" class="mt-n4 btn btn-prev tratamientos-prev rounded-circle"></button>
+        <button type="button" class="mt-n4 btn btn-next tratamientos-next rounded-circle"></button>
     </div>
     <div class="py-3 d-none" id="contenedorTratamientosHomePrincipal"></div>
 </section>

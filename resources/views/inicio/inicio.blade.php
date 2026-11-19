@@ -5,22 +5,9 @@ Mi Veris - Inicio
 @section('content')
 @php
     $tokenCita = base64_encode(uniqid());
-    // dd($tokenCita);
 @endphp
 
-{{-- <style>
-    #animacion {
-      width: 300px;
-      height: 300px;
-      margin: auto;
-      position: absolute;
-      z-index: 9;
-      pointer-events: none;
-    }
-</style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script> --}}
 <div class="flex-grow-1 container-p-y pt-0">
-    {{-- <div id="animacion"></div> --}}
 
     <!-- Modal de error -->
     <div class="modal fade" id="ModalError" tabindex="-1" aria-labelledby="ModalError" aria-hidden="true">
@@ -109,6 +96,7 @@ Mi Veris - Inicio
     <div class="d-flex justify-content-between align-items-center bg-white mb-4" style="box-shadow: 0px 0px 4px 0px #0000000D !important;">
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Inicio') }}</h5>
     </div>
+
     <!-- Banners -->
     <section class="p-3 py-3 pt-0 pe-0 pe-md-3 mb-0 d-none section-banners" style="background: #F9FAFB;">
         <div class="swiper swiper-banners position-relative pb-2">
@@ -116,7 +104,7 @@ Mi Veris - Inicio
             </div>
         </div>
     </section>
-    
+
     @if(config('app.subdomain') == "veris")
         @include('inicio.sections.tratamientos-home')
     @else
@@ -131,160 +119,81 @@ Mi Veris - Inicio
 
     @if(config('app.subdomain') == "veris")
         @include('inicio.sections.citas')
-        @include('inicio.sections.citas-vua') 
+        @include('inicio.sections.citas-vua')
     @else
         @include('inicio.sections.tratamientos-home')
     @endif
 
-    
 </div>
 @endsection
+
 @push('scripts')
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/block-ui@2.70.1/jquery.blockUI.min.js"></script>
 <script>
-
-    //variables globales
+    // Variables globales
     let datosTratamientos = [];
     let datosCitas = [];
     let datosConvenios = [];
     let datosPaciente = [];
+    let _ppd;
+    let citas_vua;
 
-    document.addEventListener("DOMContentLoaded", async function () {
-        {{-- var anim = lottie.loadAnimation({
-            container: document.getElementById('animacion'),
-            renderer: 'svg', // 👈 evita canvas
-            loop: true,
-            autoplay: true,
-            path: '{{ asset('assets/json/SPIDER_JSON.json') }}' // tu archivo Lottie JSON
-        }); --}}
-        
-        await controlVersion();
-        
-        /*var swiper = new Swiper('.swiper-acceso-rapidos', {
-            // slidesPerView: 1,
-            spaceBetween: 8,
-            
-            navigation: {
-                nextEl: '.btn-next',
-                prevEl: '.btn-prev',
-            },
-            autoplay: false,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            breakpoints: {
-                300: {
-                    slidesPerView: 2.1,
-                    centeredSlides: false,
-                    // loop: true,
-                    spaceBetween: 4,
-                },
-                768: {
-                    slidesPerView: 2.1,
-                    // centeredSlides: true,
-                    // loop: true,
-                    // spaceBetween: 8,
-                },
-                1024: {
-                    slidesPerView: 3,
-                    // spaceBetween: 8,
-                },
-            },
-        });*/
-        await obtenerPPD();
-        await cargarConfiguracionesHome("{{ Session::get('userData')->numeroIdentificacion }}");
+    document.addEventListener("DOMContentLoaded", function () {
+        const tokenCita = "{{ $tokenCita }}";
 
-        await cargarBanners();
-        await obtenerTratamientos();
-        
-        await obtenerCitas();
-        @if(config('app.subdomain') == "veris")
-        await obtenerUrgenciasAmbulatorias();
-        @endif
-        // chartProgres('#chart-progress');
-        await consultarConvenios();
-        await consultarDatosPaciente();
-        
-        // initializeSwiper('.swipertratamientos');
-        // initializeSwiper('.swiper-proximas-citas');
-        $('body').on('click', '.btn-opciones-sesion', function(){
+        // 1. Registrar eventos inmediatamente para evitar bloqueos al hacer clic
+        $(document).on('click', '#cita-nueva, .banner-cita-nueva', function (e) {
+            e.preventDefault();
+            let params = {};
+            localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
+            window.location.href = "/citas-elegir-paciente/" + tokenCita;
+        });
+
+        $('body').on('click', '.btn-opciones-sesion', function () {
             $('.data-popup-opciones').attr('data-rel', $(this).attr("data-rel"));
-            $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/seleccionar-datos-cita/{{ $tokenCita }}");
+            $('.data-popup-opciones.btn-CambiarFechaCita').attr('url-rel', "/seleccionar-datos-cita/" + tokenCita);
         });
 
-        $('#cita-nueva, .banner-cita-nueva').on('click', function(){
-            let params = {}
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-
-            // redireccionar a la pagina de citas
-            window.location.href = "/citas-elegir-paciente/" + "{{ $tokenCita }}";
-        });
-
-        $('body').on('click', '.btn-opciones-cita', function(){
-            console.log("btn-opciones-cita")
+        $('body').on('click', '.btn-opciones-cita', function () {
             let datos = JSON.parse($(this).attr("data-rel"));
             let url = `seleccionar-datos-cita`;
-            if(datos.esVirtual === "S" && datos.estaPagada == "S"){
+            if (datos.esVirtual === "S" && datos.estaPagada == "S") {
                 url = `citas-elegir-fecha-doctor`;
-            }else{
-                url = `seleccionar-datos-cita`;
             }
 
             $('#modificar-cita-normal').removeClass('disabled-item');
-            if(datos.permiteCambiar === "N"){
+            if (datos.permiteCambiar === "N") {
                 $('#modificar-cita-normal').addClass('disabled-item');
             }
 
-            /*$('#cambiar-modalidad').removeClass('disabled-item');
-            if(datos.habilitaCambioModalidad === "N" || datos.aplicaCambioModalidad === "N"){
-                $('#cambiar-modalidad').addClass('disabled-item');
-            }*/
             $('#cambiar-modalidad').removeClass('disabled-item');
-            if(datos.esVirtual === "S" || datos.idTeleconsulta !== null){
+            if (datos.esVirtual === "S" || datos.idTeleconsulta !== null) {
                 $('#cambiar-modalidad').addClass('disabled-item');
             }
 
             $('.data-popup-opciones-cita').attr('data-rel', $(this).attr("data-rel"));
-            $('.data-popup-opciones-cita.btn-CambiarFechaCita').attr('url-rel', `/${url}/{{ $tokenCita }}`);
+            $('.data-popup-opciones-cita.btn-CambiarFechaCita').attr('url-rel', `/${url}/` + tokenCita);
             $('#masOpcionesModalCitas').modal('show');
-            {{-- data-bs-toggle="modal" data-bs-target="#masOpcionesModalCitas" --}}
         });
 
-        /*$('body').on('click', '.btn-cambio-modalidad', async function(){
-            let datosServicio = JSON.parse($(this).data('rel'));
-            let ruta = "/citas-revisa-tus-datos/{{ $tokenCita }}";
-            console.log(datosServicio);
-            console.log(ruta);
-            return;
-            if(datosServicio.habilitaCambioModalidad === "N" || datosServicio.aplicaCambioModalidad === "N"){
-                $('#mensajeNoPermiteCambiarModalidad').html(datosServicio.mensajeValidacion1);
-                $('#modalPermiteCambiarModalidad').modal('show');
-                return;
-            }else{
-                location.href = ruta;
-            }
-        })*/
-
-        $('body').on('click', '.btn-cambio-modalidad', async function(){
+        $('body').on('click', '.btn-cambio-modalidad', async function () {
             let datosServicio = $(this).data('rel');
-            let ruta = "/citas-revisa-tus-datos/{{ $tokenCita }}";
+            let ruta = "/citas-revisa-tus-datos/" + tokenCita;
 
-            if(datosServicio.habilitaCambioModalidad === "N" || datosServicio.aplicaCambioModalidad === "N"){
+            if (datosServicio.habilitaCambioModalidad === "N" || datosServicio.aplicaCambioModalidad === "N") {
                 $('#mensajeNoPermiteCambiarModalidad').html(datosServicio.mensajeValidacion1);
                 $('#modalPermiteCambiarModalidad').modal('show');
                 return;
             }
 
-            let params = {}
-
-            if(datosServicio.permiteReserva == "N"){
+            if (datosServicio.permiteReserva == "N") {
                 $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
                 $('#modalPermiteCambiar').modal('show');
                 return;
             }
 
+            let params = {};
             params.cambioModalidad = "S";
             params.convenio = {
                 "secuenciaAfiliado": datosServicio.secuenciaAfiliado,
@@ -292,36 +201,36 @@ Mi Veris - Inicio
                 "codigoCliente": datosServicio.codigoCliente,
                 "codigoConvenio": datosServicio.codigoConvenio,
                 "codigoEmpresa": datosServicio.codigoEmpresa,
-                "permitePagoLab" : datosServicio.permitePagoLab,
+                "permitePagoLab": datosServicio.permitePagoLab,
                 "permitePago": datosServicio.permitePagoReserva,
-                "mensajeBloqueoPago" : datosServicio.mensajeBloqueoPago,
-                "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
+                "mensajeBloqueoPago": datosServicio.mensajeBloqueoPago,
+                "mensajeBloqueoReserva": datosServicio.mensajeBloqueoReserva,
                 "permiteReserva": datosServicio.permitePagoReserva,
                 "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
-                "esPlanStar":  datosServicio.esPlanStar
-            }
+                "esPlanStar": datosServicio.esPlanStar
+            };
 
             params.online = datosServicio.esVirtual;
 
             params.especialidad = {
                 codigoEspecialidad: datosServicio.idEspecialidad,
-                codigoPrestacion  : datosServicio.codigoPrestacion,
-                codigoServicio   : datosServicio.codigoServicio,
+                codigoPrestacion: datosServicio.codigoPrestacion,
+                codigoServicio: datosServicio.codigoServicio,
                 codigoTipoAtencion: datosServicio.codigoTipoAtencion,
-                esOnline : datosServicio.esVirtual,
-                nombre : datosServicio.especialidad,
-            }
+                esOnline: datosServicio.esVirtual,
+                nombre: datosServicio.especialidad,
+            };
             params.paciente = {
                 "numeroIdentificacion": datosServicio.numeroIdentificacion,
                 "tipoIdentificacion": datosServicio.tipoIdentificacion,
                 "nombrePaciente": datosServicio.nombrePaciente,
                 "numeroPaciente": datosServicio.numeroPaciente
-            }
+            };
 
             params.tratamiento = {
                 idPaciente: datosServicio.numeroPaciente,
                 origen: 'INICIO',
-            }
+            };
 
             params.reservaEdit = {
                 "estaPagada": datosServicio.estaPagada,
@@ -330,39 +239,33 @@ Mi Veris - Inicio
                 "codigoEmpresaOrden": datosServicio.codigoEmpresaOrden,
                 "idOrdenAgendable": datosServicio.idOrdenAgendable,
                 "idCita": datosServicio.idCita
-            }
+            };
 
             params.horario = {
                 "fechaReserva": datosServicio.fechaReserva,
                 "horaInicio": datosServicio.horaInicio,
                 "horaFin": datosServicio.horaFin,
                 "nombreMedico": datosServicio.medico
-            }
-
-            // params.sesion = {
-            //     secuenciaPlanTto: datosServicio.secuenciaPlanTto,
-            //     numeroSesion: datosServicio.numeroSesion
-            // }
+            };
 
             params.origen = "INICIO";
             params.convenio.origen = "INICIO";
 
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
             location = ruta;
         });
 
-        $('body').on('click', '.btn-sesion', async function(){
+        $('body').on('click', '.btn-sesion', async function () {
             let datosServicio = $(this).data('rel');
-            let ruta = "/detalle-sesion/{{ $tokenCita }}";
+            let ruta = "/detalle-sesion/" + tokenCita;
 
-            let params = {}
-
-            if(datosServicio.permiteReserva == "N"){
+            if (datosServicio.permiteReserva == "N") {
                 $('#mensajeNoPermiteCambiar').html(datosServicio.mensajeBloqueoReserva);
                 $('#modalPermiteCambiar').modal('show');
                 return;
             }
 
+            let params = {};
             params.sesion = datosServicio;
             params.convenio = {
                 "secuenciaAfiliado": datosServicio.secuenciaAfiliado,
@@ -370,44 +273,44 @@ Mi Veris - Inicio
                 "codigoCliente": datosServicio.codigoCliente,
                 "codigoConvenio": datosServicio.codigoConvenio,
                 "codigoEmpresa": datosServicio.codigoEmpresa,
-                "permitePagoLab" : datosServicio.permitePagoLab,
+                "permitePagoLab": datosServicio.permitePagoLab,
                 "permitePago": datosServicio.permitePagoReserva,
-                "mensajeBloqueoPago" : datosServicio.mensajeBloqueoPago,
-                "mensajeBloqueoReserva" : datosServicio.mensajeBloqueoReserva,
+                "mensajeBloqueoPago": datosServicio.mensajeBloqueoPago,
+                "mensajeBloqueoReserva": datosServicio.mensajeBloqueoReserva,
                 "permiteReserva": datosServicio.permitePagoReserva,
                 "aplicaVerificacionConvenio": datosServicio.aplicaVerificacionConvenio,
-                "esPlanStar":  datosServicio.esPlanStar
-            }
+                "esPlanStar": datosServicio.esPlanStar
+            };
             params.central = {
                 "codigoSucursal": datosServicio.codigoSucursal,
                 "nombreSucursal": datosServicio.sucursal
-            }
+            };
             params.ciudad = {
                 "codigoPais": datosServicio.idPais,
                 "codigoProvincia": datosServicio.idProvincia,
                 "codigoCiudad": datosServicio.idCiudad
-            }
+            };
             params.online = datosServicio.esVirtual;
 
             params.especialidad = {
                 codigoEspecialidad: datosServicio.idEspecialidad,
-                codigoPrestacion  : datosServicio.codigoPrestacion,
-                codigoServicio   : datosServicio.codigoServicio,
+                codigoPrestacion: datosServicio.codigoPrestacion,
+                codigoServicio: datosServicio.codigoServicio,
                 codigoTipoAtencion: datosServicio.codigoTipoAtencion,
-                esOnline : datosServicio.esVirtual,
-                nombre : datosServicio.especialidad,
-            }
+                esOnline: datosServicio.esVirtual,
+                nombre: datosServicio.especialidad,
+            };
             params.paciente = {
                 "numeroIdentificacion": datosServicio.numeroIdentificacion,
                 "tipoIdentificacion": datosServicio.tipoIdentificacion,
                 "nombrePaciente": datosServicio.nombrePaciente,
                 "numeroPaciente": datosServicio.numeroPaciente
-            }
+            };
 
             params.tratamiento = {
                 idPaciente: datosServicio.numeroPaciente,
                 origen: 'INICIO',
-            }
+            };
 
             params.reservaEdit = {
                 "estaPagada": datosServicio.estaPagada,
@@ -416,157 +319,141 @@ Mi Veris - Inicio
                 "codigoEmpresaOrden": datosServicio.codigoEmpresaOrden,
                 "idOrdenAgendable": datosServicio.idOrdenAgendable,
                 "idCita": datosServicio.idCita
-            }
-
-            // params.sesion = {
-            //     secuenciaPlanTto: datosServicio.secuenciaPlanTto,
-            //     numeroSesion: datosServicio.numeroSesion
-            // }
+            };
 
             params.origen = "Listatratamientos";
             params.convenio.origen = "Listatratamientos";
 
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
             location = ruta;
         });
 
-        $('body').on('click', '.btn-eliminar-cita', function(){
+        $('body').on('click', '.btn-eliminar-cita', function () {
             $('#idCitaEliminar').val($(this).attr('codigoReserva-rel'));
             var myModal = new bootstrap.Modal(document.getElementById('modalEliminarCita'));
             myModal.show();
-        })
+        });
 
-        $('body').on('click', '.btn-confirmar-eliminar-cita', async function(){
-            await eliminarReserva()
-        })
+        $('body').on('click', '.btn-confirmar-eliminar-cita', async function () {
+            await eliminarReserva();
+        });
 
-        $('body').on('click', '.btn-cita-informacion', async function(){
+        $('body').on('click', '.btn-cita-informacion', function () {
             let msg = $(this).attr('data-mensajeInformacion');
-            $('#mensajeNoPermiteCambiar').html(msg)
-        })
+            $('#mensajeNoPermiteCambiar').html(msg);
+        });
 
-        // seleccionar convenio convenio-item
-        $(document).on('click', '.convenio-item', function(){
+        $(document).on('click', '.convenio-item', function () {
             let data = $(this).data('rel');
-            console.log('dataConvenio', data);
-            let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
+            let params = JSON.parse(localStorage.getItem('cita-' + tokenCita));
             params.convenio = data;
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
             $('#convenioModal').modal('hide');
             location = $(this).attr('url-rel');
         });
 
-        // seleccionar convenio convenio-Ninguno
-        $(document).on('click', '.convenio-ninguno', function(){
-            let data = $(this).data('rel');
-            console.log('dataConvenio', data);
-            let params = JSON.parse(localStorage.getItem('cita-{{ $tokenCita }}'));
+        $(document).on('click', '.convenio-ninguno', function () {
+            let params = JSON.parse(localStorage.getItem('cita-' + tokenCita));
             params.convenio = {
                 "permitePago": "S",
                 "permiteReserva": "S",
                 "idCliente": null,
                 "codigoConvenio": null,
-                "secuenciaAfiliado" : null,
+                "secuenciaAfiliado": null,
             };
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
+            localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
             $('#convenioModal').modal('hide');
             location = $(this).attr('url-rel');
         });
 
-        $(document).on('click', '.btn-preparacionPrevia', function(){
+        $(document).on('click', '.btn-preparacionPrevia', function () {
             let data = $(this).data('rel');
-            obtenerPreparacionPrevia(data.codigoSolicitud)
-        })
+            obtenerPreparacionPrevia(data.codigoSolicitud);
+        });
 
-        $(document).on('click', '.btn-pagar-lab', async function(){
+        $(document).on('click', '.btn-pagar-lab', async function () {
             let params = {};
             let data = JSON.parse($(this).attr("data-rel"));
-            const paciente = await obtenerDatosUsuario(data.tipoIdentificacion,data.numeroIdentificacion);
-            // console.log(data);return;
-            if(data.permitePagoReserva == "N"){
+            const paciente = await obtenerDatosUsuario(data.tipoIdentificacion, data.numeroIdentificacion);
+
+            if (data.permitePagoReserva == "N") {
                 $('#mensajeError').text(data.mensajePagoReserva);
                 $('#ModalError').modal('show');
                 return;
             }
 
-            if(data.codigoConvenio !== null){
+            if (data.codigoConvenio !== null) {
                 params.convenio = {
                     "secuenciaAfiliado": data.secuenciaAfiliado,
                     "idCliente": data.idCliente,
                     "codigoCliente": data.codigoCliente,
                     "codigoConvenio": data.codigoConvenio,
                     "codigoEmpresa": data.codigoEmpresa,
-                    "permitePagoLab" : data.permitePagoLab,
+                    "permitePagoLab": data.permitePagoLab,
                     "permitePago": data.permitePagoReserva,
-                    "mensajeBloqueoPago" : data.mensajeBloqueoPago,
-                    "mensajeBloqueoReserva" : data.mensajeBloqueoReserva,
+                    "mensajeBloqueoPago": data.mensajeBloqueoPago,
+                    "mensajeBloqueoReserva": data.mensajeBloqueoReserva,
                     "permiteReserva": data.permitePagoReserva,
                     "aplicaVerificacionConvenio": data.aplicaVerificacionConvenio,
-                    "esPlanStar":  data.esPlanStar
+                    "esPlanStar": data.esPlanStar
                 };
-            }else{
+            } else {
                 params.convenio = {
                     "permitePago": "S",
                     "permiteReserva": "S",
                     "idCliente": null,
                     "codigoConvenio": null,
-                    "secuenciaAfiliado" : null,
-                    "esPlanStar":  data.esPlanStar
+                    "secuenciaAfiliado": null,
+                    "esPlanStar": data.esPlanStar
                 };
             }
             params.horario = {
-                "dia2": "",//datosServicio.fechaReserva,
-                "horaInicio": "",//datosServicio.horaInicio,
-                "horaFin": "",//datosServicio.horaFin,
-            }
-            params.paciente = paciente.data
+                "dia2": "",
+                "horaInicio": "",
+                "horaFin": "",
+            };
+            params.paciente = paciente.data;
             params.ordenExterna = data;
-            params.origen = 'ordenExterna'; 
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-            location.href = `/citas-datos-facturacion/{{ $tokenCita }}`;
-        })
+            params.origen = 'ordenExterna';
+            localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
+            location.href = `/citas-datos-facturacion/` + tokenCita;
+        });
 
-        // btn-pagar para redireccionar a la pagina de pago
-        $(document).on('click', '.btn-pagar', function(){
+        $(document).on('click', '.btn-pagar', function () {
             let data = $(this).data('rel');
-            console.log('dataPagar', data);
-            if(data.permitePagoReserva == "N"){
-            // if(datosConvenios.length > 0 && datosConvenios[0].permitePago == "N" || data.permitePagoReserva == "N"){
-                
-                // Modal de error
-                // setear el mensaje de error en mensajeError
+
+            if (data.permitePagoReserva == "N") {
                 $('#mensajeError').text(data.mensajePagoReserva);
-                
                 $('#ModalError').modal('show');
                 return;
             }
 
-            let params = {}
+            let params = {};
             params.online = data.esVirtual;
             params.especialidad = {
                 codigoEspecialidad: data.idEspecialidad,
-                codigoPrestacion  : data.codigoPrestacion,
-                codigoServicio   : data.codigoServicio,
+                codigoPrestacion: data.codigoPrestacion,
+                codigoServicio: data.codigoServicio,
                 codigoTipoAtencion: data.codigoTipoAtencion,
-                esOnline : data.esVirtual,
-                nombre : data.especialidad,
-            }
+                esOnline: data.esVirtual,
+                nombre: data.especialidad,
+            };
             params.convenio = {
                 secuenciaAfiliado: data.secuenciaAfiliado,
                 idCliente: data.idCliente,
                 codigoCliente: data.codigoCliente,
                 codigoConvenio: data.codigoConvenio,
                 codigoEmpresa: data.codigoEmpresa,
-                permitePagoLab : data.permitePagoLab,
+                permitePagoLab: data.permitePagoLab,
                 permitePago: data.permitePagoReserva,
-                mensajeBloqueoPago : data.mensajeBloqueoPago,
-                mensajeBloqueoReserva : data.mensajeBloqueoReserva,
+                mensajeBloqueoPago: data.mensajeBloqueoPago,
+                mensajeBloqueoReserva: data.mensajeBloqueoReserva,
                 permiteReserva: data.permitePagoReserva,
                 aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
-                esPlanStar:  data.esPlanStar
-            }
+                esPlanStar: data.esPlanStar
+            };
 
-            if(data.esSesionOdonto == "S"){
+            if (data.esSesionOdonto == "S") {
                 params.sesion = {
                     secuenciaPlanTto: data.secuenciaPlanTto,
                     numeroSesion: data.numeroSesion,
@@ -576,26 +463,15 @@ Mi Veris - Inicio
                     tipoAtencion: data.tipoAtencion,
                     tiempoSesion: data.tiempoSesion,
                     duracion: data.duracion
-                }
+                };
             }
-            // if (datosConvenios.length > 0) {
-            //     params.convenio = datosConvenios[0];
-            // } else {
-            //     params.convenio = {
-            //         "permitePago": "S",
-            //         "permiteReserva": "S",
-            //         "idCliente": null,
-            //         "codigoConvenio": null,
-            //         "secuenciaAfiliado" : null,
-            //     };
-            // }
 
             params.paciente = {
                 "numeroIdentificacion": data.numeroIdentificacion,
                 "tipoIdentificacion": data.tipoIdentificacion,
                 "nombrePaciente": data.nombrePaciente,
                 "numeroPaciente": data.numeroPaciente
-            }
+            };
 
             params.reservaEdit = {
                 "estaPagada": data.estaPagada,
@@ -604,100 +480,269 @@ Mi Veris - Inicio
                 "codigoEmpresaOrden": data.codigoEmpresaOrden,
                 "idOrdenAgendable": data.idOrdenAgendable,
                 "idCita": data.idCita
-            }
+            };
             params.origen = "inicios";
 
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-            location.href = "/citas-datos-facturacion/" + "{{ $tokenCita }}"
+            localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
+            location.href = "/citas-datos-facturacion/" + tokenCita;
         });
 
-        $('body').on('click', '.link-item-banner', async function(){
+        $('body').on('click', '.link-item-banner', async function () {
             let url = $(this).attr('url-rel');
             let codigoPaquete = $(this).attr('codigoPaquete-rel');
-            console.log('Banner click');
-            console.log(url);
-            console.log(codigoPaquete);
 
-            if (typeof codigoPaquete === "undefined"){
-                
-                if(url != ''){
+            if (typeof codigoPaquete === "undefined") {
+                if (url != '') {
                     location.href = url;
                     return;
                 }
-            }else{
-                console.log(codigoPaquete);
+            } else {
                 let args = [];
                 args["endpoint"] = api_url + `/${api_war}/v1/comercial/paquetes?canalOrigen=${_canalOrigen}&codigoEmpresa=1&tipoFiltro=POR_ASIGNAR&page=1&perPage=1&estaPagado=false&verDetalle=false&categoria=&buscarPorPromocion=&codigoPaquete=5759`;
                 args["method"] = "GET";
                 args["showLoader"] = true;
                 const res = await call(args);
-                let url = '/promocion/detalle/';
+                let urlDetalle = '/promocion/detalle/';
                 let data = {
                     "paquete": res.data.items[0]
                 };
-                localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(data));
-                location.href = url + "{{ $tokenCita }}";
+                localStorage.setItem('cita-' + tokenCita, JSON.stringify(data));
+                location.href = urlDetalle + tokenCita;
                 return;
             }
+        });
 
-        })
-
-        //cerrar el modal de politicas reuerdame
-        $(document).on('click', '#modalRecuerdame', function(){
-            console.log('click');
+        $(document).on('click', '#modalRecuerdame', function () {
             localStorage.setItem('politicaspoliticasAbiertas', true);
             $('#modalPPD').modal('hide');
         });
 
-        // ver tratamiento Inicio
-        $(document).on('click', '.btn-VerTratamientoInicio', function(){
+        $(document).on('click', '.btn-VerTratamientoInicio', function () {
             let data = $(this).data('rel');
-            console.log('dataTratamiento', data);
-            let params = { };
+            let params = {};
             params.tratamiento = data;
             params.paciente = datosPaciente;
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-
+            localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
         });
 
+        $(document).on('click', '#aceptarPDP', async function () {
+            const response = await aceptarPoliticas();
+            if (response.code == 200) {
+                cerrarModal();
+            }
+        });
+
+        $(document).on('click', '.btn-CambiarFechaCita', async function () {
+            let data = $(this).data('rel');
+            let url = $(this).attr('url-rel');
+            let tipoFlujo = "reagenda/home";
+
+            if (data.permiteReserva == "N") {
+                $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
+                $('#modalPermiteCambiar').modal('show');
+                return;
+            }
+
+            if (data.estaPagada == "N") {
+                let params = {};
+                params.online = data.esVirtual;
+                params.especialidad = {
+                    codigoEspecialidad: data.idEspecialidad,
+                    codigoPrestacion: data.codigoPrestacion,
+                    codigoServicio: data.codigoServicio,
+                    codigoTipoAtencion: data.codigoTipoAtencion,
+                    esOnline: data.esVirtual,
+                    nombre: data.especialidad
+                };
+                params.paciente = {
+                    "numeroIdentificacion": data.numeroIdentificacion,
+                    "tipoIdentificacion": data.tipoIdentificacion,
+                    "nombrePaciente": data.nombrePaciente,
+                    "numeroPaciente": data.numeroPaciente
+                };
+                params.central = {
+                    "codigoSucursal": data.codigoSucursal,
+                    "nombreSucursal": data.sucursal
+                };
+                params.ciudad = {
+                    "codigoPais": data.idPais,
+                    "codigoProvincia": data.idProvincia,
+                    "codigoCiudad": data.idCiudad
+                };
+                params.reservaEdit = {
+                    "estaPagada": data.estaPagada,
+                    "numeroOrden": data.numeroOrden,
+                    "lineaDetalleOrden": data.lineaDetalleOrden,
+                    "codigoEmpresaOrden": data.codigoEmpresaOrden,
+                    "idOrdenAgendable": data.idOrdenAgendable,
+                    "idCita": data.idCita,
+                };
+                params.origen = "inicios";
+                if (data.esSesionOdonto == "S") {
+                    params.sesion = {
+                        secuenciaPlanTto: data.secuenciaPlanTto,
+                        numeroSesion: data.numeroSesion,
+                        tiempoSesion: data.tiempoSesion
+                    };
+                    params.detalleSesion = {
+                        tipoAtencion: data.tipoAtencion,
+                        tiempoSesion: data.tiempoSesion,
+                        duracion: data.duracion
+                    };
+                }
+                params.convenio = {
+                    secuenciaAfiliado: data.secuenciaAfiliado,
+                    idCliente: data.idCliente,
+                    codigoCliente: data.codigoCliente,
+                    codigoConvenio: data.codigoConvenio,
+                    codigoEmpresa: data.codigoEmpresa,
+                    permitePagoLab: data.permitePagoLab,
+                    permitePago: data.permitePagoReserva,
+                    mensajeBloqueoPago: data.mensajeBloqueoPago,
+                    mensajeBloqueoReserva: data.mensajeBloqueoReserva,
+                    permiteReserva: data.permitePagoReserva,
+                    aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
+                    esPlanStar: data.esPlanStar
+                };
+                params.tipoFlujo = tipoFlujo;
+                localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
+                location = url;
+                return;
+            } else {
+                let params = {};
+                params.online = data.esVirtual;
+                params.especialidad = {
+                    codigoEspecialidad: data.idEspecialidad,
+                    codigoPrestacion: data.codigoPrestacion,
+                    codigoServicio: data.codigoServicio,
+                    codigoTipoAtencion: data.codigoTipoAtencion,
+                    esOnline: data.esVirtual,
+                    nombre: data.especialidad,
+                };
+                params.convenio = {
+                    secuenciaAfiliado: data.secuenciaAfiliado,
+                    idCliente: data.idCliente,
+                    codigoCliente: data.codigoCliente,
+                    codigoConvenio: data.codigoConvenio,
+                    codigoEmpresa: data.codigoEmpresa,
+                    permitePagoLab: data.permitePagoLab,
+                    permitePago: data.permitePagoReserva,
+                    mensajeBloqueoPago: data.mensajeBloqueoPago,
+                    mensajeBloqueoReserva: data.mensajeBloqueoReserva,
+                    permiteReserva: data.permitePagoReserva,
+                    aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
+                    esPlanStar: data.esPlanStar
+                };
+                params.paciente = {
+                    "numeroIdentificacion": data.numeroIdentificacion,
+                    "tipoIdentificacion": data.tipoIdentificacion,
+                    "nombrePaciente": data.nombrePaciente,
+                    "numeroPaciente": data.numeroPaciente
+                };
+                params.central = {
+                    "codigoSucursal": data.codigoSucursal,
+                    "nombreSucursal": data.sucursal
+                };
+                params.ciudad = {
+                    "codigoPais": data.idPais,
+                    "codigoProvincia": data.idProvincia,
+                    "codigoCiudad": data.idCiudad
+                };
+                params.reservaEdit = {
+                    "estaPagada": data.estaPagada,
+                    "numeroOrden": data.numeroOrden,
+                    "lineaDetalleOrden": data.lineaDetalleOrden,
+                    "codigoEmpresaOrden": data.codigoEmpresaOrden,
+                    "idOrdenAgendable": data.idOrdenAgendable,
+                    "idCita": data.idCita,
+                    "esSesionOdonto": data.esSesionOdonto
+                };
+                if (data.esSesionOdonto == "S") {
+                    params.sesion = {
+                        secuenciaPlanTto: data.secuenciaPlanTto,
+                        numeroSesion: data.numeroSesion,
+                        tiempoSesion: data.tiempoSesion,
+                    };
+                    params.detalleSesion = {
+                        tipoAtencion: data.tipoAtencion,
+                        tiempoSesion: data.tiempoSesion,
+                        duracion: data.duracion
+                    };
+                }
+                params.origen = "inicios";
+                params.tipoFlujo = tipoFlujo;
+                localStorage.setItem('cita-' + tokenCita, JSON.stringify(params));
+                location = url;
+            }
+        });
+
+        // 2. Disparar la carga inicial en segundo plano (sin bloquear el hilo principal)
+        initHomeData();
     });
 
-    async function cargarBanners(){
+    async function initHomeData() {
+        try {
+            // Si cargarConfiguracionesHome define variables globales necesarias para los demás endpoints,
+            // se espera primero antes de lanzar el resto en paralelo.
+            await cargarConfiguracionesHome("{{ Session::get('userData')->numeroIdentificacion }}");
+        } catch (error) {
+            console.warn('Error en cargarConfiguracionesHome:', error);
+        }
+
+        const tareas = [
+            controlVersion(),
+            obtenerPPD(),
+            cargarBanners(),
+            obtenerTratamientos(),
+            obtenerCitas(),
+            @if(config('app.subdomain') == "veris")
+            obtenerUrgenciasAmbulatorias(),
+            @endif
+            consultarConvenios(),
+            consultarDatosPaciente()
+        ];
+
+        const resultados = await Promise.allSettled(tareas);
+        resultados.forEach((resultado, index) => {
+            if (resultado.status === 'rejected') {
+                console.warn(`Error en tarea inicial [${index}]:`, resultado.reason);
+            }
+        });
+    }
+
+    async function cargarBanners() {
         let codigoLineaNegocio = (window.config.subdomain == "veris") ? 12 : 10;
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/configuraciones?codigoFlujoProceso=${codigoLineaNegocio}&canalOrigen=${window.config.canalOrigen}`;
-        
         args["method"] = "GET";
-        args["showLoader"] = true;
-        
+        args["showLoader"] = false;
+
         const data = await call(args);
-        {{-- console.log("----------------BANNERS--------------")
-        console.log(data) --}}
         let tieneSlides = false;
-        if(data.code == 200){
-            if(data.data === null){
+        if (data.code == 200) {
+            if (data.data === null) {
                 return;
             }
-            if(data.data.pantallas.length > 0){
+            if (data.data.pantallas.length > 0) {
                 let elem = ``;
-                $.each(data.data.pantallas, function(key, value){
-                    $.each(value.configuraciones, function(k,v){
+                $.each(data.data.pantallas, function (key, value) {
+                    $.each(value.configuraciones, function (k, v) {
                         tieneSlides = true;
                         let classAdd = ``;
                         let attrAditional = `url-rel=''`;
-                        if(v.nombreTipoObjeto == "BANNER_CUIDATE_X_MI"){
+                        if (v.nombreTipoObjeto == "BANNER_CUIDATE_X_MI") {
                             attrAditional = `type='button' url-rel='/promociones?s=Cuidate por mi'`;
-                        }else if(v.nombreTipoObjeto == "BANNER_BIENESTAR"){
+                        } else if (v.nombreTipoObjeto == "BANNER_BIENESTAR") {
                             attrAditional = `type='button' url-rel='/bienestar'`;
-                        }else if(v.nombreTipoObjeto == "BAN_DESC_EXCLUSIVOS"){
+                        } else if (v.nombreTipoObjeto == "BAN_DESC_EXCLUSIVOS") {
                             attrAditional = `type='button' url-rel='/promociones?c=TP'`;
-                        }else if(v.nombreTipoObjeto == "BANNER_PROMO_FILTRADA"){
+                        } else if (v.nombreTipoObjeto == "BANNER_PROMO_FILTRADA") {
                             attrAditional = `type='button' url-rel='/promociones?s=${v.valorAdicional}'`;
-                        }else if(v.nombreTipoObjeto == "BANNER_PROMO_X_CODIGO"){
+                        } else if (v.nombreTipoObjeto == "BANNER_PROMO_X_CODIGO") {
                             attrAditional = `type='button' codigoPaquete-rel='${v.valorAdicional}'`;
-                        }else if(v.nombreTipoObjeto == "BANNER_AGENDAMIENTO"){
+                        } else if (v.nombreTipoObjeto == "BANNER_AGENDAMIENTO") {
                             classAdd = `banner-cita-nueva`;
-                        }else if(v.nombreTipoObjeto == "BANNER_PROMOCIONES"){
+                        } else if (v.nombreTipoObjeto == "BANNER_PROMOCIONES") {
                             attrAditional = `type='button' url-rel='/promociones'`;
                         }
 
@@ -705,22 +750,20 @@ Mi Veris - Inicio
                             <div class="card d-block h-100 d-flex justify-content-center align-items-between shadow-none border-0">
                                 <div class="row h-100 g-0 justify-content-between align-items-center">
                                     <div class="col-12 link-item-banner" ${attrAditional}>
-                                        <img src="${v.valor}" class="img-fluid ${classAdd}" alt=""  >
+                                        <img src="${v.valor}" class="img-fluid ${classAdd}" alt="">
                                     </div>
                                 </div>
                             </div>
                         </div>`;
-                    })
-                })
-                if(tieneSlides){
+                    });
+                });
+                if (tieneSlides) {
                     $('#box-banners').html(elem);
                     var banners = new Swiper('.swiper-banners', {
-                        // slidesPerView: 1,
                         spaceBetween: 8,
-                        
                         navigation: {
-                            nextEl: '.btn-next',
-                            prevEl: '.btn-prev',
+                            nextEl: '.banners-next',
+                            prevEl: '.banners-prev',
                         },
                         autoplay: false,
                         pagination: {
@@ -731,18 +774,13 @@ Mi Veris - Inicio
                             300: {
                                 slidesPerView: 1.1,
                                 centeredSlides: false,
-                                // loop: true,
                                 spaceBetween: 4,
                             },
                             768: {
                                 slidesPerView: 1.5,
-                                // centeredSlides: true,
-                                // loop: true,
-                                // spaceBetween: 8,
                             },
                             1024: {
                                 slidesPerView: 2.7,
-                                // spaceBetween: 8,
                             },
                         },
                     });
@@ -754,30 +792,26 @@ Mi Veris - Inicio
 
     async function obtenerDatosUsuario(tipoIdentificacion, numeroIdentificacion) {
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${ tipoIdentificacion }&numeroIdentificacion=${ numeroIdentificacion }`;
-        
+        args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
         args["showLoader"] = true;
-        
+
         const data = await call(args);
-        console.log('datosUsuario',data);
         if (data.code == 200) {
             return data;
         }
         return [];
-    } 
+    }
 
-    async function eliminarReserva(){
+    async function eliminarReserva() {
         let args = [];
-        let canalOrigen = _canalOrigen
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/eliminarReserva?codigoReserva=${parseInt(getInput('idCitaEliminar'))}`;
         args["method"] = "PUT";
         args["bodyType"] = "json";
         args["showLoader"] = true;
         const data = await call(args);
 
-        //Menos para edictar reserva 
-        if(data.code == 200){
+        if (data.code == 200) {
             $('#modalEliminarCita').hide();
             $('.modal-backdrop').remove();
             await obtenerCitas();
@@ -789,88 +823,73 @@ Mi Veris - Inicio
         }
     }
 
-    // servicio para consultar convenios
-    async function consultarConvenios(){
-        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
-        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
-        let codigoEmpresa = 1
+    async function consultarConvenios() {
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
+        let codigoEmpresa = 1;
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/comercial/paciente/convenios?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}&codigoEmpresa=${codigoEmpresa}&tipoCredito=CREDITO_SERVICIOS`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const dataConvenio = await call(args);
-        if(dataConvenio.code == 200){
+        if (dataConvenio.code == 200) {
             datosConvenios = dataConvenio.data;
         }
-       
         return dataConvenio;
     }
 
-    // servicio para consultar datos del paciente
-    async function consultarDatosPaciente(data){
-        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}"
-        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}"
+    async function consultarDatosPaciente() {
+        let tipoIdentificacion = "{{ Session::get('userData')->codigoTipoIdentificacion }}";
+        let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/seguridad/cuenta?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroIdentificacion=${numeroIdentificacion}`;
         args["method"] = "GET";
         args["showLoader"] = false;
         const dataPaciente = await call(args);
-        if(dataPaciente.code == 200){
+        if (dataPaciente.code == 200) {
             datosPaciente = dataPaciente.data;
         }
         return dataPaciente;
     }
-    //obtener las politicas
-    let _ppd;
-    async function obtenerPPD(){
-        args = [];
+
+    async function obtenerPPD() {
+        let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}?codigoEmpresa=1&plataforma=WEB&version=7.0.1`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
 
         const data = await call(args);
         _ppd = data.data;
-        // Verificar ppd 2.0
-        // return;
 
-        if(data.code == 200){
-            {{-- console.log(data.data) --}}
+        if (data.code == 200) {
             localStorage.setItem('estadoPoliticas', data.data.estadoPoliticas);
 
-            if(localStorage.getItem('politicasAbiertas') == null){
-                let politicas = JSON.parse(localStorage.getItem('politicas'));
-                if((data.data.estadoPoliticas == "N") && (data.data.isPoliticasAceptadas == null || data.data.isPoliticasAceptadas == false)){
+            if (localStorage.getItem('politicasAbiertas') == null) {
+                if ((data.data.estadoPoliticas == "N") && (data.data.isPoliticasAceptadas == null || data.data.isPoliticasAceptadas == false)) {
                     localStorage.setItem('politicasAbiertas', true);
                     $('#modalPPD').modal('show');
-                    $('#politicasPPD').attr('href',data.data.linkPoliticaPrivacidad);
-                }
-                else {
-                    // localStorage.setItem('estadoPoliticas', data.data.estadoPoliticas);
-                    // localStorage.setItem('isPoliticasAceptadas', data.data.isPoliticasAceptadas);
+                    $('#politicasPPD').attr('href', data.data.linkPoliticaPrivacidad);
+                } else {
                     $('#modalPPD').modal('hide');
                 }
-            }
-            else {
+            } else {
                 $('#modalPPD').modal('hide');
             }
         }
     }
 
-    async function controlVersion(){
+    async function controlVersion() {
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/seguridad/controlVersion?codigoUsuario={{ Session::get('userData')->numeroIdentificacion }}&plataforma=WEB&version=1.0.0&canalOrigen=${window.config.canalOrigen}`;
-                args["method"] = "GET";
-                args["showLoader"] = true;
+        args["method"] = "GET";
+        args["showLoader"] = false;
         const data = await call(args);
-        {{-- console.log(data) --}}
-        if(data.code == 200){
-            // console.log(data.data.codigoRastreo)
+        if (data.code == 200) {
             localStorage.setItem('codigoRastreo', data.data.codigoRastreo);
         }
     }
 
-    //aceptar las politicas
-    async function aceptarPoliticas(){
+    async function aceptarPoliticas() {
         let args = [];
         args["endpoint"] = api_url + `/${api_war}/v1/politicas/usuarios/{{ Session::get('userData')->numeroIdentificacion }}`;
         args["method"] = "POST";
@@ -878,7 +897,6 @@ Mi Veris - Inicio
         args["bodyType"] = "json";
 
         args["data"] = JSON.stringify({
-
             "aceptaPoliticas": true,
             "versionPoliticas": _ppd.ultimaVersionPoliticas,
             "codigoEmpresa": 1,
@@ -888,31 +906,25 @@ Mi Veris - Inicio
             "tipoIdentificacion": {{ Session::get('userData')->codigoTipoIdentificacion }},
             "tipoEvento": "CR",
             "canalOrigen": _canalOrigen
-
         });
         const data = await call(args);
         return data;
     }
 
-    // recibir los tratamientos en home
-    async function obtenerTratamientos(){
+    async function obtenerTratamientos() {
         let args = [];
-        let canalOrigen = _canalOrigen;
         let numeroPaciente = {{ Session::get('userData')->numeroPaciente }};
-        // imprimir todos los valores de session
-        
+
         args["endpoint"] = api_url + `/${api_war}/v1/tratamientos/detallesPorServicio?idPaciente=${numeroPaciente}&estadoTratamiento=PENDIENTE&fechaInicio=&fechaFin=&page=1&perPage=3&idPacienteFiltrar=&esDetalleRealizado=N&esResumen=S&cantidadDetalles=2&canalOrigen=${window.config.canalOrigen}`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
         const data = await call(args);
-        {{-- console.log('INITR',data.data.items); --}}
-        if(data.code == 200){
-            if(data.data.items.length == 0){
+        if (data.code == 200) {
+            if (data.data.items.length == 0) {
                 mostrarNoExistenTratamientos();
             } else {
                 datosTratamientos = data.data.items;
-                console.log(datosTratamientos.length);
-                if(datosTratamientos.length > 0){
+                if (datosTratamientos.length > 0) {
                     $('.section-tratamientos').removeClass('d-none');
                     mostrarTratamientoenDiv();
                 }
@@ -922,27 +934,21 @@ Mi Veris - Inicio
         return data;
     }
 
-    // consultar citas
-    async function obtenerCitas(){
+    async function obtenerCitas() {
         let args = [];
-        let canalOrigen = _canalOrigen;
         let numeroIdentificacion = "{{ Session::get('userData')->numeroIdentificacion }}";
         let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
         let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroPaciente=${numeroPaciente}&numeroIdentificacion=${numeroIdentificacion}&codigoUsuario=${numeroIdentificacion}&version=7.8.0&adicionaSolicitudes=S&soloUsuarioSesion=S`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/citasVigentes?canalOrigen=${window.config.canalOrigen}&tipoIdentificacion=${tipoIdentificacion}&numeroPaciente=${numeroPaciente}&numeroIdentificacion=${numeroIdentificacion}&codigoUsuario=${numeroIdentificacion}&version=7.8.0&adicionaSolicitudes=S&soloUsuarioSesion=S`;
         args["method"] = "GET";
-        args["showLoader"] = true;
-        {{-- console.log(args["endpoint"]); --}}
+        args["showLoader"] = false;
         const data = await call(args);
-        {{-- console.log('citas',data); --}}
         if (data.code == 200) {
-            {{-- console.log(0, data.data.length); --}}
             if (data.data.length == 0) {
                 mostrarNoExistenCitas();
             } else {
-                $('#section-citas').removeClass('d-none')
-                {{-- console.log('si hay citas'); --}}
+                $('#section-citas').removeClass('d-none');
                 datosCitas = data.data;
                 mostrarCitasenDiv();
             }
@@ -950,51 +956,36 @@ Mi Veris - Inicio
         return data;
     }
 
-    // consultar urgencias ambulatorias
-    let citas_vua;
-    async function obtenerUrgenciasAmbulatorias(){
+    async function obtenerUrgenciasAmbulatorias() {
         let args = [];
-        let canalOrigen = _canalOrigen;
         let numeroPaciente = "{{ Session::get('userData')->numeroPaciente }}";
-        let tipoIdentificacion = {{ Session::get('userData')->codigoTipoIdentificacion }};
 
-        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservas/ingresos?idPaciente=${numeroPaciente}&canalOrigen=${window.config.canalOrigen}`
+        args["endpoint"] = api_url + `/${api_war}/v1/agenda/reservas/ingresos?idPaciente=${numeroPaciente}&canalOrigen=${window.config.canalOrigen}`;
         args["method"] = "GET";
-        args["showLoader"] = true;
+        args["showLoader"] = false;
         const data = await call(args);
         citas_vua = '';
         if (data.code == 200) {
-            if(data.data === null || data.data.length == 0){
+            if (data.data === null || data.data.length == 0) {
                 mostrarNoExistenUrgencias();
             } else {
-                $('#section-urgencias').removeClass('d-none')
-                citas_vua = data.data
+                $('#section-urgencias').removeClass('d-none');
+                citas_vua = data.data;
                 mostrarUrgenciasAmbulatorias();
             }
         }
         return data;
     }
 
-    //aceptar politicas
-    $('#aceptarPDP').click(async function(){
-        {{-- console.log("clicks"); --}}
-        const response = await aceptarPoliticas();
-        {{-- console.log("sisi",response); --}}
-        if(response.code == 200){
-            cerrarModal();
-        }
-    });
-
-    function cerrarModal(){
+    function cerrarModal() {
         $('#modalPPD').modal('hide');
     }
 
-    // llenar el div de tratamientos
     function mostrarTratamientoenDiv() {
         let data = datosTratamientos;
-
         let divContenedor = $('#contenedorTratamientoHome');
-        divContenedor.empty(); // Limpia el contenido actual
+        divContenedor.empty();
+        const tokenCita = "{{ $tokenCita }}";
 
         data.forEach((tratamientos) => {
             let elemento = `<div class="swiper-slide">
@@ -1007,7 +998,7 @@ Mi Veris - Inicio
                                                 <p class="card-text line-height-16 fs--2 text-one-line">Dr(a): ${capitalizarElemento(tratamientos.nombreMedico)}</p>
                                             </div>
                                             <div class="col-3">
-                                                <div class="progress-circle my-auto ms-auto" data-percentage="${ roundToDraw(tratamientos.porcentajeAvanceTratamiento) }">
+                                                <div class="progress-circle my-auto ms-auto" data-percentage="${roundToDraw(tratamientos.porcentajeAvanceTratamiento)}">
                                                     <span class="progress-left">
                                                         <span class="progress-bar"></span>
                                                     </span>
@@ -1025,21 +1016,13 @@ Mi Veris - Inicio
                                         </div>
                                         <div class="list-group list-group-checkable d-grid align-items-center h-50 gap-2 border-0 d-none">`;
 
-            // Bucle anidado para detalleTratamiento
             tratamientos.detallesTratamiento.forEach((detalle) => {
-                let params = {
-                    codigoTratamiento: detalle.codigoTratamiento,
-                    porcentajeAvanceTratamiento: tratamientos.porcentajeAvanceTratamiento
-                };
-
-                // convertir objeto a base64
-                let paramsBase64 = btoa(JSON.stringify(params));
-                let ruta = '/tratamiento/' + "{{ $tokenCita }}"
+                let ruta = '/tratamiento/' + tokenCita;
 
                 elemento += `<label class="list-group-item d-flex justify-content-between align-items-center border rounded-3 py-2 px-3 my-auto" style="border: 1px solid #F3F4F5 !important;box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.10);">
                                 <div class="d-flex gap-2 align-items-center">
                                     <div class="avatar-tratamiento border rounded-circle bg-very-pale-red">
-                                        <img class="rounded-circle" src=${quitarComillas(detalle.urlImagenTipoServicio)}  width="26" alt="icono">
+                                        <img class="rounded-circle" src=${quitarComillas(detalle.urlImagenTipoServicio)} width="26" alt="icono">
                                     </div>
                                     <p class="text-veris fw-medium fs--2 mb-0">${capitalizarElemento(detalle.nombreServicio)}</p>
                                 </div>
@@ -1048,22 +1031,17 @@ Mi Veris - Inicio
                             </label>`;
             });
 
-            // Finalizar construcción del elemento HTML
             elemento += `</div></div></div></div>`;
-
-            // Agregar 'elemento' al DOM
             divContenedor.append(elemento);
         });
     }
 
-    // mostrar mensaje de no hay tratamientos
     function mostrarNoExistenTratamientos() {
         document.getElementById('verTodosTratamientos').style.display = 'none';
         document.querySelector('.swiper-tratamientos').style.display = 'none';
-        let data = datosTratamientos;
 
         let divContenedor = $('#contenedorTratamientosHomePrincipal');
-        divContenedor.empty(); // Limpia el contenido actual
+        divContenedor.empty();
 
         let elemento = `<div class="text-center">
                             <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
@@ -1073,45 +1051,30 @@ Mi Veris - Inicio
         $('#contenedorTratamientosHomePrincipal').removeClass('d-none');
     }
 
-    // llenar el div de citas
     function mostrarCitasenDiv() {
         const data = datosCitas;
         const divContenedor = $('#contenedorCitas');
-        divContenedor.empty(); // Limpia el contenido actual
+        divContenedor.empty();
         let elemento = '';
         const tokenCita = "{{ $tokenCita }}";
+
         data.forEach((citas) => {
             const classElem = citas.estaPagada === "S" ? 'justify-content-end' : 'justify-content-between';
             const esConsultaOnline = citas.esVirtual === "S";
-            const esPagada = citas.estaPagada === "S" ? 'Pagada' : 'No pagada';
-            let ruta = "/citas-elegir-fecha-doctor/" + tokenCita;
-
-            if (citas.esVirtual !== "S") {
-                ruta = "/seleccionar-datos-cita/" + tokenCita;
-            }
-
-            if(citas.esSesionOdonto){
-                //console.log("AQUI ODONTO")
-            }
-
-            /*
-            permiteCambiar
-            mensajeInformacion
-            */
-
             let tituloCard = capitalizarElemento(citas.especialidad);
-            if(citas.esLabDomicilio && citas.esLabDomicilio == "S"){
+
+            if (citas.esLabDomicilio && citas.esLabDomicilio == "S") {
                 let prestaciones = ``;
                 let count = 0;
-                $.each(citas.pacientes, function(k,v){
-                    $.each(v.examenes, function(k1,v1){
-                        if(count < 3){
+                $.each(citas.pacientes, function (k, v) {
+                    $.each(v.examenes, function (k1, v1) {
+                        if (count < 3) {
                             count++;
-                            prestaciones +=`<li class="text-nowrap overflow-hidden text-truncate fs--3 line-height-12">${v1.nombreExamen}${(v.examenes.length < 3 || count == 3) ? `...` : ``}</li>`;
+                            prestaciones += `<li class="text-nowrap overflow-hidden text-truncate fs--3 line-height-12">${v1.nombreExamen}${(v.examenes.length < 3 || count == 3) ? `...` : ``}</li>`;
                         }
-                    })
-                })
-                {{-- tituloCard = `Solicitud de laboratorio a domicilio - ${citas.codigoSolicitud}`; --}}
+                    });
+                });
+
                 tituloCard = `Laboratorio a domicilio`;
                 elemento += `<div class="swiper-slide">
                     <div class="card h-100 bg-transparent shadow-none">
@@ -1121,10 +1084,10 @@ Mi Veris - Inicio
                             ` : `<span class="badge fs--12 fw-medium p-2 mb-2 text-capitalize" style="background-color: #D7EDFD!important;color:#3A5068"><i class="fa-solid fa-motorcycle me-2 label-status-detalle"></i>A Domicilio</span>`}
                             <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="text-veris-ai fs--1 fw-medium line-height-16 mb-1">${tituloCard}</h6>
-                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${ (citas.estaPagada == "S") ? "#00C853" : "#D84315"};"><i class="fa-solid fa-circle"></i> ${ (citas.estaPagada == "S") ? "Cita pagada" : "Pago pendiente" }</span>
+                                <span class="fs--2 fw-medium line-height-16 mb-1" style="color: ${(citas.estaPagada == "S") ? "#00C853" : "#D84315"};"><i class="fa-solid fa-circle"></i> ${(citas.estaPagada == "S") ? "Cita pagada" : "Pago pendiente"}</span>
                             </div>
                             <ul class="fw-normal fs--2 line-height-16 mb-1 p-0">
-                                ${ prestaciones }
+                                ${prestaciones}
                             </ul>
                             <p class="fw-normal fs--2 line-height-16 mb-1">${formatoFechaDiaMesAnio(citas.fechaReserva)} <b class="hora-cita ms-1 fw-normal text-veris-ai">${citas.horaInicio}</b></p>
                             <p class="fw-normal fs--2 line-height-16 mb-1">Paciente: ${capitalizarElemento(citas.nombrePaciente)}</p>
@@ -1140,9 +1103,9 @@ Mi Veris - Inicio
                         </div>
                     </div>
                 </div>`;
-            }else{
+            } else {
                 let noPermiteCambio = ``;
-                if(citas.permiteCambiar == "N"){
+                if (citas.permiteCambiar == "N") {
                     noPermiteCambio += `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
                             <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
                         </div>`;
@@ -1167,14 +1130,12 @@ Mi Veris - Inicio
                                 <button type="button" codigoReserva-rel="${citas.idCita}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
                             ` : ''}
                             <div class="mt-auto">
-                                ${( citas.esSesionOdonto != "S") ? `<div class="${(citas.estaPagada === "S" && citas.esVirtual === "N" && citas.idTeleconsulta === null) ? `btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16`: `btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none`} btn-opciones-cita" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
-                                ` : (citas.esSesionOdonto != "S") ? `<div data-bs-toggle="modal" data-mensajeInformacion="${citas.mensajeInformacion}" data-bs-target="#modalPermiteCambiar" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal btn-cita-informacion line-height-16 shadow-none border-0 pe-0 me-0">
-                                        <i class="fa-solid fa-circle-info text-warning line-height-20" style="font-size:22px"></i>
-                                    </div>` : ( citas.estaPagada == "S" ) ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>` : `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
+                                ${(citas.esSesionOdonto != "S") ? `<div class="${(citas.estaPagada === "S" && citas.esVirtual === "N" && citas.idTeleconsulta === null) ? `btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16` : `btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none`} btn-opciones-cita" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
+                                ` : (citas.estaPagada == "S") ? `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>` : `<div data-bs-toggle="modal" data-bs-target="#masOpcionesModal" class="btn btn-sm btn-outline-veris-ai fs--1 fw-normal line-height-16 shadow-none btn-opciones-sesion" data-rel='${JSON.stringify(citas)}'>Más opciones</div>
                                         <a class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-sesion" data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                     `
                                 }
-                                ${ (citas.estaPagada === "N" && citas.esSesionOdonto != "S") ? `
+                                ${(citas.estaPagada === "N" && citas.esSesionOdonto != "S") ? `
                                 <a class="btn btn-sm bg-veris-ai text-white fs--1 fw-medium ms-2 m-0 line-height-16 btn-pagar" data-rel='${JSON.stringify(citas)}'>Pagar</a>
                                 ` : ''}
                             </div>
@@ -1190,13 +1151,12 @@ Mi Veris - Inicio
         divContenedor.append(elemento);
     }
 
-    // mostrar mensaje de no hay citas
     function mostrarNoExistenCitas() {
         document.getElementById('section-citas').style.display = 'none';
         document.querySelector('.swiper-proximas-citas').style.display = 'none';
-        let data = datosCitas;
+
         let divContenedor = $('#contenedorCitasHomePrincipal');
-        divContenedor.empty(); // Limpia el contenido actual
+        divContenedor.empty();
 
         let elemento = `<div class="text-center">
                             <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
@@ -1207,16 +1167,13 @@ Mi Veris - Inicio
         $('#contenedorCitasHomePrincipal').removeClass('d-none');
     }
 
-    // llenar el div de urgencias ambulatorias
     function mostrarUrgenciasAmbulatorias() {
         let data = citas_vua;
-
         let divContenedor = $('#contenedorUrgenciasAmbulatorias');
-        divContenedor.empty(); // Limpia el contenido actual
+        divContenedor.empty();
 
         var elemento = ``;
         data.forEach((urgencias) => {
-            console.log(urgencias)
             elemento += `<div class="swiper-slide">
                 <div class="card">
                     <div class="card-body">
@@ -1226,7 +1183,6 @@ Mi Veris - Inicio
                         </div>
                         <p class="fw-medium fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.nombreSucursal)}</p>
                         <p class="fw-normal fs--2 line-height-16 mb-1">${urgencias.fechaAdmision.replace(/\*(.*?)\*/g, '<b class="hora-cita fw-normal text-veris-ai">$1</b>')}</p>
-                        <!--p class="fw-normal fs--2 line-height-16 mb-1">Dr(a) ${capitalizarElemento(urgencias.medico)}</p-->
                         <p class="fw-normal fs--2 line-height-16 mb-1">${capitalizarElemento(urgencias.paciente)}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <button type="button" codigoReserva-rel="${urgencias.codigoReserva}" class="btn btn-eliminar-cita btn-sm text-danger-veris shadow-none p-1"><img src="{{asset('assets/img/svg/trash.svg')}}" alt=""></button>
@@ -1235,18 +1191,16 @@ Mi Veris - Inicio
                     </div>
                 </div>
             </div>`;
-            console.log(elemento)
         });
         divContenedor.append(elemento);
     }
 
-    // mostrar mensaje de no hay urgencias
     function mostrarNoExistenUrgencias() {
         document.getElementById('section-urgencias').style.display = 'none';
         document.querySelector('.swiper-urgencias-ambulatorias').style.display = 'none';
-        let data = datosCitas;
+
         let divContenedor = $('#contenedorUrgenciasAmbulatoriasMensaje');
-        divContenedor.empty(); // Limpia el contenido actual
+        divContenedor.empty();
 
         let elemento = `<div class="text-center">
                             <img src="{{ asset('assets/img/svg/rheumatology.svg') }}" alt="">
@@ -1254,265 +1208,20 @@ Mi Veris - Inicio
                         </div>`;
         divContenedor.append(elemento);
     }
-    
 
-    // funcion para controlar swiper independientes
-    // function initializeSwiper(swiperSelector) {
-    //     document.querySelectorAll(swiperSelector).forEach(swiperElement => {
-    //         const prevButton = swiperElement.querySelector('.btn-prev');
-    //         const nextButton = swiperElement.querySelector('.btn-next');
-    //         const slides = swiperElement.querySelectorAll('.swiper-slide');
-
-    //         // Ocultar botones si hay menos de 4 slides
-    //         console.log(slides.length);
-    //         if (slides.length >= 4) {
-    //         prevButton.style.opacity = 1;
-    //         nextButton.style.opacity = 1;
-    //     } else {
-    //         prevButton.style.opacity = 0;
-    //         nextButton.style.opacity = 0;
-    //     }
-
-    //         new Swiper(swiperElement, {
-    //             navigation: {
-    //                 nextEl: nextButton,
-    //                 prevEl: prevButton,
-    //             },
-    //                 // Agrega aquí otras opciones de configuración si son necesarias
-    //                 slidesPerView: 3,
-    //                 spaceBetween: 10,
-                    
-    //             });
-    //         });
-    // }
-
-    // funcion esPagada para saber si la cita esta pagada
-    function esPagada(pagada){
-        if(pagada.estaPagada == 'S'){
+    function esPagada(pagada) {
+        if (pagada.estaPagada == 'S') {
             return `<span class="fs--2 text-success fw-medium"><i class="fa-solid fa-circle me-1"></i> ${pagada.mensajeEstado}</span>`;
-               
         } else {
             return `<span class="fs--2 text-danger-veris fw-medium"><i class="fa-solid fa-circle me-1"></i> ${pagada.mensajeEstado}</span>`;
         }
     }
 
-    // setear los valores de la cita en localstorage
-    $(document).on('click', '.btn-CambiarFechaCita', async function(){
-        //alert(0);
-        console.log('click entro a cambiar fecha');
-        let data = $(this).data('rel');
-        // console.log('datasss', data);return;
-        let url = $(this).attr('url-rel');
-        console.log(url);
-        
-        tipoFlujo = "reagenda/home";
-        // const dataConvenio = await consultarConvenios(data);
-        // const dataPaciente = await consultarDatosPaciente(data);
-        if(data.permiteReserva == "N"){
-            $('#mensajeNoPermiteCambiar').html(data.mensajeBloqueoReserva);
-            $('#modalPermiteCambiar').modal('show');
-            return;
-        }
-        
-        if (data.estaPagada == "N"){
-            let params = {}
-            params.online = data.esVirtual;
-            params.especialidad = {
-                codigoEspecialidad: data.idEspecialidad,
-                codigoPrestacion  : data.codigoPrestacion,
-                codigoServicio   : data.codigoServicio,
-                codigoTipoAtencion: data.codigoTipoAtencion,
-                esOnline : data.esVirtual,
-                nombre : data.especialidad
-            }
-            params.paciente = {
-                "numeroIdentificacion": data.numeroIdentificacion,
-                "tipoIdentificacion": data.tipoIdentificacion,
-                "nombrePaciente": data.nombrePaciente,
-                "numeroPaciente": data.numeroPaciente
-            }
-
-            params.central = {
-                "codigoSucursal": data.codigoSucursal,
-                "nombreSucursal": data.sucursal
-            }
-            params.ciudad = {
-                "codigoPais": data.idPais,
-                "codigoProvincia": data.idProvincia,
-                "codigoCiudad": data.idCiudad
-            }
-
-            params.reservaEdit = {
-                "estaPagada": data.estaPagada,
-                "numeroOrden": data.numeroOrden,
-                "lineaDetalleOrden": data.lineaDetalleOrden,
-                "codigoEmpresaOrden": data.codigoEmpresaOrden,
-                "idOrdenAgendable": data.idOrdenAgendable,
-                "idCita": data.idCita,
-            }
-            params.origen = "inicios";
-            if(data.esSesionOdonto == "S"){
-                params.sesion = {
-                    secuenciaPlanTto: data.secuenciaPlanTto,
-                    numeroSesion: data.numeroSesion,
-                    tiempoSesion: data.tiempoSesion
-                };
-                params.detalleSesion = {
-                    tipoAtencion: data.tipoAtencion,
-                    tiempoSesion: data.tiempoSesion,
-                    duracion: data.duracion
-                }
-            }
-            // if(datosConvenios.length == 0){
-            //     params.convenio = {
-            //         "permitePago": "S",
-            //         "permiteReserva": "S",
-            //         "idCliente": null,
-            //         "codigoConvenio": null,
-            //         "secuenciaAfiliado" : null,
-            //     };
-            //     localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-            //     // location = url;
-            //     return;
-            // }
-            params.convenio = {
-                secuenciaAfiliado: data.secuenciaAfiliado,
-                idCliente: data.idCliente,
-                codigoCliente: data.codigoCliente,
-                codigoConvenio: data.codigoConvenio,
-                codigoEmpresa: data.codigoEmpresa,
-                permitePagoLab : data.permitePagoLab,
-                permitePago: data.permitePagoReserva,
-                mensajeBloqueoPago : data.mensajeBloqueoPago,
-                mensajeBloqueoReserva : data.mensajeBloqueoReserva,
-                permiteReserva: data.permitePagoReserva,
-                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
-                esPlanStar:  data.esPlanStar
-            }
-            // console.log(params);return;
-            params.tipoFlujo = tipoFlujo;
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-            location = url;
-            return;
-            
-            const datosConvenioServicio = await consultarConvenios();
-            console.log('datosConvenioServicio', datosConvenioServicio);
-            if (datosConvenioServicio.data.length == 0) {
-                location = url;
-            } else {
-
-                llenarModalConvenios(datosConvenioServicio.data, url);
-
-                $('#convenioModal').modal('show');
-            }
-        }else{    
-            let params = {}
-            params.online = data.esVirtual;
-            params.especialidad = {
-                codigoEspecialidad: data.idEspecialidad,
-                codigoPrestacion  : data.codigoPrestacion,
-                codigoServicio   : data.codigoServicio,
-                codigoTipoAtencion: data.codigoTipoAtencion,
-                esOnline : data.esVirtual,
-                nombre : data.especialidad,
-            }
-            params.convenio = {
-                secuenciaAfiliado: data.secuenciaAfiliado,
-                idCliente: data.idCliente,
-                codigoCliente: data.codigoCliente,
-                codigoConvenio: data.codigoConvenio,
-                codigoEmpresa: data.codigoEmpresa,
-                permitePagoLab : data.permitePagoLab,
-                permitePago: data.permitePagoReserva,
-                mensajeBloqueoPago : data.mensajeBloqueoPago,
-                mensajeBloqueoReserva : data.mensajeBloqueoReserva,
-                permiteReserva: data.permitePagoReserva,
-                aplicaVerificacionConvenio: data.aplicaVerificacionConvenio,
-                esPlanStar:  data.esPlanStar
-            }
-
-            // if (datosConvenios.length > 0) {
-            //     console.log('datosConvenio', datosConvenios);
-            //     // datosconvenio posicion 0
-            //     params.convenio = datosConvenios[0];
-
-            // } else {
-            //     params.convenio = {
-            //         "permitePago": "S",
-            //         "permiteReserva": "S",
-            //         "idCliente": null,
-            //         "codigoConvenio": null,
-            //         "secuenciaAfiliado" : null,
-            //     };
-            // }
-            // params.paciente = {
-            //     "numeroIdentificacion": datosPaciente.numeroIdentificacion,
-            //     "tipoIdentificacion": datosPaciente.codigoTipoIdentificacion,
-            //     "nombrePaciente": datosPaciente.primerNombre + ' ' + datosPaciente.segundoNombre + ' ' + datosPaciente.primerApellido + ' ' + datosPaciente.segundoApellido,
-            //     "numeroPaciente": datosPaciente.numeroPaciente
-            // }
-            params.paciente = {
-                "numeroIdentificacion": data.numeroIdentificacion,
-                "tipoIdentificacion": data.tipoIdentificacion,
-                "nombrePaciente": data.nombrePaciente,
-                "numeroPaciente": data.numeroPaciente
-            }
-
-            params.central = {
-                "codigoSucursal": data.codigoSucursal,
-                "nombreSucursal": data.sucursal
-            }
-            params.ciudad = {
-                "codigoPais": data.idPais,
-                "codigoProvincia": data.idProvincia,
-                "codigoCiudad": data.idCiudad
-            }
-
-            params.reservaEdit = {
-                "estaPagada": data.estaPagada,
-                "numeroOrden": data.numeroOrden,
-                "lineaDetalleOrden": data.lineaDetalleOrden,
-                "codigoEmpresaOrden": data.codigoEmpresaOrden,
-                "idOrdenAgendable": data.idOrdenAgendable,
-                "idCita": data.idCita,
-                "esSesionOdonto": data.esSesionOdonto
-            }
-            if(data.esSesionOdonto == "S"){
-                params.sesion = {
-                    secuenciaPlanTto: data.secuenciaPlanTto,
-                    numeroSesion: data.numeroSesion,
-                    tiempoSesion: data.tiempoSesion,
-                };
-                params.detalleSesion = {
-                    tipoAtencion: data.tipoAtencion,
-                    tiempoSesion: data.tiempoSesion,
-                    duracion: data.duracion
-                }
-            }
-            params.origen = "inicios";
-            // console.log(params);return;
-            params.tipoFlujo = tipoFlujo;
-            localStorage.setItem('cita-{{ $tokenCita }}', JSON.stringify(params));
-            location = url;
-            
-            /*if(data.permitePagoReserva == "N" || datosConvenios.length == 0){
-                location = url;
-            }else{
-                //data.mensajePagoReserva
-                llenarModalConvenios(datosConvenios, url);
-                $('#convenioModal').modal('show');
-            }*/
-        }
-    });
-
-
-    // consultar convenios y llenar el modal de convenios
-    function llenarModalConvenios(data, url){
+    function llenarModalConvenios(data, url) {
         let divContenedor = $('#listaConvenios');
-        divContenedor.empty(); // Limpia el contenido actual
+        divContenedor.empty();
         let elemento = '';
         data.forEach((convenios) => {
-            console.log('convenioss', convenios);
             elemento += `<div data-rel='${JSON.stringify(convenios)}' url-rel='${url}' class="convenio-item mb-2">
                                     <div class="list-group-item rounded-3 py-2 px-3 border-0">
                                         <input class="list-group-item-check pe-none" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios${convenios.codigoConvenio}" value="">
@@ -1522,7 +1231,6 @@ Mi Veris - Inicio
                                     </div>
                                 </div>`;
         });
-        // agregar convenio ninguno
         elemento += `<div data-rel='ninguno' class="convenio-ninguno" url-rel='${url}' >
                         <div class="list-group-item rounded-3 py-2 px-3 border-0">
                             <label for="listGroupCheckableRadiosninguno" class="text-primary-veris fs--1 line-height-16 cursor-pointer">
@@ -1533,23 +1241,17 @@ Mi Veris - Inicio
         divContenedor.append(elemento);
     }
 
-    // consultar datos de facturacion
-    async function consultarDatosFacturacion(data){
+    async function consultarDatosFacturacion(data) {
         let args = [];
-        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/consultar_datos_factura?idPreTransaccion=5017811&codigoTipoIdentificacion=2&numeroIdentificacion=0940389299
-        `;
+        args["endpoint"] = api_url + `/${api_war}/v1/facturacion/consultar_datos_factura?idPreTransaccion=5017811&codigoTipoIdentificacion=2&numeroIdentificacion=0940389299`;
         args["method"] = "GET";
         args["showLoader"] = true;
         const dataFacturacion = await call(args);
-        console.log('dataFacturacion', dataFacturacion);
-        if(dataFacturacion.code == 200){
+        if (dataFacturacion.code == 200) {
             return dataFacturacion.data;
         }
         return [];
     }
-
-
-
 </script>
 <style>
     .link-item-banner {
@@ -1557,23 +1259,18 @@ Mi Veris - Inicio
         pointer-events: auto;
         z-index: 10;
     }
-    .box-container-icon{
-        border: 1px solid #D4E1FC
+    .box-container-icon {
+        border: 1px solid #D4E1FC;
     }
     @media screen and (max-width: 600px) {
-        .label-txt-acceso-directo{
+        .label-txt-acceso-directo {
             font-size: 14px;
         }
     }
     @media screen and (max-width: 500px) {
-        .label-txt-acceso-directo{
+        .label-txt-acceso-directo {
             font-size: 12px;
         }
     }
-    /* .btn-transition {
-        opacity: 0;
-        transition: opacity 0.01s ease;
-    } */
 </style>
-
 @endpush

@@ -373,8 +373,8 @@
                 // slidesPerView: 1,
                 spaceBetween: 8,
                 navigation: {
-                    nextEl: '.btn-next',
-                    prevEl: '.btn-prev',
+                    nextEl: '.tratamientos-next',
+                    prevEl: '.tratamientos-prev',
                 },
                 autoplay: false,
                 // watchOverflow: true,
@@ -616,8 +616,11 @@
 
     @stack('scripts')
 
-    @include('template.connect-test')
-    {{-- @include('template.connect-prod') --}}
+    @if(\App\Models\Veris::ENVIRONMENT_NUVEI === 'prod')
+        @include('template.connect-prod')
+    @else
+        @include('template.connect-test')
+    @endif
 </body>
 
 </html>
