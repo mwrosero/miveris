@@ -79,6 +79,16 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
         <h5 class="ps-3 my-auto py-3 fs-20 fs-md-24">{{ __('Revisa tus datos') }}</h5>
     </div>
     <section class="p-3 mb-3 invisible detalles-cita-box">
+        <div class="row justify-content-center mb-3 d-none" id="box-advise-parami">
+            <div class="col-12 col-md-8">
+                <div class="d-flex justify-content-start justify-content-md-center align-items-center rounded-3 p-2 bg-warning-light shadow-sm">
+                    <i class="fa-solid fa-circle-info text-warning fs-2 p-2 me-2"></i>
+                    <p class="fs--1 line-height-16 mb-0 text-veris-dark">
+                        Tu cita se <b>agendará una vez realizado el pago.</b> De lo contrario, <b>la cita se eliminará.</b>
+                    </p>
+                </div>
+            </div>
+        </div>
         <div class="row g-4 justify-content-center">
             <div class="col-md-4 box-card-precio">
                 <div class="card">
@@ -766,6 +776,9 @@ $data = json_decode(utf8_encode(base64_decode(urldecode($params))));
             if(porcentajeDescuentoCopago > 0){
                 classNone = '';
                 descuentoLabel = `*Se aplicó un ${porcentajeDescuentoCopago}% ${data.data.mensajeDescuento}`;
+                @if(config('app.subdomain') !== "veris")
+                $('#box-advise-parami').removeClass('d-none');
+                @endif
             }
 
             if(valorCanalVirtual == 0){

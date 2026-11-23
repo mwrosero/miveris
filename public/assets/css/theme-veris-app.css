@@ -42,6 +42,7 @@
   --verisAi: #296BEF;
   --Secundario-Midnight-blue-Tint-40: #717C8C;
   --Secundario-Midnight-blue-Tint-80: #D0D3D9;
+  --bg-vris-warning-light: #FFF8E1;
 }
 
 body {
@@ -165,6 +166,10 @@ body {
 
 .bg-strong-magenta {
   background-color: var(--bg-vris-strong-magenta) !important;
+}
+
+.bg-warning-light {
+  background-color: var(--bg-vris-warning-light) !important;
 }
 
 .bg-neutral {

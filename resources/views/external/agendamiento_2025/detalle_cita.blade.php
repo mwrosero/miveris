@@ -95,6 +95,16 @@ Veris - Detalle de Citas
         </div>
     </section>
     <section class="p-3 mb-3 invisible detalles-cita-box">
+        <div class="row justify-content-center mb-3 d-none" id="box-advise-parami">
+            <div class="col-12 col-md-8">
+                <div class="d-flex justify-content-start justify-content-md-center align-items-center rounded-3 p-2 bg-warning-light shadow-sm">
+                    <i class="fa-solid fa-circle-info text-warning fs-2 p-2 me-2"></i>
+                    <p class="fs--1 line-height-16 mb-0 text-veris-dark">
+                        Tu cita se <b>agendará una vez realizado el pago.</b> De lo contrario, <b>la cita se eliminará.</b>
+                    </p>
+                </div>
+            </div>
+        </div>
         <div class="row g-4 justify-content-center">
             <div class="col-md-4 box-card-precio">
                 <div class="card">
@@ -211,7 +221,7 @@ Veris - Detalle de Citas
     if(permitePago == "S"){
         let labelBtn = `Pagar`;
         if(window.config.canalOrigen == 'VER_PMF'){
-            labelBtn = `Confirmar Cita`;
+            {{-- labelBtn = `Confirmar Cita`; --}}
         }
         $('#btn-pagar').html(labelBtn);
     }
@@ -789,6 +799,9 @@ Veris - Detalle de Citas
             if(porcentajeDescuentoCopago > 0){
                 classNone = '';
                 descuentoLabel = `*Se aplicó un ${porcentajeDescuentoCopago}% ${data.data.mensajeDescuento}`;
+                @if(config('app.subdomain') !== "veris")
+                $('#box-advise-parami').removeClass('d-none');
+                @endif
             }
 
             if(valorCanalVirtual == 0){
@@ -1035,15 +1048,14 @@ Veris - Detalle de Citas
                 https://api-phantomx.veris.com.ec/${api_war}/v1/agenda/validarPermitePago?canalOrigen=MVE_CMV&codigoUsuario=0926178534&tipoItem=C&codigoReserva=4222668939
                 */
                 // await crearPreTransaccion()
-                if(window.config.canalOrigen == 'VER_PMF' && dataCita.online == "N"){
-                    //let url_payment = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
+                location.href = `/external/payment/{{ $params }}?canalOrigenNuvei=${window.config.canalOrigen}`;
+                {{-- if(window.config.canalOrigen == 'VER_PMF' && dataCita.online == "N"){
                     let url_payment = `/external/payment/{{ $params }}?canalOrigenNuvei=${window.config.canalOrigen}`;
                     $('#paymentOnline').attr('href', url_payment);
                     $('#modalTipoPago').modal('show')
                 }else{
-                    //location.href = `/external/payment?numeroIdentificacion=${numeroIdentificacion}&tipoIdentificacion=${tipoIdentificacion}&codArticulo=${dataCita.reserva.codigoReserva}&tipoArticulo=CITA&canalOrigenNuvei=${window.config.canalOrigen}`;
                     location.href = `/external/payment/{{ $params }}?canalOrigenNuvei=${window.config.canalOrigen}`;
-                }
+                } --}}
             }else{
                 location.href = '/external/agendamiento/cita-agendada/{{ $params }}';
             }
